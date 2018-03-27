@@ -1,0 +1,16 @@
+[
+	{
+		"code": "DEMO",
+		"brokerId": "100011",
+		"rewardRule": {
+			"chargeAmount": 1800,
+			"scoreLine": 1.18,
+			"rankAmount": [
+				300,
+				200,
+				100
+			],
+			"ceilAmount": 50
+		}
+	}
+]
