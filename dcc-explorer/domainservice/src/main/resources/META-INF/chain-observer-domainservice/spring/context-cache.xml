@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:c="http://www.springframework.org/schema/c" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+	<bean id="cacheManager" class="org.springframework.cache.support.CompositeCacheManager"
+		p:fallbackToNoOpCache="false">
+		<property name="cacheManagers">
+			<list>
+				<ref bean="guavaCacheManager" />
+			</list>
+		</property>
+	</bean>
+	<context:component-scan base-package="io.wexchain.info.chain.member.domainservice" />
+	<cache:annotation-driven cache-manager="cacheManager" />
+	<bean id="guavaCacheManager" class="org.springframework.cache.guava.GuavaCacheManager"
+		p:cacheSpecification="maximumSize=1000000,expireAfterWrite=60m,recordStats" />
+	<bean id="guavaCacheExpirer"
+		class="com.wexmarket.topia.commons.basic.cache.GuavaCacheExpirer"
+		c:_0-ref="guavaCacheManager" />
+
+</beans>
