@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<bean id="loanContractParamV1" parent="contractParam"
+		p:contractAddress="${contract.loan.address.v1}" p:contractClass="io.wexchain.juzix.contract.loan.xiaoxinyong.LoanServiceV1" />
+
+	<bean id="loanServiceProxyV1"
+		  class="io.wexchain.passport.gateway.service.loan.xiaoxinyong.LoanServiceProxyJuzixImpl"
+		  p:abiResource="classpath:/META-INF/passport-gateway/abi/LoanServiceV1.abi">
+		<property name="contract">
+			<bean class="io.wexchain.juzix.contract.commons.ContractFactoryBean"
+				  p:web3j-ref="web3j"
+				  p:transactionManager-ref="transactionManager"
+				  p:contractParam-ref="loanContractParamV1"
+			/>
+		</property>
+		<property name="signMessageValidator">
+			<bean
+					class="io.wexchain.passport.gateway.service.loan.xiaoxinyong.LoanSignMessageValidator"
+					p:contractParam-ref="loanContractParamV1" />
+		</property>
+
+	</bean>
+
+
+<!--	<bean id="loanContractParam" parent="contractParam"
+		  p:contractAddress="${contract.loan.address}" p:contractClass="io.wexchain.juzix.contract.loan.wexCloud.LoanService" />
+
+	<bean id="loanServiceProxy"
+		  class="io.wexchain.passport.gateway.service.loan.wexCloud.LoanServiceProxyJuzixImpl"
+		  p:abiResource="classpath:/META-INF/passport-gateway/abi/LoanService.abi">
+		<property name="contract">
+			<bean class="io.wexchain.juzix.contract.commons.ContractFactoryBean"
+				  p:web3j-ref="web3j"
+				  p:transactionManager-ref="transactionManager"
+				  p:contractParam-ref="loanContractParam"
+			/>
+		</property>
+		<property name="signMessageValidator">
+			<bean
+					class="io.wexchain.passport.gateway.service.loan.wexCloud.LoanSignMessageValidator"
+					p:contractParam-ref="loanContractParam" />
+		</property>
+
+	</bean>-->
+
+</beans>

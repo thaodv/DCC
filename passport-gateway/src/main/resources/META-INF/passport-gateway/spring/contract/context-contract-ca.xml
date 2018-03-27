@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<bean id="caContractParam" parent="contractParam"
+		p:contractAddress="${contract.ca.address}" p:contractClass="io.wexchain.juzix.contract.passport.Ca" />
+
+	<bean id="caContract" class="io.wexchain.juzix.contract.commons.ContractFactoryBean"
+		p:web3j-ref="web3j" p:transactionManager-ref="transactionManager"
+		p:contractParam-ref="caContractParam" />
+
+	<bean class="io.wexchain.passport.gateway.service.ca.CaSignMessageValidator"
+		p:contractParam-ref="caContractParam" />
+
+	<bean class="io.wexchain.passport.gateway.service.ca.CaRepoJuzixImpl"
+		p:contract-ref="caContract" />
+
+</beans>

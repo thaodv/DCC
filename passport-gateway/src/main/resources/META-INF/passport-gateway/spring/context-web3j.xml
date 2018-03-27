@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<bean id="web3j" class="juzix.web3j.protocol.CustomWeb3jFactory"
+		factory-method="buildweb3j">
+		<constructor-arg index="0">
+			<bean class="org.web3j.protocol.http.HttpService" c:_0="${juzix.url}" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="credentials" class="org.web3j.crypto.WalletUtils"
+		factory-method="loadCredentials">
+		<constructor-arg index="0" value="${gateway.wallet.password}" />
+		<constructor-arg index="1" value="${gateway.wallet.path}" />
+	</bean>
+
+	<bean id="transactionManager" class="juzix.web3j.NonceRawTransactionManager">
+		<constructor-arg index="0" ref="web3j" />
+		<constructor-arg index="1" ref="credentials" />
+	</bean>
+
+</beans>
