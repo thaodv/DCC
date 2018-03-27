@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<bean id="creditCertServiceContractParam" parent="contractParam"
+		p:contractAddress="${contract.certService.credit.address}"
+		p:contractClass="io.wexchain.juzix.contract.cert.CertService" />
+
+	<bean id="creditCertServiceProxy"
+		class="io.wexchain.passport.gateway.service.cert.CertServiceProxyJuzixImpl"
+		p:abiResource="classpath:/META-INF/passport-gateway/abi/CertService.abi">
+		<property name="contract">
+			<bean class="io.wexchain.juzix.contract.commons.ContractFactoryBean"
+				p:web3j-ref="web3j" p:transactionManager-ref="transactionManager"
+				p:contractParam-ref="creditCertServiceContractParam" />
+		</property>
+		<property name="signMessageValidator">
+			<bean
+				class="io.wexchain.passport.gateway.service.cert.CertSignMessageValidator"
+				p:contractParam-ref="creditCertServiceContractParam" />
+		</property>
+		<!--<property name="name" value="DevCredit"/>-->
+	</bean>
+
+</beans>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<bean id="contractParam" abstract="true"
+		class="io.wexchain.juzix.contract.commons.ContractParam"
+		p:maxGasLimit="${contract.gasLimit}" p:maxGasPrice="${contract.gasPrice}" />
+	<bean id="web3jProxy"
+		class="io.wexchain.passport.gateway.service.contract.Web3jProxyJuzixImpl" />
+</beans>
