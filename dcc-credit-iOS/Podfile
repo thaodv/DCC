@@ -1,0 +1,17 @@
+platform :ios, '8.0'
+target 'WeXBlockChain’ do
+ 
+  pod 'AFNetworking'
+  pod 'Masonry'
+  pod 'JSONModel'
+  pod 'MJRefresh'
+  pod 'SDWebImage'
+  pod 'YYKeyboardManager'
+  pod 'OpenSSL', '~> 1.0.210'
+  pod 'MBProgressHUD', '~> 1.0.0'
+  pod 'Realm'
+  pod 'YYImage'
+  pod 'IQKeyboardManager'
+
+
+end
