@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/util
+			http://www.springframework.org/schema/util/spring-util-3.2.xsd"
+       default-autowire="byName">
+
+  <util:map id="certServiceProxyMap">
+    <entry key="ID" value-ref="idCertServiceProxy"/>
+    <entry key="BANK_LOG" value-ref="bankLogServiceProxy"/>
+    <entry key="CREDIT_CARD" value-ref="creditCardServiceProxy"/>
+    <entry key="CREDIT" value-ref="creditCertServiceProxy"/>
+    <entry key="COMMUNICATION_LOG" value-ref="communicationLogServiceProxy"/>
+  </util:map>
+
+  <bean id="certServiceProxyFactory"
+        class="io.wexchain.passport.gateway.ctrlr.cert.CertServiceProxyFactory">
+    <property name="certServiceProxyMap" ref="certServiceProxyMap"/>
+  </bean>
+
+</beans>
