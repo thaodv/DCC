@@ -11,5 +11,6 @@ contract Hello is OwnerNamed {
     }
     function Hello() public {
         register("HelloModule", "0.0.1.0", "Hello", "0.0.1.0");
+
     }
 }
