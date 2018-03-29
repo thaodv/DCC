@@ -19,6 +19,7 @@ contract CertService is Operators {
 
         Status status;
 
+
         Content content;
     }
 
