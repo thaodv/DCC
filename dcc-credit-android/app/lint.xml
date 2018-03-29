@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!--ignore missing ContentDescription for drawables-->
+    <issue id="ContentDescription" severity="ignore"/>
+
+    <!--ignore rtl check-->
+    <issue id="RtlHardcoded" severity="ignore"/>
+    <issue id="RtlSymmetry" severity="ignore"/>
+
+    <!--there is no google out of earth-->
+    <issue id="GoogleAppIndexingWarning" severity="ignore"/>
+
+    <!--ignore i18n issue zh-cn only now-->
+    <issue id="MissingTranslation" severity="ignore"/>
+
+    <!--ignore target sdk int-->
+    <issue id="ObsoleteSdkInt" severity="ignore"/>
+
+    <!--enable js-->
+    <issue id="SetJavaScriptEnabled" severity="ignore"/>
+
+    <!--for 'android:elevation' etc-->
+    <issue id="UnusedAttribute" severity="ignore" />
+
+    <!--ignore file/folders -->
+    <issue id="all">
+        <ignore path="build" />
+    </issue>
+</lint>
