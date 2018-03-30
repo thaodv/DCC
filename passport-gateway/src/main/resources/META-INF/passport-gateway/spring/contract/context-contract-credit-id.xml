@@ -21,7 +21,25 @@
 				class="io.wexchain.passport.gateway.service.cert.CertSignMessageValidator"
 				p:contractParam-ref="idCertServiceContractParam" />
 		</property>
-		<!--<property name="name" value="DevId"/>-->
+	</bean>
+
+
+	<bean id="dccIdCertServiceContractParam" parent="contractParam"
+		p:contractAddress="${contract.dcc.certService.id.address}"
+		p:contractClass="io.wexchain.juzix.contract.cert.CertService3" />
+	<bean id="dccIdCertServiceProxy"
+		class="io.wexchain.passport.gateway.service.cert.dcc.CertServiceProxyJuzixImpl"
+		p:abiResource="classpath:/META-INF/passport-gateway/abi/DccCertService.abi">
+		<property name="contract">
+			<bean class="io.wexchain.juzix.contract.commons.ContractFactoryBean"
+				p:web3j-ref="web3j" p:transactionManager-ref="transactionManager"
+				p:contractParam-ref="dccIdCertServiceContractParam" />
+		</property>
+		<property name="signMessageValidator">
+			<bean
+				class="io.wexchain.passport.gateway.service.cert.dcc.CertSignMessageValidator"
+				p:contractParam-ref="dccIdCertServiceContractParam" />
+		</property>
 	</bean>
 
 </beans>
