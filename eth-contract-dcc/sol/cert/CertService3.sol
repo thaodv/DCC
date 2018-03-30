@@ -2,14 +2,19 @@ pragma solidity ^0.4.11;
 
 import "../ownership/OperatorPermission.sol";
 import "./CertServiceFeeModule.sol";
-
-contract CertService3 is OperatorPermission {
+import "./CertServiceIntf.sol";
+contract CertService3 is OperatorPermission ,CertServiceIntf{
 
     mapping(address => Checkpoint[]) checkpoints;
 
     Order[] orders;
 
     enum Status {INVALID, APPLIED, PASSED, REJECTED, DISCARDED, REVOKED}
+
+    enum DigestIntegrity {EMPTY,APPLICANT,VERIFIER}
+
+    DigestIntegrity public digest1Integrity;
+    DigestIntegrity public digest2Integrity;
 
     event orderUpdated(address indexed applicant, uint256 indexed orderId, Status status);
 
@@ -20,6 +25,8 @@ contract CertService3 is OperatorPermission {
         Status status;
 
         Content content;
+
+        uint256 feeDcc;
     }
 
     struct Checkpoint {
@@ -46,26 +53,52 @@ contract CertService3 is OperatorPermission {
 
     bytes public name;
 
-    CertServiceFeeModule  certServiceFeeModule;
+    CertServiceFeeModule public certServiceFeeModule;
 
-    function setCertServiceFeeModuleAddress(address certServiceFeeModuleAddress) public  onlyOperator{
-        certServiceFeeModule=CertServiceFeeModule(certServiceFeeModuleAddress);
+    function setDigest1Integrity(DigestIntegrity  _digest1Integrity) public  onlyOwner{
+        digest1Integrity=_digest1Integrity;
      }
 
-    function CertService3(bytes _name,address certServiceFeeModuleAddress) public {
+     function setDigest2Integrity(DigestIntegrity  _digest2Integrity) public  onlyOwner{
+        digest2Integrity=_digest2Integrity;
+     }
+
+     function setCertServiceFeeModuleAddress(address certServiceFeeModuleAddress) public  onlyOwner{
+         certServiceFeeModule=CertServiceFeeModule(certServiceFeeModuleAddress);
+      }
+
+
+    function CertService3(bytes _name,DigestIntegrity _digest1Integrity,DigestIntegrity _digest2Integrity) public {
         name=_name;
-        certServiceFeeModule=CertServiceFeeModule(certServiceFeeModuleAddress);
-        insertOrder(address(0), Status.INVALID, Content("", "", 0));
+        digest1Integrity=_digest1Integrity;
+        digest2Integrity=_digest2Integrity;
+        insertOrder(address(0), Status.INVALID, Content("", "", 0),0);
     }
 
+    function apply(bytes digest1, bytes digest2) public returns (uint256 _orderId){
 
-    function apply(bytes digest1, bytes digest2,uint256 expired) public returns (uint256 _orderId){
-        certServiceFeeModule.apply();
-        return insertOrder(msg.sender, Status.APPLIED, Content(digest1,digest2,expired));
+        if(digest1Integrity == DigestIntegrity.APPLICANT){
+            require(digest1.length>0 && digest1.length<=100);
+        }else{
+            require(digest1.length==0);
+        }
+
+        if(digest2Integrity == DigestIntegrity.APPLICANT){
+            require(digest2.length>0 && digest2.length<=100);
+        }else{
+            require(digest2.length==0);
+        }
+
+        uint256  fee=0;
+
+        if(certServiceFeeModule!=address(0)){
+          fee=certServiceFeeModule.apply();
+        }
+        return insertOrder(msg.sender, Status.APPLIED, Content(digest1,digest2,0),fee);
     }
 
-    function insertOrder(address applicant, Status intialStatus, Content icc) internal returns (uint256 _orderId){
-        uint256 orderId = orders.push(Order(applicant, intialStatus, icc));
+    function insertOrder(address applicant, Status intialStatus, Content icc,uint256  fee) internal returns (uint256 _orderId){
+        uint256 orderId = orders.push(Order(applicant, intialStatus, icc,fee));
         orderUpdated(applicant, orderId, intialStatus);
         return orderId;
     }
@@ -80,7 +113,7 @@ contract CertService3 is OperatorPermission {
 
         //插入订单
         Content memory icc = Content("", "", 0);
-        uint256 orderId = insertOrder(applicant, Status.REVOKED, icc);
+        uint256 orderId = insertOrder(applicant, Status.REVOKED, icc,0);
 
         //压栈
         appendElement(checkpoints[applicant], orderId, icc);
@@ -89,40 +122,29 @@ contract CertService3 is OperatorPermission {
     }
 
     function pass(uint256 orderId,bytes digest1, bytes digest2,uint256 expired) public onlyOperator {
-         Order storage order = orders[orderId];
-
+        require(expired>0);
+        Order storage order = orders[orderId];
         Content content=order.content;
 
-        if(content.digest1.length==0 || content.digest1.length==0  || expired==0){
+        if(digest1Integrity == DigestIntegrity.VERIFIER){
             require(digest1.length>0 && digest1.length<=100);
-            require(digest2.length>0 && digest2.length<=100);
-            require(expired>0);
-
             content.digest1=digest1;
-
-            content.digest2=digest2;
-
-            content.expired=expired;
+        }else{
+            require(digest1.length==0);
         }
+
+        if(digest1Integrity == DigestIntegrity.VERIFIER){
+            require(digest2.length>0 && digest2.length<=100);
+            content.digest2=digest2;
+        }else{
+            require(digest2.length==0);
+        }
+
+        content.expired=expired;
         audit(orderId, Status.PASSED);
     }
 
-    function reject(uint256 orderId,bytes digest1, bytes digest2,uint256 expired) public onlyOperator {
-       Order storage order = orders[orderId];
-
-       Content content=order.content;
-
-       if(content.digest1.length==0 || content.digest1.length==0  || expired==0){
-           require(digest1.length>0 && digest1.length<=100);
-           require(digest2.length>0 && digest2.length<=100);
-           require(expired>0);
-
-           content.digest1=digest1;
-
-           content.digest2=digest2;
-
-           content.expired=expired;
-       }
+    function reject(uint256 orderId) public onlyOperator {
         audit(orderId, Status.REJECTED);
     }
 
@@ -216,9 +238,9 @@ contract CertService3 is OperatorPermission {
         return getData(msg.sender);
     }
 
-    function getOrder(uint256 _orderId) view public returns (address applicant, Status status, bytes digest1, bytes digest2, uint256 expired) {
+    function getOrder(uint256 _orderId) view public returns (address applicant, Status status, bytes digest1, bytes digest2, uint256 expired,uint256 feeDcc) {
         Order memory rf = orders[_orderId];
-        return (rf.applicant, rf.status, rf.content.digest1, rf.content.digest2, rf.content.expired);
+        return (rf.applicant, rf.status, rf.content.digest1, rf.content.digest2, rf.content.expired,rf.feeDcc);
     }
 
     function getOrderLength() view public returns (uint256 length) {
@@ -229,9 +251,10 @@ contract CertService3 is OperatorPermission {
         return "";
     }
 
-     function  getFee()view  public returns(uint256){
-         return certServiceFeeModule.getFee();
+     function  getExpectedFeeDcc()view  public returns(uint256){
+         if(certServiceFeeModule!=address(0)){
+              return certServiceFeeModule.getFee();
+         }
      }
-
 
 }

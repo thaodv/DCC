@@ -21,12 +21,13 @@ contract CertServiceFeeModuleStaticImpl  is CertServiceFeeModule ,HasWallet{
     }
 
     function CertServiceFeeModuleStaticImpl(bytes _name,address  erc20Address,address callerAddress) public{
+        register("CertServiceFeeModuleStaticImplModule", "0.0.1.0", "CertServiceFeeModuleStaticImpl", "0.0.1.0");
         name=_name;
         erc20=ERC20Basic(erc20Address);
         caller=callerAddress;
     }
 
-    function  apply() public {
+    function  apply() public returns(uint256){
        onlycaller();
        if(!(wallet!=address(0))){
            log("!(wallet!=address(0))");
@@ -35,6 +36,7 @@ contract CertServiceFeeModuleStaticImpl  is CertServiceFeeModule ,HasWallet{
         if(fee>0){
             erc20.superTransfer(wallet,fee);
         }
+        return fee;
     }
 
     function  getFee()constant  public returns(uint256){
