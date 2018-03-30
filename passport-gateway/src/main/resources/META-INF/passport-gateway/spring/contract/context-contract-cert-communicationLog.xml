@@ -29,4 +29,28 @@
 		<!-- <property name="name" value="DevCommunicationLog"/>-->
 	</bean>
 
+
+	<bean id="dccCommunicationLogServiceContractParam" parent="contractParam"
+		  p:contractAddress="${contract.dcc.certService.communicationLog.address}"
+		  p:contractClass="io.wexchain.juzix.contract.cert.CertService3" />
+
+	<bean id="dccCommunicationLogServiceProxy"
+		  class="io.wexchain.passport.gateway.service.cert.dcc.CertServiceProxyJuzixImpl"
+		  p:abiResource="classpath:/META-INF/passport-gateway/abi/DccCertService.abi">
+
+		<property name="contract">
+			<bean class="io.wexchain.juzix.contract.commons.ContractFactoryBean"
+				  p:web3j-ref="web3j" p:transactionManager-ref="transactionManager"
+				  p:contractParam-ref="dccCommunicationLogServiceContractParam"
+			/>
+		</property>
+
+		<property name="signMessageValidator">
+			<bean
+					class="io.wexchain.passport.gateway.service.cert.dcc.CertSignMessageValidator"
+					p:contractParam-ref="dccCommunicationLogServiceContractParam" />
+		</property>
+
+		<!-- <property name="name" value="DevCommunicationLog"/>-->
+	</bean>
 </beans>

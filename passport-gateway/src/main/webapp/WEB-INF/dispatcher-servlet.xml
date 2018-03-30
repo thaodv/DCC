@@ -22,8 +22,10 @@
 
 	<bean class="io.wexchain.passport.gateway.ctrlr.cert.CertController"
 		p:certServiceProxyFactory-ref="certServiceProxyFactory" />
-	<bean
-		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" />
+	<bean class="io.wexchain.passport.gateway.ctrlr.cert.dcc.CertController"
+		p:certServiceProxyFactory-ref="dccCertServiceProxyFactory" />
+
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" />
 
 	<bean name="placeHolder"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

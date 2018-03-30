@@ -230,9 +230,7 @@ public class JuzixReplayServiceImpl implements JuzixReplayService {
                     } else {
                         transaction.setFromType(AddressType.CONTRACT);
                     }
-                }
-
-                if (StringUtils.isNotEmpty(transaction.getToAddress())) {
+                } else if (StringUtils.isNotEmpty(transaction.getToAddress())) {
                     EthGetCode toCode = web3j.ethGetCode(transaction.getToAddress(), DefaultBlockParameterName.LATEST).send();
                     if (toCode.getError() != null) {
                         Thread.sleep(1000);

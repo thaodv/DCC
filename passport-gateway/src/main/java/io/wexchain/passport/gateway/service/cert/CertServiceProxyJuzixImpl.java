@@ -107,7 +107,7 @@ public class CertServiceProxyJuzixImpl extends ContractProxyJuzixImpl<CertServic
 	@Override
 	public String revoke(String signMessageHex) {
 		Pair<RawTransaction, SignatureData> parseFull = SignMessageParser.parseFull(signMessageHex);
-		signMessageValidator.validateApply(parseFull, System.currentTimeMillis());
+		signMessageValidator.validateRevoke(parseFull, System.currentTimeMillis());
 
 		try {
 			EthSendTransaction ethSendTransaction = web3j.ethSendRawTransaction(signMessageHex).sendAsync()
