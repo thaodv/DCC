@@ -12,8 +12,14 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
+        <item name="navigationIcon">@drawable/arrow_left</item>
+
         <item name="cardViewStyle">@style/CardView.Light.Dcc</item>
         <item name="buttonStyle">@style/Widget.AppCompat.Button.Dcc.Medium</item>
+        <item name="imageButtonStyle">@style/Widget.AppCompat.ImageButton.Dcc</item>
+        <item name="spinnerStyle">@style/Widget.AppCompat.Spinner.Dcc</item>
+        <item name="android:spinnerItemStyle">@style/Widget.AppCompat.TextView.SpinnerItem.Dcc</item>
+        <item name="android:spinnerDropDownItemStyle">@style/Widget.AppCompat.Light.DropDownItem.Spinner.Dcc</item>
     </style>
 
 

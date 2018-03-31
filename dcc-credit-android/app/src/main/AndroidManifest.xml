@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="io.wexchain.auth">
 
     <application
@@ -8,8 +9,11 @@
         android:label="@string/dcc_app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
-        android:theme="@style/AppTheme">
-        <activity android:name="io.wexchain.android.dcc.LoadingActivity">
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon,android:label,android:theme,android:supportsRtl">
+        <activity
+            android:name="io.wexchain.android.dcc.LoadingActivity"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,9 +21,21 @@
             </intent-filter>
         </activity>
         <activity android:name="io.wexchain.android.dcc.HomeActivity" />
-        <activity android:name="io.wexchain.android.dcc.MyCreditActivity"
-            android:label="@string/title_my_credit"
-            />
+        <activity
+            android:name="io.wexchain.android.dcc.MyCreditActivity"
+            android:label="@string/title_my_credit" />
+        <activity android:name="io.wexchain.android.dcc.SubmitPersonalInfoActivity" />
+        <activity android:name="io.wexchain.android.dcc.EditContactInfoActivity" />
+        <activity
+            android:name="io.wexchain.android.dcc.SubmitIdActivity"
+            android:label="@string/title_id_certification" />
+        <activity
+            android:name="io.wexchain.android.dcc.SubmitBankCardActivity"
+            android:label="@string/title_bank_card_certification" />
+        <activity
+            android:name="io.wexchain.android.dcc.CreatePassportActivity"
+            android:label="@string/create_new_digital_wallet" />
+        <activity android:name="io.wexchain.android.dcc.ImportPassportActivity"></activity>
     </application>
 
 </manifest>

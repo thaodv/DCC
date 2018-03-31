@@ -1,8 +1,11 @@
 package io.wexchain.android.dcc.base
 
 import android.graphics.Color
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.auth.R
@@ -45,5 +48,34 @@ abstract class BaseCompatActivity : AppCompatActivity() {
             text = title
             if (color != Color.TRANSPARENT) setTextColor(color)
         }
+    }
+
+
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        item ?: return super.onOptionsItemSelected(item)
+        if (item.itemId == android.R.id.home) {
+            return handleHomePressed() || super.onOptionsItemSelected(item) || goBack()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    protected fun goBack(): Boolean {
+        if (!supportFragmentManager.popBackStackImmediate()) {
+            goFinish()
+        }
+        return true
+    }
+
+    protected fun goFinish() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            finishAfterTransition()
+        } else {
+            finish()
+        }
+    }
+
+    open fun handleHomePressed(): Boolean {
+        return false
     }
 }

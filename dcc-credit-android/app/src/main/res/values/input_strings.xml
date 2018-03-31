@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="marital_status_title">婚姻状况</string>
+    <string-array name="marital_status_options">
+        <item>已婚</item>
+        <item>未婚</item>
+        <item>离异</item>
+        <item>丧偶</item>
+    </string-array>
+    <string name="education_status_title">学历</string>
+    <string-array name="education_status_options">
+        <item>已婚</item>
+        <item>未婚</item>
+        <item>离异</item>
+        <item>丧偶</item>
+    </string-array>
+    <string name="occupation_category_title">职业类别</string>
+    <string-array name="occupation_category_options">
+        <item>已婚</item>
+        <item>未婚</item>
+        <item>离异</item>
+        <item>丧偶</item>
+    </string-array>
+    <string name="job_rank_title">职级</string>
+    <string-array name="job_ranks">
+        <item>已婚</item>
+        <item>未婚</item>
+        <item>离异</item>
+        <item>丧偶</item>
+    </string-array>
+</resources>

@@ -1,6 +1,6 @@
 package io.wexchain.android.dcc.vm
 
-enum class AuthType {
+enum class CertificationType {
     ID,
     PERSONAL,
     BANK,

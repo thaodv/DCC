@@ -7,13 +7,13 @@ import io.wexchain.auth.R
 
 object ViewModelHelper {
     @JvmStatic
-    fun Context.getAuthTypeIcon(authType: AuthType?): Drawable? {
-        val drawableId = when(authType){
+    fun Context.getAuthTypeIcon(certificationType: CertificationType?): Drawable? {
+        val drawableId = when(certificationType){
             null -> 0
-            AuthType.ID -> R.drawable.shape_id
-            AuthType.PERSONAL -> R.drawable.shape_personal
-            AuthType.BANK -> R.drawable.shape_bank_card
-            AuthType.MOBILE -> R.drawable.shape_mobile
+            CertificationType.ID -> R.drawable.shape_id
+            CertificationType.PERSONAL -> R.drawable.shape_personal
+            CertificationType.BANK -> R.drawable.shape_bank_card
+            CertificationType.MOBILE -> R.drawable.shape_mobile
         }
         return ContextCompat.getDrawable(this,drawableId)
     }

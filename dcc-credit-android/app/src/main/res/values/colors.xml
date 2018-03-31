@@ -3,6 +3,7 @@
     <color name="white">#fff</color>
     <color name="light_blue_magenta">#e8e8f7</color>
     <color name="blue_magenta">#6766cc</color>
+    <color name="gray_alpha">#66000000</color>
 
 
     <color name="colorPrimary">@color/white</color>
