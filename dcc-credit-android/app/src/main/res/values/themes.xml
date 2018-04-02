@@ -20,7 +20,15 @@
         <item name="spinnerStyle">@style/Widget.AppCompat.Spinner.Dcc</item>
         <item name="android:spinnerItemStyle">@style/Widget.AppCompat.TextView.SpinnerItem.Dcc</item>
         <item name="android:spinnerDropDownItemStyle">@style/Widget.AppCompat.Light.DropDownItem.Spinner.Dcc</item>
+
+        <item name="dialogTheme">@style/FullWidthDialog</item>
     </style>
 
+
+    <style name="FullWidthDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 
 </resources>

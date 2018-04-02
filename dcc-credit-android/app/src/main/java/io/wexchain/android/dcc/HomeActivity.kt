@@ -50,11 +50,12 @@ class HomeActivity : BaseCompatActivity() {
         navigateTo(ImportPassportActivity::class.java)
     }
 
-    private inner class IntroDialog :Dialog(this){
+    private inner class IntroDialog :Dialog(this,R.style.FullWidthDialog){
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.dialog_intro_wallet)
-            findViewById<View>(R.id.btn_create_passport).setOnClickListener {
+
+            findViewById<View>(R.id.btn_to_create_wallet).setOnClickListener {
                 dismiss()
                 toCreate()
             }
