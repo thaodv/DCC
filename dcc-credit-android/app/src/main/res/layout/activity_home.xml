@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context="io.wexchain.android.dcc.HomeActivity"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     >
 
     <Button
@@ -28,15 +29,22 @@
             >
 
             <android.support.v7.widget.CardView
+                android:id="@+id/card_digital_assets"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="?attr/cardViewStyle"
-                android:minHeight="200dp"
+                android:stateListAnimator="@animator/card_state_animator"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="8dp"
                 >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="数字资产"
+                <fragment
+                    android:id="@+id/section_assets"
+                    android:name="io.wexchain.android.dcc.fragment.DigitalAssetsLimitedFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    tools:layout="@layout/fragment_digital_assets_limited"
                     />
             </android.support.v7.widget.CardView>
 

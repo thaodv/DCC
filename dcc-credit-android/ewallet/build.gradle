@@ -1,0 +1,83 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion compile_sdk
+
+    defaultConfig {
+        minSdkVersion min_sdk
+        targetSdkVersion target_sdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'java.lang.String', 'INFURA_API_KEY', '"eld3bpi3h5A1Jzbgyafd"'
+        buildConfigField 'java.lang.String', 'ETHPLORER_API_KEY', '"freekey"'
+
+        externalNativeBuild {
+            cmake {
+                cFlags "-DWall", "-DHAVE_CONFIG_H"
+            }
+        }
+    }
+    packagingOptions {
+        exclude '/lib/x86_64/darwin/libscrypt.dylib'
+        exclude '/lib/x86_64/freebsd/libscrypt.so'
+        exclude '/lib/x86_64/linux/libscrypt.so'
+    }
+    externalNativeBuild {
+        cmake {
+            path 'src/main/cpp/CMakeLists.txt'
+        }
+    }
+
+    buildTypes {
+        release {
+            consumerProguardFiles 'proguard-rules.pro'
+
+            buildConfigField 'java.lang.String', 'PUBLIC_CHAIN', '"Ethereum"'
+            buildConfigField 'java.lang.String', 'ETH_INFURA_NETWORK', '"mainnet"'
+            buildConfigField 'java.lang.String', 'PUBLIC_CHAIN_RPC', '"http://ec2-54-250-235-51.ap-northeast-1.compute.amazonaws.com:8545"'
+            buildConfigField 'java.lang.String', 'JUZIX_CHAIN_RESTFUL', '"http://gateway.wexpass.cn/passport-gateway/restful/"'
+            buildConfigField 'java.lang.String', 'QX_CONTRACT_ADDRESS', '"0xae5e4e27f10d97f86a753d2c49637a23bbb444ac"'
+            externalNativeBuild {
+                cmake {
+                    cFlags "-DO3"
+                }
+            }
+        }
+        debug {
+
+//            buildConfigField 'java.lang.String', 'PUBLIC_CHAIN', '"Ethereum"'
+//            buildConfigField 'java.lang.String', 'ETH_INFURA_NETWORK', '"mainnet"'
+            buildConfigField 'java.lang.String', 'PUBLIC_CHAIN', '"Rinkeby"'
+            buildConfigField 'java.lang.String', 'ETH_INFURA_NETWORK', '"rinkeby"'
+            buildConfigField 'java.lang.String', 'PUBLIC_CHAIN_RPC', '"http://120.78.145.175:8545"'
+            buildConfigField 'java.lang.String', 'JUZIX_CHAIN_RESTFUL', '"http://222.73.39.37:9511/passport-gateway/restful/"'
+            buildConfigField 'java.lang.String', 'QX_CONTRACT_ADDRESS', '"0xe15a095c0150038150e9b5b4cd15a9f4aef0ba20"'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.android.support:support-annotations:$support_lib_version"
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    api "io.reactivex.rxjava2:rxjava:$rxjava_version"
+    api "com.squareup.retrofit2:retrofit:$retrofit_version"
+    api('juzix:core-android:2.2.1') {
+        exclude group: 'io.reactivex', module: 'rxjava'
+        exclude group: 'com.squareup', module: 'javapoet'
+        exclude group: 'cz.msebera.android', module: 'httpclient'
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
+    }
+    api 'io.reactivex.rxjava2:rxandroid:2.0.1@aar'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//    api project(':wexchainservice')
+}

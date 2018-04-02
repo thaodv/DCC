@@ -23,11 +23,12 @@ contract CertServiceFeeModuleStaticImpl  is CertServiceFeeModule ,HasWallet{
         caller=callerAddress;
     }
 
-    function  apply() public onlycaller{
+    function  apply() public  onlycaller returns(uint256){
         require(wallet!=address(0));
         if(fee>0){
             erc20.superTransfer(wallet,fee);
         }
+        return fee;
     }
 
     function  getFee()view  public returns(uint256){

@@ -16,9 +16,19 @@
     <entry key="COMMUNICATION_LOG" value-ref="communicationLogServiceProxy"/>
   </util:map>
 
+  <util:map id="dccCertServiceProxyMap">
+    <entry key="ID" value-ref="dccIdCertServiceProxy"/>
+    <entry key="BANK_CARD" value-ref="dccBankCardServiceProxy"/>
+    <entry key="COMMUNICATION_LOG" value-ref="dccCommunicationLogServiceProxy"/>
+  </util:map>
+
   <bean id="certServiceProxyFactory"
         class="io.wexchain.passport.gateway.ctrlr.cert.CertServiceProxyFactory">
     <property name="certServiceProxyMap" ref="certServiceProxyMap"/>
+  </bean>
+  <bean id="dccCertServiceProxyFactory"
+        class="io.wexchain.passport.gateway.ctrlr.cert.dcc.CertServiceProxyFactory">
+    <property name="certServiceProxyMap" ref="dccCertServiceProxyMap"/>
   </bean>
 
 </beans>

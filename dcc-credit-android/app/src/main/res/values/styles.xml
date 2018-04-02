@@ -25,6 +25,60 @@
 
     <style name="Widget.AppCompat.Button.Dcc.Full">
         <item name="android:minHeight">37dp</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:textSize">@dimen/text_size_title</item>
     </style>
+
+    <style name="Widget.AppCompat.ImageButton.Dcc">
+        <item name="android:padding">0dp</item>
+        <item name="background">@null</item>
+    </style>
+
+    <style name="Widget.AppCompat.Spinner.Dcc">
+        <item name="android:background">@drawable/background_spinner</item>
+        <item name="android:spinnerMode">dialog</item>
+    </style>
+
+    <style name="Widget.AppCompat.TextView.SpinnerItem.Dcc">
+        <item name="android:textColor">@color/text_color_spinner</item>
+    </style>
+
+    <style name="Widget.AppCompat.Light.DropDownItem.Spinner.Dcc">
+        <item name="android:textColor">@color/text_color_spinner</item>
+    </style>
+
+    <style name="NoticeTextLabel">
+        <item name="android:padding">4dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginLeft">@dimen/content_padding_horizontal</item>
+        <item name="android:layout_marginRight">@dimen/content_padding_horizontal</item>
+        <item name="android:background">@color/light_blue_magenta</item>
+        <item name="android:textSize">@dimen/text_size_sub_title</item>
+    </style>
+
+
+
+    <style name="TextAppearance.AppCompat.DccTitle">
+        <item name="android:textSize">@dimen/text_size_title</item>
+        <item name="android:textColor">@color/text_dark</item>
+    </style>
+    <style name="TextAppearance.AppCompat.DccSubTitle">
+        <item name="android:textSize">@dimen/text_size_sub_title</item>
+        <item name="android:textColor">@color/text_dark</item>
+    </style>
+    <style name="TextAppearance.AppCompat.DccMainTitle">
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">@color/text_dark</item>
+    </style>
+    <style name="TextAppearance.AppCompat.DccSupplementary">
+        <item name="android:textSize">@dimen/text_size_supplementary</item>
+        <item name="android:textColor">@color/text_gray</item>
+    </style>
+
+    <style name="DividerHorizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/divider_stroke_width</item>
+        <item name="android:background">@color/gray_alpha</item>
+    </style>
+
 </resources>

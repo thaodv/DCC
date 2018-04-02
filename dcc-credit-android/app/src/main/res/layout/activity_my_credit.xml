@@ -1,46 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="io.wexchain.android.dcc.MyCreditActivity"
-    android:orientation="vertical"
-    >
+    tools:context="io.wexchain.android.dcc.MyCreditActivity">
 
-    <include layout="@layout/include_toolbar"
-        android:id="@+id/toolbar"
-        />
+    <data>
+        <variable
+            name="asIdVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"/>
+        <variable
+            name="asPersonalVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"/>
+        <variable
+            name="asBankVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"/>
+        <variable
+            name="asMobileVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"/>
+    </data>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         >
-        <LinearLayout
+
+        <include layout="@layout/include_toolbar"
+            android:id="@+id/toolbar"
+            />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:text="完成全部资料验证，即可申请数字资产贷款"
+            style="@style/NoticeTextLabel"
+            />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:scrollbars="none"
             >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
 
-            <include layout="@layout/include_card_auth_status"
-                android:id="@+id/card_as_id"
-                />
+                <include layout="@layout/include_card_auth_status"
+                    android:id="@+id/card_as_id"
+                    app:vm="@{asIdVm}"
+                    />
 
-            <include layout="@layout/include_card_auth_status"
-                android:id="@+id/card_as_personal"
-                />
+                <include layout="@layout/include_card_auth_status"
+                    android:id="@+id/card_as_personal"
+                    app:vm="@{asPersonalVm}"
+                    />
 
-            <include layout="@layout/include_card_auth_status"
-                android:id="@+id/card_as_bank"
-                />
+                <include layout="@layout/include_card_auth_status"
+                    android:id="@+id/card_as_bank"
+                    app:vm="@{asBankVm}"
+                    />
 
-            <include layout="@layout/include_card_auth_status"
-                android:id="@+id/card_as_mobile"
-                />
-        </LinearLayout>
-    </ScrollView>
+                <include layout="@layout/include_card_auth_status"
+                    android:id="@+id/card_as_mobile"
+                    app:vm="@{asMobileVm}"
+                    />
+            </LinearLayout>
+        </ScrollView>
 
 
 
-</LinearLayout>
+    </LinearLayout>
+</layout>

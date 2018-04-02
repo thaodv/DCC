@@ -1,4 +1,19 @@
 <resources>
     <string name="dcc_app_name">数字资产借贷</string>
     <string name="title_my_credit">资料认证</string>
+    <string name="fill_info_warning">随意填写会对您的信用审核造成负面影响</string>
+    <string name="auth_management">统一登录管理</string>
+    <string name="title_bank_card_certification">银行卡认证</string>
+    <string name="bank_card_no">银行卡号</string>
+    <string name="please_input_bank_card_no">请输入银行卡号</string>
+    <string name="bank_registered_phone_num">银行预留手机号</string>
+    <string name="please_input_phone_num">请输入手机号</string>
+    <string name="certificate_org_colon_sina_cloud_finance">认证方:云金融</string>
+    <string name="next_step">下一步</string>
+    <string name="title_id_certification">身份认证</string>
+    <string name="title_liveness_detection">人脸识别</string>
+    <string name="create_new_digital_wallet">新建数字钱包</string>
+    <string name="digital_assets">数字资产</string>
+    <string name="share">分享</string>
+
 </resources>

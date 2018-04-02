@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:maxWidth="60dp"
-                android:src="@{ViewModelHelper.getAuthTypeIcon(context,vm.authType)}"
+                android:src="@{ViewModelHelper.getAuthTypeIcon(context,vm.certificationType)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -84,6 +84,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/tv_as_provider"
+                android:text="@{vm.status}"
                 tools:text="认证完成"
                 />
 
@@ -99,6 +100,7 @@
                 app:layout_constraintRight_toRightOf="@id/tv_as_status"
                 app:layout_constraintTop_toBottomOf="@id/tv_as_status"
                 app:layout_constraintBottom_toTopOf="@id/btn_as_operation"
+                android:text="@{vm.authProvider}"
                 tools:text="由云金融认证"
                 />
 
@@ -112,7 +114,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginTop="8dp"
                 tools:text="更新"
-
+                android:text="@{vm.operation}"
+                android:onClick="@{()-> vm.performOperation()}"
                 />
 
             <View
@@ -121,7 +124,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                tools:background="@color/blue_magenta"
+                android:background="@color/blue_magenta"
                 />
         </android.support.constraint.ConstraintLayout>
 
