@@ -25,18 +25,25 @@
     <include layout="@layout/include_input_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/content_padding_horizontal"
+        android:layout_marginRight="@dimen/content_padding_horizontal"
         android:id="@+id/input_password"
         />
 
     <Button
+        android:id="@+id/btn_create_passport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/content_padding_horizontal"
+        android:layout_marginRight="@dimen/content_padding_horizontal"
         android:text="@string/create_new_digital_wallet"
         />
     
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/content_padding_horizontal"
+        android:layout_marginRight="@dimen/content_padding_horizontal"
         android:text="成功创建数字钱包后,请即时在设置->备份数字钱包 中进行备份,以防数字资产丢失"
         />
 

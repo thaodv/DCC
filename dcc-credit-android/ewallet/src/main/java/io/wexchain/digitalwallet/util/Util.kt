@@ -18,7 +18,7 @@ fun isEthAddress(text: String): Boolean {
 
 fun extractStandardEthAddress(text: String): String? {
     return if (isEthAddress(text)) {
-        "0x${text.substring(text.length - 40)}"
+        "0x${text.substring(text.length - 40).toUpperCase()}"
     } else null
 }
 

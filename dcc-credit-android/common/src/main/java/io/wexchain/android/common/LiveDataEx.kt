@@ -34,11 +34,11 @@ fun <A, B, R> zipLiveData(
     }
 }
 
-fun <T, R> LiveData<T>.map(mapFunc: (T) -> R): LiveData<R> {
+fun <T, R> LiveData<T>.map(mapFunc: (T?) -> R): LiveData<R> {
     return Transformations.map(this, mapFunc)
 }
 
-fun <T, R> LiveData<T>.switchMap(mapFunc: (T) -> LiveData<R>): LiveData<R> {
+fun <T, R> LiveData<T>.switchMap(mapFunc: (T?) -> LiveData<R>): LiveData<R> {
     return Transformations.switchMap(this, mapFunc)
 }
 

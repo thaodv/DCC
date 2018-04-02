@@ -19,4 +19,8 @@ interface EthplorerApi {
             @Query("type") type: String = "transfer",
             @Query("apiKey") apiKey: String = BuildConfig.ETHPLORER_API_KEY
     ): Single<EpTransactions>
+
+    companion object {
+        const val API_URL = "https://api.ethplorer.io/"
+    }
 }

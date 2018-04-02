@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.vm
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
+import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.tools.SingleLiveEvent
 
 class AuthenticationStatusVm:ViewModel() {

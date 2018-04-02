@@ -1,1 +1,1 @@
-include ':app', ':wexchainservice', ':ewallet', ':livenesslib',':idcardlib',':idverify',':network', ':localprotect', ':common'
+include ':app', ':ewallet', ':livenesslib',':idcardlib',':idverify',':network', ':localprotect', ':common', ':dccchainservice'

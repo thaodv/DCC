@@ -1,5 +1,6 @@
 package io.wexchain.android.common
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
@@ -7,8 +8,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.support.annotation.IdRes
 import android.support.annotation.StringRes
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.util.Pair
 import android.support.v7.app.AppCompatActivity
@@ -18,10 +21,10 @@ import android.view.View
  * Created by sisel on 2018/3/27.
  */
 
-inline fun <T : Activity> Activity.navigateTo(activity: Class<T>, crossinline extras: Intent.() -> Unit = {}) {
+inline fun <T : Activity> Activity.navigateTo(activity: Class<T>,options:Bundle?=null, crossinline extras: Intent.() -> Unit = {}) {
     this.startActivity(Intent(this, activity).apply {
         this.extras()
-    })
+    },options)
 }
 
 
@@ -34,6 +37,20 @@ fun AppCompatActivity.toast(text: CharSequence, context: Context = this) {
 fun AppCompatActivity.toast(@StringRes stringId: Int, context: Context = this) {
     atLeastCreated {
         Pop.toast(stringId, context)
+    }
+}
+
+
+@SuppressLint("CommitTransaction")
+fun FragmentActivity.replaceFragment(
+        fragment: Fragment,
+        @IdRes containerViewId: Int = android.R.id.content,
+        tag: String? = null,
+        backStackStateName: String? = null
+) {
+    supportFragmentManager.commitTransaction {
+        replace(containerViewId, fragment, tag)
+        backStackStateName?.let { addToBackStack(it) }
     }
 }
 

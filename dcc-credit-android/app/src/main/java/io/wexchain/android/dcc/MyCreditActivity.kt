@@ -5,10 +5,11 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import com.wexmarket.android.passport.base.BindActivity
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.dcc.vm.CertificationType
+import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
 import io.wexchain.auth.R
 import io.wexchain.auth.databinding.ActivityMyCreditBinding
+import io.wexchain.dccchainservice.domain.BankCodes
 
 class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
     override val contentLayoutId: Int = R.layout.activity_my_credit

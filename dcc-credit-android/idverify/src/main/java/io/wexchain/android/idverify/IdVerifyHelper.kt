@@ -4,6 +4,7 @@ import android.content.Context
 import com.megvii.idcardquality.IDCardQualityLicenseManager
 import com.megvii.licensemanager.Manager
 import com.megvii.livenessdetection.LivenessLicenseManager
+import com.megvii.livenesslib.util.ConUtil
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
@@ -11,7 +12,8 @@ import io.reactivex.schedulers.Schedulers
  * Created by sisel on 2018/2/27.
  * id card capture sdk & liveness sdk helper
  */
-class IdVerifyHelper(context: Context) {
+class IdVerifyHelper(context: Context,
+                     val uuid: String = ConUtil.getUUIDString(context)) {
 
     val manager = Manager(context)
     val idLicenseManager = IDCardQualityLicenseManager(context)
@@ -29,22 +31,24 @@ class IdVerifyHelper(context: Context) {
 
     fun ensureLicence(): Single<Boolean> {
         return Single.just(System.currentTimeMillis())
-            .observeOn(Schedulers.io())
-            .map {
-                if (idLicenceOk) {
-                    true
-                } else {
-                    manager.takeLicenseFromNetwork(uuid)
+                .observeOn(Schedulers.io())
+                .map {
                     if (idLicenceOk) {
                         true
                     } else {
-                        throw IllegalStateException()
+                        manager.takeLicenseFromNetwork(uuid)
+                        if (idLicenceOk) {
+                            true
+                        } else {
+                            throw IllegalStateException()
+                        }
                     }
                 }
-            }
     }
 
     companion object {
-        private const val uuid = "35934769573954"
+
+        const val SIDE_FRONT = 0
+        const val SIDE_BACK = 1
     }
 }

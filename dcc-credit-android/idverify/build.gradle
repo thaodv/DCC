@@ -34,7 +34,6 @@ dependencies {
 
     api project(":livenesslib")
     api project(":idcardlib")
-    api project(':wexchainservice')
 
 
     api "io.reactivex.rxjava2:rxjava:$rxjava_version"

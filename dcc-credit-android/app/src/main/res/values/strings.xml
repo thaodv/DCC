@@ -11,6 +11,9 @@
     <string name="certificate_org_colon_sina_cloud_finance">认证方:云金融</string>
     <string name="next_step">下一步</string>
     <string name="title_id_certification">身份认证</string>
+    <string name="title_liveness_detection">人脸识别</string>
     <string name="create_new_digital_wallet">新建数字钱包</string>
+    <string name="digital_assets">数字资产</string>
+    <string name="share">分享</string>
 
 </resources>
