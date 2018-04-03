@@ -2,14 +2,21 @@ pragma solidity ^0.4.2;
 
 import "../permission/OperatorPermission.sol";
 import "./CertServiceFeeModule.sol";
+import "./CertServiceIntf.sol";
 
-contract CertService is OperatorPermission {
+contract CertService3 is OperatorPermission,CertServiceIntf{
 
     mapping(address => Checkpoint[]) datas;
 
     Order[] orders;
 
     enum Status {INVALID, APPLIED, PASSED, REJECTED, DISCARDED, REVOKED}
+
+    enum DigestIntegrity {EMPTY,APPLICANT,VERIFIER}
+
+    DigestIntegrity public digest1Integrity;
+    DigestIntegrity public digest2Integrity;
+    DigestIntegrity public expiredIntegrity;
 
     event orderUpdated(address indexed applicant, uint256 indexed orderId, Status status);
 
@@ -20,6 +27,8 @@ contract CertService is OperatorPermission {
         Status status;
 
         Content content;
+
+        uint256 feeDcc;
     }
 
     struct Checkpoint {
@@ -46,40 +55,89 @@ contract CertService is OperatorPermission {
 
     bytes public name;
 
-    CertServiceFeeModule  certServiceFeeModule;
+    CertServiceFeeModule public certServiceFeeModule;
+
+     function setDigest1Integrity(DigestIntegrity  _digest1Integrity) public{
+        onlyOwner();
+        digest1Integrity=_digest1Integrity;
+     }
+
+     function setDigest2Integrity(DigestIntegrity  _digest2Integrity) public{
+        onlyOwner();
+        digest2Integrity=_digest2Integrity;
+     }
+
+      function setExpiredIntegrity(DigestIntegrity  _expiredIntegrity) public{
+          onlyOwner();
+          expiredIntegrity= _expiredIntegrity;
+       }
+
 
     function setCertServiceFeeModuleAddress(address certServiceFeeModuleAddress) public{
         onlyOwner();
         certServiceFeeModule=CertServiceFeeModule(certServiceFeeModuleAddress);
      }
 
-    function CertService(bytes _name) public {
-        register("CertServiceModule", "0.0.1.0", "CertService", "0.0.1.0");
+    function CertService3(bytes _name,DigestIntegrity _digest1Integrity,DigestIntegrity _digest2Integrity,DigestIntegrity _expiredIntegrity) public {
+        register("CertService3Module", "0.0.1.0", "CertService3", "0.0.1.0");
+        digest1Integrity=_digest1Integrity;
+        digest2Integrity=_digest2Integrity;
+        expiredIntegrity= _expiredIntegrity;
         name=_name;
-        insertOrder(address(0), Status.INVALID, Content("", "", 0));
+        insertOrder(address(0), Status.INVALID, Content("", "", 0),0);
     }
 
 
-    function apply(bytes digest1, bytes digest2, uint256 expired) public returns (uint256 _orderId){
-        if(!(digest1.length > 0 && digest1.length <= 100)){
-            log("!(digest1.length > 0 && digest1.length <= 100)");
-            throw;
-        }
-        if(!(digest2.length >= 0 && digest2.length <= 100)){
-            log("!(digest2.length > 0 && digest2.length <= 100)");
-            throw;
-        }
-        if(!(expired > 0)){
-            log("!(expired > 0)");
-            throw;
-        }
-        certServiceFeeModule.apply();
-        return insertOrder(msg.sender, Status.APPLIED, Content(digest1, digest2, expired));
+    function apply(bytes digest1, bytes digest2,uint256 expired) public returns (uint256 _orderId){
+
+         if(digest1Integrity == DigestIntegrity.APPLICANT){
+                if(!(digest1.length>0 && digest1.length<=100)){
+                   log("!(digest1.length>0 && digest1.length<=100)");
+                   throw;
+                }
+          }else{
+                if(!(digest1.length==0)){
+                   log("!(digest1.length==0)");
+                   throw;
+                }
+          }
+
+          if(digest2Integrity == DigestIntegrity.APPLICANT){
+                  if(!(digest2.length>0 && digest2.length<=100)){
+                     log("!(digest2.length>0 && digest2.length<=100)");
+                     throw;
+                  }
+            }else{
+                  if(!(digest2.length==0)){
+                     log("!(digest2.length==0)");
+                     throw;
+                  }
+            }
+
+           if(expiredIntegrity == DigestIntegrity.APPLICANT){
+                if(!(expired!=0)){
+                   log("!(expired!=0)");
+                   throw;
+                }
+          }else{
+                if(!(expired==0)){
+                   log("!(expired==0)");
+                   throw;
+                }
+          }
+
+        uint256 fee=0;
+
+       if(certServiceFeeModule!=address(0)){
+         fee=certServiceFeeModule.apply();
+       }
+
+        return insertOrder(msg.sender, Status.APPLIED, Content(digest1,digest2,expired),fee);
     }
 
-    function insertOrder(address applicant, Status intialStatus, Content icc) internal returns (uint256 _orderId){
+    function insertOrder(address applicant, Status intialStatus, Content icc,uint256  fee) internal returns (uint256 _orderId){
         //订单号=数组长度-1
-        uint256 orderId = orders.push(Order(applicant, intialStatus, icc)) - 1;
+        uint256 orderId = orders.push(Order(applicant, intialStatus, icc,fee)) - 1;
         orderUpdated(applicant, orderId, intialStatus);
         return orderId;
     }
@@ -99,7 +157,7 @@ contract CertService is OperatorPermission {
 
         //插入订单
         Content memory icc = Content("", "", 0);
-        uint256 orderId = insertOrder(applicant, Status.REVOKED, icc);
+        uint256 orderId = insertOrder(applicant, Status.REVOKED, icc,0);
 
         //压栈
         appendElement(datas[applicant], orderId, icc);
@@ -107,8 +165,51 @@ contract CertService is OperatorPermission {
         return orderId;
     }
 
-    function pass(uint256 orderId) public  {
+    function pass(uint256 orderId,bytes digest1, bytes digest2,uint256 expired) public  {
         onlyOperator();
+
+        Order storage order = orders[orderId];
+        Content content=order.content;
+
+        if(digest1Integrity == DigestIntegrity.VERIFIER){
+            if(!(digest1.length>0 && digest1.length<=100)){
+               log("!(digest1.length>0 && digest1.length<=100)");
+               throw;
+            }
+             content.digest1=digest1;
+        }else{
+            if(!(digest1.length==0)){
+               log("!(digest1.length==0)");
+               throw;
+            }
+        }
+
+        if(digest2Integrity == DigestIntegrity.VERIFIER){
+            if(!(digest2.length>0 && digest2.length<=100)){
+               log("!(digest2.length>0 && digest2.length<=100)");
+               throw;
+            }
+            content.digest2=digest2;
+        }else{
+            if(!(digest2.length==0)){
+              log("!(digest2.length==0)");
+              throw;
+            }
+        }
+
+        if(expiredIntegrity == DigestIntegrity.VERIFIER){
+                if(!(expired!=0)){
+                   log("!(expired!=0)");
+                   throw;
+                }
+             content.expired=expired;
+          }else{
+                if(!(expired==0)){
+                   log("!(expired==0)");
+                   throw;
+                }
+          }
+
         audit(orderId, Status.PASSED);
 
     }
@@ -116,7 +217,6 @@ contract CertService is OperatorPermission {
     function reject(uint256 orderId) public  {
         onlyOperator();
         audit(orderId, Status.REJECTED);
-
     }
 
 
@@ -216,13 +316,19 @@ contract CertService is OperatorPermission {
         return getData(msg.sender);
     }
 
-    function getOrder(uint256 _orderId) constant public returns (address applicant, Status status, bytes digest1, bytes digest2, uint256 expired) {
+    function getOrder(uint256 _orderId) constant public returns (address applicant, Status status, bytes digest1, bytes digest2, uint256 expired,uint256 feeDcc) {
         Order memory rf = orders[_orderId];
-        return (rf.applicant, rf.status, rf.content.digest1, rf.content.digest2, rf.content.expired);
+        return (rf.applicant, rf.status, rf.content.digest1, rf.content.digest2, rf.content.expired,rf.feeDcc);
     }
 
     function getOrderLength() constant public returns (uint256 length) {
         return orders.length;
     }
+
+     function  getExpectedFeeDcc()constant  public returns(uint256){
+         if(certServiceFeeModule!=address(0)){
+            return certServiceFeeModule.getFee();
+         }
+     }
 
 }
