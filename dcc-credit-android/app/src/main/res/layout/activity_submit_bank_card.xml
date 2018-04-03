@@ -21,11 +21,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/certificate_org_colon_sina_cloud_finance"
-            android:textColor="@color/text_blue_magenta"
-            android:textSize="@dimen/text_size_title"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccProviderHeadline"
             />
 
         <include layout="@layout/include_input_spinner"

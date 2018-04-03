@@ -83,8 +83,7 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
             updateSumValue()
         }else {
             list.forEach { dc ->
-                assetsRepository.getDigitalCurrencyAgent(dc)
-                        .getBalanceOf(holder)
+                assetsRepository.getBalance(dc,holder)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
                             if (holder == holderAddress.value) {

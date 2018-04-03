@@ -40,14 +40,15 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
     }
 
     private fun performOperation(certificationType: CertificationType) {
-        when(certificationType){
+        when (certificationType) {
             CertificationType.ID ->
                 navigateTo(SubmitIdActivity::class.java)
             CertificationType.PERSONAL ->
                 navigateTo(SubmitPersonalInfoActivity::class.java)
             CertificationType.BANK ->
                 navigateTo(SubmitBankCardActivity::class.java)
-            CertificationType.MOBILE -> TODO()
+            CertificationType.MOBILE ->
+                navigateTo(SubmitCommunicationLogActivity::class.java)
         }
     }
 }

@@ -33,7 +33,7 @@ class PassportRepository(context: Context) {
         val wallet = passportPrefs.wallet.get()
         val password = passportPrefs.password.get()
         val credential = try {
-            Wallet.decrypt(password, gson.fromJson(wallet, WalletFile::class.java))
+            Wallet.decrypt(password, parseWalletFile(wallet))
         } catch (e: Exception) {
             return // can't load credential
         }
@@ -48,6 +48,7 @@ class PassportRepository(context: Context) {
                 nickname = passportPrefs.nickname.get()
         )
     }
+
 
     val passportEnabled
         get() = currPassport.value?.authKey != null
@@ -92,9 +93,13 @@ class PassportRepository(context: Context) {
         const val AUTH_KEY_ALIAS = "auth_key_alias"
         const val AUTH_KEY_PUB = "auth_key_pub"
 
+        @JvmStatic
         val gson = GsonBuilder()
                 .registerTypeAdapter(WalletFile::class.java, WalletFileDeserializer())
                 .create()
+
+        @JvmStatic
+        fun parseWalletFile(wallet: String?) = gson.fromJson(wallet, WalletFile::class.java)
     }
 
     private class PassportPrefs(sp: SharedPreferences) : Prefs(sp) {

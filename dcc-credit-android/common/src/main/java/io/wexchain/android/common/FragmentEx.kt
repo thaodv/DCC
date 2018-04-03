@@ -28,6 +28,12 @@ fun FragmentManager.commitTransaction(
     }
 }
 
+inline fun <reified T : Fragment> FragmentManager.findOrCreateFragment(tag: String, crossinline createFunc: () -> T): T {
+    val find = this.findFragmentByTag(tag)
+    @Suppress("UNCHECKED_CAST")
+    return if (find != null && find is T) find else createFunc()
+}
+
 
 inline fun <reified T : ViewModel> Fragment.getViewModel(key: String? = null): T {
     val vmClass = T::class.java

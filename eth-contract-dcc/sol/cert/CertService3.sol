@@ -15,6 +15,7 @@ contract CertService3 is OperatorPermission ,CertServiceIntf{
 
     DigestIntegrity public digest1Integrity;
     DigestIntegrity public digest2Integrity;
+    DigestIntegrity public expiredIntegrity;
 
     event orderUpdated(address indexed applicant, uint256 indexed orderId, Status status);
 
@@ -63,19 +64,24 @@ contract CertService3 is OperatorPermission ,CertServiceIntf{
         digest2Integrity=_digest2Integrity;
      }
 
+    function setExpiredIntegrity(DigestIntegrity  _expiredIntegrity) public  onlyOwner{
+         expiredIntegrity= _expiredIntegrity;
+      }
+
      function setCertServiceFeeModuleAddress(address certServiceFeeModuleAddress) public  onlyOwner{
          certServiceFeeModule=CertServiceFeeModule(certServiceFeeModuleAddress);
       }
 
 
-    function CertService3(bytes _name,DigestIntegrity _digest1Integrity,DigestIntegrity _digest2Integrity) public {
+    function CertService3(bytes _name,DigestIntegrity _digest1Integrity,DigestIntegrity _digest2Integrity,DigestIntegrity _expiredIntegrity) public {
         name=_name;
         digest1Integrity=_digest1Integrity;
         digest2Integrity=_digest2Integrity;
+        expiredIntegrity= _expiredIntegrity;
         insertOrder(address(0), Status.INVALID, Content("", "", 0),0);
     }
 
-    function apply(bytes digest1, bytes digest2) public returns (uint256 _orderId){
+    function apply(bytes digest1, bytes digest2,uint256 expired) public returns (uint256 _orderId){
 
         if(digest1Integrity == DigestIntegrity.APPLICANT){
             require(digest1.length>0 && digest1.length<=100);
@@ -89,12 +95,19 @@ contract CertService3 is OperatorPermission ,CertServiceIntf{
             require(digest2.length==0);
         }
 
+        if(expiredIntegrity == DigestIntegrity.APPLICANT){
+             require(expired!=0);
+         }else{
+             require(expired==0);
+         }
+
+
         uint256  fee=0;
 
         if(certServiceFeeModule!=address(0)){
           fee=certServiceFeeModule.apply();
         }
-        return insertOrder(msg.sender, Status.APPLIED, Content(digest1,digest2,0),fee);
+        return insertOrder(msg.sender, Status.APPLIED, Content(digest1,digest2,expired),fee);
     }
 
     function insertOrder(address applicant, Status intialStatus, Content icc,uint256  fee) internal returns (uint256 _orderId){
@@ -122,7 +135,7 @@ contract CertService3 is OperatorPermission ,CertServiceIntf{
     }
 
     function pass(uint256 orderId,bytes digest1, bytes digest2,uint256 expired) public onlyOperator {
-        require(expired>0);
+
         Order storage order = orders[orderId];
         Content content=order.content;
 
@@ -133,14 +146,19 @@ contract CertService3 is OperatorPermission ,CertServiceIntf{
             require(digest1.length==0);
         }
 
-        if(digest1Integrity == DigestIntegrity.VERIFIER){
+        if(digest2Integrity == DigestIntegrity.VERIFIER){
             require(digest2.length>0 && digest2.length<=100);
             content.digest2=digest2;
         }else{
             require(digest2.length==0);
         }
 
-        content.expired=expired;
+        if(expiredIntegrity == DigestIntegrity.VERIFIER){
+             require(expired!=0);
+             content.expired=expired;
+          }else{
+               require(expired==0);
+          }
         audit(orderId, Status.PASSED);
     }
 

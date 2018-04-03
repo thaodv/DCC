@@ -3,14 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="io.wexchain.auth">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
+        android:name="io.wexchain.android.dcc.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/dcc_app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:name="io.wexchain.android.dcc.App"
         android:supportsRtl="false"
-        android:theme="@style/AppTheme"
+        android:theme="@style/DccTheme.App"
         tools:replace="android:icon,android:label,android:theme,android:supportsRtl">
         <activity
             android:name="io.wexchain.android.dcc.LoadingActivity"
@@ -36,10 +39,17 @@
         <activity
             android:name="io.wexchain.android.dcc.CreatePassportActivity"
             android:label="@string/create_new_digital_wallet" />
-        <activity android:name="io.wexchain.android.dcc.ImportPassportActivity"
-            android:label="@string/digital_assets"
+        <activity android:name="io.wexchain.android.dcc.DigitalAssetsActivity"
+            android:label="@string/digital_assets"/>
+        <activity android:name="io.wexchain.android.dcc.DccExchangeActivity"
+            android:label="@string/dcc"
             />
-        <activity android:name="io.wexchain.android.dcc.DigitalAssetsActivity" />
+        <activity android:name="io.wexchain.android.dcc.SubmitCommunicationLogActivity"
+            android:label="@string/title_phone_carrier_certification"
+            />
+        <activity android:name="io.wexchain.android.dcc.PassportImportActivity"
+            android:label="@string/title_import_wallet"
+            />
     </application>
 
 </manifest>

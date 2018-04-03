@@ -7,7 +7,6 @@ contract CertService is OperatorPermission {
 
     mapping(address => Checkpoint[]) datas;
 
-
     Order[] orders;
 
     enum Status {INVALID, APPLIED, PASSED, REJECTED, DISCARDED, REVOKED}

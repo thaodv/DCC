@@ -27,7 +27,55 @@ import java.util.*
  */
 object PassportOperations {
 
-    fun createNewPassport(){
+    fun createNewAndEnablePassport(password: String): Single<Pair<Credentials, AuthKey>> {
+        require(password.isNotBlank())
+        return Single.just(password)
+                .observeOn(Schedulers.computation())
+                .map {
+                    EthsHelper.createNewCredential()
+                }
+                .map {
+                    val authKey = EthsHelper.createAndroidRSAKeyPair().let {
+                        AuthKey(it.second, it.first.public.encoded)
+                    }
+                    it to authKey
+                }
+                .observeOn(Schedulers.io())
+                .flatMap {
+                    App.get().chainGateway.getTicket()
+                            .compose(Result.checked())
+                            .flatMap { ticket ->
+                                PassportOperations.uploadPubKeyChecked(it, ticket.ticket, null)
+                            }
+                }
+                .doOnSuccess {
+                    App.get().passportRepository.savePassport(it.first, password, it.second)
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun enablePassport(credentials: Credentials,password: String): Single<Pair<Credentials, AuthKey>>? {
+        require(password.isNotBlank())
+        return Single.just(credentials)
+                .observeOn(Schedulers.computation())
+                .map {
+                    val authKey = EthsHelper.createAndroidRSAKeyPair().let {
+                        AuthKey(it.second, it.first.public.encoded)
+                    }
+                    it to authKey
+                }
+                .observeOn(Schedulers.io())
+                .flatMap {
+                    App.get().chainGateway.getTicket()
+                            .compose(Result.checked())
+                            .flatMap { ticket ->
+                                PassportOperations.uploadPubKeyChecked(it, ticket.ticket, null)
+                            }
+                }
+                .doOnSuccess {
+                    App.get().passportRepository.savePassport(it.first, password, it.second)
+                }
+                .observeOn(AndroidSchedulers.mainThread())
 
     }
 
@@ -100,7 +148,7 @@ object PassportOperations {
 
     private fun createPubKey(): Single<AuthKey> {
         return Single.fromCallable { createAndroidRSAKeyPair() }
-                .map { AuthKey(it.second,it.first.public.encoded) }
+                .map { AuthKey(it.second, it.first.public.encoded) }
                 .subscribeOn(Schedulers.computation())
     }
 
@@ -126,7 +174,7 @@ object PassportOperations {
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess {
-                    App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(passport.address,System.currentTimeMillis(),AuthKeyChangeRecord.UpdateType.DISABLE))
+                    App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(passport.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.DISABLE))
                 }
     }
 

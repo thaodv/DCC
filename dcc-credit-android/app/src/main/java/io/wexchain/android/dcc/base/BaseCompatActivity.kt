@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.view.dialog.FullScreenDialog
 import io.wexchain.auth.R
 
 abstract class BaseCompatActivity : AppCompatActivity() {
@@ -51,7 +52,6 @@ abstract class BaseCompatActivity : AppCompatActivity() {
     }
 
 
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         item ?: return super.onOptionsItemSelected(item)
         if (item.itemId == android.R.id.home) {
@@ -77,5 +77,21 @@ abstract class BaseCompatActivity : AppCompatActivity() {
 
     open fun handleHomePressed(): Boolean {
         return false
+    }
+
+
+    private var loadingDialog: FullScreenDialog? = null
+
+    fun showLoadingDialog() {
+        var d = loadingDialog
+        if (d == null) {
+            d = FullScreenDialog.createLoading(this)
+            loadingDialog = d
+        }
+        d.show()
+    }
+
+    fun hideLoadingDialog() {
+        loadingDialog?.hide()
     }
 }
