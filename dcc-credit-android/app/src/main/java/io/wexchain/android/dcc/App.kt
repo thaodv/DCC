@@ -7,6 +7,7 @@ import io.reactivex.plugins.RxJavaPlugins
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.PassportRepository
 import io.wexchain.android.dcc.repo.db.PassportDatabase
+import io.wexchain.android.dcc.tools.JuzixData
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.auth.BuildConfig
 import io.wexchain.dccchainservice.CertApi
@@ -66,6 +67,7 @@ class App : MultiDexApplication() {
                 EthereumAgent(EthsRpcAgent.Companion.by(infuraApi), EthsTxAgent.Companion.by(etherScanApi)),
                 { buildAgent(it) }
         )
+        JuzixData.init(app)
     }
 
     private fun initServices(app: App) {

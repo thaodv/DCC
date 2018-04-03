@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <FrameLayout
+        android:layout_width="60dp"
+        android:layout_height="60dp">
+
+        <!--<com.wexmarket.android.passport.ui.view.LoadingCircleView-->
+        <!--android:layout_width="60dp"-->
+        <!--android:layout_height="60dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--app:lcLineWidth="3dp"-->
+        <!--app:lcAnimColor="#ff136d"-->
+        <!--app:lcBgColor="#333333"-->
+        <!--/>-->
+
+        <ImageView
+            android:id="@+id/iv_gear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher"
+            android:layout_gravity="center"
+            />
+
+        <ImageView
+            android:id="@+id/iv_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_trash"
+            />
+    </FrameLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/loading"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        />
+
+</LinearLayout>

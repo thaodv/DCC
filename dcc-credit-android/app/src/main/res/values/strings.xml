@@ -15,5 +15,22 @@
     <string name="create_new_digital_wallet">新建数字钱包</string>
     <string name="digital_assets">数字资产</string>
     <string name="share">分享</string>
+    <string name="title_phone_carrier_certification">手机运营商认证</string>
+    <string name="submit">提交</string>
+    <string name="communication_log_submit_hint">
+        温馨提示\n1. 请使用本人实名制手机号进行认证\n2. 服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3. 点击"提交"按钮会收到运营商的通知短信，无需回复
+    </string>
+
+    <string name="import_and_enable_passport">导入并启用统一登录</string>
+    <string name="enable_passport_will_disable_other_warning">导入口袋成功后，其他设备统一登录功能将不可用</string>
+    <string name="loading">loading…</string>
+    <string name="please_paste_keystore">请粘贴KEYSTORE信息</string>
+    <string name="please_input_passport_password">验证数字钱包密码</string>
+    <string name="please_set_passport_password">设置数字钱包密码</string>
+    <string name="choose_picture_from_gallery">相册</string>
+    <string name="title_import_wallet">导入已有钱包</string>
+    <string name="on_chain_dcc">\@DCC</string>
+    <string name="on_chain_ethereum">\@Ethereum</string>
+    <string name="dcc">DCC</string>
 
 </resources>

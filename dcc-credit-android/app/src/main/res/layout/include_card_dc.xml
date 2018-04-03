@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+        <variable
+            name="dc"
+            type="io.wexchain.digitalwallet.DigitalCurrency"/>
+        <variable
+            name="quote"
+            type="io.wexchain.digitalwallet.api.domain.front.Quote"/>
+        <variable
+            name="holding"
+            type="java.math.BigInteger"/>
+        <variable
+            name="chainText"
+            type="CharSequence"/>
+    </data>
+    <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        tools:showIn="@layout/activity_dcc_exchange">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_currency_logo"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                imageUrl="@{dc.icon}"
+                errorRes="@{@drawable/ethereum}"
+                tools:src="@drawable/ethereum" />
+
+            <TextView
+                android:id="@+id/tv_currency_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
+                android:text="@{dc.symbol}"
+                tools:text="DCC"
+                app:layout_constraintLeft_toRightOf="@id/iv_currency_logo"
+                android:layout_marginLeft="8dp" />
+
+            <TextView
+                android:id="@+id/tv_currency_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:text="@{dc.description}"
+                app:layout_constraintTop_toBottomOf="@id/tv_currency_symbol"
+                tools:text="D C C"
+                app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol" />
+
+            <TextView
+                android:id="@+id/tv_currency_chain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:text="@{chainText}"
+                tools:text="\@DCC"
+                app:layout_constraintTop_toBottomOf="@id/tv_currency_description"
+                app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol" />
+
+            <TextView
+                android:id="@+id/tv_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/text_blue_magenta"
+                android:layout_marginTop="24dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_currency_logo"
+                android:text="@{ViewModelHelper.getBalanceStr(dc,holding)}"
+                tools:text="1234.532143" />
+
+            <TextView
+                android:id="@+id/tv_currency_approx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_balance"
+                android:text="@{ViewModelHelper.getApproxValueStr(dc,holding,quote)}"
+                tools:text="~=2132452.32$"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</layout>

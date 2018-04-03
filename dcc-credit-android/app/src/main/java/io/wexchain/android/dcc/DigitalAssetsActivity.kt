@@ -7,6 +7,7 @@ import android.support.v4.view.ViewCompat
 import android.view.View
 import com.wexmarket.android.passport.base.BindActivity
 import io.wexchain.android.common.getViewModel
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.withTransitionEnabled
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.Transitions
@@ -16,6 +17,8 @@ import io.wexchain.android.dcc.vm.DigitalAssetsVm
 import io.wexchain.auth.R
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.auth.databinding.ActivityDigitalAssetsBinding
+import io.wexchain.digitalwallet.Chain
+import io.wexchain.digitalwallet.Currencies
 
 class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), ItemViewClickListener<DigitalCurrency> {
 
@@ -70,6 +73,16 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
 //            putExtra(Extras.EXTRA_DIGITAL_CURRENCY, item)
 //            putExtra(Extras.EXTRA_DC_SELECTED, true)
 //        })
+        when(item.chain){
+            Chain.MultiChain->{
+                if (item.symbol == Currencies.DCC.symbol){
+                    navigateTo(DccExchangeActivity::class.java)
+                }
+            }
+            else->{
+                //todo
+            }
+        }
     }
 
 

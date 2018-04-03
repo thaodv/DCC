@@ -4,10 +4,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import io.wexchain.auth.R
 
-class ImportPassportActivity : AppCompatActivity() {
+class SubmitCommunicationLogActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_import_passport)
+        setContentView(R.layout.activity_submit_communication_log)
     }
 }

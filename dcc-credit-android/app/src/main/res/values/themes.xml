@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="DccTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -22,6 +22,9 @@
         <item name="android:spinnerDropDownItemStyle">@style/Widget.AppCompat.Light.DropDownItem.Spinner.Dcc</item>
 
         <item name="dialogTheme">@style/FullWidthDialog</item>
+    </style>
+
+    <style name="DccTheme.App">
     </style>
 
 

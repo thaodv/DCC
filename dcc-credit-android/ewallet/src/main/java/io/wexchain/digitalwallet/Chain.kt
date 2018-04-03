@@ -11,14 +11,20 @@ enum class Chain {
      */
     Ethereum,
     /**
+     * Rinkeby test net
+     */
+    Rinkeby,
+    /**
      * private chain
      * with several tokens
      */
     JUZIX_PRIVATE,
+
     /**
-     * Rinkeby test net
+     * indicates the digital currency exists on multiple chain
+     * eg: DCC exist on both [JUZIX_PRIVATE] and [Ethereum]
      */
-    Rinkeby
+    MultiChain
     ;
 
     companion object {

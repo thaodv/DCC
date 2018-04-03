@@ -47,7 +47,7 @@ class HomeActivity : BaseCompatActivity() {
     }
 
     private fun toImport() {
-        navigateTo(ImportPassportActivity::class.java)
+        navigateTo(PassportImportActivity::class.java)
     }
 
     private inner class IntroDialog :Dialog(this,R.style.FullWidthDialog){
