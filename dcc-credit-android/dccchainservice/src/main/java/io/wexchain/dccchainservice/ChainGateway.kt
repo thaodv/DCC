@@ -1,10 +1,7 @@
 package io.wexchain.dccchainservice
 
 import io.reactivex.Single
-import io.wexchain.dccchainservice.domain.CertData
-import io.wexchain.dccchainservice.domain.CertOrder
-import io.wexchain.dccchainservice.domain.Result
-import io.wexchain.dccchainservice.domain.TicketResponse
+import io.wexchain.dccchainservice.domain.*
 import retrofit2.http.*
 
 
@@ -72,11 +69,28 @@ interface ChainGateway {
             @Query("business") business: String
     ): Single<Result<CertOrder>>
 
+    @GET("dcc/cert/1/getOrdersByTx")
+    fun getOrdersByTx(
+            @Query("txHash") txHash: String,
+            @Query("business") business: String
+    ): Single<Result<List<CertOrder>>>
+
+    @GET("dcc/cert/1/getOrderUpdatedEventsByTx")
+    fun getOrderUpdatedEventsByTx(
+            @Query("txHash") txHash: String,
+            @Query("business") business: String
+    ): Single<Result<List<CertOrderUpdatedEvent>>>
+
     @GET("dcc/cert/1/getOrder")
     fun getOrderByOrderId(
             @Query("orderId") orderId: Long,
             @Query("business") business: String
     ): Single<Result<CertOrder>>
+
+    @GET("dcc/cert/1/getExpectedFee")
+    fun getExpectedFee(
+            @Query("business") business: String
+    ):Single<Result<String>>
 
     companion object {
         const val BUSINESS_ID = "ID"

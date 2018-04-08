@@ -3,18 +3,19 @@ package io.wexchain.auth
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import io.reactivex.SingleTransformer
+import io.wexchain.android.common.toHex
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.EthsFunctions
 import io.wexchain.android.dcc.chain.txSigned
 import io.wexchain.android.dcc.tools.RetryWithDelay
+import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.BankCodes
-import io.wexchain.dccchainservice.domain.CertOrder
+import io.wexchain.dccchainservice.domain.CertStatus
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
-import io.wexchain.dccchainservice.util.toHex
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -71,18 +72,30 @@ class ServiceApiTest {
                     api.getTicket()
                             .compose(Result.checked())
                             .flatMap { ticket ->
-                                val tx = EthsFunctions.apply(digest1, digest2)
+                                val tx = EthsFunctions.apply(digest1, digest2, BigInteger.valueOf(IdCardEssentialData.ID_TIME_EXPIRATION_UNLIMITED))
                                         .txSigned(credentials, contractAddress)
                                 api.certApply(
                                         ticket.ticket, tx, ticket.answer, business)
                                         .compose(Result.checked())
                             }
                 }
-                .flatMap {
-                    api.getOrderByTx(it, business)
+                .flatMap {txHash->
+                    api.hasReceipt(txHash)
                             .compose(Result.checked())
+                            .map {
+                                if (!it) {
+                                    throw DccChainServiceException("no receipt yet")
+                                }
+                                txHash
+                            }
                             .retryWhen(RetryWithDelay.createSimple(4, 5000L))
-
+                }
+                .flatMap {
+                    api.getOrdersByTx(it, business)
+                            .compose(Result.checked())
+                            .map {
+                                it.first()
+                            }
                 }
                 .blockingGet()
         println(order)
@@ -105,15 +118,9 @@ class ServiceApiTest {
                 .compose(Result.checked())
                 .blockingGet()
         println(verifyOrder)
-        val state = api.getOrderByOrderId(order.orderId, business)
+        val state = api.getCertData(credentials.address, business)
                 .compose(Result.checked())
-                .map {
-                    if (it.status == CertOrder.Status.APPLIED) {
-                        throw IllegalStateException("not verified yet")
-                    }
-                    it
-                }
-                .retryWhen(RetryWithDelay.createSimple(4, 5000))
+//                .retryWhen(RetryWithDelay.createSimple(4, 5000))
                 .blockingGet()
         println(state)
     }
@@ -140,7 +147,7 @@ class ServiceApiTest {
                     api.getTicket()
                             .compose(Result.checked())
                             .flatMap { ticket ->
-                                val tx = EthsFunctions.apply(digest1, digest2)
+                                val tx = EthsFunctions.apply(digest1, digest2, BigInteger.ZERO)
                                         .txSigned(credentials, contractAddress)
                                 api.certApply(
                                         ticket.ticket, tx, ticket.answer, business)
@@ -186,7 +193,7 @@ class ServiceApiTest {
         val state = api.getOrderByOrderId(applyOrder.orderId, business)
                 .compose(Result.checked())
                 .map {
-                    if (it.status == CertOrder.Status.APPLIED) {
+                    if (it.status == CertStatus.APPLIED) {
                         throw IllegalStateException("not verified yet")
                     }
                     it

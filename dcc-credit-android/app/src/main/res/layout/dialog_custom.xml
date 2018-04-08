@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="vm"
+            type="io.wexchain.android.dcc.vm.CDVm"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title"
+            style="?android:attr/windowTitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:text="@{vm.textTitle}"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:visibility="@{vm.showTitle?View.VISIBLE:View.GONE}"
+            tools:text="标题"
+            />
+
+        <LinearLayout
+            android:id="@+id/ll_content_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="?attr/dialogPreferredPadding"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            >
+
+            <TextView
+                android:id="@+id/textContent"
+                style="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingTop="4dp"
+                android:textSize="17sp"
+                android:text="@{vm.textContent}"
+                android:visibility="@{vm.showText?View.VISIBLE:View.GONE}"
+                tools:text="@tools:sample/lorem"
+                />
+
+            <FrameLayout
+                android:id="@+id/fl_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_divider"
+            style="@style/DividerHorizontal"
+            app:layout_constraintTop_toBottomOf="@id/ll_content_container"
+            />
+
+        <Button
+            android:id="@+id/button3"
+            style="?attr/buttonBarNegativeButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="@{vm.textButton3}"
+            android:textSize="20sp"
+            android:visibility="@{vm.showButton3?View.VISIBLE:View.GONE}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/v_divider_3"
+            app:layout_constraintTop_toBottomOf="@id/v_divider"
+            />
+
+        <View
+            android:id="@+id/v_divider_3"
+            android:layout_height="0dp"
+            style="@style/DividerVertical"
+            android:visibility="@{vm.showButton3?View.VISIBLE:View.GONE}"
+            app:layout_constraintLeft_toRightOf="@id/button3"
+            app:layout_constraintTop_toTopOf="@id/button3"
+            app:layout_constraintBottom_toBottomOf="@id/button3"
+            app:layout_constraintRight_toLeftOf="@id/button2"
+            />
+
+        <Button
+            android:id="@+id/button2"
+            style="?attr/buttonBarNeutralButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="@{vm.textButton2}"
+            android:textSize="20sp"
+            android:visibility="@{vm.showButton2?View.VISIBLE:View.GONE}"
+            app:layout_constraintLeft_toRightOf="@id/v_divider_3"
+            app:layout_constraintRight_toLeftOf="@+id/v_divider_2"
+            app:layout_constraintTop_toBottomOf="@id/v_divider"
+            />
+
+        <View
+            android:id="@id/v_divider_2"
+            android:layout_height="0dp"
+            style="@style/DividerVertical"
+            android:visibility="@{vm.showButton2?View.VISIBLE:View.GONE}"
+            app:layout_constraintLeft_toRightOf="@id/button2"
+            app:layout_constraintTop_toTopOf="@id/button2"
+            app:layout_constraintBottom_toBottomOf="@id/button2"
+            app:layout_constraintRight_toLeftOf="@id/button1"
+            />
+
+        <Button
+            android:id="@+id/button1"
+            style="?attr/buttonBarPositiveButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="@{vm.textButton1}"
+            android:textSize="20sp"
+            android:visibility="@{vm.showButton1?View.VISIBLE:View.GONE}"
+            app:layout_constraintLeft_toRightOf="@id/v_divider_2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v_divider"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

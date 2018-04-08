@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="FullWidthDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+
+    <style name="FullWidthDialog.SlideRight" parent="FullWidthDialog">
+        <item name="android:windowAnimationStyle">@style/AnimationSlideRight</item>
+    </style>
+    <style name="AnimationSlideRight">
+        <item name="android:windowEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_right</item>
+    </style>
+    <style name="Widget.AppCompat.Button.Borderless.PinButton">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display1</item>
+        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:padding">0dp</item>
+    </style>
+</resources>

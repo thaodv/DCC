@@ -1,5 +1,6 @@
 package io.wexchain.dccchainservice.domain
 
+import com.google.gson.annotations.SerializedName
 import io.reactivex.Single
 import io.reactivex.SingleTransformer
 import io.wexchain.dccchainservice.DccChainServiceException
@@ -10,6 +11,7 @@ import io.wexchain.dccchainservice.DccChainServiceException
 data class Result<out T>(
         @JvmField val systemCode: String,
         @JvmField val businessCode: String?,
+        @SerializedName(value="result", alternate=["resultList"])
         @JvmField val result: T?,
         @JvmField val trace: String?,
         @JvmField val message: String?

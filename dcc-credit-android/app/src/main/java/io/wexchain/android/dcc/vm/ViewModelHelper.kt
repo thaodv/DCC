@@ -43,6 +43,18 @@ object ViewModelHelper {
         }
         return "--"
     }
+
+    @JvmStatic
+    fun formatCurrencyValue(value: String?): String {
+        value ?: return ""
+        return value.toBigDecimalSafe().currencyToDisplayStr()
+    }
+
+    @JvmStatic
+    fun formatCurrencyValue(value: BigDecimal?): String {
+        value ?: return ""
+        return value.currencyToDisplayStr()
+    }
 }
 
 fun BigDecimal.currencyToDisplayStr(): String {

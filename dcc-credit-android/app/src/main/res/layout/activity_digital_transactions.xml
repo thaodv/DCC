@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="txList"
+            type="io.wexchain.android.dcc.vm.TransactionListVm"
+            />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.wexmarket.android.passport.DigitalTransactionsActivity"
+        >
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/include_toolbar"
+            />
+
+        <include
+            android:id="@+id/section_transactions"
+            layout="@layout/include_transaction_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:txList="@{txList}"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

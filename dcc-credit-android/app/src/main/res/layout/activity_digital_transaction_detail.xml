@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.wexmarket.android.passport.DigitalTransactionDetailActivity"
+    >
+
+    <data>
+
+        <import type="io.wexchain.android.dcc.vm.TransactionListVm" />
+
+        <variable
+            name="tx"
+            type="io.wexchain.digitalwallet.EthsTransaction"
+            />
+
+        <variable
+            name="owner"
+            type="String"
+            />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/include_toolbar"
+            />
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <TextView
+                android:id="@+id/tv_detail_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:text="@string/transaction_record_detail"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/tv_transfer_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_marginTop="12dp"
+                android:text="@{TransactionListVm.txValue(owner,tx)}"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_title"
+                tools:text="-123.4326583 ETH"
+                />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/gl_v1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="100dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_to_address_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginTop="12dp"
+                android:text="@string/to_address_colon"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@id/gl_v1"
+                app:layout_constraintTop_toBottomOf="@id/tv_transfer_amount"
+                />
+
+            <TextView
+                android:id="@+id/tv_to_address_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:text="@{tx.to}"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_to_address_label"
+                app:layout_constraintLeft_toRightOf="@id/gl_v1"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="@sample/address"
+                />
+
+            <TextView
+                android:id="@+id/tv_from_address_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginTop="8dp"
+                android:text="@string/from_address_colon"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@id/gl_v1"
+                app:layout_constraintTop_toBottomOf="@id/tv_to_address_value"
+                />
+
+            <TextView
+                android:id="@+id/tv_from_address_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:text="@{tx.from}"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_from_address_label"
+                app:layout_constraintLeft_toRightOf="@id/gl_v1"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="@sample/address"
+                />
+
+            <TextView
+                android:id="@+id/tv_transaction_fee_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginTop="8dp"
+                android:text="@string/transaction_fee_colon"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@id/gl_v1"
+                app:layout_constraintTop_toBottomOf="@id/tv_from_address_value"
+                visibleOrGone="@{!tx.onPrivateChain()}"
+                />
+
+            <TextView
+                android:id="@+id/tv_transaction_fee_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{tx.txFeeStr()}"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_transaction_fee_label"
+                app:layout_constraintLeft_toRightOf="@id/gl_v1"
+                tools:text="0.1234 ETH"
+                visibleOrGone="@{!tx.onPrivateChain()}"
+                />
+
+            <!--todo remarks hidden-->
+
+            <TextView
+                android:id="@+id/tv_remarks_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginTop="8dp"
+                android:text="@string/extra"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/gl_v1"
+                app:layout_constraintTop_toBottomOf="@id/tv_transaction_fee_label"
+                />
+
+            <TextView
+                android:id="@+id/tv_remarks_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{tx.remarks}"
+                android:visibility="gone"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_remarks_label"
+                app:layout_constraintLeft_toRightOf="@id/gl_v1"
+                />
+
+            <TextView
+                android:id="@+id/tv_transaction_id_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginTop="8dp"
+                android:text="@string/transaction_id_colon"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@id/gl_v1"
+                app:layout_constraintTop_toBottomOf="@id/tv_remarks_label"
+                />
+
+            <TextView
+                android:id="@+id/tv_transaction_id_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:text="@{tx.txIdLinked()}"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:textColorLink="?attr/colorAccent"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_transaction_id_label"
+                app:layout_constraintLeft_toRightOf="@id/gl_v1"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="@sample/txHash"
+                />
+
+            <TextView
+                android:id="@+id/tv_block_number_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginTop="8dp"
+                android:text="@string/block_number_colon"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@id/gl_v1"
+                app:layout_constraintTop_toBottomOf="@id/tv_transaction_id_value"
+                />
+
+            <TextView
+                android:id="@+id/tv_block_number_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:text="@{Long.toString(tx.blockNumber)}"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_block_number_label"
+                app:layout_constraintLeft_toRightOf="@id/gl_v1"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="133935"
+                />
+
+            <TextView
+                android:id="@+id/tv_transaction_time_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginTop="8dp"
+                android:text="@string/transaction_time_colon"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@id/gl_v1"
+                app:layout_constraintTop_toBottomOf="@id/tv_block_number_value"
+                />
+
+            <TextView
+                android:id="@+id/tv_transaction_time_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:text="@{tx.time==0?@string/empty_slash:@string/time_format_yyyymmdd_hhmmss(tx.time)}"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_transaction_time_label"
+                app:layout_constraintLeft_toRightOf="@id/gl_v1"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="@tools:sample/date/hhmmss"
+                />
+
+            <TextView
+                android:id="@+id/tv_transaction_status_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginTop="8dp"
+                android:text="@string/transaction_status_colon"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@id/gl_v1"
+                app:layout_constraintTop_toBottomOf="@id/tv_transaction_time_value"
+                />
+
+            <TextView
+                android:id="@+id/tv_transaction_status_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:text="@{tx.status.toDisplayStr()}"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_transaction_status_label"
+                app:layout_constraintLeft_toRightOf="@id/gl_v1"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="成功"
+                />
+        </android.support.constraint.ConstraintLayout>
+
+
+    </LinearLayout>
+
+</layout>

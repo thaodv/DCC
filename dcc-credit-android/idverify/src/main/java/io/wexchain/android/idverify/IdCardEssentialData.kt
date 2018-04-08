@@ -33,8 +33,12 @@ data class IdCardEssentialData(
     }
 
     companion object {
+        //GMT+8 2199/12/31 0:0:0
+        const val ID_TIME_EXPIRATION_UNLIMITED = 7258003200000L
         private val timeLimitPattern =
-            Pattern.compile("^(19[\\d]{2}|2[\\d]{3})\\.([1-9]|1[0-2])\\.([1-9]|[1-2][0-9]|3[0-1])-(19[\\d]{2}|2[\\d]{3})\\.([1-9]|1[0-2])\\.([1-9]|[1-2][0-9]|3[0-1])$")
+//            Pattern.compile("^(19[\\d]{2}|2[\\d]{3})\\.([1-9]|1[0-2])\\.([1-9]|[1-2][0-9]|3[0-1])-(((19[\\d]{2}|2[\\d]{3})\\.([1-9]|1[0-2])\\.([1-9]|[1-2][0-9]|3[0-1]))|长期)$")
+            // eg:20120625-20220625
+            Pattern.compile("^(19[\\d]{2}|2[\\d]{3})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])-(((19[\\d]{2}|2[\\d]{3})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1]))|长期)$")
 
         fun from(
             name: String,
@@ -62,17 +66,22 @@ data class IdCardEssentialData(
             return null
         }
 
-        private fun parseExpired(timeLimit: String): Long {
+        fun parseExpired(timeLimit: String): Long {
             val matcher = timeLimitPattern.matcher(timeLimit)
             if (matcher.matches()) {
-                val y = matcher.group(4).toInt()
-                val m = matcher.group(5).toInt()
-                val d = matcher.group(6).toInt()
-                //CN ID expiration eg: 2007.11.12-2027.11.11
-                return Calendar.getInstance(TimeZone.getTimeZone("GMT+8")).apply {
-                    timeInMillis = 0L//reset
-                    set(y, m, d)
-                }.timeInMillis
+                //CN ID expiration
+                return if ("长期" == matcher.group(4)){
+                    ID_TIME_EXPIRATION_UNLIMITED
+                }else {
+                    //has deterministic expiration
+                    val y = matcher.group(6).toInt()
+                    val m = matcher.group(7).toInt()
+                    val d = matcher.group(8).toInt()
+                    Calendar.getInstance(TimeZone.getTimeZone("GMT+8")).apply {
+                        timeInMillis = 0L//reset
+                        set(y, m, d)
+                    }.timeInMillis
+                }
             }
             return -1L
         }

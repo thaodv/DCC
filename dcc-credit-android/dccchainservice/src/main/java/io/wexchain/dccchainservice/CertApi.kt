@@ -14,7 +14,7 @@ import retrofit2.http.*
  */
 interface CertApi {
 
-    @POST("dcc/cert/id/verify")
+    @POST("dcc/endorsement/id/verify")
     @Multipart
     fun idVerify(
             @Part("address") address:String,
@@ -25,11 +25,11 @@ interface CertApi {
             @Part("signature") signature: String
     ):Single<Result<CertOrder>>
 
-    @POST("dcc/cert/id/ocr")
+    @POST("dcc/endorsement/id/ocr")
     @Multipart
     fun idOcr(@Part file: MultipartBody.Part): Single<Result<IdOcrInfo>>
 
-    @POST("dcc/cert/bankCard/verify")
+    @POST("dcc/endorsement/bankCard/verify")
     @FormUrlEncoded
     fun bankCardVerify(
             @Field("address") address:String,
@@ -42,7 +42,7 @@ interface CertApi {
             @Field("signature") signature:String
     ):Single<Result<String>>
 
-    @POST("dcc/cert/bankCard/verify/advance")
+    @POST("dcc/endorsement/bankCard/verify/advance")
     @FormUrlEncoded
     fun bankCardAdvance(
             @Field("address") address:String,
@@ -52,7 +52,7 @@ interface CertApi {
             @Field("signature") signature:String
     )
 
-    @POST("dcc/cert/communicationLog/get/data")
+    @POST("dcc/endorsement/communicationLog/get/data")
     @FormUrlEncoded
     fun requestCommunicationLogData(
             @Field("address") address:String,
@@ -64,7 +64,7 @@ interface CertApi {
             @Field("signature") signature:String
     ):Single<Result<String>>//todo response type
 
-    @POST("dcc/cert/communicationLog/get/data/advance")
+    @POST("dcc/endorsement/communicationLog/get/data/advance")
     @FormUrlEncoded
     fun requestCommunicationLogDataAdvance(
             @Field("address") address:String,
@@ -81,7 +81,7 @@ interface CertApi {
             @Field("signature") signature:String
     ):Single<Result<String>>//todo response type
 
-    @POST("dcc/cert/communicationLog/get/report")
+    @POST("dcc/endorsement/communicationLog/get/report")
     @FormUrlEncoded
     fun getCommunicationLogReport(
             @Field("address") address:String,

@@ -50,6 +50,18 @@
         <activity android:name="io.wexchain.android.dcc.PassportImportActivity"
             android:label="@string/title_import_wallet"
             />
+        <activity android:name="io.wexchain.android.dcc.DigitalCurrencyActivity"
+            />
+        <activity android:name="io.wexchain.android.dcc.DigitalTransactionDetailActivity" />
+        <activity android:name="io.wexchain.android.dcc.DigitalTransactionsActivity" />
+        <activity android:name="io.wexchain.android.dcc.CreateTransactionActivity" />
+        <activity android:name="io.wexchain.android.dcc.QrScannerActivity"
+            android:theme="@style/DccTheme.App.Transparent"
+            android:label=""
+            />
+        <activity android:name="io.wexchain.android.dcc.PassportAddressActivity"
+            android:label="TODO"
+            />
     </application>
 
 </manifest>

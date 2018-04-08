@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="100dp"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="10dp"
+        android:textSize="20sp"
+        android:text="@string/verify_finger_print"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="?attr/colorAccent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/iv_finger_print"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_title"
+        app:layout_constraintBottom_toTopOf="@id/tv_finger_print_hint"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:src="@drawable/finger_print"
+        android:layout_margin="20dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_finger_print_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_dark_alpha"
+        android:text="@string/please_touch_finger_print_sensor"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_finger_print"
+        app:layout_constraintBottom_toBottomOf="@id/v_divider_2"
+        />
+
+    <View
+        android:id="@+id/v_divider_2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/divider_line"
+        app:layout_constraintBottom_toTopOf="@id/btn_cancel"
+        />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:textSize="17sp"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/text_dark"
+        />
+
+</android.support.constraint.ConstraintLayout>

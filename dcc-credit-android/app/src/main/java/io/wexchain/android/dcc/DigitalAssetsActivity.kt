@@ -69,10 +69,6 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
 
     override fun onItemClick(item: DigitalCurrency?, position: Int, viewId: Int) {
         item ?: return
-//        startActivity(Intent(this, DigitalCurrencyActivity::class.java).apply {
-//            putExtra(Extras.EXTRA_DIGITAL_CURRENCY, item)
-//            putExtra(Extras.EXTRA_DC_SELECTED, true)
-//        })
         when(item.chain){
             Chain.MultiChain->{
                 if (item.symbol == Currencies.DCC.symbol){
@@ -80,7 +76,10 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
                 }
             }
             else->{
-                //todo
+                navigateTo(DigitalCurrencyActivity::class.java){
+                    putExtra(Extras.EXTRA_DIGITAL_CURRENCY, item)
+                    putExtra(Extras.EXTRA_DC_SELECTED, true)
+                }
             }
         }
     }

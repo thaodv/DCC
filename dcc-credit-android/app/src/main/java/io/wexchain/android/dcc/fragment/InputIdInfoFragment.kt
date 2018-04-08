@@ -60,14 +60,17 @@ class InputIdInfoFragment:BindFragment<FragmentEditIdInfoBinding>() {
                 if (resultCode == ResultCodes.RESULT_OK && data != null) {
                     val side = data.getIntExtra("side", SIDE_FRONT)
                     val imgBytes = data.getByteArrayExtra("idcardImg")!!
+                    val vm = binding.vm!!
                     when (side) {
                         SIDE_FRONT -> {
-                            binding.vm!!.imgFront.set(imgBytes)
+                            vm.imgFront.set(imgBytes)
 //                            saveIdFront(context, imgBytes)
+                            vm.doOcrFront()
                         }
                         SIDE_BACK -> {
-                            binding.vm!!.imgBack.set(imgBytes)
+                            vm.imgBack.set(imgBytes)
 //                            saveIdBack(context, imgBytes)
+                            vm.doOcrBack()
                         }
                     }
                 }

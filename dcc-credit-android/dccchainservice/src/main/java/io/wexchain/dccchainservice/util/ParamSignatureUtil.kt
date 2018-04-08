@@ -1,5 +1,6 @@
 package io.wexchain.dccchainservice.util
 
+import io.wexchain.android.common.toHex
 import java.security.PrivateKey
 import java.security.Signature
 

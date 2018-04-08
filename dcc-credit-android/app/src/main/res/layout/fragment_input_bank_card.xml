@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-
+        <variable
+            name="vm"
+            type="io.wexchain.android.dcc.vm.InputBankCardInfoVm"/>
     </data>
     <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -9,19 +11,14 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="io.wexchain.android.dcc.SubmitBankCardActivity"
         >
-
-        <include layout="@layout/include_toolbar"
-            android:id="@+id/toolbar"
-            />
 
         <TextView
             android:id="@+id/tv_cert_org"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/certificate_org_colon_sina_cloud_finance"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:textAppearance="@style/TextAppearance.AppCompat.DccProviderHeadline"
@@ -34,6 +31,7 @@
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginRight="@dimen/content_padding_horizontal"
             app:layout_constraintTop_toBottomOf="@id/tv_cert_org"
+            app:vm="@{vm.options}"
             />
 
         <include layout="@layout/include_input_text"
@@ -45,6 +43,7 @@
             app:layout_constraintTop_toBottomOf="@id/input_bank"
             app:title="@{@string/bank_card_no}"
             app:hint="@{@string/please_input_bank_card_no}"
+            app:text="@={vm.bankCardNo}"
             />
 
         <include layout="@layout/include_input_text"
@@ -56,6 +55,7 @@
             app:layout_constraintTop_toBottomOf="@id/input_bank_card_no"
             app:title="@{@string/bank_registered_phone_num}"
             app:hint="@{@string/please_input_phone_num}"
+            app:text="@={vm.phoneNum}"
             />
 
         <Button

@@ -2,9 +2,13 @@ package io.wexchain.android.dcc.vm
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import io.wexchain.android.dcc.tools.SingleLiveEvent
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.SingleLiveEvent
+import io.wexchain.android.dcc.App
 import io.wexchain.android.idverify.IdCardEssentialData
+import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.domain.IdOcrInfo
+import io.wexchain.dccchainservice.domain.Result
 
 /**
  * Created by sisel on 2018/2/27.
@@ -28,15 +32,6 @@ class EditIdCardInfoVm : ViewModel() {
 
     val proceedEvent = SingleLiveEvent<IdCardEssentialData>()
     val informationIncompleteEvent = SingleLiveEvent<CharSequence>()
-
-
-    fun setOrLoad(
-        info: IdOcrInfo.IdCardInfo?
-    ) {
-        if (info != null) {
-            setInfoFromIdCardInfo(info)
-        }
-    }
 
     private fun setInfoFromIdCardInfo(info: IdOcrInfo.IdCardInfo) {
         info.let {
@@ -103,6 +98,44 @@ class EditIdCardInfoVm : ViewModel() {
             authority = authority.get(),
             timelimit = timeLimit.get()
         )
+    }
+
+    fun doOcrFront() {
+        val front:ByteArray? = imgFront.get()
+        if(front!=null){
+            App.get().certApi.idOcr(CertApi.uploadFilePart(front,"front.jpg","image/jpeg"))
+                    .compose(Result.checked())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { info->
+                        if(front === imgFront.get()){
+                            if(info.side == IdOcrInfo.Side.front){
+
+                            }else{
+                                //todo
+                            }
+                            setInfoFromIdCardInfo(info.idCardInfo)
+                        }
+                    }
+        }
+    }
+
+    fun doOcrBack() {
+        val back:ByteArray? = imgBack.get()
+        if(back!=null){
+            App.get().certApi.idOcr(CertApi.uploadFilePart(back,"back.jpg","image/jpeg"))
+                    .compose(Result.checked())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { info->
+                        if(back === imgBack.get()){
+                            if(info.side == IdOcrInfo.Side.back){
+
+                            }else{
+                                //todo
+                            }
+                            setInfoFromIdCardInfo(info.idCardInfo)
+                        }
+                    }
+        }
     }
 
 }

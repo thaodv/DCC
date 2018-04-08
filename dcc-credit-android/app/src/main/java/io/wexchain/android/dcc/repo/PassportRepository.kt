@@ -49,6 +49,9 @@ class PassportRepository(context: Context) {
         )
     }
 
+    fun getCurrentPassport():Passport?{
+        return currPassport.value
+    }
 
     val passportEnabled
         get() = currPassport.value?.authKey != null

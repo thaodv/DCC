@@ -3,7 +3,7 @@ package io.wexchain.android.dcc.vm
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import io.wexchain.android.dcc.domain.CertificationType
-import io.wexchain.android.dcc.tools.SingleLiveEvent
+import io.wexchain.android.common.SingleLiveEvent
 
 class AuthenticationStatusVm:ViewModel() {
     val title = ObservableField<String>()
@@ -13,7 +13,7 @@ class AuthenticationStatusVm:ViewModel() {
     val authProvider = ObservableField<String>()
     val certificationType = ObservableField<CertificationType>()
 
-    val performOperationEvent=SingleLiveEvent<Void>()
+    val performOperationEvent= SingleLiveEvent<Void>()
 
     fun performOperation(){
         performOperationEvent.call()
