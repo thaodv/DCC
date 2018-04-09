@@ -18,6 +18,7 @@ contract CertService3 is OperatorPermission,CertServiceIntf{
     DigestIntegrity public digest2Integrity;
     DigestIntegrity public expiredIntegrity;
 
+
     event orderUpdated(address indexed applicant, uint256 indexed orderId, Status status);
 
     struct Order {
