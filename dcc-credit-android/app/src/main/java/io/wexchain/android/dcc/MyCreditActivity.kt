@@ -5,8 +5,10 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import com.wexmarket.android.passport.base.BindActivity
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
+import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.auth.R
 import io.wexchain.auth.databinding.ActivityMyCreditBinding
 import io.wexchain.dccchainservice.domain.BankCodes
@@ -27,28 +29,75 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
         return ViewModelProviders.of(this)[certificationType.name, AuthenticationStatusVm::class.java]
                 .apply {
                     //todo 
-                    title.set(certificationType.name)
-                    status.set("TODOTODO")
-                    operation.set("更新")
-                    authDetail.set("32142514123432\n".repeat(3))
-                    authProvider.set("云金融")
+                    title.set(getCertTypeTitle(certificationType))
+                    authDetail.set(getDescription(certificationType))
+                    this.status.set(CertOperations.getCertStatus(certificationType))
                     this.certificationType.set(certificationType)
                     this.performOperationEvent.observe(this@MyCreditActivity, Observer {
-                        performOperation(certificationType)
+                        it?.let {
+                            val type = it.first
+                            val certStatus = it.second
+                            if (type !=null && certStatus !=null){
+                                this@MyCreditActivity.performOperation(type, certStatus)
+                            }
+                        }
                     })
                 }
     }
 
-    private fun performOperation(certificationType: CertificationType) {
+    override fun onResume() {
+        super.onResume()
+        listOf(binding.asIdVm,binding.asBankVm,binding.asMobileVm,binding.asPersonalVm).forEach {
+            it?.let {vm->
+                vm.certificationType.get()?.let {
+                    vm.status.set(CertOperations.getCertStatus(it))
+                }
+            }
+        }
+    }
+
+    private fun getDescription(certificationType: CertificationType):String{
+        return when(certificationType){
+            CertificationType.ID -> "真实身份认证"
+            CertificationType.PERSONAL -> "更安全的评估"
+            CertificationType.BANK -> "提高审核的通过率"
+            CertificationType.MOBILE -> "提高审核的通过率和借款额度"
+        }
+    }
+    private fun getCertTypeTitle(certificationType: CertificationType):String{
+        return when(certificationType){
+            CertificationType.ID -> "身份证认证"
+            CertificationType.PERSONAL -> "真实信息认证"
+            CertificationType.BANK -> "银行卡认证"
+            CertificationType.MOBILE -> "运营商认证"
+        }
+    }
+
+    private fun performOperation(certificationType: CertificationType,status:UserCertStatus) {
         when (certificationType) {
-            CertificationType.ID ->
-                navigateTo(SubmitIdActivity::class.java)
+            CertificationType.ID ->{
+                if (status == UserCertStatus.DONE){
+                    navigateTo(IdCertificationActivity::class.java)
+                }else{
+                    navigateTo(SubmitIdActivity::class.java)
+                }
+            }
             CertificationType.PERSONAL ->
                 navigateTo(SubmitPersonalInfoActivity::class.java)
             CertificationType.BANK ->
-                navigateTo(SubmitBankCardActivity::class.java)
+                if (status == UserCertStatus.DONE){
+                    navigateTo(BankCardCertificationActivity::class.java)
+                }else{
+                    navigateTo(SubmitBankCardActivity::class.java)
+                }
             CertificationType.MOBILE ->
-                navigateTo(SubmitCommunicationLogActivity::class.java)
+                if (status == UserCertStatus.DONE){
+                    navigateTo(CmLogCertificationActivity::class.java)
+                }else{
+                    navigateTo(SubmitCommunicationLogActivity::class.java)
+                }
         }
     }
+
+
 }

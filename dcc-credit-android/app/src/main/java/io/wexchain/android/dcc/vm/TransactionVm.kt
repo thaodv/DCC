@@ -48,6 +48,8 @@ class TransactionVm {
 
     val inputNotSatisfiedEvent = SingleLiveEvent<String>()
 
+    val dataInvalidatedEvent=SingleLiveEvent<Void>()
+
     val busyChecking = ObservableBoolean(false)
 
     val onPrivateChain = ObservableBoolean()
@@ -103,6 +105,7 @@ class TransactionVm {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     gasPrice.set(weiToGwei(it).stripTrailingZeros().toPlainString())
+                    dataInvalidatedEvent.call()
                 }, {
                     stackTrace(it)
                 })
@@ -140,6 +143,7 @@ class TransactionVm {
                     .subscribe({
                         if (currency == dc && gasLimit.get().isNullOrEmpty()) {
                             gasLimit.set(it.toString())
+                            dataInvalidatedEvent.call()
                         }
                     }, {
                         stackTrace(it)

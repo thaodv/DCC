@@ -12,3 +12,8 @@ fun isKeyStoreValid(ks: String?): Boolean {
 fun isEcPrivateKeyValid(key: String?): Boolean {
     return key != null
 }
+
+fun isPhoneNumValid(phoneNum:String?):Boolean{
+    return true//todo delete after mock
+    return phoneNum!=null && phoneNum.length == 11
+}

@@ -88,4 +88,12 @@ class LivenessDetectionFragment:BindFragment<FragmentLivenessDetectionBinding>()
     interface Listener{
         fun onProceed(portrait: ByteArray)
     }
+
+    companion object {
+        fun create(listener: Listener): LivenessDetectionFragment {
+            val fragment = LivenessDetectionFragment()
+            fragment.listener = listener
+            return fragment
+        }
+    }
 }

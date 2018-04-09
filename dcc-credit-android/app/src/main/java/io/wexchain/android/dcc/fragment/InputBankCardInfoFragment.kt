@@ -1,6 +1,7 @@
 package io.wexchain.android.dcc.fragment
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.Observer
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
@@ -10,6 +11,8 @@ import com.wexmarket.android.passport.base.BindFragment
 import io.reactivex.Single
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
+import io.wexchain.android.dcc.vm.InputBankCardInfoVm
+import io.wexchain.android.dcc.vm.domain.BankCardInfo
 import io.wexchain.auth.R
 import io.wexchain.auth.databinding.FragmentInputBankCardBinding
 import ru.solodovnikov.rx2locationmanager.LocationTime
@@ -23,6 +26,8 @@ class InputBankCardInfoFragment: BindFragment<FragmentInputBankCardBinding>() {
     private lateinit var rxLocation: RxLocationManager
     private lateinit var rxPermissions: RxPermissions
 
+    private var listener:Listener? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,8 +38,12 @@ class InputBankCardInfoFragment: BindFragment<FragmentInputBankCardBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.vm = getViewModel()
+        val viewModel = getViewModel<InputBankCardInfoVm>().apply {
+            submitEvent.observe(this@InputBankCardInfoFragment, Observer {
+                it?.let { listener?.onProceed(it) }
+            })
+        }
+        binding.vm = viewModel
     }
 
     override fun onResume() {
@@ -42,6 +51,11 @@ class InputBankCardInfoFragment: BindFragment<FragmentInputBankCardBinding>() {
         activity!!.setTitle(R.string.title_bank_card_certification)
 
         checkPreconditions()
+    }
+
+    interface Listener{
+        fun onProceed(bankCardInfo: BankCardInfo)
+
     }
 
     @SuppressLint("MissingPermission")
@@ -71,5 +85,13 @@ class InputBankCardInfoFragment: BindFragment<FragmentInputBankCardBinding>() {
                             }
                             activity?.finish()
                         })
+    }
+
+    companion object {
+        fun create(listener: Listener): InputBankCardInfoFragment {
+            val fragment = InputBankCardInfoFragment()
+            fragment.listener = listener
+            return fragment
+        }
     }
 }

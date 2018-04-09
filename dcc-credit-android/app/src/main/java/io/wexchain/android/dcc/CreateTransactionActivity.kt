@@ -65,6 +65,12 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
                     }.assembleAndShow()
                 }
             })
+            this.dataInvalidatedEvent.observe(this@CreateTransactionActivity, Observer {
+                binding.executePendingBindings()
+            })
+        }
+        binding.etInputGasLimit.setOnFocusChangeListener { v, hasFocus ->
+            binding.tx?.updateGasLimit(hasFocus)
         }
         App.get().passportRepository.currPassport.observe(this, Observer {
             it?.let {

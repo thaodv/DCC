@@ -2,6 +2,7 @@ package io.wexchain.dccchainservice
 
 import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.CertOrder
+import io.wexchain.dccchainservice.domain.CertProcess
 import io.wexchain.dccchainservice.domain.IdOcrInfo
 import io.wexchain.dccchainservice.domain.Result
 import okhttp3.MediaType
@@ -30,67 +31,67 @@ interface CertApi {
     fun idOcr(@Part file: MultipartBody.Part): Single<Result<IdOcrInfo>>
 
     @POST("dcc/endorsement/bankCard/verify")
-    @FormUrlEncoded
+    @Multipart
     fun bankCardVerify(
-            @Field("address") address:String,
-            @Field("orderId") orderId:Long,
-            @Field("bankCode") bankCode:String,
-            @Field("bankAccountNo") bankAccountNo:String,
-            @Field("accountName") accountName:String,
-            @Field("certNo") certNo:String,
-            @Field("phoneNo") phoneNo:String,
-            @Field("signature") signature:String
+            @Part("address") address:String,
+            @Part("orderId") orderId:Long,
+            @Part("bankCode") bankCode:String,
+            @Part("bankAccountNo") bankAccountNo:String,
+            @Part("accountName") accountName:String,
+            @Part("certNo") certNo:String,
+            @Part("phoneNo") phoneNo:String,
+            @Part("signature") signature:String
     ):Single<Result<String>>
 
-    @POST("dcc/endorsement/bankCard/verify/advance")
-    @FormUrlEncoded
+    @POST("dcc/endorsement/bankCard/advance")
+    @Multipart
     fun bankCardAdvance(
-            @Field("address") address:String,
-            @Field("orderId") orderId:Long,
-            @Field("ticket") ticket:String,
-            @Field("validCode") validCode:String,
-            @Field("signature") signature:String
-    )
+            @Part("address") address:String,
+            @Part("orderId") orderId:Long,
+            @Part("ticket") ticket:String,
+            @Part("validCode") validCode:String,
+            @Part("signature") signature:String
+    ):Single<Result<CertOrder>>
 
     @POST("dcc/endorsement/communicationLog/get/data")
-    @FormUrlEncoded
+    @Multipart
     fun requestCommunicationLogData(
-            @Field("address") address:String,
-            @Field("orderId") orderId:Long,
-            @Field("userName") userName: String,
-            @Field("certNo") certNo: String,
-            @Field("phoneNo") phoneNo: String,
-            @Field("pssword") password: String,
-            @Field("signature") signature:String
-    ):Single<Result<String>>//todo response type
+            @Part("address") address:String,
+            @Part("orderId") orderId:Long,
+            @Part("userName") userName: String,
+            @Part("certNo") certNo: String,
+            @Part("phoneNo") phoneNo: String,
+            @Part("password") password: String,
+            @Part("signature") signature:String
+    ):Single<Result<CertProcess>>
 
     @POST("dcc/endorsement/communicationLog/get/data/advance")
-    @FormUrlEncoded
+    @Multipart
     fun requestCommunicationLogDataAdvance(
-            @Field("address") address:String,
-            @Field("orderId") orderId:Long,
-            @Field("userName") userName: String,
-            @Field("certNo") certNo: String,
-            @Field("phoneNo") phoneNo: String,
-            @Field("pssword") password: String,
-            @Field("token") token: String,
-            @Field("processCode") processCode: String,
-            @Field("captcha") captcha: String,
-            @Field("website") website: String,
-            @Field("queryPwd") queryPwd: String?,
-            @Field("signature") signature:String
-    ):Single<Result<String>>//todo response type
+            @Part("address") address:String,
+            @Part("orderId") orderId:Long,
+            @Part("userName") userName: String,
+            @Part("certNo") certNo: String,
+            @Part("phoneNo") phoneNo: String,
+            @Part("pssword") password: String,
+            @Part("token") token: String,
+            @Part("processCode") processCode: String,
+            @Part("captcha") captcha: String,
+            @Part("website") website: String,
+            @Part("queryPwd") queryPwd: String?,
+            @Part("signature") signature:String
+    ):Single<Result<CertProcess>>
 
     @POST("dcc/endorsement/communicationLog/get/report")
-    @FormUrlEncoded
+    @Multipart
     fun getCommunicationLogReport(
-            @Field("address") address:String,
-            @Field("orderId") orderId:Long,
-            @Field("userName") userName: String,
-            @Field("certNo") certNo: String,
-            @Field("phoneNo") phoneNo: String,
-            @Field("pssword") password: String,
-            @Field("signature") signature:String
+            @Part("address") address:String,
+            @Part("orderId") orderId:Long,
+            @Part("userName") userName: String,
+            @Part("certNo") certNo: String,
+            @Part("phoneNo") phoneNo: String,
+            @Part("pssword") password: String,
+            @Part("signature") signature:String
     ):Single<Result<String>>
 
     companion object {

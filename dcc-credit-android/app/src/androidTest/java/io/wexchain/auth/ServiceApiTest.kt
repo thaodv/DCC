@@ -2,12 +2,16 @@ package io.wexchain.auth
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
+import io.reactivex.Single
 import io.reactivex.SingleTransformer
 import io.wexchain.android.common.toHex
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.chain.CertOperations.certOrderByTx
 import io.wexchain.android.dcc.chain.EthsFunctions
+import io.wexchain.android.dcc.chain.privateChainNonce
 import io.wexchain.android.dcc.chain.txSigned
 import io.wexchain.android.dcc.tools.RetryWithDelay
+import io.wexchain.android.dcc.tools.pair
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.ChainGateway
@@ -33,6 +37,9 @@ class ServiceApiTest {
     companion object {
         const val name = "张三"
         const val id = "430726199407035439"
+        const val phoneNo = "13867899876"
+        const val bankCode = BankCodes.ICBC
+        const val bankAccountNo = "6202123443211234"
     }
 
     lateinit var credentials: Credentials
@@ -79,7 +86,7 @@ class ServiceApiTest {
                                         .compose(Result.checked())
                             }
                 }
-                .flatMap {txHash->
+                .flatMap { txHash ->
                     api.hasReceipt(txHash)
                             .compose(Result.checked())
                             .map {
@@ -127,11 +134,8 @@ class ServiceApiTest {
 
     @Test
     fun testBankVerify() {
-        val bankCode = BankCodes.ICBC
-        val bankAccountNo = "6202123443211234"
         val accountName = name
         val certNo = id
-        val phoneNo = "13867899876"
 
         val keyPair = createKeyPair()
         uploadCaKey(keyPair)
@@ -150,7 +154,7 @@ class ServiceApiTest {
                                 val tx = EthsFunctions.apply(digest1, digest2, BigInteger.ZERO)
                                         .txSigned(credentials, contractAddress)
                                 api.certApply(
-                                        ticket.ticket, tx, ticket.answer, business)
+                                        ticket.ticket, tx, null, business)
                                         .compose(Result.checked())
                             }
                 }
@@ -173,8 +177,6 @@ class ServiceApiTest {
                 "certNo" to certNo,
                 "phoneNo" to phoneNo
         )
-        val sigStr = params.entries.sortedBy { it.key }.joinToString(separator = "&") { "${it.key}=${it.value}" }
-        println("sigStr = $sigStr")
         val signature = ParamSignatureUtil.sign(keyPair.private, params)
         val verifyOrder = certApi
                 .bankCardVerify(
@@ -201,6 +203,47 @@ class ServiceApiTest {
                 .retryWhen(RetryWithDelay.createSimple(4, 5000))
                 .blockingGet()
         println(state)
+    }
+
+    @Test
+    fun testCommunicationLogSubmit() {
+        val keyPair = createKeyPair()
+        uploadCaKey(keyPair)
+        val api = chainGateway
+        val business = ChainGateway.BUSINESS_COMMUNICATION_LOG
+        val nonce = privateChainNonce(credentials.address)
+        val certOrder = Single
+                .zip(
+                        api.getCertContractAddress(business).compose(Result.checked()),
+                        api.getTicket().compose(Result.checked()),
+                        pair()
+                )
+                .flatMap { (contractAddress, ticket) ->
+                    val tx = EthsFunctions.apply(byteArrayOf(), byteArrayOf(), BigInteger.ZERO).txSigned(credentials, contractAddress, nonce)
+                    api.certApply(ticket.ticket, tx, null, business)
+                            .compose(Result.checked())
+                }
+                .certOrderByTx(api, business)
+                .blockingGet()
+        val cl = certApi.requestCommunicationLogData(
+                address = credentials.address,
+                orderId = certOrder.orderId,
+                userName = name,
+                certNo = id,
+                phoneNo = phoneNo,
+                password = "123456",
+                signature = ParamSignatureUtil.sign(keyPair.private, mapOf(
+                        "address" to credentials.address,
+                        "orderId" to certOrder.orderId.toString(),
+                        "userName" to name,
+                        "certNo" to id,
+                        "phoneNo" to phoneNo,
+                        "password" to "123456"
+                ))
+        ).compose(Result.checked())
+                .blockingGet()
+        println(cl)
+
     }
 
     private fun uploadCaKey(keyPair: KeyPair) {

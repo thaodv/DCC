@@ -19,7 +19,7 @@
     <string name="title_phone_carrier_certification">手机运营商认证</string>
     <string name="submit">提交</string>
     <string name="communication_log_submit_hint">
-        温馨提示\n1. 请使用本人实名制手机号进行认证\n2. 服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3. 点击"提交"按钮会收到运营商的通知短信，无需回复
+        温馨提示\n\n1、请使用本人实名制手机号进行认证\n2、服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3、点击“提交”按钮会收到运营商的通知短信，无需回复\n4、如忘记服务密码,请登录运营商官网找回服务密码
     </string>
 
     <string name="import_and_enable_passport">导入并启用统一登录</string>
@@ -87,5 +87,19 @@
     <string name="send_sms_code">发送验证码</string>
     <string name="cert_fee">认证费</string>
     <string name="do_certification">认证</string>
+    <string name="title_id_certification_data">身份证认证信息</string>
+    <string name="name_label">姓名</string>
+    <string name="id_no_label">身份证号</string>
+    <string name="cert_expired_label">认证有效期</string>
+    <string name="issuer_bank">发卡行</string>
+    <string name="card_no">卡号</string>
+    <string name="phone_num">手机号</string>
+    <string name="phone_owner_name">机主姓名</string>
+    <string name="title_bank_card_certification_data">银行卡认证信息</string>
+    <string name="phone_carrier_certification_data">手机运营商信息</string>
+    <string name="phone_no">手机号码</string>
+    <string name="please_input_phone_no">请输入手机号码</string>
+    <string name="phone_service_password">服务密码</string>
+    <string name="please_input_phone_service_password">请输入服务密码</string>
 
 </resources>

@@ -11,8 +11,9 @@ object ParamSignatureUtil{
     const val SIGN_ALGORITHM = "SHA256withRSA"
     @JvmStatic
     fun sign(privateKey: PrivateKey,params:Map<String,String>): String {
-        val bytes = params.entries.sortedBy { it.key }.joinToString(separator = "&") { "${it.key}=${it.value}" }.toByteArray(Charsets.UTF_8)
-        return privateKey.sign(bytes).toHex()
+        val signStr = params.entries.sortedBy { it.key }.joinToString(separator = "&") { "${it.key}=${it.value}" }
+        println("sign str = $signStr")
+        return privateKey.sign(signStr.toByteArray(Charsets.UTF_8)).toHex()
     }
 
     private fun PrivateKey.sign(data: ByteArray): ByteArray {

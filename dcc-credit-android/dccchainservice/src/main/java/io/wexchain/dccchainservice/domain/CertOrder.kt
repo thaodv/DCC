@@ -8,7 +8,8 @@ data class CertOrder(
         @JvmField val orderId: Long,
         @JvmField val applicant: String,
         @JvmField val status: CertStatus,
-        @JvmField val content: CertContent
+        @JvmField val content: CertContent,
+        @JvmField val feeDCC: Long?
 ) {
 
 }

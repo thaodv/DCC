@@ -40,6 +40,9 @@ class InputIdInfoFragment:BindFragment<FragmentEditIdInfoBinding>() {
         vm.proceedEvent.observe(this, Observer {
             it?.let { listener?.onProceed(it) }
         })
+        vm.ocrEvent.observe(this, Observer {
+            binding.executePendingBindings()
+        })
         binding.vm = vm
         binding.ibIdFront.setOnClickListener {
             enterScan(IdVerifyHelper.SIDE_FRONT)

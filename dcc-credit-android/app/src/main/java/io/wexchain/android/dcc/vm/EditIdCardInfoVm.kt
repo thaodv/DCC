@@ -30,6 +30,7 @@ class EditIdCardInfoVm : ViewModel() {
     val timeLimit = ObservableField<String>()
     val authority = ObservableField<String>()
 
+    val ocrEvent = SingleLiveEvent<IdOcrInfo.IdCardInfo>()
     val proceedEvent = SingleLiveEvent<IdCardEssentialData>()
     val informationIncompleteEvent = SingleLiveEvent<CharSequence>()
 
@@ -114,6 +115,7 @@ class EditIdCardInfoVm : ViewModel() {
                                 //todo
                             }
                             setInfoFromIdCardInfo(info.idCardInfo)
+                            ocrEvent.value = info.idCardInfo
                         }
                     }
         }
@@ -133,6 +135,7 @@ class EditIdCardInfoVm : ViewModel() {
                                 //todo
                             }
                             setInfoFromIdCardInfo(info.idCardInfo)
+                            ocrEvent.value = info.idCardInfo
                         }
                     }
         }

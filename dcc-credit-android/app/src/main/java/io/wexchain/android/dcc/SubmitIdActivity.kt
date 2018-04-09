@@ -1,6 +1,5 @@
 package io.wexchain.android.dcc
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.postOnMainThread
@@ -11,14 +10,15 @@ import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.fragment.InputIdInfoFragment
 import io.wexchain.android.dcc.fragment.LivenessDetectionFragment
-import io.wexchain.android.dcc.view.dialog.CertFeeConfirmDialog
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.auth.R
+import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.dccchainservice.domain.CertOrder
 
 class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, LivenessDetectionFragment.Listener {
 
     private val inputIdInfoFragment by lazy { InputIdInfoFragment.create(this) }
-    private val livenessDetectionFragment by lazy { LivenessDetectionFragment() }
+    private val livenessDetectionFragment by lazy { LivenessDetectionFragment.create(this) }
 
     private var idCardEssentialData: IdCardEssentialData? = null
     private var portrait: ByteArray? = null
@@ -34,9 +34,9 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
     }
 
     private fun showConfirmCertFeeDialog() {
-        CertFeeConfirmDialog.create {
+        CertOperations.confirmCertFee({supportFragmentManager},ChainGateway.BUSINESS_ID){
             doSubmitIdCert()
-        }.show(supportFragmentManager, null)
+        }
     }
 
     private fun doSubmitIdCert() {
@@ -53,14 +53,23 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
                         hideLoadingDialog()
                     }
                     .subscribe({
-                        println(it)
-                        finish()
+                        handleCertResult(it,idData,photo)
                     },{
                         stackTrace(it)
                     })
         }
     }
 
+    private fun handleCertResult(certOrder: CertOrder, idData: IdCardEssentialData, photo: ByteArray) {
+        if (certOrder.status.isPassed()){
+            toast("认证成功")
+            CertOperations.saveIdCertData(certOrder,idData,photo)
+            finish()
+        }else{
+            toast("认证失败")
+            supportFragmentManager.popBackStack()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

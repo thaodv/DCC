@@ -67,6 +67,7 @@
             app:layout_constraintTop_toBottomOf="@id/input_bank_phone_num"
             android:text="@string/next_step"
             android:layout_marginTop="48dp"
+            android:onClick="@{(v)->vm.onSubmit()}"
             />
 
 
