@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import com.google.gson.JsonSyntaxException
 import com.wexmarket.android.passport.base.BindActivity
-import com.wexmarket.android.passport.ui.fragment.PasteKeystoreFragment
+import io.wexchain.android.dcc.fragment.PasteKeystoreFragment
 import com.wexmarket.android.passport.ui.fragment.PastePrivateKeyFragment
 import io.reactivex.Single
 import io.wexchain.android.common.*

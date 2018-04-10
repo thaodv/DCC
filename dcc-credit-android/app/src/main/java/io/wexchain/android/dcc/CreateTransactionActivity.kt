@@ -3,7 +3,7 @@ package io.wexchain.android.dcc
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
-import com.wexmarket.android.passport.RequestCodes
+import io.wexchain.android.dcc.constant.RequestCodes
 import com.wexmarket.android.passport.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.view.dialog.CustomDialog

@@ -71,6 +71,21 @@
         <activity android:name="io.wexchain.android.dcc.CmLogCertificationActivity"
                 android:label="@string/phone_carrier_certification_data"
                 />
+        <activity android:name="io.wexchain.android.dcc.PassportSettingsActivity"
+                android:label="设置"
+                />
+        <activity android:name="io.wexchain.android.dcc.PassportRemovalActivity"
+                  android:label="@string/passport_removal"/>
+        <activity android:name="io.wexchain.android.dcc.EditNicknameActivity"
+                android:label="修改昵称"
+                />
+        <activity android:name="io.wexchain.android.dcc.PassportExportActivity"
+                  android:label="@string/passport_backup"/>
+        <activity android:name="io.wexchain.android.dcc.ModifyPassportPasswordActivity"
+                android:label="密码修改"
+                />
+        <activity android:name="io.wexchain.android.dcc.SearchDigitalCurrencyActivity"/>
+        <activity android:name="io.wexchain.android.dcc.ChooseCutImageActivity"/>
     </application>
 
 </manifest>

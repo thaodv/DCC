@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="dc"
+            type="io.wexchain.digitalwallet.DigitalCurrency"
+            />
+
+        <variable
+            name="selected"
+            type="io.wexchain.android.dcc.vm.SelectedDigitalCurrencies"
+            />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:id="@+id/iv_currency_logo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="6dp"
+            app:imageUrl="@{dc.icon}"
+            app:errorRes="@{@drawable/ethereum}"
+            tools:src="@drawable/gear"
+            />
+
+        <TextView
+            android:id="@+id/tv_currency_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{dc.symbol}"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+            app:layout_constraintBottom_toTopOf="@id/tv_contract_address"
+            app:layout_constraintLeft_toRightOf="@id/iv_currency_logo"
+            app:layout_constraintTop_toTopOf="@id/iv_currency_logo"
+            app:layout_constraintVertical_chainStyle="spread"
+            tools:text="ETH"
+            />
+
+        <TextView
+            android:id="@+id/tv_currency_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:text="@{dc.description}"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_currency_symbol"
+            app:layout_constraintLeft_toRightOf="@id/tv_currency_symbol"
+            tools:text="Ethereum Foundation"
+            />
+
+        <TextView
+            android:id="@+id/tv_contract_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="80dp"
+            android:ellipsize="middle"
+            android:singleLine="true"
+            android:text="@{dc.contractAddress}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_currency_symbol"
+            tools:text="@sample/address"
+            android:typeface="monospace"
+            />
+
+        <ImageButton
+            android:id="@+id/ib_select"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="60dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_currency_logo"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_currency_logo"
+            android:visibility="@{selected.set.contains(dc)?View.GONE:View.VISIBLE}"
+            android:src="@drawable/ic_add"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/already_selected"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintTop_toTopOf="@id/ib_select"
+            app:layout_constraintBottom_toBottomOf="@id/ib_select"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="16dp"
+            android:visibility="@{selected.set.contains(dc)?View.VISIBLE:View.GONE}"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@drawable/divider_line"
+            app:layout_constraintLeft_toRightOf="@id/iv_currency_logo"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_currency_logo"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

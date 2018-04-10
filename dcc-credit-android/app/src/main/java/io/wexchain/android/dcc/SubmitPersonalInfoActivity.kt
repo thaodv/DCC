@@ -13,6 +13,7 @@ class SubmitPersonalInfoActivity : BindActivity<ActivitySubmitPersonalInfoBindin
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initToolbar()
         binding.vm = ViewModelProviders.of(this)[SubmitPersonalInfoVm::class.java]
     }
 }

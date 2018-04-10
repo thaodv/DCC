@@ -3,5 +3,10 @@ package io.wexchain.android.dcc.vm.domain
 enum class UserCertStatus {
     NONE,
     INCOMPLETE,
-    DONE
+    DONE,
+    ;
+
+    fun isProcessing(): Boolean {
+        return this == INCOMPLETE
+    }
 }

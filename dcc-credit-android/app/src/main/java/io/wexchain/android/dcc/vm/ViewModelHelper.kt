@@ -44,7 +44,7 @@ object ViewModelHelper {
     @JvmStatic
     fun Context.getCertStatusOpIcon(userCertStatus: UserCertStatus?):Drawable?{
         return when(userCertStatus){
-            UserCertStatus.INCOMPLETE -> ContextCompat.getDrawable(this,R.drawable.gear)
+            UserCertStatus.INCOMPLETE -> ContextCompat.getDrawable(this,R.drawable.progress_indeterminate_gear)
             UserCertStatus.NONE, UserCertStatus.DONE -> ContextCompat.getDrawable(this,R.drawable.arrow_right)
             else -> null
         }
@@ -53,7 +53,7 @@ object ViewModelHelper {
     fun Context.getCertStatusOpText(userCertStatus: UserCertStatus?):String{
         return when(userCertStatus){
             UserCertStatus.NONE -> "未认证"
-            UserCertStatus.INCOMPLETE -> "未完成"
+            UserCertStatus.INCOMPLETE -> "认证中"
             UserCertStatus.DONE -> "认证完成"
             else -> ""
         }

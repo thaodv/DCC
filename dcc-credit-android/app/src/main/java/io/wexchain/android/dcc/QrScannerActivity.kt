@@ -9,9 +9,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
-import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
-import com.google.zxing.Result
 import com.google.zxing.client.android.BeepManager
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
@@ -20,7 +18,7 @@ import com.journeyapps.barcodescanner.DefaultDecoderFactory
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wexmarket.android.barcode.decodeBitmapQr
 import com.wexmarket.android.barcode.getDecodeFriendlyBitmapFromUri
-import com.wexmarket.android.passport.RequestCodes
+import io.wexchain.android.dcc.constant.RequestCodes
 import com.wexmarket.android.passport.base.BindActivity
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

@@ -2,7 +2,7 @@ package io.wexchain.android.dcc.tools
 
 
 fun isPasswordValid(pw: String?): Boolean {
-    return pw != null && pw.length in (2..20)
+    return pw != null && pw.length in (8..20)
 }
 
 fun isKeyStoreValid(ks: String?): Boolean {

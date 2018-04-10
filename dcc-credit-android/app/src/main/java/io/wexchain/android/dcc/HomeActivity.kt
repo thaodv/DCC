@@ -6,6 +6,7 @@ import android.view.View
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.setWindowExtended
+import io.wexchain.android.common.toast
 import io.wexchain.android.common.transitionBundle
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.auth.R
@@ -17,11 +18,26 @@ class HomeActivity : BaseCompatActivity() {
         setWindowExtended()
 
         setContentView(R.layout.activity_home)
-        findViewById<View>(R.id.card_my_credit)?.setOnClickListener {
-            navigateTo(MyCreditActivity::class.java)
+        findViewById<View>(R.id.card_my_credit).setOnClickListener {
+            if(App.get().passportRepository.passportEnabled){
+                navigateTo(MyCreditActivity::class.java)
+            }else{
+                if(!App.get().passportRepository.passportExists){
+                    showIntroWalletDialog()
+                }else{
+                    toast("通行证未启用")
+                }
+            }
         }
-        findViewById<View>(R.id.card_digital_assets)?.setOnClickListener {
+        findViewById<View>(R.id.card_digital_assets).setOnClickListener {
             clickDigitalAssets()
+        }
+        findViewById<View>(R.id.btn_settings).setOnClickListener {
+            if (App.get().passportRepository.passportExists) {
+                navigateTo(PassportSettingsActivity::class.java)
+            }else{
+                showIntroWalletDialog()
+            }
         }
     }
 

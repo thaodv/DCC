@@ -43,7 +43,7 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
         adapter.assetsVm = assetsVm
         binding.rvAssets.adapter = adapter
         binding.ibAdd.setOnClickListener {
-//            startActivity(Intent(this, SearchDigitalCurrencyActivity::class.java))
+            startActivity(Intent(this, SearchDigitalCurrencyActivity::class.java))
         }
         binding.btnShare.setOnClickListener {
             showShare()

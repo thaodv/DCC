@@ -1,7 +1,9 @@
 package io.wexchain.android.dcc.tools
 
 import android.databinding.BindingAdapter
+import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
+import android.media.Image
 import android.net.Uri
 import android.text.TextUtils
 import android.text.method.PasswordTransformationMethod

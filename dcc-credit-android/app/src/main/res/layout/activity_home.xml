@@ -12,10 +12,11 @@
 
     <Button
         android:id="@+id/btn_settings"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-
+        style="@style/Widget.AppCompat.Button.Dcc.Medium"
+        android:text="设置"
         />
 
     <ScrollView

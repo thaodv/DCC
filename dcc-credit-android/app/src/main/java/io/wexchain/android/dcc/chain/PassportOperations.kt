@@ -49,7 +49,7 @@ object PassportOperations {
                             }
                 }
                 .doOnSuccess {
-                    App.get().passportRepository.savePassport(it.first, password, it.second)
+                    App.get().passportRepository.saveNewPassport(it.first, password, it.second)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
     }
@@ -73,7 +73,7 @@ object PassportOperations {
                             }
                 }
                 .doOnSuccess {
-                    App.get().passportRepository.savePassport(it.first, password, it.second)
+                    App.get().passportRepository.saveNewPassport(it.first, password, it.second)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
 

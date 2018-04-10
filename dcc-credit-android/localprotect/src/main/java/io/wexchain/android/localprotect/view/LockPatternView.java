@@ -72,7 +72,7 @@ public class LockPatternView extends View {
                 k++;
             }
         }
-        mPaint.setColor(ContextCompat.getColor(context,R.color.lightPink));
+        mPaint.setColor(ContextCompat.getColor(context,R.color.lightBlueMagenta));
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,2f,context.getResources().getDisplayMetrics()));
         initDraw();

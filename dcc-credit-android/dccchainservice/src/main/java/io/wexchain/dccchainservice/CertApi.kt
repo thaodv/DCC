@@ -1,10 +1,7 @@
 package io.wexchain.dccchainservice
 
 import io.reactivex.Single
-import io.wexchain.dccchainservice.domain.CertOrder
-import io.wexchain.dccchainservice.domain.CertProcess
-import io.wexchain.dccchainservice.domain.IdOcrInfo
-import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.dccchainservice.domain.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -73,10 +70,10 @@ interface CertApi {
             @Part("userName") userName: String,
             @Part("certNo") certNo: String,
             @Part("phoneNo") phoneNo: String,
-            @Part("pssword") password: String,
+            @Part("password") password: String,
             @Part("token") token: String,
             @Part("processCode") processCode: String,
-            @Part("captcha") captcha: String,
+            @Part("captcha") captcha: String?,
             @Part("website") website: String,
             @Part("queryPwd") queryPwd: String?,
             @Part("signature") signature:String
@@ -90,9 +87,8 @@ interface CertApi {
             @Part("userName") userName: String,
             @Part("certNo") certNo: String,
             @Part("phoneNo") phoneNo: String,
-            @Part("pssword") password: String,
             @Part("signature") signature:String
-    ):Single<Result<String>>
+    ):Single<Result<CmLogReportData>>
 
     companion object {
 

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="privateKey"
+            type="String"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_content_horizontal"
+            android:layout_marginRight="@dimen/margin_content_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="@string/export_private_key_description"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/tv_method_1_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_content_horizontal"
+            android:layout_marginRight="@dimen/margin_content_horizontal"
+            android:layout_marginTop="24dp"
+            android:text="导出方式一:私钥明文二维码"
+            android:textSize="17sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_description"
+            />
+
+        <ImageView
+            android:id="@+id/iv_qr_code"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="10dp"
+            android:scaleType="centerInside"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_method_1_label"
+            app:qrContent="@{privateKey}"
+            />
+
+        <TextView
+            android:id="@+id/tv_method_2_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="导出方二:私钥明文信息"
+            android:textSize="17sp"
+            app:layout_constraintTop_toBottomOf="@id/iv_qr_code"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+
+
+
+        <TextView
+            android:id="@+id/tv_private_key"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="10dp"
+            android:elevation="4dp"
+            android:gravity="center_horizontal"
+            android:textIsSelectable="true"
+            android:text="@{privateKey}"
+            app:layout_constraintTop_toBottomOf="@id/tv_method_2_label"
+            app:layout_constraintBottom_toTopOf="@id/btn_copy"
+            />
+
+        <Button
+            android:id="@+id/btn_copy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="复制私钥明文"
+            android:textSize="18sp"
+            android:padding="10dp"
+            android:layout_margin="24dp"
+            style="@style/Widget.AppCompat.Button.Dcc.Full"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

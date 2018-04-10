@@ -4,15 +4,18 @@ import android.support.multidex.MultiDexApplication
 import com.wexmarket.android.network.Networking
 import io.reactivex.Single
 import io.reactivex.plugins.RxJavaPlugins
+import io.wexchain.android.common.Pop
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.PassportRepository
 import io.wexchain.android.dcc.repo.db.PassportDatabase
 import io.wexchain.android.dcc.tools.JuzixData
 import io.wexchain.android.idverify.IdVerifyHelper
+import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.auth.BuildConfig
 import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.PrivateChainApi
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.Chain
@@ -52,7 +55,11 @@ class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         instance = WeakReference(this)
-        RxJavaPlugins.setErrorHandler { if (BuildConfig.DEBUG) it.printStackTrace() }
+        RxJavaPlugins.setErrorHandler {
+            if(it is DccChainServiceException && !it.message.isNullOrBlank()){
+                Pop.toast(it.message!!,this)
+            }
+            if (BuildConfig.DEBUG) it.printStackTrace() }
         initLibraries(this)
         initServices(this)
         initData(this)
@@ -70,6 +77,7 @@ class App : MultiDexApplication() {
         )
         CertOperations.init(app)
         JuzixData.init(app)
+        LocalProtect.init(app)
     }
 
     private fun initServices(app: App) {

@@ -4,7 +4,9 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import com.wexmarket.android.passport.base.BindActivity
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
@@ -47,11 +49,36 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
 
     override fun onResume() {
         super.onResume()
-        listOf(binding.asIdVm,binding.asBankVm,binding.asMobileVm,binding.asPersonalVm).forEach {
-            it?.let {vm->
+        refreshCertStatus()
+    }
+
+    private fun refreshCertStatus() {
+        listOf(binding.asIdVm, binding.asBankVm, binding.asMobileVm, binding.asPersonalVm).forEach {
+            it?.let { vm ->
                 vm.certificationType.get()?.let {
                     vm.status.set(CertOperations.getCertStatus(it))
                 }
+            }
+        }
+        binding.asMobileVm?.let {
+            if(it.status.get() == UserCertStatus.INCOMPLETE){
+                //get report
+                val passport = App.get().passportRepository.getCurrentPassport()!!
+                CertOperations.getCommunicationLogReport(passport)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({data->
+                            if(data.fail){
+                                // generate report fail
+                                CertOperations.onCmLogFail()
+                                refreshCertStatus()
+                            }else{
+                                val reportData = data.reportData
+                                if (data.hasCompleted() && reportData !=null){
+                                    CertOperations.onCmLogSuccessGot(reportData)
+                                    refreshCertStatus()
+                                }
+                            }
+                        })
             }
         }
     }
@@ -91,10 +118,14 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                     navigateTo(SubmitBankCardActivity::class.java)
                 }
             CertificationType.MOBILE ->
-                if (status == UserCertStatus.DONE){
-                    navigateTo(CmLogCertificationActivity::class.java)
-                }else{
-                    navigateTo(SubmitCommunicationLogActivity::class.java)
+                when(status){
+                    UserCertStatus.NONE ->
+                        navigateTo(SubmitCommunicationLogActivity::class.java)
+                    UserCertStatus.INCOMPLETE ->{
+                        // get report processing
+                    }
+                    UserCertStatus.DONE ->
+                        navigateTo(CmLogCertificationActivity::class.java)
                 }
         }
     }

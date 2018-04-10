@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        >
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请选择来源"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
+            android:layout_margin="8dp"
+            />
+
+    <View
+            style="@style/DividerHorizontal"
+            />
+    <TextView
+            android:id="@+id/tv_capture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="拍照"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+            android:layout_margin="8dp"
+            />
+    <View
+            style="@style/DividerHorizontal"
+            />
+    <TextView
+            android:id="@+id/tv_pick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="从手机选择"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+            android:layout_margin="8dp"
+
+            />
+    <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:text="取消"
+            />
+
+
+</LinearLayout>

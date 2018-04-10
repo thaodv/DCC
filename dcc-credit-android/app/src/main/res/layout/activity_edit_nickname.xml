@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.wexmarket.android.passport.EditNicknameActivity"
+    >
+
+    <data>
+
+        <variable
+            name="vm"
+            type="io.wexchain.android.dcc.vm.EditNicknameVm"
+            />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/include_toolbar"
+            />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:text="@string/edit_nickname"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:maxLength="20"
+            android:inputType="textPersonName"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:text="@={vm.inputNickname}"
+            android:hint="@string/please_input_nickname"
+            />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Dcc.Full"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="160dp"
+            android:text="@string/save_changes"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginBottom="24dp"
+            android:enabled="@{vm.check(vm.passport,vm.inputNickname)}"
+            android:onClick="@{(v)->vm.submitChange()}"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

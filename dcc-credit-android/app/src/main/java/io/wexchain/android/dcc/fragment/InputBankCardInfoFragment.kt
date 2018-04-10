@@ -83,7 +83,7 @@ class InputBankCardInfoFragment: BindFragment<FragmentInputBankCardBinding>() {
                                 else ->
                                     toast("无法获取定位")
                             }
-                            activity?.finish()
+//                            activity?.finish()
                         })
     }
 

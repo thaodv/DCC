@@ -54,7 +54,7 @@
                 <ImageButton
                     android:id="@+id/ib_id_front"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="105dp"
                     android:scaleType="centerInside"
                     imageRawBytes="@{vm.imgFront}"
                     errorRes="@{@drawable/cn_id_front}"
@@ -67,7 +67,7 @@
                 <ImageButton
                     android:id="@+id/ib_id_back"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="105dp"
                     android:scaleType="centerInside"
                     imageRawBytes="@{vm.imgBack}"
                     errorRes="@{@drawable/cn_id_back}"
@@ -89,6 +89,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@={vm.name}"
+                    android:maxLength="50"
+                    android:singleLine="true"
                     />
             </android.support.design.widget.TextInputLayout>
 
@@ -102,6 +104,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@={vm.sex}"
+                    android:maxLength="1"
+                    android:singleLine="true"
                     />
             </android.support.design.widget.TextInputLayout>
 
@@ -115,6 +119,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@={vm.race}"
+                    android:maxLength="20"
+                    android:singleLine="true"
                     />
             </android.support.design.widget.TextInputLayout>
 
@@ -128,6 +134,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@={vm.idNo}"
+                    android:maxLength="18"
+                    android:digits="0123456789xX"
+                    android:inputType="text"
+                    android:singleLine="true"
                     />
             </android.support.design.widget.TextInputLayout>
 
@@ -141,6 +151,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@={vm.address}"
+                    android:maxLength="50"
+                    android:singleLine="true"
                     />
             </android.support.design.widget.TextInputLayout>
 
@@ -154,6 +166,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@={vm.authority}"
+                    android:maxLength="20"
+                    android:inputType="text"
                     />
             </android.support.design.widget.TextInputLayout>
 
@@ -167,6 +181,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@={vm.timeLimit}"
+                    android:maxLength="50"
                     />
             </android.support.design.widget.TextInputLayout>
 

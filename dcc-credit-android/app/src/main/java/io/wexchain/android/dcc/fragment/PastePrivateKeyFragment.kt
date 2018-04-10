@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.wexmarket.android.passport.RequestCodes
+import io.wexchain.android.dcc.constant.RequestCodes
 import com.wexmarket.android.passport.base.BindFragment
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

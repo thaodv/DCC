@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.View
 import com.megvii.idcardlib.IDCardScanActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.wexmarket.android.passport.RequestCodes
+import io.wexchain.android.dcc.constant.RequestCodes
 import com.wexmarket.android.passport.ResultCodes
 import com.wexmarket.android.passport.base.BindFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -22,10 +22,10 @@ import io.wexchain.android.idverify.IdVerifyHelper.Companion.SIDE_FRONT
 import io.wexchain.auth.R
 import io.wexchain.auth.databinding.FragmentEditIdInfoBinding
 
-class InputIdInfoFragment:BindFragment<FragmentEditIdInfoBinding>() {
-    override val contentLayoutId: Int=R.layout.fragment_edit_id_info
+class InputIdInfoFragment : BindFragment<FragmentEditIdInfoBinding>() {
+    override val contentLayoutId: Int = R.layout.fragment_edit_id_info
 
-    private var listener:Listener? = null
+    private var listener: Listener? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,6 +42,11 @@ class InputIdInfoFragment:BindFragment<FragmentEditIdInfoBinding>() {
         })
         vm.ocrEvent.observe(this, Observer {
             binding.executePendingBindings()
+        })
+        vm.ocrFailEvent.observe(this, Observer {
+            it?.message?.let {
+                toast(it)
+            }
         })
         binding.vm = vm
         binding.ibIdFront.setOnClickListener {
@@ -65,15 +70,8 @@ class InputIdInfoFragment:BindFragment<FragmentEditIdInfoBinding>() {
                     val imgBytes = data.getByteArrayExtra("idcardImg")!!
                     val vm = binding.vm!!
                     when (side) {
-                        SIDE_FRONT -> {
-                            vm.imgFront.set(imgBytes)
-//                            saveIdFront(context, imgBytes)
-                            vm.doOcrFront()
-                        }
-                        SIDE_BACK -> {
-                            vm.imgBack.set(imgBytes)
-//                            saveIdBack(context, imgBytes)
-                            vm.doOcrBack()
+                        SIDE_FRONT, SIDE_BACK -> {
+                            vm.setImage(imgBytes, side)
                         }
                     }
                 }
@@ -107,7 +105,7 @@ class InputIdInfoFragment:BindFragment<FragmentEditIdInfoBinding>() {
                 })
     }
 
-    interface Listener{
+    interface Listener {
         fun onProceed(idCardEssentialData: IdCardEssentialData)
     }
 

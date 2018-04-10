@@ -93,6 +93,31 @@ class AssetsRepository(
                 }
     }
 
+    fun queryTokens(query: String): Single<List<DigitalCurrency>> {
+        return chainFrontEndApi.searchToken(query)
+                .compose(CResult.checked())
+                .map {
+                    it.items?.map { it.toDigitalCurrency() } ?: emptyList()
+                }.doOnSuccess {
+                    //                    knownCurrencies.addAll(it)
+                }
+    }
+
+    fun addSelected(dc: DigitalCurrency) {
+        val pinned = pinned.value?: emptyList()
+        if (!pinned.contains(dc) || dc.contractAddress != null) {
+            RoomHelper.onRoomIoThread {
+                if (dao.addSelected(CurrencyMeta.from(dc)) > 0) {
+//                    ld(LOG_TAG, "addSelected successful $dc")
+                } else {
+//                    ld(LOG_TAG, "addSelected fail $dc")
+                }
+            }
+        } else {
+//            ld(LOG_TAG, "addSelected but in pinned or contractAddress null")
+        }
+    }
+
     fun setCurrencySelected(dc: DigitalCurrency, sel: Boolean) {
         val pinned = this.pinned.value?: emptyList()
         if (!pinned.contains(dc) || dc.contractAddress != null) {
@@ -137,8 +162,8 @@ class AssetsRepository(
                 DigitalCurrency("QTUM", Chain.publicEthChain, 18, "Qtum", "http://www.wexpass.cn/images/Contractz_icon/qtum@2x.png", "0x9a642d6b3368ddc662CA244bAdf32cDA716005BC"),
                 DigitalCurrency("RED", Chain.publicEthChain, 18, "Red Community", "http://www.wexpass.cn/images/Contractz_icon/red_community_token@2x.png", "0x76960Dccd5a1fe799F7c29bE9F19ceB4627aEb2f"),
                 DigitalCurrency("RUFF", Chain.publicEthChain, 18, "RUFF", "http://www.wexpass.cn/images/Contractz_icon/ruff@2x.png", "0xf278c1ca969095ffddded020290cf8b5c424ace2"),
-                DigitalCurrency("AIDOC", Chain.publicEthChain, 18, "AI Doctor", "http://www.wexpass.cn/images/Contractz_icon/ai_doctor@2x.png", "0x584b44853680ee34a0f337b712a8f66d816df151"),
-                DigitalCurrency("QUN", Chain.publicEthChain, 18, "QunQun", "http://www.wexpass.cn/images/Contractz_icon/qunqun@2x.png", "0x264dc2dedcdcbb897561a57cba5085ca416fb7b4")
+                DigitalCurrency("AIDOC", Chain.publicEthChain, 18, "AI Doctor", "http://www.wexpass.cn/images/Contractz_icon/ai_doctor@2x.png", "0x584b44853680ee34a0f337b712a8f66d816df151")
+                //, DigitalCurrency("QUN", Chain.publicEthChain, 18, "QunQun", "http://www.wexpass.cn/images/Contractz_icon/qunqun@2x.png", "0x264dc2dedcdcbb897561a57cba5085ca416fb7b4")
         )
     }
 }

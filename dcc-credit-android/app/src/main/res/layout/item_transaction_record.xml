@@ -60,7 +60,7 @@
             android:indeterminate="true"
             android:visibility="@{tx.isPending()?View.VISIBLE:View.GONE}"
             android:layout_marginLeft="4dp"
-            android:indeterminateDrawable="@drawable/progress_indeterminate_rotate"
+            android:indeterminateDrawable="@drawable/progress_indeterminate_gear"
             app:layout_constraintLeft_toRightOf="@id/tv_time_stamp"
             app:layout_constraintTop_toTopOf="@id/tv_time_stamp"
             app:layout_constraintBottom_toBottomOf="@id/tv_time_stamp"

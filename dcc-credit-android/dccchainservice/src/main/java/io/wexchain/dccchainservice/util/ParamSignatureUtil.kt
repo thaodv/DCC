@@ -4,14 +4,15 @@ import io.wexchain.android.common.toHex
 import java.security.PrivateKey
 import java.security.Signature
 
-object ParamSignatureUtil{
+object ParamSignatureUtil {
     /**
      * sha256/rsa2048
      */
     const val SIGN_ALGORITHM = "SHA256withRSA"
+
     @JvmStatic
-    fun sign(privateKey: PrivateKey,params:Map<String,String>): String {
-        val signStr = params.entries.sortedBy { it.key }.joinToString(separator = "&") { "${it.key}=${it.value}" }
+    fun sign(privateKey: PrivateKey, params: Map<String, String?>): String {
+        val signStr = params.entries.filter { it.value != null }.sortedBy { it.key }.joinToString(separator = "&") { "${it.key}=${it.value}" }
         println("sign str = $signStr")
         return privateKey.sign(signStr.toByteArray(Charsets.UTF_8)).toHex()
     }
