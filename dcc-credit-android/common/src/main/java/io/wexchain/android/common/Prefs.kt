@@ -175,7 +175,6 @@ abstract class Prefs protected constructor(protected val sp: SharedPreferences) 
         }
     }
 
-
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     inner class StringSetPref : ObjPref<Set<String>> {
         constructor(name: String, defaultValue: Set<String>) : super(name, defaultValue) {}

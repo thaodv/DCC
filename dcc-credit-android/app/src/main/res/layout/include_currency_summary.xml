@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="io.wexchain.android.dcc.vm.DigitalCurrencyVm"
+            />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
+        android:paddingTop="8dp"
+        >
+
+        <ImageView
+            android:id="@+id/iv_currency_logo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:padding="6dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:imageUrl="@{vm.dc.icon}"
+            app:errorRes="@{@drawable/ethereum}"
+            tools:src="@drawable/ethereum"
+            />
+
+        <TextView
+            android:id="@+id/tv_currency_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
+            app:layout_constraintBottom_toTopOf="@id/tv_currency_description"
+            app:layout_constraintLeft_toRightOf="@id/iv_currency_logo"
+            app:layout_constraintTop_toTopOf="@id/iv_currency_logo"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            android:text="@{vm.dc.symbol}"
+            tools:text="ETH"
+            />
+
+        <TextView
+            android:id="@+id/tv_currency_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/iv_currency_logo"
+            app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol"
+            app:layout_constraintTop_toBottomOf="@id/tv_currency_symbol"
+            android:text="@{vm.dc.description}"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+            tools:text="Ethereum Foundation"
+            />
+
+
+        <ImageButton
+            android:id="@+id/ib_select"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:minWidth="60dp"
+            android:src="@{vm.selected?@drawable/ic_remove:@drawable/ic_add}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:onClick="@{(v)->vm.switchSelected()}"
+            android:visibility="@{vm.pinned?View.GONE:View.VISIBLE}"
+            tools:src="@drawable/ic_add"
+            />
+
+        <TextView
+            android:id="@+id/tv_holding_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_currency_logo"
+            android:text="@{vm.holdingStr}"
+            android:textSize="24sp"
+            tools:text="1341343.5938"
+            />
+
+        <TextView
+            android:id="@+id/tv_holding_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/holding_amount"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+            app:layout_constraintLeft_toLeftOf="@id/tv_holding_value"
+            app:layout_constraintTop_toBottomOf="@id/tv_holding_value"
+            />
+
+        <TextView
+            android:id="@+id/tv_approx_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:minWidth="150dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_holding_value"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="@{vm.holdingValueStr}"
+            android:textSize="24sp"
+            tools:text="~$317395.4382"
+            />
+
+        <TextView
+            android:id="@+id/tv_approx_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/approx_capital"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+            app:layout_constraintLeft_toLeftOf="@id/tv_approx_value"
+            app:layout_constraintTop_toBottomOf="@id/tv_approx_value"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

@@ -2,11 +2,21 @@ package io.wexchain.android.dcc.tools
 
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.text.TextUtils
 import android.text.method.PasswordTransformationMethod
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import com.wexmarket.android.barcode.util.QrCodeDrawable
 import io.wexchain.android.dcc.network.GlideApp
+
+@set:BindingAdapter("visibleOrGone")
+var View.visibleOrGone
+    get() = this.visibility == View.VISIBLE
+    set(value) {
+        this.visibility = if (value) View.VISIBLE else View.GONE
+    }
 
 @BindingAdapter("imageRawBytes","errorRes")
 fun ImageView.setImageRawBytes(imageRawBytes: ByteArray?,errorRes:Drawable?){
@@ -29,6 +39,14 @@ fun setImageUrl(imageView: ImageView, url: String?, errorRes: Drawable?) {
             .into(imageView)
 }
 
+@BindingAdapter("imageUri", "errorRes")
+fun setImageUri(imageView: ImageView, uri: Uri?, errorRes: Drawable?) {
+    if (uri == null) {
+        imageView.setImageDrawable(errorRes)
+    } else {
+        imageView.setImageURI(uri)
+    }
+}
 
 @BindingAdapter("qrContent")
 fun setQrContentSrc(imageView: ImageView, qrContent: String?) {

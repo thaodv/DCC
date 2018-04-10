@@ -41,9 +41,9 @@ object EthsFunctions {
      * Func invocation : apply
      */
     @JvmStatic
-    fun apply(digest1: ByteArray, digest2: ByteArray) = Function(
+    fun apply(digest1: ByteArray, digest2: ByteArray, expired:BigInteger) = Function(
             "apply",
-            Arrays.asList<Type<*>>(DynamicBytes(digest1), DynamicBytes(digest2)),
+            Arrays.asList<Type<*>>(DynamicBytes(digest1), DynamicBytes(digest2),Uint256(expired)),
             Arrays.asList<TypeReference<*>>(typeUInt256)
     )
 

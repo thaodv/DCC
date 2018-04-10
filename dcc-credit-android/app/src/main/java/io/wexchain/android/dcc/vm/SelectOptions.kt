@@ -5,14 +5,17 @@ import android.databinding.BaseObservable
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableField
 
-class SelectOptions:BaseObservable() {
+class SelectOptions : BaseObservable() {
 
     val optionTitle = ObservableField<String>()
 
-    val options=ObservableField<List<CharSequence>>()
+    val options = ObservableField<List<String>>()
 
-//    val onSelected
-    fun onSelectionChanged(pos:Int){
+    val selected = ObservableField<String>()
 
+    //    val onSelected
+    fun onSelectionChanged(pos: Int) {
+        val sel = options.get()?.getOrNull(pos)
+        selected.set(sel)
     }
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="txList"
+            type="io.wexchain.android.dcc.vm.TransactionListVm"
+            />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        tools:layout_height="300dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_transactions_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:text="@string/transactions_record"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/no_transaction_record_yet"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_transactions_title"
+            android:visibility="@{txList.empty?View.VISIBLE:View.GONE}"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_transactions"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:layout_marginTop="16dp"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/tv_transactions_title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/item_transaction_record"
+            android:visibility="@{txList.empty?View.GONE:View.VISIBLE}"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

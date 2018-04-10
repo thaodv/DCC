@@ -1,73 +1,158 @@
 package io.wexchain.android.dcc
 
-import android.annotation.SuppressLint
-import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
-import com.tbruyelle.rxpermissions2.RxPermissions
-import com.wexmarket.android.passport.base.BindActivity
-import io.reactivex.Single
-import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.vm.SelectOptions
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.*
+import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.domain.Passport
+import io.wexchain.android.dcc.fragment.InputBankCardInfoFragment
+import io.wexchain.android.dcc.fragment.VerifyBankSmsCodeFragment
+import io.wexchain.android.dcc.vm.domain.BankCardInfo
 import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivitySubmitBankCardBinding
-import io.wexchain.dccchainservice.domain.BankCodes
-import ru.solodovnikov.rx2locationmanager.LocationTime
-import ru.solodovnikov.rx2locationmanager.ProviderDisabledException
-import ru.solodovnikov.rx2locationmanager.RxLocationManager
-import java.util.concurrent.TimeUnit
+import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.dccchainservice.domain.CertOrder
 
-class SubmitBankCardActivity : BindActivity<ActivitySubmitBankCardBinding>() {
-    override val contentLayoutId: Int = R.layout.activity_submit_bank_card
+class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.Listener, VerifyBankSmsCodeFragment.Listener {
 
-    private lateinit var rxLocation: RxLocationManager
-    private lateinit var rxPermissions: RxPermissions
+    private val inputBankCardInfoFragment by lazy { InputBankCardInfoFragment.create(this) }
+
+    private val verifyBankSmsCodeFragment by lazy { VerifyBankSmsCodeFragment.create(this) }
+
+    private var bankCardInfo: BankCardInfo? = null
+
+    private var submitOrderId: Long? = null
+    private var submitTicket: String? = null
+
+    private lateinit var passport: Passport
+    private lateinit var realName: String
+    private lateinit var realId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_default_fragment_container)
         initToolbar()
-
-        rxLocation = RxLocationManager(this)
-        rxPermissions = RxPermissions(this)
-
-        binding.inputBank!!.vm = SelectOptions().apply {
-            optionTitle.set("开户行")
-            options.set(BankCodes.banks)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
         checkPreconditions()
     }
 
-    @SuppressLint("MissingPermission")
     private fun checkPreconditions() {
-        rxPermissions.request(android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                .firstOrError()
-                .flatMap {
-                    if (it) {
-                        //granted
-                        rxLocation.requestLocation(LocationManager.NETWORK_PROVIDER, LocationTime(10,TimeUnit.SECONDS))
-                    } else Single.error<Location>(SecurityException())
+        val cp = App.get().passportRepository.getCurrentPassport()
+        if (cp?.authKey == null) {
+            runOnMainThread {
+                Pop.toast("通行证未启用", App.get())
+                finish()
+            }
+            return
+        }
+        val certId = CertOperations.getCertId()
+        if (certId == null) {
+            runOnMainThread {
+                Pop.toast("身份认证未完成", App.get())
+                finish()
+            }
+            return
+        }
+        realName = certId.first
+        realId = certId.second
+        passport = cp
+        enterStep(STEP_INPUT_BANK_CARD_INFO)
+    }
+
+    override fun onProceed(bankCardInfo: BankCardInfo) {
+        this.bankCardInfo = bankCardInfo
+        proceedSubmit(bankCardInfo)
+    }
+
+    override fun onSubmitSmsCode(code: String) {
+        doAdvance(code)
+    }
+
+    override fun requestReSendSmsCode() {
+        val info = bankCardInfo!!
+        val orderId = submitOrderId!!
+        CertOperations.verifyBankCardCert(passport, info, realName, realId, orderId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { it ->
+                    toast("已重发验证码")
                 }
-                .subscribe(
-                        { loc ->
-                            //todo
-                            println(loc)
-                        },
-                        {
-                            //can not get location, quit
-                            when(it){
-                                is SecurityException ->
-                                    toast("您的定位尚未授权,请到设置中允许读取位置权限")
-                                is ProviderDisabledException->
-                                    toast("定位服务不可用")
-                                else ->
-                                    toast("无法获取定位")
-                            }
-                            finish()
-                        })
+    }
+
+    private fun enterStep(step: Int) {
+        when (step) {
+            STEP_INPUT_BANK_CARD_INFO -> replaceFragment(inputBankCardInfoFragment, R.id.fl_container)
+            STEP_VERIFY_BANK_CARD_SMS_CODE -> {
+                verifyBankSmsCodeFragment.phoneNum = bankCardInfo!!.phoneNo
+                replaceFragment(verifyBankSmsCodeFragment, R.id.fl_container, backStackStateName = "step_$STEP_VERIFY_BANK_CARD_SMS_CODE")
+            }
+        }
+    }
+
+    private fun proceedSubmit(info: BankCardInfo?) {
+        requireNotNull(info)
+        info!!
+        CertOperations.confirmCertFee({ supportFragmentManager }, ChainGateway.BUSINESS_BANK_CARD) {
+            submitVerify(passport, info)
+        }
+    }
+
+    private fun submitVerify(passport: Passport, info: BankCardInfo) {
+        CertOperations.submitBankCardCert(passport, info, realName, realId) { this.submitOrderId = it }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    showLoadingDialog()
+                }
+                .doFinally {
+                    hideLoadingDialog()
+                }
+                .subscribe({
+                    this.submitTicket = it
+                    enterStep(STEP_VERIFY_BANK_CARD_SMS_CODE)
+                }, {
+                    //todo
+                    stackTrace(it)
+                })
+    }
+
+    private fun doAdvance(code: String) {
+        val authKey = passport.authKey
+        requireNotNull(authKey)
+        authKey!!
+        val orderId = submitOrderId
+        requireNotNull(orderId)
+        orderId!!
+        val ticket = submitTicket
+        requireNotNull(ticket)
+        ticket!!
+        CertOperations.advanceBankCardCert(passport, orderId, ticket, code)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    showLoadingDialog()
+                }
+                .doFinally {
+                    hideLoadingDialog()
+                }
+                .subscribe({
+                    handleCertResult(it, bankCardInfo!!)
+                }, {
+
+                })
+    }
+
+    private fun handleCertResult(certOrder: CertOrder, bankCardInfo: BankCardInfo) {
+        if (certOrder.status.isPassed()) {
+            toast("认证成功")
+            //todo save
+            CertOperations.saveBankCertData(certOrder,bankCardInfo)
+            finish()
+        } else {
+            toast("认证失败")
+            supportFragmentManager.popBackStack()
+        }
+    }
+
+
+    companion object {
+        const val STEP_INPUT_BANK_CARD_INFO = 0
+        const val STEP_VERIFY_BANK_CARD_SMS_CODE = 1
     }
 }

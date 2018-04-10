@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <import type="io.wexchain.android.dcc.vm.TransactionListVm" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="tx"
+            type="io.wexchain.digitalwallet.EthsTransaction"
+            />
+
+        <variable
+            name="owner"
+            type="String"
+            />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/tv_from_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="middle"
+            android:maxWidth="100dp"
+            android:singleLine="true"
+            android:text="@{tx.txId}"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+            android:typeface="monospace"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@sample/txHash"
+            />
+
+        <TextView
+            android:id="@+id/tv_time_stamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{tx.isPending()?@string/status_pending:tx.time==0?@string/empty_slash:@string/time_format_yyyymmdd_hhmmss(tx.time)}"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+            app:layout_constraintTop_toBottomOf="@id/tv_from_address"
+            tools:text="@tools:sample/date/ddmmyy"
+            />
+
+        <ProgressBar
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:indeterminate="true"
+            android:visibility="@{tx.isPending()?View.VISIBLE:View.GONE}"
+            android:layout_marginLeft="4dp"
+            android:indeterminateDrawable="@drawable/progress_indeterminate_rotate"
+            app:layout_constraintLeft_toRightOf="@id/tv_time_stamp"
+            app:layout_constraintTop_toTopOf="@id/tv_time_stamp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_time_stamp"
+            />
+
+        <TextView
+            android:id="@+id/tv_transfer_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{TransactionListVm.txValue(owner,tx)}"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="-123.4326583 ETH"
+            />
+
+        <TextView
+            android:id="@+id/tv_transfer_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{tx.transactionType}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_transfer_amount"
+            tools:text="转账"
+            android:visibility="gone"
+            />
+
+        <android.support.constraint.Barrier
+            android:id="@+id/barrier_bottom"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="tv_time_stamp,tv_transfer_type"
+            />
+
+        <View
+            style="@style/DividerHorizontal"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

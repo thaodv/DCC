@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="io.wexchain.android.dcc.fragment.VerifyBankSmsCodeFragment"
+        >
+
+    <data>
+        <variable
+                name="vm"
+                type="io.wexchain.android.dcc.vm.VerifyBankCardSmsCodeVm"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        <TextView
+                android:id="@+id/tv_phone_no_label"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:gravity="center_vertical"
+                android:text="@string/bank_registered_phone_num"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_phone_no_label"
+                app:layout_constraintLeft_toRightOf="@id/tv_phone_no_label"
+                android:text="@{vm.phoneNo}"
+                tools:text="@sample/cn_phones"
+                />
+
+        <View
+                android:id="@+id/divider_h1"
+                style="@style/DividerHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_stroke_width"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                app:layout_constraintTop_toBottomOf="@id/tv_phone_no_label"
+                />
+
+        <TextView
+                android:id="@+id/tv_sms_code_label"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:gravity="center_vertical"
+                android:text="@string/sms_code"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider_h1"
+                />
+
+        <Button
+                android:id="@+id/btn_send_sms_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:text="@string/send_sms_code"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_sms_code_label"
+                app:layout_constraintRight_toRightOf="parent"
+                />
+
+        <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_sms_code_label"
+                app:layout_constraintLeft_toRightOf="@id/tv_sms_code_label"
+                app:layout_constraintRight_toLeftOf="@id/btn_send_sms_code"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@={vm.code}"
+                />
+
+        <View
+                android:id="@+id/divider_h2"
+                style="@style/DividerHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_stroke_width"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                app:layout_constraintTop_toBottomOf="@id/tv_sms_code_label"
+                />
+
+        <TextView
+                android:id="@+id/tv_cert_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:text="认证费"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider_h2"
+                />
+
+        <Button
+                android:id="@+id/btn_submit_code"
+                style="@style/Widget.AppCompat.Button.Dcc.Full"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_marginTop="20dp"
+                android:text="银行卡认证"
+                app:layout_constraintTop_toBottomOf="@id/tv_cert_fee"
+                />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

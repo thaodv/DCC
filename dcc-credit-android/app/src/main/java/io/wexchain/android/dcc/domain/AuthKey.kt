@@ -1,11 +1,19 @@
 package io.wexchain.android.dcc.domain
 
+import io.wexchain.android.common.getAndroidKeyStoreLoaded
+import java.security.KeyStore
+import java.security.PrivateKey
 import java.util.*
 
 data class AuthKey(
-        val keyAlias:String,
-        val publicKeyEncoded:ByteArray
+        val keyAlias: String,
+        val publicKeyEncoded: ByteArray
 ) {
+
+    fun getPrivateKey(): PrivateKey {
+        return (getAndroidKeyStoreLoaded().getEntry(keyAlias, null) as? KeyStore.PrivateKeyEntry)?.privateKey!!
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

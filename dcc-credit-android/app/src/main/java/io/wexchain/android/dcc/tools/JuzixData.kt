@@ -36,11 +36,11 @@ object JuzixData {
                 Chain.JUZIX_PRIVATE to juzixPrefs.dccContractAddress.get()!!
         ))
         val ftc = Currencies.FTC.copy(contractAddress = juzixPrefs.ftcContractAddress.get()!!)
-        App.get().assetsRepository.pinned.value = listOf(
+        App.get().assetsRepository.setPinnedList( listOf(
                 Currencies.DCC,
                 ftc,
                 Currencies.Ethereum
-        )
+        ))
     }
 
     private const val JUZIX_DATA_PREFS = "juzix_data_prefs"

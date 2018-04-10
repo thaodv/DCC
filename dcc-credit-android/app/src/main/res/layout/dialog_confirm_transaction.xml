@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="io.wexchain.android.dcc.vm.TransactionConfirmVm"
+            />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        >
+
+        <TextView
+            android:id="@+id/tv_tx_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="8dp"
+            android:text="@string/transaction_detail"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <ImageButton
+            android:id="@+id/ib_close"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="60dp"
+            android:src="@drawable/ic_close_red"
+            />
+
+        <TextView
+            android:id="@+id/tv_transaction_type_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:text="@string/transaction_type_colon"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_tx_title"
+            />
+
+        <TextView
+            android:id="@+id/tv_transaction_type_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:text="@string/transfer"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_transaction_type_label"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <View
+            android:id="@+id/divider_h1"
+            style="@style/DividerHorizontal"
+            app:layout_constraintTop_toBottomOf="@id/tv_transaction_type_value"
+            />
+
+        <TextView
+            android:id="@+id/tv_to_address_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:text="@string/to_address_colon"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_h1"
+            />
+
+        <TextView
+            android:id="@+id/tv_to_address_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:text="@{vm.tx.to}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_to_address_label"
+            app:layout_constraintLeft_toRightOf="@id/tv_to_address_label"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="@sample/address"
+            />
+
+        <View
+            android:id="@+id/divider_h2"
+            style="@style/DividerHorizontal"
+            app:layout_constraintTop_toBottomOf="@id/tv_to_address_value"
+            />
+
+        <TextView
+            android:id="@+id/tv_from_address_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:text="@string/from_address_colon"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_h2"
+            />
+
+        <TextView
+            android:id="@+id/tv_from_address_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:text="@{vm.tx.from}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_from_address_label"
+            app:layout_constraintLeft_toRightOf="@id/tv_to_address_label"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="@sample/address"
+            />
+
+        <View
+            android:id="@+id/divider_h3"
+            style="@style/DividerHorizontal"
+            app:layout_constraintTop_toBottomOf="@id/tv_from_address_value"
+            />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/gl_v1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="240dp"
+            />
+
+        <TextView
+            android:id="@+id/total_tx_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:text="@{@string/max_payment_amount_colon(vm.totalEth + vm.tx.currency.symbol)}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="16sp"
+            android:visibility="@{vm.totalEth != null?View.VISIBLE:View.GONE}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_h3"
+            tools:text="@string/max_payment_amount_colon"
+            />
+
+        <TextView
+            android:id="@+id/tv_transfer_amount_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:text="@{vm.tx.amount + vm.tx.currency.symbol}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/total_tx_value"
+            tools:text="5784917.4723AI DOC"
+
+            />
+
+        <TextView
+            android:id="@+id/tv_transfer_amount_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/transfer_amount_colon"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_transfer_amount_value"
+            app:layout_constraintLeft_toRightOf="@id/gl_v1"
+
+            />
+
+        <TextView
+            android:id="@+id/tv_max_tx_fee_value"
+            visibleOrGone="@{!vm.onPrivateChain}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:text="@{vm.tx.maxTxFeeStr()}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_transfer_amount_value"
+            tools:text="0.014723ETH"
+            />
+
+        <TextView
+            android:id="@+id/tv_max_tx_fee_label"
+            visibleOrGone="@{!vm.onPrivateChain}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/max_tx_fee_colon"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_max_tx_fee_value"
+            app:layout_constraintLeft_toRightOf="@id/gl_v1"
+            />
+
+        <View
+            android:id="@+id/divider_h4"
+            visibleOrGone="@{!vm.onPrivateChain}"
+            android:layout_width="0dp"
+            style="@style/DividerHorizontal"
+            app:layout_constraintLeft_toRightOf="@id/gl_v1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_max_tx_fee_value"
+            />
+
+        <TextView
+            android:id="@+id/tv_balance_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:gravity="right"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:text="@{vm.holding}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_h4"
+            tools:text="456138536.43189AI DOC\n13424.3324936ETH"
+            />
+
+        <TextView
+            android:id="@+id/tv_balance_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/holding_balance_colon"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_balance_value"
+            app:layout_constraintLeft_toRightOf="@id/gl_v1"
+            />
+
+        <View
+            android:id="@+id/divider_h5"
+            style="@style/DividerHorizontal"
+            app:layout_constraintTop_toBottomOf="@id/tv_balance_value"
+            />
+
+        <TextView
+            android:id="@+id/tv_receive_amount"
+            visibleOrGone="@{vm.withTransferFee}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/text_red"
+            android:text="@{vm.tx.expectedReceiveAmountText()}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_h5"
+            tools:text="998.00 FTC"
+            />
+
+        <TextView
+            android:id="@+id/tv_receive_amount_label"
+            visibleOrGone="@{vm.withTransferFee}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/receive_amount_colon"
+            android:textColor="@color/text_red"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_receive_amount"
+            app:layout_constraintLeft_toRightOf="@id/gl_v1"
+            />
+
+        <TextView
+            android:id="@+id/tv_transfer_fee_amount"
+            visibleOrGone="@{vm.withTransferFee}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/text_red"
+            android:text="@{vm.tx.expectedTransferFeeText()}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_receive_amount"
+            tools:text="2.00 FTC"
+            />
+
+        <TextView
+            android:id="@+id/tv_transfer_fee_amount_label"
+            visibleOrGone="@{vm.withTransferFee}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/transfer_fee_colon"
+            android:textColor="@color/text_red"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_transfer_fee_amount"
+            app:layout_constraintLeft_toRightOf="@id/gl_v1"
+            />
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:onClick="@{(v)->vm.signAndSendTransaction()}"
+            android:text="@string/confirm"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_transfer_fee_amount"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

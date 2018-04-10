@@ -5,6 +5,7 @@ import android.security.KeyPairGeneratorSpec
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.support.annotation.WorkerThread
+import io.wexchain.android.common.getAndroidKeyStoreLoaded
 import io.wexchain.android.dcc.App
 import org.web3j.crypto.*
 import java.math.BigInteger
@@ -65,12 +66,6 @@ object EthsHelper{
         keyPairGenerator.initialize(genSpec)
         val keyPair = keyPairGenerator.generateKeyPair()
         return keyPair to alias
-    }
-
-    fun getAndroidKeyStoreLoaded(): KeyStore {
-        val keyStore = KeyStore.getInstance(ANDROID_KEY_STORE)
-        keyStore.load(null)
-        return keyStore
     }
 
 }

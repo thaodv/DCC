@@ -1,6 +1,7 @@
 package io.wexchain.android.dcc.tools
 
 import io.wexchain.digitalwallet.Chain
+import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
 import java.util.concurrent.ConcurrentHashMap
 
@@ -18,6 +19,13 @@ object MultiChainHelper {
     fun dispatch(mdc: DigitalCurrency): List<DigitalCurrency> {
         require(mdc.chain == Chain.MultiChain)
         return multiDcMap[mdc.symbol] ?: emptyList()
+    }
+
+    fun getDccPrivate(): DigitalCurrency {
+        return MultiChainHelper.dispatch(Currencies.DCC).first { it.chain == Chain.JUZIX_PRIVATE }
+    }
+    fun getDccPublic(): DigitalCurrency {
+        return MultiChainHelper.dispatch(Currencies.DCC).first { it.chain == Chain.publicEthChain }
     }
 
 }

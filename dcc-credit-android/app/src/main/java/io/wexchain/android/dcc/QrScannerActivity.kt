@@ -26,6 +26,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.isOnMainThread
+import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.constant.Extras
@@ -131,6 +132,7 @@ class QrScannerActivity : BindActivity<ActivityQrScannerBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar(true)
+        setWindowExtended()
         beepManager = BeepManager(this)
         setupScan(binding.scanView)
     }

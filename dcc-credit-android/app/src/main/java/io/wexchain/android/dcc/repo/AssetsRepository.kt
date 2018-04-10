@@ -2,14 +2,18 @@ package io.wexchain.android.dcc.repo
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.support.annotation.MainThread
 import io.reactivex.Single
 import io.wexchain.android.common.map
 import io.wexchain.android.common.zipLiveData
+import io.wexchain.android.dcc.repo.db.CurrencyMeta
 import io.wexchain.android.dcc.repo.db.PassportDao
 import io.wexchain.android.dcc.tools.MultiChainHelper
+import io.wexchain.android.dcc.tools.RoomHelper
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
+import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.api.ChainFrontEndApi
 import io.wexchain.digitalwallet.api.domain.front.CResult
 import io.wexchain.digitalwallet.api.domain.front.Quote
@@ -21,14 +25,14 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 class AssetsRepository(
-        dao: PassportDao,
+        val dao: PassportDao,
         val chainFrontEndApi: ChainFrontEndApi,
         ethereumAgent: EthereumAgent,
         val erc20AgentBuilder: (DigitalCurrency) -> Erc20Agent) {
 
-    val pinned = MutableLiveData<List<DigitalCurrency>>()
+    private val pinned = MutableLiveData<List<DigitalCurrency>>()
 
-    private val selectedCurrencies: LiveData<List<DigitalCurrency>> = dao.listCurrencyMeta(true).map {
+    val selectedCurrencies: LiveData<List<DigitalCurrency>> = dao.listCurrencyMeta(true).map {
         it?.map { it.toDigitalCurrency() } ?: listOf()
     }
 
@@ -63,7 +67,6 @@ class AssetsRepository(
                 check(it.chain != Chain.MultiChain)
                 getBalance(it, address)
             }, {
-                println(Arrays.toString(it))
                 it.fold(BigInteger.ZERO) { acc, v ->
                     acc + v as BigInteger
                 }
@@ -90,6 +93,41 @@ class AssetsRepository(
                 }
     }
 
+    fun setCurrencySelected(dc: DigitalCurrency, sel: Boolean) {
+        val pinned = this.pinned.value?: emptyList()
+        if (!pinned.contains(dc) || dc.contractAddress != null) {
+            RoomHelper.onRoomIoThread {
+                dao.updateCurrencyMeta(CurrencyMeta.from(dc, sel))
+            }
+        }
+    }
+
+    val pendingTxList = MutableLiveData<List<EthsTransaction>>().apply {
+        value = emptyList()
+    }
+
+    @MainThread
+    fun pushPendingTx(ethsTransaction: EthsTransaction) {
+        pendingTxList.value = (pendingTxList.value ?: emptyList()).toMutableList().apply {
+            add(0, ethsTransaction)
+        }
+    }
+
+    @MainThread
+    fun removePendingTx(txId: String) {
+        pendingTxList.value = (pendingTxList.value ?: emptyList()).filter { it.txId != txId }
+    }
+
+    fun setPinnedList(pinnedList: List<DigitalCurrency>) {
+        this.pinned.postValue(pinnedList)
+    }
+
+    fun isPinned(digitalCurrency: DigitalCurrency): Boolean {
+        if (digitalCurrency.symbol == Currencies.DCC.symbol){
+            return true
+        }
+        return this.pinned.value?.contains(digitalCurrency) == true
+    }
 
     companion object {
 

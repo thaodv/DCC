@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
+        <variable
+            name="quote"
+            type="io.wexchain.digitalwallet.api.domain.front.Quote"
+            />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_market_quote_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:text="@string/market_quote"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:layout_marginTop="4dp"
+            android:text="@string/quote_not_available"
+            android:visibility="@{quote==null?View.VISIBLE:View.GONE}"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_market_quote_label"
+            tools:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/tv_quote_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginTop="4dp"
+            android:text="@{ViewModelHelper.formatCurrencyValue(quote.price)}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="20sp"
+            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_market_quote_label"
+            tools:text="3253.34"
+            />
+
+        <TextView
+            android:id="@+id/tv_quote_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@{quote.change??@string/empty_slash}"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
+            app:layout_constraintLeft_toLeftOf="@id/tv_quote_price"
+            app:layout_constraintTop_toBottomOf="@id/tv_quote_price"
+            tools:text="-324.43"
+            />
+
+        <TextView
+            android:id="@+id/tv_quote_change_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@{quote.changeRate??@string/empty_slash}"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
+            app:layout_constraintLeft_toRightOf="@id/tv_quote_change"
+            app:layout_constraintTop_toBottomOf="@id/tv_quote_price"
+            tools:text="-32.43%"
+            />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/gl_cv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"
+            />
+
+        <TextView
+            android:id="@+id/tv_quote_high_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/_24h_high"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toTopOf="@id/tv_quote_high_value"
+            app:layout_constraintLeft_toRightOf="@id/gl_cv"
+            app:layout_constraintRight_toLeftOf="@id/tv_quote_low_label"
+            app:layout_constraintTop_toTopOf="@id/tv_quote_price"
+            />
+
+        <TextView
+            android:id="@+id/tv_quote_high_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{ViewModelHelper.formatCurrencyValue(quote.high)}"
+            android:textSize="12sp"
+            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_quote_price"
+            app:layout_constraintLeft_toLeftOf="@id/tv_quote_high_label"
+            app:layout_constraintTop_toBottomOf="@id/tv_quote_high_label"
+            tools:text="43215.34"
+            />
+
+        <TextView
+            android:id="@+id/tv_quote_low_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:text="@string/_24h_low"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toTopOf="@id/tv_quote_low_value"
+            app:layout_constraintLeft_toRightOf="@id/tv_quote_high_label"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_quote_price"
+            />
+
+        <TextView
+            android:id="@+id/tv_quote_low_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{ViewModelHelper.formatCurrencyValue(quote.low)}"
+            android:textSize="12sp"
+            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_quote_price"
+            app:layout_constraintLeft_toLeftOf="@id/tv_quote_low_label"
+            app:layout_constraintTop_toBottomOf="@id/tv_quote_low_label"
+            tools:text="40215.34"
+            />
+
+        <TextView
+            android:id="@+id/tv_quote_vol_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/_24h_vol"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
+            app:layout_constraintLeft_toRightOf="@id/gl_cv"
+            app:layout_constraintTop_toTopOf="@id/tv_quote_change"
+            />
+
+        <TextView
+            android:id="@+id/tv_quote_vol_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{ViewModelHelper.formatCurrencyValue(quote.volume)}"
+            android:textSize="12sp"
+            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
+            app:layout_constraintLeft_toLeftOf="@id/tv_quote_vol_label"
+            app:layout_constraintTop_toBottomOf="@id/tv_quote_vol_label"
+            tools:text="3264.4938(ETH)"
+            />
+
+        <TextView
+            android:id="@+id/tv_quote_source"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:layout_marginTop="4dp"
+            android:text="@{@string/quote_source_colon(quote.sourceName)}"
+            android:textSize="12sp"
+            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_quote_vol_value"
+            tools:text="来源: 火币Pro"
+            />
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

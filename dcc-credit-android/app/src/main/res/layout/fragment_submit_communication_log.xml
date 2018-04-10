@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+                name="vm"
+                type="io.wexchain.android.dcc.vm.InputPhoneInfoVm"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        <TextView
+                android:id="@+id/tv_cert_org"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccProviderHeadline"
+                android:text="@string/certificate_org_colon_sina_cloud_finance"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                />
+
+        <include layout="@layout/include_input_text"
+                 android:id="@+id/input_phone"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 app:layout_constraintTop_toBottomOf="@id/tv_cert_org"
+                 app:title="@{@string/phone_no}"
+                 app:hint="@{@string/please_input_phone_no}"
+                 app:text="@={vm.phoneNo}"
+                />
+
+        <include layout="@layout/include_input_text"
+                 android:id="@+id/input_password"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 app:layout_constraintTop_toBottomOf="@id/input_phone"
+                 app:title="@{@string/phone_service_password}"
+                 app:hint="@{@string/please_input_phone_service_password}"
+                 app:text="@={vm.servicePassword}"
+                />
+
+        <TextView
+                android:id="@+id/tv_cert_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:text="认证费123.00DCC"
+                app:layout_constraintTop_toBottomOf="@id/input_password"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="60dp"
+                />
+
+        <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Dcc.Full"
+                android:text="@string/submit"
+                app:layout_constraintTop_toBottomOf="@id/tv_cert_fee"
+                android:onClick="@{(v)->vm.submit()}"
+                />
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/communication_log_submit_hint"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                app:layout_constraintTop_toBottomOf="@id/btn_submit"
+                />
+
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

@@ -162,6 +162,7 @@ contract CertService3 is OperatorPermission ,CertServiceIntf{
         audit(orderId, Status.PASSED);
     }
 
+
     function reject(uint256 orderId) public onlyOperator {
         audit(orderId, Status.REJECTED);
     }

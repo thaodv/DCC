@@ -4,6 +4,7 @@
     <string name="fill_info_warning">随意填写会对您的信用审核造成负面影响</string>
     <string name="auth_management">统一登录管理</string>
     <string name="title_bank_card_certification">银行卡认证</string>
+    <string name="title_verify_sms_code">验证短信验证码</string>
     <string name="bank_card_no">银行卡号</string>
     <string name="please_input_bank_card_no">请输入银行卡号</string>
     <string name="bank_registered_phone_num">银行预留手机号</string>
@@ -18,7 +19,7 @@
     <string name="title_phone_carrier_certification">手机运营商认证</string>
     <string name="submit">提交</string>
     <string name="communication_log_submit_hint">
-        温馨提示\n1. 请使用本人实名制手机号进行认证\n2. 服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3. 点击"提交"按钮会收到运营商的通知短信，无需回复
+        温馨提示\n\n1、请使用本人实名制手机号进行认证\n2、服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3、点击“提交”按钮会收到运营商的通知短信，无需回复\n4、如忘记服务密码,请登录运营商官网找回服务密码
     </string>
 
     <string name="import_and_enable_passport">导入并启用统一登录</string>
@@ -32,5 +33,73 @@
     <string name="on_chain_dcc">\@DCC</string>
     <string name="on_chain_ethereum">\@Ethereum</string>
     <string name="dcc">DCC</string>
+    <string name="market_quote">市场价格</string>
+    <string name="quote_not_available">未能查询到该币种市场价格</string>
+    <string name="_24h_high">24H High</string>
+    <string name="_24h_low">24H Low</string>
+    <string name="_24h_vol">24H Vol</string>
+    <string name="transactions_record">交易记录</string>
+    <string name="no_transaction_record_yet">未查询到该币种交易记录</string>
+    <string name="holding_amount">持有量</string>
+    <string name="approx_capital">市值</string>
+    <string name="transfer">转账</string>
+    <string name="collect">收款</string>
+    <string name="no_more_records">没有更多记录了</string>
+    <string name="load_more">加载更多</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="no_more">没有更多了</string>
+    <string name="time_format_yyyymmdd_hhmm">%1$tY-%1$tm-%1$td  %1$tH:%1$tM</string>
+    <string name="time_format_yyyymmdd_hhmmss">%1$tY-%1$tm-%1$td  %1$tH:%1$tM:%1$tS</string>
+    <string name="empty_slash">--</string>
+    <string name="quote_source_colon">来源:%1$s</string>
+    <string name="status_pending">待上链</string>
+    <string name="transaction_record_detail">交易记录详情</string>
+    <string name="to_address_colon">接受地址:</string>
+    <string name="from_address_colon">付款地址:</string>
+    <string name="transaction_fee_colon">矿\u2002工\u2002费:</string>
+    <string name="extra">备\u3000\u3000注:</string>
+    <string name="transaction_id_colon">交\u2002易\u2002号:</string>
+    <string name="block_number_colon">区块高度:</string>
+    <string name="transaction_time_colon">交易时间:</string>
+    <string name="receiver_address">收款人钱包地址</string>
+    <string name="transfer_amount">转账金额</string>
+    <string name="remarks">备注</string>
+    <string name="transaction_status_colon">交易状态:</string>
+    <string name="custom_gas_price">自定义Gas Price</string>
+    <string name="custom_gas_limit">自定义Gas Limit</string>
+    <string name="transaction_fee">矿工费用</string>
+    <string name="transaction_detail">支付详情</string>
+    <string name="transaction_type_colon">订单信息:</string>
+    <string name="transfer_amount_colon">订单金额:</string>
+    <string name="max_tx_fee_colon">最高矿工费:</string>
+    <string name="holding_balance_colon">持有量:</string>
+    <string name="gwei">Gwei</string>
+    <string name="add_digital_asset">添加数字资产</string>
+    <string name="already_selected">已添加</string>
+    <string name="max_tx_fee">最高矿工费</string>
+    <string name="ftc_transfer_fee_hint">FTC转账手续费%1$s‰</string>
+    <string name="receive_amount_colon">接收金额:</string>
+    <string name="transfer_fee_colon">手续费:</string>
+    <string name="max_payment_amount_colon">最高支付金额: %1$s</string>
+    <string name="passport_address">通行证地址</string>
+    <string name="sms_code">短信验证码</string>
+    <string name="send_sms_code">发送验证码</string>
+    <string name="cert_fee">认证费</string>
+    <string name="do_certification">认证</string>
+    <string name="title_id_certification_data">身份证认证信息</string>
+    <string name="name_label">姓名</string>
+    <string name="id_no_label">身份证号</string>
+    <string name="cert_expired_label">认证有效期</string>
+    <string name="issuer_bank">发卡行</string>
+    <string name="card_no">卡号</string>
+    <string name="phone_num">手机号</string>
+    <string name="phone_owner_name">机主姓名</string>
+    <string name="title_bank_card_certification_data">银行卡认证信息</string>
+    <string name="phone_carrier_certification_data">手机运营商信息</string>
+    <string name="phone_no">手机号码</string>
+    <string name="please_input_phone_no">请输入手机号码</string>
+    <string name="phone_service_password">服务密码</string>
+    <string name="please_input_phone_service_password">请输入服务密码</string>
 
 </resources>

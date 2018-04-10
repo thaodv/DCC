@@ -2,19 +2,24 @@ package io.wexchain.auth
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
+import io.reactivex.Single
 import io.reactivex.SingleTransformer
+import io.wexchain.android.common.toHex
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.chain.CertOperations.certOrderByTx
 import io.wexchain.android.dcc.chain.EthsFunctions
+import io.wexchain.android.dcc.chain.privateChainNonce
 import io.wexchain.android.dcc.chain.txSigned
 import io.wexchain.android.dcc.tools.RetryWithDelay
+import io.wexchain.android.dcc.tools.pair
+import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.BankCodes
-import io.wexchain.dccchainservice.domain.CertOrder
+import io.wexchain.dccchainservice.domain.CertStatus
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
-import io.wexchain.dccchainservice.util.toHex
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -32,6 +37,9 @@ class ServiceApiTest {
     companion object {
         const val name = "张三"
         const val id = "430726199407035439"
+        const val phoneNo = "13867899876"
+        const val bankCode = BankCodes.ICBC
+        const val bankAccountNo = "6202123443211234"
     }
 
     lateinit var credentials: Credentials
@@ -71,18 +79,30 @@ class ServiceApiTest {
                     api.getTicket()
                             .compose(Result.checked())
                             .flatMap { ticket ->
-                                val tx = EthsFunctions.apply(digest1, digest2)
+                                val tx = EthsFunctions.apply(digest1, digest2, BigInteger.valueOf(IdCardEssentialData.ID_TIME_EXPIRATION_UNLIMITED))
                                         .txSigned(credentials, contractAddress)
                                 api.certApply(
                                         ticket.ticket, tx, ticket.answer, business)
                                         .compose(Result.checked())
                             }
                 }
-                .flatMap {
-                    api.getOrderByTx(it, business)
+                .flatMap { txHash ->
+                    api.hasReceipt(txHash)
                             .compose(Result.checked())
+                            .map {
+                                if (!it) {
+                                    throw DccChainServiceException("no receipt yet")
+                                }
+                                txHash
+                            }
                             .retryWhen(RetryWithDelay.createSimple(4, 5000L))
-
+                }
+                .flatMap {
+                    api.getOrdersByTx(it, business)
+                            .compose(Result.checked())
+                            .map {
+                                it.first()
+                            }
                 }
                 .blockingGet()
         println(order)
@@ -105,26 +125,17 @@ class ServiceApiTest {
                 .compose(Result.checked())
                 .blockingGet()
         println(verifyOrder)
-        val state = api.getOrderByOrderId(order.orderId, business)
+        val state = api.getCertData(credentials.address, business)
                 .compose(Result.checked())
-                .map {
-                    if (it.status == CertOrder.Status.APPLIED) {
-                        throw IllegalStateException("not verified yet")
-                    }
-                    it
-                }
-                .retryWhen(RetryWithDelay.createSimple(4, 5000))
+//                .retryWhen(RetryWithDelay.createSimple(4, 5000))
                 .blockingGet()
         println(state)
     }
 
     @Test
     fun testBankVerify() {
-        val bankCode = BankCodes.ICBC
-        val bankAccountNo = "6202123443211234"
         val accountName = name
         val certNo = id
-        val phoneNo = "13867899876"
 
         val keyPair = createKeyPair()
         uploadCaKey(keyPair)
@@ -140,10 +151,10 @@ class ServiceApiTest {
                     api.getTicket()
                             .compose(Result.checked())
                             .flatMap { ticket ->
-                                val tx = EthsFunctions.apply(digest1, digest2)
+                                val tx = EthsFunctions.apply(digest1, digest2, BigInteger.ZERO)
                                         .txSigned(credentials, contractAddress)
                                 api.certApply(
-                                        ticket.ticket, tx, ticket.answer, business)
+                                        ticket.ticket, tx, null, business)
                                         .compose(Result.checked())
                             }
                 }
@@ -166,8 +177,6 @@ class ServiceApiTest {
                 "certNo" to certNo,
                 "phoneNo" to phoneNo
         )
-        val sigStr = params.entries.sortedBy { it.key }.joinToString(separator = "&") { "${it.key}=${it.value}" }
-        println("sigStr = $sigStr")
         val signature = ParamSignatureUtil.sign(keyPair.private, params)
         val verifyOrder = certApi
                 .bankCardVerify(
@@ -186,7 +195,7 @@ class ServiceApiTest {
         val state = api.getOrderByOrderId(applyOrder.orderId, business)
                 .compose(Result.checked())
                 .map {
-                    if (it.status == CertOrder.Status.APPLIED) {
+                    if (it.status == CertStatus.APPLIED) {
                         throw IllegalStateException("not verified yet")
                     }
                     it
@@ -194,6 +203,47 @@ class ServiceApiTest {
                 .retryWhen(RetryWithDelay.createSimple(4, 5000))
                 .blockingGet()
         println(state)
+    }
+
+    @Test
+    fun testCommunicationLogSubmit() {
+        val keyPair = createKeyPair()
+        uploadCaKey(keyPair)
+        val api = chainGateway
+        val business = ChainGateway.BUSINESS_COMMUNICATION_LOG
+        val nonce = privateChainNonce(credentials.address)
+        val certOrder = Single
+                .zip(
+                        api.getCertContractAddress(business).compose(Result.checked()),
+                        api.getTicket().compose(Result.checked()),
+                        pair()
+                )
+                .flatMap { (contractAddress, ticket) ->
+                    val tx = EthsFunctions.apply(byteArrayOf(), byteArrayOf(), BigInteger.ZERO).txSigned(credentials, contractAddress, nonce)
+                    api.certApply(ticket.ticket, tx, null, business)
+                            .compose(Result.checked())
+                }
+                .certOrderByTx(api, business)
+                .blockingGet()
+        val cl = certApi.requestCommunicationLogData(
+                address = credentials.address,
+                orderId = certOrder.orderId,
+                userName = name,
+                certNo = id,
+                phoneNo = phoneNo,
+                password = "123456",
+                signature = ParamSignatureUtil.sign(keyPair.private, mapOf(
+                        "address" to credentials.address,
+                        "orderId" to certOrder.orderId.toString(),
+                        "userName" to name,
+                        "certNo" to id,
+                        "phoneNo" to phoneNo,
+                        "password" to "123456"
+                ))
+        ).compose(Result.checked())
+                .blockingGet()
+        println(cl)
+
     }
 
     private fun uploadCaKey(keyPair: KeyPair) {

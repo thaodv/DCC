@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package io.wexchain.android.dcc.tools
+package io.wexchain.android.common
 
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.MutableLiveData

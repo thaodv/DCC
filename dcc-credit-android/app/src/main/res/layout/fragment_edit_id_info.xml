@@ -45,7 +45,7 @@
                 android:text="请拍摄身份证照片,系统自动识别"
                 />
 
-            <LinearLayout
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -55,30 +55,29 @@
                     android:id="@+id/ib_id_front"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
+                    android:scaleType="centerInside"
                     imageRawBytes="@{vm.imgFront}"
                     errorRes="@{@drawable/cn_id_front}"
                     tools:src="@drawable/cn_id_front"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/ib_id_back"
                     />
 
-                <Space
-                    android:layout_width="24dp"
-                    android:layout_height="0dp"
-                    />
 
                 <ImageButton
                     android:id="@+id/ib_id_back"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
+                    android:scaleType="centerInside"
                     imageRawBytes="@{vm.imgBack}"
                     errorRes="@{@drawable/cn_id_back}"
                     tools:src="@drawable/cn_id_back"
+                    app:layout_constraintLeft_toRightOf="@id/ib_id_front"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginLeft="24dp"
                     />
 
-            </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"

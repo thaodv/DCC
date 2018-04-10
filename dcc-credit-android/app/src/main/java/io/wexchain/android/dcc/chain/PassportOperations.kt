@@ -7,11 +7,11 @@ import io.reactivex.Single
 import io.reactivex.SingleTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import io.wexchain.android.common.getAndroidKeyStoreLoaded
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.EthsFunctions.deleteKey
 import io.wexchain.android.dcc.chain.EthsHelper.ANDROID_RSA_PREFIX
 import io.wexchain.android.dcc.chain.EthsHelper.createAndroidRSAKeyPair
-import io.wexchain.android.dcc.chain.EthsHelper.getAndroidKeyStoreLoaded
 import io.wexchain.android.dcc.domain.AuthKey
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.repo.db.AuthKeyChangeRecord

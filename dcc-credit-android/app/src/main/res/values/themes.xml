@@ -21,17 +21,35 @@
         <item name="android:spinnerItemStyle">@style/Widget.AppCompat.TextView.SpinnerItem.Dcc</item>
         <item name="android:spinnerDropDownItemStyle">@style/Widget.AppCompat.Light.DropDownItem.Spinner.Dcc</item>
 
-        <item name="dialogTheme">@style/FullWidthDialog</item>
+        <item name="dialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert.Dcc</item>
     </style>
 
     <style name="DccTheme.App">
     </style>
 
+    <style name="DccTheme.App.Transparent">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+    </style>
 
     <style name="FullWidthDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowMinWidthMajor">100%</item>
         <item name="android:windowMinWidthMinor">100%</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+
+    <style name="Theme.AppCompat.Light.Dialog.Alert.Dcc" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/text_dark</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance.AppCompat.Medium.Dcc</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Medium.Dcc" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/text_dark</item>
     </style>
 
 </resources>

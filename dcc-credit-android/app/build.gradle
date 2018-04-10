@@ -37,7 +37,9 @@ android {
         }
         debug {
             buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://222.73.39.37:9511/passport-gateway/restful/"'
-            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://func.wexchain.io/passport-logic/"'
+//            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://func.wexchain.io/passport-logic/"'
+//            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.103.28:1212/passport-logic/"'
+            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.178.12:9101/passport-logic/"'//mock
 //            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.104.12:8080/"'
             buildConfigField 'java.lang.String', 'CHAIN_FRONTEND_URL', '"http://www.icohint.com/chain-frontend/"'
             buildConfigField 'java.lang.String', 'CHAIN_EXPLORER_URL', '"http://10.65.209.17:9301/chain-observer/restful/"'
@@ -85,6 +87,7 @@ dependencies {
     implementation project(':ewallet')
     implementation project(':network')
     implementation project(':barcode')
+    implementation project(':localprotect')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
