@@ -153,11 +153,4 @@ public class CaController {
 		logger.warn("", e);
 		return BaseResponseUtils.errorCodeExceptionResponse(e);
 	}
-
-	@ExceptionHandler(Exception.class)
-	@ResponseBody
-	public BaseResponse others(Exception e) {
-		logger.warn("", e);
-		return BaseResponseUtils.exceptionBaseResponse(e);
-	}
 }
