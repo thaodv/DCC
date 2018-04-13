@@ -60,7 +60,7 @@ abstract class BaseCompatActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    protected fun goBack(): Boolean {
+    open fun goBack(): Boolean {
         if (!supportFragmentManager.popBackStackImmediate()) {
             goFinish()
         }

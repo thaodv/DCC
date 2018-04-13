@@ -5,16 +5,14 @@ import android.arch.lifecycle.AndroidViewModel
 import android.databinding.ObservableField
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.vm.domain.BankCardInfo
+import io.wexchain.android.dcc.vm.domain.BankInfo
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.dccchainservice.domain.BankCodes
 import io.wexchain.dccchainservice.domain.IdOcrInfo
 
 class InputBankCardInfoVm(application: Application):AndroidViewModel(application){
 
-    val options = SelectOptions().apply {
-        optionTitle.set("开户行")
-        options.set(BankCodes.banks)
-    }
+    val bank = ObservableField<BankInfo>()
 
     val bankCardNo = ObservableField<String>()
 
@@ -35,7 +33,7 @@ class InputBankCardInfoVm(application: Application):AndroidViewModel(application
     }
 
     private fun checkAndBuildBankCardInfo(): BankCardInfo? {
-        val bankCode = options.selected.get()
+        val bankCode = bank.get()?.code
         val cardNo = bankCardNo.get()
         val phoneNo = phoneNum.get()
         //todo check

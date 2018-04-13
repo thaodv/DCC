@@ -81,6 +81,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:text="@={vm.code}"
+                android:background="@null"
                 />
 
         <View

@@ -13,10 +13,7 @@ import io.wexchain.android.dcc.tools.JuzixData
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.auth.BuildConfig
-import io.wexchain.dccchainservice.CertApi
-import io.wexchain.dccchainservice.ChainGateway
-import io.wexchain.dccchainservice.DccChainServiceException
-import io.wexchain.dccchainservice.PrivateChainApi
+import io.wexchain.dccchainservice.*
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.DigitalCurrency
@@ -41,6 +38,7 @@ class App : MultiDexApplication() {
     lateinit var certApi: CertApi
     lateinit var chainFrontEndApi: ChainFrontEndApi
     lateinit var privateChainApi: PrivateChainApi
+    lateinit var marketingApi: MarketingApi
 
     //public services
     lateinit var infuraApi: InfuraApi
@@ -87,6 +85,7 @@ class App : MultiDexApplication() {
         certApi = networking.createApi(CertApi::class.java, BuildConfig.CHAIN_FUNC_URL)
         chainFrontEndApi = networking.createApi(ChainFrontEndApi::class.java, BuildConfig.CHAIN_FRONTEND_URL)
         privateChainApi = networking.createApi(PrivateChainApi::class.java,BuildConfig.CHAIN_EXPLORER_URL)
+        marketingApi = networking.createApi(MarketingApi::class.java,BuildConfig.DCC_MARKETING_API_URL)
 
         infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))

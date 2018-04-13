@@ -5,6 +5,7 @@ import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
 import android.media.Image
 import android.net.Uri
+import android.support.annotation.DrawableRes
 import android.text.TextUtils
 import android.text.method.PasswordTransformationMethod
 import android.view.View
@@ -19,6 +20,15 @@ var View.visibleOrGone
     set(value) {
         this.visibility = if (value) View.VISIBLE else View.GONE
     }
+
+@BindingAdapter("imageRes")
+fun ImageView.setImageRes(@DrawableRes res:Int?){
+    if (res == null || res == 0){
+        this.setImageDrawable(null)
+    }else{
+        this.setImageResource(res)
+    }
+}
 
 @BindingAdapter("imageRawBytes","errorRes")
 fun ImageView.setImageRawBytes(imageRawBytes: ByteArray?,errorRes:Drawable?){

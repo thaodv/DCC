@@ -10,6 +10,9 @@ import io.wexchain.digitalwallet.api.domain.front.Quote
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.dcc.App
 import io.wexchain.android.common.SingleLiveEvent
+import io.wexchain.auth.R
+import io.wexchain.digitalwallet.Chain
+import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.util.toBigDecimalSafe
 import java.math.BigInteger
@@ -36,6 +39,8 @@ class DigitalCurrencyVm(application: Application) : AndroidViewModel(application
     val holdingStr = ObservableField<String>()
     val holdingValueStr = ObservableField<String>()
 
+    val chainText = ObservableField<String>()
+
     val fetchDataFailEvent = SingleLiveEvent<Void>()
     val selectedChangedEvent = SingleLiveEvent<Boolean>()
     val confirmEvent = SingleLiveEvent<Pair<CharSequence, (Boolean) -> Unit>>()
@@ -45,6 +50,23 @@ class DigitalCurrencyVm(application: Application) : AndroidViewModel(application
         this.dc.set(dc)
         observeSelected(lifecycleOwner)
         pinned.set(assetsRepository.isPinned(dc))
+        if(showChainText(dc)){
+            when(dc.chain){
+                Chain.JUZIX_PRIVATE -> {
+                    chainText.set(getApplication<Application>().getString(R.string.on_chain_dcc))
+                }
+                Chain.publicEthChain ->{
+                    chainText.set(getApplication<Application>().getString(R.string.on_chain_ethereum))
+                }
+                else-> chainText.set(null)
+            }
+        }else{
+            chainText.set(null)
+        }
+    }
+
+    private fun showChainText(dc: DigitalCurrency): Boolean {
+        return dc.copy(chain = Chain.MultiChain,contractAddress = null) == Currencies.DCC
     }
 
     private fun observeSelected(lifecycleOwner: LifecycleOwner) {

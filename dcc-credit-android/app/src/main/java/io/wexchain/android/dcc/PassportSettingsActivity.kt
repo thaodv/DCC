@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc
 
+import android.Manifest
 import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.content.Intent
@@ -18,6 +19,7 @@ import io.wexchain.auth.databinding.ActivityPassportSettingsBinding
 import android.provider.MediaStore
 import android.support.v4.view.ViewCompat
 import android.view.*
+import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wexmarket.android.passport.ResultCodes
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.constant.RequestCodes
@@ -95,10 +97,19 @@ class PassportSettingsActivity:BindActivity<ActivityPassportSettingsBinding>() {
     }
 
     private fun captureImage() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (takePictureIntent.resolveActivity(packageManager) != null) {
-            startActivityForResult(takePictureIntent, RequestCodes.CAPTURE_IMAGE)
-        }
+        RxPermissions(this)
+                .request(Manifest.permission.CAMERA)
+                .subscribe {
+                    if (it) {
+                        //granted
+                        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                        if (takePictureIntent.resolveActivity(packageManager) != null) {
+                            startActivityForResult(takePictureIntent, RequestCodes.CAPTURE_IMAGE)
+                        }
+                    } else {
+                        toast("没有相机权限")
+                    }
+                }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

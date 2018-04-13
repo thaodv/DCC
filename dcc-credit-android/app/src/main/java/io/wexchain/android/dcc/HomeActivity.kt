@@ -18,13 +18,17 @@ class HomeActivity : BaseCompatActivity() {
         setWindowExtended()
 
         setContentView(R.layout.activity_home)
+        setupClicks()
+    }
+
+    private fun setupClicks() {
         findViewById<View>(R.id.card_my_credit).setOnClickListener {
-            if(App.get().passportRepository.passportEnabled){
+            if (App.get().passportRepository.passportEnabled) {
                 navigateTo(MyCreditActivity::class.java)
-            }else{
-                if(!App.get().passportRepository.passportExists){
+            } else {
+                if (!App.get().passportRepository.passportExists) {
                     showIntroWalletDialog()
-                }else{
+                } else {
                     toast("通行证未启用")
                 }
             }
@@ -35,7 +39,14 @@ class HomeActivity : BaseCompatActivity() {
         findViewById<View>(R.id.btn_settings).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
                 navigateTo(PassportSettingsActivity::class.java)
-            }else{
+            } else {
+                showIntroWalletDialog()
+            }
+        }
+        findViewById<View>(R.id.card_candy).setOnClickListener {
+            if (App.get().passportRepository.passportExists) {
+                navigateTo(MarketingListActivity::class.java)
+            } else {
                 showIntroWalletDialog()
             }
         }

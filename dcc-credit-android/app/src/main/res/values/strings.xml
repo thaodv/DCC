@@ -114,5 +114,6 @@
     <string name="password_length_invalid">密码长度应在8至20位之间</string>
     <string name="hint_search_token">搜索Token名称、简写或合约地址</string>
     <string name="submit_new_token">提交新token</string>
+    <string name="please_select">请选择</string>
 
 </resources>

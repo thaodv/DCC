@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+    <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:text="取消"
+            android:textColor="@color/text_dark"
+            android:minWidth="80dp"
+            android:minHeight="40dp"
+            />
+
+    <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+            android:text="选择开户行"
+            android:gravity="center_vertical"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+    <View
+            android:id="@+id/divider_h1"
+            style="@style/DividerHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_stroke_width"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            />
+
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/divider_h1"
+            />
+</android.support.constraint.ConstraintLayout>

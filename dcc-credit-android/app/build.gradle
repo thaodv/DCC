@@ -43,6 +43,7 @@ android {
 //            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.104.12:8080/"'
             buildConfigField 'java.lang.String', 'CHAIN_FRONTEND_URL', '"http://www.icohint.com/chain-frontend/"'
             buildConfigField 'java.lang.String', 'CHAIN_EXPLORER_URL', '"http://10.65.209.17:9301/chain-observer/restful/"'
+            buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://10.65.103.67:8030/"'
         }
     }
     sourceSets {

@@ -79,7 +79,7 @@ data class IdCardEssentialData(
                     val d = matcher.group(8).toInt()
                     Calendar.getInstance(TimeZone.getTimeZone("GMT+8")).apply {
                         timeInMillis = 0L//reset
-                        set(y, m, d)
+                        set(y, m - 1, d)
                     }.timeInMillis
                 }
             }

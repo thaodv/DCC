@@ -11,6 +11,7 @@ import io.wexchain.android.dcc.fragment.VerifyBankSmsCodeFragment
 import io.wexchain.android.dcc.vm.domain.BankCardInfo
 import io.wexchain.auth.R
 import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CertOrder
 
 class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.Listener, VerifyBankSmsCodeFragment.Listener {
@@ -73,6 +74,7 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
         CertOperations.verifyBankCardCert(passport, info, realName, realId, orderId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
+                    this.submitTicket = it
                     toast("已重发验证码")
                 }
     }
@@ -131,11 +133,9 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
                 .doFinally {
                     hideLoadingDialog()
                 }
-                .subscribe({
+                .subscribe { it ->
                     handleCertResult(it, bankCardInfo!!)
-                }, {
-
-                })
+                }
     }
 
     private fun handleCertResult(certOrder: CertOrder, bankCardInfo: BankCardInfo) {

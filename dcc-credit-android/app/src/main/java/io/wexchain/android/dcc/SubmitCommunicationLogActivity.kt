@@ -40,6 +40,16 @@ class SubmitCommunicationLogActivity : BaseCompatActivity(), InputPhoneInfoFragm
         checkPreconditions()
     }
 
+    override fun goBack(): Boolean {
+        val curr = supportFragmentManager.findFragmentById(R.id.fl_container)
+        return if(curr!=inputPhoneInfoFragment){
+            replaceFragment(inputPhoneInfoFragment, R.id.fl_container)
+            true
+        }else{
+            super.goBack()
+        }
+    }
+
     override fun onSubmitPhoneInfo(phoneNo: String, password: String) {
         this.submitPhoneNo = phoneNo
         this.submitServicePassword = password
@@ -167,7 +177,7 @@ class SubmitCommunicationLogActivity : BaseCompatActivity(), InputPhoneInfoFragm
     }
 
     private fun onRequestSuccess() {
-        toast("报告申请已提交")
+        Pop.toast("认证申请提交成功",App.get())
         CertOperations.onCmLogRequestSuccess(submitOrderId!!,submitPhoneNo!!,submitServicePassword!!)
         finish()
     }

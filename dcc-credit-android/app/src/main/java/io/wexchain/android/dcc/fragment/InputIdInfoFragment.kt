@@ -45,8 +45,10 @@ class InputIdInfoFragment : BindFragment<FragmentEditIdInfoBinding>() {
         })
         vm.ocrFailEvent.observe(this, Observer {
             it?.message?.let {
+                println("ocr fail : $it")
                 toast(it)
             }
+            binding.executePendingBindings()
         })
         binding.vm = vm
         binding.ibIdFront.setOnClickListener {

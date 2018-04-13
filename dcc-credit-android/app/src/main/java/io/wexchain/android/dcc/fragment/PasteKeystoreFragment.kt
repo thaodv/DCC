@@ -1,6 +1,7 @@
 package io.wexchain.android.dcc.fragment
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -32,6 +33,9 @@ class PasteKeystoreFragment: BindFragment<FragmentPasteKeystoreBinding>() {
             passwordHint.set(context!!.getString(R.string.please_input_passport_password))
             reset()
         }
+        inputPasswordVm.secureChangedEvent.observe(this, Observer {
+            binding.executePendingBindings()
+        })
         binding.inputPassword = inputPasswordVm
         binding.ivScan.setOnClickListener {
             requestScan()

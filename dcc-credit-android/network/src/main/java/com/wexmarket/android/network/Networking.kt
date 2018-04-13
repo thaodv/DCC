@@ -56,8 +56,8 @@ class Networking {
     companion object {
         private const val CACHE_SIZE: Long = 20 * 1024 * 1024
         private const val DEFAULT_OKHTTP_CACHE_DIR_NAME = "ok_cache_wn"
-        private const val READ_TIMEOUT: Long = 21
-        private const val CONNECT_TIMEOUT: Long = 15
+        private const val READ_TIMEOUT: Long = 60
+        private const val CONNECT_TIMEOUT: Long = 30
         private const val LOG_TAG_OKHTTP = "OkHttp"
         private val DEFAULT_COOKIE_POLICY = CookiePolicy.ACCEPT_ORIGINAL_SERVER
         fun createOkHttp(cookieJar: CookieJar, cacheDir: File?, debug: Boolean): OkHttpClient {

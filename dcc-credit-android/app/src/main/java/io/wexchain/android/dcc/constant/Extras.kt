@@ -12,4 +12,5 @@ object Extras {
     const val EXTRA_DIGITAL_TRANSACTION = "digital_transaction"
     const val EXTRA_FTC_TRANSFER_FEE_RATE = "ftc_transfer_fee_rate"
     const val EXTRA_BANK_CARD_PHONE_NUM = "bank_card_phone_num"
+    const val EXTRA_MARKETING_ACTIVITY = "dcc_marketing_activity"
 }

@@ -3,6 +3,7 @@ package io.wexchain.android.common
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleOwner
 import android.support.annotation.MainThread
+import android.util.Log
 
 /**
  * Created by sisel on 2018/3/5.
@@ -34,6 +35,10 @@ inline fun LifecycleOwner.atLeastOnState(
 ) {
     if (this.lifecycle.currentState.isAtLeast(state)) {
         action()
+    }else{
+        Lg.withLogEnabled {
+            Log.w("lifecycle","lifecycle not satisfied for action")
+        }
     }
 }
 
