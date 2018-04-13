@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CardView.Light.Dcc">
+        <item name="cardCornerRadius">12dp</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="contentPadding">8dp</item>
+
+        <item name="android:stateListAnimator">@animator/card_state_animator</item>
+    </style>
+</resources>

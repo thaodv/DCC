@@ -14,13 +14,13 @@ object JuzixData {
 
     fun init(app: App) {
         juzixPrefs = JuzixPrefs(app)
-        app.chainGateway.getErc20ContractAddress(Currencies.FTC.symbol)
-                .compose(Result.checked())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { address ->
-                    juzixPrefs.ftcContractAddress.set(address)
-                    update()
-                }
+//        app.chainGateway.getErc20ContractAddress(Currencies.FTC.symbol)
+//                .compose(Result.checked())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe { address ->
+//                    juzixPrefs.ftcContractAddress.set(address)
+//                    update()
+//                }
         app.chainGateway.getErc20ContractAddress(Currencies.DCC.symbol)
                 .compose(Result.checked())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -35,10 +35,10 @@ object JuzixData {
                 Chain.publicEthChain to cc.sisel.ewallet.BuildConfig.DCC_PUBLIC_ADDRESS,
                 Chain.JUZIX_PRIVATE to juzixPrefs.dccContractAddress.get()!!
         ))
-        val ftc = Currencies.FTC.copy(contractAddress = juzixPrefs.ftcContractAddress.get()!!)
+//        val ftc = Currencies.FTC.copy(contractAddress = juzixPrefs.ftcContractAddress.get()!!)
         App.get().assetsRepository.setPinnedList( listOf(
                 Currencies.DCC,
-                ftc,
+//                ftc,
                 Currencies.Ethereum
         ))
     }

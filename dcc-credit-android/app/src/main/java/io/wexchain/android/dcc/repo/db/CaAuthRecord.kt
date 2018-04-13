@@ -24,4 +24,8 @@ data class CaAuthRecord(
         const val COLUMN_REQUEST_APP_NAME = "request_app_name"
         const val COLUMN_TIME = "time"
     }
+
+    fun presentName(): String {
+        return (requestAppName ?: requestAppId)
+    }
 }

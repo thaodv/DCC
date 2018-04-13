@@ -5,6 +5,9 @@
 
     <dimen name="notice_margin_vertical">10dp</dimen>
     <dimen name="content_padding_horizontal">16dp</dimen>
+    <dimen name="margin_content_horizontal">16dp</dimen>
 
-    <dimen name="divider_stroke_width">1dp</dimen>
+    <dimen name="divider_stroke_width">1px</dimen>
+
+    <dimen name="dialog_elevation">6dp</dimen>
 </resources>

@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import com.google.gson.JsonSyntaxException
 import com.wexmarket.android.passport.base.BindActivity
-import com.wexmarket.android.passport.ui.fragment.PasteKeystoreFragment
-import com.wexmarket.android.passport.ui.fragment.PastePrivateKeyFragment
+import io.wexchain.android.dcc.fragment.PasteKeystoreFragment
+import io.wexchain.android.dcc.fragment.PastePrivateKeyFragment
 import io.reactivex.Single
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.chain.PassportOperations
+import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.auth.R
 import io.wexchain.auth.databinding.ActivityPassportImportBinding
 import kotlinx.android.synthetic.main.activity_passport_import.*
@@ -73,6 +74,9 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
     private fun onImportSuccess() {
         toast("导入成功")
         finish()
+        navigateTo(PassportCreationSucceedActivity::class.java){
+            putExtra(Extras.FROM_IMPORT,true)
+        }
     }
 
     private fun showError(e: Throwable) {

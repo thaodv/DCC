@@ -1,6 +1,6 @@
 <resources>
-    <string name="dcc_app_name">数字资产借贷</string>
-    <string name="title_my_credit">资料认证</string>
+    <string name="dcc_app_name">BitExpress</string>
+    <string name="title_my_credit">我的信用</string>
     <string name="fill_info_warning">随意填写会对您的信用审核造成负面影响</string>
     <string name="auth_management">统一登录管理</string>
     <string name="title_bank_card_certification">银行卡认证</string>
@@ -50,6 +50,7 @@
     <string name="cancel">取消</string>
     <string name="no_more">没有更多了</string>
     <string name="time_format_yyyymmdd_hhmm">%1$tY-%1$tm-%1$td  %1$tH:%1$tM</string>
+    <string name="time_format_yyyymmdd">%1$tY-%1$tm-%1$td</string>
     <string name="time_format_yyyymmdd_hhmmss">%1$tY-%1$tm-%1$td  %1$tH:%1$tM:%1$tS</string>
     <string name="empty_slash">--</string>
     <string name="quote_source_colon">来源:%1$s</string>
@@ -101,5 +102,26 @@
     <string name="please_input_phone_no">请输入手机号码</string>
     <string name="phone_service_password">服务密码</string>
     <string name="please_input_phone_service_password">请输入服务密码</string>
+    <string name="passport_removal">删除通行证</string>
+    <string name="title_remove_passport">删除通行证</string>
+    <string name="remove_passport_description">删除通行证后,您只能通过导入通行证恢复当前通行证的使用,如果您为备份通行证,则无法继续使用当前通行证.强烈建议您在删除通行证之前备份通行证</string>
+    <string name="description_remove_passport">您尚未开启本地安全保护,用户仅能通过导入通行证备份恢复当前通行证的使用.建议在删除通行证之前备份通行证</string>
+    <string name="click_here_to_passport">点击这里备份通行证</string>
+    <string name="passport_backup">通行证备份</string>
+    <string name="export_keystore_description">二维码显示的是KeyStore信息,KEYSTORE是私钥的签名保护文件,通过通行证密码对KEYSTORE文件签名.单独拥有KEYSTORE文件或者通行证密码都无法使用通行证.而同时拥有KEYSTORE文件和通行证密码则可以再任何设备使用通行证.强烈建议您在使用通行证前做好备份</string>
+    <string name="export_private_key_description">当前二维码显示的是私钥明文,私钥明文是您对通行证所有权的认证方式.通过导入私钥可以再任何设备使用通行证,并创建通行证对应的KeyStore文件和通行证密码.强烈建议您在使用通行证前做好备份.</string>
+    <string name="please_input_current_passport_password">请输入原通行证密码:</string>
+    <string name="please_input_new_passport_password">请输入新通行证密码:</string>
+    <string name="password_length_invalid">密码长度应在8至20位之间</string>
+    <string name="hint_search_token">搜索Token名称、简写或合约地址</string>
+    <string name="submit_new_token">提交新token</string>
+    <string name="please_select">请选择</string>
+    <string name="default_nickname">会员</string>
+    <string name="status_enabled">统一登录状态:可用</string>
+    <string name="status_disabled">统一登录状态:不可用</string>
+    <string name="please_try_ocr">请点击上方按钮拍照识别</string>
+    <string name="creation_succeed">创建成功</string>
+    <string name="import_succeed">导入成功</string>
+    <string name="hint_enable_local_protect">为了您的TODO安全，建议您先开启本地安全保护</string>
 
 </resources>

@@ -1,8 +1,11 @@
 package io.wexchain.android.dcc.tools
 
 import android.databinding.BindingAdapter
+import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
+import android.media.Image
 import android.net.Uri
+import android.support.annotation.DrawableRes
 import android.text.TextUtils
 import android.text.method.PasswordTransformationMethod
 import android.view.View
@@ -17,6 +20,15 @@ var View.visibleOrGone
     set(value) {
         this.visibility = if (value) View.VISIBLE else View.GONE
     }
+
+@BindingAdapter("imageRes")
+fun ImageView.setImageRes(@DrawableRes res:Int?){
+    if (res == null || res == 0){
+        this.setImageDrawable(null)
+    }else{
+        this.setImageResource(res)
+    }
+}
 
 @BindingAdapter("imageRawBytes","errorRes")
 fun ImageView.setImageRawBytes(imageRawBytes: ByteArray?,errorRes:Drawable?){
@@ -37,6 +49,19 @@ fun setImageUrl(imageView: ImageView, url: String?, errorRes: Drawable?) {
     GlideApp.with(imageView).load(url)
             .error(errorRes)
             .into(imageView)
+}
+
+@BindingAdapter("bgUrl")
+fun View.setBackgroundUrl(url: String?){
+    val target = ViewBackgroundTarget(this)
+    if (url.isNullOrBlank()){
+        GlideApp.with(this)
+                .clear(target)
+    }else {
+        GlideApp.with(this)
+                .load(url)
+                .into(target)
+    }
 }
 
 @BindingAdapter("imageUri", "errorRes")
@@ -70,3 +95,4 @@ fun setPasswordSecure(editText: EditText, passwordSecure: Boolean) {
     }
     editText.setSelection(editText.text.length)
 }
+

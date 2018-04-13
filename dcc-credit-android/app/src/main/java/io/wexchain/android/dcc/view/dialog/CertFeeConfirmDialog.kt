@@ -15,6 +15,8 @@ class CertFeeConfirmDialog : DialogFragment() {
 
     private var onConfirm: (() -> Unit)? = null
 
+    private var fee: Long = 0L
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<DialogCertFeeBinding>(inflater, R.layout.dialog_cert_fee, container, false)
         val vm = getViewModel<CertFeeConfirmVm>().apply {
@@ -22,10 +24,11 @@ class CertFeeConfirmDialog : DialogFragment() {
                 onConfirm?.invoke()
                 dismiss()
             })
+            fee.set("${this@CertFeeConfirmDialog.fee} DCC")
+            loadHolding()
         }
         binding.vm = vm
         return binding.root
-
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -40,9 +43,10 @@ class CertFeeConfirmDialog : DialogFragment() {
     }
 
     companion object {
-        fun create(onConfirm: () -> Unit): CertFeeConfirmDialog {
+        fun create(fee:Long,onConfirm: () -> Unit): CertFeeConfirmDialog {
             val certFeeConfirmDialog = CertFeeConfirmDialog()
             certFeeConfirmDialog.onConfirm = onConfirm
+            certFeeConfirmDialog.fee = fee
             return certFeeConfirmDialog
         }
     }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
+
+    <data>
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+        <import type="io.wexchain.dccchainservice.domain.MarketingActivityScenario.Qualification"/>
+        <variable
+                name="scene"
+                type="io.wexchain.dccchainservice.domain.MarketingActivityScenario"/>
+    </data>
+
+    <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="80dp"
+            style="@style/CardView.Light.Dcc"
+            app:cardCornerRadius="0dp"
+            >
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:text="@{scene.name}"
+                tools:text="身份认证"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@{ViewModelHelper.getDccStr(scene.amount)}"
+                tools:text="2.33 DCC"
+                />
+
+        <Button
+                android:id="@+id/btn_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="80dp"
+                android:layout_gravity="right|center_vertical"
+                android:text="@{ViewModelHelper.getMarketingScenarioActionText(context,scene.qualification)}"
+                android:enabled="@{scene.qualification!=Qualification.REDEEMED}"
+                tools:text="领取"
+                />
+
+    </android.support.v7.widget.CardView>
+</layout>

@@ -7,7 +7,7 @@ import android.view.View
 import com.google.gson.Gson
 import com.megvii.livenesslib.LivenessActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.wexmarket.android.passport.RequestCodes
+import io.wexchain.android.dcc.constant.RequestCodes
 import com.wexmarket.android.passport.ResultCodes
 import com.wexmarket.android.passport.base.BindFragment
 import io.reactivex.android.schedulers.AndroidSchedulers

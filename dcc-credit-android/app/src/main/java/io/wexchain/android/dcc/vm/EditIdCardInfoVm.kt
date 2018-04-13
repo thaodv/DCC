@@ -6,6 +6,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
 import io.wexchain.android.idverify.IdCardEssentialData
+import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.domain.IdOcrInfo
 import io.wexchain.dccchainservice.domain.Result
@@ -31,6 +32,7 @@ class EditIdCardInfoVm : ViewModel() {
     val authority = ObservableField<String>()
 
     val ocrEvent = SingleLiveEvent<IdOcrInfo.IdCardInfo>()
+    val ocrFailEvent = SingleLiveEvent<Throwable>()
     val proceedEvent = SingleLiveEvent<IdCardEssentialData>()
     val informationIncompleteEvent = SingleLiveEvent<CharSequence>()
 
@@ -54,8 +56,8 @@ class EditIdCardInfoVm : ViewModel() {
         val n = name.get()
         val id = idNo.get()
         val tl = timeLimit.get()
-        if (n == null) {
-            informationIncompleteEvent.value = "请填写姓名"
+        if (n == null || n.length !in 2..50) {
+            informationIncompleteEvent.value = "请输入正确的姓名"
             return
         }
         if (id == null) {
@@ -63,18 +65,18 @@ class EditIdCardInfoVm : ViewModel() {
             return
         }
         if (tl == null) {
-            informationIncompleteEvent.value = "请填写有效期限"
+            informationIncompleteEvent.value = "请输入正确的有效期"
             return
         }
         IdCardEssentialData.from(
-            n,
-            id,
-            tl,
-            sex.get(),
-            race.get(),
-            year, month, dayOfMonth,
-            address.get(),
-            authority.get()
+                n,
+                id,
+                tl,
+                sex.get(),
+                race.get(),
+                year, month, dayOfMonth,
+                address.get(),
+                authority.get()
         )?.let {
             proceedEvent.value = it
         }
@@ -88,56 +90,60 @@ class EditIdCardInfoVm : ViewModel() {
 
     fun toIdCardInfo(): IdOcrInfo.IdCardInfo {
         return IdOcrInfo.IdCardInfo(
-            address = address.get(),
-            day = dayOfMonth.toString(),
-            month = month.toString(),
-            year = year.toString(),
-            nation = race.get(),
-            sex = sex.get(),
-            name = name.get(),
-            number = idNo.get(),
-            authority = authority.get(),
-            timelimit = timeLimit.get()
+                address = address.get(),
+                day = dayOfMonth.toString(),
+                month = month.toString(),
+                year = year.toString(),
+                nation = race.get(),
+                sex = sex.get(),
+                name = name.get(),
+                number = idNo.get(),
+                authority = authority.get(),
+                timelimit = timeLimit.get()
         )
     }
 
-    fun doOcrFront() {
-        val front:ByteArray? = imgFront.get()
-        if(front!=null){
-            App.get().certApi.idOcr(CertApi.uploadFilePart(front,"front.jpg","image/jpeg"))
+    fun setImage(imgBytes: ByteArray?, side: Int) {
+        if(imgBytes!=null){
+            when(side){
+                IdVerifyHelper.SIDE_FRONT ->{
+                    imgFront.set(imgBytes)
+                }
+                IdVerifyHelper.SIDE_BACK->{
+                    imgBack.set(imgBytes)
+                }
+            }
+            App.get().certApi.idOcr(CertApi.uploadFilePart(imgBytes, "id.jpg", "image/jpeg"))
                     .compose(Result.checked())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { info->
-                        if(front === imgFront.get()){
-                            if(info.side == IdOcrInfo.Side.front){
+                    .subscribe({ info ->
+                        if (side==IdVerifyHelper.SIDE_BACK && imgBytes === imgBack.get()) {
+                            if (info.side == IdOcrInfo.Side.back) {
 
-                            }else{
+                            } else {
                                 //todo
                             }
                             setInfoFromIdCardInfo(info.idCardInfo)
                             ocrEvent.value = info.idCardInfo
                         }
-                    }
-        }
-    }
+                        if (side==IdVerifyHelper.SIDE_FRONT && imgBytes === imgFront.get()) {
+                            if (info.side == IdOcrInfo.Side.back) {
 
-    fun doOcrBack() {
-        val back:ByteArray? = imgBack.get()
-        if(back!=null){
-            App.get().certApi.idOcr(CertApi.uploadFilePart(back,"back.jpg","image/jpeg"))
-                    .compose(Result.checked())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { info->
-                        if(back === imgBack.get()){
-                            if(info.side == IdOcrInfo.Side.back){
-
-                            }else{
+                            } else {
                                 //todo
                             }
                             setInfoFromIdCardInfo(info.idCardInfo)
                             ocrEvent.value = info.idCardInfo
                         }
-                    }
+                    }, {
+                        ocrFailEvent.value = it
+                        if (side==IdVerifyHelper.SIDE_BACK && imgBytes === imgBack.get()) {
+                            imgBack.set(null)
+                        }
+                        if (side==IdVerifyHelper.SIDE_FRONT && imgBytes === imgFront.get()) {
+                            imgFront.set(null)
+                        }
+                    })
         }
     }
 

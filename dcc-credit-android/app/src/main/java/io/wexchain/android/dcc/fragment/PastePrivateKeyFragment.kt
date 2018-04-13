@@ -1,11 +1,12 @@
-package com.wexmarket.android.passport.ui.fragment
+package io.wexchain.android.dcc.fragment
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.wexmarket.android.passport.RequestCodes
+import io.wexchain.android.dcc.constant.RequestCodes
 import com.wexmarket.android.passport.base.BindFragment
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -29,6 +30,9 @@ class PastePrivateKeyFragment :BindFragment<FragmentPastePrivateKeyBinding>() {
         val inputPassword = ViewModelProviders.of(this).get(InputPasswordVm::class.java)
         inputPassword.passwordHint.set(context!!.getString(R.string.please_set_passport_password))
         inputPassword.reset()
+        inputPassword.secureChangedEvent.observe(this, Observer {
+            binding.executePendingBindings()
+        })
         binding.inputPassword = inputPassword
         binding.ivScan.setOnClickListener {
             requestScan()

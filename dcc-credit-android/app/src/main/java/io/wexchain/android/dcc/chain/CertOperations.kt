@@ -3,6 +3,7 @@ package io.wexchain.android.dcc.chain
 import android.content.Context
 import android.content.SharedPreferences
 import android.support.v4.app.FragmentManager
+import android.util.Base64
 import com.google.gson.Gson
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -22,16 +23,17 @@ import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
-import io.wexchain.dccchainservice.domain.CertOrder
-import io.wexchain.dccchainservice.domain.CertProcess
-import io.wexchain.dccchainservice.domain.CertStatus
-import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.dccchainservice.domain.*
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
+import java.util.*
 
 object CertOperations {
+
+    const val ERROR_SUBMIT_ID_NOT_MATCH = "提交认证信息与已认证身份证信息不一致"
+
     private const val DIGEST = "SHA256"
 
     private lateinit var certPrefs: CertPrefs
@@ -46,7 +48,7 @@ object CertOperations {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val fee = it.toLong()
-                    CertFeeConfirmDialog.create(proceedAction).show(context(), "confirm_cert_fee")
+                    CertFeeConfirmDialog.create(fee,proceedAction).show(context(), "confirm_cert_fee")
 //                    if (fee > 0){
 //                        CertFeeConfirmDialog.create(proceedAction).show(context(),"confirm_cert_fee")
 //                    }else{
@@ -75,9 +77,27 @@ object CertOperations {
         val certApi = App.get().certApi
         val business = ChainGateway.BUSINESS_ID
         val authKey = passport.authKey!!
-        val nonce = privateChainNonce(credentials.address)
+        val address = passport.address
+        val nonce = privateChainNonce(address)
 
-        return Single.just(credentials)
+        return api.getCertData(address,business)
+                .compose(Result.checked())
+                .map {
+                    val data = name.toByteArray(Charsets.UTF_8) + id.toByteArray(Charsets.UTF_8)
+                    val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
+                    val content = it.content
+                    if(content == null || content.digest1.isEmpty()){
+                        //ok
+                    }else{
+                        val de = Base64.decode(content.digest1, Base64.DEFAULT)
+                        if(Arrays.equals(de,digest1)){
+                            //ok
+                        }else{
+                            throw IllegalStateException(ERROR_SUBMIT_ID_NOT_MATCH)
+                        }
+                    }
+                    credentials
+                }
                 .observeOn(Schedulers.computation())
                 .map {
 
@@ -105,13 +125,13 @@ object CertOperations {
                 .flatMap {
                     certApi
                             .idVerify(
-                                    address = credentials.address,
+                                    address = address,
                                     orderId = it.orderId,
                                     realName = name,
                                     certNo = id,
                                     file = CertApi.uploadFilePart(photo, "user.jpg", "image/jpeg"),
                                     signature = ParamSignatureUtil.sign(authKey.getPrivateKey(), mapOf<String, String>(
-                                            "address" to credentials.address,
+                                            "address" to address,
                                             "orderId" to it.orderId.toString(),
                                             "realName" to name,
                                             "certNo" to id
@@ -157,11 +177,11 @@ object CertOperations {
                     onOrderCreated(it.orderId)
                 }
                 .flatMap {
-                    verifyBankCardCert(passport,bankCardInfo,accountName,id,it.orderId)
+                    verifyBankCardCert(passport, bankCardInfo, accountName, id, it.orderId)
                 }
     }
 
-    fun verifyBankCardCert(passport: Passport, bankCardInfo: BankCardInfo, accountName: String, id: String,orderId: Long): Single<String> {
+    fun verifyBankCardCert(passport: Passport, bankCardInfo: BankCardInfo, accountName: String, id: String, orderId: Long): Single<String> {
         require(passport.authKey != null)
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
@@ -220,10 +240,11 @@ object CertOperations {
             val tx = cmLogApply.txSigned(passport.credential, contractAddress, nonce)
             api.certApply(ticket.ticket, tx, null, business)
                     .compose(Result.checked())
-        }.certOrderByTx(api,business)
+        }.certOrderByTx(api, business)
     }
 
-    fun requestCommunicationLog(passport: Passport,orderId: Long,name:String,id:String,phoneNo:String,password:String): Single<CertProcess> {
+    fun requestCommunicationLog(passport: Passport, orderId: Long, name: String, id: String, phoneNo: String, password: String): Single<CertProcess> {
+        require(passport.authKey != null)
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
         return App.get().certApi.requestCommunicationLogData(
@@ -240,6 +261,72 @@ object CertOperations {
                         "certNo" to id,
                         "phoneNo" to phoneNo,
                         "password" to password
+                ))
+        ).compose(Result.checked())
+    }
+
+    fun advanceCommunicationLog(
+            passport: Passport,
+            orderId: Long,
+            name: String,
+            id: String,
+            phoneNo: String,
+            password: String,
+            process: CertProcess,
+            captcha: String? = null,
+            queryPwd: String? = null
+    ): Single<CertProcess> {
+        require(passport.authKey != null)
+        val address = passport.address
+        val privateKey = passport.authKey!!.getPrivateKey()
+        return App.get().certApi.requestCommunicationLogDataAdvance(
+                address = address,
+                orderId = orderId,
+                userName = name,
+                certNo = id,
+                phoneNo = phoneNo,
+                password = password,
+                token = process.token,
+                processCode = process.processCode,
+                website = process.website,
+                captcha = captcha,
+                queryPwd = queryPwd,
+                signature = ParamSignatureUtil.sign(privateKey, mapOf(
+                        "address" to address,
+                        "orderId" to orderId.toString(),
+                        "userName" to name,
+                        "certNo" to id,
+                        "phoneNo" to phoneNo,
+                        "password" to password,
+                        "token" to process.token,
+                        "processCode" to process.processCode,
+                        "website" to process.website,
+                        "captcha" to captcha,
+                        "queryPwd" to queryPwd
+                ))
+        ).compose(Result.checked())
+
+    }
+
+    fun getCommunicationLogReport(passport: Passport): Single<CmLogReportData> {
+        require(passport.authKey != null)
+        val address = passport.address
+        val privateKey = passport.authKey!!.getPrivateKey()
+        val orderId = certPrefs.certCmLogOrderId.get()
+        val (name,id) = getCertId()!!
+        val phoneNo = certPrefs.certCmLogPhoneNo.get()!!
+        return App.get().certApi.getCommunicationLogReport(
+                address = address,
+                orderId = orderId,
+                userName = name,
+                certNo = id,
+                phoneNo = phoneNo,
+                signature = ParamSignatureUtil.sign(privateKey, mapOf(
+                        "address" to address,
+                        "orderId" to orderId.toString(),
+                        "userName" to name,
+                        "certNo" to id,
+                        "phoneNo" to phoneNo
                 ))
         ).compose(Result.checked())
     }
@@ -266,17 +353,17 @@ object CertOperations {
     }
 
     fun getCertIdData(): IdCardEssentialData? {
-        if (!isIdCertPassed()){
+        if (!isIdCertPassed()) {
             return null
         }
         val dataStr = certPrefs.certIdData.get()
         return dataStr?.run {
-            gson.fromJson(this,IdCardEssentialData::class.java)
+            gson.fromJson(this, IdCardEssentialData::class.java)
         }
     }
 
     fun getCertId(): Pair<String, String>? {
-        if (!isIdCertPassed()){
+        if (!isIdCertPassed()) {
             return null
         }
         val name = certPrefs.certRealName.get()
@@ -298,13 +385,13 @@ object CertOperations {
         return true
     }
 
-    fun getCertBankCardData():BankCardInfo?{
-        if (!isBankCertPassed()){
+    fun getCertBankCardData(): BankCardInfo? {
+        if (!isBankCertPassed()) {
             return null
         }
         val dataStr = certPrefs.certBankCardData.get()
         return dataStr?.run {
-            gson.fromJson(this,BankCardInfo::class.java)
+            gson.fromJson(this, BankCardInfo::class.java)
         }
     }
 
@@ -312,7 +399,7 @@ object CertOperations {
         return certPrefs.certBankExpired.get()
     }
 
-    fun isBankCertPassed():Boolean{
+    fun isBankCertPassed(): Boolean {
         if (certPrefs.certBankOrderId.get() == INVALID_CERT_ORDER_ID) {
             return false
         }
@@ -321,6 +408,19 @@ object CertOperations {
             return false
         }
         return true
+    }
+
+    fun getCmLogUserStatus():UserCertStatus{
+        return if (certPrefs.certCmLogOrderId.get() == INVALID_CERT_ORDER_ID) {
+            UserCertStatus.NONE
+        }else{
+            val state = certPrefs.certCmLogState.get()
+            if(state == null){
+                UserCertStatus.NONE
+            }else{
+                UserCertStatus.valueOf(state)
+            }
+        }
     }
 
     fun getCertStatus(certificationType: CertificationType): UserCertStatus {
@@ -333,15 +433,17 @@ object CertOperations {
                 }
             }
             CertificationType.BANK -> {
-                if(isBankCertPassed()){
+                if (isBankCertPassed()) {
                     UserCertStatus.DONE
-                }else{
+                } else {
                     UserCertStatus.NONE
                 }
             }
-            else-> UserCertStatus.NONE
+            CertificationType.MOBILE -> {
+                getCmLogUserStatus()
+            }
+            else -> UserCertStatus.NONE
 //            CertificationType.PERSONAL -> TODO()
-//            CertificationType.MOBILE -> TODO()
         }
     }
 
@@ -362,7 +464,7 @@ object CertOperations {
     private fun certIdPhotoFileName(order: CertOrder) =
             "cert${File.separator}id${File.separator}${order.orderId}.jpg"
 
-    fun clearAllCertData(){
+    fun clearAllCertData() {
         certPrefs.clearAll()
     }
 
@@ -372,6 +474,36 @@ object CertOperations {
         certPrefs.certBankExpired.set(certOrder.content.expired)
         certPrefs.certBankCardData.set(gson.toJson(bankCardInfo))
     }
+
+    fun onCmLogRequestSuccess(orderId: Long,phoneNo: String,password: String) {
+        certPrefs.certCmLogOrderId.set(orderId)
+        certPrefs.certCmLogState.set(UserCertStatus.INCOMPLETE.name)
+        certPrefs.certCmLogPhoneNo.set(phoneNo)
+        certPrefs.certCmLogPassword.set(password)
+    }
+
+    fun onCmLogFail(){
+        certPrefs.run {
+            certCmLogState.clear()
+            certCmLogOrderId.clear()
+            certCmLogPhoneNo.clear()
+            certCmLogPassword.clear()
+        }
+    }
+
+    fun onCmLogSuccessGot(reportData: String) {
+        certPrefs.certCmLogState.set(UserCertStatus.DONE.name)
+        val orderId = certPrefs.certCmLogOrderId.get()
+        Schedulers.io().scheduleDirect {
+            File(App.get().filesDir, certCmLogReportFileName(orderId)).apply {
+                ensureNewFile()
+                writeBytes(Base64.decode(reportData,Base64.DEFAULT))
+            }
+        }
+    }
+
+    private fun certCmLogReportFileName(orderId: Long) =
+            "cert${File.separator}cmlog${File.separator}$orderId.dat"
 
     private val gson = Gson()
     private const val INVALID_CERT_ORDER_ID = -1L
@@ -389,5 +521,11 @@ object CertOperations {
         val certBankStatus = StringPref("certBankStatus")
         val certBankExpired = LongPref("certBankExpired", -1L)
         val certBankCardData = StringPref("certBankCardData")
+
+        //communication log
+        val certCmLogOrderId = LongPref("certCmLogOrderId", INVALID_CERT_ORDER_ID)
+        val certCmLogState = StringPref("certCmLogState")
+        val certCmLogPhoneNo = StringPref("certCmLogPhoneNo")
+        val certCmLogPassword = StringPref("certCmLogPassword")
     }
 }

@@ -1,6 +1,7 @@
 package io.wexchain.android.dcc
 
 import android.os.Bundle
+import android.os.SystemClock
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BaseCompatActivity
@@ -23,6 +24,7 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
 
     private var submitOrderId: Long? = null
     private var submitTicket: String? = null
+    private var submitTicketUpTimeStamp: Long? = null
 
     private lateinit var passport: Passport
     private lateinit var realName: String
@@ -73,6 +75,7 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
         CertOperations.verifyBankCardCert(passport, info, realName, realId, orderId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
+                    setSmsTicket(it)
                     toast("已重发验证码")
                 }
     }
@@ -105,12 +108,19 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
                     hideLoadingDialog()
                 }
                 .subscribe({
-                    this.submitTicket = it
+                    setSmsTicket(it)
                     enterStep(STEP_VERIFY_BANK_CARD_SMS_CODE)
                 }, {
                     //todo
                     stackTrace(it)
                 })
+    }
+
+    private fun setSmsTicket(it: String?) {
+        this.submitTicket = it
+        val uptimeMillis = SystemClock.uptimeMillis()
+        this.submitTicketUpTimeStamp = uptimeMillis
+        verifyBankSmsCodeFragment.smsUpTimeStamp = uptimeMillis
     }
 
     private fun doAdvance(code: String) {
@@ -131,11 +141,9 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
                 .doFinally {
                     hideLoadingDialog()
                 }
-                .subscribe({
+                .subscribe { it ->
                     handleCertResult(it, bankCardInfo!!)
-                }, {
-
-                })
+                }
     }
 
     private fun handleCertResult(certOrder: CertOrder, bankCardInfo: BankCardInfo) {

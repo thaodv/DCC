@@ -70,19 +70,19 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical|right"
             android:layout_marginTop="8dp"
-            android:minWidth="140dp"
             android:textColor="?attr/colorAccent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_currency_logo"
             android:text="@{ViewModelHelper.getBalanceStr(dc,holdingMap[dc])}"
             tools:text="4371538.38"
+            android:background="@drawable/background_holding"
             />
 
         <TextView
             android:id="@+id/tv_currency_approx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="18dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="4dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_currency_amount"
@@ -92,6 +92,7 @@
 
         <View
             style="@style/DividerHorizontal"
+            android:layout_width="0dp"
             android:layout_marginTop="4dp"
             app:layout_constraintLeft_toRightOf="@id/iv_currency_logo"
             app:layout_constraintRight_toRightOf="parent"

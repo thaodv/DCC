@@ -1,18 +1,17 @@
-package com.wexmarket.android.passport.ui.fragment
+package io.wexchain.android.dcc.fragment
 
 import android.app.Activity
-import android.arch.lifecycle.ViewModelProviders
+import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.wexmarket.android.passport.RequestCodes
+import io.wexchain.android.dcc.constant.RequestCodes
 import com.wexmarket.android.passport.base.BindFragment
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.QrScannerActivity
-import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.repo.PassportRepository
 import io.wexchain.android.dcc.tools.isKeyStoreValid
 import io.wexchain.android.dcc.tools.isPasswordValid
@@ -34,6 +33,9 @@ class PasteKeystoreFragment: BindFragment<FragmentPasteKeystoreBinding>() {
             passwordHint.set(context!!.getString(R.string.please_input_passport_password))
             reset()
         }
+        inputPasswordVm.secureChangedEvent.observe(this, Observer {
+            binding.executePendingBindings()
+        })
         binding.inputPassword = inputPasswordVm
         binding.ivScan.setOnClickListener {
             requestScan()
@@ -41,7 +43,7 @@ class PasteKeystoreFragment: BindFragment<FragmentPasteKeystoreBinding>() {
     }
 
     private fun requestScan() {
-        startActivityForResult(Intent(context,QrScannerActivity::class.java),RequestCodes.SCAN)
+        startActivityForResult(Intent(context,QrScannerActivity::class.java), RequestCodes.SCAN)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

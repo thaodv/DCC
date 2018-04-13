@@ -1,6 +1,10 @@
 package io.wexchain.android.dcc
 
 import android.os.Bundle
+import android.support.v4.app.DialogFragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.replaceFragment
@@ -34,7 +38,7 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
     }
 
     private fun showConfirmCertFeeDialog() {
-        CertOperations.confirmCertFee({supportFragmentManager},ChainGateway.BUSINESS_ID){
+        CertOperations.confirmCertFee({ supportFragmentManager }, ChainGateway.BUSINESS_ID) {
             doSubmitIdCert()
         }
     }
@@ -44,7 +48,7 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
         val photo = portrait
         val passport = App.get().passportRepository.getCurrentPassport()
         if (passport?.authKey != null && idData != null && photo != null) {
-            CertOperations.submitIdCert(passport,idData,photo)
+            CertOperations.submitIdCert(passport, idData, photo)
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSubscribe {
                         showLoadingDialog()
@@ -53,19 +57,22 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
                         hideLoadingDialog()
                     }
                     .subscribe({
-                        handleCertResult(it,idData,photo)
-                    },{
+                        handleCertResult(it, idData, photo)
+                    }, {
+                        if (it is IllegalStateException && it.message == CertOperations.ERROR_SUBMIT_ID_NOT_MATCH) {
+                            INMDialog().show(supportFragmentManager,null)
+                        }
                         stackTrace(it)
                     })
         }
     }
 
     private fun handleCertResult(certOrder: CertOrder, idData: IdCardEssentialData, photo: ByteArray) {
-        if (certOrder.status.isPassed()){
+        if (certOrder.status.isPassed()) {
             toast("认证成功")
-            CertOperations.saveIdCertData(certOrder,idData,photo)
+            CertOperations.saveIdCertData(certOrder, idData, photo)
             finish()
-        }else{
+        } else {
             toast("认证失败")
             supportFragmentManager.popBackStack()
         }
@@ -95,6 +102,14 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
                 replaceFragment(inputIdInfoFragment, R.id.fl_container)
             STEP_LIVENESS_DETECT ->
                 replaceFragment(livenessDetectionFragment, R.id.fl_container, backStackStateName = "step_$step")
+        }
+    }
+
+    class INMDialog : DialogFragment() {
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+            val view = inflater.inflate(R.layout.dialog_notice_id_not_match, container, false)
+            view.findViewById<View>(R.id.btn_confirm).setOnClickListener { dismiss() }
+            return view
         }
     }
 

@@ -7,9 +7,13 @@
         >
 
     <data>
+
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
         <variable
                 name="vm"
-                type="io.wexchain.android.dcc.vm.VerifyBankCardSmsCodeVm"/>
+                type="io.wexchain.android.dcc.vm.VerifyBankCardSmsCodeVm"
+                />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -66,9 +70,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:text="@string/send_sms_code"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:minWidth="60dp"
+                android:gravity="center"
+                android:text="@{ViewModelHelper.smsTimeText(context,vm.resendRemain)}"
+                android:enabled="@{ViewModelHelper.canResendSms(vm.resendRemain)}"
+                tools:text="@string/send_sms_code"
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_sms_code_label"
                 app:layout_constraintRight_toRightOf="parent"
+                android:textColor="?attr/colorAccent"
+                android:background="@drawable/rect_border"
                 />
 
         <EditText
@@ -81,6 +93,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:text="@={vm.code}"
+                android:background="@null"
                 />
 
         <View

@@ -3,9 +3,14 @@ package io.wexchain.android.dcc
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v4.view.ViewCompat
 import com.wexmarket.android.passport.base.BindActivity
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.toast
+import io.wexchain.android.common.withTransitionEnabled
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
@@ -18,11 +23,22 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupTransitions()
         initToolbar()
         binding.asIdVm = obtainAuthStatus(CertificationType.ID)
         binding.asBankVm = obtainAuthStatus(CertificationType.BANK)
         binding.asMobileVm = obtainAuthStatus(CertificationType.MOBILE)
         binding.asPersonalVm = obtainAuthStatus(CertificationType.PERSONAL)
+    }
+
+    private fun setupTransitions() {
+        withTransitionEnabled {
+            // avoid leaks
+            ViewCompat.setTransitionName(
+                    findViewById(R.id.appbar),
+                    Transitions.CARD_CREDIT
+            )
+        }
     }
 
     private fun obtainAuthStatus(certificationType: CertificationType): AuthenticationStatusVm? {
@@ -47,11 +63,36 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
 
     override fun onResume() {
         super.onResume()
-        listOf(binding.asIdVm,binding.asBankVm,binding.asMobileVm,binding.asPersonalVm).forEach {
-            it?.let {vm->
+        refreshCertStatus()
+    }
+
+    private fun refreshCertStatus() {
+        listOf(binding.asIdVm, binding.asBankVm, binding.asMobileVm, binding.asPersonalVm).forEach {
+            it?.let { vm ->
                 vm.certificationType.get()?.let {
                     vm.status.set(CertOperations.getCertStatus(it))
                 }
+            }
+        }
+        binding.asMobileVm?.let {
+            if(it.status.get() == UserCertStatus.INCOMPLETE){
+                //get report
+                val passport = App.get().passportRepository.getCurrentPassport()!!
+                CertOperations.getCommunicationLogReport(passport)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({data->
+                            if(data.fail){
+                                // generate report fail
+                                CertOperations.onCmLogFail()
+                                refreshCertStatus()
+                            }else{
+                                val reportData = data.reportData
+                                if (data.hasCompleted() && reportData !=null){
+                                    CertOperations.onCmLogSuccessGot(reportData)
+                                    refreshCertStatus()
+                                }
+                            }
+                        })
             }
         }
     }
@@ -91,10 +132,14 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                     navigateTo(SubmitBankCardActivity::class.java)
                 }
             CertificationType.MOBILE ->
-                if (status == UserCertStatus.DONE){
-                    navigateTo(CmLogCertificationActivity::class.java)
-                }else{
-                    navigateTo(SubmitCommunicationLogActivity::class.java)
+                when(status){
+                    UserCertStatus.NONE ->
+                        navigateTo(SubmitCommunicationLogActivity::class.java)
+                    UserCertStatus.INCOMPLETE ->{
+                        // get report processing
+                    }
+                    UserCertStatus.DONE ->
+                        navigateTo(CmLogCertificationActivity::class.java)
                 }
         }
     }

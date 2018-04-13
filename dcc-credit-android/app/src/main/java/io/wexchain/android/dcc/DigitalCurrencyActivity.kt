@@ -6,10 +6,9 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.*
-import com.wexmarket.android.passport.RequestCodes
+import io.wexchain.android.dcc.constant.RequestCodes
 import com.wexmarket.android.passport.ResultCodes
 import com.wexmarket.android.passport.base.BindActivity
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.constant.Extras
@@ -181,7 +180,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
             toCreateTransaction()
         }
         binding.btnToCollect.setOnClickListener {
-//            startActivity(Intent(this, PassportAddressActivity::class.java))
+            startActivity(Intent(this, PassportAddressActivity::class.java))
         }
     }
 

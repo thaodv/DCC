@@ -2,9 +2,7 @@ package io.wexchain.android.dcc.vm
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import android.view.View
 import io.wexchain.android.common.SingleLiveEvent
-import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.dcc.tools.isPhoneNumValid
 
 class InputPhoneInfoVm:ViewModel(){
