@@ -1,6 +1,8 @@
 package io.wexchain.dccchainservice.domain
 
 import java.io.Serializable
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 data class MarketingActivity(
@@ -20,5 +22,10 @@ data class MarketingActivity(
         SHELVED,// 尚未开始
         STARTED,// 已开始
         ENDED,// 已结束
+    }
+
+    companion object {
+        //eg 2018-04-13T17:15:23.699+08:00
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",Locale.CHINA)
     }
 }

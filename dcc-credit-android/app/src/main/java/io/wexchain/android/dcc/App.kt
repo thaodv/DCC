@@ -65,7 +65,7 @@ class App : MultiDexApplication() {
 
     private fun initData(app: App) {
         val dao = PassportDatabase.createDatabase(this).dao
-        passportRepository = PassportRepository(app)
+        passportRepository = PassportRepository(app,dao)
         passportRepository.load()
         assetsRepository = AssetsRepository(
                 dao,

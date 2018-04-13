@@ -51,6 +51,19 @@ fun setImageUrl(imageView: ImageView, url: String?, errorRes: Drawable?) {
             .into(imageView)
 }
 
+@BindingAdapter("bgUrl")
+fun View.setBackgroundUrl(url: String?){
+    val target = ViewBackgroundTarget(this)
+    if (url.isNullOrBlank()){
+        GlideApp.with(this)
+                .clear(target)
+    }else {
+        GlideApp.with(this)
+                .load(url)
+                .into(target)
+    }
+}
+
 @BindingAdapter("imageUri", "errorRes")
 fun setImageUri(imageView: ImageView, uri: Uri?, errorRes: Drawable?) {
     if (uri == null) {
@@ -82,3 +95,4 @@ fun setPasswordSecure(editText: EditText, passwordSecure: Boolean) {
     }
     editText.setSelection(editText.text.length)
 }
+

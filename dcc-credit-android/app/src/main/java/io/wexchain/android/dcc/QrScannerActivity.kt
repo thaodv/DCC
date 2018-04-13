@@ -81,7 +81,7 @@ class QrScannerActivity : BindActivity<ActivityQrScannerBinding>() {
     private fun onScanResult(text: String) {
         beepManager.playBeepSound()
         when (scanType) {
-            SCAN_TYPE_AUTH_REQUEST -> {
+//            SCAN_TYPE_AUTH_REQUEST -> {
 //                val authRequest = tryParseAuthRequest(text)
 //                if (authRequest != null) {
 //                    if (resultWaiting.compareAndSet(false, true)) {
@@ -93,7 +93,7 @@ class QrScannerActivity : BindActivity<ActivityQrScannerBinding>() {
 //                } else {
 //                    toast("不是有效的认证请求信息")
 //                }
-            }
+//            }
             SCAN_TYPE_ADDRESS -> {
                 if (isEthAddress(text)) {
                     setResult(Activity.RESULT_OK, Intent().apply {

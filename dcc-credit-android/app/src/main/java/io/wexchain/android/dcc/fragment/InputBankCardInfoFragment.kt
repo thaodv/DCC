@@ -57,6 +57,9 @@ class InputBankCardInfoFragment: BindFragment<FragmentInputBankCardBinding>(), I
             submitEvent.observe(this@InputBankCardInfoFragment, Observer {
                 it?.let { listener?.onProceed(it) }
             })
+            informationIncompleteEvent.observe(this@InputBankCardInfoFragment, Observer {
+                it?.let { toast("请输入完整信息") }
+            })
         }
         binding.vm = viewModel
         binding.inputBank.setOnClickListener {

@@ -9,20 +9,11 @@
         android:layout_width="60dp"
         android:layout_height="60dp">
 
-        <!--<com.wexmarket.android.passport.ui.view.LoadingCircleView-->
-        <!--android:layout_width="60dp"-->
-        <!--android:layout_height="60dp"-->
-        <!--android:layout_gravity="center"-->
-        <!--app:lcLineWidth="3dp"-->
-        <!--app:lcAnimColor="#ff136d"-->
-        <!--app:lcBgColor="#333333"-->
-        <!--/>-->
-
         <ImageView
             android:id="@+id/iv_gear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher"
+            android:src="@drawable/loading_gear"
             android:layout_gravity="center"
             />
 
@@ -31,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/ic_trash"
+            android:src="@drawable/loading_slogan"
             />
     </FrameLayout>
 

@@ -75,6 +75,25 @@ object ViewModelHelper {
     }
 
     @JvmStatic
+    fun Context.getMarketingActivityStatusText(status: MarketingActivity.Status?): String {
+        return when (status) {
+            MarketingActivity.Status.SHELVED -> "未开始"
+            MarketingActivity.Status.STARTED -> "进行中"
+            MarketingActivity.Status.ENDED -> "已结束"
+            null -> ""
+        }
+    }
+
+    @JvmStatic
+    fun Context.getMarketingActivityStartTimeText(ma: MarketingActivity?): String? {
+
+        return ma?.let {
+            val date = MarketingActivity.dateFormat.parse(it.startTime)
+            "开始时间:${getString(R.string.time_format_yyyymmdd, date)}"
+        } ?: ""
+    }
+
+    @JvmStatic
     @ColorInt
     fun Context.getCertStatusBarColor(userCertStatus: UserCertStatus): Int {
         return when (userCertStatus) {
@@ -114,10 +133,53 @@ object ViewModelHelper {
     }
 
     @JvmStatic
+    fun maskAddress(address: String?): String? {
+        return if (address != null && address.length > 6) {
+            return "***${address.substring(address.length - 6)}"
+        } else null
+    }
+
+    @JvmStatic
+    fun maskAddress2(address: String?): String? {
+        return if (address != null && address.length >= 8) {
+            val length = address.length
+            return "0X ${address.substring(length - 8, length - 4).toUpperCase()} ${address.substring(
+                    length - 4
+            )}"
+        } else null
+    }
+
+    @JvmStatic
+    fun Context.getIconFor(appid: String): Drawable? {
+        return when (appid) {
+        // 微财富 appId = 1 , appName = com.weicaifu.wcf
+//            "1" -> ContextCompat.getDrawable(context, R.drawable.wcflogo)
+            else -> ContextCompat.getDrawable(
+                    this,
+                    R.drawable.ic_launcher
+            )
+        }
+    }
+
+    @JvmStatic
+    fun Context.smsTimeText(resend: Long?): String? {
+        if (canResendSms(resend)) {
+            return this.getString(R.string.send_sms_code)
+        } else {
+            return "$resend s"
+        }
+    }
+
+    @JvmStatic
+    fun canResendSms(resend: Long?): Boolean {
+        return (resend == null || resend <= 0L)
+    }
+
+    @JvmStatic
     fun getDccStr(holding: BigInteger?): String {
         return holding?.let {
             Currencies.DCC.toDecimalAmount(it)
-                    .setScale(2,RoundingMode.DOWN).toPlainString() + " DCC"
+                    .setScale(2, RoundingMode.DOWN).toPlainString() + " DCC"
         } ?: "--"
     }
 

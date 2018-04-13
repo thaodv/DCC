@@ -18,6 +18,8 @@ object Transitions{
     const val CARD_CONTAINER = "card_container"
     const val CARD_BAND = "card_band"
     const val CARD_ALLY = "card_ally"
+    const val CARD_CANDY = "card_candy"
+    const val CARD_CREDIT = "card_credit"
 
     @JvmStatic
     fun create(view: View, name: String): Pair<View, String> {

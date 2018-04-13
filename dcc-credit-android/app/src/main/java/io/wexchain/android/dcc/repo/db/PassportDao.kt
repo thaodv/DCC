@@ -10,6 +10,13 @@ abstract class PassportDao {
     @Insert
     abstract fun saveAuthRecord(authRecord: CaAuthRecord): Long
 
+    @Insert
+    abstract fun saveAuthKeyChangeRecord(authKeyChangeRecord: AuthKeyChangeRecord): Long
+
+
+    @Query("SELECT * FROM ${CaAuthRecord.TABLE_NAME} WHERE ${CaAuthRecord.COLUMN_PASSPORT_ADDRESS} = :address ORDER BY ${CaAuthRecord.COLUMN_TIME} DESC")
+    abstract fun listAuthRecords(address: String):LiveData<List<CaAuthRecord>>
+
     /* digital assets */
 
     @Query("SELECT * FROM ${CurrencyMeta.TABLE_NAME} WHERE ${CurrencyMeta.COLUMN_SELECTED} = :selected")

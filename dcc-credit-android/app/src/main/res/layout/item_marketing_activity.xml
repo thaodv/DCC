@@ -4,56 +4,76 @@
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         >
+
     <data>
+
         <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
         <variable
                 name="ma"
-                type="io.wexchain.dccchainservice.domain.MarketingActivity"/>
+                type="io.wexchain.dccchainservice.domain.MarketingActivity"
+                />
     </data>
-    <android.support.constraint.ConstraintLayout
+
+    <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="96dp"
-            android:padding="8dp"
+            style="?attr/cardViewStyle"
+            app:contentPadding="0dp"
+            app:cardCornerRadius="12dp"
             >
 
-        <TextView
-                android:id="@+id/tv_marketing_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
-                android:text="@{ma.name}"
-                tools:text="活动名称"
-                />
-        <TextView
-                android:id="@+id/tv_marketing_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
-                app:layout_constraintTop_toBottomOf="@id/tv_marketing_title"
-                android:layout_marginTop="4dp"
-                android:text="状态:"
-                />
+        <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:padding="12dp"
+                bgUrl="@{ma.coverImgUrl}"
+                tools:background="@android:color/black"
+                >
 
-        <TextView
-                android:id="@+id/tv_marketing_status_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{ma.status.name}"
-                app:layout_constraintBaseline_toBaselineOf="@id/tv_marketing_status"
-                app:layout_constraintLeft_toRightOf="@id/tv_marketing_status"
-                android:layout_marginLeft="4dp"
-                />
+            <TextView
+                    android:id="@+id/tv_marketing_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
+                    android:text="@{ma.name}"
+                    android:textColor="@color/text_white"
+                    tools:text="活动名称"
+                    />
 
-        <TextView
-                android:id="@+id/tv_marketing_start_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                android:text="@{ma.startTime}"
-                tools:text="开始时间:"
-                />
+            <TextView
+                    android:id="@+id/tv_marketing_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
+                    app:layout_constraintTop_toBottomOf="@id/tv_marketing_title"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/text_white"
+                    android:text="状态:"
+                    />
 
-    </android.support.constraint.ConstraintLayout>
+            <TextView
+                    android:id="@+id/tv_marketing_status_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{ViewModelHelper.getMarketingActivityStatusText(context,ma.status)}"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_marketing_status"
+                    app:layout_constraintLeft_toRightOf="@id/tv_marketing_status"
+                    android:layout_marginLeft="4dp"
+                    android:textColor="@color/text_white"
+                    />
+
+            <TextView
+                    android:id="@+id/tv_marketing_start_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                    android:text="@{ViewModelHelper.getMarketingActivityStartTimeText(context,ma)}"
+                    android:textColor="@color/text_white"
+                    tools:text="开始时间:"
+                    />
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 </layout>

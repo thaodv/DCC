@@ -80,6 +80,7 @@
             android:text="@{privateKey}"
             app:layout_constraintTop_toBottomOf="@id/tv_method_2_label"
             app:layout_constraintBottom_toTopOf="@id/btn_copy"
+            android:background="@drawable/bg_round_rect_alpha"
             />
 
         <Button

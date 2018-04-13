@@ -2,11 +2,15 @@ package io.wexchain.android.dcc
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.setWindowExtended
+import io.wexchain.android.common.withTransitionEnabled
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.auth.BR
@@ -25,16 +29,28 @@ class MarketingListActivity : BaseCompatActivity(), ItemViewClickListener<Market
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_default_list)
-        initToolbar()
+        setContentView(R.layout.activity_marketing_list)
+        setupTransitions()
         findViewById<RecyclerView>(R.id.rv_list).adapter = adapter
         loadMa()
     }
 
+    private fun setupTransitions() {
+        withTransitionEnabled {
+            // avoid leaks
+            ViewCompat.setTransitionName(
+                    findViewById(R.id.appbar),
+                    Transitions.CARD_CANDY
+            )
+        }
+    }
+
     override fun onItemClick(item: MarketingActivity?, position: Int, viewId: Int) {
         item?.let {
-            navigateTo(MarketingScenariosActivity::class.java){
-                putExtra(Extras.EXTRA_MARKETING_ACTIVITY,it)
+            if(it.status == MarketingActivity.Status.STARTED) {
+                navigateTo(MarketingScenariosActivity::class.java) {
+                    putExtra(Extras.EXTRA_MARKETING_ACTIVITY, it)
+                }
             }
         }
     }

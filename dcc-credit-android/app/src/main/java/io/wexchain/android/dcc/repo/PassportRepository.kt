@@ -9,16 +9,17 @@ import android.support.annotation.WorkerThread
 import com.google.gson.GsonBuilder
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.Prefs
-import io.wexchain.android.common.stackTrace
-import io.wexchain.android.common.toast
+import io.wexchain.android.common.switchMap
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.ChooseCutImageActivity
 import io.wexchain.android.dcc.chain.EthsHelper
 import io.wexchain.android.dcc.domain.AuthKey
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.repo.db.AuthKeyChangeRecord
+import io.wexchain.android.dcc.repo.db.CaAuthRecord
+import io.wexchain.android.dcc.repo.db.PassportDao
+import io.wexchain.android.dcc.tools.RoomHelper
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.Wallet
 import org.web3j.crypto.WalletFile
@@ -29,14 +30,19 @@ import java.io.File
 /**
  *
  */
-class PassportRepository(context: Context) {
+class PassportRepository(context: Context,
+                         val dao: PassportDao) {
 
 
     fun addAuthKeyChangedRecord(authKeyChangeRecord: AuthKeyChangeRecord) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        RoomHelper.onRoomIoThread {
+            dao.saveAuthKeyChangeRecord(authKeyChangeRecord)
+        }
     }
 
     val currPassport = MutableLiveData<Passport>()
+    val authRecords = currPassport
+            .switchMap { it?.let { dao.listAuthRecords(it.address) } ?: MutableLiveData() }
 
     fun load() {
         val wallet = passportPrefs.wallet.get()

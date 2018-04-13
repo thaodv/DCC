@@ -51,6 +51,7 @@
             android:drawableLeft="@drawable/ic_search"
             android:hint="@string/hint_search_token"
             android:text="@={vm.queryText}"
+            android:background="@drawable/background_search_frame"
             />
 
         <ImageButton

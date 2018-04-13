@@ -16,6 +16,7 @@ class VerifyBankSmsCodeFragment : BindFragment<FragmentVerifyBankSmsCodeBinding>
         super.onViewCreated(view, savedInstanceState)
         val viewModel = getViewModel<VerifyBankCardSmsCodeVm>().apply {
             phoneNo.set(phoneNum)
+            upTimeStamp.value = smsUpTimeStamp
         }
         binding.vm = viewModel
         binding.btnSendSmsCode.setOnClickListener {
@@ -42,6 +43,18 @@ class VerifyBankSmsCodeFragment : BindFragment<FragmentVerifyBankSmsCodeBinding>
                     arguments = Bundle()
                 }
             arguments!!.putString(Extras.EXTRA_BANK_CARD_PHONE_NUM, value)
+        }
+
+    var smsUpTimeStamp:Long
+        get() = arguments?.getLong(Extras.EXTRA_BANK_CARD_VERIFY_SMS_UP_TIME_STAMP,0L)?:0L
+        set(value) {
+            if(arguments == null){
+                    arguments = Bundle()
+                }
+            arguments!!.putLong(Extras.EXTRA_BANK_CARD_VERIFY_SMS_UP_TIME_STAMP, value)
+            if (isBindingInitialized) {
+                binding.vm?.upTimeStamp?.value = value
+            }
         }
 
     private var listener:Listener? = null

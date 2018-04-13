@@ -23,4 +23,9 @@ abstract class BindFragment<T : ViewDataBinding> : BaseCompatFragment() {
         binding.setLifecycleOwner(this)
         return binding.root
     }
+
+    val isBindingInitialized:Boolean
+        get() {
+            return this::binding.isInitialized
+        }
 }

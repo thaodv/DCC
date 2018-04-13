@@ -9,6 +9,7 @@ import io.wexchain.android.dcc.fragment.PastePrivateKeyFragment
 import io.reactivex.Single
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.chain.PassportOperations
+import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.auth.R
 import io.wexchain.auth.databinding.ActivityPassportImportBinding
 import kotlinx.android.synthetic.main.activity_passport_import.*
@@ -73,6 +74,9 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
     private fun onImportSuccess() {
         toast("导入成功")
         finish()
+        navigateTo(PassportCreationSucceedActivity::class.java){
+            putExtra(Extras.FROM_IMPORT,true)
+        }
     }
 
     private fun showError(e: Throwable) {

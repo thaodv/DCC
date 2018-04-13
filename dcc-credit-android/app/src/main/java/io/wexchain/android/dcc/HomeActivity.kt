@@ -1,30 +1,37 @@
 package io.wexchain.android.dcc
 
 import android.app.Dialog
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import com.wexmarket.android.passport.base.BindActivity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.common.toast
 import io.wexchain.android.common.transitionBundle
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.auth.R
+import io.wexchain.auth.databinding.ActivityHomeBinding
 
-class HomeActivity : BaseCompatActivity() {
+class HomeActivity : BindActivity<ActivityHomeBinding>() {
+    override val contentLayoutId: Int = R.layout.activity_home
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setWindowExtended()
 
-        setContentView(R.layout.activity_home)
+        App.get().passportRepository.currPassport.observe(this, Observer {
+            binding.cardPassport.passport = it
+        })
         setupClicks()
     }
 
     private fun setupClicks() {
         findViewById<View>(R.id.card_my_credit).setOnClickListener {
             if (App.get().passportRepository.passportEnabled) {
-                navigateTo(MyCreditActivity::class.java)
+                navigateTo(MyCreditActivity::class.java,transitionBundle(
+                        Transitions.create(findViewById(R.id.card_my_credit),Transitions.CARD_CREDIT)
+                ))
             } else {
                 if (!App.get().passportRepository.passportExists) {
                     showIntroWalletDialog()
@@ -34,7 +41,15 @@ class HomeActivity : BaseCompatActivity() {
             }
         }
         findViewById<View>(R.id.card_digital_assets).setOnClickListener {
-            clickDigitalAssets()
+            if (App.get().passportRepository.passportExists) {
+                navigateTo(DigitalAssetsActivity::class.java, transitionBundle(
+                        Transitions.create(findViewById(R.id.rv_assets), Transitions.DIGITAL_ASSETS_LIST)
+                        , Transitions.create(findViewById(R.id.assets_amount_label), Transitions.DIGITAL_ASSETS_AMOUNT_LABEL)
+                        , Transitions.create(findViewById(R.id.assets_amount_value), Transitions.DIGITAL_ASSETS_AMOUNT)
+                ))
+            } else {
+                showIntroWalletDialog()
+            }
         }
         findViewById<View>(R.id.btn_settings).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
@@ -45,27 +60,23 @@ class HomeActivity : BaseCompatActivity() {
         }
         findViewById<View>(R.id.card_candy).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
-                navigateTo(MarketingListActivity::class.java)
+                navigateTo(MarketingListActivity::class.java,transitionBundle(
+                        Transitions.create(findViewById(R.id.card_candy),Transitions.CARD_CANDY)
+                ))
             } else {
+                showIntroWalletDialog()
+            }
+        }
+        binding.cardPassport.root.setOnClickListener {
+//            navigateTo(PassportActivity::class.java)
+            if (!App.get().passportRepository.passportExists) {
                 showIntroWalletDialog()
             }
         }
     }
 
-    fun clickDigitalAssets() {
-        if (App.get().passportRepository.passportExists) {
-            navigateTo(DigitalAssetsActivity::class.java, transitionBundle(
-                    Transitions.create(findViewById(R.id.rv_assets), Transitions.DIGITAL_ASSETS_LIST)
-                    , Transitions.create(findViewById(R.id.assets_amount_label), Transitions.DIGITAL_ASSETS_AMOUNT_LABEL)
-                    , Transitions.create(findViewById(R.id.assets_amount_value), Transitions.DIGITAL_ASSETS_AMOUNT)
-            ))
-        } else {
-            showIntroWalletDialog()
-        }
-    }
-
     private val introDialog by lazy { IntroDialog() }
-    private fun showIntroWalletDialog() {
+    fun showIntroWalletDialog() {
         introDialog.show()
     }
 

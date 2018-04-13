@@ -50,6 +50,7 @@
     <string name="cancel">取消</string>
     <string name="no_more">没有更多了</string>
     <string name="time_format_yyyymmdd_hhmm">%1$tY-%1$tm-%1$td  %1$tH:%1$tM</string>
+    <string name="time_format_yyyymmdd">%1$tY-%1$tm-%1$td</string>
     <string name="time_format_yyyymmdd_hhmmss">%1$tY-%1$tm-%1$td  %1$tH:%1$tM:%1$tS</string>
     <string name="empty_slash">--</string>
     <string name="quote_source_colon">来源:%1$s</string>
@@ -115,5 +116,12 @@
     <string name="hint_search_token">搜索Token名称、简写或合约地址</string>
     <string name="submit_new_token">提交新token</string>
     <string name="please_select">请选择</string>
+    <string name="default_nickname">会员</string>
+    <string name="status_enabled">统一登录状态:可用</string>
+    <string name="status_disabled">统一登录状态:不可用</string>
+    <string name="please_try_ocr">请点击上方按钮拍照识别</string>
+    <string name="creation_succeed">创建成功</string>
+    <string name="import_succeed">导入成功</string>
+    <string name="hint_enable_local_protect">为了您的TODO安全，建议您先开启本地安全保护</string>
 
 </resources>

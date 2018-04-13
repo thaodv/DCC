@@ -3,11 +3,14 @@ package io.wexchain.android.dcc
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v4.view.ViewCompat
 import com.wexmarket.android.passport.base.BindActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
+import io.wexchain.android.common.withTransitionEnabled
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
@@ -20,11 +23,22 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupTransitions()
         initToolbar()
         binding.asIdVm = obtainAuthStatus(CertificationType.ID)
         binding.asBankVm = obtainAuthStatus(CertificationType.BANK)
         binding.asMobileVm = obtainAuthStatus(CertificationType.MOBILE)
         binding.asPersonalVm = obtainAuthStatus(CertificationType.PERSONAL)
+    }
+
+    private fun setupTransitions() {
+        withTransitionEnabled {
+            // avoid leaks
+            ViewCompat.setTransitionName(
+                    findViewById(R.id.appbar),
+                    Transitions.CARD_CREDIT
+            )
+        }
     }
 
     private fun obtainAuthStatus(certificationType: CertificationType): AuthenticationStatusVm? {

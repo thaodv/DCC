@@ -1,13 +1,16 @@
 package io.wexchain.android.dcc
 
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
+import android.widget.ImageView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.domain.Passport
+import io.wexchain.android.dcc.network.GlideApp
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.auth.BR
@@ -36,7 +39,33 @@ class MarketingScenariosActivity :BaseCompatActivity(), ItemViewClickListener<Ma
         setContentView(R.layout.activity_marketing_scenarios)
         initToolbar()
         findViewById<RecyclerView>(R.id.rv_list).adapter = adapter
-        if(checkPreconditions()) {
+        setBanner()
+    }
+
+    private fun setBanner() {
+        val ivBanner = findViewById<ImageView>(R.id.iv_banner)
+        ma?.bannerImgUrl?.let {
+            GlideApp.with(ivBanner)
+                    .load(it)
+                    .into(ivBanner)
+        }
+        ma?.bannerLinkUrl?.let { url ->
+            ivBanner.setOnClickListener {
+                navigateTo(WebPageActivity::class.java) {
+                    data = Uri.parse(url)
+                }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        tryLoad()
+    }
+
+    private fun tryLoad() {
+        if (checkPreconditions()) {
             loadScenarios()
             title = ma!!.name
         }

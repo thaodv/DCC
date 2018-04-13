@@ -3,9 +3,11 @@ package io.wexchain.android.dcc
 import android.os.Bundle
 import com.wexmarket.android.passport.base.BindActivity
 import io.wexchain.android.common.getViewModel
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.chain.PassportOperations.createNewAndEnablePassport
+import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.auth.R
 import io.wexchain.auth.databinding.ActivityCreatePassportBinding
@@ -26,7 +28,11 @@ class CreatePassportActivity : BindActivity<ActivityCreatePassportBinding>() {
         binding.btnCreatePassport.setOnClickListener {
             val pw = binding.inputPw!!.password.get()
             pw?:return@setOnClickListener
-            doCreatePassport(pw)
+            if(isPasswordValid(pw)) {
+                doCreatePassport(pw)
+            }else{
+                toast("")
+            }
         }
     }
 
@@ -40,11 +46,16 @@ class CreatePassportActivity : BindActivity<ActivityCreatePassportBinding>() {
                 }
                 .subscribe({
                     //todo
-                    toast("创建成功")
-                    finish()
+                    onCreateSuccess()
                 },{
                     it.printStackTrace()
                 })
+    }
+
+    private fun onCreateSuccess() {
+        toast("创建成功")
+        finish()
+        navigateTo(PassportCreationSucceedActivity::class.java)
     }
 
     private fun ensurePassportIsAbsent() {
