@@ -34,11 +34,12 @@
                 />
 
         <io.wexchain.android.dcc.view.RoundImageView
+                android:id="@+id/iv_avatar"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:layout_gravity="center"
-                app:imageUri="@{passport.avatarUri}"
-                app:errorRes="@{@drawable/default_user_avatar}"
+                imageUri="@{passport.avatarUri}"
+                errorRes="@{@drawable/default_user_avatar}"
                 android:scaleType="centerCrop"
                 tools:src="@drawable/default_user_avatar"
                 />

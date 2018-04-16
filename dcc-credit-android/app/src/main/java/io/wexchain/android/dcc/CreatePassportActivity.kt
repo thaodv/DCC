@@ -62,7 +62,7 @@ class CreatePassportActivity : BindActivity<ActivityCreatePassportBinding>() {
         if (App.get().passportRepository.passportExists){
             // post action to complete onCreate() and postpone finish
             postOnMainThread {
-                toast("已存在通行证")
+                toast("已存在钱包")
                 finish()
             }
         }

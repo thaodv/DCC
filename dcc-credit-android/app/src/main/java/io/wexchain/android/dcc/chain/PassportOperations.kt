@@ -7,8 +7,12 @@ import io.reactivex.Single
 import io.reactivex.SingleTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import io.wexchain.android.common.Pop
 import io.wexchain.android.common.getAndroidKeyStoreLoaded
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.AuthManageActivity
+import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.EthsFunctions.deleteKey
 import io.wexchain.android.dcc.chain.EthsHelper.ANDROID_RSA_PREFIX
 import io.wexchain.android.dcc.chain.EthsHelper.createAndroidRSAKeyPair
@@ -16,6 +20,7 @@ import io.wexchain.android.dcc.domain.AuthKey
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.repo.db.AuthKeyChangeRecord
 import io.wexchain.android.dcc.tools.RetryWithDelay
+import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.TicketResponse
@@ -26,6 +31,50 @@ import java.util.*
  * Created by lulingzhi on 2017/11/24.
  */
 object PassportOperations {
+
+    fun ensureCaValidity(activity: BaseCompatActivity, action: () -> Unit) {
+        val app = App.get()
+        val passport = app.passportRepository.getCurrentPassport()
+        if (passport == null) {
+            Pop.toast("钱包不存在", activity)
+            return
+        }
+        val authKey = passport.authKey
+        if (authKey == null) {
+            Single.error<AuthKey>(IllegalStateException("未启用统一登录"))
+        } else {
+            app.chainGateway.getPubKey(passport.address)
+                    .compose(Result.checked())
+                    .flatMap {
+                        val decodedPubKey = Base64.decode(it, Base64.DEFAULT)
+                        if (Arrays.equals(decodedPubKey, authKey.publicKeyEncoded)) {
+                            Single.just(authKey)
+                        } else {
+                            Single.error<AuthKey>(IllegalStateException("您当前使用的统一登录秘钥与链上不一致,将影响部分功能的正常使用"))
+                        }
+                    }
+        }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    activity.showLoadingDialog()
+                }
+                .doFinally {
+                    activity.hideLoadingDialog()
+                }
+                .subscribe({
+                    action()
+                },{
+                    CustomDialog(activity).apply {
+                        this.setTitle("提示")
+                        textContent = it.message
+                        withPositiveButton("更新") {
+                            activity.navigateTo(AuthManageActivity::class.java)
+                            true
+                        }
+                        withNegativeButton()
+                    }.assembleAndShow()
+                })
+    }
 
     fun createNewAndEnablePassport(password: String): Single<Pair<Credentials, AuthKey>> {
         require(password.isNotBlank())
@@ -54,7 +103,7 @@ object PassportOperations {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun enablePassport(credentials: Credentials,password: String): Single<Pair<Credentials, AuthKey>>? {
+    fun enablePassport(credentials: Credentials, password: String): Single<Pair<Credentials, AuthKey>>? {
         require(password.isNotBlank())
         return Single.just(credentials)
                 .observeOn(Schedulers.computation())
@@ -152,6 +201,18 @@ object PassportOperations {
                 .subscribeOn(Schedulers.computation())
     }
 
+    fun updatePubKeyAndUploadChecked(passport: Passport, ticket: String, code: String?): Single<AuthKey> {
+        return createPubKey()
+                .flatMap {
+                    uploadPubKeyChecked(it, passport.credential, ticket, code)
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess {
+                    App.get().passportRepository.updateAuthKey(passport,it)
+                    App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(passport.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.UPDATE))
+                }
+    }
+
     fun deletePubKeyAndUploadChecked(passport: Passport, ticket: String, code: String?): Single<Passport> {
         val api = App.get().chainGateway
         return api.getCaContractAddress()
@@ -174,6 +235,7 @@ object PassportOperations {
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess {
+                    App.get().passportRepository.updateAuthKey(passport,null)
                     App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(passport.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.DISABLE))
                 }
     }

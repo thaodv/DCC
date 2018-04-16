@@ -2,8 +2,6 @@
 <resources>
 
     <style name="DccTheme.App">
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar">true</item>
         <!-- enable window content transitions -->
         <item name="android:windowContentTransitions">true</item>
 

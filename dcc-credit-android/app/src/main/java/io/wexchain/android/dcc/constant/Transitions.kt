@@ -15,6 +15,7 @@ object Transitions{
     const val STUB_TOP = "stub_top"
     const val STUB_BOTTOM = "stub_bottom"
     const val CARD_PASSPORT = "card_passport"
+    const val CARD_PASSPORT_AVATAR = "card_passport_avatar"
     const val CARD_CONTAINER = "card_container"
     const val CARD_BAND = "card_band"
     const val CARD_ALLY = "card_ally"

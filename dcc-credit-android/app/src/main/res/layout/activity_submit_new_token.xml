@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText"
+    >
+
+    <include
+        layout="@layout/include_toolbar"
+        android:id="@+id/toolbar"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/submit_new_token_title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/margin_content_horizontal"
+                android:layout_marginRight="@dimen/margin_content_horizontal"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                
+                android:layout_marginLeft="@dimen/margin_content_horizontal"
+                android:layout_marginRight="@dimen/margin_content_horizontal"
+                android:text="@string/token_submit_info_general"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                
+                android:layout_marginLeft="@dimen/margin_content_horizontal"
+                android:layout_marginRight="@dimen/margin_content_horizontal"
+                android:text="必要信息"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                
+                android:layout_marginLeft="@dimen/margin_content_horizontal"
+                android:layout_marginRight="@dimen/margin_content_horizontal"
+                android:text="* 公司或个人名字"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                
+                android:layout_marginLeft="@dimen/margin_content_horizontal"
+                android:layout_marginRight="@dimen/margin_content_horizontal"
+                android:text="* 官方网站"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                
+                android:layout_marginLeft="@dimen/margin_content_horizontal"
+                android:layout_marginRight="@dimen/margin_content_horizontal"
+                android:text="* 合约地址"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                
+                android:layout_marginLeft="@dimen/margin_content_horizontal"
+                android:layout_marginRight="@dimen/margin_content_horizontal"
+                android:text="* 推荐用户转账所使用的 Gas 数量（没有提供，我们默认值 100000）"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                
+                android:layout_marginLeft="@dimen/margin_content_horizontal"
+                android:layout_marginRight="@dimen/margin_content_horizontal"
+                android:text="* Logo.png"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                
+                android:layout_marginLeft="@dimen/margin_content_horizontal"
+                android:layout_marginRight="@dimen/margin_content_horizontal"
+                android:text="* 其它情况说明"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                
+                android:layout_marginLeft="@dimen/margin_content_horizontal"
+                android:layout_marginRight="@dimen/margin_content_horizontal"
+                android:text="Logo 设计要求"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                
+                android:layout_marginLeft="@dimen/margin_content_horizontal"
+                android:layout_marginRight="@dimen/margin_content_horizontal"
+                android:text="* 切图尺寸：132x132 像素"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                
+                android:layout_marginLeft="@dimen/margin_content_horizontal"
+                android:layout_marginRight="@dimen/margin_content_horizontal"
+                android:text="* 透明背景 PNG"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                
+                android:layout_marginLeft="@dimen/margin_content_horizontal"
+                android:layout_marginRight="@dimen/margin_content_horizontal"
+                android:text="* 品牌标识水平和垂直居中"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                
+                android:layout_marginLeft="@dimen/margin_content_horizontal"
+                android:layout_marginRight="@dimen/margin_content_horizontal"
+                android:text="第一次提交，我们一般会在两个工作日处理。如有信息变动，请第一时间邮件跟我们联系更新，谢谢配合！ 由于以太坊代币种类繁杂，同时为了避免误导部分 BitExpress用户，我们暂时只添加社区内相对流行的代币 logo 。 如果你想修改代币的合约地址，请提供相关的官方公告给我们。
+注：BitExpress 默认显示列表只显示合作方 Token ，其它 Token 是按余额 > 0 自动出现或用户搜索添加出现"
+                />
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

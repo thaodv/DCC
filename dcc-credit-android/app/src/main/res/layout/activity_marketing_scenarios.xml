@@ -18,12 +18,14 @@
             android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat.DccTitle"
             android:text="活动内容简介"
+            android:visibility="gone"
             />
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat.DccSubTitle"
             android:text="每身份证认证奖励仅可领取一次"
+            android:visibility="gone"
             />
 
     <ImageView

@@ -66,7 +66,8 @@ class DigitalCurrencyVm(application: Application) : AndroidViewModel(application
     }
 
     private fun showChainText(dc: DigitalCurrency): Boolean {
-        return dc.copy(chain = Chain.MultiChain,contractAddress = null) == Currencies.DCC
+//        return dc.copy(chain = Chain.MultiChain,contractAddress = null) == Currencies.DCC
+        return true
     }
 
     private fun observeSelected(lifecycleOwner: LifecycleOwner) {

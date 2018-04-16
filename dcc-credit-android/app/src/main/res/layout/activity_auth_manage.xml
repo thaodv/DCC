@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper" />
+
+        <variable
+            name="authManage"
+            type="io.wexchain.android.dcc.vm.AuthManage"
+            />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        >
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/include_toolbar"
+            />
+
+        <Button
+            android:id="@+id/btn_switch"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginLeft="@dimen/margin_content_horizontal"
+            android:onClick="@{(v)->authManage.switchPassportLoginEnable()}"
+            android:text="@{authManage.authKey == null?@string/enable_passport_login:@string/disable_passport_login}"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/btn_replace"
+            tools:text="@string/disable_passport_login"
+            />
+
+        <Button
+            android:id="@+id/btn_replace"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="@dimen/margin_content_horizontal"
+            android:enabled="@{authManage.authKey != null}"
+            android:onClick="@{(v)->authManage.replaceAuthKey()}"
+            android:text="@string/update_key"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/btn_switch"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/tv_auth_change_records_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_content_horizontal"
+            android:layout_marginRight="@dimen/margin_content_horizontal"
+            android:drawableBottom="@drawable/divider_line"
+            android:drawablePadding="8dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="8dp"
+            android:text="@string/auth_key_change_log"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_auth_change_records"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="@dimen/margin_content_horizontal"
+            android:layout_marginRight="@dimen/margin_content_horizontal"
+            android:layout_marginTop="4dp"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/btn_switch"
+            app:layout_constraintTop_toBottomOf="@id/tv_auth_change_records_label"
+            android:layout_marginBottom="8dp"
+            tools:listitem="@layout/item_authkey_change_record"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

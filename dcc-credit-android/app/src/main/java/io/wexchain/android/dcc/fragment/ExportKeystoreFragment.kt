@@ -72,7 +72,7 @@ class ExportKeystoreFragment : BaseCompatFragment() {
                 val context = context!!
                 CustomDialog(context)
                         .apply {
-                            setTitle("通行证密码")
+                            setTitle("钱包密码")
                             textContent = password.centered()
                             withPositiveButton("知道了")
                         }

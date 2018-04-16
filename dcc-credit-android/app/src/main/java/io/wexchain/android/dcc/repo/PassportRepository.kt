@@ -1,10 +1,12 @@
 package io.wexchain.android.dcc.repo
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.net.Uri
+import android.support.annotation.MainThread
 import android.support.annotation.WorkerThread
 import com.google.gson.GsonBuilder
 import io.reactivex.Single
@@ -44,6 +46,9 @@ class PassportRepository(context: Context,
     val authRecords = currPassport
             .switchMap { it?.let { dao.listAuthRecords(it.address) } ?: MutableLiveData() }
 
+    val authKeyChangeRecords: LiveData<List<AuthKeyChangeRecord>> = currPassport
+            .switchMap { it?.let { dao.listAuthKeyChangeRecords(it.address) } ?: MutableLiveData() }
+
     fun load() {
         val wallet = passportPrefs.wallet.get()
         val password = passportPrefs.password.get()
@@ -53,9 +58,7 @@ class PassportRepository(context: Context,
             return // can't load credential
         }
 
-        val keyAlias = passportPrefs.authKeyAlias.get()
-        val pub = passportPrefs.authKeyPublicKey.get()?.let { Numeric.hexStringToByteArray(it) }
-        val authKey = if (keyAlias != null && pub != null) AuthKey(keyAlias, pub) else null
+        val authKey = passportPrefs.loadAuthKey()
         currPassport.value = Passport(
                 credential = Credentials.create(credential),
                 authKey = authKey,
@@ -87,13 +90,7 @@ class PassportRepository(context: Context,
         passportPrefs.let {
             it.wallet.set(gson.toJson(walletFile))
             it.password.set(password)
-            if (authKey == null) {
-                it.authKeyAlias.clear()
-                it.authKeyPublicKey.clear()
-            } else {
-                it.authKeyPublicKey.set(Numeric.toHexString(authKey.publicKeyEncoded))
-                it.authKeyAlias.set(authKey.keyAlias)
-            }
+            it.saveAuthKey(authKey)
             it.avatar.clear()
             it.nickname.clear()
         }
@@ -102,6 +99,10 @@ class PassportRepository(context: Context,
     fun removeEntirePassportInformation() {
         currPassport.value = null
         passportPrefs.clearAll()
+        RoomHelper.onRoomIoThread {
+//            dao.deleteAuthRecords()
+//            dao.deleteAuthKeyChangeRecords()
+        }
     }
 
     fun updatePassportNickname(passport: Passport, newNickname: String?) {
@@ -139,9 +140,8 @@ class PassportRepository(context: Context,
                     passport to Uri.fromFile(imgFile)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .map {
-                    updatePassportUserAvatar(it.first, it.second)
-                    it
+                .doOnSuccess {
+                    updatePassportUserAvatar(it.first,it.second)
                 }
     }
 
@@ -173,6 +173,14 @@ class PassportRepository(context: Context,
         return true
     }
 
+    @MainThread
+    fun updateAuthKey(passport: Passport, authKey: AuthKey?) {
+        if (getCurrentPassport()?.address == passport.address){
+            passportPrefs.saveAuthKey(authKey)
+            val copy = passport.copy(authKey = authKey)
+            currPassport.value = copy
+        }
+    }
 
     private val passportPrefs = PassportPrefs(context.getSharedPreferences(PASSPORT_SP_NAME, Context.MODE_PRIVATE))
 
@@ -202,5 +210,23 @@ class PassportRepository(context: Context,
         val nickname = StringPref(USER_NICKNAME)
         val authKeyAlias = StringPref(AUTH_KEY_ALIAS)
         val authKeyPublicKey = StringPref(AUTH_KEY_PUB)
+
+        fun loadAuthKey(): AuthKey? {
+            val keyAlias = authKeyAlias.get()
+            val pub = authKeyPublicKey.get()?.let { Numeric.hexStringToByteArray(it) }
+            val authKey = if (keyAlias != null && pub != null) AuthKey(keyAlias, pub) else null
+            return authKey
+        }
+
+        fun saveAuthKey(authKey: AuthKey?){
+            if (authKey == null) {
+                authKeyAlias.clear()
+                authKeyPublicKey.clear()
+            } else {
+                authKeyPublicKey.set(Numeric.toHexString(authKey.publicKeyEncoded))
+                authKeyAlias.set(authKey.keyAlias)
+            }
+        }
+
     }
 }

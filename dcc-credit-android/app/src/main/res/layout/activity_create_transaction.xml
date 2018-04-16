@@ -127,7 +127,6 @@
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginTop="8dp"
             android:text="@{tx.transferFeeHintText}"
-            android:textColor="@color/text_red"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_transaction_fee"
             tools:text="@string/ftc_transfer_fee_hint" />

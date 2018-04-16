@@ -95,6 +95,8 @@
         <activity android:name="io.wexchain.android.dcc.PassportActivity"/>
         <activity android:name="io.wexchain.android.dcc.WebPageActivity"/>
         <activity android:name="io.wexchain.android.dcc.PassportCreationSucceedActivity"/>
+        <activity android:name="io.wexchain.android.dcc.SubmitNewTokenActivity"/>
+        <activity android:name="io.wexchain.android.dcc.AuthManageActivity"/>
     </application>
 
 </manifest>

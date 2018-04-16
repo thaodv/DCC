@@ -53,9 +53,9 @@ class ModifyPassportPasswordActivity : BaseCompatActivity() {
         CustomDialog(this)
                 .apply {
                     setTitle("修改成功")
-                    textContent = "通行证密码修改成功,KEYSTORE信息变更,建议您立即重新备份通行证."
+                    textContent = "钱包密码修改成功,KEYSTORE信息变更,建议您立即重新备份钱包."
                     withNegativeButton("暂不备份")
-                    withPositiveButton("备份通行证") {
+                    withPositiveButton("备份钱包") {
                         toExport()
                         true
                     }

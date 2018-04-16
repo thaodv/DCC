@@ -66,7 +66,7 @@ fun View.setBackgroundUrl(url: String?){
 
 @BindingAdapter("imageUri", "errorRes")
 fun setImageUri(imageView: ImageView, uri: Uri?, errorRes: Drawable?) {
-    if (uri == null) {
+    if (uri == null || uri.toString().isBlank()) {
         imageView.setImageDrawable(errorRes)
     } else {
         imageView.setImageURI(uri)

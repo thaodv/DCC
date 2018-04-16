@@ -2,14 +2,21 @@ package io.wexchain.android.dcc
 
 import android.app.Dialog
 import android.arch.lifecycle.Observer
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.wexmarket.android.passport.base.BindActivity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.common.toast
 import io.wexchain.android.common.transitionBundle
 import io.wexchain.android.dcc.constant.Transitions
+import io.wexchain.android.dcc.network.GlideApp
 import io.wexchain.auth.R
 import io.wexchain.auth.databinding.ActivityHomeBinding
 
@@ -20,8 +27,8 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
         super.onCreate(savedInstanceState)
         setWindowExtended()
 
-        App.get().passportRepository.currPassport.observe(this, Observer {
-            binding.cardPassport.passport = it
+        App.get().passportRepository.currPassport.observe(this, Observer {p->
+            binding.cardPassport.passport = p
         })
         setupClicks()
     }
@@ -36,7 +43,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
                 if (!App.get().passportRepository.passportExists) {
                     showIntroWalletDialog()
                 } else {
-                    toast("通行证未启用")
+                    toast(R.string.ca_not_enabled)
                 }
             }
         }
@@ -68,9 +75,13 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
             }
         }
         binding.cardPassport.root.setOnClickListener {
-//            navigateTo(PassportActivity::class.java)
             if (!App.get().passportRepository.passportExists) {
                 showIntroWalletDialog()
+            }else{
+                navigateTo(PassportActivity::class.java,transitionBundle(
+                        Transitions.create(findViewById(R.id.card_passport),Transitions.CARD_PASSPORT),
+                        Transitions.create(findViewById<ViewGroup>(R.id.card_passport).findViewById(R.id.iv_avatar),Transitions.CARD_PASSPORT_AVATAR)
+                ))
             }
         }
     }

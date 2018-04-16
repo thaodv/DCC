@@ -20,8 +20,8 @@
     <string name="skip">跳过</string>
     <string name="cancel">取消</string>
     <string name="input_back_cancel"><![CDATA[<删除]]></string>
-    <string name="address_description">二维码显示的是通行证地址,它可以作为以太坊及 DCC代币的接收地址</string>
-    <string name="copy_passport_address">复制通行证地址</string>
+    <string name="address_description">二维码显示的是钱包地址,它可以作为以太坊及 DCC代币的接收地址</string>
+    <string name="copy_passport_address">复制钱包地址</string>
     <string name="copy_succeed">复制成功</string>
     <string name="user_avatar">头像</string>
     <string name="user_nickname">昵称</string>
@@ -29,10 +29,10 @@
     <string name="save_changes">保存</string>
     <string name="please_input_nickname">请输入昵称</string>
     <string name="use_this_picture">使用</string>
-    <string name="passport_address">todo地址</string>
+    <string name="passport_address">钱包地址</string>
     <string name="local_protect">本地安全保护</string>
-    <string name="export_passport">备份todo</string>
-    <string name="modify_passport_password">修改todo密码</string>
+    <string name="export_passport">备份钱包</string>
+    <string name="modify_passport_password">修改钱包密码</string>
     <string name="about_us">关于我们</string>
-    <string name="remove_passport">删除todo(注销)</string>
+    <string name="remove_passport">删除钱包(注销)</string>
 </resources>

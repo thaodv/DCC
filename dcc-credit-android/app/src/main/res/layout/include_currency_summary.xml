@@ -60,7 +60,6 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
                     android:text="@{vm.chainText}"
-                    visibleOrGone="@{vm.chainText != null}"
                     tools:text="\@DCC"
                     app:layout_constraintBottom_toBottomOf="@id/iv_currency_logo"
                     app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol"
