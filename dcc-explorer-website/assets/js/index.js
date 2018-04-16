@@ -111,7 +111,18 @@ var Index = function() {
                         ticks: {
                             fontColor: '#7871ea'
                         }
-                    }],
+                    },
+                        {
+                            gridLines: {
+                                display: true,
+                                zeroLineColor: '#1d6881',
+                                zeroLineWidth: 3
+                            },
+                            ticks: {
+                                fontColor: '#7871ea'
+                            }
+                        }],
+
                     yAxes: [{
                         gridLines: {
                             display: true,
