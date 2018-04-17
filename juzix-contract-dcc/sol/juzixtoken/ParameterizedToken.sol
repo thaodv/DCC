@@ -12,7 +12,6 @@ contract ParameterizedToken is CappedToken {
     uint256 public decimals;
 
     function ParameterizedToken(string _name, string _symbol, uint256 _decimals, uint256 _capIntPart) public CappedToken(_capIntPart * 10 ** _decimals) {
-        //register("ParameterizedTokenModule", "0.0.1.0", "ParameterizedTokenModule", "0.0.1.0");
         name = _name;
         symbol = _symbol;
         decimals = _decimals;

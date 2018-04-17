@@ -18,7 +18,6 @@ contract CertService3 is OperatorPermission,CertServiceIntf{
     DigestIntegrity public digest2Integrity;
     DigestIntegrity public expiredIntegrity;
 
-
     event orderUpdated(address indexed applicant, uint256 indexed orderId, Status status);
 
     struct Order {
@@ -264,6 +263,8 @@ contract CertService3 is OperatorPermission,CertServiceIntf{
         order.status = nextStatus;
         orderUpdated(order.applicant, orderId, nextStatus);
     }
+
+
 
 
     function appendElement(Checkpoint[] storage checkpointList, uint256 dataVersion, Content memory icd) internal returns (uint256) {
