@@ -1,111 +1,142 @@
-pragma solidity ^0.4.18;
-
+pragma solidity ^0.4.2;
 import "../ownership/OperatorPermission.sol";
-import "./AgreementIntf.sol";
+import "../utils/ByteUtils.sol";
 
-contract AgreementService is OperatorPermission, AgreementIntf {
+contract AgreementService is OperatorPermission{
 
-    mapping(address => uint256[]) public creditIndex;
+   using ByteUtils for bytes;
 
-    mapping(address => uint256[]) public debitIndex;
-
-    mapping(bytes => uint256[]) creditIdHashIndex;
-
-    mapping(address => mapping(uint256 => uint256)) public orderIdIndex;
-
-    uint256 public constant MAX_SIZE = 10 * 1024;
-
-    struct Agreement {
-
-        address orderAddress;
-
+   struct Agreement{
+        uint256 id;
+        address caller;
+        uint256 version;
         uint256 orderId;
+        Status  status;
+        bytes repayDigest;
+        bytes agrementDigest;
+        bytes idHash;
+        address borrower;
+        bytes applicationDigest;
+   }
 
-        address debit;
+   enum Status {INVALID,CREATED, FULFILLED}
 
-        address credit;
+   event agreementUpdate(uint256 indexed id,address indexed caller,uint256 indexed version, uint256 orderId,Status  status,bytes repayDigest,bytes agrementDigest,
+        bytes idHash,address borrower,bytes applicationDigest);
 
-        bytes creditIdHash;
+   Agreement[] public agreements;
 
-        bytes agreementHash;
-    }
+   mapping(address => uint256[]) public applicantIndex;
 
-    Agreement[] public agreements;
+   mapping(bytes32 => uint256[]) public idHashIndex;
 
-    event submitted(uint256 indexed agreementId, address indexed orderAddress, uint256 indexed orderId, address
-    debit, address credit, bytes creditIdHash, bytes agreementHash);
+   mapping(address => mapping(uint256 => uint256)) public orderIdIndex;
 
-    function AgreementService() public {
-        agreements.push(Agreement(address(0), 0, address(0), address(0), "", ""));
-    }
+   uint256 public constant MAX_SIZE = 100;
 
-    function queryAgreementIdArrayByCreditIndex(address _credit) public view returns (uint256[]){
-        require(_credit != address(0));
-        return creditIndex[_credit];
-    }
+   function AgreementService() public {
+        agreements.push(Agreement(0,address(0),0,0,Status.INVALID,"","","",address(0),""));
+   }
 
-    function getAgreementArrayLengthByCreditIndex(address _credit) public view returns (uint256){
-        require(_credit != address(0));
-        return creditIndex[_credit].length;
-    }
-
-    function queryAgreementIdArrayByDebitIndex(address _debit) public view returns (uint256[]){
-        require(_debit != address(0));
-        return debitIndex[_debit];
-    }
-
-    function getAgreementArrayLengthByDebitIndex(address _debit) public view returns (uint256){
-        require(_debit != address(0));
-        return debitIndex[_debit].length;
-    }
-
-    function queryAgreementIdArrayByCreditIdHashIndex(bytes _creditIdHash) public view returns (uint256[]){
-        require(_creditIdHash.length > 0 && _creditIdHash.length <= MAX_SIZE);
-        return creditIdHashIndex[_creditIdHash];
-    }
-
-    function getAgreementArrayLengthByCreditIdHashIndex(bytes _creditIdHash) public view returns (uint256){
-        require(_creditIdHash.length > 0 && _creditIdHash.length <= MAX_SIZE);
-        return creditIdHashIndex[_creditIdHash].length;
-    }
-
-    function getAgreementByOrderId(address _orderAddress, uint256 _orderId) public view returns (uint256 agreementId, address orderAddress,
-        uint256 orderId, address debit, address credit, bytes creditIdHash, bytes agreementHash){
-        require(_orderAddress != address(0));
-        require(_orderId > 0);
-        uint256 _agreementId = orderIdIndex[_orderAddress][_orderId];
-        return getAgreement(_agreementId);
-    }
-
-    function getAgreement(uint256 _agreementId) public view returns (uint256 agreementId, address orderAddress,
-        uint256 orderId, address debit, address credit, bytes creditIdHash, bytes agreementHash){
-        require(_agreementId > 0 && _agreementId < agreements.length);
-        Agreement memory agreement = agreements[_agreementId];
-        return (_agreementId, agreement.orderAddress, agreement.orderId, agreement.debit, agreement.credit,
-        agreement.creditIdHash, agreement.agreementHash);
-    }
-
-    function submit(uint256 orderId, address debit, address credit, bytes creditIdHash, bytes agreementHash) public
-    onlyOperator returns (uint256 agreementId){
+   function createAgreement(uint256 version,uint256 orderId,bytes repayDigest,bytes agrementDigest,bytes idHash,address _borrower,bytes applicationDigest)
+   onlyOperator external returns(uint256 agreementId) {
         require(orderId > 0);
-        require(debit != address(0));
-        require(credit != address(0));
-        require(debit != credit);
-        require(agreementHash.length > 0 && agreementHash.length <= MAX_SIZE);
-        require(creditIdHash.length > 0 && creditIdHash.length <= MAX_SIZE);
+        require(version == 1);
+        require(_borrower != address(0));
+        require(repayDigest.length > 0 && repayDigest.length <= MAX_SIZE);
+        require(agrementDigest.length > 0 && agrementDigest.length <= MAX_SIZE);
+        require(idHash.length > 0 && idHash.length <= MAX_SIZE);
+        require(applicationDigest.length > 0 && applicationDigest.length <= MAX_SIZE);
 
-        address orderAddress = msg.sender;
-        agreementId = agreements.push(Agreement(orderAddress, orderId, debit, credit, creditIdHash, agreementHash)) - 1;
-        submitted(agreementId, orderAddress, orderId, debit, credit, creditIdHash, agreementHash);
-        debitIndex[debit].push(agreementId);
-        creditIndex[credit].push(agreementId);
-        creditIdHashIndex[creditIdHash].push(agreementId);
-        orderIdIndex[orderAddress][orderId] = agreementId;
 
+        agreementId=agreements.push(Agreement(0,msg.sender,0,orderId,Status.CREATED,repayDigest,agrementDigest,idHash,_borrower,applicationDigest));
+        agreementId-=1;
+        agreements[agreementId].version=version;
+        agreements[agreementId].id=agreementId;
+
+        createAgreementHelp(agreements[agreementId],agreementId);
+
+   }
+
+   function createAgreementHelp(Agreement agreement,uint256 agreementId) internal{
+        agreementUpdate(agreement.id,agreement.caller,agreement.version, agreement.orderId,agreement.status,agreement.repayDigest,agreement.agrementDigest,
+        agreement.idHash,agreement.borrower,agreement.applicationDigest);
+
+        applicantIndex[agreement.borrower].push(agreementId);
+        idHashIndex[(agreement.idHash).bytesToBytes32(0)].push(agreementId);
+        orderIdIndex[msg.sender][agreement.orderId]=agreementId;
+   }
+
+    function finishAgreement(uint256 id)onlyOperator external{
+        require(id>0);
+        require(orderIdIndex[msg.sender][id]>0);
+
+        uint256 agreementId = orderIdIndex[msg.sender][id];
+        getAgreementAndChangeStatus(agreementId,Status.CREATED,Status.FULFILLED,false);
+    }
+
+     function updateRepayDigest(uint256 id,bytes repayDigest) onlyOperator external{
+        require(id>0);
+        require(repayDigest.length>0 && repayDigest.length<=MAX_SIZE);
+
+        uint256  agreementId = orderIdIndex[msg.sender][id];
+        agreements[agreementId].repayDigest=repayDigest;
+     }
+
+    function getAgreementAndChangeStatus(uint256 agreementId, Status fromStatus, Status nextStatus, bool force) internal
+    returns (Agreement storage agreement){
+        require(agreementId < agreements.length);
+        agreement = agreements[agreementId];
+        require(force == true || agreement.status == fromStatus);
+
+        justChangeStatus(agreementId, agreement, nextStatus);
+        return agreement;
+    }
+
+    function justChangeStatus(uint256 agreementId, Agreement storage agreement, Status nextStatus) internal {
+        //状态机跃迁
+        agreement.status = nextStatus;
+        agreementUpdate(agreementId,agreement.caller,agreement.version, agreement.orderId,agreement.status,agreement.repayDigest,agreement.agrementDigest,
+        agreement.idHash,agreement.borrower,agreement.applicationDigest);
     }
 
     function getAgreementLength() public view returns (uint256 length) {
         return agreements.length;
     }
 
+    function getAgreement(uint256 _agreementId) public view returns (uint256 id,address caller,uint256 version, uint256 orderId,Status  status,bytes repayDigest,bytes agrementDigest,
+        bytes idHash,address borrower,bytes applicationDigest){
+        require(_agreementId > 0 && _agreementId < agreements.length);
+        Agreement memory agreement = agreements[_agreementId];
+        return (_agreementId, agreement.caller, agreement.version, agreement.orderId, agreement.status,
+        agreement.repayDigest, agreement.agrementDigest,agreement.idHash,agreement.borrower,agreement.applicationDigest);
+    }
+
+   function getAgreementByOrderId(address _caller, uint256 _orderId) public view returns (uint256 id,address caller,uint256 version, uint256 orderId,Status  status,bytes repayDigest,bytes agrementDigest,
+        bytes idHash,address borrower,bytes applicationDigest){
+        require(_caller != address(0));
+        require(_orderId > 0);
+        uint256 _agreementId = orderIdIndex[_caller][_orderId];
+        return getAgreement(_agreementId);
+   }
+
+    function queryOrderIdArrayByApplicantIndex(address _applicant) public view returns (uint256[]){
+        require(_applicant != address(0));
+        return applicantIndex[_applicant];
+    }
+
+    function getOrderArrayLengthByApplicantIndex(address _applicant) public view returns (uint256){
+        require(_applicant != address(0));
+        return applicantIndex[_applicant].length;
+    }
+
+    function queryOrderIdArrayByIdHashIndex(bytes _idHash) public view returns (uint256[]){
+        require(_idHash.length>0 && _idHash.length<=MAX_SIZE);
+        return idHashIndex[_idHash.bytesToBytes32(0)];
+    }
+
+    function getOrderArrayLengthByIdHashIndex(bytes _idHash) public view returns (uint256){
+        require(_idHash.length>0 && _idHash.length<=MAX_SIZE);
+        return idHashIndex[_idHash.bytesToBytes32(0)].length;
+    }
 }

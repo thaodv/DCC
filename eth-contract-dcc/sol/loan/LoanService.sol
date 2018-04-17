@@ -1,179 +1,212 @@
-pragma solidity ^0.4.11;
+pragma solidity ^0.4.2;
 
-import './AgreementIntf.sol';
-import '../ownership/Ownable.sol';
+import "../ownership/OperatorPermission.sol";
+import "../cert/CertServiceFeeModule.sol";
+import "../utils/ByteUtils.sol";
+import './AgreementInfo.sol';
 
-contract LoanService is Ownable{
+contract LoanService is OperatorPermission {
 
-    Order[] orders;
-
-    mapping(address => uint256[]) public debitIndex;
-
-    mapping(address => uint256[]) public creditIndex;
-
-    AgreementIntf public agreementContract;
-
-    enum Status {INVALID, PROCESSING, APPROVED, REJECTED, DEPOSITED, PAID_OFF}
-
-    event orderUpdated(uint256 indexed orderId, address indexed debit, address indexed credit, Status status);
+    using ByteUtils for bytes;
 
     struct Order {
-
-        address debit;
-
-        address credit;
-
-        bytes creditIdHash;
-
-        Status orderStatus;
-
-        bytes orderHash;
-
-        bytes agreementHash;
-
-        uint256 appliedTime;
-
+        uint256 version;
+        address borrower;
+        bytes idHash;
+        Status status;
+        uint256 fee;
+        bytes applicationDigest;
+        bytes agreementDigest;
+        bytes repayDigest;
     }
 
-    mapping(uint256 => RepayPlan[]) repayPlans;
+    enum Status {INVALID, CREATED, CANCELLED, AUDITING, REJECTED, APPROVED, FAILURE, DELIVERIED, RECEIVIED, REPAID}
 
-    struct RepayPlan {
+    Order[] public orders;
 
-        uint256 expectedTime;
+    mapping(address => uint256[]) public borrowerIndex;
 
-        uint256 actualTime;
+    mapping(bytes32 => uint256[]) public idHashIndex;
 
-    }
+    CertServiceFeeModule public certServiceFeeModule;
+
+    AgreementInfo public agreementContract;
+
+    uint256 public constant MAX_SIZE = 300;
+
+    event orderUpdated(uint256 indexed id, address indexed borrower, Status status);
 
     function LoanService(address agreementContractAddress) public {
         setAggreementContract(agreementContractAddress);
-        orders.push(Order(address(0), address(0), "", Status.INVALID, "", "", 0));
+        orders.push(Order(0, address(0), Status.INVALID, 0, "", "", ""));
     }
 
     function setAggreementContract(address agreementContractAddress) public onlyOwner {
         require(agreementContractAddress != address(0));
-        agreementContract = AgreementIntf(agreementContractAddress);
+        agreementContract = AgreementInfo(agreementContractAddress);
     }
 
-    function apply(address debit, bytes creditIdHash, uint256 appliedTime, bytes orderHash) public returns (uint256
-        _orderId){
-        require(debit != address(0) && debit != msg.sender);
-        require(orderHash.length > 0 && orderHash.length <= 100);
-        return insertOrder(debit, msg.sender, creditIdHash, Status.PROCESSING, orderHash, appliedTime);
+    function setCertServiceFeeModuleAddress(address certServiceFeeModuleAddress) public onlyOwner {
+        certServiceFeeModule = CertServiceFeeModule(certServiceFeeModuleAddress);
     }
 
-    function insertOrder(address debit, address credit, bytes creditIdHash, Status intialStatus, bytes orderHash, uint256 appliedTime)
+
+    function insertOrder(uint256 _version, address _borrower, bytes _idHash, Status _status, uint256 _fee, bytes _applicationDigest)
     internal returns (uint256 newOrderId){
-        newOrderId = orders.push(Order(debit, credit, creditIdHash, intialStatus, orderHash, "", appliedTime)) - 1;
-        debitIndex[debit].push(newOrderId);
-        creditIndex[credit].push(newOrderId);
-        orderUpdated(newOrderId, debit, credit, intialStatus);
+
+        newOrderId = orders.push(Order(_version, _borrower, _idHash, _status, _fee, _applicationDigest, "", "")) - 1;
+
+        orders[newOrderId].id = newOrderId;
+
+        borrowerIndex[_borrower].push(newOrderId);
+        idHashIndex[_idHash.bytesToBytes32(0)].push(newOrderId);
+
+        orderUpdated(newOrderId, _borrower, _status);
+
     }
 
-    function getOrderAndChangeStatus(uint256 orderId, Status fromStatus, Status nextStatus, bool force) internal
-    returns (Order storage returnOrder){
-        require(orderId < orders.length);
-        Order storage order = orders[orderId];
-        require(order.debit == msg.sender);
-        require(force == true || order.orderStatus == fromStatus);
+    function apply(uint256 _version, bytes _idHash, bytes _applicationDigest) external returns (uint256 newOrderId){
+        require(_version > 0);
+        require(_idHash.length > 0 && _idHash.length <= MAX_SIZE);
+        require(_applicationDigest.length > 0 && _applicationDigest.length <= MAX_SIZE);
 
-        justChangeStatus(orderId, order, nextStatus);
+        uint256[] memory userOrders = borrowerIndex[msg.sender];
+        if (userOrders.length > 0) {
+            uint256 lastOrderId = userOrders[userOrders.length - 1];
+            require(!checkStatus(lastOrderId, Status.CREATED));
+        }
+
+        uint256 fee = 0;
+        if (certServiceFeeModule != address(0)) {
+            fee = certServiceFeeModule.apply();
+        }
+
+        return insertOrder(_version, msg.sender, _idHash, Status.CREATED, fee, _applicationDigest);
+    }
+
+    function cancel(uint256 id) external {
+        //TODO onlyBorrower
+        getOrderAndChangeStatus(id, Status.CREATED, Status.CANCELLED, false);
+    }
+
+    function audit(uint256 id) onlyOperator external {
+        getOrderAndChangeStatus(id, Status.CREATED, Status.AUDITING, false);
+    }
+
+    function reject(uint256 id) onlyOperator external {
+        getOrderAndChangeStatus(id, Status.AUDITING, Status.REJECTED, false);
+    }
+
+
+    function approve(uint256 id) onlyOperator external {
+        getOrderAndChangeStatus(id, Status.AUDITING, Status.APPROVED, false);
+    }
+
+    function deliver(uint256 id, bytes repayDigest, bytes agreementDigest) onlyOperator external {
+        require(agreementContract != address(0));
+        require(id > 0 && id < orders.length);
+        require(agreementDigest.length >= 0 && agreementDigest.length < MAX_SIZE);
+        require(repayDigest.length >= 0 && repayDigest.length < MAX_SIZE);
+
+        Order storage order = getOrderAndChangeStatus(id, Status.APPROVED, Status.DELIVERIED, false);
+        order.agreementDigest = agreementDigest;
+        order.repayDigest = repayDigest;
+
+        agreementContract.createAgreement(order.version, order.id, order.repayDigest, order.agreementDigest, order.idHash, order.borrower, order.applicationDigest);
+    }
+
+    function deliverFailure(uint256 id) onlyOperator external {
+        getOrderAndChangeStatus(id, Status.APPROVED, Status.FAILURE, false);
+    }
+
+    function receive(uint256 id) external {
+        //TODO onlyBorrower
+        getOrderAndChangeStatus(id, Status.DELIVERIED, Status.RECEIVIED, false);
+    }
+
+    function confirmRepay(uint256 id) onlyOperator external {
+        require(agreementContract != address(0));
+        Status[] expectedStatusArray;
+        expectedStatusArray.push(Status.RECEIVIED);
+        expectedStatusArray.push(Status.DELIVERIED);
+        getOrderAndChangeStatus(id, expectedStatusArray, Status.REPAID, false);
+        agreementContract.finishAgreement(id);
+    }
+
+    function updateRepayDigest(uint256 id, bytes repayDigest) onlyOperator external {
+        require(id > 0 && id < orders.length);
+        require(repayDigest.length > 0 && repayDigest.length <= MAX_SIZE);
+
+        Order storage order = orders[id];
+        require(order.status == Status.DELIVERIED || order.status == Status.RECEIVIED);
+
+        order.repayDigest = repayDigest;
+
+        agreementContract.updateRepayDigest(id, repayDigest);
+    }
+
+    function checkStatus(uint256 ordersIndex, Status[] expectedStatusArray) internal returns (bool){
+        Status status = orders[ordersIndex].status;
+        return checkStatus(status, expectedStatusArray);
+    }
+
+    function checkStatus(Status inputStatus, Status[] expectedStatusArray) internal returns (bool){
+        for (int i = 0; i < expectedStatusArray.length; i++) {
+            if (inputStatus == expectedStatusArray[i]) {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    function getOrderAndChangeStatus(uint256 id, Status[] fromStatusArray, Status nextStatus, bool force)
+    returns (Order storage returnOrder){
+        require(id > 0 && id < orders.length);
+        Order storage order = orders[id];
+
+        require(force == true || checkStatus(order.status, fromStatusArray));
+
+        justChangeStatus(id, order, nextStatus);
         return order;
     }
 
+
     function justChangeStatus(uint256 orderId, Order storage order, Status nextStatus) internal {
         //状态机跃迁
-        order.orderStatus = nextStatus;
-        orderUpdated(orderId, order.debit, order.credit, nextStatus);
+        order.status = nextStatus;
+        orderUpdated(orderId, order.borrower, nextStatus);
     }
-
-    function approve(uint256 orderId) public {
-        getOrderAndChangeStatus(orderId, Status.PROCESSING, Status.APPROVED, false);
-    }
-
-    function reject(uint256 orderId) public {
-        getOrderAndChangeStatus(orderId, Status.PROCESSING, Status.REJECTED, false);
-    }
-
-    function deposit(uint256 orderId, bytes agreementHash, uint256[] exptectedRepayTimes) public {
-        require(agreementHash.length > 0);
-        require(exptectedRepayTimes.length > 0);
-        Order storage order = getOrderAndChangeStatus(orderId, Status.APPROVED, Status.DEPOSITED, false);
-        order.agreementHash = agreementHash;
-
-        for (uint256 i = 0; i < exptectedRepayTimes.length; i++) {
-            require(exptectedRepayTimes[i] > 0);
-            repayPlans[orderId].push(RepayPlan(exptectedRepayTimes[i], 0));
-        }
-        agreementContract.submit(orderId, order.debit, order.credit,order.creditIdHash, agreementHash);
-    }
-
-    function recordRepay(uint256 orderId, uint256 offset, uint256 actualRepayTime) public {
-        require(orderId < orders.length);
-        require(actualRepayTime > 0);
-
-        Order storage order = orders[orderId];
-        require(order.orderStatus == Status.DEPOSITED);
-        require(order.debit == msg.sender);
-
-        require(offset > 0 && offset <= repayPlans[orderId].length);
-        repayPlans[orderId][offset - 1].actualTime = actualRepayTime;
-    }
-
-    function payOff(uint256 orderId) public {
-        getOrderAndChangeStatus(orderId, Status.DEPOSITED, Status.PAID_OFF, false);
-    }
-
-    function forceUpdateStatus(uint256 orderId, Status nextStatus) public {
-        getOrderAndChangeStatus(orderId, Status.INVALID, nextStatus, true);
-    }
-
-    function getOrder(uint256 _orderId) view external returns (uint256 orderId, address debit, address credit,
-        bytes creditIdHash, Status status, bytes orderHash, bytes agreementHash) {
+    
+    //TODO 修改顺序
+    function getOrder(uint256 _orderId) view external returns (uint256 version, uint256 id, Status status, uint256 fee,
+        bytes repayDigest, bytes agreementDigest, bytes idHash, address borrower, bytes applicationDigest) {
         require(_orderId < orders.length);
         Order memory order = orders[_orderId];
-        return (_orderId, order.debit, order.credit, order.creditIdHash, order.orderStatus, order.orderHash, order
-        .agreementHash);
-    }
-
-    function getReplayPlanLength(uint256 _orderId) view external returns (uint256 repayPlansLength) {
-        require(_orderId < orders.length);
-        return repayPlans[_orderId].length;
-    }
-
-    function getReplayPlan(uint256 _orderId, uint256 offset) view external returns (uint256 expectedTime, uint256 actualTime) {
-        require(_orderId < orders.length);
-        require(offset > 0 && offset <= repayPlans[_orderId].length);
-        RepayPlan memory rp = repayPlans[_orderId][offset - 1];
-        return (rp.expectedTime, rp.actualTime);
+        return (order.version, order.id, order.status, order.fee, order.repayDigest, order.agreementDigest, order
+        .idHash, order.borrower, order.applicationDigest);
     }
 
     function getOrderLength() view public returns (uint256 length) {
         return orders.length;
     }
 
-    function getOwner() view public returns (string _ret) {
-        return "";
+    function queryOrderIdArrayByBorrowerIndex(address _borrower) public view returns (uint256[]){
+        require(_borrower != address(0));
+        return borrowerIndex[_borrower];
     }
 
-    function queryOrderIdArrayByCreditIndex(address _credit) public view returns (uint256[]){
-        require(_credit != address(0));
-        return creditIndex[_credit];
+    function getOrderArrayLengthByBorrowerIndex(address _borrower) public view returns (uint256){
+        require(_borrower != address(0));
+        return borrowerIndex[_borrower].length;
     }
 
-    function getOrderArrayLengthByCreditIndex(address _credit) public view returns (uint256){
-        require(_credit != address(0));
-        return creditIndex[_credit].length;
+    function queryOrderIdArrayByIdHashIndex(bytes _idHash) public view returns (uint256[]){
+        require(_idHash.length > 0 && _idHash.length <= MAX_SIZE);
+        return idHashIndex[_idHash.bytesToBytes32(0)];
     }
 
-    function queryOrderIdArrayByDebitIndex(address _debit) public view returns (uint256[]){
-        require(_debit != address(0));
-        return debitIndex[_debit];
+    function getOrderArrayLengthByIdHashIndex(bytes _idHash) public view returns (uint256){
+        require(_idHash.length > 0 && _idHash.length <= MAX_SIZE);
+        return idHashIndex[_idHash.bytesToBytes32(0)].length;
     }
-
-    function getOrderArrayLengthByDebitIndex(address _debit) public view returns (uint256){
-        require(_debit != address(0));
-        return debitIndex[_debit].length;
-    }
-
 }
