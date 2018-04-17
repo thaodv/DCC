@@ -36,6 +36,17 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
+        <Button
+                android:id="@+id/btn_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:text="详情"
+                android:textColor="?attr/colorAccent"
+                android:minHeight="0dp"
+                app:layout_constraintRight_toRightOf="parent"
+                />
+
         <TextView
             android:id="@+id/assets_amount_value"
             android:layout_width="wrap_content"

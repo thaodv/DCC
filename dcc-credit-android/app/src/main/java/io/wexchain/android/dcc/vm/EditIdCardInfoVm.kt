@@ -2,12 +2,14 @@ package io.wexchain.android.dcc.vm
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.dccchainservice.CertApi
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.IdOcrInfo
 import io.wexchain.dccchainservice.domain.Result
 
@@ -104,20 +106,21 @@ class EditIdCardInfoVm : ViewModel() {
     }
 
     fun setImage(imgBytes: ByteArray?, side: Int) {
-        if(imgBytes!=null){
-            when(side){
-                IdVerifyHelper.SIDE_FRONT ->{
+        if (imgBytes != null) {
+            when (side) {
+                IdVerifyHelper.SIDE_FRONT -> {
                     imgFront.set(imgBytes)
                 }
-                IdVerifyHelper.SIDE_BACK->{
+                IdVerifyHelper.SIDE_BACK -> {
                     imgBack.set(imgBytes)
                 }
             }
             App.get().certApi.idOcr(CertApi.uploadFilePart(imgBytes, "id.jpg", "image/jpeg"))
                     .compose(Result.checked())
                     .observeOn(AndroidSchedulers.mainThread())
+//            Single.error<IdOcrInfo>(DccChainServiceException())
                     .subscribe({ info ->
-                        if (side==IdVerifyHelper.SIDE_BACK && imgBytes === imgBack.get()) {
+                        if (side == IdVerifyHelper.SIDE_BACK && imgBytes === imgBack.get()) {
                             if (info.side == IdOcrInfo.Side.back) {
 
                             } else {
@@ -126,7 +129,7 @@ class EditIdCardInfoVm : ViewModel() {
                             setInfoFromIdCardInfo(info.idCardInfo)
                             ocrEvent.value = info.idCardInfo
                         }
-                        if (side==IdVerifyHelper.SIDE_FRONT && imgBytes === imgFront.get()) {
+                        if (side == IdVerifyHelper.SIDE_FRONT && imgBytes === imgFront.get()) {
                             if (info.side == IdOcrInfo.Side.back) {
 
                             } else {
@@ -137,10 +140,10 @@ class EditIdCardInfoVm : ViewModel() {
                         }
                     }, {
                         ocrFailEvent.value = it
-                        if (side==IdVerifyHelper.SIDE_BACK && imgBytes === imgBack.get()) {
+                        if (side == IdVerifyHelper.SIDE_BACK && imgBytes === imgBack.get()) {
                             imgBack.set(null)
                         }
-                        if (side==IdVerifyHelper.SIDE_FRONT && imgBytes === imgFront.get()) {
+                        if (side == IdVerifyHelper.SIDE_FRONT && imgBytes === imgFront.get()) {
                             imgFront.set(null)
                         }
                     })

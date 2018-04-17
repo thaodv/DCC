@@ -31,7 +31,10 @@ class AssetsRepository(
         val erc20AgentBuilder: (DigitalCurrency) -> Erc20Agent) {
 
     private val pinned = MutableLiveData<List<DigitalCurrency>>().apply {
-        value = emptyList()//avoid null
+        value = listOf(
+                Currencies.DCC,
+                Currencies.Ethereum
+        )
     }
 
     val selectedCurrencies: LiveData<List<DigitalCurrency>> = dao.listCurrencyMeta(true).map {

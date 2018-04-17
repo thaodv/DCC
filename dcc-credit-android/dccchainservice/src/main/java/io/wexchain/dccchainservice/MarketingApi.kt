@@ -1,6 +1,7 @@
 package io.wexchain.dccchainservice
 
 import io.reactivex.Single
+import io.wexchain.dccchainservice.domain.Bank
 import io.wexchain.dccchainservice.domain.MarketingActivity
 import io.wexchain.dccchainservice.domain.MarketingActivityScenario
 import io.wexchain.dccchainservice.domain.Result
@@ -25,4 +26,7 @@ interface MarketingApi {
             @Field("scenarioCode") scenarioCode:String,
             @Field("address") address:String
     ):Single<Result<String>>
+
+    @GET("bank/list")
+    fun getBankList():Single<Result<List<Bank>>>
 }

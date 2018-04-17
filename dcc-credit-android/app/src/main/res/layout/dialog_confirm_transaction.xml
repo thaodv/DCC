@@ -43,37 +43,6 @@
             />
 
         <TextView
-            android:id="@+id/tv_transaction_type_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/content_padding_horizontal"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
-            android:text="@string/transaction_type_colon"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_tx_title"
-            />
-
-        <TextView
-            android:id="@+id/tv_transaction_type_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/content_padding_horizontal"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
-            android:text="@string/transfer"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_transaction_type_label"
-            app:layout_constraintRight_toRightOf="parent"
-            />
-
-        <View
-            android:id="@+id/divider_h1"
-            style="@style/DividerHorizontal"
-            app:layout_constraintTop_toBottomOf="@id/tv_transaction_type_value"
-            />
-
-        <TextView
             android:id="@+id/tv_to_address_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,7 +51,7 @@
             android:paddingTop="4dp"
             android:text="@string/to_address_colon"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider_h1"
+            app:layout_constraintTop_toBottomOf="@id/tv_tx_title"
             />
 
         <TextView

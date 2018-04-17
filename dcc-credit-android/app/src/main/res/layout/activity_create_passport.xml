@@ -37,6 +37,18 @@
             app:inputPassword="@{inputPw}"
             />
 
+        <TextView
+                android:id="@+id/tv_wallet_password_guide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                android:text="@string/wallet_password_guide"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_marginBottom="4dp"
+                />
+
         <Button
             android:id="@+id/btn_create_passport"
             android:layout_width="match_parent"

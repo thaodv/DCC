@@ -25,11 +25,12 @@
         <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="240dp"
                 style="@style/Widget.AppCompat.ImageButton.Dcc"
                 imageRawBytes="@{portrait}"
                 errorRes="@{@drawable/face_detect}"
                 tools:src="@drawable/face_detect"
-                android:scaleType="centerInside"
+                android:scaleType="fitCenter"
                 android:layout_margin="32dp"
                 />
 
@@ -50,7 +51,8 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="认证费:"
+                android:text="@{certFee}"
+                tools:text="认证费:"
                 />
 
         <Button

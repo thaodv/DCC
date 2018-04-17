@@ -21,7 +21,6 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/content_padding_horizontal"
                 android:paddingRight="@dimen/content_padding_horizontal"
@@ -88,7 +87,7 @@
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                    android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:hint="姓名"
                     android:layout_marginTop="4dp"
                     />
@@ -102,6 +101,7 @@
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:hint="@string/please_try_ocr"
+                    android:textSize="@dimen/text_size_sub_title"
                     />
 
             <View
@@ -111,7 +111,7 @@
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                    android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:hint="性别"
                     android:layout_marginTop="4dp"
                     />
@@ -125,6 +125,7 @@
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:hint="@string/please_try_ocr"
+                    android:textSize="@dimen/text_size_sub_title"
                     />
 
             <View
@@ -134,7 +135,7 @@
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                    android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:layout_marginTop="4dp"
                     android:hint="民族"
                     />
@@ -148,6 +149,7 @@
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:hint="@string/please_try_ocr"
+                    android:textSize="@dimen/text_size_sub_title"
                     />
 
             <View
@@ -157,7 +159,7 @@
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                    android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:layout_marginTop="4dp"
                     android:hint="身份证号"
                     />
@@ -173,6 +175,7 @@
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:hint="@string/please_try_ocr"
+                    android:textSize="@dimen/text_size_sub_title"
                     />
 
             <View
@@ -182,7 +185,7 @@
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                    android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:layout_marginTop="4dp"
                     android:hint="住址"
                     />
@@ -196,6 +199,7 @@
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:hint="@string/please_try_ocr"
+                    android:textSize="@dimen/text_size_sub_title"
                     />
 
             <View
@@ -205,7 +209,7 @@
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                    android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:layout_marginTop="4dp"
                     android:hint="签发机构"
                     />
@@ -220,15 +224,17 @@
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:hint="@string/please_try_ocr"
+                    android:textSize="@dimen/text_size_sub_title"
                     />
 
             <View
                     style="@style/DividerHorizontal"
                     />
+
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                    android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:layout_marginTop="4dp"
                     android:hint="有效期限"
                     />
@@ -241,7 +247,8 @@
                     android:singleLine="true"
                     android:background="@null"
                     android:gravity="center_vertical"
-                    android:hint="@string/please_try_ocr"
+                    android:hint="请点击上方按钮拍照识别 例:20180101-20380101"
+                    android:textSize="@dimen/text_size_sub_title"
                     />
 
             <View

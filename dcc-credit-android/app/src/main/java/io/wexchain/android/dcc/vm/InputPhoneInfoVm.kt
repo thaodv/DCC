@@ -9,6 +9,8 @@ class InputPhoneInfoVm:ViewModel(){
     val phoneNo = ObservableField<String>()
     val servicePassword = ObservableField<String>()
 
+    val certFee = ObservableField<String>()
+
     val submitEvent = SingleLiveEvent<Pair<String,String>>()
 
     fun submit(){

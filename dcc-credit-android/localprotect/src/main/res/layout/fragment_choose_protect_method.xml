@@ -32,7 +32,6 @@
                 android:textSize="20sp"
                 android:padding="10dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:textColor="?attr/colorAccent"
                 android:text="@string/choose_protect_type"
                 />
 
@@ -45,6 +44,7 @@
                 android:padding="6dp"
                 android:textSize="15sp"
                 android:text="@{cancelText}"
+                android:textColor="?attr/colorAccent"
                 tools:text="@string/skip"
                 />
         </FrameLayout>

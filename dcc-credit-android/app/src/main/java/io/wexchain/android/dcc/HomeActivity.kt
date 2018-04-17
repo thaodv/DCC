@@ -34,10 +34,10 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
     }
 
     private fun setupClicks() {
-        findViewById<View>(R.id.card_my_credit).setOnClickListener {
+        findViewById<View>(R.id.iv_credit).setOnClickListener {
             if (App.get().passportRepository.passportEnabled) {
                 navigateTo(MyCreditActivity::class.java,transitionBundle(
-                        Transitions.create(findViewById(R.id.card_my_credit),Transitions.CARD_CREDIT)
+                        Transitions.create(findViewById(R.id.iv_credit),Transitions.CARD_CREDIT)
                 ))
             } else {
                 if (!App.get().passportRepository.passportExists) {
@@ -47,7 +47,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
                 }
             }
         }
-        findViewById<View>(R.id.card_digital_assets).setOnClickListener {
+        val clickDigitalAssets: (View) -> Unit = {
             if (App.get().passportRepository.passportExists) {
                 navigateTo(DigitalAssetsActivity::class.java, transitionBundle(
                         Transitions.create(findViewById(R.id.rv_assets), Transitions.DIGITAL_ASSETS_LIST)
@@ -58,6 +58,10 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
                 showIntroWalletDialog()
             }
         }
+        findViewById<ViewGroup>(R.id.section_assets).apply {
+            setOnClickListener(clickDigitalAssets)
+            this.findViewById<View>(R.id.btn_detail).setOnClickListener(clickDigitalAssets)
+        }
         findViewById<View>(R.id.btn_settings).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
                 navigateTo(PassportSettingsActivity::class.java)
@@ -65,14 +69,20 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
                 showIntroWalletDialog()
             }
         }
-        findViewById<View>(R.id.card_candy).setOnClickListener {
+        findViewById<View>(R.id.iv_candy).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
                 navigateTo(MarketingListActivity::class.java,transitionBundle(
-                        Transitions.create(findViewById(R.id.card_candy),Transitions.CARD_CANDY)
+                        Transitions.create(findViewById(R.id.iv_candy),Transitions.CARD_CANDY)
                 ))
             } else {
                 showIntroWalletDialog()
             }
+        }
+        findViewById<View>(R.id.iv_affiliate).setOnClickListener {
+            toast("Coming soon")
+        }
+        findViewById<View>(R.id.iv_loan).setOnClickListener {
+            toast("Coming soon")
         }
         binding.cardPassport.root.setOnClickListener {
             if (!App.get().passportRepository.passportExists) {

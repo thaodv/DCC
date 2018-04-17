@@ -13,9 +13,14 @@ import com.wexmarket.android.passport.base.BindFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.android.idverify.domain.LivenessResult
 import io.wexchain.auth.R
 import io.wexchain.auth.databinding.FragmentLivenessDetectionBinding
+import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.digitalwallet.Currencies
+import java.math.BigInteger
 
 class LivenessDetectionFragment:BindFragment<FragmentLivenessDetectionBinding>() {
 
@@ -38,6 +43,13 @@ class LivenessDetectionFragment:BindFragment<FragmentLivenessDetectionBinding>()
                 listener?.onProceed(portrait)
             }
         }
+        App.get().chainGateway.getExpectedFee(ChainGateway.BUSINESS_ID)
+                .compose(Result.checked())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe{it->
+                    val fee = it.toLong()
+                    binding.certFee = "认证费：${Currencies.DCC.toDecimalAmount(BigInteger.valueOf(fee)).currencyToDisplayStr()} DCC"
+                }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

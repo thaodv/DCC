@@ -50,6 +50,7 @@
                 android:text="完成全部资料验证，即可申请数字资产贷款"
                 style="@style/NoticeTextLabel"
                 android:layout_marginTop="8dp"
+                android:visibility="gone"
                 />
 
         <ScrollView

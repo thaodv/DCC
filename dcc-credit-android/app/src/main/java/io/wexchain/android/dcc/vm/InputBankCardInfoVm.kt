@@ -5,18 +5,20 @@ import android.arch.lifecycle.AndroidViewModel
 import android.databinding.ObservableField
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.vm.domain.BankCardInfo
-import io.wexchain.android.dcc.vm.domain.BankInfo
 import io.wexchain.android.idverify.IdCardEssentialData
+import io.wexchain.dccchainservice.domain.Bank
 import io.wexchain.dccchainservice.domain.BankCodes
 import io.wexchain.dccchainservice.domain.IdOcrInfo
 
 class InputBankCardInfoVm(application: Application):AndroidViewModel(application){
 
-    val bank = ObservableField<BankInfo>()
+    val bank = ObservableField<Bank>()
 
     val bankCardNo = ObservableField<String>()
 
     val phoneNum = ObservableField<String>()
+
+    val certFee = ObservableField<String>()
 
     val submitEvent = SingleLiveEvent<BankCardInfo>()
 
@@ -33,7 +35,7 @@ class InputBankCardInfoVm(application: Application):AndroidViewModel(application
     }
 
     private fun checkAndBuildBankCardInfo(): BankCardInfo? {
-        val bankCode = bank.get()?.code
+        val bankCode = bank.get()?.bankCode
         val cardNo = bankCardNo.get()
         val phoneNo = phoneNum.get()
         //todo check

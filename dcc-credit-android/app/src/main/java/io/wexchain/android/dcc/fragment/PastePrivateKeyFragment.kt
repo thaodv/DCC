@@ -58,7 +58,11 @@ class PastePrivateKeyFragment :BindFragment<FragmentPastePrivateKeyBinding>() {
     fun parsePassport():Single<Pair<Credentials,String>>{
         val key = binding.key
         val pw = binding.inputPassword!!.password.get()
-        return if(isEcPrivateKeyValid(key)&&isPasswordValid(pw)){
+        return if (!isEcPrivateKeyValid(key)){
+            Single.error(IllegalArgumentException("私钥明文不符合规则，导入失败"))
+        }else if (!isPasswordValid(pw)) {
+            Single.error(IllegalArgumentException("密码不符合规则"))
+        }else{
             Single.just(Pair(key!!,pw!!))
                     .observeOn(Schedulers.computation())
                     .map {
@@ -66,7 +70,7 @@ class PastePrivateKeyFragment :BindFragment<FragmentPastePrivateKeyBinding>() {
                         credentials to it.second
                     }
                     .observeOn(AndroidSchedulers.mainThread())
-        } else Single.error(IllegalArgumentException("私钥明文不符合规则，导入失败"))
+        }
     }
 
     companion object {

@@ -22,6 +22,10 @@ object JuzixData {
 //                    juzixPrefs.ftcContractAddress.set(address)
 //                    update()
 //                }
+        MultiChainHelper.putMultiDc(Currencies.DCC, listOf(
+                Chain.publicEthChain to cc.sisel.ewallet.BuildConfig.DCC_PUBLIC_ADDRESS,
+                Chain.JUZIX_PRIVATE to juzixPrefs.dccContractAddress.get()!!
+        ))
         updateDccJuzixAddress(app)
     }
 

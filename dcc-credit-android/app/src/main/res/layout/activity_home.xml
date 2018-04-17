@@ -35,89 +35,67 @@
                         android:id="@+id/card_passport"
                         />
 
-                <android.support.v7.widget.CardView
-                        android:id="@+id/card_digital_assets"
+                <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="?attr/cardViewStyle"
-                        android:stateListAnimator="@animator/card_state_animator"
-                        app:cardBackgroundColor="@android:color/transparent"
-                        app:cardCornerRadius="8dp"
-                        tools:layout_height="200dp"
-                        >
-                    <fragment
-                            android:id="@+id/section_assets"
-                            android:name="io.wexchain.android.dcc.fragment.DigitalAssetsLimitedFragment"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="16dp"
-                            android:layout_marginTop="16dp"
-                            tools:layout="@layout/fragment_digital_assets_limited"
-                            />
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                        android:id="@+id/card_candy"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="?attr/cardViewStyle"
-                        app:contentPadding="0dp"
+                        android:layout_marginLeft="@dimen/content_padding_horizontal"
+                        android:layout_marginRight="@dimen/content_padding_horizontal"
                         >
 
                     <ImageView
-                            android:layout_width="match_parent"
+                            android:id="@+id/iv_candy"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/banner_candy"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/bar_candy"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/iv_credit"
                             />
-
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                        android:id="@+id/card_my_credit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="?attr/cardViewStyle"
-                        app:contentPadding="0dp"
-                        >
-
                     <ImageView
-                            android:layout_width="match_parent"
+                            android:id="@+id/iv_credit"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/banner_credit"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/bar_credit"
+                            app:layout_constraintLeft_toRightOf="@id/iv_candy"
+                            app:layout_constraintRight_toRightOf="parent"
+                            android:layout_marginLeft="24dp"
                             />
-
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="?attr/cardViewStyle"
-                        app:contentPadding="0dp"
-                        >
-
                     <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/card_loan"
+                            android:id="@+id/iv_loan"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/bar_loan"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/iv_affiliate"
+                            app:layout_constraintTop_toBottomOf="@id/iv_candy"
+                            android:layout_marginTop="12dp"
                             />
-
-                </android.support.v7.widget.CardView>
-
-
-                <android.support.v7.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="?attr/cardViewStyle"
-                        app:contentPadding="0dp"
-                        >
-
                     <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/card_affiliate"
+                            android:id="@+id/iv_affiliate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/bar_affiliate"
+                            app:layout_constraintLeft_toRightOf="@id/iv_loan"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintBottom_toBottomOf="@id/iv_loan"
+                            android:layout_marginLeft="24dp"
                             />
 
-                </android.support.v7.widget.CardView>
+                </android.support.constraint.ConstraintLayout>
+
+                <fragment
+                        android:id="@+id/section_assets"
+                        android:name="io.wexchain.android.dcc.fragment.DigitalAssetsLimitedFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp"
+                        tools:layout="@layout/fragment_digital_assets_limited"
+                        />
+
             </LinearLayout>
 
         </ScrollView>

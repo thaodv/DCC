@@ -99,6 +99,7 @@ object PassportOperations {
                 }
                 .doOnSuccess {
                     App.get().passportRepository.saveNewPassport(it.first, password, it.second)
+                    App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(it.first.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.ENABLE))
                 }
                 .observeOn(AndroidSchedulers.mainThread())
     }
@@ -123,6 +124,7 @@ object PassportOperations {
                 }
                 .doOnSuccess {
                     App.get().passportRepository.saveNewPassport(it.first, password, it.second)
+                    App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(it.first.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.ENABLE))
                 }
                 .observeOn(AndroidSchedulers.mainThread())
 

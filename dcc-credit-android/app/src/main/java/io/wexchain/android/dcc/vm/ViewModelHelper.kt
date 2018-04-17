@@ -103,27 +103,6 @@ object ViewModelHelper {
     }
 
     @JvmStatic
-    fun Context.getMarketingStatusBackground(status: MarketingActivity.Status?) {
-        when (status) {
-            MarketingActivity.Status.SHELVED -> TODO()
-            MarketingActivity.Status.STARTED -> TODO()
-            MarketingActivity.Status.ENDED -> TODO()
-            null -> TODO()
-        }
-    }
-
-    @JvmStatic
-    @ColorInt
-    fun Context.getMarketingTextColor(status: MarketingActivity.Status?) {
-        when (status) {
-            MarketingActivity.Status.SHELVED -> TODO()
-            MarketingActivity.Status.STARTED -> TODO()
-            MarketingActivity.Status.ENDED -> TODO()
-            null -> TODO()
-        }
-    }
-
-    @JvmStatic
     fun Context.getMarketingScenarioActionText(status: MarketingActivityScenario.Qualification?): String {
         return when (status) {
             MarketingActivityScenario.Qualification.REDEEMED -> "已领取"
@@ -178,8 +157,9 @@ object ViewModelHelper {
     @JvmStatic
     fun getDccStr(holding: BigInteger?): String {
         return holding?.let {
-            Currencies.DCC.toDecimalAmount(it)
-                    .setScale(2, RoundingMode.DOWN).toPlainString() + " DCC"
+            val holdingStr = Currencies.DCC.toDecimalAmount(it)
+                    .setScale(2, RoundingMode.DOWN).toPlainString()
+            "+$holdingStr DCC"
         } ?: "--"
     }
 
