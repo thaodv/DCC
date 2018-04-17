@@ -38,4 +38,7 @@ contract CertServiceFeeModuleStaticImpl  is CertServiceFeeModule ,HasWallet{
     function setFee(uint256 _fee) public onlyOwner{
         fee=_fee;
     }
+
+    function  refund() public onlycaller{}
+    function  settle() public onlycaller{}
 }
