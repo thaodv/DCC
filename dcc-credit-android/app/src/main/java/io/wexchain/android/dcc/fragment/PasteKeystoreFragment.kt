@@ -13,6 +13,7 @@ import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.QrScannerActivity
 import io.wexchain.android.dcc.repo.PassportRepository
+import io.wexchain.android.dcc.tools.isEcPrivateKeyValid
 import io.wexchain.android.dcc.tools.isKeyStoreValid
 import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.dcc.vm.InputPasswordVm
@@ -24,12 +25,13 @@ import org.web3j.crypto.Wallet
 /**
  * Created by lulingzhi on 2017/11/17.
  */
-class PasteKeystoreFragment: BindFragment<FragmentPasteKeystoreBinding>() {
-    override val contentLayoutId: Int= R.layout.fragment_paste_keystore
+class PasteKeystoreFragment : BindFragment<FragmentPasteKeystoreBinding>() {
+    override val contentLayoutId: Int = R.layout.fragment_paste_keystore
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val inputPasswordVm = getViewModel<InputPasswordVm>().apply {
+            passwordValidator = this@PasteKeystoreFragment::checkKeystorePassword
             passwordHint.set(context!!.getString(R.string.please_input_passport_password))
             reset()
         }
@@ -42,14 +44,16 @@ class PasteKeystoreFragment: BindFragment<FragmentPasteKeystoreBinding>() {
         }
     }
 
+    private fun checkKeystorePassword(pw: String?) = pw != null && pw.isNotBlank()
+
     private fun requestScan() {
-        startActivityForResult(Intent(context,QrScannerActivity::class.java), RequestCodes.SCAN)
+        startActivityForResult(Intent(context, QrScannerActivity::class.java), RequestCodes.SCAN)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when(requestCode){
-            RequestCodes.SCAN->{
-                if(resultCode == Activity.RESULT_OK && data!=null){
+        when (requestCode) {
+            RequestCodes.SCAN -> {
+                if (resultCode == Activity.RESULT_OK && data != null) {
                     val result = data.getStringExtra(QrScannerActivity.EXTRA_SCAN_RESULT)
                     binding.keyStore = result
                 }
@@ -58,11 +62,15 @@ class PasteKeystoreFragment: BindFragment<FragmentPasteKeystoreBinding>() {
         }
     }
 
-    fun parsePassport():Single<Pair<Credentials,String>>{
+    fun parsePassport(): Single<Pair<Credentials, String>> {
         val ks = binding.keyStore
         val pw = binding.inputPassword!!.password.get()
-        return if(isKeyStoreValid(ks) && isPasswordValid(pw)){
-            Single.just(Pair(ks!!,pw!!))
+        return if (!isKeyStoreValid(ks)){
+            Single.error(IllegalArgumentException("KeyStore信息格式错误，导入失败"))
+        }else if (!isPasswordValid(pw)) {
+            Single.error(IllegalArgumentException("密码不符合规则"))
+        }else{
+            Single.just(Pair(ks!!, pw!!))
                     .observeOn(Schedulers.computation())
                     .map {
                         //parse
@@ -76,7 +84,10 @@ class PasteKeystoreFragment: BindFragment<FragmentPasteKeystoreBinding>() {
                         Credentials.create(ecKeyPair) to pw
                     }
                     .observeOn(AndroidSchedulers.mainThread())
-        }else Single.error(IllegalArgumentException())
+                    .doOnError {
+                        binding.inputPassword!!.password.set("")
+                    }
+        }
     }
 
     companion object {

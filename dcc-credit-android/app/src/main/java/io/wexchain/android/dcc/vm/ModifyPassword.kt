@@ -8,6 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.UseProtect
 import io.wexchain.auth.R
@@ -23,6 +24,7 @@ class ModifyPassword(application: Application) : AndroidViewModel(application), 
     private val passportRepo = App.get().passportRepository
 
     val inputCurrentPassword = InputPasswordVm(application).apply {
+        this.passwordValidator = { isOldPasswordValid(it) }
         this.passwordHint.set(application.getString(R.string.please_input_current_passport_password))
     }
     val inputNewPassword = InputPasswordVm(application).apply {
@@ -38,9 +40,9 @@ class ModifyPassword(application: Application) : AndroidViewModel(application), 
     fun clickModify() {
         val inputPw = inputCurrentPassword.password.get()
         val inputNewPw = inputNewPassword.password.get()
-        inputPw?:return
-        inputNewPw?:return
-        if (checkPassword(inputPw) && checkPassword(inputNewPw)) {
+        inputPw ?: return
+        inputNewPw ?: return
+        if (isOldPasswordValid(inputPw) && isPasswordValid(inputNewPw)) {
             verifyProtect {
                 val passport = passportRepo.getCurrentPassport()
                 if (passport == null) {
@@ -51,7 +53,7 @@ class ModifyPassword(application: Application) : AndroidViewModel(application), 
                 Single.just(inputNewPw)
                         .observeOn(Schedulers.io())
                         .map {
-                            passportRepo.changePassword(passport,inputNewPw)
+                            passportRepo.changePassword(passport, inputNewPw)
                         }
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe {
@@ -68,18 +70,15 @@ class ModifyPassword(application: Application) : AndroidViewModel(application), 
                             modifyPasswordFailEvent.call()
                         })
             }
+        }else{
+            passwordCheckInvalidEvent.call()
         }
     }
+
+    private fun isOldPasswordValid(pw: String?) = pw != null && pw.isNotBlank()
 
     fun reset() {
         inputCurrentPassword.reset()
         inputNewPassword.reset()
-    }
-
-    private fun checkPassword(password: String): Boolean {
-        return if (password.length !in 2..20) {
-            passwordCheckInvalidEvent.call()
-            false
-        } else true
     }
 }

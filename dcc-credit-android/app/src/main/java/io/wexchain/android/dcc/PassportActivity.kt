@@ -3,17 +3,22 @@ package io.wexchain.android.dcc
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.wexmarket.android.passport.base.BindActivity
 import io.wexchain.android.common.withTransitionEnabled
 import io.wexchain.android.dcc.constant.Transitions
+import io.wexchain.android.dcc.network.GlideApp
 import io.wexchain.android.dcc.repo.db.CaAuthRecord
 import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
@@ -42,22 +47,29 @@ class PassportActivity : BindActivity<ActivityPassportBinding>(),
         super.onCreate(savedInstanceState)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
                 View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        setupTransitions()
         toolbarTitle = findViewById<TextView>(R.id.toolbar_title).apply {
             text = title
         }
         setupData()
         setupBtn()
+        setupTransitions()
+        supportPostponeEnterTransition()
     }
 
+    override fun onResourceLoaded(id: Int) {
+        super.onResourceLoaded(id)
+        when(id){
+            R.id.iv_avatar->{
+                supportStartPostponedEnterTransition()
+            }
+        }
+    }
 
     private fun setupTransitions() {
         withTransitionEnabled {
             // avoid leaks
-            ViewCompat.setTransitionName(
-                    findViewById(R.id.card_passport),
-                    Transitions.CARD_PASSPORT
-            )
+            ViewCompat.setTransitionName(findViewById(R.id.card_passport), Transitions.CARD_PASSPORT)
+            ViewCompat.setTransitionName(findViewById(R.id.iv_avatar), Transitions.CARD_PASSPORT_AVATAR)
         }
     }
 
@@ -67,6 +79,7 @@ class PassportActivity : BindActivity<ActivityPassportBinding>(),
             it?.let {
                 binding.passport = it
                 binding.statusEnabled = it.authKey != null
+                supportStartPostponedEnterTransition()
             }
         })
         val llm = LinearLayoutManager(this)
@@ -116,7 +129,7 @@ class PassportActivity : BindActivity<ActivityPassportBinding>(),
             goFinish()
         }
         binding.btnToManageAuth.setOnClickListener {
-            //            startActivity(Intent(this, AuthManageActivity::class.java))
+            startActivity(Intent(this, AuthManageActivity::class.java))
         }
         binding.cardPassport!!.tvPassportAddress.setOnClickListener {
             startActivity(Intent(this, PassportAddressActivity::class.java))

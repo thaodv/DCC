@@ -1,6 +1,7 @@
 package io.wexchain.android.dcc.tools
 
 import android.content.Context
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.Prefs
 import io.wexchain.android.dcc.App
@@ -21,10 +22,18 @@ object JuzixData {
 //                    juzixPrefs.ftcContractAddress.set(address)
 //                    update()
 //                }
-        app.chainGateway.getErc20ContractAddress(Currencies.DCC.symbol)
+        MultiChainHelper.putMultiDc(Currencies.DCC, listOf(
+                Chain.publicEthChain to cc.sisel.ewallet.BuildConfig.DCC_PUBLIC_ADDRESS,
+                Chain.JUZIX_PRIVATE to juzixPrefs.dccContractAddress.get()!!
+        ))
+        updateDccJuzixAddress(app)
+    }
+
+    private fun updateDccJuzixAddress(app: App): Single<String> {
+        return app.chainGateway.getErc20ContractAddress(Currencies.DCC.symbol)
                 .compose(Result.checked())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { address ->
+                .doOnSuccess { address ->
                     juzixPrefs.dccContractAddress.set(address)
                     update()
                 }

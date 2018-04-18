@@ -20,6 +20,7 @@
         <item name="spinnerStyle">@style/Widget.AppCompat.Spinner.Dcc</item>
         <item name="android:spinnerItemStyle">@style/Widget.AppCompat.TextView.SpinnerItem.Dcc</item>
         <item name="android:spinnerDropDownItemStyle">@style/Widget.AppCompat.Light.DropDownItem.Spinner.Dcc</item>
+        <item name="android:actionMenuTextColor">?attr/colorAccent</item>
 
         <item name="dialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert.Dcc</item>
     </style>

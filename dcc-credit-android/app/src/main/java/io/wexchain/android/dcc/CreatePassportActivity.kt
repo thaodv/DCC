@@ -6,7 +6,7 @@ import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.chain.PassportOperations.createNewAndEnablePassport
+import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.auth.R
@@ -37,7 +37,7 @@ class CreatePassportActivity : BindActivity<ActivityCreatePassportBinding>() {
     }
 
     private fun doCreatePassport(password: String) {
-        createNewAndEnablePassport(password)
+        PassportOperations.createNewAndEnablePassport(password)
                 .doOnSubscribe {
                     showLoadingDialog()
                 }
@@ -62,7 +62,7 @@ class CreatePassportActivity : BindActivity<ActivityCreatePassportBinding>() {
         if (App.get().passportRepository.passportExists){
             // post action to complete onCreate() and postpone finish
             postOnMainThread {
-                toast("已存在通行证")
+                toast("已存在钱包")
                 finish()
             }
         }

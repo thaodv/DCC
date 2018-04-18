@@ -101,7 +101,6 @@ contract CertService3 is OperatorPermission ,CertServiceIntf{
              require(expired==0);
          }
 
-
         uint256  fee=0;
 
         if(certServiceFeeModule!=address(0)){
@@ -161,7 +160,6 @@ contract CertService3 is OperatorPermission ,CertServiceIntf{
           }
         audit(orderId, Status.PASSED);
     }
-
 
     function reject(uint256 orderId) public onlyOperator {
         audit(orderId, Status.REJECTED);

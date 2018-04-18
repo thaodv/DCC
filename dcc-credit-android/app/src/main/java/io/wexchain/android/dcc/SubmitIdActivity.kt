@@ -86,7 +86,7 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
             enterStep(STEP_INPUT_ID)
         } else {
             postOnMainThread {
-                toast("通行证未启用")
+                toast(R.string.ca_not_enabled)
                 finish()
             }
         }

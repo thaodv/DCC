@@ -3,10 +3,15 @@ package io.wexchain.android.dcc.vm
 import android.databinding.Observable
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
+import android.support.v4.content.ContextCompat
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.App
 import io.wexchain.android.common.SingleLiveEvent
+import io.wexchain.auth.R
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
@@ -55,7 +60,7 @@ class TransactionVm {
     val onPrivateChain = ObservableBoolean()
 
     var feeRate:BigDecimal? = null
-    val transferFeeHintText = ObservableField<String>()
+    val transferFeeHintText = ObservableField<CharSequence>()
 
     init {
         val feeChange: Observable.OnPropertyChangedCallback = object : Observable.OnPropertyChangedCallback() {
@@ -90,11 +95,18 @@ class TransactionVm {
             txTitle.set("${dc.symbol} 转账")
             updateGasPrice()
             onPrivateChain.set(dc.chain == Chain.JUZIX_PRIVATE)
-            if (dc.chain == Chain.JUZIX_PRIVATE && dc.symbol == Currencies.FTC.symbol){
-                val decimal = feeRate!!.toBigDecimalSafe()
-                this.feeRate = decimal
-                val rdc = decimal.scaleByPowerOfTen(3).stripTrailingZeros().toPlainString()
-                this.transferFeeHintText.set(rdc)
+            if(dc.chain == Chain.JUZIX_PRIVATE){
+                if(dc.symbol == Currencies.FTC.symbol){
+                    val decimal = feeRate!!.toBigDecimalSafe()
+                    this.feeRate = decimal
+                    val rdc = decimal.scaleByPowerOfTen(3).stripTrailingZeros().toPlainString()
+                    val colored = SpannableString(rdc).apply {
+                        setSpan(ForegroundColorSpan(ContextCompat.getColor(App.get(), R.color.text_red)),0,rdc.length,Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+                    }
+                    this.transferFeeHintText.set(colored)
+                }else{
+                    this.transferFeeHintText.set("@DCC免矿工费")
+                }
             }
         }
     }

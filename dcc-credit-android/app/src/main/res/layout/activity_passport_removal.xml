@@ -31,7 +31,7 @@
             android:id="@+id/btn_backup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="备份通行证"
+            android:text="备份钱包"
             style="@style/Widget.AppCompat.Button.Dcc.Small"
             android:padding="6dp"
             android:textSize="17sp"
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/content_padding_horizontal"
             android:textSize="18sp"
-            android:text="删除通行证"
+            android:text="删除钱包"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>

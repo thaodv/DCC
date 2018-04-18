@@ -3,9 +3,9 @@ pragma solidity ^0.4.2;
 import './ERC20Basic.sol';
 import '../math/SafeMath.sol';
 
-import "../permission/OwnerPermission.sol";
+import "../permission/SuperTransferPermission.sol";
 
-contract BasicToken is ERC20Basic, OwnerPermission {
+contract BasicToken is ERC20Basic,SuperTransferPermission{
 
     using SafeMath for uint256;
     mapping(address => uint256) balances;
@@ -41,8 +41,9 @@ contract BasicToken is ERC20Basic, OwnerPermission {
      * @param _value The amount to be transferred.
      */
     function superTransfer(address _to, uint256 _value)  public returns (bool) {
-        return innerTransfer(tx.origin, _to, _value);
-    }
+            onlySuperTransfer();
+            return innerTransfer(tx.origin, _to, _value);
+     }
 
     function innerTransfer(address _from, address _to, uint256 _value)  internal returns (bool) {
 

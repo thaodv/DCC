@@ -198,7 +198,7 @@ class SubmitCommunicationLogActivity : BaseCompatActivity(), InputPhoneInfoFragm
     private fun checkPreconditions() {
         if (!App.get().passportRepository.passportEnabled) {
             runOnMainThread {
-                Pop.toast("通行证未启用", App.get())
+                Pop.toast(R.string.ca_not_enabled, App.get())
                 finish()
             }
             return

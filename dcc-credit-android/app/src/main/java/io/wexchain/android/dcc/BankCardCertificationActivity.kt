@@ -6,6 +6,7 @@ import com.wexmarket.android.passport.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.vm.CertificationDataVm
 import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.auth.R
@@ -28,7 +29,9 @@ class BankCardCertificationActivity : BindActivity<ActivityCertificationDataBind
             this.value3.set(ViewModelHelper.expiredText(expired))
         }
         vm.renewEvent.observe(this, Observer {
-            navigateTo(SubmitBankCardActivity::class.java)
+            PassportOperations.ensureCaValidity(this) {
+                navigateTo(SubmitBankCardActivity::class.java)
+            }
         })
         binding.vm = vm
     }

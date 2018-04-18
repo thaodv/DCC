@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="DccTheme.App">
+        <!-- enable window content transitions -->
+        <item name="android:windowContentTransitions">true</item>
+
+        <!-- specify enter and exit transitions -->
+        <item name="android:windowEnterTransition">@transition/transition_window_content</item>
+        <item name="android:windowExitTransition">@transition/transition_window_content</item>
+
+        <item name="android:windowSharedElementEnterTransition">@transition/default_transition
+        </item>
+        <item name="android:windowSharedElementExitTransition">@transition/default_transition</item>
+    </style>
+</resources>

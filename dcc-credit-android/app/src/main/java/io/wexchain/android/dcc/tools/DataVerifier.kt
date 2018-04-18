@@ -18,6 +18,5 @@ fun isEcPrivateKeyValid(key: String?): Boolean {
 }
 
 fun isPhoneNumValid(phoneNum:String?):Boolean{
-    return true//todo delete after mock
     return phoneNum!=null && phoneNum.length == 11
 }

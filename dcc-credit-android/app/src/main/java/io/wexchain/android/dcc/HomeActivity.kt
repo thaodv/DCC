@@ -2,14 +2,21 @@ package io.wexchain.android.dcc
 
 import android.app.Dialog
 import android.arch.lifecycle.Observer
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.wexmarket.android.passport.base.BindActivity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.common.toast
 import io.wexchain.android.common.transitionBundle
 import io.wexchain.android.dcc.constant.Transitions
+import io.wexchain.android.dcc.network.GlideApp
 import io.wexchain.auth.R
 import io.wexchain.auth.databinding.ActivityHomeBinding
 
@@ -20,27 +27,27 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
         super.onCreate(savedInstanceState)
         setWindowExtended()
 
-        App.get().passportRepository.currPassport.observe(this, Observer {
-            binding.cardPassport.passport = it
+        App.get().passportRepository.currPassport.observe(this, Observer {p->
+            binding.cardPassport.passport = p
         })
         setupClicks()
     }
 
     private fun setupClicks() {
-        findViewById<View>(R.id.card_my_credit).setOnClickListener {
+        findViewById<View>(R.id.iv_credit).setOnClickListener {
             if (App.get().passportRepository.passportEnabled) {
                 navigateTo(MyCreditActivity::class.java,transitionBundle(
-                        Transitions.create(findViewById(R.id.card_my_credit),Transitions.CARD_CREDIT)
+                        Transitions.create(findViewById(R.id.iv_credit),Transitions.CARD_CREDIT)
                 ))
             } else {
                 if (!App.get().passportRepository.passportExists) {
                     showIntroWalletDialog()
                 } else {
-                    toast("通行证未启用")
+                    toast(R.string.ca_not_enabled)
                 }
             }
         }
-        findViewById<View>(R.id.card_digital_assets).setOnClickListener {
+        val clickDigitalAssets: (View) -> Unit = {
             if (App.get().passportRepository.passportExists) {
                 navigateTo(DigitalAssetsActivity::class.java, transitionBundle(
                         Transitions.create(findViewById(R.id.rv_assets), Transitions.DIGITAL_ASSETS_LIST)
@@ -51,6 +58,10 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
                 showIntroWalletDialog()
             }
         }
+        findViewById<ViewGroup>(R.id.section_assets).apply {
+            setOnClickListener(clickDigitalAssets)
+            this.findViewById<View>(R.id.btn_detail).setOnClickListener(clickDigitalAssets)
+        }
         findViewById<View>(R.id.btn_settings).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
                 navigateTo(PassportSettingsActivity::class.java)
@@ -58,19 +69,29 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
                 showIntroWalletDialog()
             }
         }
-        findViewById<View>(R.id.card_candy).setOnClickListener {
+        findViewById<View>(R.id.iv_candy).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
                 navigateTo(MarketingListActivity::class.java,transitionBundle(
-                        Transitions.create(findViewById(R.id.card_candy),Transitions.CARD_CANDY)
+                        Transitions.create(findViewById(R.id.iv_candy),Transitions.CARD_CANDY)
                 ))
             } else {
                 showIntroWalletDialog()
             }
         }
+        findViewById<View>(R.id.iv_affiliate).setOnClickListener {
+            toast("Coming soon")
+        }
+        findViewById<View>(R.id.iv_loan).setOnClickListener {
+            toast("Coming soon")
+        }
         binding.cardPassport.root.setOnClickListener {
-//            navigateTo(PassportActivity::class.java)
             if (!App.get().passportRepository.passportExists) {
                 showIntroWalletDialog()
+            }else{
+                navigateTo(PassportActivity::class.java,transitionBundle(
+                        Transitions.create(findViewById(R.id.card_passport),Transitions.CARD_PASSPORT),
+                        Transitions.create(findViewById<ViewGroup>(R.id.card_passport).findViewById(R.id.iv_avatar),Transitions.CARD_PASSPORT_AVATAR)
+                ))
             }
         }
     }

@@ -70,7 +70,7 @@
             android:textSize="16sp"
             android:drawableRight="@drawable/success1"
             android:drawablePadding="4dp"
-            android:text="TODO"
+            android:text="@string/bitexpress"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintBottom_toBottomOf="@id/iv_passport_qr"
             app:layout_constraintLeft_toLeftOf="@id/tv_passport_address_label"

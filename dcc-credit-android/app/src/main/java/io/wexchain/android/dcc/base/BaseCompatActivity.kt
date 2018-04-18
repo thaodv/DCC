@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.base
 
 import android.graphics.Color
 import android.os.Build
+import android.support.annotation.IdRes
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
@@ -79,6 +80,9 @@ abstract class BaseCompatActivity : AppCompatActivity() {
         return false
     }
 
+    open fun onResourceLoaded(@IdRes id:Int){
+
+    }
 
     private var loadingDialog: FullScreenDialog? = null
 

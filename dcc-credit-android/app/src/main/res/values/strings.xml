@@ -22,7 +22,7 @@
         温馨提示\n\n1、请使用本人实名制手机号进行认证\n2、服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3、点击“提交”按钮会收到运营商的通知短信，无需回复\n4、如忘记服务密码,请登录运营商官网找回服务密码
     </string>
 
-    <string name="import_and_enable_passport">导入并启用统一登录</string>
+    <string name="import_and_enable_passport">导入已有钱包</string>
     <string name="enable_passport_will_disable_other_warning">导入口袋成功后，其他设备统一登录功能将不可用</string>
     <string name="loading">loading…</string>
     <string name="please_paste_keystore">请粘贴KEYSTORE信息</string>
@@ -83,7 +83,7 @@
     <string name="receive_amount_colon">接收金额:</string>
     <string name="transfer_fee_colon">手续费:</string>
     <string name="max_payment_amount_colon">最高支付金额: %1$s</string>
-    <string name="passport_address">通行证地址</string>
+    <string name="passport_address">钱包地址</string>
     <string name="sms_code">短信验证码</string>
     <string name="send_sms_code">发送验证码</string>
     <string name="cert_fee">认证费</string>
@@ -102,26 +102,36 @@
     <string name="please_input_phone_no">请输入手机号码</string>
     <string name="phone_service_password">服务密码</string>
     <string name="please_input_phone_service_password">请输入服务密码</string>
-    <string name="passport_removal">删除通行证</string>
-    <string name="title_remove_passport">删除通行证</string>
-    <string name="remove_passport_description">删除通行证后,您只能通过导入通行证恢复当前通行证的使用,如果您为备份通行证,则无法继续使用当前通行证.强烈建议您在删除通行证之前备份通行证</string>
-    <string name="description_remove_passport">您尚未开启本地安全保护,用户仅能通过导入通行证备份恢复当前通行证的使用.建议在删除通行证之前备份通行证</string>
-    <string name="click_here_to_passport">点击这里备份通行证</string>
-    <string name="passport_backup">通行证备份</string>
-    <string name="export_keystore_description">二维码显示的是KeyStore信息,KEYSTORE是私钥的签名保护文件,通过通行证密码对KEYSTORE文件签名.单独拥有KEYSTORE文件或者通行证密码都无法使用通行证.而同时拥有KEYSTORE文件和通行证密码则可以再任何设备使用通行证.强烈建议您在使用通行证前做好备份</string>
-    <string name="export_private_key_description">当前二维码显示的是私钥明文,私钥明文是您对通行证所有权的认证方式.通过导入私钥可以再任何设备使用通行证,并创建通行证对应的KeyStore文件和通行证密码.强烈建议您在使用通行证前做好备份.</string>
-    <string name="please_input_current_passport_password">请输入原通行证密码:</string>
-    <string name="please_input_new_passport_password">请输入新通行证密码:</string>
+    <string name="passport_removal">删除钱包</string>
+    <string name="title_remove_passport">删除钱包</string>
+    <string name="remove_passport_description">删除钱包后,您只能通过导入钱包恢复当前钱包的使用,如果您为备份钱包,则无法继续使用当前钱包.强烈建议您在删除钱包之前备份钱包</string>
+    <string name="description_remove_passport">如果您还没有对钱包进行过备份，删除钱包可能会导致您的数字资产永远无法找回，请您自行检查钱包备份。</string>
+    <string name="click_here_to_passport">点击这里备份钱包</string>
+    <string name="passport_backup">钱包备份</string>
+    <string name="export_keystore_description">二维码显示的是KeyStore信息,KEYSTORE是私钥的签名保护文件,通过钱包密码对KEYSTORE文件签名.单独拥有KEYSTORE文件或者钱包密码都无法使用钱包.而同时拥有KEYSTORE文件和钱包密码则可以再任何设备使用钱包.强烈建议您在使用钱包前做好备份</string>
+    <string name="export_private_key_description">当前二维码显示的是私钥明文,私钥明文是您对钱包所有权的认证方式.通过导入私钥可以再任何设备使用钱包,并创建钱包对应的KeyStore文件和钱包密码.强烈建议您在使用钱包前做好备份.</string>
+    <string name="ca_not_enabled">您当前使用的统一登录秘钥与链上不一致,将影响部分功能的正常使用</string>
+    <string name="please_input_current_passport_password">请输入原钱包密码:</string>
+    <string name="please_input_new_passport_password">请输入新钱包密码:</string>
     <string name="password_length_invalid">密码长度应在8至20位之间</string>
     <string name="hint_search_token">搜索Token名称、简写或合约地址</string>
     <string name="submit_new_token">提交新token</string>
     <string name="please_select">请选择</string>
-    <string name="default_nickname">会员</string>
+    <string name="default_nickname">BitExpress会员</string>
     <string name="status_enabled">统一登录状态:可用</string>
     <string name="status_disabled">统一登录状态:不可用</string>
     <string name="please_try_ocr">请点击上方按钮拍照识别</string>
     <string name="creation_succeed">创建成功</string>
     <string name="import_succeed">导入成功</string>
-    <string name="hint_enable_local_protect">为了您的TODO安全，建议您先开启本地安全保护</string>
+    <string name="hint_enable_local_protect">为了您的钱包安全，建议您先开启本地安全保护</string>
+    <string name="bitexpress">BitExpress</string>
+    <string name="wallet_password_guide">不少于8位字符，建议混合大小写字母、数字、特殊符号</string>
+    <string name="wallet_password_notice">密码用于保护私钥和交易授权，强度非常重要\n应用提供方不存储密码，也无法帮您找回，请务必记牢</string>
+    <string name="disable_passport_login">禁用统一登录</string>
+    <string name="enable_passport_login">启用统一登录</string>
+    <string name="update_key">更新密钥</string>
+    <string name="auth_key_change_log">统一登录变更记录</string>
+    <string name="submit_new_token_title">如何提交新token给BitExpress?</string>
+    <string name="token_submit_info_general">如果需要在 BitExpress 显示你的 Token 信息，请务必使用官方邮箱提供以下信息，发送至 bitexpressinfo@gmail.com 我们会有专人处理。</string>
 
 </resources>

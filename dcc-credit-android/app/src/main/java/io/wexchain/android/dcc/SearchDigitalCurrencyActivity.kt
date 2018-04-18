@@ -37,7 +37,7 @@ class SearchDigitalCurrencyActivity : BindActivity<ActivitySearchDigitalCurrency
         })
         binding.vm = vm
         binding.btnSubmitNewToken.setOnClickListener {
-//            startActivity(Intent(this, SubmitNewTokenActivity::class.java))
+            startActivity(Intent(this, SubmitNewTokenActivity::class.java))
         }
     }
 

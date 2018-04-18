@@ -10,6 +10,7 @@ import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
 import io.wexchain.android.common.withTransitionEnabled
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
@@ -53,7 +54,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                         it?.let {
                             val type = it.first
                             val certStatus = it.second
-                            if (type !=null && certStatus !=null){
+                            if (type != null && certStatus != null) {
                                 this@MyCreditActivity.performOperation(type, certStatus)
                             }
                         }
@@ -75,19 +76,19 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
             }
         }
         binding.asMobileVm?.let {
-            if(it.status.get() == UserCertStatus.INCOMPLETE){
+            if (it.status.get() == UserCertStatus.INCOMPLETE) {
                 //get report
                 val passport = App.get().passportRepository.getCurrentPassport()!!
                 CertOperations.getCommunicationLogReport(passport)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({data->
-                            if(data.fail){
+                        .subscribe({ data ->
+                            if (data.fail) {
                                 // generate report fail
                                 CertOperations.onCmLogFail()
                                 refreshCertStatus()
-                            }else{
+                            } else {
                                 val reportData = data.reportData
-                                if (data.hasCompleted() && reportData !=null){
+                                if (data.hasCompleted() && reportData != null) {
                                     CertOperations.onCmLogSuccessGot(reportData)
                                     refreshCertStatus()
                                 }
@@ -97,16 +98,17 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
         }
     }
 
-    private fun getDescription(certificationType: CertificationType):String{
-        return when(certificationType){
+    private fun getDescription(certificationType: CertificationType): String {
+        return when (certificationType) {
             CertificationType.ID -> "真实身份认证"
             CertificationType.PERSONAL -> "更安全的评估"
             CertificationType.BANK -> "提高审核的通过率"
             CertificationType.MOBILE -> "提高审核的通过率和借款额度"
         }
     }
-    private fun getCertTypeTitle(certificationType: CertificationType):String{
-        return when(certificationType){
+
+    private fun getCertTypeTitle(certificationType: CertificationType): String {
+        return when (certificationType) {
             CertificationType.ID -> "身份证认证"
             CertificationType.PERSONAL -> "真实信息认证"
             CertificationType.BANK -> "银行卡认证"
@@ -114,28 +116,36 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
         }
     }
 
-    private fun performOperation(certificationType: CertificationType,status:UserCertStatus) {
+    private fun performOperation(certificationType: CertificationType, status: UserCertStatus) {
         when (certificationType) {
-            CertificationType.ID ->{
-                if (status == UserCertStatus.DONE){
+            CertificationType.ID -> {
+                if (status == UserCertStatus.DONE) {
                     navigateTo(IdCertificationActivity::class.java)
-                }else{
-                    navigateTo(SubmitIdActivity::class.java)
+                } else {
+                    PassportOperations.ensureCaValidity(this) {
+                        navigateTo(SubmitIdActivity::class.java)
+                    }
                 }
             }
-            CertificationType.PERSONAL ->
-                navigateTo(SubmitPersonalInfoActivity::class.java)
+            CertificationType.PERSONAL -> {
+//                navigateTo(SubmitPersonalInfoActivity::class.java)
+            }
             CertificationType.BANK ->
-                if (status == UserCertStatus.DONE){
+                if (status == UserCertStatus.DONE) {
                     navigateTo(BankCardCertificationActivity::class.java)
-                }else{
-                    navigateTo(SubmitBankCardActivity::class.java)
+                } else {
+                    PassportOperations.ensureCaValidity(this) {
+                        navigateTo(SubmitBankCardActivity::class.java)
+                    }
                 }
             CertificationType.MOBILE ->
-                when(status){
-                    UserCertStatus.NONE ->
-                        navigateTo(SubmitCommunicationLogActivity::class.java)
-                    UserCertStatus.INCOMPLETE ->{
+                when (status) {
+                    UserCertStatus.NONE -> {
+                        PassportOperations.ensureCaValidity(this) {
+                            navigateTo(SubmitCommunicationLogActivity::class.java)
+                        }
+                    }
+                    UserCertStatus.INCOMPLETE -> {
                         // get report processing
                     }
                     UserCertStatus.DONE ->

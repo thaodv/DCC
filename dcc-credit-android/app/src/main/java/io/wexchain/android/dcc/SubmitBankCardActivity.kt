@@ -41,7 +41,7 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
         val cp = App.get().passportRepository.getCurrentPassport()
         if (cp?.authKey == null) {
             runOnMainThread {
-                Pop.toast("通行证未启用", App.get())
+                Pop.toast(R.string.ca_not_enabled, App.get())
                 finish()
             }
             return

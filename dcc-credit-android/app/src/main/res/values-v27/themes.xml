@@ -4,5 +4,15 @@
     <style name="DccTheme.App">
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
+        <!-- enable window content transitions -->
+        <item name="android:windowContentTransitions">true</item>
+
+        <!-- specify enter and exit transitions -->
+        <item name="android:windowEnterTransition">@transition/transition_window_content</item>
+        <item name="android:windowExitTransition">@transition/transition_window_content</item>
+
+        <item name="android:windowSharedElementEnterTransition">@transition/default_transition
+        </item>
+        <item name="android:windowSharedElementExitTransition">@transition/default_transition</item>
     </style>
 </resources>
