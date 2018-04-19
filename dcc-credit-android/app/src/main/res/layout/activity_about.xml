@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="io.wexchain.android.dcc.AboutActivity"
+    >
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/include_toolbar"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_content_horizontal"
+        android:layout_marginRight="@dimen/margin_content_horizontal"
+        android:lineSpacingMultiplier="1.5"
+        android:text="@string/app_introduction_description"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="17sp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        />
+
+
+</android.support.constraint.ConstraintLayout>

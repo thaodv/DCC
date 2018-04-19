@@ -11,6 +11,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="请选择来源"
+            android:textSize="15sp"
             android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
             android:layout_margin="8dp"
             />
@@ -23,8 +24,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="拍照"
+            android:textSize="17sp"
             android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
             android:layout_margin="8dp"
+            android:textColor="?attr/colorAccent"
             />
     <View
             style="@style/DividerHorizontal"
@@ -34,9 +37,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="从手机选择"
+            android:textSize="17sp"
+            android:textColor="?attr/colorAccent"
             android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
             android:layout_margin="8dp"
 
+            />
+    <View
+            style="@style/DividerHorizontal"
             />
     <Button
             android:id="@+id/btn_cancel"
@@ -44,6 +52,8 @@
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:text="取消"
+            android:textSize="17sp"
+            android:textColor="?attr/colorAccent"
             />
 
 

@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
                 android:text="@{scene.name}"
+                android:textSize="17sp"
                 tools:text="身份认证"
                 />
 
@@ -33,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@{ViewModelHelper.getDccStr(scene.amount)}"
+                android:textSize="17sp"
                 tools:text="2.33 DCC"
                 />
 
@@ -41,6 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="80dp"
+                android:textSize="17sp"
                 android:layout_gravity="right|center_vertical"
                 android:text="@{ViewModelHelper.getMarketingScenarioActionText(context,scene.qualification)}"
                 android:enabled="@{scene.qualification!=Qualification.REDEEMED}"

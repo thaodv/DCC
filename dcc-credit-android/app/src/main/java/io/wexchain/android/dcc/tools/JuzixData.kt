@@ -26,7 +26,7 @@ object JuzixData {
                 Chain.publicEthChain to cc.sisel.ewallet.BuildConfig.DCC_PUBLIC_ADDRESS,
                 Chain.JUZIX_PRIVATE to juzixPrefs.dccContractAddress.get()!!
         ))
-        updateDccJuzixAddress(app)
+        updateDccJuzixAddress(app).subscribe()
     }
 
     private fun updateDccJuzixAddress(app: App): Single<String> {

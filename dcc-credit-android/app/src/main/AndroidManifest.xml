@@ -84,7 +84,7 @@
                 android:label="@string/passport_backup"/>
         <activity
                 android:name="io.wexchain.android.dcc.ModifyPassportPasswordActivity"
-                android:label="密码修改"/>
+                android:label="修改钱包密码"/>
         <activity android:name="io.wexchain.android.dcc.SearchDigitalCurrencyActivity"/>
         <activity android:name="io.wexchain.android.dcc.ChooseCutImageActivity"/>
         <activity android:name="io.wexchain.android.dcc.MarketingListActivity"
@@ -97,6 +97,8 @@
         <activity android:name="io.wexchain.android.dcc.PassportCreationSucceedActivity"/>
         <activity android:name="io.wexchain.android.dcc.SubmitNewTokenActivity"/>
         <activity android:name="io.wexchain.android.dcc.AuthManageActivity"/>
+        <activity android:name="io.wexchain.android.dcc.AboutActivity"
+                android:label="关于我们"/>
     </application>
 
 </manifest>

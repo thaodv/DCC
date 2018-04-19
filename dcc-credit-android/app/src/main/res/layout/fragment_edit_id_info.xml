@@ -88,7 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
-                    android:hint="姓名"
+                    android:text="姓名"
                     android:layout_marginTop="4dp"
                     />
 
@@ -112,7 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
-                    android:hint="性别"
+                    android:text="性别"
                     android:layout_marginTop="4dp"
                     />
 
@@ -137,7 +137,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:layout_marginTop="4dp"
-                    android:hint="民族"
+                    android:text="民族"
                     />
 
             <EditText
@@ -161,7 +161,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:layout_marginTop="4dp"
-                    android:hint="身份证号"
+                    android:text="身份证号"
                     />
 
             <EditText
@@ -187,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:layout_marginTop="4dp"
-                    android:hint="住址"
+                    android:text="住址"
                     />
 
             <EditText
@@ -211,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:layout_marginTop="4dp"
-                    android:hint="签发机构"
+                    android:text="签发机构"
                     />
 
             <EditText
@@ -236,7 +236,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:layout_marginTop="4dp"
-                    android:hint="有效期限"
+                    android:text="有效期限"
                     />
 
             <EditText

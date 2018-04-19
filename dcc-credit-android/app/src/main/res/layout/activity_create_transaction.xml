@@ -29,18 +29,6 @@
                 layout="@layout/include_toolbar"
                 />
 
-        <TextView
-                android:id="@+id/transaction_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
-                android:text="@{tx.txTitle}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/toolbar"
-                tools:text="ETH 转账"
-                />
-
         <android.support.constraint.Guideline
                 android:id="@+id/gl_v1"
                 android:layout_width="0dp"
@@ -61,7 +49,7 @@
                 android:inputType="text"
                 android:paddingRight="40dp"
                 android:text="@={tx.toAddress}"
-                app:layout_constraintTop_toBottomOf="@id/transaction_title"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
                 />
 
         <TextView
@@ -279,9 +267,11 @@
                 />
 
         <Button
-                style="@style/Widget.AppCompat.Button.Dcc.Medium"
-                android:layout_width="wrap_content"
+                style="@style/Widget.AppCompat.Button.Dcc.Full"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginBottom="24dp"
                 android:enabled="@{!tx.busyChecking}"
                 android:minWidth="160dp"

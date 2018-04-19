@@ -86,7 +86,7 @@ class ChooseCutImageActivity : BaseCompatActivity() {
                     stackTrace(it)
                 })
         } else {
-            //todo
+            // todo
         }
     }
 

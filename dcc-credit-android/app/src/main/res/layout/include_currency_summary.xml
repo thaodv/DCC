@@ -49,6 +49,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     app:layout_constraintLeft_toRightOf="@id/iv_currency_logo"
                     app:layout_constraintTop_toTopOf="@id/iv_currency_logo"
+                    app:layout_constraintBottom_toTopOf="@id/tv_currency_description"
                     app:layout_constraintVertical_chainStyle="packed"
                     android:text="@{vm.dc.symbol}"
                     tools:text="ETH"
@@ -62,6 +63,7 @@
                     android:text="@{vm.chainText}"
                     tools:text="\@DCC"
                     app:layout_constraintBottom_toBottomOf="@id/iv_currency_logo"
+                    app:layout_constraintTop_toBottomOf="@id/tv_currency_description"
                     app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol"
                     />
 
@@ -69,9 +71,9 @@
                     android:id="@+id/tv_currency_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_currency_logo"
                     app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol"
                     app:layout_constraintBottom_toTopOf="@id/tv_currency_chain"
+                    app:layout_constraintTop_toBottomOf="@id/tv_currency_symbol"
                     android:text="@{vm.dc.description}"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
                     tools:text="Ethereum Foundation"

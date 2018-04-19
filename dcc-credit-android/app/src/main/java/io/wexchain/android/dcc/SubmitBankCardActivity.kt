@@ -107,12 +107,9 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
                 .doFinally {
                     hideLoadingDialog()
                 }
-                .subscribe({
+                .subscribe({it->
                     setSmsTicket(it)
                     enterStep(STEP_VERIFY_BANK_CARD_SMS_CODE)
-                }, {
-                    //todo
-                    stackTrace(it)
                 })
     }
 
@@ -149,7 +146,6 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
     private fun handleCertResult(certOrder: CertOrder, bankCardInfo: BankCardInfo) {
         if (certOrder.status.isPassed()) {
             toast("认证成功")
-            //todo save
             CertOperations.saveBankCertData(certOrder,bankCardInfo)
             finish()
         } else {

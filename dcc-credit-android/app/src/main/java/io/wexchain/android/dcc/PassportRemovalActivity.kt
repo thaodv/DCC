@@ -44,7 +44,7 @@ class PassportRemovalActivity : BaseCompatActivity() {
     }
 
     private fun toBackup() {
-//        startActivity(Intent(this, PassportExportActivity::class.java))
+        startActivity(Intent(this, PassportExportActivity::class.java))
     }
 
     private fun showConfirmDeleteDialog() {

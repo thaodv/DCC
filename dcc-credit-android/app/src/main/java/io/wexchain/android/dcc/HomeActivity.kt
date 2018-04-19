@@ -36,9 +36,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
     private fun setupClicks() {
         findViewById<View>(R.id.iv_credit).setOnClickListener {
             if (App.get().passportRepository.passportEnabled) {
-                navigateTo(MyCreditActivity::class.java,transitionBundle(
-                        Transitions.create(findViewById(R.id.iv_credit),Transitions.CARD_CREDIT)
-                ))
+                navigateTo(MyCreditActivity::class.java)
             } else {
                 if (!App.get().passportRepository.passportExists) {
                     showIntroWalletDialog()
@@ -71,9 +69,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
         }
         findViewById<View>(R.id.iv_candy).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
-                navigateTo(MarketingListActivity::class.java,transitionBundle(
-                        Transitions.create(findViewById(R.id.iv_candy),Transitions.CARD_CANDY)
-                ))
+                navigateTo(MarketingListActivity::class.java)
             } else {
                 showIntroWalletDialog()
             }

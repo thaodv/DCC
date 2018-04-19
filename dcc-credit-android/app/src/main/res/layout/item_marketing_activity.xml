@@ -25,16 +25,27 @@
 
         <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:padding="12dp"
-                bgUrl="@{ma.coverImgUrl}"
+                android:layout_height="wrap_content"
+                android:minHeight="80dp"
                 tools:background="@android:color/black"
                 >
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    imageUrl="@{ma.coverImgUrl}"
+                    errorRes="@{null}"
+                    />
 
             <TextView
                     android:id="@+id/tv_marketing_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:text="@{ma.name}"
                     android:textColor="@color/text_white"
@@ -47,6 +58,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     app:layout_constraintTop_toBottomOf="@id/tv_marketing_title"
+                    app:layout_constraintLeft_toLeftOf="@id/tv_marketing_title"
                     android:layout_marginTop="4dp"
                     android:textColor="@color/text_white"
                     android:text="状态:"
@@ -68,6 +80,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="12dp"
+                    app:layout_constraintLeft_toLeftOf="@id/tv_marketing_title"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
                     android:text="@{ViewModelHelper.getMarketingActivityStartTimeText(context,ma)}"
                     android:textColor="@color/text_white"

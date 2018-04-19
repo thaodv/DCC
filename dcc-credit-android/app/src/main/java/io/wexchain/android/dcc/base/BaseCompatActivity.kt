@@ -96,6 +96,6 @@ abstract class BaseCompatActivity : AppCompatActivity() {
     }
 
     fun hideLoadingDialog() {
-        loadingDialog?.hide()
+        loadingDialog?.dismiss()
     }
 }

@@ -53,6 +53,7 @@ class LivenessDetectionFragment:BindFragment<FragmentLivenessDetectionBinding>()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        println("reqCode = $requestCode, resCode = $resultCode")
         when (requestCode) {
             RequestCodes.CAPTURE_HEAD_PORTRAIT -> {
                 val extras = data?.extras
@@ -62,6 +63,9 @@ class LivenessDetectionFragment:BindFragment<FragmentLivenessDetectionBinding>()
                     val delta = extras.getString("delta")
                     @Suppress("UNCHECKED_CAST")
                     val images = extras.getSerializable("images") as? Map<String, ByteArray>
+                    println("delta = $delta")
+                    println("result = ${extras.getString("result")}")
+                    println("images size = ${images?.size}")
                     if (result.resultcode == R.string.verify_success && images != null && images.isNotEmpty()) {
                         val imgBestBytes = images["image_best"]
 //                        val imgEnvBytes = images["image_env"]
