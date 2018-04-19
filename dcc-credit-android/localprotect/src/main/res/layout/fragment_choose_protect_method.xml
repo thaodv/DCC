@@ -66,6 +66,7 @@
             android:text="指纹识别"
             android:visibility="@{fingerPrintAvailable?View.VISIBLE:View.GONE}"
             android:enabled="@{fingerPrintEnrolled}"
+            android:textColor="?attr/colorAccent"
             />
 
         <View
@@ -84,6 +85,7 @@
             android:padding="10dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:text="手势密码"
+            android:textColor="?attr/colorAccent"
             />
 
         <View
@@ -101,6 +103,7 @@
             android:padding="10dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:text="数字密码"
+            android:textColor="?attr/colorAccent"
             />
 
         <View

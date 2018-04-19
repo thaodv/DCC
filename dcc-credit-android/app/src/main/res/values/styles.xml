@@ -6,6 +6,18 @@
         <item name="cardElevation">4dp</item>
     </style>
 
+    <style name="AnimationDcc">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_right_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_left_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_left_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_right_exit</item>
+    </style>
+
+    <style name="AnimationDccSlideBottom">
+        <item name="android:windowEnterAnimation">@anim/slide_bottom_enter</item>
+        <item name="android:windowExitAnimation">@anim/slide_bottom_exit</item>
+    </style>
+
     <style name="Widget.AppCompat.Button.Dcc" parent="Widget.AppCompat.Button.Borderless">
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/text_color_button</item>
@@ -27,7 +39,8 @@
     <style name="Widget.AppCompat.Button.Dcc.Full">
         <item name="android:minHeight">37dp</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:textSize">@dimen/text_size_title</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">10dp</item>
     </style>
 
     <style name="Widget.AppCompat.ImageButton.Dcc">
@@ -100,14 +113,14 @@
     </style>
     <style name="DividerVertical">
         <item name="android:layout_width">@dimen/divider_stroke_width</item>
-        <item name="android:background">@color/gray_alpha</item>
+        <item name="android:background">@color/light_gray_alpha</item>
     </style>
 
     <style name="TextActionLine">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:layout_marginTop">1dp</item>
-        <item name="android:textSize">@dimen/text_size_sub_title</item>
+        <item name="android:textSize">17sp</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
         <item name="android:paddingLeft">@dimen/content_padding_horizontal</item>
         <item name="android:paddingRight">@dimen/content_padding_horizontal</item>

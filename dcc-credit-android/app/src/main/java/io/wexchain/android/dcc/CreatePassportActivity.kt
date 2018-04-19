@@ -1,6 +1,10 @@
 package io.wexchain.android.dcc
 
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ImageSpan
 import com.wexmarket.android.passport.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
@@ -33,6 +37,12 @@ class CreatePassportActivity : BindActivity<ActivityCreatePassportBinding>() {
             }else{
                 toast("")
             }
+        }
+        binding.tvBackupNotice.text = SpannableString("成功创建数字钱包后,请即时在设置->备份数字钱包 中进行备份,以防数字资产丢失").apply {
+            val drawable = ContextCompat.getDrawable(this@CreatePassportActivity, R.drawable.ic_settings)!!
+            val height = binding.tvBackupNotice.lineHeight
+            drawable.setBounds(0,0,height,height)
+            setSpan(ImageSpan(drawable),16,17,Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
         }
     }
 

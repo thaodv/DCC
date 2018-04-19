@@ -29,8 +29,6 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
                 android:text="@string/wallet_password_guide"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
-                android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:layout_marginBottom="4dp"
                 />
 
@@ -59,9 +57,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/wallet_password_notice"
-                android:gravity="center"
+                android:gravity="left"
                 style="@style/NoticeTextLabel"
                 app:layout_constraintBottom_toTopOf="@id/ll_input_password"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
                 android:layout_marginBottom="4dp"
                 />
 
@@ -70,7 +70,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center_vertical"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:hint="请粘贴私钥明文"
                 android:minLines="2"

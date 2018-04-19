@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.setWindowExtended
+import io.wexchain.android.common.toast
 import io.wexchain.android.common.withTransitionEnabled
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
@@ -30,20 +31,11 @@ class MarketingListActivity : BaseCompatActivity(), ItemViewClickListener<Market
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_marketing_list)
-        setupTransitions()
+        initToolbar()
         findViewById<RecyclerView>(R.id.rv_list).adapter = adapter
         loadMa()
     }
 
-    private fun setupTransitions() {
-        withTransitionEnabled {
-            // avoid leaks
-            ViewCompat.setTransitionName(
-                    findViewById(R.id.appbar),
-                    Transitions.CARD_CANDY
-            )
-        }
-    }
 
     override fun onItemClick(item: MarketingActivity?, position: Int, viewId: Int) {
         item?.let {
@@ -59,8 +51,16 @@ class MarketingListActivity : BaseCompatActivity(), ItemViewClickListener<Market
         App.get().marketingApi.queryActivity()
                 .compose(Result.checked())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { list->
-                    adapter.setList(list)
+                .doOnSubscribe {
+                    showLoadingDialog()
                 }
+                .doFinally {
+                    hideLoadingDialog()
+                }
+                .subscribe ({ list->
+                    adapter.setList(list)
+                },{
+                    toast(R.string.common_service_error_toast)
+                })
     }
 }

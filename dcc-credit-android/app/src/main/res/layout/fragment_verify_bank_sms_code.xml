@@ -106,17 +106,6 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_sms_code_label"
                 />
 
-        <TextView
-                android:id="@+id/tv_cert_fee"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:text="认证费"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider_h2"
-                />
-
         <Button
                 android:id="@+id/btn_submit_code"
                 style="@style/Widget.AppCompat.Button.Dcc.Full"
@@ -124,9 +113,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="80dp"
                 android:text="银行卡认证"
-                app:layout_constraintTop_toBottomOf="@id/tv_cert_fee"
+                app:layout_constraintTop_toBottomOf="@id/divider_h2"
                 />
 
     </android.support.constraint.ConstraintLayout>

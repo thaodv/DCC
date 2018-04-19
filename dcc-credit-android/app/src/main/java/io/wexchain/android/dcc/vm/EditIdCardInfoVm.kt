@@ -118,7 +118,6 @@ class EditIdCardInfoVm : ViewModel() {
             App.get().certApi.idOcr(CertApi.uploadFilePart(imgBytes, "id.jpg", "image/jpeg"))
                     .compose(Result.checked())
                     .observeOn(AndroidSchedulers.mainThread())
-//            Single.error<IdOcrInfo>(DccChainServiceException())
                     .subscribe({ info ->
                         if (side == IdVerifyHelper.SIDE_BACK && imgBytes === imgBack.get()) {
                             if (info.side == IdOcrInfo.Side.back) {
@@ -139,13 +138,13 @@ class EditIdCardInfoVm : ViewModel() {
                             ocrEvent.value = info.idCardInfo
                         }
                     }, {
-                        ocrFailEvent.value = it
                         if (side == IdVerifyHelper.SIDE_BACK && imgBytes === imgBack.get()) {
                             imgBack.set(null)
                         }
                         if (side == IdVerifyHelper.SIDE_FRONT && imgBytes === imgFront.get()) {
                             imgFront.set(null)
                         }
+                        ocrFailEvent.value = it
                     })
         }
     }

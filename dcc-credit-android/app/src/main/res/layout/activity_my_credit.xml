@@ -35,14 +35,7 @@
             android:orientation="vertical"
             >
 
-        <android.support.design.widget.AppBarLayout
-                android:id="@+id/appbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/banner_credit"
-                >
-
-        </android.support.design.widget.AppBarLayout>
+        <include layout="@layout/include_toolbar"/>
 
         <TextView
                 android:layout_width="match_parent"

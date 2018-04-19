@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="备份钱包"
             style="@style/Widget.AppCompat.Button.Dcc.Small"
-            android:padding="6dp"
+            android:padding="8dp"
             android:textSize="17sp"
             app:layout_constraintTop_toBottomOf="@id/tv_description"
             app:layout_constraintRight_toRightOf="parent"

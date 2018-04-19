@@ -31,6 +31,7 @@
 -keepattributes Exceptions
 
 # okhttp3
+-dontnote okhttp3.**
 -dontwarn okhttp3.**
 -dontwarn javax.annotation.**
 # A resource is loaded with a relative path so the package of this class must be preserved.
@@ -60,6 +61,7 @@
 
 # Gson specific classes
 -dontwarn sun.misc.**
+-dontnote sun.misc.**
 #-keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson

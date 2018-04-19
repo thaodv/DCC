@@ -25,15 +25,27 @@ android {
             }
         }
     }
+    signingConfigs {
+        wexchain {
+            keyAlias 'android'
+            keyPassword keyProperties['WEXCHAIN_KEY_PASSWORD']
+            storeFile file('../wexchain.jks')
+            storePassword keyProperties['WEXCHAIN_KEYSTORE_PASSWORD']
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.wexchain
+
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            debuggable true
 
             buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://gateway.wexpass.cn/passport-gateway/restful/"'
-            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://func.wexchain.io/passport-logic/"'
+            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://gateway.wexpass.cn/passport-logic/"'
             buildConfigField 'java.lang.String', 'CHAIN_FRONTEND_URL', '"http://www.icohint.com/chain-frontend/"'
             buildConfigField 'java.lang.String', 'CHAIN_EXPLORER_URL', '"http://wexpass.cn/chain-observer/restful/"'
+            buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://gateway.wexpass.cn/chain-service-frontend/"'
         }
         debug {
             buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://222.73.39.37:9511/passport-gateway/restful/"'

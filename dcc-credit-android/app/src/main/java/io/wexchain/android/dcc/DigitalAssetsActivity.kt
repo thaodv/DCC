@@ -27,12 +27,9 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initToolbar()
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         setupTransitions()
-
-
-        binding.ibClose.setOnClickListener { goFinish() }
-
 
         val assetsVm = getViewModel<DigitalAssetsVm>()
         assetsVm.ensureHolderAddress(this)

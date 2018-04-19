@@ -24,22 +24,11 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupTransitions()
         initToolbar()
         binding.asIdVm = obtainAuthStatus(CertificationType.ID)
         binding.asBankVm = obtainAuthStatus(CertificationType.BANK)
         binding.asMobileVm = obtainAuthStatus(CertificationType.MOBILE)
         binding.asPersonalVm = obtainAuthStatus(CertificationType.PERSONAL)
-    }
-
-    private fun setupTransitions() {
-        withTransitionEnabled {
-            // avoid leaks
-            ViewCompat.setTransitionName(
-                    findViewById(R.id.appbar),
-                    Transitions.CARD_CREDIT
-            )
-        }
     }
 
     private fun obtainAuthStatus(certificationType: CertificationType): AuthenticationStatusVm? {

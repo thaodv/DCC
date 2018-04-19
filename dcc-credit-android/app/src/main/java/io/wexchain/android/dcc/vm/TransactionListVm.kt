@@ -55,7 +55,8 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
 
     private val pending: LiveData<List<EthsTransaction>> = assetsRepository.pendingTxList
             .filter {
-                it.digitalCurrency == dc
+                val tdc = it.digitalCurrency
+                tdc.chain == dc.chain && tdc.contractAddress == dc.contractAddress
             }
             .observing(
                     doOnChange = {

@@ -24,6 +24,7 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
         val feeRate = intent.getStringExtra(Extras.EXTRA_FTC_TRANSFER_FEE_RATE)
         setupEvents(dc,feeRate)
         setupButtons()
+        title = ("${dc.symbol} 转账")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -55,7 +56,8 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
                 showConfirmDialog(it)
             }
         }
-        binding.tx = TransactionVm().apply {
+        val txVm = TransactionVm()
+        binding.tx = txVm.apply {
             ensureDigitalCurrency(dc,feeRate)
             this.txProceedEvent.observe(this@CreateTransactionActivity, observer)
             this.inputNotSatisfiedEvent.observe(this@CreateTransactionActivity, Observer {

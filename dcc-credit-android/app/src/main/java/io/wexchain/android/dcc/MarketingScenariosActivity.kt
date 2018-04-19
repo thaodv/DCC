@@ -3,10 +3,12 @@ package io.wexchain.android.dcc
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.widget.ImageView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.domain.Passport
@@ -20,14 +22,14 @@ import io.wexchain.dccchainservice.domain.MarketingActivity
 import io.wexchain.dccchainservice.domain.MarketingActivityScenario
 import io.wexchain.dccchainservice.domain.Result
 
-class MarketingScenariosActivity :BaseCompatActivity(), ItemViewClickListener<MarketingActivityScenario> {
+class MarketingScenariosActivity : BaseCompatActivity(), ItemViewClickListener<MarketingActivityScenario> {
 
     private val ma
         get() = intent.getSerializableExtra(Extras.EXTRA_MARKETING_ACTIVITY) as? MarketingActivity
 
-    private lateinit var passport:Passport
+    private lateinit var passport: Passport
 
-    private val adapter = SimpleDataBindAdapter<ItemMarketingScenarioBinding,MarketingActivityScenario>(
+    private val adapter = SimpleDataBindAdapter<ItemMarketingScenarioBinding, MarketingActivityScenario>(
             layoutId = R.layout.item_marketing_scenario,
             variableId = BR.scene,
             itemViewClickListener = this@MarketingScenariosActivity,
@@ -44,15 +46,18 @@ class MarketingScenariosActivity :BaseCompatActivity(), ItemViewClickListener<Ma
 
     private fun setBanner() {
         val ivBanner = findViewById<ImageView>(R.id.iv_banner)
-        ma?.bannerImgUrl?.let {
-            GlideApp.with(ivBanner)
-                    .load(it)
-                    .into(ivBanner)
-        }
-        ma?.bannerLinkUrl?.let { url ->
-            ivBanner.setOnClickListener {
-                navigateTo(WebPageActivity::class.java) {
-                    data = Uri.parse(url)
+        ma?.let {
+            ivBanner.visibility = if (it.bannerImgUrl == null) View.GONE else View.VISIBLE
+            it.bannerImgUrl?.let {
+                GlideApp.with(ivBanner)
+                        .load(it)
+                        .into(ivBanner)
+            }
+            it.bannerLinkUrl?.let { url ->
+                ivBanner.setOnClickListener {
+                    navigateTo(WebPageActivity::class.java) {
+                        data = Uri.parse(url)
+                    }
                 }
             }
         }
@@ -73,10 +78,10 @@ class MarketingScenariosActivity :BaseCompatActivity(), ItemViewClickListener<Ma
 
     private fun checkPreconditions(): Boolean {
         val currentPassport = App.get().passportRepository.getCurrentPassport()
-        return if (currentPassport!=null && ma !=null) {
+        return if (currentPassport != null && ma != null) {
             passport = currentPassport
             true
-        }else{
+        } else {
             postOnMainThread {
                 finish()
             }
@@ -86,12 +91,12 @@ class MarketingScenariosActivity :BaseCompatActivity(), ItemViewClickListener<Ma
 
     override fun onItemClick(item: MarketingActivityScenario?, position: Int, viewId: Int) {
         item?.let {
-            when(it.qualification){
+            when (it.qualification) {
                 MarketingActivityScenario.Qualification.REDEEMED -> {
                     //no op
                 }
                 MarketingActivityScenario.Qualification.AVAILABLE -> {
-                    redeemScenario(it.code,passport.address)
+                    redeemScenario(it.code, passport.address)
                 }
                 else -> {
                     // cert undone
@@ -102,20 +107,28 @@ class MarketingScenariosActivity :BaseCompatActivity(), ItemViewClickListener<Ma
     }
 
     private fun redeemScenario(code: String, address: String) {
-        App.get().marketingApi.applyRedeemToken(code,address)
+        App.get().marketingApi.applyRedeemToken(code, address)
                 .compose(Result.checkedAllowingNull(""))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { _->
+                .subscribe { _ ->
                     loadScenarios()
                 }
     }
 
     private fun loadScenarios() {
-        App.get().marketingApi.queryScenario(ma!!.code,passport.address)
+        App.get().marketingApi.queryScenario(ma!!.code, passport.address)
                 .compose(Result.checked())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { list->
-                    adapter.setList(list)
+                .doOnSubscribe {
+                    showLoadingDialog()
                 }
+                .doFinally {
+                    hideLoadingDialog()
+                }
+                .subscribe( { list ->
+                    adapter.setList(list)
+                },{
+                    toast(R.string.common_service_error_toast)
+                })
     }
 }

@@ -11,6 +11,7 @@
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationDcc</item>
 
         <item name="navigationIcon">@drawable/arrow_left</item>
 
@@ -41,12 +42,13 @@
 
 
     <style name="Theme.AppCompat.Light.Dialog.Alert.Dcc" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/text_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@null</item>
         <item name="android:background">@color/white</item>
         <item name="android:windowMinWidthMajor">100%</item>
         <item name="android:windowMinWidthMinor">100%</item>
         <item name="android:textAppearanceMedium">@style/TextAppearance.AppCompat.Medium.Dcc</item>
+        <item name="android:windowAnimationStyle">@style/AnimationDccSlideBottom</item>
     </style>
 
     <style name="TextAppearance.AppCompat.Medium.Dcc" parent="TextAppearance.AppCompat.Medium">

@@ -41,7 +41,7 @@ android {
             buildConfigField 'java.lang.String', 'PUBLIC_CHAIN_RPC', '"http://ec2-54-250-235-51.ap-northeast-1.compute.amazonaws.com:8545"'
             buildConfigField 'java.lang.String', 'JUZIX_CHAIN_RESTFUL', '"http://gateway.wexpass.cn/passport-gateway/restful/"'
             buildConfigField 'java.lang.String', 'QX_CONTRACT_ADDRESS', '"0xae5e4e27f10d97f86a753d2c49637a23bbb444ac"'
-            buildConfigField 'java.lang.String', 'DCC_JUZIX_CONTRACT_ADDRESS', '"0x625769a40adcd290591cd4a83eae25d374099d4d"'
+            buildConfigField 'java.lang.String', 'DCC_JUZIX_CONTRACT_ADDRESS', '"0xbdcaa1eb15ccb0d6f136847a96ed6987266a1d6c"'
             buildConfigField 'java.lang.String', 'DCC_PUBLIC_ADDRESS', '"0xFFa93Aacf49297D51E211817452839052FDFB961"'
             externalNativeBuild {
                 cmake {
@@ -58,7 +58,7 @@ android {
             buildConfigField 'java.lang.String', 'PUBLIC_CHAIN_RPC', '"http://120.78.145.175:8545"'
             buildConfigField 'java.lang.String', 'JUZIX_CHAIN_RESTFUL', '"http://222.73.39.37:9511/passport-gateway/restful/"'
             buildConfigField 'java.lang.String', 'QX_CONTRACT_ADDRESS', '"0xe15a095c0150038150e9b5b4cd15a9f4aef0ba20"'
-            buildConfigField 'java.lang.String', 'DCC_JUZIX_CONTRACT_ADDRESS', '"0x625769a40adcd290591cd4a83eae25d374099d4d"'
+            buildConfigField 'java.lang.String', 'DCC_JUZIX_CONTRACT_ADDRESS', '"0x06dcb764103a051b55f27e312a4a450f37bdda7a"'
 //            buildConfigField 'java.lang.String', 'DCC_PUBLIC_ADDRESS', '"0x3261fb28c4582c1ef67e2e2c243be622aec199c7"'
             buildConfigField 'java.lang.String', 'DCC_PUBLIC_ADDRESS', '"0x5512611d713aef81a96bfe18e25a57f8dcae25d7"'
         }

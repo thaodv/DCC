@@ -85,7 +85,7 @@ class PassportSettingsActivity:BindActivity<ActivityPassportSettingsBinding>() {
 //            startActivity(Intent(this, PassportIntroductionActivity::class.java))
 //        }
         binding.tvAboutUs.setOnClickListener {
-//            startActivity(Intent(this, AboutActivity::class.java))
+            startActivity(Intent(this, AboutActivity::class.java))
         }
         binding.tvDeletePassport.setOnClickListener {
             startActivity(Intent(this, PassportRemovalActivity::class.java))
