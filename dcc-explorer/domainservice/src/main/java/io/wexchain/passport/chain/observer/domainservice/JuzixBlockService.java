@@ -12,8 +12,6 @@ public interface JuzixBlockService {
 
     JuzixBlock getJuzixBlockNullable(String search);
 
-    JuzixBlock getJuzixBlockById(Long id);
-
     JuzixBlock getJuzixBlockByNumber(Long number);
 
     JuzixBlock getJuzixBlockByHash(String hash);
