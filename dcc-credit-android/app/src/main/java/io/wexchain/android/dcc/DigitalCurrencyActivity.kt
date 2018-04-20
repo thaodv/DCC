@@ -144,7 +144,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
         }
         val bottomMoreItemsAdapter = BottomMoreItemsAdapter(adapter, object : BottomMoreItemsAdapter.BottomViewProvider {
 
-            override fun inflateBottomView(parent: ViewGroup?): View {
+            override fun inflateBottomView(parent: ViewGroup): View {
                 parent ?: throw IllegalArgumentException()
                 val b = DataBindingUtil.inflate<ItemBottomMoreTextBinding>(LayoutInflater.from(parent.context), R.layout.item_bottom_more_text, parent, false)
                 b.bm = bm

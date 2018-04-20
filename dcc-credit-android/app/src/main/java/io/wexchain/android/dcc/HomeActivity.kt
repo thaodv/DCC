@@ -75,10 +75,10 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
             }
         }
         findViewById<View>(R.id.iv_affiliate).setOnClickListener {
-            toast("Coming soon")
+            navigateTo(AffiliateActivity::class.java)
         }
         findViewById<View>(R.id.iv_loan).setOnClickListener {
-            toast("Coming soon")
+            navigateTo(LoanActivity::class.java)
         }
         binding.cardPassport.root.setOnClickListener {
             if (!App.get().passportRepository.passportExists) {

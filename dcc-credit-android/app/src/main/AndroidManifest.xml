@@ -26,7 +26,8 @@
         <activity android:name="io.wexchain.android.dcc.HomeActivity"/>
         <activity
                 android:name="io.wexchain.android.dcc.MyCreditActivity"
-                android:label="@string/title_my_credit"/>
+                android:label="@string/title_my_credit"
+                android:theme="@style/DccTheme.App.Immerse"/>
         <activity android:name="io.wexchain.android.dcc.SubmitPersonalInfoActivity"/>
         <activity android:name="io.wexchain.android.dcc.EditContactInfoActivity"/>
         <activity
@@ -87,9 +88,9 @@
                 android:label="修改钱包密码"/>
         <activity android:name="io.wexchain.android.dcc.SearchDigitalCurrencyActivity"/>
         <activity android:name="io.wexchain.android.dcc.ChooseCutImageActivity"/>
-        <activity android:name="io.wexchain.android.dcc.MarketingListActivity"
-                android:label="糖果领取"
-                >
+        <activity
+                android:name="io.wexchain.android.dcc.MarketingListActivity"
+                android:label="糖果领取">
         </activity>
         <activity android:name="io.wexchain.android.dcc.MarketingScenariosActivity"/>
         <activity android:name="io.wexchain.android.dcc.PassportActivity"/>
@@ -97,8 +98,17 @@
         <activity android:name="io.wexchain.android.dcc.PassportCreationSucceedActivity"/>
         <activity android:name="io.wexchain.android.dcc.SubmitNewTokenActivity"/>
         <activity android:name="io.wexchain.android.dcc.AuthManageActivity"/>
-        <activity android:name="io.wexchain.android.dcc.AboutActivity"
+        <activity
+                android:name="io.wexchain.android.dcc.AboutActivity"
                 android:label="关于我们"/>
+        <activity
+                android:name="io.wexchain.android.dcc.AffiliateActivity"
+                android:theme="@style/DccTheme.App.Transparent">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.LoanActivity"
+                android:theme="@style/DccTheme.App.Transparent"
+                >
+        </activity>
     </application>
 
 </manifest>

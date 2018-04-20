@@ -138,5 +138,9 @@
 下面是我们的联系方式，如果您对我们感兴趣，寻求合作，业务咨询或发送简历等，欢迎与我们联系。\n
 邮箱 bitexpressinfo@gmail.com</string>
     <string name="common_service_error_toast">系统繁忙,请稍后重试</string>
+    <string name="candy_release_notice">&#x3000;&#x3000;我们会在这里不定期的发放免费糖果，建议您打开系统通知，我们将在第一时间提醒您领取新活动的糖果。</string>
+    <string name="bitexpress_info_mail_address">bitexpressinfo@gmail.com</string>
+    <string name="coming_soon">Coming soon</string>
+    <string name="affiliate_description">总共可邀请5位好友加入BitEXPRESS，\n每邀请一位好友注册并实名后，\n您将获得额外奖励</string>
 
 </resources>

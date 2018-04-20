@@ -13,4 +13,10 @@
         </item>
         <item name="android:windowSharedElementExitTransition">@transition/default_transition</item>
     </style>
+
+    <style name="DccTheme.App.Immerse">
+        <item name="navigationIcon">@drawable/arrow_left_white</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
 </resources>

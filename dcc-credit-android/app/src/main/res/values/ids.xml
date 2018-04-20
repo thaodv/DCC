@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="constant_bottom_more_item_type_id" type="id"/>
+    <item name="constant_fix_insert_item_type_id" type="id"/>
 </resources>

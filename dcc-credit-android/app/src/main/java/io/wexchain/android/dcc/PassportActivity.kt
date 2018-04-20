@@ -104,8 +104,7 @@ class PassportActivity : BindActivity<ActivityPassportBinding>(),
 
     private fun bottomViewProvider(bm: BottomMoreVm): BottomMoreItemsAdapter.BottomViewProvider {
         return object : BottomMoreItemsAdapter.BottomViewProvider {
-            override fun inflateBottomView(parent: ViewGroup?): View {
-                parent ?: throw IllegalArgumentException()
+            override fun inflateBottomView(parent: ViewGroup): View {
                 val b = DataBindingUtil.inflate<ItemBottomMoreTextBinding>(
                         LayoutInflater.from(parent.context),
                         R.layout.item_bottom_more_text,

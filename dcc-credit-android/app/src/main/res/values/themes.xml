@@ -34,6 +34,10 @@
         <item name="colorPrimaryDark">@android:color/transparent</item>
     </style>
 
+    <style name="DccTheme.App.Immerse">
+        <item name="navigationIcon">@drawable/arrow_left_white</item>
+    </style>
+
     <style name="FullWidthDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowMinWidthMajor">100%</item>
         <item name="android:windowMinWidthMinor">100%</item>
