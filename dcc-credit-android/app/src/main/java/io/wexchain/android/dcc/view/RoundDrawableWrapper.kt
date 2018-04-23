@@ -28,7 +28,9 @@ class RoundDrawableWrapper(bitmap: Bitmap) : Drawable() {
         canvas ?: return
         val b = bounds
         val radius = minOf(b.width() * 0.5f, b.height() * 0.5f) - 1f
-        dstRect.set(b.exactCenterX() - radius, b.exactCenterY() - radius, b.exactCenterX() + radius, b.exactCenterY() + radius)
+        val cx = b.exactCenterX()
+        val cy = b.exactCenterY()
+        dstRect.set(cx - radius, cy - radius, cx + radius, cy + radius)
         rShaderMatrix.setRectToRect(srcRect, dstRect, Matrix.ScaleToFit.FILL)
         rBitmapShader.setLocalMatrix(rShaderMatrix)
         rBitmapPaint.shader = rBitmapShader
@@ -59,10 +61,9 @@ class RoundDrawableWrapper(bitmap: Bitmap) : Drawable() {
                 return drawable.bitmap
             }
 
-            var bitmap: Bitmap?
             val width = drawable.intrinsicWidth.coerceIn(2, 2160)
             val height = drawable.intrinsicHeight.coerceIn(2, 2160)
-            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(bitmap!!)
             drawable.setBounds(0, 0, canvas.width, canvas.height)
             drawable.draw(canvas)

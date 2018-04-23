@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewCompat
 import android.view.View
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.withTransitionEnabled
@@ -59,7 +59,6 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
     private fun setupTransitions() {
         withTransitionEnabled {
             ViewCompat.setTransitionName(findViewById(R.id.rv_assets), Transitions.DIGITAL_ASSETS_LIST)
-            ViewCompat.setTransitionName(findViewById(R.id.assets_amount_label), Transitions.DIGITAL_ASSETS_AMOUNT_LABEL)
             ViewCompat.setTransitionName(findViewById(R.id.assets_amount_value), Transitions.DIGITAL_ASSETS_AMOUNT)
         }
     }

@@ -3,7 +3,7 @@ package io.wexchain.android.dcc
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.design.widget.TabLayout
-import com.wexmarket.android.passport.ui.fragment.ExportPrivateKeyFragment
+import io.wexchain.android.dcc.fragment.ExportPrivateKeyFragment
 import io.wexchain.android.common.findOrCreateFragment
 import io.wexchain.android.common.replaceFragment
 import io.wexchain.android.common.toast

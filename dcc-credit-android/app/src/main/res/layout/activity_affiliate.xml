@@ -44,6 +44,7 @@
                     android:layout_marginTop="24dp"
                     style="?attr/cardViewStyle"
                     app:cardCornerRadius="2dp"
+                    app:cardElevation="0dp"
                     >
 
                 <TextView
@@ -93,7 +94,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerInside"
                 android:src="@drawable/text_coming_soon"
-                android:background="#7f484848"
+                android:background="@color/gray_mask"
                 android:clickable="true"
                 android:focusable="true"
                 />

@@ -7,7 +7,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.vm.Protect
@@ -25,7 +25,7 @@ import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.constant.RequestCodes
 
 
-class PassportSettingsActivity:BindActivity<ActivityPassportSettingsBinding>() {
+class PassportSettingsActivity: BindActivity<ActivityPassportSettingsBinding>() {
     override val contentLayoutId: Int = R.layout.activity_passport_settings
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -5,7 +5,7 @@ import android.support.v4.content.ContextCompat
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ImageSpan
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread

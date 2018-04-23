@@ -3,7 +3,7 @@ package io.wexchain.android.dcc
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import com.google.gson.JsonSyntaxException
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.fragment.PasteKeystoreFragment
 import io.wexchain.android.dcc.fragment.PastePrivateKeyFragment
 import io.reactivex.Single

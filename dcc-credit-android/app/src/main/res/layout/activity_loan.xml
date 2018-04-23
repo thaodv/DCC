@@ -39,6 +39,7 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintDimensionRatio="1:1"
                 app:cardCornerRadius="2dp"
+                app:cardElevation="0dp"
                 >
             <ImageView
                     android:layout_width="wrap_content"
@@ -70,6 +71,7 @@
                 android:layout_marginLeft="12dp"
                 app:layout_constraintDimensionRatio="1:1"
                 app:cardCornerRadius="2dp"
+                app:cardElevation="0dp"
                 >
             <ImageView
                     android:layout_width="wrap_content"
@@ -101,6 +103,7 @@
                 android:layout_marginTop="12dp"
                 app:layout_constraintDimensionRatio="1:1"
                 app:cardCornerRadius="2dp"
+                app:cardElevation="0dp"
                 >
             <ImageView
                     android:layout_width="wrap_content"
@@ -132,6 +135,7 @@
                 android:layout_marginLeft="12dp"
                 app:layout_constraintDimensionRatio="1:1"
                 app:cardCornerRadius="2dp"
+                app:cardElevation="0dp"
                 >
             <ImageView
                     android:layout_width="wrap_content"
@@ -162,7 +166,7 @@
             android:focusable="true"
             android:src="@drawable/text_coming_soon"
             android:scaleType="centerInside"
-            android:background="#7f484848"
+            android:background="@color/gray_mask"
             tools:visibility="gone"
             />
 </FrameLayout>

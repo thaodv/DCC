@@ -2,7 +2,7 @@ package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.localprotect.LocalProtectType
@@ -10,7 +10,7 @@ import io.wexchain.android.localprotect.fragment.CreateProtectFragment
 import io.wexchain.auth.R
 import io.wexchain.auth.databinding.ActivityPassportCreationSucceedBinding
 
-class PassportCreationSucceedActivity:BindActivity<ActivityPassportCreationSucceedBinding>() {
+class PassportCreationSucceedActivity: BindActivity<ActivityPassportCreationSucceedBinding>() {
     override val contentLayoutId: Int = R.layout.activity_passport_creation_succeed
 
     override fun onCreate(savedInstanceState: Bundle?) {

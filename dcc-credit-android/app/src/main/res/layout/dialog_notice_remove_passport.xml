@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/description_remove_passport"
         android:textSize="17sp"
+        android:textColor="@color/text_dark"
         />
     <TextView
         android:id="@+id/tv_passport_backup"

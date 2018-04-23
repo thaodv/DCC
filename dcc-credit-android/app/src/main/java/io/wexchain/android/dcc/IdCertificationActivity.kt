@@ -2,7 +2,7 @@ package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.chain.CertOperations

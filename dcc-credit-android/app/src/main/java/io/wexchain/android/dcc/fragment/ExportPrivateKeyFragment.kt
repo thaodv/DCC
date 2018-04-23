@@ -1,4 +1,4 @@
-package com.wexmarket.android.passport.ui.fragment
+package io.wexchain.android.dcc.fragment
 
 import android.content.ClipData
 import android.databinding.DataBindingUtil

@@ -4,7 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.diffCallbackById

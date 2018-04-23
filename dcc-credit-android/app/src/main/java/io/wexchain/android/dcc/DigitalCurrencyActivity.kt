@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.view.*
 import io.wexchain.android.dcc.constant.RequestCodes
 import com.wexmarket.android.passport.ResultCodes
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.constant.Extras

@@ -22,6 +22,7 @@
             android:layout_marginRight="@dimen/margin_content_horizontal"
             android:layout_marginTop="10dp"
             android:text="@string/export_private_key_description"
+            android:textColor="@color/text_dark"
             app:layout_constraintTop_toTopOf="parent"
             />
 
@@ -34,6 +35,7 @@
             android:layout_marginTop="24dp"
             android:text="导出方式一:私钥明文二维码"
             android:textSize="17sp"
+            android:textColor="@color/text_dark"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_description"
@@ -57,6 +59,7 @@
             android:layout_height="wrap_content"
             android:text="导出方二:私钥明文信息"
             android:textSize="17sp"
+            android:textColor="@color/text_dark"
             app:layout_constraintTop_toBottomOf="@id/iv_qr_code"
             android:layout_marginTop="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -80,7 +83,7 @@
             android:text="@{privateKey}"
             app:layout_constraintTop_toBottomOf="@id/tv_method_2_label"
             app:layout_constraintBottom_toTopOf="@id/btn_copy"
-            android:background="@drawable/bg_round_rect_alpha"
+            android:background="@drawable/bg_round_rect_frame_white"
             />
 
         <Button

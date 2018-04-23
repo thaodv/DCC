@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="DccTheme.App">
+    <style name="DccLightTheme.App">
         <item name="android:windowLightStatusBar">true</item>
 
         <!-- enable window content transitions -->
@@ -17,7 +17,7 @@
     </style>
 
 
-    <style name="DccTheme.App.Immerse">
+    <style name="DccLightTheme.App.Immerse">
         <item name="android:windowLightStatusBar">false</item>
         <item name="navigationIcon">@drawable/arrow_left_white</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>

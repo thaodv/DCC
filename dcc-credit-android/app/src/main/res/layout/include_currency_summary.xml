@@ -70,6 +70,7 @@
                 android:text="@{vm.dc.description}"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
                 tools:text="Ethereum Foundation"
+                android:visibility="gone"
                 />
 
 

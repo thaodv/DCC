@@ -37,8 +37,9 @@
             />
 
         <EditText
+                android:id="@+id/et_input_nickname"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:maxLines="1"
             android:maxLength="20"
             android:inputType="textPersonName"
@@ -48,6 +49,16 @@
             android:layout_marginRight="@dimen/content_padding_horizontal"
             android:text="@={vm.inputNickname}"
             android:hint="@string/please_input_nickname"
+            android:background="@null"
+            />
+
+        <View
+            style="@style/DividerHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_stroke_width"
+            app:layout_constraintTop_toBottomOf="@id/et_input_nickname"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
             />
 
         <Button
