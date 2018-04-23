@@ -19,7 +19,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wexmarket.android.barcode.decodeBitmapQr
 import com.wexmarket.android.barcode.getDecodeFriendlyBitmapFromUri
 import io.wexchain.android.dcc.constant.RequestCodes
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

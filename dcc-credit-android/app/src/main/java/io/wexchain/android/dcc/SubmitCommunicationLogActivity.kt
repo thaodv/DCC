@@ -177,7 +177,7 @@ class SubmitCommunicationLogActivity : BaseCompatActivity(), InputPhoneInfoFragm
     }
 
     private fun onRequestSuccess() {
-        Pop.toast("认证申请提交成功",App.get())
+        Pop.toast("认证申请提交成功",this)
         CertOperations.onCmLogRequestSuccess(submitOrderId!!,submitPhoneNo!!,submitServicePassword!!)
         finish()
     }
@@ -198,7 +198,7 @@ class SubmitCommunicationLogActivity : BaseCompatActivity(), InputPhoneInfoFragm
     private fun checkPreconditions() {
         if (!App.get().passportRepository.passportEnabled) {
             runOnMainThread {
-                Pop.toast(R.string.ca_not_enabled, App.get())
+                Pop.toast(R.string.ca_not_enabled, this)
                 finish()
             }
             return
@@ -206,7 +206,7 @@ class SubmitCommunicationLogActivity : BaseCompatActivity(), InputPhoneInfoFragm
         val certId = CertOperations.getCertId()
         if (certId == null) {
             runOnMainThread {
-                Pop.toast("身份认证未完成", App.get())
+                Pop.toast("身份认证未完成", this)
                 finish()
             }
             return

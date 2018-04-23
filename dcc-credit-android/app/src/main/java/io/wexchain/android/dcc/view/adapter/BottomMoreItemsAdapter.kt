@@ -78,7 +78,7 @@ class BottomMoreItemsAdapter<OVH : RecyclerView.ViewHolder>(
     }
 
     interface BottomViewProvider {
-        fun inflateBottomView(parent: ViewGroup?): View
+        fun inflateBottomView(parent: ViewGroup): View
         fun onBind(bottomView: View?, position: Int)
     }
 

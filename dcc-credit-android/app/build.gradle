@@ -56,6 +56,7 @@ android {
             buildConfigField 'java.lang.String', 'CHAIN_FRONTEND_URL', '"http://www.icohint.com/chain-frontend/"'
             buildConfigField 'java.lang.String', 'CHAIN_EXPLORER_URL', '"http://10.65.209.17:9301/chain-observer/restful/"'
             buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://10.65.103.67:8030/"'
+//            buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://10.65.178.18:9033/chain-service-frontend/"'
         }
     }
     sourceSets {
@@ -69,7 +70,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     kapt "com.android.databinding:compiler:$android_gradle_plugin_version"
 
     implementation "com.android.support:appcompat-v7:$support_lib_version"

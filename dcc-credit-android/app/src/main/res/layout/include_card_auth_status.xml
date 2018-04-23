@@ -15,21 +15,22 @@
             />
     </data>
 
-    <android.support.v7.widget.CardView
+    <FrameLayout
         style="?attr/cardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:contentPadding="0dp"
+        android:background="@drawable/bg_round_rect_frame_white"
         >
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:minHeight="120dp"
+            android:minHeight="80dp"
             android:onClick="@{(v)->vm.performOperation()}"
             >
 
             <ImageView
+                    android:id="@+id/iv_cert_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -39,19 +40,21 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/shape_bank_card"
+                android:visibility="gone"
                 />
 
             <TextView
                 android:id="@+id/tv_as_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="80dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginLeft="16dp"
                 android:text="@{vm.title}"
                 android:textColor="@color/text_dark"
                 android:textSize="17sp"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/iv_cert_type"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_as_detail"
+                app:layout_constraintVertical_chainStyle="packed"
                 tools:text="真实信息认证"
                 />
 
@@ -63,6 +66,7 @@
                 android:text="@{vm.authDetail}"
                 android:textColor="@color/text_gray"
                 android:textSize="15sp"
+                android:layout_marginTop="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@id/tv_as_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_as_title"
@@ -118,8 +122,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:background="@{ViewModelHelper.getCertStatusBarColor(context,vm.status)}"
+                android:visibility="gone"
                 />
         </android.support.constraint.ConstraintLayout>
 
-    </android.support.v7.widget.CardView>
+    </FrameLayout>
 </layout>

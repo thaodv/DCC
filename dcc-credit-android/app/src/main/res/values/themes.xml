@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="DccTheme" parent="Theme.AppCompat.Light">
+    <style name="DccLightTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -24,14 +24,21 @@
         <item name="android:actionMenuTextColor">?attr/colorAccent</item>
 
         <item name="dialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert.Dcc</item>
+
+        <!--app attr-->
+        <item name="customToastLayout">@layout/toast_custom</item>
     </style>
 
-    <style name="DccTheme.App">
+    <style name="DccLightTheme.App">
     </style>
 
-    <style name="DccTheme.App.Transparent">
+    <style name="DccLightTheme.App.Transparent">
         <item name="colorPrimary">@android:color/transparent</item>
         <item name="colorPrimaryDark">@android:color/transparent</item>
+    </style>
+
+    <style name="DccLightTheme.App.Immerse">
+        <item name="navigationIcon">@drawable/arrow_left_white</item>
     </style>
 
     <style name="FullWidthDialog" parent="Theme.AppCompat.Light.Dialog">

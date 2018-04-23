@@ -4,11 +4,12 @@
     <color name="light_blue_magenta">#e8e8f7</color>
     <color name="blue_magenta">#6766cc</color>
     <color name="gray_alpha">#66000000</color>
-    <color name="light_gray_alpha">#1f000000</color>
+    <color name="light_gray_alpha">#0f000000</color>
 
 
     <color name="colorPrimary">@color/white</color>
     <color name="colorPrimaryDark">@color/white</color>
     <color name="colorAccent">@color/blue_magenta</color>
+    <color name="gray_mask">#B2484848</color>
 
 </resources>

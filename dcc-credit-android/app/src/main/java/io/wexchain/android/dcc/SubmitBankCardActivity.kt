@@ -41,7 +41,7 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
         val cp = App.get().passportRepository.getCurrentPassport()
         if (cp?.authKey == null) {
             runOnMainThread {
-                Pop.toast(R.string.ca_not_enabled, App.get())
+                Pop.toast(R.string.ca_not_enabled, this@SubmitBankCardActivity)
                 finish()
             }
             return
@@ -49,7 +49,7 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
         val certId = CertOperations.getCertId()
         if (certId == null) {
             runOnMainThread {
-                Pop.toast("身份认证未完成", App.get())
+                Pop.toast("身份认证未完成", this@SubmitBankCardActivity)
                 finish()
             }
             return

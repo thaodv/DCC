@@ -12,12 +12,35 @@
             android:id="@+id/toolbar"
             />
 
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:textSize="16sp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Hi,BitEXPRESS会员"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:text="@string/candy_release_notice"
+            />
+
+
     <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="12dp"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_marketing_activity"
             />
 
 </LinearLayout>

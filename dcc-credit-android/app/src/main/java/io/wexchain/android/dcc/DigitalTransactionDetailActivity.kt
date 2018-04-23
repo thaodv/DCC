@@ -2,7 +2,7 @@ package io.wexchain.android.dcc
 
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.constant.Extras

@@ -31,13 +31,18 @@
     <ImageView
             android:id="@+id/iv_banner"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
             />
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             tools:listitem="@layout/item_marketing_activity"
             />

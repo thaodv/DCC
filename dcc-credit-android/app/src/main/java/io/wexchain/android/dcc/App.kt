@@ -1,6 +1,7 @@
 package io.wexchain.android.dcc
 
 import android.support.multidex.MultiDexApplication
+import android.view.ContextThemeWrapper
 import com.wexmarket.android.network.Networking
 import io.reactivex.Single
 import io.reactivex.plugins.RxJavaPlugins
@@ -42,6 +43,7 @@ class App : MultiDexApplication() {
 
     //public services
     lateinit var infuraApi: InfuraApi
+    lateinit var customPublicJsonRpc: EthJsonRpcApi
     lateinit var etherScanApi: EtherScanApi
     lateinit var ethplorerApi: EthplorerApi
     lateinit var publicRpc: EthsRpcAgent
@@ -53,11 +55,13 @@ class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         instance = WeakReference(this)
+        val themeWrapper = ContextThemeWrapper(this, io.wexchain.auth.R.style.DccLightTheme_App)
         RxJavaPlugins.setErrorHandler {
-            if(it is DccChainServiceException && !it.message.isNullOrBlank()){
-                Pop.toast(it.message!!,this)
+            if (it is DccChainServiceException && !it.message.isNullOrBlank()) {
+                Pop.toast(it.message!!, themeWrapper)
             }
-            if (BuildConfig.DEBUG) it.printStackTrace() }
+            if (BuildConfig.DEBUG) it.printStackTrace()
+        }
         initLibraries(this)
         initServices(this)
         initData(this)
@@ -65,12 +69,12 @@ class App : MultiDexApplication() {
 
     private fun initData(app: App) {
         val dao = PassportDatabase.createDatabase(this).dao
-        passportRepository = PassportRepository(app,dao)
+        passportRepository = PassportRepository(app, dao)
         passportRepository.load()
         assetsRepository = AssetsRepository(
                 dao,
                 chainFrontEndApi,
-                EthereumAgent(EthsRpcAgent.Companion.by(infuraApi), EthsTxAgent.Companion.by(etherScanApi)),
+                EthereumAgent(publicRpc, EthsTxAgent.by(etherScanApi)),
                 { buildAgent(it) }
         )
         CertOperations.init(app)
@@ -84,13 +88,15 @@ class App : MultiDexApplication() {
         chainGateway = networking.createApi(ChainGateway::class.java, BuildConfig.GATEWAY_BASE_URL)
         certApi = networking.createApi(CertApi::class.java, BuildConfig.CHAIN_FUNC_URL)
         chainFrontEndApi = networking.createApi(ChainFrontEndApi::class.java, BuildConfig.CHAIN_FRONTEND_URL)
-        privateChainApi = networking.createApi(PrivateChainApi::class.java,BuildConfig.CHAIN_EXPLORER_URL)
-        marketingApi = networking.createApi(MarketingApi::class.java,BuildConfig.DCC_MARKETING_API_URL)
+        privateChainApi = networking.createApi(PrivateChainApi::class.java, BuildConfig.CHAIN_EXPLORER_URL)
+        marketingApi = networking.createApi(MarketingApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
 
-        infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
+//        infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
+        customPublicJsonRpc = networking.createApi(EthJsonRpcApi::class.java, cc.sisel.ewallet.BuildConfig.PUBLIC_CHAIN_RPC).getPrepared()
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))
         ethplorerApi = networking.createApi(EthplorerApi::class.java, EthplorerApi.API_URL)
-        publicRpc = EthsRpcAgent.by(infuraApi)
+//        publicRpc = EthsRpcAgent.by(infuraApi)
+        publicRpc = EthsRpcAgent.by(customPublicJsonRpc)
     }
 
     private fun initLibraries(context: App) {

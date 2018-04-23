@@ -67,10 +67,10 @@ object ViewModelHelper {
     @ColorInt
     fun Context.getCertStatusOpTextColor(userCertStatus: UserCertStatus?): Int {
         return when (userCertStatus) {
-            UserCertStatus.NONE -> ContextCompat.getColor(this, R.color.text_dark_alpha)
+            UserCertStatus.NONE -> ContextCompat.getColor(this, R.color.text_dark)
             UserCertStatus.INCOMPLETE -> ContextCompat.getColor(this, R.color.text_blue_magenta)
-            UserCertStatus.DONE -> ContextCompat.getColor(this, R.color.text_blue_magenta)
-            else -> ContextCompat.getColor(this, R.color.text_dark_alpha)
+            UserCertStatus.DONE -> ContextCompat.getColor(this, R.color.text_dark)
+            else -> ContextCompat.getColor(this, R.color.text_dark)
         }
     }
 

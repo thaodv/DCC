@@ -1,9 +1,8 @@
 package io.wexchain.android.dcc
 
 import android.arch.lifecycle.ViewModelProviders
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.vm.SubmitPersonalInfoVm
 import io.wexchain.auth.R
 import io.wexchain.auth.databinding.ActivitySubmitPersonalInfoBinding

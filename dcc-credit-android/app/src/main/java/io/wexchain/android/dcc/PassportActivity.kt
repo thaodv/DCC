@@ -3,7 +3,6 @@ package io.wexchain.android.dcc
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -11,14 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.withTransitionEnabled
 import io.wexchain.android.dcc.constant.Transitions
-import io.wexchain.android.dcc.network.GlideApp
 import io.wexchain.android.dcc.repo.db.CaAuthRecord
 import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
@@ -104,8 +98,7 @@ class PassportActivity : BindActivity<ActivityPassportBinding>(),
 
     private fun bottomViewProvider(bm: BottomMoreVm): BottomMoreItemsAdapter.BottomViewProvider {
         return object : BottomMoreItemsAdapter.BottomViewProvider {
-            override fun inflateBottomView(parent: ViewGroup?): View {
-                parent ?: throw IllegalArgumentException()
+            override fun inflateBottomView(parent: ViewGroup): View {
                 val b = DataBindingUtil.inflate<ItemBottomMoreTextBinding>(
                         LayoutInflater.from(parent.context),
                         R.layout.item_bottom_more_text,

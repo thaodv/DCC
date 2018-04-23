@@ -14,7 +14,7 @@ import android.view.ViewGroup
  * for single type
  */
 abstract class DataBindAdapter<B : ViewDataBinding, T>(
-        @LayoutRes private val layout: Int,
+        @LayoutRes val layout: Int,
         itemDiffCallback: DiffUtil.ItemCallback<T>,
         private val itemViewClickListener: ItemViewClickListener<T>? = null,
         private vararg val clickAwareViewIds: Int = intArrayOf()
@@ -42,6 +42,10 @@ abstract class DataBindAdapter<B : ViewDataBinding, T>(
 
     private fun onPositionClick(position: Int, @IdRes viewId: Int) {
         itemViewClickListener?.onItemClick(getItem(position), position, viewId)
+    }
+
+    public fun getItemOnPos(pos:Int): T {
+        return getItem(pos)
     }
 
 }

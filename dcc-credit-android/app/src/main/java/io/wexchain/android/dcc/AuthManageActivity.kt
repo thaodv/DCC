@@ -3,11 +3,9 @@ package io.wexchain.android.dcc
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.graphics.Color
 import android.os.Bundle
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.Pop
-import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.repo.db.AuthKeyChangeRecord
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
