@@ -167,12 +167,12 @@ class TransactionVm {
         from ?: return
         val to = toAddress.get()
         if (to == null || !isEthAddress(to)) {
-            inputNotSatisfiedEvent.value = "to address not valid"
+            inputNotSatisfiedEvent.value = "收款地址不能为空"
             return
         }
         val value = amount.get()?.toBigDecimalSafe()
         if (value == null || value == BigDecimal.ZERO) {
-            inputNotSatisfiedEvent.value = "amount not valid"
+            inputNotSatisfiedEvent.value = "金额不能为空"
             return
         }
         val dc = currency
@@ -182,7 +182,7 @@ class TransactionVm {
         } else {
             val inputLimit = gasLimit.get()?.toBigIntegerSafe()
             if (inputLimit == null || inputLimit == BigInteger.ZERO) {
-                inputNotSatisfiedEvent.value = "gas limit not valid"
+                inputNotSatisfiedEvent.value = "GasLimit不能为空"
                 return
             }
             inputLimit
@@ -201,7 +201,7 @@ class TransactionVm {
         }else {
             val price = gasPrice.get()?.toBigDecimalSafe()
             if (price == null || value == BigDecimal.ZERO) {
-                inputNotSatisfiedEvent.value = "gas price not valid"
+                inputNotSatisfiedEvent.value = "GasPrice不能为空"
                 return
             }
             EthsTransactionScratch(
@@ -228,7 +228,7 @@ class TransactionVm {
                 }, {
                     stackTrace(it)
                     //cannot get gas limit
-                    //thus scanSucceedAndProceed as normal
+                    //thus proceed as normal
                     this.txProceedEvent.value = scratch
                 })
     }

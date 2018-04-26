@@ -14,6 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.vm.EditIdCardInfoVm
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.android.idverify.IdVerifyHelper
@@ -46,9 +47,18 @@ class InputIdInfoFragment : BindFragment<FragmentEditIdInfoBinding>() {
         vm.ocrFailEvent.observe(this, Observer {
             it?.message?.let {
                 println("ocr fail : $it")
-                toast(it)
+                toast("ocr 失败   系统繁忙请稍后再试")
             }
             binding.executePendingBindings()
+        })
+        vm.ocrProcessing.observe(this, Observer {
+            it?.let {
+                if (it){
+                    (activity as? BaseCompatActivity)?.showLoadingDialog()
+                }else{
+                    (activity as? BaseCompatActivity)?.hideLoadingDialog()
+                }
+            }
         })
         binding.vm = vm
         binding.ibIdFront.setOnClickListener {

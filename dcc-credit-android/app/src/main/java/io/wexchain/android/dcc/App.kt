@@ -57,7 +57,8 @@ class App : MultiDexApplication() {
         instance = WeakReference(this)
         val themeWrapper = ContextThemeWrapper(this, io.wexchain.auth.R.style.DccLightTheme_App)
         RxJavaPlugins.setErrorHandler {
-            if (it is DccChainServiceException && !it.message.isNullOrBlank()) {
+            val ex = it.cause ?: it
+            if (ex is DccChainServiceException && !ex.message.isNullOrBlank()) {
                 Pop.toast(it.message!!, themeWrapper)
             }
             if (BuildConfig.DEBUG) it.printStackTrace()

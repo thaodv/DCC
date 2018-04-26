@@ -83,7 +83,7 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
         stackTrace(e)
         when (e) {
             is CipherException -> {
-                toast("KeyStore信息或口袋密码错误")
+                toast("KeyStore或钱包密码有误,请重试")
             }
             is JsonSyntaxException -> {
                 toast("KeyStore信息格式错误")

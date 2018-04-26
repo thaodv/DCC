@@ -135,7 +135,7 @@ fun EthJsonRpcApi.transactionReceipt(txId: String): Single<EthJsonTxReceipt> {
 fun EthJsonRpcApi.transactionByHash(txId: String): Single<EthJsonTxInfo> {
     return this.getTransactionByHash(
             EthJsonRpcRequestBody(
-                    method = "eth_getBalance",
+                    method = "eth_getTransactionByHash",
                     params = kotlin.collections.listOf(txId),
                     id = this.nextId()
             ))

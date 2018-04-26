@@ -8,6 +8,7 @@ import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.auth.R
 import io.wexchain.auth.databinding.ActivityDigitalTransactionDetailBinding
+import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.EthsTransaction
 import org.web3j.utils.Numeric
 import java.math.BigInteger
@@ -30,9 +31,8 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
 
     private fun updateInfoIfRequired(tx: EthsTransaction) {
         val agent = App.get().assetsRepository.getDigitalCurrencyAgent(tx.digitalCurrency)
-        if (tx.blockNumber == 0L ||
-                tx.gas == BigInteger.ZERO ||
-                tx.gasPrice == BigInteger.ZERO) {
+        val gasUnknown = !tx.onPrivateChain() && (tx.gas == BigInteger.ZERO || tx.gasPrice == BigInteger.ZERO)
+        if (tx.blockNumber == 0L || gasUnknown) {
             agent.transactionByHash(tx.txId)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({

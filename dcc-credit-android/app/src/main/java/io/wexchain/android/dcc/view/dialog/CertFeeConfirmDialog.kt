@@ -32,6 +32,9 @@ class CertFeeConfirmDialog : DialogFragment() {
             loadHolding()
         }
         binding.vm = vm
+        binding.ibClose.setOnClickListener {
+            dismiss()
+        }
         return binding.root
     }
 

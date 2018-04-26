@@ -35,6 +35,7 @@ class EditIdCardInfoVm : ViewModel() {
 
     val ocrEvent = SingleLiveEvent<IdOcrInfo.IdCardInfo>()
     val ocrFailEvent = SingleLiveEvent<Throwable>()
+    val ocrProcessing = SingleLiveEvent<Boolean>()
     val proceedEvent = SingleLiveEvent<IdCardEssentialData>()
     val informationIncompleteEvent = SingleLiveEvent<CharSequence>()
 
@@ -118,6 +119,12 @@ class EditIdCardInfoVm : ViewModel() {
             App.get().certApi.idOcr(CertApi.uploadFilePart(imgBytes, "id.jpg", "image/jpeg"))
                     .compose(Result.checked())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe {
+                        ocrProcessing.value = true
+                    }
+                    .doFinally {
+                        ocrProcessing.value = false
+                    }
                     .subscribe({ info ->
                         if (side == IdVerifyHelper.SIDE_BACK && imgBytes === imgBack.get()) {
                             if (info.side == IdOcrInfo.Side.back) {
