@@ -15,8 +15,8 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.android.idverify.domain.LivenessResult
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.FragmentLivenessDetectionBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.FragmentLivenessDetectionBinding
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.Currencies

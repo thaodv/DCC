@@ -17,8 +17,8 @@ import io.wexchain.android.dcc.tools.isEcPrivateKeyValid
 import io.wexchain.android.dcc.tools.isKeyStoreValid
 import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.dcc.vm.InputPasswordVm
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.FragmentPasteKeystoreBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.FragmentPasteKeystoreBinding
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.Wallet
 

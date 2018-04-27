@@ -18,11 +18,11 @@ import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.android.dcc.vm.BottomMoreVm
-import io.wexchain.auth.BR
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityPassportBinding
-import io.wexchain.auth.databinding.ItemAuthRecordBinding
-import io.wexchain.auth.databinding.ItemBottomMoreTextBinding
+import io.wexchain.dcc.BR
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityPassportBinding
+import io.wexchain.dcc.databinding.ItemAuthRecordBinding
+import io.wexchain.dcc.databinding.ItemBottomMoreTextBinding
 
 class PassportActivity : BindActivity<ActivityPassportBinding>(),
         ItemViewClickListener<CaAuthRecord> {

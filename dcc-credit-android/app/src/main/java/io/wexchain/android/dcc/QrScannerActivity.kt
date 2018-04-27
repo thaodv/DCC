@@ -28,8 +28,8 @@ import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityQrScannerBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityQrScannerBinding
 import io.wexchain.digitalwallet.util.isEthAddress
 import java.util.concurrent.atomic.AtomicBoolean
 

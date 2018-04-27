@@ -13,7 +13,7 @@ import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.fragment.InputPhoneInfoFragment
 import io.wexchain.android.dcc.fragment.VerifyCarrierQueryPasswordFragment
 import io.wexchain.android.dcc.fragment.VerifyCarrierSmsCodeFragment
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.CertProcess
 

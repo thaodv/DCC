@@ -3,10 +3,10 @@ package io.wexchain.android.dcc.view.adapters
 import android.support.v4.util.ObjectsCompat
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.itemDiffCallback
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
-import io.wexchain.auth.databinding.ItemTransactionRecordBinding
+import io.wexchain.dcc.databinding.ItemTransactionRecordBinding
 
 /**
  * Created by sisel on 2018/1/24.

@@ -10,8 +10,8 @@ import io.reactivex.Single
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityPassportImportBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityPassportImportBinding
 import kotlinx.android.synthetic.main.activity_passport_import.*
 import org.web3j.crypto.CipherException
 import org.web3j.crypto.Credentials

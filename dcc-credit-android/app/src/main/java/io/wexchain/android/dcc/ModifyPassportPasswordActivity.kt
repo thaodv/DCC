@@ -11,8 +11,8 @@ import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.vm.ModifyPassword
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityModifyPassportPasswordBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityModifyPassportPasswordBinding
 
 class ModifyPassportPasswordActivity : BaseCompatActivity() {
 

@@ -6,8 +6,8 @@ import io.wexchain.android.dcc.base.BindActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityDigitalTransactionDetailBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityDigitalTransactionDetailBinding
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.EthsTransaction
 import org.web3j.utils.Numeric

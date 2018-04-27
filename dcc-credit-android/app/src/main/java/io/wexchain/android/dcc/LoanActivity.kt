@@ -2,9 +2,11 @@ package io.wexchain.android.dcc
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.dcc.base.BaseCompatActivity
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 
 class LoanActivity : BaseCompatActivity() {
 
@@ -12,5 +14,12 @@ class LoanActivity : BaseCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan)
         setWindowExtended()
+        initClicks()
+    }
+
+    private fun initClicks() {
+        findViewById<View>(R.id.card_my_address).setOnClickListener {
+            navigateTo(BeneficiaryAddressesManagementActivity::class.java)
+        }
     }
 }

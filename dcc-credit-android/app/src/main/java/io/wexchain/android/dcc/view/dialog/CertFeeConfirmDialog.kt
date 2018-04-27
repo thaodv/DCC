@@ -9,8 +9,8 @@ import android.view.*
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.vm.CertFeeConfirmVm
 import io.wexchain.android.dcc.vm.currencyToDisplayStr
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.DialogCertFeeBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.DialogCertFeeBinding
 import io.wexchain.digitalwallet.Currencies
 import java.math.BigInteger
 

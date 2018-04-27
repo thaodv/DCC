@@ -10,9 +10,9 @@ import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.diffCallbackById
 import io.wexchain.android.dcc.vm.SearchTokenVm
 import io.wexchain.android.dcc.vm.SelectedDigitalCurrencies
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivitySearchDigitalCurrencyBinding
-import io.wexchain.auth.databinding.ItemDigitalCurrencySelectBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivitySearchDigitalCurrencyBinding
+import io.wexchain.dcc.databinding.ItemDigitalCurrencySelectBinding
 import io.wexchain.digitalwallet.DigitalCurrency
 
 /**

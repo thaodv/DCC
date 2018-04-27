@@ -6,8 +6,8 @@ import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.tools.MultiChainHelper
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityDccExchangeBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityDccExchangeBinding
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 

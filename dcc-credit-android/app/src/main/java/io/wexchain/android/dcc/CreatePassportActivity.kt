@@ -13,8 +13,8 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.dcc.vm.InputPasswordVm
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityCreatePassportBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityCreatePassportBinding
 
 class CreatePassportActivity : BindActivity<ActivityCreatePassportBinding>() {
     override val contentLayoutId: Int = R.layout.activity_create_passport

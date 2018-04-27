@@ -11,8 +11,8 @@ import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.common.toast
 import io.wexchain.android.common.transitionBundle
 import io.wexchain.android.dcc.constant.Transitions
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityHomeBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityHomeBinding
 
 class HomeActivity : BindActivity<ActivityHomeBinding>() {
     override val contentLayoutId: Int = R.layout.activity_home
@@ -71,7 +71,11 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
             navigateTo(AffiliateActivity::class.java)
         }
         findViewById<View>(R.id.iv_loan).setOnClickListener {
-            navigateTo(LoanActivity::class.java)
+            if (App.get().passportRepository.passportExists) {
+                navigateTo(LoanActivity::class.java)
+            } else {
+                showIntroWalletDialog()
+            }
         }
         binding.cardPassport.root.setOnClickListener {
             if (!App.get().passportRepository.passportExists) {

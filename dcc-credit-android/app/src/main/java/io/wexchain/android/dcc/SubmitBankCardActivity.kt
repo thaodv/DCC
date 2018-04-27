@@ -10,7 +10,7 @@ import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.fragment.InputBankCardInfoFragment
 import io.wexchain.android.dcc.fragment.VerifyBankSmsCodeFragment
 import io.wexchain.android.dcc.vm.domain.BankCardInfo
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.CertOrder
 

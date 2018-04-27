@@ -14,9 +14,9 @@ import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.DigitalAssetsAdapter
 import io.wexchain.android.dcc.vm.DigitalAssetsVm
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 import io.wexchain.digitalwallet.DigitalCurrency
-import io.wexchain.auth.databinding.ActivityDigitalAssetsBinding
+import io.wexchain.dcc.databinding.ActivityDigitalAssetsBinding
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 

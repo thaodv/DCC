@@ -2,7 +2,7 @@ package io.wexchain.android.dcc
 
 import android.os.Bundle
 import io.wexchain.android.dcc.base.BaseCompatActivity
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 
 class SubmitNewTokenActivity : BaseCompatActivity() {
 

@@ -9,8 +9,8 @@ import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.vm.CertificationDataVm
 import io.wexchain.android.dcc.vm.ViewModelHelper
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityCertificationDataBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityCertificationDataBinding
 
 class IdCertificationActivity : BindActivity<ActivityCertificationDataBinding>() {
     override val contentLayoutId: Int = R.layout.activity_certification_data

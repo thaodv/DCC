@@ -6,7 +6,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.atLeastCreated
 import io.wexchain.android.common.navigateTo
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 import java.util.concurrent.TimeUnit
 
 class LoadingActivity : AppCompatActivity() {

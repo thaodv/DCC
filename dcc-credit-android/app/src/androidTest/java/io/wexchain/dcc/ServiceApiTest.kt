@@ -1,13 +1,15 @@
-package io.wexchain.auth
+package io.wexchain.dcc
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
+import com.google.gson.JsonSyntaxException
 import io.reactivex.Single
 import io.reactivex.SingleTransformer
 import io.wexchain.android.common.toHex
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.CertOperations.certOrderByTx
 import io.wexchain.android.dcc.chain.EthsFunctions
+import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.chain.privateChainNonce
 import io.wexchain.android.dcc.chain.txSigned
 import io.wexchain.android.dcc.tools.RetryWithDelay
@@ -16,7 +18,7 @@ import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
-import io.wexchain.dccchainservice.domain.BankCodes
+import io.wexchain.dccchainservice.ScfApi
 import io.wexchain.dccchainservice.domain.CertStatus
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
@@ -25,6 +27,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.web3j.crypto.Credentials
+import org.web3j.crypto.Keys
 import java.math.BigInteger
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -38,20 +41,86 @@ class ServiceApiTest {
         const val name = "张三"
         const val id = "430726199407035439"
         const val phoneNo = "13867899876"
-        const val bankCode = BankCodes.ICBC
+        const val bankCode = "ICBC"
         const val bankAccountNo = "6202123443211234"
     }
 
     lateinit var credentials: Credentials
     lateinit var chainGateway: ChainGateway
     lateinit var certApi: CertApi
+    lateinit var scfApi: ScfApi
+    lateinit var scfTestApi: ScfTestApi
 
     @Before
     fun setup() {
-        credentials = Credentials.create("f233101e5e25949640694a0e640f6027688d5d4a62ef3c094495e7d689499177")
+        credentials = Credentials.create(Keys.createEcKeyPair())
         InstrumentationRegistry.getTargetContext()
         chainGateway = App.get().chainGateway
         certApi = App.get().certApi
+        scfApi = App.get().scfApi
+        scfTestApi = App.get().networking.createApi(ScfTestApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
+    }
+
+    @Test
+    fun testScfLogin() {
+        val keyPair = createKeyPair()
+        uploadCaKey(keyPair)
+        val address = credentials.address
+        val scfTokenManager = App.get().scfTokenManager
+        scfTokenManager.scfToken = "invalid_token"
+        val response = ScfOperations.currentToken
+                .flatMap {
+                    scfTestApi.testPing(it)
+                            .map {
+                                if(it.isSuccessful){
+                                    val body = it.body()
+                                    if (body == null){
+                                        //ok
+                                        it
+                                    }else{
+                                        if (body.isSuccess){
+                                            it//ok
+                                        }else{
+                                            throw body.asError()
+                                        }
+                                    }
+                                }else{
+                                    throw IllegalStateException()
+                                }
+                            }
+                            .map { "pong" }
+                            .onErrorReturn {
+                                if(it is JsonSyntaxException){
+                                    "pong"
+                                }else throw it
+                            }
+                }
+                .compose(ScfOperations.withScfToken(address, keyPair.private))
+                .blockingGet()
+        println(response)
+        scfTokenManager.scfToken = null
+
+//        val response = scfApi.getNonce()
+//                .compose(Result.checked())
+//                .flatMap {
+//                    scfApi.login(
+//                            nonce = it,
+//                            address = address,
+//                            username = address,
+//                            password = null,
+//                            sign = ParamSignatureUtil.sign(keyPair.private, mapOf(
+//                                    "nonce" to it,
+//                                    "address" to address,
+//                                    "username" to address,
+//                                    "password" to null
+//                            ))
+//                    )
+//                }
+//                .blockingGet()
+//        val token = response.headers()["x-auth-token"]!!
+//        println(token)
+//        val response1 = scfTestApi.testPing(token).blockingGet()
+//        println(response1.body())
     }
 
     @Test
@@ -256,7 +325,7 @@ class ServiceApiTest {
                             .compose(Result.checked())
                             .flatMap {
                                 val transactionMessage = EthsFunctions.putKey(pubKey).txSigned(credentials = credentials, address = it)
-                                println(transactionMessage)
+//                                println(transactionMessage)
                                 api.uploadCaPubKey(ticket.ticket, transactionMessage, ticket.answer)
                             }
                             .compose(Result.checked())

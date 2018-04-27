@@ -5,8 +5,8 @@ import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.diffCallbackById
 import io.wexchain.android.dcc.vm.DigitalAssetsVm
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ItemDigitalCurrencySummaryBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ItemDigitalCurrencySummaryBinding
 import io.wexchain.digitalwallet.DigitalCurrency
 import java.math.BigInteger
 

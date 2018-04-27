@@ -166,5 +166,10 @@ fun EthJsonRpcApi.getErc20Balance(contractAddress: String, address: String, tag:
             method = "eth_call",
             params = listOf(call, tag),
             id = this.nextId()
-    )).map { if (it.result.equals("0x", true)) BigInteger.ZERO else Numeric.toBigInt(it.result!!) }
+    )).map {
+        if (it.result.equals("0x", true))
+            BigInteger.ZERO
+        else
+            Numeric.toBigInt(it.result!!)
+    }
 }

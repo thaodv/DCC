@@ -6,8 +6,8 @@ import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.vm.EditNicknameVm
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityEditNicknameBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityEditNicknameBinding
 
 class EditNicknameActivity : BindActivity<ActivityEditNicknameBinding>() {
     override val contentLayoutId: Int = R.layout.activity_edit_nickname

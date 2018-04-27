@@ -20,8 +20,8 @@ import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.idverify.IdVerifyHelper.Companion.SIDE_BACK
 import io.wexchain.android.idverify.IdVerifyHelper.Companion.SIDE_FRONT
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.FragmentEditIdInfoBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.FragmentEditIdInfoBinding
 
 class InputIdInfoFragment : BindFragment<FragmentEditIdInfoBinding>() {
     override val contentLayoutId: Int = R.layout.fragment_edit_id_info
