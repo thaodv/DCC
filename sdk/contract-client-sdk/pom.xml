@@ -7,7 +7,7 @@
 	<version>0.3-SNAPSHOT</version>
 	<name>contract client sdk</name>
 	<description>contract client sdk</description>
-	<distributionManagement>
+	<distributionManagement> 
 		<repository>
 			<id>deployRelease</id>
 			<name>weihui Internal Repository</name>
