@@ -5,6 +5,12 @@ package io.wexchain.dccchainservice.domain
  */
 
 object BusinessCodes {
+
+    /**
+     * scf access token invalid access is forbidden
+     */
+    const val TOKEN_FORBIDDEN = "FORBIDDEN"
+
     const val TICKET_INVALID = "TICKET_INVALID"
     const val CHALLENGE_FAILURE = "CHALLENGE_FAILURE"
     const val SIGN_MESSAGE_INVALID = "SIGN_MESSAGE_INVALID"

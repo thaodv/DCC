@@ -135,7 +135,7 @@ fun EthJsonRpcApi.transactionReceipt(txId: String): Single<EthJsonTxReceipt> {
 fun EthJsonRpcApi.transactionByHash(txId: String): Single<EthJsonTxInfo> {
     return this.getTransactionByHash(
             EthJsonRpcRequestBody(
-                    method = "eth_getBalance",
+                    method = "eth_getTransactionByHash",
                     params = kotlin.collections.listOf(txId),
                     id = this.nextId()
             ))
@@ -166,5 +166,10 @@ fun EthJsonRpcApi.getErc20Balance(contractAddress: String, address: String, tag:
             method = "eth_call",
             params = listOf(call, tag),
             id = this.nextId()
-    )).map { if (it.result.equals("0x", true)) BigInteger.ZERO else Numeric.toBigInt(it.result!!) }
+    )).map {
+        if (it.result.equals("0x", true))
+            BigInteger.ZERO
+        else
+            Numeric.toBigInt(it.result!!)
+    }
 }

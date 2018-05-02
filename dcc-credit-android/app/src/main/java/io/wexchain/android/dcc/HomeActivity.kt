@@ -2,23 +2,17 @@ package io.wexchain.android.dcc
 
 import android.app.Dialog
 import android.arch.lifecycle.Observer
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.common.toast
 import io.wexchain.android.common.transitionBundle
 import io.wexchain.android.dcc.constant.Transitions
-import io.wexchain.android.dcc.network.GlideApp
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityHomeBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityHomeBinding
 
 class HomeActivity : BindActivity<ActivityHomeBinding>() {
     override val contentLayoutId: Int = R.layout.activity_home
@@ -49,7 +43,6 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
             if (App.get().passportRepository.passportExists) {
                 navigateTo(DigitalAssetsActivity::class.java, transitionBundle(
                         Transitions.create(findViewById(R.id.rv_assets), Transitions.DIGITAL_ASSETS_LIST)
-                        , Transitions.create(findViewById(R.id.assets_amount_label), Transitions.DIGITAL_ASSETS_AMOUNT_LABEL)
                         , Transitions.create(findViewById(R.id.assets_amount_value), Transitions.DIGITAL_ASSETS_AMOUNT)
                 ))
             } else {
@@ -75,10 +68,14 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
             }
         }
         findViewById<View>(R.id.iv_affiliate).setOnClickListener {
-            toast("Coming soon")
+            navigateTo(AffiliateActivity::class.java)
         }
         findViewById<View>(R.id.iv_loan).setOnClickListener {
-            toast("Coming soon")
+            if (App.get().passportRepository.passportExists) {
+                navigateTo(LoanActivity::class.java)
+            } else {
+                showIntroWalletDialog()
+            }
         }
         binding.cardPassport.root.setOnClickListener {
             if (!App.get().passportRepository.passportExists) {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="DccTheme.App">
-        <item name="android:windowLightStatusBar">true</item>>
+    <style name="DccLightTheme.App">
+        <item name="android:windowLightStatusBar">true</item>
 
         <!-- enable window content transitions -->
         <item name="android:windowContentTransitions">true</item>
@@ -14,5 +14,13 @@
         <item name="android:windowSharedElementEnterTransition">@transition/default_transition
         </item>
         <item name="android:windowSharedElementExitTransition">@transition/default_transition</item>
+    </style>
+
+
+    <style name="DccLightTheme.App.Immerse">
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="navigationIcon">@drawable/arrow_left_white</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 </resources>

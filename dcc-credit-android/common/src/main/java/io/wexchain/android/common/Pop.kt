@@ -1,7 +1,10 @@
 package io.wexchain.android.common
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.support.annotation.StringRes
+import android.view.LayoutInflater
+import android.widget.TextView
 import android.widget.Toast
 import java.lang.ref.WeakReference
 
@@ -40,8 +43,19 @@ object Pop {
                 }
     }
 
+    @SuppressLint("ShowToast")
     private fun buildToast(context: Context, text: CharSequence, duration: Int): Toast {
-        return Toast.makeText(context,text,duration)
+        val attrId = context.getAttrId(R.attr.customToastLayout)
+        return if (attrId > 0){
+            val view = LayoutInflater.from(context).inflate(attrId, null)
+            val toast = Toast(context)
+            toast.duration = duration
+            toast.view = view
+            view.findViewById<TextView>(android.R.id.message).text = text
+            toast
+        }else {
+            Toast.makeText(context, text, duration)
+        }
     }
 
     fun cancelToast() {

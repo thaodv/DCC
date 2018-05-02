@@ -5,7 +5,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.*
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter
@@ -13,9 +13,9 @@ import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.TransactionRecordAdapter
 import io.wexchain.android.dcc.vm.BottomMoreVm
 import io.wexchain.android.dcc.vm.TransactionListVm
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityDigitalTransactionsBinding
-import io.wexchain.auth.databinding.ItemBottomMoreTextBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityDigitalTransactionsBinding
+import io.wexchain.dcc.databinding.ItemBottomMoreTextBinding
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
 
@@ -71,7 +71,7 @@ class DigitalTransactionsActivity : BindActivity<ActivityDigitalTransactionsBind
         }
         val bottomMoreItemsAdapter = BottomMoreItemsAdapter(adapter, object : BottomMoreItemsAdapter.BottomViewProvider {
 
-            override fun inflateBottomView(parent: ViewGroup?): View {
+            override fun inflateBottomView(parent: ViewGroup): View {
                 parent ?: throw IllegalArgumentException()
                 val b = DataBindingUtil.inflate<ItemBottomMoreTextBinding>(LayoutInflater.from(parent.context), R.layout.item_bottom_more_text, parent, false)
                 b.bm = bm

@@ -3,7 +3,7 @@ package io.wexchain.android.dcc
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebView
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 
 class WebPageActivity : AppCompatActivity() {
 

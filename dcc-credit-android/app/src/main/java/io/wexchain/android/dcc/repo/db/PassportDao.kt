@@ -42,4 +42,10 @@ abstract class PassportDao {
 
     @Update
     abstract fun updateCurrencyMeta(currencyMeta: CurrencyMeta): Int
+
+    @Query("SELECT * FROM ${BeneficiaryAddress.TABLE_NAME}")
+    abstract fun listBeneficiaryAddresses(): LiveData<List<BeneficiaryAddress>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun addOrUpdateBeneficiaryAddress(beneficiaryAddress: BeneficiaryAddress)
 }

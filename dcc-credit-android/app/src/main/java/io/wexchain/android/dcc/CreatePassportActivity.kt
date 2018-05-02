@@ -5,7 +5,7 @@ import android.support.v4.content.ContextCompat
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ImageSpan
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
@@ -13,8 +13,8 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.dcc.vm.InputPasswordVm
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityCreatePassportBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityCreatePassportBinding
 
 class CreatePassportActivity : BindActivity<ActivityCreatePassportBinding>() {
     override val contentLayoutId: Int = R.layout.activity_create_passport
@@ -35,7 +35,7 @@ class CreatePassportActivity : BindActivity<ActivityCreatePassportBinding>() {
             if(isPasswordValid(pw)) {
                 doCreatePassport(pw)
             }else{
-                toast("")
+                toast("设置钱包密码不符合要求,请重试")
             }
         }
         binding.tvBackupNotice.text = SpannableString("成功创建数字钱包后,请即时在设置->备份数字钱包 中进行备份,以防数字资产丢失").apply {

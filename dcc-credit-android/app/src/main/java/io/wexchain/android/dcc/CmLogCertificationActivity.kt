@@ -2,15 +2,15 @@ package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.vm.CertificationDataVm
 import io.wexchain.android.dcc.vm.ViewModelHelper
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityCertificationDataBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityCertificationDataBinding
 
 class CmLogCertificationActivity : BindActivity<ActivityCertificationDataBinding>() {
     override val contentLayoutId: Int = R.layout.activity_certification_data

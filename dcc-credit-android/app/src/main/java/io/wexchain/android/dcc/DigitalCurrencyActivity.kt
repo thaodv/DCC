@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.view.*
 import io.wexchain.android.dcc.constant.RequestCodes
 import com.wexmarket.android.passport.ResultCodes
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.constant.Extras
@@ -19,9 +19,9 @@ import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.vm.BottomMoreVm
 import io.wexchain.android.dcc.vm.DigitalCurrencyVm
 import io.wexchain.android.dcc.vm.TransactionListVm
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityDigitalCurrencyBinding
-import io.wexchain.auth.databinding.ItemBottomMoreTextBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityDigitalCurrencyBinding
+import io.wexchain.dcc.databinding.ItemBottomMoreTextBinding
 import io.wexchain.digitalwallet.*
 import io.wexchain.digitalwallet.util.gweiTowei
 import java.math.BigInteger
@@ -144,7 +144,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
         }
         val bottomMoreItemsAdapter = BottomMoreItemsAdapter(adapter, object : BottomMoreItemsAdapter.BottomViewProvider {
 
-            override fun inflateBottomView(parent: ViewGroup?): View {
+            override fun inflateBottomView(parent: ViewGroup): View {
                 parent ?: throw IllegalArgumentException()
                 val b = DataBindingUtil.inflate<ItemBottomMoreTextBinding>(LayoutInflater.from(parent.context), R.layout.item_bottom_more_text, parent, false)
                 b.bm = bm

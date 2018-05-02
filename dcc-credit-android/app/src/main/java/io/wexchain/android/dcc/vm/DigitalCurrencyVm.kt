@@ -10,7 +10,7 @@ import io.wexchain.digitalwallet.api.domain.front.Quote
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.dcc.App
 import io.wexchain.android.common.SingleLiveEvent
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency

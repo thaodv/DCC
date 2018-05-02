@@ -13,11 +13,16 @@
                 type="io.wexchain.dccchainservice.domain.MarketingActivityScenario"/>
     </data>
 
-    <android.support.v7.widget.CardView
+    <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="120dp"
-            style="@style/CardView.Light.Dcc"
+            android:minHeight="96dp"
+            app:cardCornerRadius="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:background="@drawable/bg_round_rect_frame_white"
             >
 
         <TextView
@@ -50,5 +55,5 @@
                 tools:text="领取"
                 />
 
-    </android.support.v7.widget.CardView>
+    </FrameLayout>
 </layout>

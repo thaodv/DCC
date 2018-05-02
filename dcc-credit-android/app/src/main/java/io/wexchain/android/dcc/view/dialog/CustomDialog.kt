@@ -11,8 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import io.wexchain.android.dcc.vm.CDVm
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.DialogCustomBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.DialogCustomBinding
 
 /**
  * Created by lulingzhi on 2017/11/29.

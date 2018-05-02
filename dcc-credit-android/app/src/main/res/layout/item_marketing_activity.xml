@@ -21,6 +21,7 @@
             style="?attr/cardViewStyle"
             app:contentPadding="0dp"
             app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
             >
 
         <android.support.constraint.ConstraintLayout

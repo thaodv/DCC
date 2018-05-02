@@ -3,7 +3,7 @@ package io.wexchain.android.dcc
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.design.widget.TabLayout
-import com.wexmarket.android.passport.ui.fragment.ExportPrivateKeyFragment
+import io.wexchain.android.dcc.fragment.ExportPrivateKeyFragment
 import io.wexchain.android.common.findOrCreateFragment
 import io.wexchain.android.common.replaceFragment
 import io.wexchain.android.common.toast
@@ -12,7 +12,7 @@ import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.fragment.ExportKeystoreFragment
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 import kotlinx.android.synthetic.main.activity_passport_export.*
 
 class PassportExportActivity : BaseCompatActivity(), TabLayout.OnTabSelectedListener {

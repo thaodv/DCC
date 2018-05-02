@@ -15,7 +15,7 @@ import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.fragment.InputIdInfoFragment
 import io.wexchain.android.dcc.fragment.LivenessDetectionFragment
 import io.wexchain.android.idverify.IdCardEssentialData
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.CertOrder
 

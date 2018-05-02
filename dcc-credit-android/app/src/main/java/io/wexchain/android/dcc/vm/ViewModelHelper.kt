@@ -5,9 +5,11 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
+import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.domain.CertificationType
+import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.domain.MarketingActivity
 import io.wexchain.dccchainservice.domain.MarketingActivityScenario
 import io.wexchain.digitalwallet.Currencies
@@ -67,10 +69,10 @@ object ViewModelHelper {
     @ColorInt
     fun Context.getCertStatusOpTextColor(userCertStatus: UserCertStatus?): Int {
         return when (userCertStatus) {
-            UserCertStatus.NONE -> ContextCompat.getColor(this, R.color.text_dark_alpha)
+            UserCertStatus.NONE -> ContextCompat.getColor(this, R.color.text_dark)
             UserCertStatus.INCOMPLETE -> ContextCompat.getColor(this, R.color.text_blue_magenta)
-            UserCertStatus.DONE -> ContextCompat.getColor(this, R.color.text_blue_magenta)
-            else -> ContextCompat.getColor(this, R.color.text_dark_alpha)
+            UserCertStatus.DONE -> ContextCompat.getColor(this, R.color.text_dark)
+            else -> ContextCompat.getColor(this, R.color.text_dark)
         }
     }
 

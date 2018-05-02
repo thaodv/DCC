@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:textSize="17sp"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:textColor="@color/text_dark"
             android:text="@string/address_description"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginRight="@dimen/content_padding_horizontal"
@@ -42,13 +43,14 @@
             android:layout_marginTop="10dp"
             />
 
-        <android.support.v7.widget.CardView
+        <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="100dp"
                 android:layout_marginLeft="48dp"
                 android:layout_marginRight="48dp"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/bg_round_rect_frame_white"
                 app:layout_constraintTop_toBottomOf="@id/iv_passport_qr"
                 >
 
@@ -63,6 +65,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/passport_address"
+                        android:textColor="@color/text_dark"
                         android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
                         android:textSize="17sp"
                         />
@@ -76,7 +79,7 @@
                         />
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </FrameLayout>
 
         <Button
             android:id="@+id/btn_copy"

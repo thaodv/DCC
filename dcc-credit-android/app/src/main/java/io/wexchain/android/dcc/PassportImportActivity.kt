@@ -3,15 +3,15 @@ package io.wexchain.android.dcc
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import com.google.gson.JsonSyntaxException
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.fragment.PasteKeystoreFragment
 import io.wexchain.android.dcc.fragment.PastePrivateKeyFragment
 import io.reactivex.Single
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityPassportImportBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityPassportImportBinding
 import kotlinx.android.synthetic.main.activity_passport_import.*
 import org.web3j.crypto.CipherException
 import org.web3j.crypto.Credentials
@@ -83,7 +83,7 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
         stackTrace(e)
         when (e) {
             is CipherException -> {
-                toast("KeyStore信息或口袋密码错误")
+                toast("KeyStore或钱包密码有误,请重试")
             }
             is JsonSyntaxException -> {
                 toast("KeyStore信息格式错误")

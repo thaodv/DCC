@@ -11,7 +11,7 @@ import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.UseProtect
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 
 /**
  * Created by lulingzhi on 2017/11/23.

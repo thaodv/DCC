@@ -1,4 +1,4 @@
-package com.wexmarket.android.passport.ui.fragment
+package io.wexchain.android.dcc.fragment
 
 import android.content.ClipData
 import android.databinding.DataBindingUtil
@@ -11,8 +11,8 @@ import io.wexchain.android.common.setInterceptScroll
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BaseCompatFragment
 import io.wexchain.android.dcc.view.dialog.FullScreenDialog
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.FragmentExportPrivateKeyBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.FragmentExportPrivateKeyBinding
 import org.web3j.utils.Numeric
 import java.math.BigInteger
 

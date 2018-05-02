@@ -1,6 +1,8 @@
 package io.wexchain.android.dcc
 
+import android.support.annotation.VisibleForTesting
 import android.support.multidex.MultiDexApplication
+import android.view.ContextThemeWrapper
 import com.wexmarket.android.network.Networking
 import io.reactivex.Single
 import io.reactivex.plugins.RxJavaPlugins
@@ -8,11 +10,12 @@ import io.wexchain.android.common.Pop
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.PassportRepository
+import io.wexchain.android.dcc.repo.ScfTokenManager
 import io.wexchain.android.dcc.repo.db.PassportDatabase
 import io.wexchain.android.dcc.tools.JuzixData
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.localprotect.LocalProtect
-import io.wexchain.auth.BuildConfig
+import io.wexchain.dcc.BuildConfig
 import io.wexchain.dccchainservice.*
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.Chain
@@ -31,7 +34,8 @@ class App : MultiDexApplication() {
     //lib
     lateinit var idVerifyHelper: IdVerifyHelper
 
-    private lateinit var networking: Networking
+    @VisibleForTesting
+    lateinit var networking: Networking
 
     //our services
     lateinit var chainGateway: ChainGateway
@@ -39,9 +43,11 @@ class App : MultiDexApplication() {
     lateinit var chainFrontEndApi: ChainFrontEndApi
     lateinit var privateChainApi: PrivateChainApi
     lateinit var marketingApi: MarketingApi
+    lateinit var scfApi: ScfApi
 
     //public services
     lateinit var infuraApi: InfuraApi
+    lateinit var customPublicJsonRpc: EthJsonRpcApi
     lateinit var etherScanApi: EtherScanApi
     lateinit var ethplorerApi: EthplorerApi
     lateinit var publicRpc: EthsRpcAgent
@@ -49,15 +55,19 @@ class App : MultiDexApplication() {
 
     lateinit var passportRepository: PassportRepository
     lateinit var assetsRepository: AssetsRepository
+    lateinit var scfTokenManager: ScfTokenManager
 
     override fun onCreate() {
         super.onCreate()
         instance = WeakReference(this)
+        val themeWrapper = ContextThemeWrapper(this, io.wexchain.dcc.R.style.DccLightTheme_App)
         RxJavaPlugins.setErrorHandler {
-            if(it is DccChainServiceException && !it.message.isNullOrBlank()){
-                Pop.toast(it.message!!,this)
+            val ex = it.cause ?: it
+            if (ex is DccChainServiceException && !ex.message.isNullOrBlank()) {
+                Pop.toast(it.message!!, themeWrapper)
             }
-            if (BuildConfig.DEBUG) it.printStackTrace() }
+            if (BuildConfig.DEBUG) it.printStackTrace()
+        }
         initLibraries(this)
         initServices(this)
         initData(this)
@@ -65,14 +75,15 @@ class App : MultiDexApplication() {
 
     private fun initData(app: App) {
         val dao = PassportDatabase.createDatabase(this).dao
-        passportRepository = PassportRepository(app,dao)
+        passportRepository = PassportRepository(app, dao)
         passportRepository.load()
         assetsRepository = AssetsRepository(
                 dao,
                 chainFrontEndApi,
-                EthereumAgent(EthsRpcAgent.Companion.by(infuraApi), EthsTxAgent.Companion.by(etherScanApi)),
+                EthereumAgent(publicRpc, EthsTxAgent.by(etherScanApi)),
                 { buildAgent(it) }
         )
+        scfTokenManager = ScfTokenManager(app)
         CertOperations.init(app)
         JuzixData.init(app)
         LocalProtect.init(app)
@@ -84,13 +95,16 @@ class App : MultiDexApplication() {
         chainGateway = networking.createApi(ChainGateway::class.java, BuildConfig.GATEWAY_BASE_URL)
         certApi = networking.createApi(CertApi::class.java, BuildConfig.CHAIN_FUNC_URL)
         chainFrontEndApi = networking.createApi(ChainFrontEndApi::class.java, BuildConfig.CHAIN_FRONTEND_URL)
-        privateChainApi = networking.createApi(PrivateChainApi::class.java,BuildConfig.CHAIN_EXPLORER_URL)
-        marketingApi = networking.createApi(MarketingApi::class.java,BuildConfig.DCC_MARKETING_API_URL)
+        privateChainApi = networking.createApi(PrivateChainApi::class.java, BuildConfig.CHAIN_EXPLORER_URL)
+        marketingApi = networking.createApi(MarketingApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
+        scfApi = networking.createApi(ScfApi::class.java,BuildConfig.DCC_MARKETING_API_URL)
 
-        infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
+//        infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
+        customPublicJsonRpc = networking.createApi(EthJsonRpcApi::class.java, cc.sisel.ewallet.BuildConfig.PUBLIC_CHAIN_RPC).getPrepared()
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))
         ethplorerApi = networking.createApi(EthplorerApi::class.java, EthplorerApi.API_URL)
-        publicRpc = EthsRpcAgent.by(infuraApi)
+//        publicRpc = EthsRpcAgent.by(infuraApi)
+        publicRpc = EthsRpcAgent.by(customPublicJsonRpc)
     }
 
     private fun initLibraries(context: App) {

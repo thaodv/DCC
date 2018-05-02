@@ -4,13 +4,13 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import io.wexchain.android.dcc.constant.RequestCodes
-import com.wexmarket.android.passport.base.BindActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.view.dialog.TransactionConfirmDialogFragment
 import io.wexchain.android.dcc.vm.TransactionVm
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityCreateTransactionBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityCreateTransactionBinding
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransactionScratch
 

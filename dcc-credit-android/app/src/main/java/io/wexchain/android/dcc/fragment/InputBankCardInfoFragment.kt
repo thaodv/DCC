@@ -20,10 +20,10 @@ import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.android.dcc.vm.InputBankCardInfoVm
 import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.android.dcc.vm.domain.BankCardInfo
-import io.wexchain.auth.BR
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.FragmentInputBankCardBinding
-import io.wexchain.auth.databinding.ItemBankInfoBinding
+import io.wexchain.dcc.BR
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.FragmentInputBankCardBinding
+import io.wexchain.dcc.databinding.ItemBankInfoBinding
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.Bank
 import io.wexchain.dccchainservice.domain.Result

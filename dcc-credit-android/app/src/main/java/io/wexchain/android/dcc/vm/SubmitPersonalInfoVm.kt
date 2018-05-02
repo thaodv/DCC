@@ -2,7 +2,7 @@ package io.wexchain.android.dcc.vm
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 
 class SubmitPersonalInfoVm(application: Application)
     : AndroidViewModel(application) {
