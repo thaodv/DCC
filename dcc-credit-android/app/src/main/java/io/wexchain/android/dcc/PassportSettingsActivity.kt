@@ -14,8 +14,8 @@ import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.fragment.CreateProtectFragment
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityPassportSettingsBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityPassportSettingsBinding
 import android.provider.MediaStore
 import android.support.v4.view.ViewCompat
 import android.view.*

@@ -12,10 +12,10 @@ import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback
 import io.wexchain.android.dcc.vm.AuthManage
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
-import io.wexchain.auth.BuildConfig
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityAuthManageBinding
-import io.wexchain.auth.databinding.ItemAuthkeyChangeRecordBinding
+import io.wexchain.dcc.BuildConfig
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityAuthManageBinding
+import io.wexchain.dcc.databinding.ItemAuthkeyChangeRecordBinding
 import io.wexchain.dccchainservice.DccChainServiceException
 
 class AuthManageActivity : BindActivity<ActivityAuthManageBinding>() {

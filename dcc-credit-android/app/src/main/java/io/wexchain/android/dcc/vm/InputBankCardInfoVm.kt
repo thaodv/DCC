@@ -5,10 +5,7 @@ import android.arch.lifecycle.AndroidViewModel
 import android.databinding.ObservableField
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.vm.domain.BankCardInfo
-import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.dccchainservice.domain.Bank
-import io.wexchain.dccchainservice.domain.BankCodes
-import io.wexchain.dccchainservice.domain.IdOcrInfo
 
 class InputBankCardInfoVm(application: Application):AndroidViewModel(application){
 

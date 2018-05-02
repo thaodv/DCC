@@ -13,7 +13,7 @@ object ParamSignatureUtil {
     @JvmStatic
     fun sign(privateKey: PrivateKey, params: Map<String, String?>): String {
         val signStr = params.entries.filter { it.value != null }.sortedBy { it.key }.joinToString(separator = "&") { "${it.key}=${it.value}" }
-        println("sign str = $signStr")
+//        println("sign str = $signStr")
         return privateKey.sign(signStr.toByteArray(Charsets.UTF_8)).toHex()
     }
 

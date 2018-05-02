@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="io.wexchain.auth">
+          package="io.wexchain.dcc">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -30,8 +30,8 @@
         <activity
                 android:name="io.wexchain.android.dcc.MyCreditActivity"
                 android:label="@string/title_my_credit"
-                android:theme="@style/DccLightTheme.App.Immerse"
-                android:screenOrientation="portrait"/>
+                android:screenOrientation="portrait"
+                android:theme="@style/DccLightTheme.App.Immerse"/>
         <activity
                 android:name="io.wexchain.android.dcc.SubmitPersonalInfoActivity"
                 android:screenOrientation="portrait"/>
@@ -81,8 +81,8 @@
         <activity
                 android:name="io.wexchain.android.dcc.QrScannerActivity"
                 android:label=""
-                android:theme="@style/DccLightTheme.App.Transparent"
-                android:screenOrientation="portrait"/>
+                android:screenOrientation="portrait"
+                android:theme="@style/DccLightTheme.App.Transparent"/>
         <activity
                 android:name="io.wexchain.android.dcc.PassportAddressActivity"
                 android:label="@string/passport_address"
@@ -111,8 +111,7 @@
                 android:name="io.wexchain.android.dcc.EditNicknameActivity"
                 android:label="修改昵称"
                 android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustResize|stateUnspecified"
-                />
+                android:windowSoftInputMode="adjustResize|stateUnspecified"/>
         <activity
                 android:name="io.wexchain.android.dcc.PassportExportActivity"
                 android:label="@string/passport_backup"
@@ -155,12 +154,22 @@
                 android:screenOrientation="portrait"/>
         <activity
                 android:name="io.wexchain.android.dcc.AffiliateActivity"
-                android:theme="@style/DccLightTheme.App.Transparent"
-                android:screenOrientation="portrait"/>
+                android:screenOrientation="portrait"
+                android:theme="@style/DccLightTheme.App.Transparent"/>
         <activity
                 android:name="io.wexchain.android.dcc.LoanActivity"
-                android:theme="@style/DccLightTheme.App.Transparent"
-                android:screenOrientation="portrait"/>
+                android:screenOrientation="portrait"
+                android:theme="@style/DccLightTheme.App.Transparent"/>
+        <activity
+                android:name="io.wexchain.android.dcc.AddBeneficiaryAddressActivity"
+                android:label="添加收款地址">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.BeneficiaryAddressesManagementActivity">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.MyLoansActivity">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.LoanDetailActivity">
+        </activity>
     </application>
 
 </manifest>

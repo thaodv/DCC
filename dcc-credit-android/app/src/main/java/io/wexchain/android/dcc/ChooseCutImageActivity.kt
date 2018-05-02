@@ -18,7 +18,7 @@ import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.network.GlideApp
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 import java.io.File
 
 class ChooseCutImageActivity : BaseCompatActivity() {

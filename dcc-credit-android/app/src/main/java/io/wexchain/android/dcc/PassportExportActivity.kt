@@ -12,7 +12,7 @@ import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.fragment.ExportKeystoreFragment
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 import kotlinx.android.synthetic.main.activity_passport_export.*
 
 class PassportExportActivity : BaseCompatActivity(), TabLayout.OnTabSelectedListener {

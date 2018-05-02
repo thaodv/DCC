@@ -158,15 +158,4 @@
         </android.support.v7.widget.CardView>
 
     </android.support.constraint.ConstraintLayout>
-
-    <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/text_coming_soon"
-            android:scaleType="centerInside"
-            android:background="@color/gray_mask"
-            tools:visibility="gone"
-            />
 </FrameLayout>

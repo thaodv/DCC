@@ -14,13 +14,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.vm.EditIdCardInfoVm
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.idverify.IdVerifyHelper.Companion.SIDE_BACK
 import io.wexchain.android.idverify.IdVerifyHelper.Companion.SIDE_FRONT
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.FragmentEditIdInfoBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.FragmentEditIdInfoBinding
 
 class InputIdInfoFragment : BindFragment<FragmentEditIdInfoBinding>() {
     override val contentLayoutId: Int = R.layout.fragment_edit_id_info
@@ -46,9 +47,18 @@ class InputIdInfoFragment : BindFragment<FragmentEditIdInfoBinding>() {
         vm.ocrFailEvent.observe(this, Observer {
             it?.message?.let {
                 println("ocr fail : $it")
-                toast(it)
+                toast("ocr 失败   系统繁忙请稍后再试")
             }
             binding.executePendingBindings()
+        })
+        vm.ocrProcessing.observe(this, Observer {
+            it?.let {
+                if (it){
+                    (activity as? BaseCompatActivity)?.showLoadingDialog()
+                }else{
+                    (activity as? BaseCompatActivity)?.hideLoadingDialog()
+                }
+            }
         })
         binding.vm = vm
         binding.ibIdFront.setOnClickListener {

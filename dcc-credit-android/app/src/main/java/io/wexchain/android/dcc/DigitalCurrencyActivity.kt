@@ -19,9 +19,9 @@ import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.vm.BottomMoreVm
 import io.wexchain.android.dcc.vm.DigitalCurrencyVm
 import io.wexchain.android.dcc.vm.TransactionListVm
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityDigitalCurrencyBinding
-import io.wexchain.auth.databinding.ItemBottomMoreTextBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityDigitalCurrencyBinding
+import io.wexchain.dcc.databinding.ItemBottomMoreTextBinding
 import io.wexchain.digitalwallet.*
 import io.wexchain.digitalwallet.util.gweiTowei
 import java.math.BigInteger

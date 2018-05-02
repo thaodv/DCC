@@ -6,8 +6,8 @@ import android.os.Bundle
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.toast
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityPassportAddressBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityPassportAddressBinding
 
 class PassportAddressActivity : BindActivity<ActivityPassportAddressBinding>() {
     override val contentLayoutId: Int = R.layout.activity_passport_address

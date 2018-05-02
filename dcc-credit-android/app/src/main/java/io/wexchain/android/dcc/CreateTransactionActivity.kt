@@ -9,8 +9,8 @@ import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.view.dialog.TransactionConfirmDialogFragment
 import io.wexchain.android.dcc.vm.TransactionVm
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityCreateTransactionBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityCreateTransactionBinding
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransactionScratch
 

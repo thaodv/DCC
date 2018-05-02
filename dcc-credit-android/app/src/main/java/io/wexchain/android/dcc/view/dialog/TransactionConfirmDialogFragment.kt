@@ -13,8 +13,8 @@ import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.vm.TransactionConfirmVm
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.DialogConfirmTransactionBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.DialogConfirmTransactionBinding
 import io.wexchain.digitalwallet.EthsTransactionScratch
 
 /**

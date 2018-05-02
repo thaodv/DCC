@@ -19,8 +19,8 @@ import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.view.dialog.FullScreenDialog
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.FragmentExportKeystoreBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.FragmentExportKeystoreBinding
 
 
 /**

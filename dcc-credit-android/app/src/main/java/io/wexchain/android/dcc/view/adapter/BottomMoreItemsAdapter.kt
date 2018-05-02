@@ -3,7 +3,7 @@ package io.wexchain.android.dcc.view.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 
 /**
  * Created by lulingzhi on 2017/12/11.

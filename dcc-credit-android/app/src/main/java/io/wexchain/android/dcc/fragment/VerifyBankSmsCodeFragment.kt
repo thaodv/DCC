@@ -6,8 +6,8 @@ import com.wexmarket.android.passport.base.BindFragment
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.vm.VerifyBankCardSmsCodeVm
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.FragmentVerifyBankSmsCodeBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.FragmentVerifyBankSmsCodeBinding
 
 class VerifyBankSmsCodeFragment : BindFragment<FragmentVerifyBankSmsCodeBinding>() {
     override val contentLayoutId: Int = R.layout.fragment_verify_bank_sms_code

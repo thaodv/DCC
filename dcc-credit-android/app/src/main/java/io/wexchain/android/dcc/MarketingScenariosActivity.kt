@@ -15,9 +15,9 @@ import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.network.GlideApp
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
-import io.wexchain.auth.BR
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ItemMarketingScenarioBinding
+import io.wexchain.dcc.BR
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ItemMarketingScenarioBinding
 import io.wexchain.dccchainservice.domain.MarketingActivity
 import io.wexchain.dccchainservice.domain.MarketingActivityScenario
 import io.wexchain.dccchainservice.domain.Result

@@ -14,7 +14,7 @@ contract AgreementServiceModule is BaseModule {
 
     //模块构造函数
     function AgreementServiceModule() {
-	  //定义模块合约名称
+        //定义模块合约名称
         string memory moduleName = "AgreementServiceModule";
 
         //定义模块合约名称
@@ -23,11 +23,11 @@ contract AgreementServiceModule is BaseModule {
         //定义模块合约版本号
         string memory moduleVersion = "0.0.1.0";
 
-	//把合约注册到JUICE链上
+        //把合约注册到JUICE链上
         LibLog.log("register AgreementServiceModule");
         register(moduleName, moduleVersion);
 
-	tmpModule.moduleName = moduleName;
+        tmpModule.moduleName = moduleName;
         tmpModule.moduleVersion = moduleVersion;
         tmpModule.moduleEnable = 0;
         tmpModule.moduleDescription = moduleDesc;

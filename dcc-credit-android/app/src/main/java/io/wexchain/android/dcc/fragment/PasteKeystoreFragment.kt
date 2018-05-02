@@ -17,8 +17,8 @@ import io.wexchain.android.dcc.tools.isEcPrivateKeyValid
 import io.wexchain.android.dcc.tools.isKeyStoreValid
 import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.dcc.vm.InputPasswordVm
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.FragmentPasteKeystoreBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.FragmentPasteKeystoreBinding
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.Wallet
 
@@ -67,8 +67,10 @@ class PasteKeystoreFragment : BindFragment<FragmentPasteKeystoreBinding>() {
         val pw = binding.inputPassword!!.password.get()
         return if (!isKeyStoreValid(ks)){
             Single.error(IllegalArgumentException("KeyStore信息格式错误，导入失败"))
-        }else if (!isPasswordValid(pw)) {
-            Single.error(IllegalArgumentException("密码不符合规则"))
+//        }else if (!isPasswordValid(pw)) {
+//            Single.error(IllegalArgumentException("密码不符合规则"))
+        }else if (pw.isNullOrBlank()) {
+            Single.error(IllegalArgumentException("密码不可为空"))
         }else{
             Single.just(Pair(ks!!, pw!!))
                     .observeOn(Schedulers.computation())

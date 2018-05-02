@@ -13,9 +13,9 @@ import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.TransactionRecordAdapter
 import io.wexchain.android.dcc.vm.BottomMoreVm
 import io.wexchain.android.dcc.vm.TransactionListVm
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityDigitalTransactionsBinding
-import io.wexchain.auth.databinding.ItemBottomMoreTextBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityDigitalTransactionsBinding
+import io.wexchain.dcc.databinding.ItemBottomMoreTextBinding
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
 

@@ -10,7 +10,7 @@ import android.view.View
 import android.widget.TextView
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.view.dialog.FullScreenDialog
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 
 abstract class BaseCompatActivity : AppCompatActivity() {
 

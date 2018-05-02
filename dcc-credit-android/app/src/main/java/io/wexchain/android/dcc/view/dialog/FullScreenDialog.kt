@@ -10,7 +10,7 @@ import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import io.wexchain.android.dcc.tools.setQrContentSrc
-import io.wexchain.auth.R
+import io.wexchain.dcc.R
 
 
 /**

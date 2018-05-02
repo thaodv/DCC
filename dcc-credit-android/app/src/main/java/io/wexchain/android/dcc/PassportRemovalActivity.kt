@@ -15,8 +15,8 @@ import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ActivityPassportRemovalBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityPassportRemovalBinding
 
 class PassportRemovalActivity : BaseCompatActivity() {
 

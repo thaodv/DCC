@@ -14,8 +14,8 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.view.adapter.*
-import io.wexchain.auth.R
-import io.wexchain.auth.databinding.ItemMarketingActivityBinding
+import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ItemMarketingActivityBinding
 import io.wexchain.dccchainservice.domain.MarketingActivity
 import io.wexchain.dccchainservice.domain.Result
 
