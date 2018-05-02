@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<configuration>
+		<custom-converters>
+			<converter type="com.wexmarket.topia.commons.basic.dozer.converter.DateTimeConverter">
+				<class-a>org.joda.time.DateTime</class-a>
+				<class-b>java.util.Date</class-b>
+			</converter>
+			<!--<converter type="com.wexmarket.clearing.common.converter.BigDecimalConverter">
+				<class-a>java.math.BigDecimal</class-a>
+				<class-b>java.math.BigDecimal</class-b>
+			</converter>-->
+		</custom-converters>
+		<copy-by-references>
+			<copy-by-reference>org.joda.*</copy-by-reference>
+		</copy-by-references>
+	</configuration>
+
+	<mapping type="one-way">
+		<class-a>io.wexchain.dcc.marketing.domain.Scenario</class-a>
+		<class-b>io.wexchain.dcc.marketing.api.model.Scenario</class-b>
+		<field>
+			<a>activity.code</a>
+			<b>activityCode</b>
+		</field>
+	</mapping>
+
+	<mapping type="one-way">
+		<class-a>io.wexchain.dcc.marketing.domain.RedeemToken</class-a>
+		<class-b>io.wexchain.dcc.marketing.api.model.RedeemToken</class-b>
+		<field>
+			<a>scenario.code</a>
+			<b>scenarioCode</b>
+		</field>
+	</mapping>
+
+	<mapping type="one-way">
+		<class-a>io.wexchain.dcc.marketing.domain.IdRestriction</class-a>
+		<class-b>io.wexchain.dcc.marketing.api.model.IdRestriction</class-b>
+		<field>
+			<a>scenario.code</a>
+			<b>scenarioCode</b>
+		</field>
+	</mapping>
+
+</mappings> 

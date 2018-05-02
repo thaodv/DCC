@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:hz="http://www.hazelcast.com/schema/spring" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.hazelcast.com/schema/spring http://www.hazelcast.com/schema/spring/hazelcast-spring.xsd">
+	<hz:hazelcast id="hazelcast">
+		<hz:config>
+			<hz:group name="${hazelcast.group.name}" password="${hazelcast.group.password}" />
+			<hz:properties>
+				<hz:property name="hazelcast.logging.type">slf4j</hz:property>
+				<hz:property name="hazelcast.health.monitoring.level">NOISY</hz:property>
+				<hz:property name="hazelcast.jmx">true</hz:property>
+				<hz:property name="hazelcast.jmx.detailed">true</hz:property>
+			</hz:properties>
+			<hz:network port="5702">
+				<hz:join>
+					<hz:multicast multicast-group="224.1.1.1"
+						multicast-port="54329" />
+				</hz:join>
+			</hz:network>
+			<hz:map name="CANDLESTICK_CHART">
+				<hz:entry-listeners>
+					<hz:entry-listener include-value="true" class-name="io.wexchain.dcc.marketing.ext.deamon.quote.listener.CandlestickChartMapListener"/>
+				</hz:entry-listeners>
+			</hz:map>
+		</hz:config>
+	</hz:hazelcast>
+</beans>

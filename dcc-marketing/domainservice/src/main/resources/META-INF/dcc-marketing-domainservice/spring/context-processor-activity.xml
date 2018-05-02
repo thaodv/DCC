@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean id="activityExecutor" class="com.godmonth.status.executor.impl.DefaultOrderExecutor"
+		p:advancerMappings-ref="activityAdvancerMappings"
+		p:txStatusTransitor-ref="activityStatusTransitor">
+		<property name="modelAnalysis">
+			<bean class="com.godmonth.status.executor.impl.BeanModelAnalysis"
+				p:statusPropertyName="status" p:modelClass="io.wexchain.dcc.marketing.domain.Activity" />
+		</property>
+	</bean>
+
+	<bean id="activityAdvancerMappings" class="com.godmonth.util.collections.List2MapFactoryBean"
+		p:propertyPath="key">
+		<property name="sourceList">
+			<list value-type="java.lang.Object">
+				<bean class="io.wexchain.dcc.marketing.domainservice.processor.activity.advancer.SwitchAdvancer">
+					<property name="availableStatus">
+						<util:constant static-field="io.wexchain.dcc.marketing.api.constant.ActivityStatus.SHELVED" />
+					</property>
+				</bean>
+				<bean class="io.wexchain.dcc.marketing.domainservice.processor.activity.advancer.SwitchAdvancer">
+					<property name="availableStatus">
+						<util:constant static-field="io.wexchain.dcc.marketing.api.constant.ActivityStatus.STARTED" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="activityStatusTransitor" parent="statusRepositoryStatusTransitor"
+		p:statusPropertyName="status">
+		<property name="statusTransitor">
+			<bean factory-bean="activityStatusTransitorBuilder"
+				factory-method="buildTransitor" />
+		</property>
+	</bean>
+	<bean id="activityStatusTransitorBuilder"
+		class="com.godmonth.status.transitor.definition.impl.StatusTransitorBuilder"
+		p:definitionClass="io.wexchain.dcc.marketing.domainservice.processor.activity.ActivityStatusDefinition"
+		p:resource="classpath:/META-INF/dcc-marketing-domainservice/json/status-machine-activity.json">
+	</bean>
+</beans>

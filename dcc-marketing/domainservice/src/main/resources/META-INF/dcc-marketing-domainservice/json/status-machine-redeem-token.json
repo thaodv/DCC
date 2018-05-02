@@ -1,0 +1,15 @@
+[
+	{
+		"status": "CREATED",
+		"triggers": [
+			{
+				"trigger": "SUCCESS",
+				"nextStatus": "SUCCESS"
+			},
+			{
+				"trigger": "FAIL",
+				"nextStatus": "FAILURE"
+			}
+		]
+	}
+]

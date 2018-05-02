@@ -1,0 +1,50 @@
+[
+	{
+		"status": "CREATED",
+		"triggers": [
+			{
+				"trigger": "SHELVE",
+				"nextStatus": "SHELVED"
+			}
+		]
+	},
+	{
+		"status": "SHELVED",
+		"triggers": [
+			{
+				"trigger": "START",
+				"nextStatus": "STARTED"
+			},
+			{
+				"trigger": "END",
+				"nextStatus": "ENDED"
+			},
+			{
+				"trigger": "OFF_SHELVE",
+				"nextStatus": "CREATED"
+			}
+		]
+	},
+	{
+		"status": "STARTED",
+		"triggers": [
+			{
+				"trigger": "END",
+				"nextStatus": "ENDED"
+			},
+			{
+				"trigger": "OFF_SHELVE",
+				"nextStatus": "CREATED"
+			}
+		]
+	},
+	{
+		"status": "ENDED",
+		"triggers": [
+			{
+				"trigger": "OFF_SHELVE",
+				"nextStatus": "CREATED"
+			}
+		]
+	}
+]
