@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
+    <data>
+        <variable
+                name="product"
+                type="io.wexchain.dccchainservice.domain.LoanProduct"/>
+    </data>
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="96dp"
+            android:background="@drawable/bg_round_rect_frame"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            >
+
+        <TextView
+                android:id="@+id/tv_product_description"
+                android:layout_width="96dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:text="@{product.description}"
+                tools:text="信用借币ETH"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+        <TextView
+                android:id="@+id/tv_product_period_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                android:text="@string/loan_period_colon"
+                app:layout_constraintLeft_toRightOf="@id/tv_product_description"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_product_volume_label"
+                app:layout_constraintVertical_chainStyle="spread_inside"
+                />
+        <TextView
+                android:id="@+id/tv_product_period_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                android:text="@{product.periodStr}"
+                tools:text="7天-30天"
+                app:layout_constraintLeft_toRightOf="@id/tv_product_period_label"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_product_period_label"
+                android:layout_marginLeft="4dp"
+                />
+
+        <TextView
+                android:id="@+id/tv_product_volume_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                android:text="@string/loan_volume_colon"
+                app:layout_constraintLeft_toRightOf="@id/tv_product_description"
+                app:layout_constraintTop_toBottomOf="@id/tv_product_period_label"
+                app:layout_constraintBottom_toTopOf="@id/tv_product_interest_rate_label"
+                />
+        <TextView
+                android:id="@+id/tv_product_volume_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                android:text="@{product.volumeRangeStr}"
+                tools:text="1.0000ETH-4.0000ETH"
+                app:layout_constraintLeft_toRightOf="@id/tv_product_volume_label"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_product_volume_label"
+                android:layout_marginLeft="4dp"
+                />
+
+        <TextView
+                android:id="@+id/tv_product_interest_rate_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                android:text="@string/loan_interest_rate_colon"
+                app:layout_constraintLeft_toRightOf="@id/tv_product_description"
+                app:layout_constraintTop_toBottomOf="@id/tv_product_volume_label"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+        <TextView
+                android:id="@+id/tv_product_interest_rate_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                android:text="@{product.interestRateStr}"
+                tools:text="年化20%"
+                app:layout_constraintLeft_toRightOf="@id/tv_product_interest_rate_label"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_product_interest_rate_label"
+                android:layout_marginLeft="4dp"
+                />
+
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_right"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

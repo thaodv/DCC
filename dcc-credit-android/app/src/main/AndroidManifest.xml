@@ -170,6 +170,14 @@
         </activity>
         <activity android:name="io.wexchain.android.dcc.LoanDetailActivity">
         </activity>
+        <activity
+                android:name="io.wexchain.android.dcc.LoanProductListActivity"
+                android:label="我要借币">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.LoanProductDetailActivity">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.StartLoanActivity">
+        </activity>
     </application>
 
 </manifest>

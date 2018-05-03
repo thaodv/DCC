@@ -11,6 +11,8 @@ object BusinessCodes {
      */
     const val TOKEN_FORBIDDEN = "FORBIDDEN"
 
+    const val LOAN_PRODUCT_NOT_EXIST = "LOAN_PRODUCT_NOT_EXIST"
+
     const val TICKET_INVALID = "TICKET_INVALID"
     const val CHALLENGE_FAILURE = "CHALLENGE_FAILURE"
     const val SIGN_MESSAGE_INVALID = "SIGN_MESSAGE_INVALID"

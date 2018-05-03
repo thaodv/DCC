@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<!-- clearing-merchant-api-->
+	<bean id="activityFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
+		<property name="remoteAddress" value="${dcc.marketing.ws.address}/activityFacade" />
+		<property name="clazz" value="io.wexchain.dcc.marketing.api.facade.ActivityFacade" />
+		<property name="timeout" value="${dcc.marketing.remote.timeout}" />
+	</bean>
+
+	<!-- clearing-merchant-api-->
+	<bean id="scenarioFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
+		<property name="remoteAddress" value="${dcc.marketing.ws.address}/scenarioFacade" />
+		<property name="clazz" value="io.wexchain.dcc.marketing.api.facade.ScenarioFacade" />
+		<property name="timeout" value="${dcc.marketing.remote.timeout}" />
+	</bean>
+
+	<!-- clearing-merchant-api-->
+	<bean id="redeemTokenFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
+		<property name="remoteAddress" value="${dcc.marketing.ws.address}/redeemTokenFacade" />
+		<property name="clazz" value="io.wexchain.dcc.marketing.api.facade.RedeemTokenFacade" />
+		<property name="timeout" value="${dcc.marketing.remote.timeout}" />
+	</bean>
+
+</beans>

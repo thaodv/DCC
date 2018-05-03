@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+  <bean id="wexyunClientConfigValues" class="com.wexyun.open.api.client.ConfigValues">
+    <property name="partnerId" value="${wexyun.partnerId}"/>
+    <property name="remoteUrl" value="${wexyun.remoteUrl}"/>
+    <property name="md5Salt" value="${wexyun.md5Salt}"/>
+    <property name="rsaEncryptPublicKey" value="${wexyun.rsaEncryptPublicKey}"/>
+    <property name="logOpen" value="false"/>
+    <property name="logLevel" value="INFO"/>
+    <property name="connTimeout" value="30000"/>
+    <property name="readTimeout" value="180000"/>
+  </bean>
+
+  <bean id="wexyunApiClient" class="com.wexyun.open.api.client.DefaultWexyunApiClient">
+    <property name="configValues" ref="wexyunClientConfigValues"/>
+  </bean>
+
+</beans>

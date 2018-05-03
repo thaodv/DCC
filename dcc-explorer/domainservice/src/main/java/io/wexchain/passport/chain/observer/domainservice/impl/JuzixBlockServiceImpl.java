@@ -68,11 +68,6 @@ public class JuzixBlockServiceImpl implements JuzixBlockService {
     }
 
     @Override
-    public JuzixBlock getJuzixBlockById(Long id) {
-        return ErrorCodeValidate.notNull(juzixBlockRepository.findOne(id), ChainErrorCode.BLOCK_NOT_FOUND);
-    }
-
-    @Override
     public JuzixBlock getJuzixBlockByNumber(Long number) {
         return ErrorCodeValidate.notNull(
                 juzixBlockRepository.findByBlockNumber(number), ChainErrorCode.BLOCK_NOT_FOUND);

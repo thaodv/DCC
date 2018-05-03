@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+	<bean id="objectMapper" class="io.wexchain.dcc.service.frontend.configuration.ExtendObjectMapperFactoryBean">
+		<property name="dateFormat">
+			<bean class="com.fasterxml.jackson.databind.util.StdDateFormat">
+				<property name="timeZone">
+					<bean class="java.util.TimeZone" factory-method="getDefault" />
+				</property>
+			</bean>
+		</property>
+
+		<property name="modules">
+			<bean class="com.fasterxml.jackson.datatype.joda.JodaModule" />
+		</property>
+
+		<property name="serializationInclusion">
+			<util:constant static-field="com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS" />
+		</property>
+
+		<property name="featuresToEnable">
+			<list>
+				<util:constant static-field="com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS" />
+			</list>
+		</property>
+		<property name="featuresToDisable">
+			<list>
+				<util:constant static-field="com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES" />
+			</list>
+		</property>
+
+
+		<!--<property name="deserializers">
+			<list>
+				<bean
+					class="com.wexmarket.topia.commons.basic.json.converter.IntervalDeserializer" />
+				<bean
+					class="com.wexmarket.topia.commons.basic.json.converter.DateTimeDeserializer" />
+			</list>
+		</property>-->
+		<property name="serializers">
+			<list>
+				<bean
+					class="com.wexmarket.topia.commons.basic.json.converter.IntervalSerializer" />
+				<bean
+					class="com.wexmarket.topia.commons.basic.json.converter.DateTimeSerializer" />
+			</list>
+		</property>
+
+	</bean>
+</beans>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:jee="http://www.springframework.org/schema/jee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:task="http://www.springframework.org/schema/task" xmlns:cache="http://www.springframework.org/schema/cache"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+
+	<import resource="classpath*:/META-INF/dcc-marketing-repository/spring/context*.xml" />
+	<import resource="classpath*:/META-INF/dcc-marketing-domainservice/spring/context*.xml" />
+	<import resource="classpath*:/META-INF/dcc-marketing-ext-integration/spring/context*.xml" />
+	<import resource="classpath*:/META-INF/dcc-marketing-ext-service/spring/context*.xml" />
+	<import resource="classpath*:/META-INF/dcc-marketing-ext-daemon/spring/context*.xml" />
+
+	<import resource="classpath*:/META-INF/dcc-marketing-common/spring/context*.xml" />
+	<import resource="classpath:/META-INF/dcc-marketing-web/spring/context-env.xml" />
+	<import resource="classpath:/META-INF/dcc-marketing-web/spring/context-mvc.xml" />
+
+	<context:annotation-config />
+
+	<context:component-scan base-package="io.wexchain.dcc.marketing"/>
+
+	<task:annotation-driven/>
+
+	<cache:annotation-driven />
+
+	<bean id="cacheManager" name="hazelcastCacheManager" class="com.hazelcast.spring.cache.HazelcastCacheManager">
+		<property name="hazelcastInstance" ref="hazelcast"/>
+	</bean>
+
+</beans>
+

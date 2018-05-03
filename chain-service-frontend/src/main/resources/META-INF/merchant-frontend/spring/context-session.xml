@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:c="http://www.springframework.org/schema/c"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="sessionFilter"
+		  class="org.springframework.session.web.http.SessionRepositoryFilter">
+		<constructor-arg index="0" ref="redisRepository"/>
+		<property name="httpSessionStrategy">
+			<bean
+					class="io.wexchain.dcc.service.frontend.ctrlr.security.MultiHttpSessionStrategyAdapter">
+				<constructor-arg index="0">
+					<bean
+							class="io.wexchain.dcc.service.frontend.ctrlr.security.HeaderHttpSessionStrategy" />
+				</constructor-arg>
+			</bean>
+
+		</property>
+	</bean>
+</beans>
+
