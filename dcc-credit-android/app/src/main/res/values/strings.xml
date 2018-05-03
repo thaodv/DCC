@@ -142,5 +142,10 @@
     <string name="bitexpress_info_mail_address">dingnan@myassetapp.com</string>
     <string name="coming_soon">Coming soon</string>
     <string name="affiliate_description">总共可邀请5位好友加入BitEXPRESS，\n每邀请一位好友注册并实名后，\n您将获得额外奖励</string>
+    <string name="loan_period_colon">借币周期:</string>
+    <string name="loan_volume_colon">借币额度:</string>
+    <string name="loan_interest_rate_colon">借币利率:</string>
+    <string name="repay_ahead_permitted">允许</string>
+    <string name="repay_ahead_not_permitted">不允许</string>
 
 </resources>

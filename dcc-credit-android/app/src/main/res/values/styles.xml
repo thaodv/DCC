@@ -129,4 +129,14 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+    <style name="Widget.AppCompat.CompoundButton.RadioButton.Dcc">
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Widget.AppCompat.CompoundButton.RadioButton.Dcc.Label">
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/bg_radio_label</item>
+        <item name="android:textColor">@color/text_white</item>
+    </style>
+
 </resources>

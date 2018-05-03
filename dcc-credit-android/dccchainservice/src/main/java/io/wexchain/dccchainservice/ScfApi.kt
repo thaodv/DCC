@@ -1,6 +1,7 @@
 package io.wexchain.dccchainservice
 
 import io.reactivex.Single
+import io.wexchain.dccchainservice.domain.LoanProduct
 import io.wexchain.dccchainservice.domain.Result
 import retrofit2.Response
 import retrofit2.http.Field
@@ -26,4 +27,16 @@ interface ScfApi {
 
         const val HEADER_TOKEN = "x-auth-token"
     }
+
+    @POST("loan/product/queryByLenderCode")
+    @FormUrlEncoded
+    fun queryLoanProductsByLenderCode(
+            @Field("lenderCode") lenderCode:String? = null
+    ):Single<Result<List<LoanProduct>>>
+
+    @POST("loan/product/getById")
+    @FormUrlEncoded
+    fun queryLoanProductById(
+            @Field("id") id:Long
+    ):Single<Result<LoanProduct>>
 }

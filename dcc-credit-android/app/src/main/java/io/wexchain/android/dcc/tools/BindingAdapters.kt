@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import com.wexmarket.android.barcode.util.QrCodeDrawable
 import io.wexchain.android.dcc.network.GlideApp
+import io.wexchain.android.dcc.view.state.ExceedAware
 
 @set:BindingAdapter("visibleOrGone")
 var View.visibleOrGone
@@ -22,24 +23,27 @@ var View.visibleOrGone
     }
 
 @BindingAdapter("imageRes")
-fun ImageView.setImageRes(@DrawableRes res:Int?){
-    if (res == null || res == 0){
+fun ImageView.setImageRes(
+    @DrawableRes
+    res: Int?
+) {
+    if (res == null || res == 0) {
         this.setImageDrawable(null)
-    }else{
+    } else {
         this.setImageResource(res)
     }
 }
 
-@BindingAdapter("imageRawBytes","errorRes")
-fun ImageView.setImageRawBytes(imageRawBytes: ByteArray?,errorRes:Drawable?){
-    if(imageRawBytes!=null) {
+@BindingAdapter("imageRawBytes", "errorRes")
+fun ImageView.setImageRawBytes(imageRawBytes: ByteArray?, errorRes: Drawable?) {
+    if (imageRawBytes != null) {
         try {
             val decoded = android.graphics.BitmapFactory.decodeByteArray(imageRawBytes, 0, imageRawBytes.size)
             this.setImageBitmap(decoded)
-        }catch (e:IllegalArgumentException){
+        } catch (e: IllegalArgumentException) {
             this.setImageDrawable(errorRes)
         }
-    }else{
+    } else {
         this.setImageDrawable(errorRes)
     }
 }
@@ -47,20 +51,20 @@ fun ImageView.setImageRawBytes(imageRawBytes: ByteArray?,errorRes:Drawable?){
 @BindingAdapter("imageUrl", "errorRes")
 fun setImageUrl(imageView: ImageView, url: String?, errorRes: Drawable?) {
     GlideApp.with(imageView).load(url)
-            .error(errorRes)
-            .into(imageView)
+        .error(errorRes)
+        .into(imageView)
 }
 
 @BindingAdapter("bgUrl")
-fun View.setBackgroundUrl(url: String?){
+fun View.setBackgroundUrl(url: String?) {
     val target = ViewBackgroundTarget(this)
-    if (url.isNullOrBlank()){
+    if (url.isNullOrBlank()) {
         GlideApp.with(this)
-                .clear(target)
-    }else {
+            .clear(target)
+    } else {
         GlideApp.with(this)
-                .load(url)
-                .into(target)
+            .load(url)
+            .into(target)
     }
 }
 
@@ -96,3 +100,8 @@ fun setPasswordSecure(editText: EditText, passwordSecure: Boolean) {
     editText.setSelection(editText.text.length)
 }
 
+@BindingAdapter("app:state_exceeded")
+fun View.setExceeded(exceeded: Boolean) {
+    if (this is ExceedAware)
+        this.isExceeded = exceeded
+}
