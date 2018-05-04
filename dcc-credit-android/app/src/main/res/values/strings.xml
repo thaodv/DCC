@@ -147,5 +147,16 @@
     <string name="loan_interest_rate_colon">借币利率:</string>
     <string name="repay_ahead_permitted">允许</string>
     <string name="repay_ahead_not_permitted">不允许</string>
+    <string name="loan_amount_colon">借币金额:</string>
+    <string name="repayment_date_colon">还币日期:</string>
+    <string name="repayment_total_amount_colon">应还总额:</string>
+    <string name="repayment_principal_amount_colon">应还本金:</string>
+    <string name="repayment_interest_amount_colon">应还利息:</string>
+    <string name="loan_submit_fee_colon">借款申请手续费:</string>
+    <string name="holding_amount_colon">持有量:</string>
+    <string name="confirm2">确认</string>
+    <string name="business_contact_2">出借代币\n商务咨询</string>
+    <string name="loan_time_colon">借币期限:</string>
+    <string name="beneficiary_address_colon">收币地址:</string>
 
 </resources>

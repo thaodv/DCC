@@ -71,6 +71,13 @@ data class LoanProduct(
         return requisiteCertList.withIndex().joinToString(separator = "\n") { "${it.index+1}.${certTypeStr(it.value)};" }
     }
 
+    fun getStandardDccFeeStr():String{
+        return dccFeeScope.firstOrNull()?.toString()?:""
+    }
+    fun getPriorityDccFeeStr():String{
+        return dccFeeScope.lastOrNull()?.toString()?:""
+    }
+
     private fun certTypeStr(cert:String):String{
         return when(cert){
             ChainGateway.BUSINESS_ID -> "身份证认证"

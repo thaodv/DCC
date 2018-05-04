@@ -6,6 +6,7 @@
         >
 
     <data>
+        <import type="android.support.v4.util.ObjectsCompat"/>
         <variable
                 name="addr"
                 type="io.wexchain.android.dcc.repo.db.BeneficiaryAddress"
@@ -86,7 +87,7 @@
                     android:button="@drawable/check_button_round"
                     android:textColor="@color/text_dark"
                     android:paddingLeft="4dp"
-                    android:checked="@{addr.address == def.defaultAddr}"
+                    android:checked="@{ObjectsCompat.equals(addr.address,def.defaultAddr)}"
                     android:onCheckedChanged="@{(v,checked)->def.changeDefault(addr,checked)}"
                     />
 
@@ -100,7 +101,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     android:drawableLeft="@drawable/ic_edit"
                     app:layout_constraintTop_toBottomOf="@id/divider_h1_item"
-                    visibleOrGone="@{addr.address != def.walletAddr}"
+                    visibleOrGone="@{!ObjectsCompat.equals(addr.address,def.walletAddr)}"
                     />
 
             <Button
@@ -114,7 +115,7 @@
                     app:layout_constraintRight_toLeftOf="@id/btn_edit"
                     android:layout_marginRight="8dp"
                     app:layout_constraintTop_toBottomOf="@id/divider_h1_item"
-                    visibleOrGone="@{addr.address != def.walletAddr}"
+                    visibleOrGone="@{!ObjectsCompat.equals(addr.address,def.walletAddr)}"
                     />
 
         </android.support.constraint.ConstraintLayout>

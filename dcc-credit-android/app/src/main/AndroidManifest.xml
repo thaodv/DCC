@@ -178,6 +178,29 @@
         </activity>
         <activity android:name="io.wexchain.android.dcc.StartLoanActivity">
         </activity>
+        <activity android:name="io.wexchain.android.dcc.LoanRequisiteActivity">
+        </activity>
+        <activity
+                android:name="io.wexchain.android.dcc.LoanSubmitResultActivity"
+                android:label="借币申请结果">
+        </activity>
+        <activity
+                android:name="io.wexchain.android.dcc.LoanRecordsActivity"
+                android:label="借币记录">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.EditBeneficiaryAddressActivity">
+        </activity>
+        <activity
+                android:name="io.wexchain.android.dcc.LoanRecordDetailActivity"
+                android:label="借币详情">
+        </activity>
+        <activity
+                android:name="io.wexchain.android.dcc.LoanRepayResultActivity"
+                android:label="还币结果">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.LoanRepayActivity"
+                android:label="还币">
+        </activity>
     </application>
 
 </manifest>

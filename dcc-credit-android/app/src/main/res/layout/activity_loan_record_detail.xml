@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="io.wexchain.android.dcc.LoanRecordDetailActivity"
+        >
+
+    <include layout="@layout/include_toolbar"
+             android:id="@+id/toolbar"
+             />
+
+
+    <TextView
+            android:id="@+id/tv_loan_amount_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="借币金额"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:layout_marginTop="8dp"
+            />
+
+    <TextView
+            android:id="@+id/tv_loan_amount_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="借币金额"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_loan_amount_label"
+            tools:text="1000.0000 BNB"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold"
+            />
+
+    <TextView
+            android:id="@+id/tv_loan_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_loan_amount_value"
+            android:layout_marginTop="16dp"
+            tools:text="已还币"
+            />
+
+    <TextView
+            android:id="@+id/tv_loan_time_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loan_time_colon"
+            app:layout_constraintTop_toBottomOf="@id/tv_loan_status"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginTop="24dp"
+            />
+
+    <TextView
+            android:id="@+id/tv_loan_interest_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loan_time_colon"
+            app:layout_constraintTop_toBottomOf="@id/tv_loan_time_label"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginTop="16dp"
+            />
+
+    <TextView
+            android:id="@+id/tv_loan_fee_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="借币手续费:"
+            app:layout_constraintTop_toBottomOf="@id/tv_loan_interest_label"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginTop="16dp"
+            />
+
+    <TextView
+            android:id="@+id/tv_loan_address_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/beneficiary_address_colon"
+            app:layout_constraintTop_toBottomOf="@id/tv_loan_fee_label"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginTop="16dp"
+            />
+
+    <TextView
+            android:id="@+id/tv_loan_notice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="提示提示~~"
+            app:layout_constraintTop_toBottomOf="@id/tv_loan_address_label"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginTop="16dp"
+            />
+
+    <FrameLayout
+            android:id="@+id/fl_loan_contract"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tv_loan_address_label"
+            android:layout_marginTop="48dp"
+            >
+        <View
+                style="@style/DividerHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_stroke_width"
+                android:layout_gravity="top"
+            />
+        <View
+                style="@style/DividerHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_stroke_width"
+                android:layout_gravity="bottom"
+            />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="借币合同"
+                android:layout_gravity="center_vertical|left"
+                />
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_right_bm"
+                android:layout_gravity="center_vertical|right"
+                />
+    </FrameLayout>
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            style="@style/Widget.AppCompat.Button.Dcc.Full"
+            app:layout_constraintTop_toBottomOf="@id/tv_loan_address_label"
+            android:layout_marginTop="144dp"
+            tools:text="还币"
+            />
+
+</android.support.constraint.ConstraintLayout>

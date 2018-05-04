@@ -19,7 +19,7 @@ class DefaultBeneficiaryAddressVm(application: Application):AndroidViewModel(app
             }else if(!checked && defaultAddr.value == it.address){
                 App.get().passportRepository.setDefaultBeneficiaryAddress(null)
             }else{
-                App.get().passportRepository.setDefaultBeneficiaryAddress(defaultAddr.value)
+                //noop
             }
         }
     }

@@ -28,17 +28,6 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
     }
 
     private fun setupClicks() {
-        findViewById<View>(R.id.iv_credit).setOnClickListener {
-            if (App.get().passportRepository.passportEnabled) {
-                navigateTo(MyCreditActivity::class.java)
-            } else {
-                if (!App.get().passportRepository.passportExists) {
-                    showIntroWalletDialog()
-                } else {
-                    toast(R.string.ca_not_enabled)
-                }
-            }
-        }
         val clickDigitalAssets: (View) -> Unit = {
             if (App.get().passportRepository.passportExists) {
                 navigateTo(DigitalAssetsActivity::class.java, transitionBundle(
@@ -60,17 +49,25 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
                 showIntroWalletDialog()
             }
         }
-        findViewById<View>(R.id.iv_candy).setOnClickListener {
+        findViewById<View>(R.id.tv_credit).setOnClickListener {
+            if (App.get().passportRepository.passportEnabled) {
+                navigateTo(MyCreditActivity::class.java)
+            } else {
+                if (!App.get().passportRepository.passportExists) {
+                    showIntroWalletDialog()
+                } else {
+                    toast(R.string.ca_not_enabled)
+                }
+            }
+        }
+        findViewById<View>(R.id.tv_candy).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
                 navigateTo(MarketingListActivity::class.java)
             } else {
                 showIntroWalletDialog()
             }
         }
-        findViewById<View>(R.id.iv_affiliate).setOnClickListener {
-            navigateTo(AffiliateActivity::class.java)
-        }
-        findViewById<View>(R.id.iv_loan).setOnClickListener {
+        findViewById<View>(R.id.tv_loan).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
                 navigateTo(LoanActivity::class.java)
             } else {

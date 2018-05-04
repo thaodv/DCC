@@ -79,7 +79,7 @@ class PassportRepository(context: Context,
 
     private val selectedBeneficiaryAddress = MutableLiveData<String>()
 
-    val defaultBeneficiaryAddress = MediatorLiveData<String?>().apply {
+    val defaultBeneficiaryAddress:LiveData<String?> = MediatorLiveData<String?>().apply {
         var walletAddr: String? = null
         var selected: String? = null
         addSource(selectedBeneficiaryAddress) {
@@ -248,6 +248,14 @@ class PassportRepository(context: Context,
         }
     }
 
+    fun removeBeneficiaryAddress(beneficiaryAddress: BeneficiaryAddress) {
+        RoomHelper.onRoomIoThread {
+            dao.removeBeneficiaryAddress(beneficiaryAddress)
+        }
+        if(selectedBeneficiaryAddress.value == beneficiaryAddress.address){
+            selectedBeneficiaryAddress.value = null
+        }
+    }
 
     companion object {
         const val WALLET_ADDR_SHORT_NAME = "本地钱包"

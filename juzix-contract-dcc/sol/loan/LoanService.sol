@@ -108,7 +108,11 @@ contract LoanService is OperatorPermission, GateControl ,FastFailure{
 
     function cancel(uint256 id) external {
         Order storage order = innerGetOrder(id);
-        onlyBorrower(order);
+
+        if(!((operators[msg.sender] || msg.sender == owner) || (order.borrower == msg.sender))){
+           log("!((operators[msg.sender] || msg.sender == owner) || (order.borrower == msg.sender))");
+            throw;
+        }
         Status[] memory exptectedStatusArray = new  Status[](1);
         exptectedStatusArray[0] = Status.CREATED;
 
@@ -200,7 +204,7 @@ contract LoanService is OperatorPermission, GateControl ,FastFailure{
         checkAndChangeStatus(order, exptectedStatusArray, Status.RECEIVIED);
     }
 
-    function onlyBorrower(Order storage order) internal {
+    function onlyBorrower(Order storage order) internal{
         onlyGateOpen();
         if (!(order.borrower == msg.sender)) {
             log("!(order.borrower == msg.sender)");

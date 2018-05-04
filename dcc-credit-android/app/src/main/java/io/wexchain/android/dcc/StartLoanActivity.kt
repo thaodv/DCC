@@ -1,10 +1,6 @@
 package io.wexchain.android.dcc
 
-import android.databinding.DataBindingUtil
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import com.warkiz.widget.IndicatorSeekBar
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.postOnMainThread
@@ -14,7 +10,6 @@ import io.wexchain.android.dcc.view.EATextView
 import io.wexchain.android.dcc.vm.StartLoanVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityStartLoanBinding
-import io.wexchain.dcc.databinding.EiCustomIndicatorBinding
 import io.wexchain.dccchainservice.domain.LoanProduct
 
 class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
@@ -51,7 +46,7 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
                     ) {
                         val e = progress > 160
                         if (isExceeded != e) {
-
+                            isExceeded = e
                         }
                         indicator.getmContentView().apply {
                             findViewById<EATextView>(R.id.tv_dcc_insufficient_notice).isExceeded = e

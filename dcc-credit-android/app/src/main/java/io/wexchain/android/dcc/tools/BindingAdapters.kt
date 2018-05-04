@@ -100,7 +100,7 @@ fun setPasswordSecure(editText: EditText, passwordSecure: Boolean) {
     editText.setSelection(editText.text.length)
 }
 
-@BindingAdapter("app:state_exceeded")
+@BindingAdapter("state_exceeded")
 fun View.setExceeded(exceeded: Boolean) {
     if (this is ExceedAware)
         this.isExceeded = exceeded

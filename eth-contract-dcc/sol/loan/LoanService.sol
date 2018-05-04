@@ -8,7 +8,7 @@ import "./LoanFee.sol";
 import "../math/SafeMath.sol";
 import "../utils/FastFailure.sol";
 
-contract LoanService is OperatorPermission, GateControl ,FastFailure{
+contract LoanService is OperatorPermission, GateControl, FastFailure {
 
     using SafeMath for uint256;
 
@@ -86,7 +86,8 @@ contract LoanService is OperatorPermission, GateControl ,FastFailure{
 
     function cancel(uint256 id) external {
         Order storage order = innerGetOrder(id);
-        onlyBorrower(order);
+        require((operators[msg.sender] || msg.sender == owner) || (msg.sender == order.borrower));
+
         Status[] memory exptectedStatusArray = new  Status[](1);
         exptectedStatusArray[0] = Status.CREATED;
 
