@@ -14,6 +14,7 @@ object Extras {
     const val EXTRA_BANK_CARD_PHONE_NUM = "bank_card_phone_num"
     const val EXTRA_BANK_CARD_VERIFY_SMS_UP_TIME_STAMP = "bank_card_verify_sms_up_time_stamp"
     const val EXTRA_MARKETING_ACTIVITY = "dcc_marketing_activity"
+    const val EXTRA_BENEFICIARY_ADDRESS = "beneficiary_address"
     const val EXTRA_LOAN_PRODUCT_ID = "dcc_loan_product_id"
     const val EXTRA_LOAN_PRODUCT = "dcc_loan_product"
     const val FROM_AUTH = "from_auth"

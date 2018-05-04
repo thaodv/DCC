@@ -20,3 +20,7 @@ fun isEcPrivateKeyValid(key: String?): Boolean {
 fun isPhoneNumValid(phoneNum:String?):Boolean{
     return phoneNum!=null && phoneNum.length == 11
 }
+
+fun isAddressShortNameValid(inputShortName: String): Boolean {
+    return true
+}

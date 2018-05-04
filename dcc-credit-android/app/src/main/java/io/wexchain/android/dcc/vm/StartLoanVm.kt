@@ -3,6 +3,7 @@ package io.wexchain.android.dcc.vm
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import android.databinding.ObservableInt
+import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 import io.wexchain.dccchainservice.domain.LoanProduct
 import java.math.BigDecimal
 
@@ -16,6 +17,10 @@ class StartLoanVm:ViewModel() {
     val periodSelectIndex = ObservableInt(1)
 
     val dccBalance = ObservableField<BigDecimal>()
+
+    val fee = ObservableField<BigDecimal>()
+
+    val address = ObservableField<BeneficiaryAddress>()
 
     fun checkVol(checked:Boolean,index:Int){
         if(checked){

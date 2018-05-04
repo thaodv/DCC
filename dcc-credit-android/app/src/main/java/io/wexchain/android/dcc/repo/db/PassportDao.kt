@@ -48,4 +48,7 @@ abstract class PassportDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun addOrUpdateBeneficiaryAddress(beneficiaryAddress: BeneficiaryAddress)
+
+    @Delete
+    abstract fun removeBeneficiaryAddress(beneficiaryAddress: BeneficiaryAddress)
 }

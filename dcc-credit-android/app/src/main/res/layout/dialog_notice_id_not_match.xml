@@ -27,7 +27,7 @@
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="确认"
+            android:text="@string/confirm2"
             />
 
 </LinearLayout>

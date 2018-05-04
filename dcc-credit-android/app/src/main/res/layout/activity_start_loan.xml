@@ -6,6 +6,7 @@
         tools:context="io.wexchain.android.dcc.StartLoanActivity">
 
     <data>
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
         <variable
                 name="vm"
                 type="io.wexchain.android.dcc.vm.StartLoanVm"/>
@@ -214,13 +215,19 @@
                     android:id="@+id/tv_fee_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_fee_label"
+                    app:layout_constraintLeft_toRightOf="@id/tv_fee_label"
+                    android:text="@{ViewModelHelper.formatCurrencyValue(vm.fee)}"
                     />
 
             <TextView
                     android:id="@+id/tv_dcc_holding"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_fee_label"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="@dimen/content_padding_horizontal"
+                    android:text="@{}"
                     />
 
             <io.wexchain.android.dcc.view.EISeekBar
@@ -237,6 +244,137 @@
                     android:layout_marginLeft="48dp"
                     android:layout_marginRight="48dp"
                     android:layout_marginTop="60dp"
+                    />
+
+            <TextView
+                    android:id="@+id/tv_standard_fee_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="标准审核"
+                    app:layout_constraintTop_toBottomOf="@id/isb_fee"
+                    app:layout_constraintLeft_toLeftOf="@id/isb_fee"
+                    app:layout_constraintRight_toLeftOf="@id/isb_fee"
+                    />
+            <TextView
+                    android:id="@+id/tv_standard_fee_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.product.standardDccFeeStr}"
+                    app:layout_constraintLeft_toLeftOf="@id/tv_standard_fee_label"
+                    app:layout_constraintRight_toRightOf="@id/tv_standard_fee_label"
+                    app:layout_constraintTop_toBottomOf="@id/tv_standard_fee_label"
+                    />
+            <TextView
+                    android:id="@+id/tv_priority_fee_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="极速审核"
+                    app:layout_constraintTop_toBottomOf="@id/isb_fee"
+                    app:layout_constraintRight_toRightOf="@id/isb_fee"
+                    app:layout_constraintLeft_toRightOf="@id/isb_fee"
+                    />
+            <TextView
+                    android:id="@+id/tv_priority_fee_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.product.priorityDccFeeStr}"
+                    app:layout_constraintLeft_toLeftOf="@id/tv_priority_fee_label"
+                    app:layout_constraintRight_toRightOf="@id/tv_priority_fee_label"
+                    app:layout_constraintTop_toBottomOf="@id/tv_priority_fee_label"
+                    />
+
+            <View
+                    android:id="@+id/divider_h3"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_stroke_width"
+                    style="@style/DividerHorizontal"
+                    android:layout_marginLeft="@dimen/content_padding_horizontal"
+                    android:layout_marginRight="@dimen/content_padding_horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tv_standard_fee_value"
+                    />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收币地址"
+                    android:textColor="@color/text_gray"
+                    app:layout_constraintTop_toBottomOf="@id/divider_h3"
+                    app:layout_constraintBottom_toTopOf="@id/divider_h4"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginLeft="@dimen/content_padding_horizontal"
+                    />
+
+            <TextView
+                    android:id="@+id/tv_beneficiary_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="32dp"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/text_blue_magenta"
+                    app:layout_constraintTop_toBottomOf="@id/divider_h3"
+                    android:drawableRight="@drawable/arrow_right_bm"
+                    android:drawablePadding="8dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginRight="@dimen/content_padding_horizontal"
+                    android:paddingRight="4dp"
+                    android:gravity="center_vertical"
+                    tools:text="本地钱包"
+                    />
+
+            <View
+                    android:id="@+id/divider_h4"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_stroke_width"
+                    android:layout_marginTop="8dp"
+                    style="@style/DividerHorizontal"
+                    android:layout_marginLeft="@dimen/content_padding_horizontal"
+                    android:layout_marginRight="@dimen/content_padding_horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tv_beneficiary_address"
+                    />
+
+            <TextView
+                    android:id="@+id/tv_requisite_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="所需资料"
+                    app:layout_constraintTop_toBottomOf="@id/divider_h4"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginLeft="@dimen/content_padding_horizontal"
+                    android:layout_marginTop="8dp"
+                    />
+            <View
+                    android:id="@+id/divider_h5"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_stroke_width"
+                    android:layout_marginTop="8dp"
+                    style="@style/DividerHorizontal"
+                    android:layout_marginLeft="@dimen/content_padding_horizontal"
+                    android:layout_marginRight="@dimen/content_padding_horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tv_requisite_label"
+                    />
+
+            <Button
+                    android:id="@+id/btn_proceed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/content_padding_horizontal"
+                    android:layout_marginRight="@dimen/content_padding_horizontal"
+                    style="@style/Widget.AppCompat.Button.Dcc.Full"
+                    android:text="@string/next_step"
+                    app:layout_constraintTop_toBottomOf="@id/divider_h5"
+                    android:layout_marginTop="32dp"
+                    />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/btn_proceed"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="12dp"
+                    android:text="点击下一步即表示同意《借币协议》"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="12dp"
                     />
 
         </android.support.constraint.ConstraintLayout>

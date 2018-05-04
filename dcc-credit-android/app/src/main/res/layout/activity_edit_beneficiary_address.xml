@@ -3,7 +3,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context="io.wexchain.android.dcc.AddBeneficiaryAddressActivity">
+        tools:context="io.wexchain.android.dcc.EditBeneficiaryAddressActivity"
+        >
 
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -48,6 +49,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/et_input_address_short_name"
                 android:gravity="center_vertical"
                 />
+
         <View
                 android:id="@+id/divider_h1"
                 android:layout_width="match_parent"
@@ -93,6 +95,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/et_input_address"
                 android:gravity="center_vertical"
                 />
+
         <View
                 android:id="@+id/divider_h2"
                 android:layout_width="match_parent"
@@ -102,6 +105,7 @@
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 />
+
         <CheckBox
                 android:id="@+id/check_default_address"
                 android:layout_width="wrap_content"
@@ -123,6 +127,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/check_default_address"
                 android:gravity="center_vertical"
                 />
+
         <View
                 android:id="@+id/divider_h3"
                 android:layout_width="match_parent"
@@ -134,13 +139,13 @@
                 />
 
         <Button
-                android:id="@+id/btn_add"
+                android:id="@+id/btn_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.AppCompat.Button.Dcc.Full"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:text="添加"
+                android:text="保存"
                 app:layout_constraintTop_toBottomOf="@id/divider_h3"
                 android:layout_marginTop="16dp"
                 />

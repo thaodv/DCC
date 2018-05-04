@@ -13,6 +13,9 @@ interface ChainGateway {
     @GET("receipt/1/hasReceipt")
     fun hasReceipt(@Query("txHash") txHash: String): Single<Result<Boolean>>
 
+    @GET("receipt/1/getReceiptResult")
+    fun getReceiptResult(@Query("txHash") txHash: String):Single<Result<ReceiptResult>>
+
     @GET("erc20/{symbol}/1/getContractAddress")
     fun getErc20ContractAddress(@Path("symbol") symbol: String): Single<Result<String>>
 
