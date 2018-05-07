@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
-            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
+            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
 	   default-autowire="byName">
 
 	<bean id="loanService"  class="io.wexchain.dcc.loan.sdk.service.LoanServiceImpl" >
 		<property name="contractClient" ref="loanLowerLevelClient"/>
 		<property name="receiptClient" ref="receiptClient"/>
 		<property name="ticketClient" ref="ticketClient"/>
+	</bean>
+
+	<bean id="dccIdCertService"  class="io.wexchain.dcc.cert.sdk.service.CertServiceImpl" >
+		<property name="certLowerLevelClient" ref="idCertClient"/>
+		<property name="receiptClient" ref="receiptClient"/>
+		<property name="ticketClient" ref="ticketClient"/>
+	</bean>
+	<bean id="dccBankCardCertService"  class="io.wexchain.dcc.cert.sdk.service.CertServiceImpl" >
+		<property name="certLowerLevelClient" ref="bankCardCertClient"/>
+		<property name="receiptClient" ref="receiptClient"/>
+		<property name="ticketClient" ref="ticketClient"/>
+	</bean>
+	<bean id="dccCommunicationLogClientCertService"  class="io.wexchain.dcc.cert.sdk.service.CertServiceImpl">
+		<property name="certLowerLevelClient" ref="communicationLogClient"/>
+		<property name="receiptClient" ref="receiptClient"/>
+		<property name="ticketClient" ref="ticketClient"/>
+	</bean>
+
+	<util:map id="certServiceMap">
+		<entry key="ID" value-ref="dccIdCertService"/>
+		<entry key="COMMUNICATION_LOG" value-ref="dccCommunicationLogClientCertService"/>
+		<entry key="BANK_CARD" value-ref="dccBankCardCertService"/>
+	</util:map>
+
+
+	<bean id="certService" class="io.wexchain.dcc.service.frontend.service.dcc.cert.CertServiceImpl">
+		<property name="certServiceMap" ref="certServiceMap"></property>
 	</bean>
 </beans>

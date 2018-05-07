@@ -1,5 +1,7 @@
 package io.wexchain.dcc.service.frontend.common.constants;
 
+import java.math.BigDecimal;
+
 /**
  * <p>站点常量持有器</p>
  * @author yanyi
@@ -124,6 +126,13 @@ public interface FrontendWebConstants {
      */
     static final String SETTLEMENT_TYPE_REJECTED = "rejected";
 
+
     /**默认每页数据量*/
     static final int DEFAULT_PAGE_SIZE                 = 2000;
+
+    static final BigDecimal AMOUNT_MULTIPLY = new BigDecimal("10000");
+
+    static final String ID = "ID";
+    static final String COMMUNICATION_LOG = "COMMUNICATION_LOG";
+    static final String BANK_CARD = "BANK_CARD";
 }

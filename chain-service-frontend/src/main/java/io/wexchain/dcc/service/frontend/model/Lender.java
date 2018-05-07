@@ -2,7 +2,10 @@ package io.wexchain.dcc.service.frontend.model;
 
 
 public class Lender {
+
 	private String code;
+
+	private String name;
 
 	private String logoUrl;
 
@@ -30,5 +33,13 @@ public class Lender {
 
 	public void setLogoUrl(String logoUrl) {
 		this.logoUrl = logoUrl;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

@@ -35,12 +35,32 @@ public class LoanProductVo {
 
 	private BigDecimal repayAheadRate;
 
+	private int repayCyclesNo;
+
+	private String loanType;
+
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public int getRepayCyclesNo() {
+		return repayCyclesNo;
+	}
+
+	public void setRepayCyclesNo(int repayCyclesNo) {
+		this.repayCyclesNo = repayCyclesNo;
+	}
+
+	public String getLoanType() {
+		return loanType;
+	}
+
+	public void setLoanType(String loanType) {
+		this.loanType = loanType;
 	}
 
 	public Currency getCurrency() {
@@ -137,6 +157,7 @@ public class LoanProductVo {
 		this.requisiteCertList = loanProduct.getRequisiteCertList();
 		this.repayPermit = loanProduct.isRepayPermit();
 		this.repayAheadRate = loanProduct.getRepayAheadRate();
-
+		this.repayCyclesNo = loanProduct.getRepayCyclesNo();
+		this.loanType = loanProduct.getLoanType();
 	}
 }

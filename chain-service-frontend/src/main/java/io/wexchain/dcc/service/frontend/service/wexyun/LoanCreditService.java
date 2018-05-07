@@ -1,5 +1,6 @@
 package io.wexchain.dcc.service.frontend.service.wexyun;
 
+import io.wexchain.dcc.service.frontend.ctrlr.security.MemberDetails;
 import io.wexchain.dcc.service.frontend.model.request.LoanCreditApplyRequest;
 
 /**
@@ -9,5 +10,5 @@ import io.wexchain.dcc.service.frontend.model.request.LoanCreditApplyRequest;
  */
 public interface LoanCreditService {
 
-    Long apply(LoanCreditApplyRequest credit2ApplyAddRequest, Long memberId);
+    Long apply(LoanCreditApplyRequest credit2ApplyAddRequest, MemberDetails memberDetails);
 }

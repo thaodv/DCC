@@ -54,7 +54,7 @@ public class LoanProductServiceImpl implements LoanProductService {
 
     @Override
     public LoanProductVo getLoanProductVo(Long id) {
-        LoanProduct loanProduct = ErrorCodeValidate.notNull(productByIdMap.get(id), FrontendErrorCode.LOAN_PRODUCT_NOT_EXIST, null);
+        LoanProduct loanProduct = ErrorCodeValidate.notNull(productByIdMap.get(id), FrontendErrorCode.LOAN_PRODUCT_NOT_EXIST, "");
         LoanProductVo loanProductVo = new LoanProductVo(loanProduct);
         loanProductVo.setLender(lenderService.getLender(loanProduct.getLenderCode()));
         loanProductVo.setCurrency(currencyService.getCurrency(loanProduct.getCurrencySymbol()));
@@ -66,7 +66,7 @@ public class LoanProductServiceImpl implements LoanProductService {
         if(StringUtil.isBlank(lenderCode)){
             lenderCode = lenderService.getDefaultLender().getCode();
         }
-        List<LoanProduct> loanProducts = ErrorCodeValidate.notNull(productByLenderCodeMap.get(lenderCode), FrontendErrorCode.LOAN_PRODUCT_NOT_EXIST, null);
+        List<LoanProduct> loanProducts = ErrorCodeValidate.notNull(productByLenderCodeMap.get(lenderCode), FrontendErrorCode.LOAN_PRODUCT_NOT_EXIST, "");
         List<LoanProductVo> loanProductVos = new ArrayList<>();
         for (LoanProduct loanProduct : loanProducts) {
             LoanProductVo loanProductVo = new LoanProductVo(loanProduct);

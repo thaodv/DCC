@@ -1,28 +1,19 @@
 package io.wexchain.dcc.service.frontend.integration.wexyun.impl;
 
 import com.weihui.basic.util.marshaller.json.JsonUtil;
+import com.weihui.finance.common.credit2.enums.ApplySourceType;
 import com.wexmarket.topia.commons.basic.exception.ErrorCodeException;
 import com.wexyun.open.api.client.DefaultWexyunApiClient;
 import com.wexyun.open.api.domain.credit2.Credit2Apply;
 import com.wexyun.open.api.domain.credit2.Credit2ApplyAddResult;
-import com.wexyun.open.api.domain.member.LoginPwsCheckResult;
-import com.wexyun.open.api.domain.member.Member;
-import com.wexyun.open.api.enums.LoginNameType;
-import com.wexyun.open.api.enums.credit2.ApplySourceType;
 import com.wexyun.open.api.enums.credit2.MemberIdType;
 import com.wexyun.open.api.exception.WexyunClientException;
-import com.wexyun.open.api.request.credit.credit2.Credit2ApplyAddRequest;
 import com.wexyun.open.api.request.credit.credit2.Credit2ApplyPageGetRequest;
-import com.wexyun.open.api.request.member.MemberInfoGetByIdentityRequest;
-import com.wexyun.open.api.request.member.inner.InnerMemberLoginPasswordCheckRequest;
-import com.wexyun.open.api.request.member.inner.InnerPersonalMemberInfoAddRequest;
-import com.wexyun.open.api.response.CreateMemberResponse;
 import com.wexyun.open.api.response.QueryResponse4Batch;
 import com.wexyun.open.api.response.QueryResponse4Single;
 import io.wexchain.dcc.service.frontend.common.enums.FrontendErrorCode;
 import io.wexchain.dcc.service.frontend.integration.wexyun.Credit2OperationClient;
-import io.wexchain.dcc.service.frontend.integration.wexyun.MemberOperationClient;
-import io.wexchain.dcc.service.frontend.model.param.RegisterParam;
+import io.wexchain.dcc.service.frontend.service.wexyun.impl.Credit2ApplyAddRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +28,6 @@ import java.util.List;
 public class DefaultCredit2OperationClient implements Credit2OperationClient{
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultCredit2OperationClient.class);
 
-    public static final String LOAN_TYPE = "xinyong";
     public static final String BORROW_USE = "数字资产借贷";
 
     @Autowired
@@ -45,8 +35,7 @@ public class DefaultCredit2OperationClient implements Credit2OperationClient{
 
     @Override
     public Long apply(Credit2ApplyAddRequest credit2ApplyAddRequest) {
-        credit2ApplyAddRequest.setApplySourceType(ApplySourceType.DIRECT);
-        credit2ApplyAddRequest.setLoanType(LOAN_TYPE);
+        credit2ApplyAddRequest.setApplySourceType(ApplySourceType.TOKENCOIN);
         credit2ApplyAddRequest.setBorrowUse(BORROW_USE);
         credit2ApplyAddRequest.setMemberIdType(MemberIdType.ZJTG_UID);
 

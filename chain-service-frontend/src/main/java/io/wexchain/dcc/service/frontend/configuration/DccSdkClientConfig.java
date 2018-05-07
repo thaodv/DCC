@@ -2,6 +2,8 @@ package io.wexchain.dcc.service.frontend.configuration;
 
 import io.wexchain.dcc.ca.sdk.client.CaLowerLevelClient;
 import io.wexchain.dcc.ca.sdk.client.CaLowerLevelClientImpl;
+import io.wexchain.dcc.cert.sdk.client.CertLowerLevelClient;
+import io.wexchain.dcc.cert.sdk.client.CertLowerLevelClientImpl;
 import io.wexchain.dcc.loan.sdk.client.LoanLowerLevelClient;
 import io.wexchain.dcc.loan.sdk.client.LoanLowerLevelClientImpl;
 import io.wexchain.dcc.sdk.client.receipt.ReceiptClient;
@@ -59,5 +61,34 @@ public class DccSdkClientConfig {
         loanLowerLevelClient.init();
         return loanLowerLevelClient;
     }
-
+    @Bean(name = "idCertClient")
+    public CertLowerLevelClient idCertClient(){
+        CertLowerLevelClientImpl certLowerLevelClient = new CertLowerLevelClientImpl();
+        certLowerLevelClient.setBasePath(basePath);
+        certLowerLevelClient.setObjectMapper(Rests.OBJECT_MAPPER);
+        certLowerLevelClient.setRestTemplate(Rests.REST_TEMPLATE);
+        certLowerLevelClient.setSubPath("/dcc/cert/2/id");
+        certLowerLevelClient.init();
+        return certLowerLevelClient;
+    }
+    @Bean(name = "bankCardCertClient")
+    public CertLowerLevelClient bankCardCertClient(){
+        CertLowerLevelClientImpl certLowerLevelClient = new CertLowerLevelClientImpl();
+        certLowerLevelClient.setBasePath(basePath);
+        certLowerLevelClient.setObjectMapper(Rests.OBJECT_MAPPER);
+        certLowerLevelClient.setRestTemplate(Rests.REST_TEMPLATE);
+        certLowerLevelClient.setSubPath("/dcc/cert/2/bankCard");
+        certLowerLevelClient.init();
+        return certLowerLevelClient;
+    }
+    @Bean(name = "communicationLogClient")
+    public CertLowerLevelClient communicationClient(){
+        CertLowerLevelClientImpl certLowerLevelClient = new CertLowerLevelClientImpl();
+        certLowerLevelClient.setBasePath(basePath);
+        certLowerLevelClient.setObjectMapper(Rests.OBJECT_MAPPER);
+        certLowerLevelClient.setRestTemplate(Rests.REST_TEMPLATE);
+        certLowerLevelClient.setSubPath("/dcc/cert/2/communicationLog");
+        certLowerLevelClient.init();
+        return certLowerLevelClient;
+    }
 }

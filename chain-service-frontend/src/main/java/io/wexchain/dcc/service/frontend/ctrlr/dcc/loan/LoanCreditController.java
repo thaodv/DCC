@@ -29,7 +29,7 @@ public class LoanCreditController extends SecurityBaseController {
 
     @PostMapping("/apply")
     public ResultResponse<Long> getList(@Valid LoanCreditApplyRequest loanCreditApplyRequest) {
-        Long applyId = loanCreditService.apply(loanCreditApplyRequest,getMemberId());
+        Long applyId = loanCreditService.apply(loanCreditApplyRequest,getMember());
         return ResultResponseUtils.successResultResponse(applyId);
     }
 

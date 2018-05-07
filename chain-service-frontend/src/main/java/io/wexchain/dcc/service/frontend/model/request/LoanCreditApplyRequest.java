@@ -4,8 +4,10 @@ import com.wexyun.open.api.anotation.jsr303.annotation.Length;
 import com.wexyun.open.api.anotation.jsr303.annotation.NotNull;
 import com.wexyun.open.api.anotation.jsr303.annotation.Size;
 import com.wexyun.open.api.enums.DurationType;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -15,8 +17,10 @@ import java.math.BigDecimal;
  */
 public class LoanCreditApplyRequest {
 
+    @NotNull
     private Long orderId;
 
+    @NotNull(message = "产品id不能为空'")
     private Long loanProductId;
 
     /**
@@ -66,6 +70,20 @@ public class LoanCreditApplyRequest {
      */
     @Size(max = 11, message = "银行卡绑定手机号长度校验失败，最多11位")
     private String          bankMobile;
+
+    /**
+     * 申请日期
+     */
+    @NotNull
+    private long applyDate;
+
+    public long getApplyDate() {
+        return applyDate;
+    }
+
+    public void setApplyDate(long applyDate) {
+        this.applyDate = applyDate;
+    }
 
     public BigDecimal getBorrowAmount() {
         return borrowAmount;

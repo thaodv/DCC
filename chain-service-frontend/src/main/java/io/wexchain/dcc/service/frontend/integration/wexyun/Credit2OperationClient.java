@@ -1,7 +1,7 @@
 package io.wexchain.dcc.service.frontend.integration.wexyun;
 
 import com.wexyun.open.api.domain.credit2.Credit2Apply;
-import com.wexyun.open.api.request.credit.credit2.Credit2ApplyAddRequest;
+import io.wexchain.dcc.service.frontend.service.wexyun.impl.Credit2ApplyAddRequest;
 
 import java.util.List;
 

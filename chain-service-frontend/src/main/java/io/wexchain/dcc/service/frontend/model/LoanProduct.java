@@ -2,6 +2,7 @@ package io.wexchain.dcc.service.frontend.model;
 
 
 import io.wexchain.dcc.service.frontend.common.enums.CertType;
+import org.web3j.abi.datatypes.Int;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -12,6 +13,8 @@ public class LoanProduct {
 	private Long id;
 
 	private String currencySymbol;
+
+	private String loanType;
 
 	private List<BigInteger> dccFeeScope;
 
@@ -30,6 +33,24 @@ public class LoanProduct {
 	private boolean repayPermit;
 
 	private BigDecimal repayAheadRate;
+
+	private int repayCyclesNo;
+
+	public String getLoanType() {
+		return loanType;
+	}
+
+	public void setLoanType(String loanType) {
+		this.loanType = loanType;
+	}
+
+	public int getRepayCyclesNo() {
+		return repayCyclesNo;
+	}
+
+	public void setRepayCyclesNo(int repayCyclesNo) {
+		this.repayCyclesNo = repayCyclesNo;
+	}
 
 	public Long getId() {
 		return id;

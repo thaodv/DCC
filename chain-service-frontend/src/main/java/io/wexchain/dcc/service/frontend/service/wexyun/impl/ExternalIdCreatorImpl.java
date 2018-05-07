@@ -12,12 +12,12 @@ import java.text.MessageFormat;
 @Service
 public class ExternalIdCreatorImpl implements ExternalIdCreator {
 
-    private static final String EXTERNAL_APPLY_ID  = "{0}_{1}";
+    private static final String EXTERNAL_APPLY_ID  = "{0}_{1}_{2}";
 
     @Value(value = "${app.identity}")
     private String appIdentity;
 
-    public String getExternalId(String orderId){
-        return MessageFormat.format(EXTERNAL_APPLY_ID,appIdentity,orderId);
+    public String getExternalId(String mark,String orderId){
+        return MessageFormat.format(EXTERNAL_APPLY_ID,appIdentity,mark,orderId);
     }
 }
