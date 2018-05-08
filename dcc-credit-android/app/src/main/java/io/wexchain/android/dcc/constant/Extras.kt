@@ -17,6 +17,8 @@ object Extras {
     const val EXTRA_BENEFICIARY_ADDRESS = "beneficiary_address"
     const val EXTRA_LOAN_PRODUCT_ID = "dcc_loan_product_id"
     const val EXTRA_LOAN_PRODUCT = "dcc_loan_product"
+    const val EXTRA_LOAN_RECORD = "dcc_loan_record"
+    const val EXTRA_REQUISITE_CERTS = "dcc_loan_requisite_certs"
     const val FROM_AUTH = "from_auth"
     const val FROM_IMPORT = "from_import"
 }

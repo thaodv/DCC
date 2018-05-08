@@ -12,6 +12,7 @@ object RequestCodes {
     const val SCAN_ID_CARD = 0x4006
     const val CAPTURE_HEAD_PORTRAIT = 0x4007
     const val CAPTURE_IMAGE = 0x4008
+    const val CHOOSE_BENEFICIARY_ADDRESS = 0x4009
 
     const val PASSPORT_REQUIRED = 0x5001
     const val AUTH_KEY_REQUIRED = 0x5002

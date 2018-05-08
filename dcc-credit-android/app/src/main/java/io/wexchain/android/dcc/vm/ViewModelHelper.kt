@@ -5,13 +5,16 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
-import io.wexchain.android.dcc.App
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
-import io.wexchain.dccchainservice.domain.MarketingActivity
-import io.wexchain.dccchainservice.domain.MarketingActivityScenario
+import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.dccchainservice.domain.*
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.api.domain.front.Quote
@@ -125,7 +128,7 @@ object ViewModelHelper {
         return if (address != null && address.length >= 8) {
             val length = address.length
             return "0X ${address.substring(length - 8, length - 4).toUpperCase()} ${address.substring(
-                    length - 4
+                length - 4
             )}"
         } else null
     }
@@ -136,8 +139,8 @@ object ViewModelHelper {
         // 微财富 appId = 1 , appName = com.weicaifu.wcf
 //            "1" -> ContextCompat.getDrawable(context, R.drawable.wcflogo)
             else -> ContextCompat.getDrawable(
-                    this,
-                    R.drawable.ic_launcher
+                this,
+                R.drawable.ic_launcher
             )
         }
     }
@@ -157,11 +160,20 @@ object ViewModelHelper {
     }
 
     @JvmStatic
+    fun getDccStrPlus(holding: BigInteger?): String {
+        return holding?.let {
+            val holdingStr = Currencies.DCC.toDecimalAmount(it)
+                .setScale(2, RoundingMode.DOWN).toPlainString()
+            "+$holdingStr DCC"
+        } ?: "--"
+    }
+
+    @JvmStatic
     fun getDccStr(holding: BigInteger?): String {
         return holding?.let {
             val holdingStr = Currencies.DCC.toDecimalAmount(it)
-                    .setScale(2, RoundingMode.DOWN).toPlainString()
-            "+$holdingStr DCC"
+                .setScale(2, RoundingMode.DOWN).toPlainString()
+            "$holdingStr DCC"
         } ?: "--"
     }
 
@@ -193,6 +205,71 @@ object ViewModelHelper {
     fun formatCurrencyValue(value: BigDecimal?): String {
         value ?: return ""
         return value.currencyToDisplayStr()
+    }
+
+    @JvmStatic
+    fun text2LinesBeneficiaryAddress(beneficiaryAddress: BeneficiaryAddress?): String {
+        return beneficiaryAddress?.run { "$shortName\n$address" } ?: ""
+    }
+
+    @JvmStatic
+    fun Context.requisiteListStr(product: LoanProduct?, completed: List<String>?): CharSequence {
+        return if (product != null) {
+            product.requisiteCertList.joinTo(SpannableStringBuilder(), separator = "、") {
+                val text = when (it) {
+                    ChainGateway.BUSINESS_ID -> "身份证信息"
+                    ChainGateway.BUSINESS_BANK_CARD -> "银行卡信息"
+                    ChainGateway.BUSINESS_COMMUNICATION_LOG -> "运营商信息"
+                    else -> it
+                }
+                if (completed?.contains(it) == true) {
+                    text
+                } else {
+                    SpannableString(text).apply {
+                        setSpan(
+                            ForegroundColorSpan(ContextCompat.getColor(this@requisiteListStr, R.color.text_red)),
+                            0,
+                            length,
+                            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                        )
+                    }
+                }
+            }
+        } else ""
+    }
+
+    @JvmStatic
+    fun Context.loanStatusText(status: LoanStatus?): CharSequence? {
+        return when (status) {
+            LoanStatus.INVALID -> "已失效"
+            LoanStatus.CREATED -> "订单创建中"
+            LoanStatus.CANCELLED -> "已取消"
+            LoanStatus.AUDITING -> "审核中"
+            LoanStatus.REJECTED -> "审核失败"
+            LoanStatus.APPROVED -> "审核成功"
+            LoanStatus.FAILURE -> "放币失败"
+            LoanStatus.DELIVERIED -> "已放币"
+            LoanStatus.RECEIVIED -> "已收币"
+            LoanStatus.REPAID -> "已还币"
+            null -> getString(R.string.empty_slash)
+        }
+    }
+
+    @JvmStatic
+    fun Context.loanStatusBackground(status: LoanStatus?): Drawable? {
+        return when (status) {
+            LoanStatus.DELIVERIED -> ContextCompat.getDrawable(this, R.drawable.bg_status_magenta)
+            LoanStatus.REPAID -> ContextCompat.getDrawable(this, R.drawable.bg_status_blue)
+            LoanStatus.INVALID,
+            LoanStatus.CREATED,
+            LoanStatus.CANCELLED,
+            LoanStatus.AUDITING,
+            LoanStatus.REJECTED,
+            LoanStatus.APPROVED,
+            LoanStatus.FAILURE,
+            LoanStatus.RECEIVIED,
+            null -> ContextCompat.getDrawable(this, R.drawable.bg_status_gray)
+        }
     }
 }
 

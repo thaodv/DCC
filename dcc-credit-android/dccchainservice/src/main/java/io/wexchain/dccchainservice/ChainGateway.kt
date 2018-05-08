@@ -7,6 +7,7 @@ import retrofit2.http.*
 
 interface ChainGateway {
 
+    /* generic */
     @POST("ticket/1/getTicket")
     fun getTicket(): Single<Result<TicketResponse>>
 
@@ -22,6 +23,7 @@ interface ChainGateway {
     @GET("ca/1/getContractAddress")
     fun getCaContractAddress(): Single<Result<String>>
 
+    /* ca */
     @POST("ca/1/uploadPubKey")
     @FormUrlEncoded
     fun uploadCaPubKey(
@@ -44,6 +46,7 @@ interface ChainGateway {
     @GET("ca/1/getPubKey")
     fun getPubKey(@Query("address") address: String): Single<Result<String>>
 
+    /* cert */
     @GET("dcc/cert/1/getAbi")
     fun getContractAbi(@Query("business") business: String): Single<Result<String>>
 
@@ -94,6 +97,29 @@ interface ChainGateway {
     fun getExpectedFee(
             @Query("business") business: String
     ):Single<Result<String>>
+
+    /* loan */
+    @GET("dcc/loan/1/getContractAddress")
+    fun getLoanContractAddress():Single<Result<String>>
+
+    @POST("dcc/loan/1/apply")
+    @FormUrlEncoded
+    fun applyLoan(
+        @Field("ticket") ticket: String,
+        @Field("signMessage") signMessage: String,
+        @Field("code") code: String? = null
+    ):Single<Result<String>>
+
+    @POST("dcc/loan/1/cancel")
+    @FormUrlEncoded
+    fun cancelLoanOrder(
+        @Field("signMessage") signMessage: String
+    ):Single<Result<String>>
+
+    @GET("dcc/loan/1/getOrderByTx")
+    fun getLoanOrdersByTx(
+        @Query("txHash") txHash: String
+    ): Single<Result<List<LoanChainOrder>>>
 
     companion object {
         const val BUSINESS_ID = "ID"

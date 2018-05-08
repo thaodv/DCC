@@ -29,6 +29,7 @@ import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.util.*
+import kotlin.collections.ArrayList
 
 object CertOperations {
 
@@ -83,8 +84,7 @@ object CertOperations {
         return api.getCertData(address,business)
                 .compose(Result.checked())
                 .map {
-                    val data = name.toByteArray(Charsets.UTF_8) + id.toByteArray(Charsets.UTF_8)
-                    val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
+                    val digest1 = digestIdName(name, id)
                     val content = it.content
                     if(content == null || content.digest1.isEmpty()){
                         //ok
@@ -101,8 +101,7 @@ object CertOperations {
                 .observeOn(Schedulers.computation())
                 .map {
 
-                    val data = name.toByteArray(Charsets.UTF_8) + id.toByteArray(Charsets.UTF_8)
-                    val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
+                    val digest1 = digestIdName(name, id)
                     val digest2 = MessageDigest.getInstance(DIGEST).run {
                         update(digest1)
                         digest(MessageDigest.getInstance(DIGEST).digest(photo))
@@ -179,6 +178,12 @@ object CertOperations {
                 .flatMap {
                     verifyBankCardCert(passport, bankCardInfo, accountName, id, it.orderId)
                 }
+    }
+
+    @JvmStatic
+    fun digestIdName(name: String, id: String): ByteArray {
+        val data = name.toByteArray(Charsets.UTF_8) + id.toByteArray(Charsets.UTF_8)
+        return MessageDigest.getInstance(DIGEST).digest(data)
     }
 
     fun verifyBankCardCert(passport: Passport, bankCardInfo: BankCardInfo, accountName: String, id: String, orderId: Long): Single<String> {
@@ -352,6 +357,20 @@ object CertOperations {
                 }
     }
 
+    fun getCompletedCerts(): List<String> {
+        return ArrayList<String>().apply {
+            if(isIdCertPassed()){
+                add(ChainGateway.BUSINESS_ID)
+            }
+            if(isBankCertPassed()){
+                add(ChainGateway.BUSINESS_BANK_CARD)
+            }
+            if(getCmLogUserStatus() == UserCertStatus.DONE){
+                add(ChainGateway.BUSINESS_COMMUNICATION_LOG)
+            }
+        }.toList()
+    }
+
     fun getCertIdData(): IdCardEssentialData? {
         if (!isIdCertPassed()) {
             return null
@@ -473,6 +492,10 @@ object CertOperations {
         certPrefs.certBankStatus.set(certOrder.status.name)
         certPrefs.certBankExpired.set(certOrder.content.expired)
         certPrefs.certBankCardData.set(gson.toJson(bankCardInfo))
+    }
+
+    fun getCmLogPhoneNo(): String? {
+        return certPrefs.certCmLogPhoneNo.get()
     }
 
     fun onCmLogRequestSuccess(orderId: Long,phoneNo: String,password: String) {

@@ -51,8 +51,8 @@ android {
 //            buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://222.73.39.37:9511/passport-gateway/restful/"'
             buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://10.65.178.18:9511/passport-gateway/restful/"'
 //            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://func.wexchain.io/passport-logic/"'
-            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.103.28:1212/passport-logic/"'
-//            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.178.12:9101/passport-logic/"'//mock
+//            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.103.28:1212/passport-logic/"'
+            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.178.12:9101/passport-logic/"'//mock
 //            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.104.12:8080/"'
             buildConfigField 'java.lang.String', 'CHAIN_FRONTEND_URL', '"http://www.icohint.com/chain-frontend/"'
             buildConfigField 'java.lang.String', 'CHAIN_EXPLORER_URL', '"http://10.65.209.17:9301/chain-observer/restful/"'
@@ -81,7 +81,7 @@ dependencies {
     implementation "com.android.support:cardview-v7:$support_lib_version"
     implementation "com.android.support:recyclerview-v7:$support_lib_version"
     implementation "com.android.support:design:$support_lib_version"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta6'
+    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
 
     implementation "android.arch.lifecycle:extensions:$arch_lifecycle_version"
     implementation "android.arch.lifecycle:reactivestreams:$arch_lifecycle_version"
@@ -99,7 +99,6 @@ dependencies {
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
     implementation 'com.github.zellius:rxlocationmanager-rxjava2:1.0.0'
     implementation 'com.lyft:scissors:1.1.1'
-    implementation 'com.github.warkiz.widget:indicatorseekbar:1.2.9'
 
     implementation project(':common')
     implementation project(':idverify')

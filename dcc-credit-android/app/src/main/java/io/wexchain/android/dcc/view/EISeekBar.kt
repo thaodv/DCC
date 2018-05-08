@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import com.warkiz.widget.IndicatorSeekBar
+import android.widget.SeekBar
 import io.wexchain.android.dcc.view.state.ExceedAware
 import io.wexchain.dcc.R
 
-class EISeekBar : IndicatorSeekBar, ExceedAware {
+class EISeekBar : SeekBar, ExceedAware {
     override var isExceeded: Boolean
         set(value) {
             val changed = field != value

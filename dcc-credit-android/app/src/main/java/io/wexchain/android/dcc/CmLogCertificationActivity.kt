@@ -29,7 +29,7 @@ class CmLogCertificationActivity : BindActivity<ActivityCertificationDataBinding
         }
         vm.renewEvent.observe(this, Observer {
             PassportOperations.ensureCaValidity(this) {
-                navigateTo(SubmitIdActivity::class.java)
+                navigateTo(SubmitCommunicationLogActivity::class.java)
             }
         })
         binding.vm = vm

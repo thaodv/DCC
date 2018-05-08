@@ -27,6 +27,11 @@ inline fun <T : Activity> Activity.navigateTo(activity: Class<T>,options:Bundle?
     },options)
 }
 
+fun Activity.resultOk(data:(Intent.()->Unit)? = null){
+    val resultData = data?.run { Intent().apply { data() } }
+    this.setResult(Activity.RESULT_OK,resultData)
+    finish()
+}
 
 fun AppCompatActivity.toast(text: CharSequence, context: Context = this) {
     atLeastCreated {

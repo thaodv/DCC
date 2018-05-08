@@ -144,18 +144,19 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                     }
                 }
             CertificationType.MOBILE -> {
-//                when (status) {
-//                    UserCertStatus.NONE -> {
-//                        PassportOperations.ensureCaValidity(this) {
-//                            navigateTo(SubmitCommunicationLogActivity::class.java)
-//                        }
-//                    }
-//                    UserCertStatus.INCOMPLETE -> {
-//                        // get report processing
-//                    }
-//                    UserCertStatus.DONE ->
-//                        navigateTo(CmLogCertificationActivity::class.java)
-//                }
+                when (status) {
+                    UserCertStatus.DONE -> {
+                        navigateTo(CmLogCertificationActivity::class.java)
+                    }
+                    UserCertStatus.NONE -> {
+                        PassportOperations.ensureCaValidity(this) {
+                            navigateTo(SubmitCommunicationLogActivity::class.java)
+                        }
+                    }
+                    UserCertStatus.INCOMPLETE -> {
+                        // get report processing
+                    }
+                }
             }
         }
     }

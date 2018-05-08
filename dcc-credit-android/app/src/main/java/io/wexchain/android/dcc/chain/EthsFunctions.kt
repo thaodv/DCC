@@ -10,6 +10,8 @@ import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.DynamicBytes
 import org.web3j.abi.datatypes.Function
 import org.web3j.abi.datatypes.Type
+import org.web3j.abi.datatypes.Utf8String
+import org.web3j.abi.datatypes.generated.Bytes32
 import org.web3j.abi.datatypes.generated.Uint256
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.TransactionEncoder
@@ -26,45 +28,78 @@ object EthsFunctions {
      */
     @JvmStatic
     fun putKey(pubKey: ByteArray): Function =
-            Function("putKey", Arrays.asList<Type<*>>(DynamicBytes(pubKey)),
-                    Collections.emptyList<TypeReference<*>>())
+        Function(
+            "putKey", Arrays.asList<Type<*>>(DynamicBytes(pubKey)),
+            Collections.emptyList<TypeReference<*>>()
+        )
 
     /**
      * Func invocation : delete key
      */
     @JvmStatic
     fun deleteKey(): Function =
-            Function("deleteKey", Arrays.asList<Type<*>>(),
-                    Collections.emptyList<TypeReference<*>>())
+        Function(
+            "deleteKey", Arrays.asList<Type<*>>(),
+            Collections.emptyList<TypeReference<*>>()
+        )
 
     /**
      * Func invocation : apply
      */
     @JvmStatic
-    fun apply(digest1: ByteArray, digest2: ByteArray, expired:BigInteger) = Function(
-            "apply",
-            Arrays.asList<Type<*>>(DynamicBytes(digest1), DynamicBytes(digest2),Uint256(expired)),
-            Arrays.asList<TypeReference<*>>(typeUInt256)
+    fun apply(digest1: ByteArray, digest2: ByteArray, expired: BigInteger) = Function(
+        "apply",
+        Arrays.asList<Type<*>>(DynamicBytes(digest1), DynamicBytes(digest2), Uint256(expired)),
+        Arrays.asList<TypeReference<*>>(typeUInt256)
     )
 
+    @JvmStatic
+    fun applyLoan(
+        version: BigInteger,
+        idHash: ByteArray,
+        applicationDigest: ByteArray,
+        inputFee: BigInteger,
+        receiverAddress: String
+    ): Function = Function(
+        "apply",
+        Arrays.asList<Type<*>>(
+            Uint256(version),
+            Bytes32(idHash),
+            DynamicBytes(applicationDigest),
+            Uint256(inputFee),
+            Utf8String(receiverAddress)
+        ),
+        Arrays.asList<TypeReference<*>>(typeUInt256)
+    )
+
+    fun cancelLoan(
+        orderId:Long
+    ):Function = Function(
+        "cancel",
+        Arrays.asList<Type<*>>(
+            Uint256(BigInteger.valueOf(orderId))
+        ),
+        Arrays.asList<TypeReference<*>>()
+    )
 }
 
 fun Function.txSigned(
-        credentials: Credentials,
-        address: String,
-        nonce: BigInteger = privateChainNonce(credentials.address)
+    credentials: Credentials,
+    address: String,
+    nonce: BigInteger = privateChainNonce(credentials.address)
 ) =
-        RawTransaction.createTransaction(
-                nonce,
-                GAS_PRICE,
-                GAS_LIMIT,
-                address,
-                TX_VALUE,
-                this.encoded()
-        ).signedWith(credentials)
+    RawTransaction.createTransaction(
+        nonce,
+        GAS_PRICE,
+        GAS_LIMIT,
+        address,
+        TX_VALUE,
+        this.encoded()
+    ).signedWith(credentials)
 
 private fun Function.encoded(): String = FunctionEncoder.encode(this)
-private fun RawTransaction.signedWith(credentials: Credentials) = Numeric.toHexString(TransactionEncoder.signMessage(this, credentials))!!
+private fun RawTransaction.signedWith(credentials: Credentials) =
+    Numeric.toHexString(TransactionEncoder.signMessage(this, credentials))!!
 
 @Size(8)
 private fun Long.toByteArray(): ByteArray {

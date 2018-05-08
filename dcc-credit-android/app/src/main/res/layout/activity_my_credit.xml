@@ -117,7 +117,6 @@
                         layout="@layout/include_card_auth_status"
                         android:id="@+id/card_as_mobile"
                         app:vm="@{asMobileVm}"
-                        android:visibility="gone"
                         />
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>

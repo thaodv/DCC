@@ -12,7 +12,7 @@ data class LoanProduct(
     @SerializedName("id")
     val id: Long,
     @SerializedName("currency")
-    val currency: Currency,
+    val currency: LoanCurrency,
     @SerializedName("dccFeeScope")
     val dccFeeScope: List<Int>,
     @SerializedName("description")
@@ -30,7 +30,17 @@ data class LoanProduct(
     @SerializedName("repayPermit")
     val repayPermit: Boolean,
     @SerializedName("repayAheadRate")
-    val repayAheadRate: BigDecimal
+    val repayAheadRate: BigDecimal,
+    /**
+     * 期数
+     */
+    @SerializedName("repayCyclesNo")
+    val repayCyclesNo: Long,
+    /**
+     * 借款类型
+     */
+    @SerializedName("loanType")
+    val loanType: String
 ):Serializable {
     fun getPeriodStr(): String {
         require(loanPeriodList.size >= 2)
@@ -78,6 +88,10 @@ data class LoanProduct(
         return dccFeeScope.lastOrNull()?.toString()?:""
     }
 
+    fun getFeeRange():Int{
+        return dccFeeScope.last() - dccFeeScope.first()
+    }
+
     private fun certTypeStr(cert:String):String{
         return when(cert){
             ChainGateway.BUSINESS_ID -> "身份证认证"
@@ -87,20 +101,9 @@ data class LoanProduct(
         }
     }
 
-    data class Currency(
-        @SerializedName("symbol")
-        val symbol: String,
-        @SerializedName("decimal")
-        val decimal: Int
-    ):Serializable {
-        fun convertToDecimal(value:BigInteger): BigDecimal {
-            return value.toBigDecimal().scaleByPowerOfTen(-decimal)
-        }
-    }
-
     data class LoanPeriod(
         @SerializedName("unit")
-        val unit: PeriodTimeUnit,
+        val unit: LoanPeriodTimeUnit,
         @SerializedName("value")
         val value: Int
     ):Serializable {
@@ -109,27 +112,4 @@ data class LoanProduct(
         }
     }
 
-    enum class PeriodTimeUnit{
-        DAY,
-        MONTH,
-        YEAR
-        ;
-
-        fun str():String{
-            return when(this){
-                LoanProduct.PeriodTimeUnit.DAY -> "天"
-                LoanProduct.PeriodTimeUnit.MONTH -> "月"
-                LoanProduct.PeriodTimeUnit.YEAR -> "年"
-            }
-        }
-    }
-
-    data class Lender(
-        @SerializedName("code")
-        val code: String,
-        @SerializedName("logoUrl")
-        val logoUrl: String,
-        @SerializedName("defaultConfig")
-        val defaultConfig: Boolean
-    ):Serializable
 }

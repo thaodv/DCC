@@ -3,13 +3,17 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context="io.wexchain.android.dcc.StartLoanActivity">
+        tools:context="io.wexchain.android.dcc.StartLoanActivity"
+        >
 
     <data>
+
         <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
         <variable
                 name="vm"
-                type="io.wexchain.android.dcc.vm.StartLoanVm"/>
+                type="io.wexchain.android.dcc.vm.StartLoanVm"
+                />
     </data>
 
     <ScrollView
@@ -20,10 +24,15 @@
         <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
                 >
 
-            <include layout="@layout/include_toolbar"
-                     android:id="@+id/toolbar"/>
+            <include
+                    layout="@layout/include_toolbar"
+                    android:id="@+id/toolbar"
+                    />
 
             <TextView
                     android:id="@+id/tv_select_volume"
@@ -61,6 +70,7 @@
                     android:checked="@{vm.volSelectIndex==0}"
                     android:onCheckedChanged="@{(v,isChecked)->vm.checkVol(isChecked,0)}"
                     />
+
             <RadioButton
                     android:id="@+id/rb_vol_1"
                     android:layout_width="0dp"
@@ -76,6 +86,7 @@
                     android:checked="@{vm.volSelectIndex==1}"
                     android:onCheckedChanged="@{(v,isChecked)->vm.checkVol(isChecked,1)}"
                     />
+
             <RadioButton
                     android:id="@+id/rb_vol_2"
                     android:layout_width="0dp"
@@ -85,11 +96,12 @@
                     app:layout_constraintTop_toTopOf="@id/rb_vol_0"
                     android:layout_marginRight="@dimen/content_padding_horizontal"
                     android:text="@{vm.product.getVolume(2)}"
-                    tools:text="200"
+                    tools:text="400"
                     style="@style/Widget.AppCompat.CompoundButton.RadioButton.Dcc.Label"
                     android:checked="@{vm.volSelectIndex==2}"
                     android:onCheckedChanged="@{(v,isChecked)->vm.checkVol(isChecked,2)}"
                     />
+
             <RadioButton
                     android:id="@+id/rb_vol_custom"
                     android:layout_width="0dp"
@@ -158,6 +170,7 @@
                     android:checked="@{vm.periodSelectIndex==0}"
                     android:onCheckedChanged="@{(v,isChecked)->vm.checkPeriod(isChecked,0)}"
                     />
+
             <RadioButton
                     android:id="@+id/rb_period_1"
                     android:layout_width="0dp"
@@ -173,6 +186,7 @@
                     android:checked="@{vm.periodSelectIndex==1}"
                     android:onCheckedChanged="@{(v,isChecked)->vm.checkPeriod(isChecked,1)}"
                     />
+
             <RadioButton
                     android:id="@+id/rb_period_2"
                     android:layout_width="0dp"
@@ -182,11 +196,12 @@
                     app:layout_constraintTop_toTopOf="@id/rb_period_0"
                     android:layout_marginRight="@dimen/content_padding_horizontal"
                     android:text="@{vm.product.getPeriod(2)}"
-                    tools:text="30天"
+                    tools:text="28天"
                     style="@style/Widget.AppCompat.CompoundButton.RadioButton.Dcc.Label"
                     android:checked="@{vm.periodSelectIndex==2}"
                     android:onCheckedChanged="@{(v,isChecked)->vm.checkPeriod(isChecked,2)}"
                     />
+
             <View
                     android:id="@+id/divider_h2"
                     android:layout_width="match_parent"
@@ -227,22 +242,23 @@
                     app:layout_constraintBaseline_toBaselineOf="@id/tv_fee_label"
                     app:layout_constraintRight_toRightOf="parent"
                     android:layout_marginRight="@dimen/content_padding_horizontal"
-                    android:text="@{}"
+                    android:text="@{ViewModelHelper.formatCurrencyValue(vm.dccBalance)}"
                     />
 
             <io.wexchain.android.dcc.view.EISeekBar
                     android:id="@+id/isb_fee"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/tv_fee_label"
-                    app:isb_indicator_stay="true"
-                    app:isb_indicator_type="custom"
-                    app:isb_indicator_custom_layout="@layout/ei_custom_indicator"
-                    app:isb_thumb_drawable="@drawable/ei_tracker"
-                    app:isb_track_background_bar_color="@color/light_blue_magenta"
-                    app:isb_track_progress_bar_color="@color/light_blue_magenta"
-                    android:layout_marginLeft="48dp"
-                    android:layout_marginRight="48dp"
+                    android:max="@{vm.product.feeRange*10000}"
+                    state_exceeded="@{vm.feeExceeded}"
+                    android:thumb="@drawable/ei_tracker"
+                    android:progressDrawable="@drawable/seekbar_progress_dcc"
+                    android:maxHeight="3dp"
+                    android:minHeight="3dp"
+                    android:padding="16dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
                     android:layout_marginTop="60dp"
                     />
 
@@ -255,6 +271,7 @@
                     app:layout_constraintLeft_toLeftOf="@id/isb_fee"
                     app:layout_constraintRight_toLeftOf="@id/isb_fee"
                     />
+
             <TextView
                     android:id="@+id/tv_standard_fee_value"
                     android:layout_width="wrap_content"
@@ -264,6 +281,7 @@
                     app:layout_constraintRight_toRightOf="@id/tv_standard_fee_label"
                     app:layout_constraintTop_toBottomOf="@id/tv_standard_fee_label"
                     />
+
             <TextView
                     android:id="@+id/tv_priority_fee_label"
                     android:layout_width="wrap_content"
@@ -273,6 +291,7 @@
                     app:layout_constraintRight_toRightOf="@id/isb_fee"
                     app:layout_constraintLeft_toRightOf="@id/isb_fee"
                     />
+
             <TextView
                     android:id="@+id/tv_priority_fee_value"
                     android:layout_width="wrap_content"
@@ -294,6 +313,7 @@
                     />
 
             <TextView
+                    android:id="@+id/tv_beneficiary_address_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="收币地址"
@@ -306,7 +326,7 @@
 
             <TextView
                     android:id="@+id/tv_beneficiary_address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:minHeight="32dp"
                     android:layout_marginTop="8dp"
@@ -315,9 +335,12 @@
                     android:drawableRight="@drawable/arrow_right_bm"
                     android:drawablePadding="8dp"
                     app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/tv_beneficiary_address_label"
+                    android:layout_marginLeft="24dp"
                     android:layout_marginRight="@dimen/content_padding_horizontal"
                     android:paddingRight="4dp"
                     android:gravity="center_vertical"
+                    android:text="@{ViewModelHelper.text2LinesBeneficiaryAddress(vm.address)}"
                     tools:text="本地钱包"
                     />
 
@@ -342,6 +365,22 @@
                     android:layout_marginLeft="@dimen/content_padding_horizontal"
                     android:layout_marginTop="8dp"
                     />
+
+            <TextView
+                    android:id="@+id/tv_requisite_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{ViewModelHelper.requisiteListStr(context,vm.product,vm.completedCert)}"
+                    android:drawableRight="@drawable/arrow_right_bm"
+                    android:drawablePadding="8dp"
+                    android:layout_marginRight="@dimen/content_padding_horizontal"
+                    android:paddingRight="4dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/tv_requisite_label"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_requisite_label"
+                    android:layout_marginLeft="24dp"
+                    />
+
             <View
                     android:id="@+id/divider_h5"
                     android:layout_width="match_parent"
@@ -363,6 +402,7 @@
                     android:text="@string/next_step"
                     app:layout_constraintTop_toBottomOf="@id/divider_h5"
                     android:layout_marginTop="32dp"
+                    android:enabled="@{!vm.feeExceeded}"
                     />
 
             <TextView

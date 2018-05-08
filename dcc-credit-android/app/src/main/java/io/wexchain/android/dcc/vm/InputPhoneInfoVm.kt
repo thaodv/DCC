@@ -5,18 +5,22 @@ import android.databinding.ObservableField
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.tools.isPhoneNumValid
 
-class InputPhoneInfoVm:ViewModel(){
+class InputPhoneInfoVm : ViewModel() {
     val phoneNo = ObservableField<String>()
     val servicePassword = ObservableField<String>()
 
     val certFee = ObservableField<String>()
 
-    val submitEvent = SingleLiveEvent<Pair<String,String>>()
+    val submitEvent = SingleLiveEvent<Pair<String, String>>()
 
-    fun submit(){
+    fun submit() {
         val phone = phoneNo.get()
         val pw = servicePassword.get()
-        if(isPhoneNumValid(phone) && !pw.isNullOrBlank()){
+//        if(isPhoneNumValid(phone) && !pw.isNullOrBlank()){
+//            submitEvent.value = phone!! to pw!!
+//        }
+        //todo for mock, delete it
+        if (!phone.isNullOrBlank() && !pw.isNullOrBlank()) {
             submitEvent.value = phone!! to pw!!
         }
     }

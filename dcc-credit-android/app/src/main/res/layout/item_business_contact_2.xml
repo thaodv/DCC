@@ -35,6 +35,8 @@
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="8dp"
             android:text="@string/bitexpress_info_mail_address"
+            android:drawableLeft="@drawable/ic_email"
+            android:drawablePadding="4dp"
             />
 
 

@@ -5,6 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         >
     <data>
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
         <variable
                 name="vm"
                 type="io.wexchain.android.dcc.vm.ConfirmLoanVm"/>
@@ -21,6 +22,7 @@
                 android:src="@drawable/ic_close"
                 android:minWidth="60dp"
                 android:minHeight="32dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 />
 
         <View
@@ -53,6 +55,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/loan_amount_label"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:text="@{vm.scratch.amountStr}"
                 tools:text="50.0000 BNB"
                 />
 
@@ -75,6 +78,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/loan_repay_date_label"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:text="@{vm.scratch.period.str()}"
                 tools:text="14天"
                 />
         <View
@@ -135,6 +139,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_principal_amount_label"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:text="@{ViewModelHelper.formatCurrencyValue(vm.scratch.amount)}"
                 tools:text="50.0000 BNB"
                 />
 
@@ -177,6 +182,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_fee_amount_label"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:text="@{ViewModelHelper.formatCurrencyValue(vm.scratch.fee)}"
                 tools:text="10.0000 DCC"
                 />
 
@@ -199,10 +205,12 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_holding_label"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:text="@{ViewModelHelper.formatCurrencyValue(vm.holding)}"
                 tools:text="159.0000 DCC"
                 />
 
         <Button
+                android:id="@+id/btn_confirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"

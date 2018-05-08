@@ -158,5 +158,6 @@
     <string name="business_contact_2">出借代币\n商务咨询</string>
     <string name="loan_time_colon">借币期限:</string>
     <string name="beneficiary_address_colon">收币地址:</string>
+    <string name="repay_interest_colon">应还利息:</string>
 
 </resources>
