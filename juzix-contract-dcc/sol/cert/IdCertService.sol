@@ -12,6 +12,7 @@ contract IdCertService is CertService3{
         register("IdCertServiceModule", "0.0.1.0", "IdCertService", "0.0.1.0");
     }
 
+    //身份认证申请
     function apply(bytes digest1, bytes digest2,uint256 expired) public returns (uint256 _orderId){
 
          if(digest1Integrity == DigestIntegrity.APPLICANT){
