@@ -118,6 +118,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_total_amount_label"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:text="@{ViewModelHelper.formatCurrencyValue(vm.totalAmount)+` `+vm.scratch.product.currency.symbol}"
                 tools:text="55.0000 BNB"
                 />
 
@@ -139,7 +140,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_principal_amount_label"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                android:text="@{ViewModelHelper.formatCurrencyValue(vm.scratch.amount)}"
+                android:text="@{ViewModelHelper.formatCurrencyValue(vm.scratch.amount)+` `+vm.scratch.product.currency.symbol}"
                 tools:text="50.0000 BNB"
                 />
 
@@ -161,6 +162,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_interest_amount_label"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:text="@{ViewModelHelper.formatCurrencyValue(vm.interest)+` `+vm.scratch.product.currency.symbol}"
                 tools:text="5.0000 BNB"
                 />
 
@@ -182,7 +184,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_fee_amount_label"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                android:text="@{ViewModelHelper.formatCurrencyValue(vm.scratch.fee)}"
+                android:text="@{ViewModelHelper.formatCurrencyValue(vm.scratch.fee)+` DCC`}"
                 tools:text="10.0000 DCC"
                 />
 
@@ -205,7 +207,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_holding_label"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                android:text="@{ViewModelHelper.formatCurrencyValue(vm.holding)}"
+                android:text="@{ViewModelHelper.formatCurrencyValue(vm.holding)+` DCC`}"
                 tools:text="159.0000 DCC"
                 />
 

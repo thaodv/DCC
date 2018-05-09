@@ -6,6 +6,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.atLeastCreated
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.setWindowExtended
 import io.wexchain.dcc.R
 import java.util.concurrent.TimeUnit
 
@@ -13,6 +14,7 @@ class LoadingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setWindowExtended()
         setContentView(R.layout.activity_loading)
         delayedStart()
     }

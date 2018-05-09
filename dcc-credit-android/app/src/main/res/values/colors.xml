@@ -6,6 +6,7 @@
     <color name="gray_alpha">#66000000</color>
     <color name="light_gray_alpha">#0f000000</color>
 
+    <color name="blue_magenta_loading">#53368a</color>
 
     <color name="colorPrimary">@color/white</color>
     <color name="colorPrimaryDark">@color/white</color>

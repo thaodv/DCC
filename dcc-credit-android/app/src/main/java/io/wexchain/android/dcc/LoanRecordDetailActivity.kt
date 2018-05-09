@@ -1,31 +1,87 @@
 package io.wexchain.android.dcc
 
 import android.os.Bundle
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityLoanRecordDetailBinding
 import io.wexchain.dccchainservice.domain.LoanRecord
+import io.wexchain.dccchainservice.domain.LoanStatus
 
 class LoanRecordDetailActivity : BindActivity<ActivityLoanRecordDetailBinding>() {
     override val contentLayoutId: Int
         get() = R.layout.activity_loan_record_detail
 
-    private val loanRecord
-        get() = intent.getSerializableExtra(Extras.EXTRA_LOAN_RECORD) as? LoanRecord
+    private val loanRecordId
+        get() = intent.getLongExtra(Extras.EXTRA_LOAN_RECORD_ID, -1L)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-        val record = loanRecord
-        if(record == null){
+        initData()
+        binding.btnAction.setOnClickListener {
+            performAction(binding.order)
+        }
+    }
+
+    private fun performAction(order: LoanRecord?) {
+        when(order?.status){
+            LoanStatus.INVALID -> {}//todo
+            LoanStatus.CREATED -> {}//todo
+            LoanStatus.CANCELLED -> {}//todo
+            LoanStatus.AUDITING -> {}
+            LoanStatus.APPROVED -> {}
+            LoanStatus.REJECTED -> applyAgain()
+            LoanStatus.FAILURE -> applyAgain()
+            LoanStatus.REPAID -> applyAgain()
+            LoanStatus.DELIVERED -> toRepay()
+            LoanStatus.RECEIVIED -> toRepay()
+            null -> {}
+        }
+    }
+
+    private fun toRepay() {
+        //todo
+        binding.order?.let {
+            if(it.earlyRepayAvailable && !it.allowRepayPermit){
+                //early repay not allowed
+            }else {
+                navigateTo(ReviewRepayActivity::class.java) {
+                    putExtra(Extras.EXTRA_LOAN_CHAIN_ORDER_ID, it.orderId)
+                }
+            }
+        }
+    }
+
+    private fun applyAgain() {
+        //todo
+        toast("去重新申请")
+    }
+
+    private fun initData() {
+        val recordId = loanRecordId
+        if (recordId == -1L) {
             postOnMainThread {
                 finish()
             }
-        }else{
-            binding.order = record
+        } else {
+            loadLoanOrderDetail(recordId)
         }
+    }
+
+    private fun loadLoanOrderDetail(recordId: Long) {
+        ScfOperations
+            .withScfTokenInCurrentPassport {
+                App.get().scfApi.getLoanRecordById(it, recordId)
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{it->
+                binding.order = it
+            }
     }
 }

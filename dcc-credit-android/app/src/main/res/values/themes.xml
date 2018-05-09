@@ -37,6 +37,9 @@
         <item name="colorPrimary">@android:color/transparent</item>
         <item name="colorPrimaryDark">@android:color/transparent</item>
     </style>
+    <style name="DccLightTheme.App.Transparent.Loading">
+        <item name="android:windowBackground">@color/blue_magenta_loading</item>
+    </style>
 
     <style name="DccLightTheme.App.Immerse">
         <item name="navigationIcon">@drawable/arrow_left_white</item>

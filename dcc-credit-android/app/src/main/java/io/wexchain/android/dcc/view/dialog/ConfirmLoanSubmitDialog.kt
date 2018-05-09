@@ -28,7 +28,7 @@ class ConfirmLoanSubmitDialog : DialogFragment() {
         )
         binding.setLifecycleOwner(this)
         val vm = getViewModel<ConfirmLoanVm>().apply {
-            this.scratch.set(this@ConfirmLoanSubmitDialog.scratch)
+            setScratch(this@ConfirmLoanSubmitDialog.scratch)
             loadHolding()
         }
         binding.vm = vm

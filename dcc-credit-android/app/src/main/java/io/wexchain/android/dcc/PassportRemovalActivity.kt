@@ -28,14 +28,14 @@ class PassportRemovalActivity : BaseCompatActivity() {
         initToolbar(true)
         val protect = ViewModelProviders.of(this).get(Protect::class.java)
         protect.sync(this)
-        VerifyProtectFragment.serve(protect,this)
+        VerifyProtectFragment.serve(protect, this)
         binding.btnBackup.setOnClickListener {
             toBackup()
         }
         binding.btnRemove.setOnClickListener {
-            if(protect.type.get() == null) {
+            if (protect.type.get() == null) {
                 showConfirmDeleteDialog()
-            }else{
+            } else {
                 protect.verifyProtect {
                     performPassportDelete()
                 }
@@ -48,42 +48,47 @@ class PassportRemovalActivity : BaseCompatActivity() {
     }
 
     private fun showConfirmDeleteDialog() {
-        val view = layoutInflater.inflate(R.layout.dialog_notice_remove_passport,null)
+        val view = layoutInflater.inflate(R.layout.dialog_notice_remove_passport, null)
         view.findViewById<View>(R.id.tv_passport_backup).setOnClickListener {
             toBackup()
         }
         CustomDialog(this)
-                .apply {
-                    setTitle(R.string.title_remove_passport)
-                    viewContent = view
-                    withPositiveButton(getString(R.string.title_remove_passport)) {
-                        performPassportDelete()
-                        true
-                    }
-                    withNegativeButton()
+            .apply {
+                setTitle(R.string.title_remove_passport)
+                viewContent = view
+                withPositiveButton(getString(R.string.title_remove_passport)) {
+                    performPassportDelete()
+                    true
                 }
-                .assembleAndShow()
+                withNegativeButton()
+            }
+            .assembleAndShow()
     }
 
     private fun performPassportDelete() {
         Single.fromCallable {
-                    App.get().passportRepository.removeEntirePassportInformation()
-                    LocalProtect.disableProtect()
-                    PassportOperations.deleteAllLocalAndroidRSAKeys()
-                    CertOperations.clearAllCertData()
-                }
-                .doOnSubscribe {
-                    showLoadingDialog()
-                }
-                .doFinally {
-                    hideLoadingDialog()
-                }
-                .subscribe { _->
-                    finishAllAndRestart()
-                }
+            //clear passport info
+            App.get().passportRepository.removeEntirePassportInformation()
+            LocalProtect.disableProtect()
+            //clear rsa keys
+            PassportOperations.deleteAllLocalAndroidRSAKeys()
+            //clear cert data
+            CertOperations.clearAllCertData()
+            //clear session token
+            App.get().scfTokenManager.scfToken = null
+        }
+            .doOnSubscribe {
+                showLoadingDialog()
+            }
+            .doFinally {
+                hideLoadingDialog()
+            }
+            .subscribe { _ ->
+                finishAllAndRestart()
+            }
     }
 
-    fun finishAllAndRestart(){
+    fun finishAllAndRestart() {
         val intent = Intent(this, LoadingActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)

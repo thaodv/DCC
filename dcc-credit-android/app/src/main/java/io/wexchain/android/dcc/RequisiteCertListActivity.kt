@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BaseCompatActivity
@@ -39,6 +40,42 @@ class RequisiteCertListActivity : BaseCompatActivity() {
             finish()
         }
         loadCertStatus()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshCertStatus()
+    }
+
+    private fun refreshCertStatus() {
+        val count=adapter.itemCount
+        (0 until count).map { adapter.getItemOnPos(it) }.forEach {
+            val certificationType = it.certificationType.get()
+            if(certificationType!=null) {
+                it.status.set(CertOperations.getCertStatus(certificationType))
+            }
+            if (certificationType == CertificationType.MOBILE){
+                if (it.status.get() == UserCertStatus.INCOMPLETE) {
+                    //get report
+                    val passport = App.get().passportRepository.getCurrentPassport()!!
+                    CertOperations.getCommunicationLogReport(passport)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({ data ->
+                            if (data.fail) {
+                                // generate report fail
+                                CertOperations.onCmLogFail()
+                                refreshCertStatus()
+                            } else {
+                                val reportData = data.reportData
+                                if (data.hasCompleted() && reportData != null) {
+                                    CertOperations.onCmLogSuccessGot(reportData)
+                                    refreshCertStatus()
+                                }
+                            }
+                        })
+                }
+            }
+        }
     }
 
     private fun loadCertStatus() {

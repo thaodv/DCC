@@ -54,7 +54,7 @@ object ScfOperations {
             .confirmOnChain(chainGateway)
     }
 
-    fun submitLoan(loanScratch: LoanScratch, passport: Passport): Single<Long> {
+    fun submitLoan(loanScratch: LoanScratch, passport: Passport): Single<String> {
         val certIdData = CertOperations.getCertIdData()
         val cmLogPhoneNo = CertOperations.getCmLogPhoneNo()
         val certBankCardData = CertOperations.getCertBankCardData()
@@ -92,7 +92,7 @@ object ScfOperations {
                 }
                 .loanOrderByTx(chainGateway)
                 .flatMap {order->
-                    ScfOperations.withScfTokenInCurrentPassport {
+                    ScfOperations.withScfTokenInCurrentPassport(allowNull = "") {
                         scfApi.applyLoanCredit(
                             it,
                             order.id,
@@ -110,7 +110,7 @@ object ScfOperations {
                     }
                 }
         } else {
-            Single.error<Long>(IllegalStateException())
+            Single.error<String>(IllegalStateException())
         }
     }
 

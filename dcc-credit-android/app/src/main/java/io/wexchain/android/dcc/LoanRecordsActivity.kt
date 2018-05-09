@@ -13,11 +13,12 @@ import io.wexchain.dcc.BR
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ItemLoanRecordBinding
 import io.wexchain.dccchainservice.domain.LoanRecord
+import io.wexchain.dccchainservice.domain.LoanRecordSummary
 import java.io.Serializable
 
-class LoanRecordsActivity : BaseCompatActivity(), ItemViewClickListener<LoanRecord> {
+class LoanRecordsActivity : BaseCompatActivity(), ItemViewClickListener<LoanRecordSummary> {
 
-    private val adapter = SimpleDataBindAdapter<ItemLoanRecordBinding, LoanRecord>(
+    private val adapter = SimpleDataBindAdapter<ItemLoanRecordBinding, LoanRecordSummary>(
         layoutId = R.layout.item_loan_record,
         variableId = BR.order,
         itemViewClickListener = this
@@ -35,7 +36,7 @@ class LoanRecordsActivity : BaseCompatActivity(), ItemViewClickListener<LoanReco
         ScfOperations
             .withScfTokenInCurrentPassport {
                 //todo paging
-                App.get().scfApi.queryOrders(it, 0, 100)
+                App.get().scfApi.queryOrderPage(it, 0, 100)
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ list ->
@@ -44,14 +45,10 @@ class LoanRecordsActivity : BaseCompatActivity(), ItemViewClickListener<LoanReco
             })
     }
 
-    override fun onItemClick(item: LoanRecord?, position: Int, viewId: Int) {
+    override fun onItemClick(item: LoanRecordSummary?, position: Int, viewId: Int) {
         item?.let {
-            if (it.applyId != null) {
-                navigateTo(LoanRecordDetailActivity::class.java) {
-                    putExtra(Extras.EXTRA_LOAN_RECORD, it as Serializable)
-                }
-            }else{
-                //todo
+            navigateTo(LoanRecordDetailActivity::class.java) {
+                putExtra(Extras.EXTRA_LOAN_RECORD_ID, it.orderId)
             }
         }
     }

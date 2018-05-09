@@ -8,7 +8,7 @@
         <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
         <variable
                 name="order"
-                type="io.wexchain.dccchainservice.domain.LoanRecord"/>
+                type="io.wexchain.dccchainservice.domain.LoanRecordSummary"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -51,7 +51,7 @@
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{order.gmtCreate==null?null:@string/time_format_yyyymmdd_hhmmss(order.gmtCreate)}"
+                android:text="@{order.applyDate==null?null:@string/time_format_yyyymmdd_hhmmss(order.applyDate)}"
                 tools:text="@tools:sample/date/ddmmyy"
                 app:layout_constraintTop_toBottomOf="@id/tv_product_name"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -64,10 +64,10 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:text="@{order.borrowAmount.toPlainString()+order.currency.symbol}"
                 tools:text="100.0000 BNB"
                 android:layout_marginRight="24dp"
                 />
+        <!--android:text="@{order.borrowAmount.toPlainString()+order.currency.symbol}"-->
 
         <ImageView
                 android:layout_width="wrap_content"

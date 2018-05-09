@@ -49,6 +49,9 @@ abstract class PassportDao {
     @Query("SELECT * FROM ${BeneficiaryAddress.TABLE_NAME} WHERE ${BeneficiaryAddress.COLUMN_ADDRESS} = :address")
     abstract fun getBeneficiaryAddresseByAddress(address: String): List<BeneficiaryAddress>
 
+    @Query("DELETE FROM ${BeneficiaryAddress.TABLE_NAME}")
+    abstract fun deleteBeneficiaryAddresses()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun addOrUpdateBeneficiaryAddress(beneficiaryAddress: BeneficiaryAddress)
 

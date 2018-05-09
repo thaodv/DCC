@@ -232,7 +232,8 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintBaseline_toBaselineOf="@id/tv_fee_label"
                     app:layout_constraintLeft_toRightOf="@id/tv_fee_label"
-                    android:text="@{ViewModelHelper.formatCurrencyValue(vm.fee)}"
+                    android:text="@{ViewModelHelper.formatCurrencyValue(vm.fee)+` DCC`}"
+                    tools:text="5.0000 DCC"
                     />
 
             <TextView
@@ -242,7 +243,7 @@
                     app:layout_constraintBaseline_toBaselineOf="@id/tv_fee_label"
                     app:layout_constraintRight_toRightOf="parent"
                     android:layout_marginRight="@dimen/content_padding_horizontal"
-                    android:text="@{ViewModelHelper.formatCurrencyValue(vm.dccBalance)}"
+                    android:text="@{ViewModelHelper.formatCurrencyValue(vm.dccBalance)+` DCC`}"
                     />
 
             <io.wexchain.android.dcc.view.EISeekBar

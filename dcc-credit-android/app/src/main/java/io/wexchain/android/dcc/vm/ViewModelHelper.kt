@@ -248,7 +248,7 @@ object ViewModelHelper {
             LoanStatus.REJECTED -> "审核失败"
             LoanStatus.APPROVED -> "审核成功"
             LoanStatus.FAILURE -> "放币失败"
-            LoanStatus.DELIVERIED -> "已放币"
+            LoanStatus.DELIVERED -> "已放币"
             LoanStatus.RECEIVIED -> "已收币"
             LoanStatus.REPAID -> "已还币"
             null -> getString(R.string.empty_slash)
@@ -258,7 +258,7 @@ object ViewModelHelper {
     @JvmStatic
     fun Context.loanStatusBackground(status: LoanStatus?): Drawable? {
         return when (status) {
-            LoanStatus.DELIVERIED -> ContextCompat.getDrawable(this, R.drawable.bg_status_magenta)
+            LoanStatus.DELIVERED -> ContextCompat.getDrawable(this, R.drawable.bg_status_magenta)
             LoanStatus.REPAID -> ContextCompat.getDrawable(this, R.drawable.bg_status_blue)
             LoanStatus.INVALID,
             LoanStatus.CREATED,
@@ -269,6 +269,48 @@ object ViewModelHelper {
             LoanStatus.FAILURE,
             LoanStatus.RECEIVIED,
             null -> ContextCompat.getDrawable(this, R.drawable.bg_status_gray)
+        }
+    }
+
+    @JvmStatic
+    fun Context.loanStatusNoticeText(status: LoanStatus?):CharSequence?{
+        return when(status){
+            LoanStatus.INVALID -> null//todo
+            LoanStatus.CREATED -> null//todo
+            LoanStatus.CANCELLED -> null//todo
+            LoanStatus.AUDITING -> "您的借币申请正在审核中"
+            LoanStatus.REJECTED -> "您的借币申请审核失败，建议过段时间(1个月)再尝试"
+            LoanStatus.APPROVED -> "更新你的申请已经审核通过，我们将尽快打币"
+            LoanStatus.FAILURE -> "很遗憾放币失败，建议过短时间(一周后)再尝试"
+            LoanStatus.DELIVERED -> null
+            LoanStatus.RECEIVIED -> null//todo
+            LoanStatus.REPAID -> "您的订单已处理完毕"
+            null -> null
+        }
+    }
+
+    @JvmStatic
+    fun Context.loanStatusAction(record: LoanRecord?):CharSequence?{
+        record?:return null
+        return when(record.status){
+            LoanStatus.INVALID -> null//todo
+            LoanStatus.CREATED -> null//todo
+            LoanStatus.CANCELLED -> null//todo
+            LoanStatus.AUDITING -> null
+            LoanStatus.APPROVED -> null
+            LoanStatus.REJECTED,
+            LoanStatus.FAILURE ,
+            LoanStatus.REPAID -> "重新申请"
+            LoanStatus.DELIVERED ,
+            LoanStatus.RECEIVIED -> {
+                if(!record.earlyRepayAvailable){// not early now
+                    "还币"
+                }else{
+                    if (record.allowRepayPermit){
+                        "提前还币"
+                    }else null
+                }
+            }
         }
     }
 }

@@ -154,6 +154,7 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
             }
             .subscribe({ _ ->
                 toast("提交贷款申请成功")
+                navigateTo(LoanSubmitResultActivity::class.java)
             })
     }
 

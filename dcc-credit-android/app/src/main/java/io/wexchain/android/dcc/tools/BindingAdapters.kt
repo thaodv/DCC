@@ -22,6 +22,13 @@ var View.visibleOrGone
         this.visibility = if (value) View.VISIBLE else View.GONE
     }
 
+@set:BindingAdapter("visibleOrInvisible")
+var View.visibleOrInvisible
+    get() = this.visibility == View.VISIBLE
+    set(value) {
+        this.visibility = if (value) View.VISIBLE else View.INVISIBLE
+    }
+
 @BindingAdapter("imageRes")
 fun ImageView.setImageRes(
     @DrawableRes

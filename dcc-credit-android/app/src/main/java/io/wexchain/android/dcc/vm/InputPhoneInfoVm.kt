@@ -16,11 +16,7 @@ class InputPhoneInfoVm : ViewModel() {
     fun submit() {
         val phone = phoneNo.get()
         val pw = servicePassword.get()
-//        if(isPhoneNumValid(phone) && !pw.isNullOrBlank()){
-//            submitEvent.value = phone!! to pw!!
-//        }
-        //todo for mock, delete it
-        if (!phone.isNullOrBlank() && !pw.isNullOrBlank()) {
+        if(isPhoneNumValid(phone) && !pw.isNullOrBlank()){
             submitEvent.value = phone!! to pw!!
         }
     }

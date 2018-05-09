@@ -182,9 +182,11 @@ class PassportRepository(
     fun removeEntirePassportInformation() {
         currPassport.value = null
         passportPrefs.clearAll()
+        selectedBeneficiaryAddress.value = null
         RoomHelper.onRoomIoThread {
             dao.deleteAuthRecords()
             dao.deleteAuthKeyChangeRecords()
+            dao.deleteBeneficiaryAddresses()
         }
     }
 

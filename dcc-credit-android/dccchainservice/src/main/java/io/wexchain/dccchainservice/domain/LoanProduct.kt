@@ -68,13 +68,13 @@ data class LoanProduct(
     }
 
     fun getInterestRateStr(): String {
-        val rateStr = loanRate.scaleByPowerOfTen(2).toPlainString()//x100
-        return "年化$rateStr%"
+        val rateStr = loanRate.divide(BigDecimal("3.65"),RoundingMode.DOWN).toPlainString()//interest rate in day
+        return "$rateStr%"
     }
 
     fun getRepayAheadRateStr():String{
-        val rateStr = repayAheadRate.scaleByPowerOfTen(2).toPlainString()//x100
-        return "年化$rateStr%"
+        val rateStr = repayAheadRate.divide(BigDecimal("3.65"),RoundingMode.DOWN).toPlainString()//interest rate in day
+        return "$rateStr%"
     }
 
     fun getRequisiteStr():String{

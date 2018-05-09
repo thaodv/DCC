@@ -8,7 +8,7 @@ enum class LoanStatus {
     REJECTED,//拒绝
     APPROVED,//审核通过
     FAILURE,//放款失败
-    DELIVERIED,//已放款
+    DELIVERED,//已放款
     RECEIVIED,//已收款
     REPAID,//已还款
 }

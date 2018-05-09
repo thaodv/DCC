@@ -17,7 +17,9 @@
         <activity
                 android:name="io.wexchain.android.dcc.LoadingActivity"
                 android:noHistory="true"
-                android:screenOrientation="portrait">
+                android:screenOrientation="portrait"
+                android:theme="@style/DccLightTheme.App.Transparent.Loading"
+                >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -164,55 +166,64 @@
                 android:name="io.wexchain.android.dcc.AddBeneficiaryAddressActivity"
                 android:label="添加收款地址">
         </activity>
-        <activity android:name="io.wexchain.android.dcc.BeneficiaryAddressesManagementActivity">
-        </activity>
-        <activity android:name="io.wexchain.android.dcc.MyLoansActivity">
-        </activity>
-        <activity android:name="io.wexchain.android.dcc.LoanDetailActivity">
-        </activity>
+        <activity
+                android:name="io.wexchain.android.dcc.BeneficiaryAddressesManagementActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name="io.wexchain.android.dcc.MyLoansActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name="io.wexchain.android.dcc.LoanDetailActivity"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name="io.wexchain.android.dcc.LoanProductListActivity"
-                android:label="我要借币">
-        </activity>
-        <activity android:name="io.wexchain.android.dcc.LoanProductDetailActivity">
-        </activity>
-        <activity android:name="io.wexchain.android.dcc.StartLoanActivity">
-        </activity>
-        <activity android:name="io.wexchain.android.dcc.LoanRequisiteActivity">
-        </activity>
+                android:label="我要借币"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name="io.wexchain.android.dcc.LoanProductDetailActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name="io.wexchain.android.dcc.StartLoanActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name="io.wexchain.android.dcc.LoanRequisiteActivity"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name="io.wexchain.android.dcc.LoanSubmitResultActivity"
-                android:label="借币申请结果">
-        </activity>
+                android:noHistory="true"
+                android:label="借币申请结果"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name="io.wexchain.android.dcc.LoanRecordsActivity"
-                android:label="借币记录">
-        </activity>
-        <activity android:name="io.wexchain.android.dcc.EditBeneficiaryAddressActivity">
-        </activity>
+                android:label="借币记录"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name="io.wexchain.android.dcc.EditBeneficiaryAddressActivity"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name="io.wexchain.android.dcc.LoanRecordDetailActivity"
-                android:label="借币详情">
-        </activity>
+                android:label="借币详情"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name="io.wexchain.android.dcc.LoanRepayResultActivity"
-                android:label="还币结果">
-        </activity>
+                android:label="还币结果"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name="io.wexchain.android.dcc.LoanRepayActivity"
-                android:label="还币">
-        </activity>
+                android:label="还币"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name="io.wexchain.android.dcc.ChooseBeneficiaryAddressActivity"
-                android:label="选择收币地址">
-        </activity>
+                android:label="选择收币地址"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name="io.wexchain.android.dcc.ReviewRepayActivity"
-                android:label="还币信息确认">
-        </activity>
-        <activity android:name="io.wexchain.android.dcc.RequisiteCertListActivity"
-                android:label="所需资料">
-        </activity>
+                android:label="还币信息确认"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name="io.wexchain.android.dcc.RequisiteCertListActivity"
+                android:label="所需资料"
+                android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -4,6 +4,7 @@ import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
 import retrofit2.Response
 import retrofit2.http.*
+import java.math.BigDecimal
 
 interface ScfApi {
     @POST("login")
@@ -42,12 +43,30 @@ interface ScfApi {
         @Field("size") size: Long
     ): Single<Result<PagedList<LoanRecord>>>
 
+    @POST("secure/loan/queryOrderPage")
+    @FormUrlEncoded
+    fun queryOrderPage(
+        @Header(ScfApi.HEADER_TOKEN) token: String?,
+        /**
+         * start @ 0
+         */
+        @Field("number") number: Long,
+        @Field("size") size: Long
+    ): Single<Result<PagedList<LoanRecordSummary>>>
+
     @POST("secure/loan/getLastOrder")
     fun getLastOrder(
         @Header(ScfApi.HEADER_TOKEN) token: String?
     ): Single<Result<LoanChainOrder>>
 
-    @POST("secure/loan/credit/apply")
+    @POST("secure/loan/getByChainOrderId")
+    @FormUrlEncoded
+    fun getLoanRecordById(
+        @Header(ScfApi.HEADER_TOKEN) token: String?,
+        @Field("chainOrderId") chainOrderId: Long
+    ): Single<Result<LoanRecord>>
+
+    @POST("secure/loan/apply")
     @FormUrlEncoded
     fun applyLoanCredit(
         @Header(ScfApi.HEADER_TOKEN) token: String?,
@@ -56,13 +75,35 @@ interface ScfApi {
         @Field("borrowName") borrowName: String,//否	借款人真实姓名
         @Field("borrowAmount") borrowAmount: String, //    否	借款金额（11，4）
         @Field("borrowDuration") borrowDuration: Int,//否	借款期限
-        @Field("durationType") durationType: String,//否	借款期限单位（YEAR，MONTH，DAY）
+        @Field("durationUnit") durationUnit: String,//否	借款期限单位（YEAR，MONTH，DAY）
         @Field("certNo") certNo: String,//否	身份证件号
         @Field("mobile") mobile: String,//否	借款人手机号（手机认证）
         @Field("bankCard") bankCard: String,//否	银行卡号
         @Field("bankMobile") bankMobile: String,//否	银行卡预留绑定手机号
         @Field("applyDate") applyDate: Long//否	申请时间（时间戳）
-    ):Single<Result<Long>>
+    ): Single<Result<String>>
+
+    @POST("secure/loan/getRepaymentBill")
+    @FormUrlEncoded
+    fun getRepaymentBill(
+        @Header(ScfApi.HEADER_TOKEN) token: String?,
+        @Field("chainOrderId") chainOrderId: Long//否	链上订单id
+    ):Single<Result<LoanRepaymentBill>>
+
+    @POST("secure/loan/confirmRepayment")
+    @FormUrlEncoded
+    fun confirmRepayment(
+        @Header(ScfApi.HEADER_TOKEN) token: String?,
+        @Field("chainOrderId") chainOrderId: Long//否	链上订单id
+    ): Single<Result<String>>
+
+    @POST("loan/getLoanInterest")
+    @FormUrlEncoded
+    fun getLoanInterest(
+        @Field("productId") productId :Long,
+        @Field("amount") amount :String,
+        @Field("loanPeriodValue") loanPeriodValue :Int
+    ):Single<Result<BigDecimal>>
 
     companion object {
         const val HEADER_TOKEN = "x-auth-token"
