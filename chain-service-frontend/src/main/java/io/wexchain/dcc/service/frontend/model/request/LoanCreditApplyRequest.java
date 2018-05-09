@@ -1,13 +1,11 @@
 package io.wexchain.dcc.service.frontend.model.request;
 
-import com.wexyun.open.api.anotation.jsr303.annotation.Length;
-import com.wexyun.open.api.anotation.jsr303.annotation.NotNull;
-import com.wexyun.open.api.anotation.jsr303.annotation.Size;
-import com.wexyun.open.api.enums.DurationType;
-import org.springframework.format.annotation.DateTimeFormat;
+import io.wexchain.cryptoasset.loan.api.constant.DurationUnit;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * <p>
@@ -17,7 +15,7 @@ import java.util.Date;
  */
 public class LoanCreditApplyRequest {
 
-    @NotNull
+    @NotNull(message = "orderId不能为空")
     private Long orderId;
 
     @NotNull(message = "产品id不能为空'")
@@ -45,7 +43,7 @@ public class LoanCreditApplyRequest {
      * 借款期限单位
      */
     @NotNull(message = "借款期限单位不能为空")
-    private DurationType    durationType;
+    private DurationUnit durationUnit;
 
     /**
      * 证件号
@@ -74,14 +72,14 @@ public class LoanCreditApplyRequest {
     /**
      * 申请日期
      */
-    @NotNull
-    private long applyDate;
+    @NotNull(message = "申请日期不能为空")
+    private Long applyDate;
 
-    public long getApplyDate() {
+    public Long getApplyDate() {
         return applyDate;
     }
 
-    public void setApplyDate(long applyDate) {
+    public void setApplyDate(Long applyDate) {
         this.applyDate = applyDate;
     }
 
@@ -117,12 +115,12 @@ public class LoanCreditApplyRequest {
         this.borrowDuration = borrowDuration;
     }
 
-    public DurationType getDurationType() {
-        return durationType;
+    public DurationUnit getDurationUnit() {
+        return durationUnit;
     }
 
-    public void setDurationType(DurationType durationType) {
-        this.durationType = durationType;
+    public void setDurationUnit(DurationUnit durationUnit) {
+        this.durationUnit = durationUnit;
     }
 
     public String getCertNo() {
