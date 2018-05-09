@@ -317,16 +317,12 @@
 			<version>2.1.6-jiaoyihui-SNAPSHOT</version>
 		</dependency>
 
-		<!--借款合同 -->
+
 		<dependency>
-			<groupId>com.weihui.finance.contract</groupId>
-			<artifactId>contract-client</artifactId>
-			<version>1.0.2</version>
+			<groupId>io.wexchain.cal</groupId>
+			<artifactId>crypto-asset-loan-api</artifactId>
+			<version>0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.weihui.finance.contract</groupId>
-			<artifactId>contract-api</artifactId>
-			<version>1.0.8</version>
-		</dependency>
+
 	</dependencies>
 </project>

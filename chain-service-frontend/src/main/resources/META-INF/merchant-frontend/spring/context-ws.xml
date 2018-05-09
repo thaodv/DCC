@@ -27,4 +27,11 @@
 		<property name="timeout" value="${dcc.marketing.remote.timeout}" />
 	</bean>
 
+	<!-- crypto_asset_loan-api-->
+	<bean id="cryptoAssetLoanFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
+		<property name="remoteAddress" value="${crypto.asset.loan.ws.address}/cryptoAssetLoanFacade" />
+		<property name="clazz" value="io.wexchain.cryptoasset.loan.api.CryptoAssetLoanFacade" />
+		<property name="timeout" value="${dcc.marketing.remote.timeout}" />
+	</bean>
+
 </beans>
