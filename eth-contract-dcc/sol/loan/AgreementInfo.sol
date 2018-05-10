@@ -1,5 +1,6 @@
 pragma solidity ^0.4.2;
 
+//AgreementInfo接口
 contract AgreementInfo {
 
     function createAgreement(
