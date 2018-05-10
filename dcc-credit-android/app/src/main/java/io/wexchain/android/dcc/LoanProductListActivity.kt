@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -57,6 +58,22 @@ class LoanProductListActivity : BaseCompatActivity(), ItemViewClickListener<Loan
         adapter.lifecycleOwner = this
         findViewById<RecyclerView>(R.id.rv_list).adapter = BottomMoreItemsAdapter(adapter,this)
         loadData()
+    }
+
+    override fun onBackPressed() {
+        finishAndGotoLoan()
+    }
+
+    override fun handleHomePressed(): Boolean {
+        finishAndGotoLoan()
+        return true
+    }
+
+    private fun finishAndGotoLoan() {
+        ActivityCompat.finishAfterTransition(this)
+        navigateTo(LoanActivity::class.java) {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
     }
 
     override fun onItemClick(item: LoanProduct?, position: Int, viewId: Int) {
