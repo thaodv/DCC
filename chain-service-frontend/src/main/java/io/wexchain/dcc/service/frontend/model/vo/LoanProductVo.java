@@ -39,6 +39,8 @@ public class LoanProductVo {
 
 	private String loanType;
 
+	private String name;
+
 	public Long getId() {
 		return id;
 	}
@@ -119,6 +121,13 @@ public class LoanProductVo {
 		this.loanPeriodList = loanPeriodList;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public List<CertType> getRequisiteCertList() {
 		return requisiteCertList;
@@ -159,5 +168,6 @@ public class LoanProductVo {
 		this.repayAheadRate = loanProduct.getRepayAheadRate();
 		this.repayCyclesNo = loanProduct.getRepayCyclesNo();
 		this.loanType = loanProduct.getLoanType();
+		this.name = loanProduct.getName();
 	}
 }

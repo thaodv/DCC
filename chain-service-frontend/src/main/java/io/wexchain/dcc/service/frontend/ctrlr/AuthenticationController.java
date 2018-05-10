@@ -1,9 +1,11 @@
 package io.wexchain.dcc.service.frontend.ctrlr;
 
+import com.wexmarket.topia.commons.basic.exception.ErrorCodeValidate;
 import com.wexmarket.topia.commons.basic.rpc.utils.BaseResponseUtils;
 import com.wexmarket.topia.commons.basic.rpc.utils.ResultResponseUtils;
 import com.wexmarket.topia.commons.rpc.BaseResponse;
 import com.wexmarket.topia.commons.rpc.ResultResponse;
+import io.wexchain.dcc.service.frontend.common.enums.FrontendErrorCode;
 import io.wexchain.dcc.service.frontend.model.request.AuthenticationRequest;
 import io.wexchain.dcc.service.frontend.helper.SignValidator;
 import io.wexchain.dcc.service.frontend.model.request.SignBaseRequest;
@@ -61,7 +63,7 @@ public class AuthenticationController extends BaseController {
     }
 
     public void validateNonce(String nonce){
-       /* ErrorCodeValidate.isTrue(redisTemplate.hasKey(nonce),
+        /*ErrorCodeValidate.isTrue(redisTemplate.hasKey(nonce),
                 FrontendErrorCode.INVALID_NONCE);
         redisTemplate.delete(nonce);*/
     }
