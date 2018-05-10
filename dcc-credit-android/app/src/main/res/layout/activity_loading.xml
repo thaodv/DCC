@@ -17,7 +17,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toTopOf="@id/iv_slogan"
-            android:src="@mipmap/ic_app_dcc"
+            android:src="@drawable/logo_bitexpress"
             app:layout_constraintVertical_bias="0.4"
             />
 
@@ -28,8 +28,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginBottom="72dp"
-            android:src="@drawable/dcc_slogan"
+            android:layout_marginBottom="120dp"
+            android:src="@drawable/slogan_text_bitexpress"
             />
 
 </android.support.constraint.ConstraintLayout>

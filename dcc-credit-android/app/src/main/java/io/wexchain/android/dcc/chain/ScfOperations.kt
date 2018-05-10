@@ -255,8 +255,12 @@ object ScfOperations {
                         )
                         .map {
                             val body = it.body()
-                            if (it.isSuccessful && body != null && body.isSuccess) {
-                                it.headers()[ScfApi.HEADER_TOKEN]!!
+                            if (it.isSuccessful && body != null ) {
+                                if(body.isSuccess) {
+                                    it.headers()[ScfApi.HEADER_TOKEN]!!
+                                }else{
+                                    throw body.asError()
+                                }
                             } else {
                                 throw IllegalStateException()
                             }

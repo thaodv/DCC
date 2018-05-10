@@ -1,6 +1,8 @@
 package io.wexchain.android.dcc
 
+import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.RecyclerView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
@@ -50,6 +52,22 @@ class LoanRecordsActivity : BaseCompatActivity(), ItemViewClickListener<LoanReco
             navigateTo(LoanRecordDetailActivity::class.java) {
                 putExtra(Extras.EXTRA_LOAN_RECORD_ID, it.orderId)
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        finishAndGotoLoan()
+    }
+
+    override fun handleHomePressed(): Boolean {
+        finishAndGotoLoan()
+        return true
+    }
+
+    private fun finishAndGotoLoan() {
+        ActivityCompat.finishAfterTransition(this)
+        navigateTo(LoanActivity::class.java) {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }
 }

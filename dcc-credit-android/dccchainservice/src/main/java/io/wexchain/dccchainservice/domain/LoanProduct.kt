@@ -41,7 +41,7 @@ data class LoanProduct(
      */
     @SerializedName("loanType")
     val loanType: String
-):Serializable {
+) : Serializable {
     fun getPeriodStr(): String {
         require(loanPeriodList.size >= 2)
         val start = loanPeriodList.first()
@@ -53,8 +53,11 @@ data class LoanProduct(
         return loanPeriodList.getOrNull(index)?.str()
     }
 
-    fun getVolume(index:Int): String? {
-        return volumeOptionList.getOrNull(index)?.toString()
+    fun getVolume(index: Int): String? {
+        val c = currency
+        return volumeOptionList.getOrNull(index)?.run {
+            c.convertToDecimal(this).setScale(4, RoundingMode.DOWN).toPlainString()
+        }
     }
 
     fun getVolumeRangeStr(): String {
@@ -62,42 +65,44 @@ data class LoanProduct(
         val c = currency
         val start = volumeOptionList.first()
         val end = volumeOptionList.last()
-        val startStr = c.convertToDecimal(start).setScale(4,RoundingMode.DOWN).toPlainString()
-        val endStr = c.convertToDecimal(end).setScale(4,RoundingMode.DOWN).toPlainString()
+        val startStr = c.convertToDecimal(start).setScale(4, RoundingMode.DOWN).toPlainString()
+        val endStr = c.convertToDecimal(end).setScale(4, RoundingMode.DOWN).toPlainString()
         return "$startStr${c.symbol}-$endStr${c.symbol}"
     }
 
     fun getInterestRateStr(): String {
-        val rateStr = loanRate.divide(BigDecimal("3.65"),RoundingMode.DOWN).toPlainString()//interest rate in day
+        val rateStr = loanRate.divide(BigDecimal("3.65"), RoundingMode.DOWN).toPlainString()//interest rate in day
         return "$rateStr%"
     }
 
-    fun getRepayAheadRateStr():String{
-        val rateStr = repayAheadRate.divide(BigDecimal("3.65"),RoundingMode.DOWN).toPlainString()//interest rate in day
+    fun getRepayAheadRateStr(): String {
+        val rateStr = repayAheadRate.divide(BigDecimal("3.65"), RoundingMode.DOWN).toPlainString()//interest rate in day
         return "$rateStr%"
     }
 
-    fun getRequisiteStr():String{
-        return requisiteCertList.withIndex().joinToString(separator = "\n") { "${it.index+1}.${certTypeStr(it.value)};" }
+    fun getRequisiteStr(): String {
+        return requisiteCertList.withIndex()
+            .joinToString(separator = "\n") { "${it.index + 1}.${certTypeStr(it.value)};" }
     }
 
-    fun getStandardDccFeeStr():String{
-        return dccFeeScope.firstOrNull()?.toString()?:""
-    }
-    fun getPriorityDccFeeStr():String{
-        return dccFeeScope.lastOrNull()?.toString()?:""
+    fun getStandardDccFeeStr(): String {
+        return dccFeeScope.firstOrNull()?.toString() ?: ""
     }
 
-    fun getFeeRange():Int{
+    fun getPriorityDccFeeStr(): String {
+        return dccFeeScope.lastOrNull()?.toString() ?: ""
+    }
+
+    fun getFeeRange(): Int {
         return dccFeeScope.last() - dccFeeScope.first()
     }
 
-    private fun certTypeStr(cert:String):String{
-        return when(cert){
+    private fun certTypeStr(cert: String): String {
+        return when (cert) {
             ChainGateway.BUSINESS_ID -> "身份证认证"
             ChainGateway.BUSINESS_BANK_CARD -> "银行卡认证"
             ChainGateway.BUSINESS_COMMUNICATION_LOG -> "运营商认证"
-            else->"--"
+            else -> "--"
         }
     }
 
@@ -106,8 +111,8 @@ data class LoanProduct(
         val unit: LoanPeriodTimeUnit,
         @SerializedName("value")
         val value: Int
-    ):Serializable {
-        fun str():String{
+    ) : Serializable {
+        fun str(): String {
             return "$value${unit.str()}"
         }
     }

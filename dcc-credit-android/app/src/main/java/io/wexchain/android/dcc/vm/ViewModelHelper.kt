@@ -238,6 +238,24 @@ object ViewModelHelper {
         } else ""
     }
 
+
+    @JvmStatic
+    fun isCreating(status: LoanStatus?): Boolean {
+        return when(status){
+            LoanStatus.INVALID -> false//todo
+            LoanStatus.CREATED -> true
+            LoanStatus.CANCELLED -> true
+            LoanStatus.AUDITING -> false
+            LoanStatus.REJECTED -> false
+            LoanStatus.APPROVED -> false
+            LoanStatus.FAILURE -> false
+            LoanStatus.DELIVERED -> false
+            LoanStatus.RECEIVIED -> false
+            LoanStatus.REPAID -> false
+            null -> false
+        }
+    }
+
     @JvmStatic
     fun Context.loanStatusText(status: LoanStatus?): CharSequence? {
         return when (status) {
@@ -310,6 +328,27 @@ object ViewModelHelper {
                         "提前还币"
                     }else null
                 }
+            }
+        }
+    }
+
+    @JvmStatic
+    fun Context.loanPeriodText(record: LoanRecord?):CharSequence?{
+        record?:return null
+        return when(record.status){
+            LoanStatus.INVALID ,
+            LoanStatus.CREATED ,
+            LoanStatus.CANCELLED -> ""//todo
+            LoanStatus.AUDITING ,
+            LoanStatus.REJECTED ,
+            LoanStatus.APPROVED ,
+            LoanStatus.FAILURE -> "${record.borrowDuration}${record.durationUnit.str()}"
+            LoanStatus.DELIVERED ,
+            LoanStatus.RECEIVIED ,
+            LoanStatus.REPAID -> if(record.repayDate!= null&& record.deliverDate!=null){
+                getString(R.string.time_format_yyyymmdd_dot_to,record.deliverDate,record.repayDate)
+            }else{
+                "${record.borrowDuration}${record.durationUnit.str()}"
             }
         }
     }

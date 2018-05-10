@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-
+                android:descendantFocusability="beforeDescendants"
                 >
 
             <include
@@ -117,6 +117,7 @@
                     />
 
             <EditText
+                    android:id="@+id/et_input_vol"
                     android:layout_width="0dp"
                     android:layout_height="32dp"
                     android:gravity="center"
@@ -125,10 +126,11 @@
                     app:layout_constraintLeft_toLeftOf="@id/rb_vol_1"
                     app:layout_constraintRight_toRightOf="@id/rb_vol_1"
                     android:text="@={vm.inputCustomVol}"
-                    android:enabled="@{vm.volSelectIndex==-1}"
                     android:background="@null"
                     android:inputType="numberDecimal"
+                    android:maxLength="16"
                     app:layout_constraintBottom_toBottomOf="@id/rb_vol_custom"
+                    android:onFocusChange="@{(v,hasFocus)->vm.checkVol(hasFocus,-1)}"
                     />
 
             <View
@@ -382,6 +384,14 @@
                     android:layout_marginLeft="24dp"
                     />
 
+            <android.support.constraint.Barrier
+                    android:id="@+id/barrier_bottom_1"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:constraint_referenced_ids="tv_requisite_label,tv_requisite_value"
+                    app:barrierDirection="bottom"
+                    />
+
             <View
                     android:id="@+id/divider_h5"
                     android:layout_width="match_parent"
@@ -390,7 +400,7 @@
                     style="@style/DividerHorizontal"
                     android:layout_marginLeft="@dimen/content_padding_horizontal"
                     android:layout_marginRight="@dimen/content_padding_horizontal"
-                    app:layout_constraintTop_toBottomOf="@id/tv_requisite_label"
+                    app:layout_constraintTop_toBottomOf="@id/barrier_bottom_1"
                     />
 
             <Button

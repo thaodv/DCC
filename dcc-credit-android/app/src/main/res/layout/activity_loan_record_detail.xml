@@ -73,6 +73,16 @@
                 />
 
         <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_loan_time_label"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:text="@{ViewModelHelper.loanPeriodText(context,order)}"
+                tools:text="30天"
+                />
+
+        <TextView
                 android:id="@+id/tv_loan_interest_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -92,6 +102,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:text="@{order.loanInterest==null?null:order.loanInterest.toPlainString()}"
+                tools:text="0.345 BNB"
                 />
 
         <TextView
@@ -112,6 +123,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:text="@{ViewModelHelper.formatCurrencyValue(order.fee)}"
+                tools:text="2.0000 DCC"
                 />
 
         <TextView

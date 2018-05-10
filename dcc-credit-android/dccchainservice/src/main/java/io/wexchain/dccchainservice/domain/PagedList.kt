@@ -19,6 +19,17 @@ data class PagedList<T>(
         @SerializedName("size")
         val size: Int,
         @SerializedName("sortParamList")
-        val sortParamList: List<String>
-    )
+        val sortParamList: List<SortParam>
+    ){
+
+        data class SortParam(
+            @SerializedName("direction") val direction: SortDirection,
+            @SerializedName("property") val property: String
+        )
+
+        enum class SortDirection{
+            DESC,
+            ASC
+        }
+    }
 }

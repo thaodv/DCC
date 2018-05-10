@@ -51,6 +51,7 @@
     <string name="no_more">没有更多了</string>
     <string name="time_format_yyyymmdd_hhmm">%1$tY-%1$tm-%1$td  %1$tH:%1$tM</string>
     <string name="time_format_yyyymmdd">%1$tY-%1$tm-%1$td</string>
+    <string name="time_format_yyyymmdd_dot_to">%1$tY.%1$tm.%1$td-%1$tY.%1$tm.%1$td</string>
     <string name="time_format_yyyymmdd_hhmmss">%1$tY-%1$tm-%1$td  %1$tH:%1$tM:%1$tS</string>
     <string name="empty_slash">--</string>
     <string name="quote_source_colon">来源:%1$s</string>

@@ -3,6 +3,7 @@ package io.wexchain.android.dcc.base
 import android.graphics.Color
 import android.os.Build
 import android.support.annotation.IdRes
+import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
@@ -69,11 +70,7 @@ abstract class BaseCompatActivity : AppCompatActivity() {
     }
 
     protected fun goFinish() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            finishAfterTransition()
-        } else {
-            finish()
-        }
+        ActivityCompat.finishAfterTransition(this)
     }
 
     open fun handleHomePressed(): Boolean {

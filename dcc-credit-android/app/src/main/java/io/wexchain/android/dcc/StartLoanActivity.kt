@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.widget.SeekBar
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.getViewModel
-import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.postOnMainThread
-import io.wexchain.android.common.toast
+import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.ScfOperations
@@ -86,11 +83,21 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
         vm.refreshEvent.observe(this, Observer {
             binding.executePendingBindings()
         })
+        vm.volSelChangedEvent.observe(this, Observer {
+            it?.let {
+                if (it != -1) {
+                    binding.etInputVol.hideIme()
+                    binding.etInputVol.clearFocus()
+                }else{
+                    binding.etInputVol.requestFocus()
+                }
+            }
+        })
         binding.vm = vm
         App.get().passportRepository.getDefaultBeneficiaryAddress()
             .subscribe { ba ->
                 binding.vm?.let {
-                    if(it.address.get() == null){
+                    if (it.address.get() == null) {
                         it.address.set(ba)
                     }
                 }
