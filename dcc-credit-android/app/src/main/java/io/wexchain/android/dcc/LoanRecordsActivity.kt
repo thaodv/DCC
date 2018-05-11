@@ -4,21 +4,27 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.RecyclerView
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter
+import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
+import io.wexchain.android.dcc.vm.LoanRecordsVm
 import io.wexchain.dcc.BR
 import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityLoanRecordsBinding
 import io.wexchain.dcc.databinding.ItemLoanRecordBinding
-import io.wexchain.dccchainservice.domain.LoanRecord
 import io.wexchain.dccchainservice.domain.LoanRecordSummary
-import java.io.Serializable
 
-class LoanRecordsActivity : BaseCompatActivity(), ItemViewClickListener<LoanRecordSummary> {
+class LoanRecordsActivity : BindActivity<ActivityLoanRecordsBinding>(), ItemViewClickListener<LoanRecordSummary> {
+    override val contentLayoutId: Int
+        get() = R.layout.activity_loan_records
 
     private val adapter = SimpleDataBindAdapter<ItemLoanRecordBinding, LoanRecordSummary>(
         layoutId = R.layout.item_loan_record,
@@ -28,23 +34,23 @@ class LoanRecordsActivity : BaseCompatActivity(), ItemViewClickListener<LoanReco
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_default_list)
         initToolbar()
-        findViewById<RecyclerView>(R.id.rv_list).adapter = adapter
-        loadData()
+        binding.rvList.adapter = adapter
+        val vm = getViewModel<LoanRecordsVm>()
+        binding.srlList.setOnRefreshListener { srl ->
+            vm.refresh { srl.finishRefresh() }
+        }
+        binding.srlList.setOnLoadMoreListener { srl ->
+            vm.loadNext { srl.finishLoadMore() }
+        }
+        binding.srlList.setRefreshHeader(ClassicsHeader(this))
+        binding.srlList.setRefreshFooter(ClassicsFooter(this))
+        binding.records = vm
     }
 
-    private fun loadData() {
-        ScfOperations
-            .withScfTokenInCurrentPassport {
-                //todo paging
-                App.get().scfApi.queryOrderPage(it, 0, 100)
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ list ->
-                //todo merge pages
-                adapter.setList(list.items)
-            })
+    override fun onResume() {
+        super.onResume()
+        binding.srlList.autoRefresh()
     }
 
     override fun onItemClick(item: LoanRecordSummary?, position: Int, viewId: Int) {

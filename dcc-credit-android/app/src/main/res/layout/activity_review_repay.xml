@@ -7,9 +7,13 @@
         >
 
     <data>
+
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
         <variable
                 name="bill"
-                type="io.wexchain.dccchainservice.domain.LoanRepaymentBill"/>
+                type="io.wexchain.dccchainservice.domain.LoanRepaymentBill"
+                />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -40,7 +44,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_principal_amount_label"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:text="@{bill.repaymentPrincipal.toPlainString()+bill.assetCode}"
+                android:text="@{ViewModelHelper.concatWithoutNull(bill.repaymentPrincipal.toPlainString(),bill.assetCode)}"
                 tools:text="50.0000 BNB"
                 />
 
@@ -62,7 +66,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_interest_amount_label"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:text="@{bill.repaymentInterest.toPlainString()+bill.assetCode}"
+                android:text="@{ViewModelHelper.concatWithoutNull(bill.repaymentInterest.toPlainString(),bill.assetCode)}"
                 tools:text="50.0000 BNB"
                 />
 
@@ -85,7 +89,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_overdue_amount_label"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:text="@{bill.overdueFine.toPlainString()+bill.assetCode}"
+                android:text="@{ViewModelHelper.concatWithoutNull(bill.overdueFine.toPlainString(),bill.assetCode)}"
                 tools:text="50.0000 BNB"
                 visibleOrGone="@{bill.overdue}"
                 />
@@ -109,7 +113,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_penalty_amount_label"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:text="@{bill.penaltyAmount.toPlainString()+bill.assetCode}"
+                android:text="@{ViewModelHelper.concatWithoutNull(bill.penaltyAmount.toPlainString(),bill.assetCode)}"
                 visibleOrGone="@{bill.penalty}"
                 tools:text="50.0000 BNB"
                 />
@@ -139,6 +143,7 @@
                 app:layout_constraintTop_toBottomOf="@id/divider_h1"
 
                 />
+
         <TextView
                 android:id="@+id/tv_total_amount_value"
                 android:layout_width="wrap_content"
@@ -147,7 +152,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:textSize="16sp"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:text="@{bill.amount.toPlainString()+bill.assetCode}"
+                android:text="@{ViewModelHelper.concatWithoutNull(bill.amount.toPlainString(),bill.assetCode)}"
                 tools:text="50.0000 BNB"
                 />
 

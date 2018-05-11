@@ -81,12 +81,34 @@
                 android:text="@{vm.scratch.period.str()}"
                 tools:text="14天"
                 />
+        <TextView
+                android:id="@+id/tv_loan_address_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:text="@string/receive_address_colon"
+                app:layout_constraintTop_toBottomOf="@id/loan_repay_date_label"
+                app:layout_constraintLeft_toLeftOf="@id/loan_amount_label"
+                android:layout_marginTop="16dp"
+                />
+
+        <TextView
+                android:id="@+id/tv_loan_address_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_loan_address_label"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:text="@{vm.scratch.beneficiaryAddress.address}"
+                tools:text="@sample/address"
+                />
         <View
                 android:id="@+id/divider_h2"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/divider_stroke_width"
                 style="@style/DividerHorizontal"
-                app:layout_constraintTop_toBottomOf="@id/loan_repay_date_label"
+                app:layout_constraintTop_toBottomOf="@id/tv_loan_address_label"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginRight="@dimen/content_padding_horizontal"

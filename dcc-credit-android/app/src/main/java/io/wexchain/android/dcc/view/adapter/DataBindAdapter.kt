@@ -55,5 +55,4 @@ abstract class DataBindAdapter<B : ViewDataBinding, T>(
     public fun getItemOnPos(pos:Int): T {
         return getItem(pos)
     }
-
 }

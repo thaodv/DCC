@@ -23,10 +23,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="待还币金额:55.0000BNB"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
-                android:text="@{`待还币金额:`+bill.amount.toPlainString()+bill.assetCode}"
+                android:text="@{`待还币金额:`+bill.noPayAmount.toPlainString()+bill.assetCode}"
                 />
 
         <View
@@ -37,13 +39,16 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_repay_amount"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_marginTop="16dp"
                 />
 
         <TextView
                 android:id="@+id/tv_repay_step1_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1将待还币金额转入到下面的还币地址中"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="4dp"
+                android:text="①将待还币金额转入到下面的还币地址中"
                 app:layout_constraintTop_toBottomOf="@id/divider_h1"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -51,25 +56,31 @@
 
         <EditText
                 android:id="@+id/et_repay_address"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 tools:text="@sample/address"
                 android:text="@{bill.repaymentAddress}"
                 android:textSize="12sp"
-                android:background="@drawable/bg_round_rect_frame"
+                android:background="@drawable/bg_rect_frame"
                 android:inputType="none"
+                android:editable="false"
+                android:singleLine="true"
                 app:layout_constraintTop_toBottomOf="@id/tv_repay_step1_hint"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/btn_copy_address"
+                android:layout_marginRight="4dp"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginTop="8dp"
                 />
 
         <Button
                 android:id="@+id/btn_copy_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintLeft_toRightOf="@id/et_repay_address"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/et_repay_address"
                 app:layout_constraintBottom_toBottomOf="@id/et_repay_address"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:text="复制"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
@@ -91,6 +102,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="扫描二维码可获得还币地址"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 app:layout_constraintTop_toBottomOf="@id/iv_qr_address"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -104,13 +117,16 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_qr_hint"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_marginTop="16dp"
                 />
 
         <TextView
                 android:id="@+id/tv_repay_step2_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2转币完成后点击下面的按钮完成还币"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="4dp"
+                android:text="②转币完成后点击下面的按钮完成还币"
                 app:layout_constraintTop_toBottomOf="@id/divider_h2"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -122,6 +138,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_marginTop="24dp"
                 style="@style/Widget.AppCompat.Button.Dcc.Full"
                 android:text="确认还币"
                 app:layout_constraintTop_toBottomOf="@id/tv_repay_step2_hint"
@@ -130,6 +147,8 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_confirm_repay"
