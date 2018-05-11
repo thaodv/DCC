@@ -6,6 +6,7 @@ contract LoanFee {
     function apply(uint256 orderId, address borrower, uint256 totalAmount) external;
 
     //取消订单费用流程接口
+
     function cancel(uint256 orderId) external;
 
     //审核订单费用流程接口

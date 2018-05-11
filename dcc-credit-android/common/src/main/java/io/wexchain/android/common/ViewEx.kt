@@ -1,8 +1,10 @@
 package io.wexchain.android.common
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 
 
 @SuppressLint("ClickableViewAccessibility")
@@ -20,4 +22,9 @@ fun <T : View> T.setInterceptScroll() {
         v.onTouchEvent(event)
     }
     this.setOnTouchListener(l)
+}
+
+fun View.hideIme(){
+    val imm = this.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromInputMethod(this.windowToken,0)
 }

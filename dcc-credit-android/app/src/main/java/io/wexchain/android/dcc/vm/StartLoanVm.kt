@@ -40,6 +40,8 @@ class StartLoanVm : ViewModel() {
 
     val refreshEvent = SingleLiveEvent<Void>()
 
+    val volSelChangedEvent = SingleLiveEvent<Int>()
+
     init {
         feeAdditional.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
@@ -79,6 +81,7 @@ class StartLoanVm : ViewModel() {
         if (checked) {
             volSelectIndex.set(index)
             refreshEvent.call()
+            volSelChangedEvent.value = index
         }
     }
 
@@ -109,6 +112,16 @@ class StartLoanVm : ViewModel() {
         }
         if (fee == null || amount == null){
             failEvent.value = "amount or fee is empty"
+            return
+        }
+        val c = product.currency
+        val minAmount = c.convertToDecimal(product.volumeOptionList.first())
+        val maxAmount = c.convertToDecimal(product.volumeOptionList.last())
+        if(amount < minAmount){
+            failEvent.value = "输入金额不可小于${minAmount.toPlainString()}"
+            return
+        }else if(amount > maxAmount){
+            failEvent.value = "输入金额不可大于${maxAmount.toPlainString()}"
             return
         }
         val address = this.address.get()

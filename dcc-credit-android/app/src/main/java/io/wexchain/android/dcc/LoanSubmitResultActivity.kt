@@ -11,7 +11,7 @@ class LoanSubmitResultActivity : BaseCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan_submit_result)
-        initToolbar()
+        initToolbar(false)
         findViewById<View>(R.id.btn_loan_records).setOnClickListener {
             navigateTo(LoanRecordsActivity::class.java)
         }

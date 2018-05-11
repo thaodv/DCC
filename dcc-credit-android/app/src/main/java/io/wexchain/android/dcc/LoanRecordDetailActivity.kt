@@ -46,7 +46,6 @@ class LoanRecordDetailActivity : BindActivity<ActivityLoanRecordDetailBinding>()
     }
 
     private fun toRepay() {
-        //todo
         binding.order?.let {
             if(it.earlyRepayAvailable && !it.allowRepayPermit){
                 //early repay not allowed
@@ -59,8 +58,7 @@ class LoanRecordDetailActivity : BindActivity<ActivityLoanRecordDetailBinding>()
     }
 
     private fun applyAgain() {
-        //todo
-        toast("去重新申请")
+        navigateTo(LoanProductListActivity::class.java)
     }
 
     private fun initData() {

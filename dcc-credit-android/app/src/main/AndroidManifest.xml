@@ -161,7 +161,9 @@
         <activity
                 android:name="io.wexchain.android.dcc.LoanActivity"
                 android:screenOrientation="portrait"
-                android:theme="@style/DccLightTheme.App.Transparent"/>
+                android:theme="@style/DccLightTheme.App.Transparent"
+                android:launchMode="singleTask"
+                />
         <activity
                 android:name="io.wexchain.android.dcc.AddBeneficiaryAddressActivity"
                 android:label="添加收款地址">
@@ -206,6 +208,7 @@
                 android:screenOrientation="portrait"/>
         <activity
                 android:name="io.wexchain.android.dcc.LoanRepayResultActivity"
+                android:noHistory="true"
                 android:label="还币结果"
                 android:screenOrientation="portrait"/>
         <activity
