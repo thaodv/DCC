@@ -41,6 +41,7 @@ contract AgreementService is OperatorPermission, AgreementInfo {
         agreements.push(Agreement(0, 0, address(0), 0, address(0), "", Status.INVALID, "", "", ""));
     }
 
+    //创建借贷协议
     function createAgreement(
         uint256 version,
         uint256 orderId,
