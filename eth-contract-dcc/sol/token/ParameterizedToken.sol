@@ -2,6 +2,7 @@ pragma solidity ^0.4.18;
 
 import './CappedToken.sol';
 
+//代币合约
 contract ParameterizedToken is CappedToken {
     string public version = "1.3";
     

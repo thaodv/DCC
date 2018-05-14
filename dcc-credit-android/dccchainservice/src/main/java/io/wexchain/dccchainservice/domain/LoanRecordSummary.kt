@@ -1,6 +1,6 @@
 package io.wexchain.dccchainservice.domain
 import com.google.gson.annotations.SerializedName
-
+import java.math.BigDecimal
 
 
 data class LoanRecordSummary(
@@ -8,6 +8,7 @@ data class LoanRecordSummary(
     @SerializedName("status") val status: LoanStatus,
     @SerializedName("applyDate") val applyDate: Long?,
     @SerializedName("currency") val currency: LoanCurrency?,
-    @SerializedName("lender") val lender: Lender?
+    @SerializedName("lender") val lender: Lender?,
+    @SerializedName("amount") val amount: BigDecimal
 ) {
 }

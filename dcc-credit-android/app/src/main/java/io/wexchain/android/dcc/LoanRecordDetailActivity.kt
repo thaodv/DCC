@@ -78,6 +78,12 @@ class LoanRecordDetailActivity : BindActivity<ActivityLoanRecordDetailBinding>()
                 App.get().scfApi.getLoanRecordById(it, recordId)
             }
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                showLoadingDialog()
+            }
+            .doFinally {
+                hideLoadingDialog()
+            }
             .subscribe{it->
                 binding.order = it
             }

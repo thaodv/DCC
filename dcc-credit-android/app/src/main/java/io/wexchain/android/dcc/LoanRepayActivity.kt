@@ -23,6 +23,7 @@ class LoanRepayActivity : BindActivity<ActivityLoanRepayBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initToolbar()
         initData()
         binding.btnConfirmRepay.setOnClickListener {
             binding.bill?.let {
@@ -43,6 +44,12 @@ class LoanRepayActivity : BindActivity<ActivityLoanRepayBinding>() {
             App.get().scfApi.confirmRepayment(it,bill.chainOrderId)
         }
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                showLoadingDialog()
+            }
+            .doFinally {
+                hideLoadingDialog()
+            }
             .subscribe { _->
                 finish()
                 navigateTo(LoanRepayResultActivity::class.java)

@@ -41,6 +41,7 @@ data class LoanRecord(
     @SerializedName("repayDate") val repayDate: Long?,
     @SerializedName("expectRepayDate") val expectRepayDate: Long?,
     @SerializedName("loanInterest") val loanInterest: BigDecimal?,
+    @SerializedName("expectLoanInterest") val expectLoanInterest: BigDecimal?,
     @SerializedName("earlyRepayAvailable") val earlyRepayAvailable: Boolean,
     @SerializedName("allowRepayPermit") val allowRepayPermit: Boolean
 )

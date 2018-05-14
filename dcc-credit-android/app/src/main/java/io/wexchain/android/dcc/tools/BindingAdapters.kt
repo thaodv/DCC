@@ -6,6 +6,8 @@ import android.graphics.drawable.Drawable
 import android.media.Image
 import android.net.Uri
 import android.support.annotation.DrawableRes
+import android.support.v7.recyclerview.extensions.ListAdapter
+import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.text.method.PasswordTransformationMethod
 import android.view.View
@@ -60,6 +62,11 @@ fun setImageUrl(imageView: ImageView, url: String?, errorRes: Drawable?) {
     GlideApp.with(imageView).load(url)
         .error(errorRes)
         .into(imageView)
+}
+
+@BindingAdapter("dataList")
+fun <T> RecyclerView.setDataList(dataList:List<T>?){
+    (this.adapter as? ListAdapter<T, *>)?.submitList(dataList)
 }
 
 @BindingAdapter("bgUrl")

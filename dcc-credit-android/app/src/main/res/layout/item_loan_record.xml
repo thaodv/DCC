@@ -2,32 +2,51 @@
 <layout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
 
     <data>
+
         <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
         <variable
                 name="order"
-                type="io.wexchain.dccchainservice.domain.LoanRecordSummary"/>
+                type="io.wexchain.dccchainservice.domain.LoanRecordSummary"
+                />
     </data>
 
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:background="@drawable/bg_round_rect_frame"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:background="@{ViewModelHelper.loanStatusBackground(context,order.status)}"
+            tools:background="@drawable/bg_loan_status_other"
             >
+
+        <ImageView
+                android:id="@+id/iv_currency_logo"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                tools:src="@drawable/ethereum"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                visibleOrGone="@{!ViewModelHelper.isCreating(order.status)}"
+                />
 
         <TextView
                 android:id="@+id/tv_product_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{order.lender.name}"
+                android:textColor="@color/text_white"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/tv_time"
+                app:layout_constraintLeft_toRightOf="@id/iv_currency_logo"
+                android:textSize="16sp"
+                android:layout_marginLeft="8dp"
                 tools:text="云金融现金贷"
                 visibleOrGone="@{!ViewModelHelper.isCreating(order.status)}"
                 />
@@ -37,15 +56,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{ViewModelHelper.loanStatusText(context,order.status)}"
-                android:background="@{ViewModelHelper.loanStatusBackground(context,order.status)}"
                 tools:text="已放币"
                 android:textColor="@color/text_white"
                 android:minWidth="60dp"
                 android:gravity="center"
-                app:layout_constraintLeft_toRightOf="@id/tv_product_name"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_product_name"
-                android:layout_marginLeft="12dp"
-                tools:background="@drawable/bg_status_gray"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/round_rect_border_white"
                 visibleOrGone="@{!ViewModelHelper.isCreating(order.status)}"
                 />
 
@@ -55,8 +73,11 @@
                 android:layout_height="wrap_content"
                 android:text="@{order.applyDate==null?null:@string/time_format_yyyymmdd_hhmmss(order.applyDate)}"
                 tools:text="@tools:sample/date/ddmmyy"
+                android:textColor="@color/text_white"
                 app:layout_constraintTop_toBottomOf="@id/tv_product_name"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/iv_currency_logo"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="12dp"
                 visibleOrGone="@{!ViewModelHelper.isCreating(order.status)}"
                 />
@@ -65,18 +86,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:text="100.0000 BNB"
+                android:textSize="16sp"
+                android:textColor="@color/text_white"
+                tools:text="100.0000"
                 android:layout_marginRight="24dp"
                 visibleOrGone="@{!ViewModelHelper.isCreating(order.status)}"
+                android:text="@{order.amount.toPlainString()}"
                 />
-        <!--android:text="@{order.borrowAmount.toPlainString()+order.currency.symbol}"-->
 
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/arrow_right"
+                android:tint="@color/white"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -86,6 +109,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="订单创建中"
+                android:textSize="16sp"
+                android:textColor="@color/text_white"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 visibleOrGone="@{ViewModelHelper.isCreating(order.status)}"
@@ -94,7 +119,7 @@
         <ProgressBar
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:indeterminateDrawable="@drawable/progress_indeterminate_gear"
+                android:indeterminateDrawable="@drawable/progress_indeterminate_gear_white"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

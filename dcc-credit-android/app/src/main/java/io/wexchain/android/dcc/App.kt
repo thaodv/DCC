@@ -99,12 +99,12 @@ class App : MultiDexApplication() {
         marketingApi = networking.createApi(MarketingApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
         scfApi = networking.createApi(ScfApi::class.java,BuildConfig.DCC_MARKETING_API_URL)
 
-//        infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
-        customPublicJsonRpc = networking.createApi(EthJsonRpcApi::class.java, cc.sisel.ewallet.BuildConfig.PUBLIC_CHAIN_RPC).getPrepared()
+        infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
+//        customPublicJsonRpc = networking.createApi(EthJsonRpcApi::class.java, cc.sisel.ewallet.BuildConfig.PUBLIC_CHAIN_RPC).getPrepared()
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))
         ethplorerApi = networking.createApi(EthplorerApi::class.java, EthplorerApi.API_URL)
-//        publicRpc = EthsRpcAgent.by(infuraApi)
-        publicRpc = EthsRpcAgent.by(customPublicJsonRpc)
+        publicRpc = EthsRpcAgent.by(infuraApi)
+//        publicRpc = EthsRpcAgent.by(customPublicJsonRpc)
     }
 
     private fun initLibraries(context: App) {

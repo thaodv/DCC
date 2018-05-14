@@ -15,9 +15,9 @@
 
     <ImageView
             android:id="@+id/iv_provider_logo"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/dcc_logo_with_border"
+            android:src="@drawable/banner_loan"
             android:layout_margin="16dp"
             android:scaleType="fitCenter"
             android:maxHeight="120dp"

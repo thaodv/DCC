@@ -5,6 +5,7 @@ import "../utils/ByteUtils.sol";
 import "./AgreementInfo.sol";
 import "../math/SafeMath.sol";
 
+//借贷协议订单储存合约
 contract AgreementService is OperatorPermission, AgreementInfo {
 
     using SafeMath for uint256;
@@ -16,7 +17,6 @@ contract AgreementService is OperatorPermission, AgreementInfo {
         uint256 orderId;
         address borrower;
         bytes32 idHash;
-        Status status;
         bytes applicationDigest;
         bytes agreementDigest;
         bytes repayDigest;
@@ -41,6 +41,7 @@ contract AgreementService is OperatorPermission, AgreementInfo {
         agreements.push(Agreement(0, 0, address(0), 0, address(0), "", Status.INVALID, "", "", ""));
     }
 
+    //创建借贷协议
     function createAgreement(
         uint256 version,
         uint256 orderId,

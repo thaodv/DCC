@@ -12,14 +12,15 @@ data class LoanRepaymentBill(
     @SerializedName("overdueFine") val overdueFine: BigDecimal?,
     @SerializedName("penaltyAmount") val penaltyAmount: BigDecimal?,
     @SerializedName("amount") val amount: BigDecimal,
+    @SerializedName("noPayAmount") val noPayAmount: BigDecimal,
     @SerializedName("assetCode") val assetCode: String,
     @SerializedName("repaymentAddress") val repaymentAddress: String
 ):Serializable {
     fun isOverdue(): Boolean {
-        return overdueFine != null && overdueFine != BigDecimal.ZERO
+        return overdueFine != null && overdueFine.signum() != 0
     }
 
     fun isPenalty():Boolean{
-        return penaltyAmount != null && penaltyAmount != BigDecimal.ZERO
+        return penaltyAmount != null && penaltyAmount.signum() != 0
     }
 }

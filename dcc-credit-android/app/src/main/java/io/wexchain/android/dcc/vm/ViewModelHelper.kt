@@ -241,7 +241,7 @@ object ViewModelHelper {
 
     @JvmStatic
     fun isCreating(status: LoanStatus?): Boolean {
-        return when(status){
+        return when (status) {
             LoanStatus.INVALID -> false//todo
             LoanStatus.CREATED -> true
             LoanStatus.CANCELLED -> true
@@ -276,81 +276,110 @@ object ViewModelHelper {
     @JvmStatic
     fun Context.loanStatusBackground(status: LoanStatus?): Drawable? {
         return when (status) {
-            LoanStatus.DELIVERED -> ContextCompat.getDrawable(this, R.drawable.bg_status_magenta)
-            LoanStatus.REPAID -> ContextCompat.getDrawable(this, R.drawable.bg_status_blue)
+            LoanStatus.DELIVERED -> ContextCompat.getDrawable(this, R.drawable.bg_loan_status_delivered)
+            LoanStatus.REPAID -> ContextCompat.getDrawable(this, R.drawable.bg_loan_status_repaid)
             LoanStatus.INVALID,
-            LoanStatus.CREATED,
             LoanStatus.CANCELLED,
+            LoanStatus.CREATED-> ContextCompat.getDrawable(this,R.drawable.bg_loan_status_created)
+            LoanStatus.APPROVED-> ContextCompat.getDrawable(this,R.drawable.bg_loan_status_approved)
             LoanStatus.AUDITING,
             LoanStatus.REJECTED,
-            LoanStatus.APPROVED,
             LoanStatus.FAILURE,
             LoanStatus.RECEIVIED,
-            null -> ContextCompat.getDrawable(this, R.drawable.bg_status_gray)
+            null -> ContextCompat.getDrawable(this, R.drawable.bg_loan_status_other)
         }
     }
 
     @JvmStatic
-    fun Context.loanStatusNoticeText(status: LoanStatus?):CharSequence?{
-        return when(status){
+    fun Context.loanStatusNoticeText(status: LoanStatus?): CharSequence? {
+        return when (status) {
             LoanStatus.INVALID -> null//todo
             LoanStatus.CREATED -> null//todo
             LoanStatus.CANCELLED -> null//todo
             LoanStatus.AUDITING -> "您的借币申请正在审核中"
-            LoanStatus.REJECTED -> "您的借币申请审核失败，建议过段时间(1个月)再尝试"
-            LoanStatus.APPROVED -> "更新你的申请已经审核通过，我们将尽快打币"
-            LoanStatus.FAILURE -> "很遗憾放币失败，建议过短时间(一周后)再尝试"
-            LoanStatus.DELIVERED -> null
-            LoanStatus.RECEIVIED -> null//todo
+            LoanStatus.REJECTED -> "您的借币申请审核失败\n建议过段时间(1个月)再尝试"
+            LoanStatus.APPROVED -> "更新你的申请已经审核通过\n我们将尽快打币"
+            LoanStatus.FAILURE -> "很遗憾放币失败\n建议过短时间(一周后)再尝试"
+            LoanStatus.DELIVERED -> "已放币"
+            LoanStatus.RECEIVIED -> "已收币"
             LoanStatus.REPAID -> "您的订单已处理完毕"
             null -> null
         }
     }
 
     @JvmStatic
-    fun Context.loanStatusAction(record: LoanRecord?):CharSequence?{
-        record?:return null
-        return when(record.status){
+    fun Context.loanStatusNoticeIcon(status: LoanStatus?): Drawable? {
+        return when (status) {
+            LoanStatus.INVALID -> null//todo
+            LoanStatus.CREATED -> null//todo
+            LoanStatus.CANCELLED -> null//todo
+            LoanStatus.AUDITING -> ContextCompat.getDrawable(this,R.drawable.ic_loan_auditing)
+            LoanStatus.REJECTED -> ContextCompat.getDrawable(this,R.drawable.ic_loan_rejected)
+            LoanStatus.APPROVED -> ContextCompat.getDrawable(this,R.drawable.ic_loan_approved)
+            LoanStatus.FAILURE -> ContextCompat.getDrawable(this,R.drawable.ic_loan_failure)
+            LoanStatus.RECEIVIED ,//treat same as DELIVERED
+            LoanStatus.DELIVERED -> ContextCompat.getDrawable(this,R.drawable.ic_loan_delivered)
+            LoanStatus.REPAID -> ContextCompat.getDrawable(this,R.drawable.ic_loan_repaid)
+            null -> null
+        }
+    }
+
+    @JvmStatic
+    fun Context.loanStatusAction(record: LoanRecord?): CharSequence? {
+        record ?: return null
+        return when (record.status) {
             LoanStatus.INVALID -> null//todo
             LoanStatus.CREATED -> null//todo
             LoanStatus.CANCELLED -> null//todo
             LoanStatus.AUDITING -> null
             LoanStatus.APPROVED -> null
             LoanStatus.REJECTED,
-            LoanStatus.FAILURE ,
+            LoanStatus.FAILURE,
             LoanStatus.REPAID -> "重新申请"
-            LoanStatus.DELIVERED ,
+            LoanStatus.DELIVERED,
             LoanStatus.RECEIVIED -> {
-                if(!record.earlyRepayAvailable){// not early now
+                if (!record.earlyRepayAvailable) {// not early now
                     "还币"
-                }else{
-                    if (record.allowRepayPermit){
+                } else {
+                    if (record.allowRepayPermit) {
                         "提前还币"
-                    }else null
+                    } else null
                 }
             }
         }
     }
 
     @JvmStatic
-    fun Context.loanPeriodText(record: LoanRecord?):CharSequence?{
-        record?:return null
-        return when(record.status){
-            LoanStatus.INVALID ,
-            LoanStatus.CREATED ,
+    fun Context.loanPeriodText(record: LoanRecord?): CharSequence? {
+        record ?: return null
+        return when (record.status) {
+            LoanStatus.INVALID,
+            LoanStatus.CREATED,
             LoanStatus.CANCELLED -> ""//todo
-            LoanStatus.AUDITING ,
-            LoanStatus.REJECTED ,
-            LoanStatus.APPROVED ,
+            LoanStatus.AUDITING,
+            LoanStatus.REJECTED,
+            LoanStatus.APPROVED,
             LoanStatus.FAILURE -> "${record.borrowDuration}${record.durationUnit.str()}"
-            LoanStatus.DELIVERED ,
-            LoanStatus.RECEIVIED ,
-            LoanStatus.REPAID -> if(record.repayDate!= null&& record.deliverDate!=null){
-                getString(R.string.time_format_yyyymmdd_dot_to,record.deliverDate,record.repayDate)
-            }else{
+            LoanStatus.DELIVERED,
+            LoanStatus.RECEIVIED,
+            LoanStatus.REPAID -> if (record.repayDate != null && record.deliverDate != null) {
+                getString(R.string.time_format_yyyymmdd_dot_to, record.deliverDate, record.repayDate)
+            } else {
                 "${record.borrowDuration}${record.durationUnit.str()}"
             }
         }
+    }
+
+
+    @JvmStatic
+    fun Context.loanAmountText(record: LoanRecord?): CharSequence? {
+        record ?: return null
+        return "${record.amount.toPlainString()}${record.currency.symbol}"
+    }
+
+    @JvmStatic
+    fun concatWithoutNull(vararg texts: String?): String {
+        return texts.joinToString(separator = "") { it ?: "" }
     }
 }
 
