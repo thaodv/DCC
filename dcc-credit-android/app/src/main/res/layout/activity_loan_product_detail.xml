@@ -7,6 +7,7 @@
         >
 
     <data>
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
         <variable
                 name="product"
                 type="io.wexchain.dccchainservice.domain.LoanProduct"
@@ -101,8 +102,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                android:text="@{product.interestRateStr}"
-                tools:text="年化20%"
+                android:text="@{ViewModelHelper.concatWithoutNull(`日利率`,product.interestRateStr)}"
+                tools:text="日利率2%"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_product_interest_rate_label"
@@ -147,8 +148,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                android:text="@{product.repayAheadRateStr}"
-                tools:text="年化20%"
+                android:text="@{ViewModelHelper.concatWithoutNull(`年利率`,product.repayAheadRateStr)}"
+                tools:text="年利率20%"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_product_repay_fee_label"

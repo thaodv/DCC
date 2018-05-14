@@ -253,7 +253,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/tv_fee_label"
-                    android:max="@{vm.product.feeRange*10000}"
+                    android:max="@{vm.product.feeRange*100}"
                     state_exceeded="@{vm.feeExceeded}"
                     android:thumb="@drawable/ei_tracker"
                     android:progressDrawable="@drawable/seekbar_progress_dcc"

@@ -31,6 +31,10 @@ data class LoanProduct(
     val repayPermit: Boolean,
     @SerializedName("repayAheadRate")
     val repayAheadRate: BigDecimal,
+    @SerializedName("name")
+    val name: String?,
+    @SerializedName("logoUrl")
+    val logoUrl: String?,
     /**
      * 期数
      */
@@ -46,7 +50,7 @@ data class LoanProduct(
         require(loanPeriodList.size >= 2)
         val start = loanPeriodList.first()
         val end = loanPeriodList.last()
-        return "${start.str()}-${end.str()}"
+        return "${start.value}-${end.str()}"
     }
 
     fun getPeriod(index: Int): String? {
@@ -65,9 +69,9 @@ data class LoanProduct(
         val c = currency
         val start = volumeOptionList.first()
         val end = volumeOptionList.last()
-        val startStr = c.convertToDecimal(start).setScale(4, RoundingMode.DOWN).toPlainString()
-        val endStr = c.convertToDecimal(end).setScale(4, RoundingMode.DOWN).toPlainString()
-        return "$startStr${c.symbol}-$endStr${c.symbol}"
+        val startStr = c.convertToDecimal(start).toPlainString()
+        val endStr = c.convertToDecimal(end).toPlainString()
+        return "$startStr-$endStr${c.symbol}"
     }
 
     fun getInterestRateStr(): String {
@@ -76,7 +80,7 @@ data class LoanProduct(
     }
 
     fun getRepayAheadRateStr(): String {
-        val rateStr = repayAheadRate.divide(BigDecimal("3.65"), RoundingMode.DOWN).toPlainString()//interest rate in day
+        val rateStr = repayAheadRate.scaleByPowerOfTen(2).toPlainString()
         return "$rateStr%"
     }
 

@@ -9,6 +9,11 @@ data class LoanRecordSummary(
     @SerializedName("applyDate") val applyDate: Long?,
     @SerializedName("currency") val currency: LoanCurrency?,
     @SerializedName("lender") val lender: Lender?,
-    @SerializedName("amount") val amount: BigDecimal
+    @SerializedName("amount") val amount: BigDecimal,
+    @SerializedName("productLogoUrl") val productLogoUrl: String?
+
 ) {
+    fun getOrderIdStr(): String {
+        return orderId.toString()
+    }
 }

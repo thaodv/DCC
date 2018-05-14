@@ -33,6 +33,7 @@
                 tools:src="@drawable/ethereum"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                imageUrl="@{order.productLogoUrl}"
                 visibleOrGone="@{!ViewModelHelper.isCreating(order.status)}"
                 />
 
@@ -40,7 +41,7 @@
                 android:id="@+id/tv_product_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{order.lender.name}"
+                android:text="@{order.orderIdStr}"
                 android:textColor="@color/text_white"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/tv_time"
@@ -71,7 +72,7 @@
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{order.applyDate==null?null:@string/time_format_yyyymmdd_hhmmss(order.applyDate)}"
+                android:text="@{order.applyDate==null?null:@string/time_format_yyyymmdd_hhmm(order.applyDate)}"
                 tools:text="@tools:sample/date/ddmmyy"
                 android:textColor="@color/text_white"
                 app:layout_constraintTop_toBottomOf="@id/tv_product_name"

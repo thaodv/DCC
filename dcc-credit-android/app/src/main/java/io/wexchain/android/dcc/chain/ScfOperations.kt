@@ -32,6 +32,7 @@ object ScfOperations {
 
     private const val DIGEST = "SHA256"
 
+    @Deprecated("replaced")
     fun cancelLoan(orderId:Long,passport: Passport): Single<String> {
         val credentials = passport.credential
         val nonce = privateChainNonce(credentials.address)
@@ -52,6 +53,12 @@ object ScfOperations {
                     }
             }
             .confirmOnChain(chainGateway)
+    }
+
+    fun cancelLoan(orderId: Long): Single<String> {
+        return withScfTokenInCurrentPassport("") {
+            App.get().scfApi.cancelLoan(it,orderId)
+        }
     }
 
     fun submitLoan(loanScratch: LoanScratch, passport: Passport): Single<String> {
@@ -133,12 +140,15 @@ object ScfOperations {
                     if (!it.hasReceipt) {
                         throw DccChainServiceException("no receipt yet")
                     }
+                    it
+                }
+                .retryWhen(RetryWithDelay.createSimple(6, 5000L))
+                .map {
                     if(!it.approximatelySuccess){
-                        throw DccChainServiceException("tx not successfully confirmed")
+                        throw DccChainServiceException()
                     }
                     txHash
                 }
-                .retryWhen(RetryWithDelay.createSimple(6, 5000L))
         }
     }
 

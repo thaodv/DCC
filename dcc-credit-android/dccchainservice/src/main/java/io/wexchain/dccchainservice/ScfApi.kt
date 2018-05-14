@@ -105,6 +105,13 @@ interface ScfApi {
         @Field("loanPeriodValue") loanPeriodValue :Int
     ):Single<Result<BigDecimal>>
 
+    @POST("secure/cancel")
+    @FormUrlEncoded
+    fun cancelLoan(
+        @Header(ScfApi.HEADER_TOKEN) token: String?,
+        @Field("orderId") orderId: Long//否	链上订单id
+    ):Single<Result<String>>
+
     companion object {
         const val HEADER_TOKEN = "x-auth-token"
     }

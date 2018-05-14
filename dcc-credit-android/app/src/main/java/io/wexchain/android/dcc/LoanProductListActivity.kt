@@ -92,11 +92,15 @@ class LoanProductListActivity : BaseCompatActivity(), ItemViewClickListener<Loan
                 adapter.setList(it)
                 if(it.isNotEmpty()){
                     val logoUrl = it.first().lender.logoUrl
-                    val ivLogo = findViewById<ImageView>(R.id.iv_provider_logo)
-                    GlideApp.with(ivLogo)
-                        .load(logoUrl)
-                        .into(ivLogo)
+//                    setBanner(logoUrl)
                 }
             }
+    }
+
+    private fun setBanner(logoUrl: String) {
+        val ivLogo = findViewById<ImageView>(R.id.iv_provider_logo)
+        GlideApp.with(ivLogo)
+            .load(logoUrl)
+            .into(ivLogo)
     }
 }

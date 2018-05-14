@@ -27,5 +27,8 @@ class LoanActivity : BaseCompatActivity() {
         findViewById<View>(R.id.card_my_loan).setOnClickListener {
             navigateTo(LoanRecordsActivity::class.java)
         }
+        findViewById<View>(R.id.card_incentive_program).setOnClickListener {
+            navigateTo(IncentiveProgramActivity::class.java)
+        }
     }
 }

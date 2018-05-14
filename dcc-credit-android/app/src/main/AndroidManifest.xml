@@ -18,8 +18,7 @@
                 android:name="io.wexchain.android.dcc.LoadingActivity"
                 android:noHistory="true"
                 android:screenOrientation="portrait"
-                android:theme="@style/DccLightTheme.App.Transparent.Loading"
-                >
+                android:theme="@style/DccLightTheme.App.Transparent.Loading">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -160,10 +159,9 @@
                 android:theme="@style/DccLightTheme.App.Transparent"/>
         <activity
                 android:name="io.wexchain.android.dcc.LoanActivity"
-                android:screenOrientation="portrait"
-                android:theme="@style/DccLightTheme.App.Transparent"
                 android:launchMode="singleTask"
-                />
+                android:screenOrientation="portrait"
+                android:theme="@style/DccLightTheme.App.Transparent"/>
         <activity
                 android:name="io.wexchain.android.dcc.AddBeneficiaryAddressActivity"
                 android:label="添加收款地址">
@@ -192,8 +190,8 @@
                 android:screenOrientation="portrait"/>
         <activity
                 android:name="io.wexchain.android.dcc.LoanSubmitResultActivity"
-                android:noHistory="true"
                 android:label="借币申请结果"
+                android:noHistory="true"
                 android:screenOrientation="portrait"/>
         <activity
                 android:name="io.wexchain.android.dcc.LoanRecordsActivity"
@@ -208,8 +206,8 @@
                 android:screenOrientation="portrait"/>
         <activity
                 android:name="io.wexchain.android.dcc.LoanRepayResultActivity"
-                android:noHistory="true"
                 android:label="还币结果"
+                android:noHistory="true"
                 android:screenOrientation="portrait"/>
         <activity
                 android:name="io.wexchain.android.dcc.LoanRepayActivity"
@@ -227,6 +225,12 @@
                 android:name="io.wexchain.android.dcc.RequisiteCertListActivity"
                 android:label="所需资料"
                 android:screenOrientation="portrait"/>
+        <activity
+                android:name="io.wexchain.android.dcc.IncentiveProgramActivity"
+                android:label="@string/incentive_program"
+                android:screenOrientation="portrait"
+                >
+        </activity>
     </application>
 
 </manifest>

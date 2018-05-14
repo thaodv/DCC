@@ -49,7 +49,7 @@ class StartLoanVm : ViewModel() {
                 if (product == null) {
                     fee.set(null)
                 } else {
-                    val userFee = product.dccFeeScope.first().toBigDecimal() + BigDecimal.valueOf((feeAdditional.get()).toLong()).scaleByPowerOfTen(-4)
+                    val userFee = product.dccFeeScope.first().toBigDecimal() + BigDecimal.valueOf((feeAdditional.get()).toLong()).scaleByPowerOfTen(-2)
                     fee.set(userFee)
                 }
             }

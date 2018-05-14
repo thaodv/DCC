@@ -69,7 +69,7 @@ interface EthJsonRpcApi {
         const val PUBLIC_RPC_URL = BuildConfig.PUBLIC_CHAIN_RPC
 
         fun juzixErc20RpcUrl(symbol:String): String {
-            return "${BuildConfig.JUZIX_CHAIN_RESTFUL}erc20/$symbol/1/web3/"
+            return "${BuildConfig.GATEWAY_BASE_URL}erc20/$symbol/1/web3/"
         }
 
         internal val ids = ConcurrentHashMap<EthJsonRpcApi, AtomicLong>()

@@ -102,10 +102,18 @@
                         android:layout_marginTop="16dp"
                         tools:layout="@layout/fragment_digital_assets_limited"
                         />
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:src="@drawable/footer_dcc_colored"
+                        android:layout_gravity="center_horizontal"
+                        />
 
             </LinearLayout>
 
         </ScrollView>
+
 
     </LinearLayout>
 </layout>
