@@ -8,6 +8,7 @@ import "./LoanFee.sol";
 import "../math/SafeMath.sol";
 import "../utils/FastFailure.sol";
 
+//借贷的主要处理逻辑
 contract LoanService is OperatorPermission, GateControl, FastFailure {
 
     using SafeMath for uint256;
