@@ -5,6 +5,7 @@ import "../utils/ByteUtils.sol";
 import "./AgreementInfo.sol";
 import "../math/SafeMath.sol";
 
+//借贷协议订单储存合约
 contract AgreementService is OperatorPermission, AgreementInfo {
 
     using SafeMath for uint256;
