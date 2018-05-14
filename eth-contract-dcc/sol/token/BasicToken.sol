@@ -40,6 +40,7 @@ contract BasicToken is ERC20Basic, Ownable {
         return true;
     }
 
+    //批量转账方法
     function batchTransfer(address[] _addresses, uint256[] _value) public returns (bool) {
         for (uint256 i = 0; i < _addresses.length; i++) {
             require(transfer(_addresses[i], _value[i]));
