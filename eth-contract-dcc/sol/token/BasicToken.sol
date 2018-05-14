@@ -19,6 +19,7 @@ contract BasicToken is ERC20Basic, Ownable {
         _;
     }
 
+    //transfersEnabledFlag=true
     function enableTransfers() public onlyOwner {
         transfersEnabledFlag = true;
     }
