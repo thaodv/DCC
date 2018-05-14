@@ -17,7 +17,8 @@ contract AgreementService is OperatorPermission, AgreementInfo {
         uint256 orderId;
         address borrower;
         bytes32 idHash;
-        Status status;
+
+
         bytes applicationDigest;
         bytes agreementDigest;
         bytes repayDigest;
