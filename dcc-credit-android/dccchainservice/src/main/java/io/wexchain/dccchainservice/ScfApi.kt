@@ -2,6 +2,7 @@ package io.wexchain.dccchainservice
 
 import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
 import java.math.BigDecimal
@@ -105,12 +106,18 @@ interface ScfApi {
         @Field("loanPeriodValue") loanPeriodValue :Int
     ):Single<Result<BigDecimal>>
 
-    @POST("secure/cancel")
+    @POST("secure/loan/cancel")
     @FormUrlEncoded
     fun cancelLoan(
         @Header(ScfApi.HEADER_TOKEN) token: String?,
-        @Field("orderId") orderId: Long//否	链上订单id
+        @Field("chainOrderId") orderId: Long//否	链上订单id
     ):Single<Result<String>>
+
+    @GET("secure/loan/download/agreement")
+    fun loanAgreement(
+        @Header(ScfApi.HEADER_TOKEN) token: String?,
+        @Query("chainOrderId") chainOrderId: Long//否	链上订单id
+    ):Single<ResponseBody>
 
     companion object {
         const val HEADER_TOKEN = "x-auth-token"

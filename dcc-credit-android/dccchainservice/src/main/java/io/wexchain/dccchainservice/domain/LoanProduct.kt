@@ -35,6 +35,8 @@ data class LoanProduct(
     val name: String?,
     @SerializedName("logoUrl")
     val logoUrl: String?,
+    @SerializedName("agreementTemplateUrl")
+    val agreementTemplateUrl: String?,
     /**
      * 期数
      */
@@ -75,7 +77,7 @@ data class LoanProduct(
     }
 
     fun getInterestRateStr(): String {
-        val rateStr = loanRate.divide(BigDecimal("3.65"), RoundingMode.DOWN).toPlainString()//interest rate in day
+        val rateStr = loanRate.divide(BigDecimal("3.65"), RoundingMode.DOWN).setScale(2,RoundingMode.DOWN).toPlainString()//interest rate in day
         return "$rateStr%"
     }
 

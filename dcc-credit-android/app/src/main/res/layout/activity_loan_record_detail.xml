@@ -197,7 +197,7 @@
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 app:layout_constraintTop_toBottomOf="@id/fl_loan_status"
                 app:layout_constraintBottom_toTopOf="@id/btn_action"
-                android:layout_marginTop="48dp"
+                app:layout_constraintVertical_bias="0.6"
                 >
 
             <View

@@ -131,6 +131,13 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
                 }
             }
         }
+        binding.tvAgreementNoticeLink.setOnClickListener {
+            product?.agreementTemplateUrl?.let {
+                navigateTo(ViewPdfActivity::class.java){
+                    putExtra(Extras.EXTRA_PDF_URL,it)
+                }
+            }
+        }
     }
 
     private fun checkOrderAndProceed(loanScratch: LoanScratch) {

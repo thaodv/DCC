@@ -125,6 +125,7 @@
     <string name="creation_succeed">创建成功</string>
     <string name="import_succeed">导入成功</string>
     <string name="hint_enable_local_protect">为了您的钱包安全，建议您先开启本地安全保护</string>
+    <string name="warning_backup_wallet">请优先备份钱包到其他设备，以免客户端删除、密钥丢失等造成资产损失。</string>
     <string name="bitexpress">BitExpress</string>
     <string name="wallet_password_guide">不少于8位字符，建议混合大小写字母、数字、特殊符号</string>
     <string name="wallet_password_notice">密码用于保护私钥和交易授权，强度非常重要\n应用提供方不存储密码，也无法帮您找回，请务必记牢</string>

@@ -8,6 +8,7 @@ import io.reactivex.Single
 import io.reactivex.plugins.RxJavaPlugins
 import io.wexchain.android.common.Pop
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.network.CommonApi
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.PassportRepository
 import io.wexchain.android.dcc.repo.ScfTokenManager
@@ -36,6 +37,8 @@ class App : MultiDexApplication() {
 
     @VisibleForTesting
     lateinit var networking: Networking
+
+    lateinit var commonApi: CommonApi
 
     //our services
     lateinit var chainGateway: ChainGateway
@@ -92,6 +95,8 @@ class App : MultiDexApplication() {
     private fun initServices(app: App) {
         val networking = Networking(app, BuildConfig.DEBUG)
         this.networking = networking
+        this.commonApi = networking.createApi(CommonApi::class.java,"https://www.google.com")//url is unused
+
         chainGateway = networking.createApi(ChainGateway::class.java, cc.sisel.ewallet.BuildConfig.GATEWAY_BASE_URL)
         certApi = networking.createApi(CertApi::class.java, BuildConfig.CHAIN_FUNC_URL)
         chainFrontEndApi = networking.createApi(ChainFrontEndApi::class.java, BuildConfig.CHAIN_FRONTEND_URL)

@@ -27,6 +27,13 @@ class LoanRecordDetailActivity : BindActivity<ActivityLoanRecordDetailBinding>()
         binding.btnAction.setOnClickListener {
             performAction(binding.order)
         }
+        binding.flLoanContract.setOnClickListener {
+            binding.order?.orderId?.let {
+                navigateTo(LoanAgreementActivity::class.java){
+                    putExtra(Extras.EXTRA_LOAN_CHAIN_ORDER_ID,it)
+                }
+            }
+        }
     }
 
     private fun performAction(order: LoanRecord?) {

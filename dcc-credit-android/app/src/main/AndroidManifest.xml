@@ -228,8 +228,11 @@
         <activity
                 android:name="io.wexchain.android.dcc.IncentiveProgramActivity"
                 android:label="@string/incentive_program"
-                android:screenOrientation="portrait"
-                >
+                android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.LoanAgreementActivity">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.ViewPdfActivity">
         </activity>
     </application>
 

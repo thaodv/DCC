@@ -44,7 +44,7 @@ class InsertFixItemAdapter<OVH : RecyclerView.ViewHolder>(
         return viewType == TYPE_INSERT_FIXED
     }
 
-    private fun isBottomPosition(position: Int): Boolean {
+    private fun isInsertedPosition(position: Int): Boolean {
         val insertionPos = insertFixViewProvider.insertionPos
         val oCount = originalAdapter.itemCount
         return (oCount < insertionPos && position == oCount) || position == insertionPos
@@ -55,7 +55,7 @@ class InsertFixItemAdapter<OVH : RecyclerView.ViewHolder>(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (isBottomPosition(position)) {
+        if (isInsertedPosition(position)) {
             insertFixViewProvider.onBind(holder.itemView, position)
         } else {
             @Suppress("UNCHECKED_CAST")
@@ -64,7 +64,7 @@ class InsertFixItemAdapter<OVH : RecyclerView.ViewHolder>(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (isBottomPosition(position)) {
+        return if (isInsertedPosition(position)) {
             TYPE_INSERT_FIXED
         } else {
             originalAdapter.getItemViewType(getOriginalPos(position))
@@ -75,7 +75,7 @@ class InsertFixItemAdapter<OVH : RecyclerView.ViewHolder>(
             if (position > insertFixViewProvider.insertionPos) position - 1 else position
 
     override fun getItemId(position: Int): Long {
-        return if (isBottomPosition(position)) {
+        return if (isInsertedPosition(position)) {
             RecyclerView.NO_ID//todo consider another id
         } else {
             originalAdapter.getItemId(getOriginalPos(position))

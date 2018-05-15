@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.chain
 
+import com.google.gson.reflect.TypeToken
 import io.reactivex.Single
 import io.reactivex.Flowable
 import io.reactivex.SingleTransformer
@@ -21,6 +22,7 @@ import io.wexchain.dccchainservice.domain.LoanChainOrder
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import io.wexchain.digitalwallet.Currencies
+import okhttp3.MediaType
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -184,6 +186,27 @@ object ScfOperations {
         } else {
             Single.error<BigDecimal>(IllegalStateException())
         }
+    }
+
+    fun loadContractPdf(orderId: Long): Single<ByteArray> {
+        return ScfOperations.currentToken
+            .flatMap {
+                App.get().scfApi
+                    .loanAgreement(it, orderId)
+                    .map {
+                        when (it.contentType()) {
+                            MediaType.parse("application/pdf") -> it.bytes()
+                            MediaType.parse("application/json") -> {
+                                val result =
+                                    App.get().networking.networkGson.fromJson<Result<String>>(it.charStream(),
+                                        object : TypeToken<Result<String>>() {}.type)
+                                throw result.asError()
+                            }
+                            else -> throw IllegalArgumentException()
+                        }
+                    }
+            }
+            .compose(ScfOperations.withScfTokenInCurrentPassport())
     }
 
     /**

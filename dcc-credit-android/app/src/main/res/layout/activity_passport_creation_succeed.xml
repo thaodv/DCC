@@ -8,8 +8,8 @@
     <data>
 
         <variable
-                name="passportAddress"
-                type="String"
+                name="passport"
+                type="io.wexchain.android.dcc.domain.Passport"
                 />
 
         <variable
@@ -23,32 +23,17 @@
             android:layout_height="match_parent"
             >
 
-        <FrameLayout
-                android:id="@+id/card_passport_info"
+
+        <include
+                layout="@layout/include_card_passport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_marginLeft="18dp"
-                android:layout_marginRight="18dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
                 app:layout_constraintTop_toTopOf="parent"
-                android:background="@drawable/bg_round_rect_frame_white"
-                >
-            <include
-                    layout="@layout/layout_passport_info_card"
-                    android:id="@+id/composite_passport_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:passportAddress="@{passportAddress}"
-                    android:elevation="2dp"
-                    />
-        </FrameLayout>
-
-
-        <android.support.v4.widget.Space
-                android:id="@+id/s_loc1"
-                android:layout_width="0dp"
-                android:layout_height="20dp"
-                app:layout_constraintBottom_toBottomOf="@id/card_passport_info"
+                android:id="@+id/card_passport_info"
+                app:passport="@{passport}"
                 />
 
         <TextView
@@ -56,38 +41,64 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{fromImport?@string/import_succeed:@string/creation_succeed}"
-                android:drawableTop="@drawable/success3"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/s_loc1"
-                android:layout_marginTop="0dp"
+                app:layout_constraintTop_toBottomOf="@id/card_passport_info"
+                android:layout_marginTop="16dp"
                 android:drawablePadding="10dp"
                 tools:text="@string/creation_succeed"
                 android:elevation="4dp"
                 />
 
-        <TextView
-                android:id="@+id/tv_protect_notice"
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/black_overlay"
-                android:elevation="2dp"
-                android:drawableLeft="@drawable/success2"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:drawablePadding="12dp"
-                android:text="@string/hint_enable_local_protect"
-                android:gravity="center_vertical"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
                 app:layout_constraintTop_toBottomOf="@id/tv_creation_succeed"
                 app:layout_constraintBottom_toTopOf="@id/btn_enable_protect"
+                android:background="@drawable/bg_round_rect_frame"
+                android:orientation="vertical"
+                android:padding="0dp"
                 >
 
-        </TextView>
+            <TextView
+                    android:id="@+id/tv_protect_notice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:drawableLeft="@drawable/success2"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:drawablePadding="12dp"
+                    android:text="@string/hint_enable_local_protect"
+                    android:gravity="center_vertical"
+                    />
+
+            <View style="@style/DividerHorizontal"
+                  android:background="@color/gray_alpha"
+                    />
+
+            <TextView
+                    android:id="@+id/tv_warning_backup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:drawableLeft="@drawable/ic_warning"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:drawablePadding="12dp"
+                    android:text="@string/warning_backup_wallet"
+                    android:textColor="@color/text_red"
+                    android:gravity="center_vertical"
+                    />
+
+        </LinearLayout>
 
         <Button
                 android:id="@+id/btn_enable_protect"
@@ -97,8 +108,8 @@
                 app:layout_constraintRight_toRightOf="parent"
                 style="@style/Widget.AppCompat.Button.Dcc.Full"
                 android:text="开启本地安全保护"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:padding="12dp"
                 app:layout_constraintBottom_toTopOf="@id/btn_skip"
                 android:layout_marginBottom="16dp"

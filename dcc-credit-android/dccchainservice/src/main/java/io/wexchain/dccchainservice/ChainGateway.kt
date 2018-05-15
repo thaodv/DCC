@@ -110,6 +110,7 @@ interface ChainGateway {
         @Field("code") code: String? = null
     ):Single<Result<String>>
 
+    @Deprecated("replaced")
     @POST("dcc/loan/1/cancel")
     @FormUrlEncoded
     fun cancelLoanOrder(

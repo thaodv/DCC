@@ -21,6 +21,7 @@ object Extras {
     const val EXTRA_LOAN_CHAIN_ORDER_ID = "dcc_loan_chain_order_id"
     const val EXTRA_LOAN_REPAY_BILL = "dcc_loan_repay_bill"
     const val EXTRA_REQUISITE_CERTS = "dcc_loan_requisite_certs"
+    const val EXTRA_PDF_URL = "common_pdf_url"
     const val FROM_AUTH = "from_auth"
     const val FROM_IMPORT = "from_import"
 }
