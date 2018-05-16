@@ -159,6 +159,7 @@
                 android:theme="@style/DccLightTheme.App.Transparent"/>
         <activity
                 android:name="io.wexchain.android.dcc.LoanActivity"
+                android:label="信用借币"
                 android:launchMode="singleTask"
                 android:screenOrientation="portrait"
                 android:theme="@style/DccLightTheme.App.Transparent"/>
@@ -230,9 +231,11 @@
                 android:label="@string/incentive_program"
                 android:screenOrientation="portrait">
         </activity>
-        <activity android:name="io.wexchain.android.dcc.LoanAgreementActivity">
+        <activity android:name="io.wexchain.android.dcc.LoanAgreementActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name="io.wexchain.android.dcc.ViewPdfActivity">
+        <activity android:name="io.wexchain.android.dcc.ViewPdfActivity"
+                  android:screenOrientation="portrait">
         </activity>
     </application>
 

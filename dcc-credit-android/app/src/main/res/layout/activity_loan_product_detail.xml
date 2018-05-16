@@ -150,7 +150,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                android:text="@{ViewModelHelper.concatWithoutNull(`年利率`,product.repayAheadRateStr)}"
+                android:text="@{ViewModelHelper.concatWithoutNull(`本金`,product.repayAheadRateStr)}"
                 tools:text="年利率20%"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 app:layout_constraintRight_toRightOf="parent"
