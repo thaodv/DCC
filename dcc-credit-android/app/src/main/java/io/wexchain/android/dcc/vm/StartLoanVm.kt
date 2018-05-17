@@ -108,15 +108,15 @@ class StartLoanVm : ViewModel() {
         val fee = this.fee.get()
         val amount = when(volSelectIndex.get()){
             -1 -> inputCustomVol.get()?.toBigDecimal()
-            else -> product.volumeOptionList.getOrNull(volSelectIndex.get())?.toBigDecimal()
+            else -> product.volumeOptionList.getOrNull(volSelectIndex.get())
         }
         if (fee == null || amount == null){
             failEvent.value = "amount or fee is empty"
             return
         }
         val c = product.currency
-        val minAmount = c.convertToDecimal(product.volumeOptionList.first())
-        val maxAmount = c.convertToDecimal(product.volumeOptionList.last())
+        val minAmount = product.volumeOptionList.first()
+        val maxAmount = product.volumeOptionList.last()
         if(amount < minAmount){
             failEvent.value = "输入金额不可小于${minAmount.toPlainString()}"
             return

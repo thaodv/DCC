@@ -46,4 +46,13 @@ data class LoanRecord(
     @SerializedName("allowRepayPermit") val allowRepayPermit: Boolean
 ){
     fun getOrderIdStr() = "$orderId"
+
+    fun showContract():Boolean {
+        return when(status){
+            LoanStatus.DELIVERED ,
+            LoanStatus.RECEIVIED ,
+            LoanStatus.REPAID -> true
+            else -> false
+        }
+    }
 }

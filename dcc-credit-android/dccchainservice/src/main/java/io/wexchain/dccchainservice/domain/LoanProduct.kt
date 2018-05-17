@@ -18,7 +18,7 @@ data class LoanProduct(
     @SerializedName("description")
     val description: String,
     @SerializedName("volumeOptionList")
-    val volumeOptionList: List<BigInteger>,//represent as raw uint256 value
+    val volumeOptionList: List<BigDecimal>,//represent as raw uint256 value
     @SerializedName("loanRate")
     val loanRate: BigDecimal,
     @SerializedName("loanPeriodList")
@@ -60,9 +60,8 @@ data class LoanProduct(
     }
 
     fun getVolume(index: Int): String? {
-        val c = currency
         return volumeOptionList.getOrNull(index)?.run {
-            c.convertToDecimal(this).setScale(4, RoundingMode.DOWN).toPlainString()
+            this.setScale(4, RoundingMode.DOWN).toPlainString()
         }
     }
 
@@ -71,8 +70,8 @@ data class LoanProduct(
         val c = currency
         val start = volumeOptionList.first()
         val end = volumeOptionList.last()
-        val startStr = c.convertToDecimal(start).toPlainString()
-        val endStr = c.convertToDecimal(end).toPlainString()
+        val startStr = start.toPlainString()
+        val endStr = end.toPlainString()
         return "$startStr-$endStr${c.symbol}"
     }
 
