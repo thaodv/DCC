@@ -8,7 +8,6 @@ import "./LoanFee.sol";
 import "../math/SafeMath.sol";
 import "../utils/FastFailure.sol";
 
-//借贷的主要处理逻辑
 contract LoanService is OperatorPermission, GateControl, FastFailure {
 
     using SafeMath for uint256;
@@ -288,7 +287,7 @@ contract LoanService is OperatorPermission, GateControl, FastFailure {
         return orderIdList;
     }
 
-    function setAggreementContract(address agreementContractAddress) public onlyOwner {
+    function setAgreementContract(address agreementContractAddress) public onlyOwner {
         require(agreementContractAddress != address(0));
         agreementContract = AgreementInfo(agreementContractAddress);
     }
