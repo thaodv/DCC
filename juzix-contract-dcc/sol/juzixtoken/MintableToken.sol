@@ -16,6 +16,8 @@ contract MintableToken is StandardToken {
 
     bool public mintingFinished = false;
 
+    event Burn(address minter, uint256 amount);
+
     mapping(address => bool) public minters;
 
     function canMint() {
@@ -26,6 +28,7 @@ contract MintableToken is StandardToken {
     }
 
     function onlyMinters() {
+        log("burn onlyMinters");
         if (!(minters[msg.sender] || msg.sender == owner)) {
             throw;
         }
@@ -39,6 +42,32 @@ contract MintableToken is StandardToken {
     function deleteMinter(address _addr) public {
         onlyOwner();
         delete minters[_addr];
+    }
+
+    //销毁币
+    function burn(uint256 amount)  public returns (bool){
+        onlyMinters();
+        //校验
+        if(!(amount > 0)){
+            log("!(amount > 0)");
+            throw;
+        }
+        if(!(totalSupply >= amount)){
+            log("!(totalSupply >= amount)");
+            throw;
+        }
+        if(!(balances[msg.sender] >= amount)){
+            log("!(balances[msg.sender] >= amount)");
+            throw;
+        }
+        //将msg.sender的币销毁
+        balances[msg.sender] = balances[msg.sender].sub(amount);
+        //币总量减少
+        totalSupply = totalSupply.sub(amount);
+
+        Burn(msg.sender, amount);
+
+        return true;
     }
 
     /**
