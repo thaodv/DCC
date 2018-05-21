@@ -13,6 +13,7 @@ class LoanActivity : BaseCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan)
+        initToolbar(false)
         setWindowExtended()
         initClicks()
     }
@@ -26,6 +27,9 @@ class LoanActivity : BaseCompatActivity() {
         }
         findViewById<View>(R.id.card_my_loan).setOnClickListener {
             navigateTo(LoanRecordsActivity::class.java)
+        }
+        findViewById<View>(R.id.card_incentive_program).setOnClickListener {
+            navigateTo(IncentiveProgramActivity::class.java)
         }
     }
 }

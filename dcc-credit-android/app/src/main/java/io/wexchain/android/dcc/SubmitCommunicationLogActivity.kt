@@ -135,7 +135,8 @@ class SubmitCommunicationLogActivity : BaseCompatActivity(), InputPhoneInfoFragm
     private fun handleCertProcess(process: CertProcess) {
         currentProcess = process
         if (process.needSecRequest) {
-            when (process.wrapCode()) {
+            val wrapCode = process.wrapCode()
+            when (wrapCode) {
                 CertProcess.Code.CODE_10008 -> onRequestSuccess()
                 CertProcess.Code.CODE_10001,
                 CertProcess.Code.CODE_10002 -> verifyViaSms()
@@ -149,7 +150,7 @@ class SubmitCommunicationLogActivity : BaseCompatActivity(), InputPhoneInfoFragm
                 CertProcess.Code.CODE_10023,
                 CertProcess.Code.CODE_30000,
                 CertProcess.Code.CODE_0,
-                null -> onFail(process.wrapCode()?.message)
+                null -> onFail(wrapCode?.message)
             }
         } else {
             onRequestSuccess()

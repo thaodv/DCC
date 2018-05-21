@@ -14,6 +14,8 @@ contract MintableToken is StandardToken {
 
     event MintFinished();
 
+    event Burn(address minter, uint256 amount);
+
     bool public mintingFinished = false;
 
     mapping(address => bool) public minters;
@@ -32,6 +34,22 @@ contract MintableToken is StandardToken {
 
     function deleteMinter(address _addr) public onlyOwner {
         delete minters[_addr];
+    }
+
+    //销毁币
+    function burn(uint256 amount) onlyMinters public returns (bool){
+        //校验
+        require(amount > 0);
+        require(totalSupply >= amount);
+        require(balances[msg.sender] >= amount);
+        //将msg.sender的币销毁
+        balances[msg.sender] = balances[msg.sender].sub(amount);
+        //币总量减少
+        totalSupply = totalSupply.sub(amount);
+
+        Burn(msg.sender, amount);
+
+        return true;
     }
 
     /**

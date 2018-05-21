@@ -42,7 +42,7 @@ contract LoanService is OperatorPermission, GateControl ,FastFailure{
 
     function LoanService(address agreementContractAddress) public {
         register("LoanServiceModule", "0.0.1.0", "LoanService", "0.0.1.0");
-        setAggreementContract(agreementContractAddress);
+        setAgreementContract(agreementContractAddress);
         orders.push(Order(0, 0, address(0), "", Status.INVALID, 0, "", "", "", ""));
     }
 
@@ -370,7 +370,7 @@ contract LoanService is OperatorPermission, GateControl ,FastFailure{
         return orderIdList;
     }
 
-    function setAggreementContract(address agreementContractAddress) public {
+    function setAgreementContract(address agreementContractAddress) public {
         onlyOwner();
         if (!(agreementContractAddress != address(0))) {
             log("!(agreementContractAddress != address(0))");
@@ -390,4 +390,5 @@ contract LoanService is OperatorPermission, GateControl ,FastFailure{
             fee = loanFee.getMinFee();
         }
     }
+
 }

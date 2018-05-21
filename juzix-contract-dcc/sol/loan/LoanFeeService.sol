@@ -239,4 +239,26 @@ contract LoanFeeService is OperatorPermission, LoanFee {
         return minFee;
     }
 
+    function setCaller(address _caller)  public {
+        onlyOwner();
+        if(!(_caller != address(0))){
+            log("!(_caller != address(0))");
+            throw;
+        }
+        caller = _caller;
+    }
+
+    function setErc20Address(address erc20Address) public {
+        onlyOwner();
+        if(!(erc20Address != address(0))){
+            log("!(erc20Address != address(0))");
+            throw;
+        }
+        erc20 = ERC20Basic(erc20Address);
+    }
+
+    function balanceOf() constant public returns (uint256) {
+        return erc20.balanceOf(this);
+    }
+
 }

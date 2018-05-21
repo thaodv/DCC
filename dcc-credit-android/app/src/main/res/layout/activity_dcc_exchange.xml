@@ -38,7 +38,6 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/ib_public_to_dcc"
                 app:layout_constraintHorizontal_chainStyle="spread"
-                android:enabled="false"
                 />
             <ImageButton
                 android:id="@+id/ib_public_to_dcc"
@@ -47,7 +46,6 @@
                 android:src="@drawable/ic_up_round_disabled"
                 app:layout_constraintLeft_toRightOf="@id/ib_dcc_to_public"
                 app:layout_constraintRight_toRightOf="parent"
-                android:enabled="false"
                 />
 
 

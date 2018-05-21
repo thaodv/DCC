@@ -31,3 +31,6 @@
   **[] $VALUES;
   public *;
 }
+
+#pdfview
+-keep class com.shockwave.**

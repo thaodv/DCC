@@ -4,6 +4,7 @@ import android.os.Bundle
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.dcc.R
@@ -31,6 +32,12 @@ class DccExchangeActivity : BindActivity<ActivityDccExchangeBinding>() {
                 putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dccJuzix)
                 putExtra(Extras.EXTRA_DC_SELECTED, true)
             }
+        }
+        binding.ibDccToPublic.setOnClickListener {
+            toast("该功能将在下个版本中开放")
+        }
+        binding.ibPublicToDcc.setOnClickListener {
+            toast("该功能将在下个版本中开放")
         }
     }
 }

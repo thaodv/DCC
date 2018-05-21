@@ -44,4 +44,15 @@ data class LoanRecord(
     @SerializedName("expectLoanInterest") val expectLoanInterest: BigDecimal?,
     @SerializedName("earlyRepayAvailable") val earlyRepayAvailable: Boolean,
     @SerializedName("allowRepayPermit") val allowRepayPermit: Boolean
-)
+){
+    fun getOrderIdStr() = "$orderId"
+
+    fun showContract():Boolean {
+        return when(status){
+            LoanStatus.DELIVERED ,
+            LoanStatus.RECEIVIED ,
+            LoanStatus.REPAID -> true
+            else -> false
+        }
+    }
+}

@@ -1,6 +1,7 @@
 package io.wexchain.android.dcc.repo
 
 import android.content.Context
+import android.support.annotation.GuardedBy
 import io.wexchain.android.common.persist.SharedPreferencesKVStore
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
@@ -10,6 +11,8 @@ class ScfTokenManager(context: Context){
     private val tokenStore = SharedPreferencesKVStore(context.getSharedPreferences(TOKEN_SP_NAME,Context.MODE_PRIVATE))
     private val lock = ReentrantReadWriteLock()
 
+    @get:GuardedBy("lock")
+    @set:GuardedBy("lock")
     var scfToken:String?
         get() {
             lock.read {

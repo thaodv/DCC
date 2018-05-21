@@ -1,6 +1,7 @@
 package io.wexchain.dccchainservice.domain
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigInteger
 
 
 data class LoanChainOrder(
@@ -9,7 +10,7 @@ data class LoanChainOrder(
     @SerializedName("borrower") val borrower: String,
     @SerializedName("idHash") val idHash: String,
     @SerializedName("status") val status: LoanStatus,
-    @SerializedName("fee") val fee: Int,
+    @SerializedName("fee") val fee: BigInteger,
     @SerializedName("applicationDigest") val applicationDigest: String,
     @SerializedName("agreementDigest") val agreementDigest: String,
     @SerializedName("repayDigest") val repayDigest: String,
@@ -33,7 +34,7 @@ data class LoanChainOrder(
             "",
             "",
             LoanStatus.INVALID,
-            0,
+            BigInteger.ZERO,
             "",
             "",
             "",

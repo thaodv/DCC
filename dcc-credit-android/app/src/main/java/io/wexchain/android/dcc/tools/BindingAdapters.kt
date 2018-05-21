@@ -57,7 +57,7 @@ fun ImageView.setImageRawBytes(imageRawBytes: ByteArray?, errorRes: Drawable?) {
     }
 }
 
-@BindingAdapter("imageUrl", "errorRes")
+@BindingAdapter(value =["imageUrl", "errorRes"],requireAll = false)
 fun setImageUrl(imageView: ImageView, url: String?, errorRes: Drawable?) {
     GlideApp.with(imageView).load(url)
         .error(errorRes)

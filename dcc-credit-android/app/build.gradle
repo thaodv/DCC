@@ -17,7 +17,7 @@ android {
         minSdkVersion min_sdk
         targetSdkVersion target_sdk
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -41,15 +41,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 //            debuggable true
 
-            buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://gateway.wexpass.cn/passport-gateway/restful/"'
             buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://gateway.wexpass.cn/passport-logic/"'
             buildConfigField 'java.lang.String', 'CHAIN_FRONTEND_URL', '"http://www.icohint.com/chain-frontend/"'
             buildConfigField 'java.lang.String', 'CHAIN_EXPLORER_URL', '"http://wexpass.cn/chain-observer/restful/"'
             buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://gateway.wexpass.cn/chain-service-frontend/"'
         }
         debug {
-//            buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://222.73.39.37:9511/passport-gateway/restful/"'
-            buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://10.65.178.18:9511/passport-gateway/restful/"'
 //            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://func.wexchain.io/passport-logic/"'
 //            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.103.28:1212/passport-logic/"'
             buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.178.12:9101/passport-logic/"'//mock
@@ -75,6 +72,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     kapt "com.android.databinding:compiler:$android_gradle_plugin_version"
 
     implementation "com.android.support:appcompat-v7:$support_lib_version"
@@ -100,6 +98,7 @@ dependencies {
     implementation 'com.github.zellius:rxlocationmanager-rxjava2:1.0.0'
     implementation 'com.lyft:scissors:1.1.1'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
+    implementation 'com.github.barteksc:android-pdf-viewer:3.0.0-beta.5'
 
     implementation project(':common')
     implementation project(':idverify')

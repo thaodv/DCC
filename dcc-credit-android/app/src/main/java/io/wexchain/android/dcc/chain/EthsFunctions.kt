@@ -72,6 +72,7 @@ object EthsFunctions {
         Arrays.asList<TypeReference<*>>(typeUInt256)
     )
 
+    @JvmStatic
     fun cancelLoan(
         orderId:Long
     ):Function = Function(

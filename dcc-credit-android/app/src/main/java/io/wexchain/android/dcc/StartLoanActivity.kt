@@ -19,6 +19,7 @@ import io.wexchain.android.dcc.vm.StartLoanVm
 import io.wexchain.android.dcc.vm.domain.LoanScratch
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityStartLoanBinding
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.LoanChainOrder
 import io.wexchain.dccchainservice.domain.LoanProduct
 import io.wexchain.dccchainservice.domain.LoanStatus
@@ -130,6 +131,13 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
                 }
             }
         }
+        binding.tvAgreementNoticeLink.setOnClickListener {
+            product?.agreementTemplateUrl?.let {
+                navigateTo(ViewPdfActivity::class.java){
+                    putExtra(Extras.EXTRA_PDF_URL,it)
+                }
+            }
+        }
     }
 
     private fun checkOrderAndProceed(loanScratch: LoanScratch) {
@@ -162,6 +170,10 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
             .subscribe({ _ ->
                 toast("提交贷款申请成功")
                 navigateTo(LoanSubmitResultActivity::class.java)
+            },{
+                if (it is DccChainServiceException) {
+                    Pop.toast(it.message?:"系统错误",this)
+                }
             })
     }
 
@@ -184,9 +196,7 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
     }
 
     private fun doCancelOrder(order: LoanChainOrder) {
-        val passport = App.get().passportRepository.getCurrentPassport()
-        passport ?: return
-        ScfOperations.cancelLoan(order.id, passport)
+        ScfOperations.cancelLoan(order.id)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
                 showLoadingDialog()
@@ -196,6 +206,10 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
             }
             .subscribe({ _ ->
                 toast("取消成功")
+            },{
+                if (it is DccChainServiceException) {
+                    Pop.toast(it.message?:"系统错误",this)
+                }
             })
     }
 }

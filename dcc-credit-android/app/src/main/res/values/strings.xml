@@ -125,6 +125,7 @@
     <string name="creation_succeed">创建成功</string>
     <string name="import_succeed">导入成功</string>
     <string name="hint_enable_local_protect">为了您的钱包安全，建议您先开启本地安全保护</string>
+    <string name="warning_backup_wallet">请优先备份钱包到其他设备，以免客户端删除、密钥丢失等造成资产损失。</string>
     <string name="bitexpress">BitExpress</string>
     <string name="wallet_password_guide">不少于8位字符，建议混合大小写字母、数字、特殊符号</string>
     <string name="wallet_password_notice">密码用于保护私钥和交易授权，强度非常重要\n应用提供方不存储密码，也无法帮您找回，请务必记牢</string>
@@ -143,9 +144,9 @@
     <string name="bitexpress_info_mail_address">dingnan@myassetapp.com</string>
     <string name="coming_soon">Coming soon</string>
     <string name="affiliate_description">总共可邀请5位好友加入BitEXPRESS，\n每邀请一位好友注册并实名后，\n您将获得额外奖励</string>
-    <string name="loan_period_colon">借币周期:</string>
-    <string name="loan_volume_colon">借币额度:</string>
-    <string name="loan_interest_rate_colon">借币利率:</string>
+    <string name="loan_period_colon">周期:</string>
+    <string name="loan_volume_colon">额度:</string>
+    <string name="loan_interest_rate_colon">利率:</string>
     <string name="repay_ahead_permitted">允许</string>
     <string name="repay_ahead_not_permitted">不允许</string>
     <string name="loan_amount_colon">借币金额:</string>
@@ -162,5 +163,11 @@
     <string name="repay_interest_colon">应还利息:</string>
     <string name="receive_address">收币地址</string>
     <string name="receive_address_colon">收币地址:</string>
+    <string name="incentive_program">激励计划</string>
+    <string name="incentive_program_0">激励计划\nBitExpress是基于信用的数字货币借贷APP，为了鼓励用户建立自己区块链的信用记录，保障良好的借贷行为获得更多的借贷便利，发生在DCC公链上借贷交易均会参与激励计划，获得各种奖励。</string>
+    <string name="incentive_program_1">数据激励\nBitExpress上线初期所有提供的数据验证均不收取费用，并且用户提交数据认证即可获得对应的DCC奖励。</string>
+    <string name="incentive_program_2">传播激励\nBitExpress对推荐朋友使用app进行数字资产借贷的用户进行激励，您推荐的好友如果借贷申请成功，借贷服务费的50%将返还给您。</string>
+    <string name="incentive_program_3">贡献奖励（挖矿奖励）\nBitExpress中用户的行为都会产生不同的贡献值，贡献值会进行累计，每3小时用户可以在糖果领取的功能中进行糖果领取，获得和BitExpress合作的机构投放的各种Token奖励。</string>
+    <string name="incentive_program_4">生态奖励\nBitExpress的底层信用网络构建在Distributed Credit Chain上，因此根据DCC的生态激励规则，BitExpress的用户行为可以获得DCC自动发放的生态奖励。具体的方法规则，请关注DCC网站http://dcc.finance公布的各类策略。</string>
 
 </resources>

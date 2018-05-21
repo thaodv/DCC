@@ -52,7 +52,7 @@ class PassportCreationSucceedActivity: BindActivity<ActivityPassportCreationSucc
         App.get().passportRepository.currPassport
                 .observe(this, Observer {
                     it?.let {
-                        binding.passportAddress = it.address
+                        binding.passport = it
                     }
                 })
     }

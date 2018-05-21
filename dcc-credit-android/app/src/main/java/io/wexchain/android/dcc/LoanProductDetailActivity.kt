@@ -64,7 +64,7 @@ class LoanProductDetailActivity : BindActivity<ActivityLoanProductDetailBinding>
     }
 
     private fun updateProductInfo(product: LoanProduct) {
-        title = product.description
+        title = product.name
         binding.product = product
     }
 }
