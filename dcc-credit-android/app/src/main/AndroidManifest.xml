@@ -8,12 +8,12 @@
 
     <application
             android:name="io.wexchain.android.dcc.App"
-            android:allowBackup="true"
+            android:allowBackup="false"
             android:icon="@mipmap/ic_app_dcc"
             android:label="@string/dcc_app_name"
             android:supportsRtl="false"
             android:theme="@style/DccLightTheme.App"
-            tools:replace="android:icon,android:label,android:theme,android:supportsRtl">
+            tools:replace="android:allowBackup,android:icon,android:label,android:theme,android:supportsRtl">
         <activity
                 android:name="io.wexchain.android.dcc.LoadingActivity"
                 android:noHistory="true"
@@ -231,12 +231,19 @@
                 android:label="@string/incentive_program"
                 android:screenOrientation="portrait">
         </activity>
-        <activity android:name="io.wexchain.android.dcc.LoanAgreementActivity"
-                  android:screenOrientation="portrait">
+        <activity
+                android:name="io.wexchain.android.dcc.LoanAgreementActivity"
+                android:screenOrientation="portrait">
         </activity>
-        <activity android:name="io.wexchain.android.dcc.ViewPdfActivity"
-                  android:screenOrientation="portrait">
+        <activity
+                android:name="io.wexchain.android.dcc.ViewPdfActivity"
+                android:screenOrientation="portrait">
         </activity>
+        <activity
+                android:name="io.wexchain.android.dcc.CmCertDataActivity"
+                android:label="报告原文"
+                android:screenOrientation="portrait"
+                />
     </application>
 
 </manifest>

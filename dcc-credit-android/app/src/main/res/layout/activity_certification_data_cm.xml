@@ -34,7 +34,6 @@
                     android:layout_height="wrap_content"
                     >
 
-
                 <TextView
                         android:id="@+id/tv_cert_org"
                         android:layout_width="wrap_content"
@@ -140,6 +139,41 @@
                         android:text="@{vm.value3}"
                         tools:text="@sample/id.json/data/timelimit"
                         />
+
+
+                <View
+                        android:id="@+id/divider_h3"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_stroke_width"
+                        app:layout_constraintTop_toBottomOf="@id/tv_expired_label"
+                        style="@style/DividerHorizontal"
+                        />
+                <FrameLayout
+                        android:id="@+id/fl_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/divider_h3"
+                        android:onClick="@{(v)->vm.showData()}"
+                        >
+                    <TextView
+                            android:id="@+id/tv_data_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical"
+                            android:text="认证内容"
+                            app:layout_constraintTop_toBottomOf="@id/divider_h2"
+                            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            />
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|center_vertical"
+                            android:src="@drawable/arrow_right"
+                            />
+                </FrameLayout>
+
             </android.support.constraint.ConstraintLayout>
 
         </android.support.v7.widget.CardView>

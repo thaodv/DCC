@@ -14,8 +14,13 @@ class CertificationDataVm:ViewModel(){
     val value3=ObservableField<String>()
 
     val renewEvent = SingleLiveEvent<Void>()
+    val showDataEvent = SingleLiveEvent<Void>()
 
     fun renew(){
         renewEvent.call()
+    }
+
+    fun showData(){
+        showDataEvent.call()
     }
 }

@@ -121,35 +121,6 @@ class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), 
 
     }
 
-//    @SuppressLint("MissingPermission")
-//    private fun checkPreconditions() {
-//        rxPermissions.request(android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION)
-//                .firstOrError()
-//                .flatMap {
-//                    if (it) {
-//                        //granted
-//                        rxLocation.requestLocation(LocationManager.NETWORK_PROVIDER, LocationTime(10, TimeUnit.SECONDS))
-//                    } else Single.error<Location>(SecurityException())
-//                }
-//                .subscribe(
-//                        { loc ->
-//                            //todo
-//                            println(loc)
-//                        },
-//                        {
-//                            //can not get location, quit
-//                            when(it){
-//                                is SecurityException ->
-//                                    toast("您的定位尚未授权,请到设置中允许读取位置权限")
-//                                is ProviderDisabledException ->
-//                                    toast("定位服务不可用")
-//                                else ->
-//                                    toast("无法获取定位")
-//                            }
-////                            activity?.finish()
-//                        })
-//    }
-
     companion object {
         fun create(listener: Listener): InputBankCardInfoFragment {
             val fragment = InputBankCardInfoFragment()

@@ -498,6 +498,19 @@ object CertOperations {
         return certPrefs.certCmLogPhoneNo.get()
     }
 
+    fun getCmCertOrderId(): Long {
+        return certPrefs.certCmLogOrderId.get()
+    }
+
+    fun getCmLogData(orderId: Long):Single<ByteArray>{
+        return Single.just(certCmLogReportFileName(orderId))
+            .observeOn(Schedulers.io())
+            .map {
+                File(App.get().filesDir, it).readBytes()
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     fun onCmLogRequestSuccess(orderId: Long,phoneNo: String,password: String) {
         certPrefs.certCmLogOrderId.set(orderId)
         certPrefs.certCmLogState.set(UserCertStatus.INCOMPLETE.name)

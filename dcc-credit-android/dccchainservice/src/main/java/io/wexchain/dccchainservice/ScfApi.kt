@@ -8,6 +8,7 @@ import retrofit2.http.*
 import java.math.BigDecimal
 
 interface ScfApi {
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @POST("login")
     @FormUrlEncoded
     fun login(
@@ -21,18 +22,21 @@ interface ScfApi {
     @GET("auth/getNonce")
     fun getNonce(): Single<Result<String>>
 
-    @POST("loan/product/queryByLenderCode")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @FormUrlEncoded
+    @POST("loan/product/queryByLenderCode")
     fun queryLoanProductsByLenderCode(
         @Field("lenderCode") lenderCode: String? = null
     ): Single<Result<List<LoanProduct>>>
 
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @POST("loan/product/getById")
     @FormUrlEncoded
     fun queryLoanProductById(
         @Field("id") id: Long
     ): Single<Result<LoanProduct>>
 
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @POST("secure/loan/queryOrders")
     @FormUrlEncoded
     fun queryOrders(
@@ -44,6 +48,7 @@ interface ScfApi {
         @Field("size") size: Long
     ): Single<Result<PagedList<LoanRecord>>>
 
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @POST("secure/loan/queryOrderPage")
     @FormUrlEncoded
     fun queryOrderPage(
@@ -60,6 +65,7 @@ interface ScfApi {
         @Header(ScfApi.HEADER_TOKEN) token: String?
     ): Single<Result<LoanChainOrder>>
 
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @POST("secure/loan/getByChainOrderId")
     @FormUrlEncoded
     fun getLoanRecordById(
@@ -67,6 +73,7 @@ interface ScfApi {
         @Field("chainOrderId") chainOrderId: Long
     ): Single<Result<LoanRecord>>
 
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @POST("secure/loan/apply")
     @FormUrlEncoded
     fun applyLoanCredit(
@@ -84,6 +91,7 @@ interface ScfApi {
         @Field("applyDate") applyDate: Long//否	申请时间（时间戳）
     ): Single<Result<String>>
 
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @POST("secure/loan/getRepaymentBill")
     @FormUrlEncoded
     fun getRepaymentBill(
@@ -91,6 +99,7 @@ interface ScfApi {
         @Field("chainOrderId") chainOrderId: Long//否	链上订单id
     ):Single<Result<LoanRepaymentBill>>
 
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @POST("secure/loan/confirmRepayment")
     @FormUrlEncoded
     fun confirmRepayment(
@@ -98,6 +107,7 @@ interface ScfApi {
         @Field("chainOrderId") chainOrderId: Long//否	链上订单id
     ): Single<Result<String>>
 
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @POST("loan/getLoanInterest")
     @FormUrlEncoded
     fun getLoanInterest(
@@ -106,6 +116,7 @@ interface ScfApi {
         @Field("loanPeriodValue") loanPeriodValue :Int
     ):Single<Result<BigDecimal>>
 
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @POST("secure/loan/cancel")
     @FormUrlEncoded
     fun cancelLoan(
