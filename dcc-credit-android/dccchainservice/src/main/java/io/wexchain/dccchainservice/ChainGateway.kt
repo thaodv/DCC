@@ -24,16 +24,18 @@ interface ChainGateway {
     fun getCaContractAddress(): Single<Result<String>>
 
     /* ca */
-    @POST("ca/1/uploadPubKey")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @FormUrlEncoded
+    @POST("ca/1/uploadPubKey")
     fun uploadCaPubKey(
             @Field("ticket") ticket: String,
             @Field("signMessage") signMessage: String,
             @Field("code") code: String? = null
     ): Single<Result<String>>
 
-    @POST("ca/1/deletePubKey")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @FormUrlEncoded
+    @POST("ca/1/deletePubKey")
     fun deleteCaPubKey(
             @Field("ticket") ticket: String,
             @Field("signMessage") signMessage: String,
@@ -53,9 +55,9 @@ interface ChainGateway {
     @GET("dcc/cert/1/getContractAddress")
     fun getCertContractAddress(@Query("business") business: String): Single<Result<String>>
 
-
-    @POST("dcc/cert/1/apply")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @FormUrlEncoded
+    @POST("dcc/cert/1/apply")
     fun certApply(
             @Field("ticket") ticket: String,
             @Field("signMessage") signMessage: String,
@@ -102,8 +104,9 @@ interface ChainGateway {
     @GET("dcc/loan/1/getContractAddress")
     fun getLoanContractAddress():Single<Result<String>>
 
-    @POST("dcc/loan/1/apply")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @FormUrlEncoded
+    @POST("dcc/loan/1/apply")
     fun applyLoan(
         @Field("ticket") ticket: String,
         @Field("signMessage") signMessage: String,
@@ -111,8 +114,9 @@ interface ChainGateway {
     ):Single<Result<String>>
 
     @Deprecated("replaced")
-    @POST("dcc/loan/1/cancel")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @FormUrlEncoded
+    @POST("dcc/loan/1/cancel")
     fun cancelLoanOrder(
         @Field("signMessage") signMessage: String
     ):Single<Result<String>>

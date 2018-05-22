@@ -162,6 +162,9 @@ class AssetsRepository(
     companion object {
 
         val preset = listOf<DigitalCurrency>(
+                DigitalCurrency("BNB", Chain.publicEthChain, 18, "BNB", "http://open.dcc.finance/images/dapp/product_bnb.png", "0xB8c77482e45F1F44dE1745F52C74426C631bDD52"),
+                DigitalCurrency("TUSD", Chain.publicEthChain, 18, "TrueUSD", "http://open.dcc.finance/images/dapp/product_tusd.png", "0x8dd5fbce2f6a956c3022ba3663759011dd51e73e"),
+                DigitalCurrency("HT", Chain.publicEthChain, 18, "HuobiToken", "http://open.dcc.finance/images/dapp/product_ht.png", "0x6f259637dcd74c767781e37bc6133cd6a68aa161"),
                 DigitalCurrency("EOS", Chain.publicEthChain, 18, "EOS", "http://www.wexpass.cn/images/Contractz_icon/eos@2x.png", "0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0"),
                 DigitalCurrency("TRX", Chain.publicEthChain, 6, "TRON", "http://www.wexpass.cn/images/Contractz_icon/tron@2x.png", "0xf230b790e05390fc8295f4d3f60332c93bed42e2"),
                 DigitalCurrency("QTUM", Chain.publicEthChain, 18, "Qtum", "http://www.wexpass.cn/images/Contractz_icon/qtum@2x.png", "0x9a642d6b3368ddc662CA244bAdf32cDA716005BC"),

@@ -7,13 +7,14 @@ import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.PassportOperations
+import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.vm.CertificationDataVm
 import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.dcc.R
-import io.wexchain.dcc.databinding.ActivityCertificationDataBinding
+import io.wexchain.dcc.databinding.ActivityCertificationDataCmBinding
 
-class CmLogCertificationActivity : BindActivity<ActivityCertificationDataBinding>() {
-    override val contentLayoutId: Int = R.layout.activity_certification_data
+class CmLogCertificationActivity : BindActivity<ActivityCertificationDataCmBinding>() {
+    override val contentLayoutId: Int = R.layout.activity_certification_data_cm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,11 @@ class CmLogCertificationActivity : BindActivity<ActivityCertificationDataBinding
         vm.renewEvent.observe(this, Observer {
             PassportOperations.ensureCaValidity(this) {
                 navigateTo(SubmitCommunicationLogActivity::class.java)
+            }
+        })
+        vm.showDataEvent.observe(this, Observer {
+            navigateTo(CmCertDataActivity::class.java){
+                putExtra(Extras.EXTRA_CERT_ORDER_ID,CertOperations.getCmCertOrderId())
             }
         })
         binding.vm = vm
