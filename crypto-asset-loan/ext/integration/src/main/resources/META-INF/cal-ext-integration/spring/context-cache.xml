@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!--<bean id="cacheManager" class="org.springframework.cache.support.CompositeCacheManager"
+		  p:fallbackToNoOpCache="false">
+		<property name="cacheManagers">
+			<list>
+				<ref bean="caffeineCacheManager" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="caffeineCacheManager" class="org.springframework.cache.caffeine.CaffeineCacheManager"
+		  p:cacheSpecification="maximumSize=1000000,expireAfterWrite=60m,recordStats" />-->
+
+</beans>

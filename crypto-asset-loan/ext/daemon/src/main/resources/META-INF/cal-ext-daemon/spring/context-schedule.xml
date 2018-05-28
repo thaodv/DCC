@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:c="http://www.springframework.org/schema/c"
+	   xmlns:task="http://www.springframework.org/schema/task"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+	<task:scheduler id="myScheduler" pool-size="4" />
+
+	<task:scheduled-tasks scheduler="myScheduler">
+		<task:scheduled ref="collectOrderPatroller" method="patrol" trigger="collectOrderPatrollerTrigger" />
+		<task:scheduled ref="loanOrderPatroller" method="patrol" trigger="loanOrderPatrollerTrigger" />
+		<task:scheduled ref="loanOrderAuditPatroller" method="patrol" trigger="loanOrderAuditPatrollerTrigger" />
+	</task:scheduled-tasks>
+
+	<bean id="collectOrderPatroller"
+		  class="io.wexchain.cryptoasset.loan.ext.daemon.schedule.CollectOrderPatroller" />
+	<bean id="loanOrderPatroller"
+		  class="io.wexchain.cryptoasset.loan.ext.daemon.schedule.LoanOrderPatroller" />
+	<bean id="loanOrderAuditPatroller"
+		  class="io.wexchain.cryptoasset.loan.ext.daemon.schedule.LoanOrderAuditPatroller" />
+	<bean id="loanOrderDeliverPatroller"
+		  class="io.wexchain.cryptoasset.loan.ext.daemon.schedule.LoanOrderDeliverPatroller" />
+
+
+	<bean id="collectOrderPatrollerTrigger"
+		  class="com.wexmarket.topia.commons.basic.schedule.SwitchTrigger"
+		  p:enabled="${schedule.enabled}">
+		<property name="trigger">
+			<bean class="org.springframework.scheduling.support.CronTrigger"
+				  c:_0="${schedule.cron.patroller}" />
+		</property>
+	</bean>
+
+	<bean id="loanOrderPatrollerTrigger"
+		  class="com.wexmarket.topia.commons.basic.schedule.SwitchTrigger"
+		  p:enabled="${schedule.enabled}">
+		<property name="trigger">
+			<bean class="org.springframework.scheduling.support.CronTrigger"
+				  c:_0="${schedule.cron.patroller}" />
+		</property>
+	</bean>
+
+	<bean id="loanOrderAuditPatrollerTrigger"
+		  class="com.wexmarket.topia.commons.basic.schedule.SwitchTrigger"
+		  p:enabled="${schedule.enabled}">
+		<property name="trigger">
+			<bean class="org.springframework.scheduling.support.CronTrigger"
+				  c:_0="0 0/1 * * * ?" />
+		</property>
+	</bean>
+
+	<bean id="loanOrderDeliverPatrollerTrigger"
+		  class="com.wexmarket.topia.commons.basic.schedule.SwitchTrigger"
+		  p:enabled="${schedule.enabled}">
+		<property name="trigger">
+			<bean class="org.springframework.scheduling.support.CronTrigger"
+				  c:_0="0 0/1 * * * ?" />
+		</property>
+	</bean>
+
+</beans>

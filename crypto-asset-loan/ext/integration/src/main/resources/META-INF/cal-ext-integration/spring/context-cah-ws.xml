@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:jaxws="http://cxf.apache.org/jaxws"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<jaxws:client id="transferFacade"
+				  serviceClass="io.wexchain.cryptoasset.hosting.frontier.TransferFacade"
+				  address="${ws.address.cah}/frontier/transferFacade">
+		<jaxws:inInterceptors>
+			<ref bean="loggingInInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+			<ref bean="loggingOutInterceptor" />
+		</jaxws:outInterceptors>
+	</jaxws:client>
+
+	<jaxws:client id="cryptoWalletFacade"
+		serviceClass="io.wexchain.cryptoasset.hosting.wallet.CryptoWalletFacade" address="${ws.address.cah}/cryptoWalletFacade">
+		<jaxws:inInterceptors>
+			<ref bean="loggingInInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+			<ref bean="loggingOutInterceptor" />
+		</jaxws:outInterceptors>
+	</jaxws:client>
+
+	<jaxws:client id="cryptoAssetConfigFacade"
+		serviceClass="io.wexchain.cryptoasset.hosting.asset.CryptoAssetConfigFacade" address="${ws.address.cah}/cryptoAssetConfigFacade">
+		<jaxws:inInterceptors>
+			<ref bean="loggingInInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+			<ref bean="loggingOutInterceptor" />
+		</jaxws:outInterceptors>
+	</jaxws:client>
+
+	<jaxws:client id="balanceFacade"
+				  serviceClass="io.wexchain.cryptoasset.hosting.frontier.BalanceFacade"
+				  address="${ws.address.cah}/frontier/balanceFacade">
+		<jaxws:inInterceptors>
+			<ref bean="loggingInInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+			<ref bean="loggingOutInterceptor" />
+		</jaxws:outInterceptors>
+	</jaxws:client>
+
+</beans>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+	<servlet>
+		<servlet-name>restful</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>restful</servlet-name>
+		<url-pattern>/restful/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>Apache CXF Endpoint</description>
+		<display-name>cxf</display-name>
+		<servlet-name>cxf</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>cxf</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:/META-INF/cal-web/spring/context-assemble.xml</param-value>
+	</context-param>
+	<filter>
+		<filter-name>requestLoggingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>requestLoggingFilter</filter-name>
+		<url-pattern>/restful/*</url-pattern>
+	</filter-mapping>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<env-entry>
+		<env-entry-name>configLocation</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+	</env-entry>
+	<env-entry>
+		<env-entry-name>emptyConfigLocation</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+	</env-entry>
+	<env-entry>
+		<env-entry-name>overrideConfigLocation</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+	</env-entry>
+	<env-entry>
+		<env-entry-name>logbackFileLocation</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+	</env-entry>
+	<resource-ref>
+		<description>DataSource Reference</description>
+		<res-ref-name>jdbc/cryptoAssetLoan</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+</web-app>

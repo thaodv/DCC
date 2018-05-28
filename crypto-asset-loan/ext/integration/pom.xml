@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>io.wexchain.cal</groupId>
+		<artifactId>cal-ext-parent</artifactId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>cal-integration-service</artifactId>
+
+	<name>cal integration service</name>
+	<description>cal application</description>
+
+	<packaging>jar</packaging>
+	<dependencies>
+
+		<dependency>
+			<groupId>com.weihui.basis.ufs</groupId>
+			<artifactId>ufs-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.wexchain.cal</groupId>
+			<artifactId>cal-common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.wexchain.dcc</groupId>
+			<artifactId>loan-sdk</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.wexchain.dcc</groupId>
+			<artifactId>ca-sdk</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.wexchain.dcc</groupId>
+			<artifactId>cert-sdk</artifactId>
+		</dependency>
+
+		<!-- WOS MQ -->
+		<dependency>
+			<groupId>com.weihui.finance.wos</groupId>
+			<artifactId>wos-domain-notify</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.barcsys</groupId>
+			<artifactId>barcsys_amqp_broker_2.11</artifactId>
+		</dependency>
+
+		<!--basis -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.wexmarket.topia.commons</groupId>
+			<artifactId>commons-basic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.rabbitmq</groupId>
+			<artifactId>amqp-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.netflix.governator</groupId>
+			<artifactId>governator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.odysseus.juel</groupId>
+			<artifactId>juel-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.odysseus.juel</groupId>
+			<artifactId>juel-impl</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.wexyun</groupId>
+			<artifactId>wex-openapi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.weihui.finance.common.credit2</groupId>
+			<artifactId>credit2-common-domain</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.weihui.finance.contract</groupId>
+			<artifactId>contract-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.weihui.finance.contract</groupId>
+			<artifactId>contract-api</artifactId>
+		</dependency>
+
+	</dependencies>
+</project>
