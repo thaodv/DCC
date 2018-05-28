@@ -15,7 +15,7 @@ class ReviewRepayActivity : BindActivity<ActivityReviewRepayBinding>() {
         get() = R.layout.activity_review_repay
 
     private val loanOrderId
-        get() = intent.getLongExtra(Extras.EXTRA_LOAN_CHAIN_ORDER_ID,-1L)
+        get() = intent.getLongExtra(Extras.EXTRA_LOAN_CHAIN_ORDER_ID, -1L)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +23,8 @@ class ReviewRepayActivity : BindActivity<ActivityReviewRepayBinding>() {
         initData()
         binding.btnConfirm.setOnClickListener {
             binding.bill?.let {
-                navigateTo(LoanRepayActivity::class.java){
-                    putExtra(Extras.EXTRA_LOAN_REPAY_BILL,it)
+                navigateTo(LoanRepayActivity::class.java) {
+                    putExtra(Extras.EXTRA_LOAN_REPAY_BILL, it)
                 }
             }
         }
@@ -42,13 +42,18 @@ class ReviewRepayActivity : BindActivity<ActivityReviewRepayBinding>() {
     }
 
     private fun getRepaymentBill(id: Long) {
-        ScfOperations.withScfTokenInCurrentPassport {
-
-            App.get().scfApi.getRepaymentBill(it,id)
-
-        }
+        ScfOperations
+            .withScfTokenInCurrentPassport {
+                App.get().scfApi.getRepaymentBill(it, id)
+            }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{bill->
+            .doOnSubscribe {
+                showLoadingDialog()
+            }
+            .doFinally {
+                hideLoadingDialog()
+            }
+            .subscribe { bill ->
                 binding.bill = bill
             }
     }

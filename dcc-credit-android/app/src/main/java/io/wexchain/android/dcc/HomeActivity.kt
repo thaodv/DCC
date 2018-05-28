@@ -74,6 +74,13 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
                 showIntroWalletDialog()
             }
         }
+        findViewById<View>(R.id.tv_loan_report).setOnClickListener {
+            if (App.get().passportRepository.passportExists) {
+                navigateTo(LoanReportActivity::class.java)
+            } else {
+                showIntroWalletDialog()
+            }
+        }
         binding.cardPassport.root.setOnClickListener {
             if (!App.get().passportRepository.passportExists) {
                 showIntroWalletDialog()

@@ -29,7 +29,9 @@ class MarketingListActivity : BaseCompatActivity(), ItemViewClickListener<Market
                 override fun inflateBottomView(parent: ViewGroup): View {
                     val view = LayoutInflater.from(parent.context).inflate(R.layout.item_business_contact, parent, false)
                     view.setOnClickListener {
-                        toBusinessEmail()
+//                        toBusinessEmail()
+                        //todo revert this
+                        navigateTo(DccAffiliateActivity::class.java)
                     }
                     return view
                 }

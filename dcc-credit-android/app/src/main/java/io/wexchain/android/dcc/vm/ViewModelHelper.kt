@@ -127,10 +127,15 @@ object ViewModelHelper {
     fun maskAddress2(address: String?): String? {
         return if (address != null && address.length >= 8) {
             val length = address.length
-            return "0X ${address.substring(length - 8, length - 4).toUpperCase()} ${address.substring(
-                length - 4
-            )}"
+            return "0X ${address.substring(length - 8, length - 4).toUpperCase()} ${address.substring(length - 4)}"
         } else null
+    }
+
+    @JvmStatic
+    fun maskCnId(id:String?): String? {
+        id?:return null
+        require(id.length == 15 || id.length == 18)
+        return "${id.substring(0,6)}********${id.substring(id.length-4)}"
     }
 
     @JvmStatic
@@ -280,8 +285,8 @@ object ViewModelHelper {
             LoanStatus.REPAID -> ContextCompat.getDrawable(this, R.drawable.bg_loan_status_repaid)
             LoanStatus.INVALID,
             LoanStatus.CANCELLED,
-            LoanStatus.CREATED-> ContextCompat.getDrawable(this,R.drawable.bg_loan_status_created)
-            LoanStatus.APPROVED-> ContextCompat.getDrawable(this,R.drawable.bg_loan_status_approved)
+            LoanStatus.CREATED -> ContextCompat.getDrawable(this, R.drawable.bg_loan_status_created)
+            LoanStatus.APPROVED -> ContextCompat.getDrawable(this, R.drawable.bg_loan_status_approved)
             LoanStatus.AUDITING,
             LoanStatus.REJECTED,
             LoanStatus.FAILURE,
@@ -313,13 +318,13 @@ object ViewModelHelper {
             LoanStatus.INVALID -> null//todo
             LoanStatus.CREATED -> null//todo
             LoanStatus.CANCELLED -> null//todo
-            LoanStatus.AUDITING -> ContextCompat.getDrawable(this,R.drawable.ic_loan_auditing)
-            LoanStatus.REJECTED -> ContextCompat.getDrawable(this,R.drawable.ic_loan_rejected)
-            LoanStatus.APPROVED -> ContextCompat.getDrawable(this,R.drawable.ic_loan_approved)
-            LoanStatus.FAILURE -> ContextCompat.getDrawable(this,R.drawable.ic_loan_failure)
-            LoanStatus.RECEIVIED ,//treat same as DELIVERED
-            LoanStatus.DELIVERED -> ContextCompat.getDrawable(this,R.drawable.ic_loan_delivered)
-            LoanStatus.REPAID -> ContextCompat.getDrawable(this,R.drawable.ic_loan_repaid)
+            LoanStatus.AUDITING -> ContextCompat.getDrawable(this, R.drawable.ic_loan_auditing)
+            LoanStatus.REJECTED -> ContextCompat.getDrawable(this, R.drawable.ic_loan_rejected)
+            LoanStatus.APPROVED -> ContextCompat.getDrawable(this, R.drawable.ic_loan_approved)
+            LoanStatus.FAILURE -> ContextCompat.getDrawable(this, R.drawable.ic_loan_failure)
+            LoanStatus.RECEIVIED,//treat same as DELIVERED
+            LoanStatus.DELIVERED -> ContextCompat.getDrawable(this, R.drawable.ic_loan_delivered)
+            LoanStatus.REPAID -> ContextCompat.getDrawable(this, R.drawable.ic_loan_repaid)
             null -> null
         }
     }
@@ -363,7 +368,7 @@ object ViewModelHelper {
             LoanStatus.DELIVERED,
             LoanStatus.RECEIVIED,
             LoanStatus.REPAID -> if (record.repayDate != null && record.deliverDate != null) {
-                getString(R.string.time_format_yyyymmdd_dot_to, record.deliverDate, record.repayDate)
+                getString(R.string.period_format_yyyymmdd_dot, record.deliverDate, record.repayDate)
             } else {
                 "${record.borrowDuration}${record.durationUnit.str()}"
             }
@@ -379,7 +384,31 @@ object ViewModelHelper {
 
     @JvmStatic
     fun concatWithoutNull(vararg texts: String?): String {
-        return texts.joinToString(separator = "") { it ?: "" }
+        return texts.filterNotNull().joinToString(separator = "") { it }
+    }
+
+    @JvmStatic
+    fun Context.loanReportBg(loanReport: LoanReport?): Drawable? {
+        return if(loanReport == null || loanReport.isFromOtherAddress()){
+             ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_other)
+        }else{
+            when (loanReport?.status) {
+                LoanStatus.REPAID -> ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_complete)
+                else -> ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_incomplete)
+            }
+        }
+    }
+
+    @JvmStatic
+    fun Context.billStatusStr(bill: LoanReport.Bill?): CharSequence? {
+        return when (bill?.status) {
+            LoanReport.Bill.BillStatus.VERIFIED,
+            LoanReport.Bill.BillStatus.PAY_OFF -> "已结清"
+            LoanReport.Bill.BillStatus.WAITING_VERIFY,
+            LoanReport.Bill.BillStatus.CREATED,
+            LoanReport.Bill.BillStatus.CANCELED -> "未结清"
+            else -> null
+        }
     }
 }
 

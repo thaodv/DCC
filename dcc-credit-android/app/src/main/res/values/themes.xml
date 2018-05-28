@@ -16,6 +16,7 @@
 
         <item name="navigationIcon">@drawable/arrow_left</item>
 
+        <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
         <item name="cardViewStyle">@style/CardView.Light.Dcc</item>
         <item name="buttonStyle">@style/Widget.AppCompat.Button.Dcc.Medium</item>
         <item name="imageButtonStyle">@style/Widget.AppCompat.ImageButton.Dcc</item>
@@ -39,6 +40,11 @@
     </style>
     <style name="DccLightTheme.App.Transparent.Loading">
         <item name="android:windowBackground">@color/blue_magenta_loading</item>
+    </style>
+    <style name="DccLightTheme.App.Transparent.Aff">
+        <item name="android:windowBackground">@color/blue_magenta_loading</item>
+        <item name="android:actionMenuTextColor">?android:attr/textColorPrimary</item>
+        <item name="navigationIcon">@drawable/arrow_left_white</item>
     </style>
 
     <style name="DccLightTheme.App.Immerse">
