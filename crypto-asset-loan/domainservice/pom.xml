@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>io.wexchain.cal</groupId>
+		<artifactId>cal-platform-root</artifactId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>cal-domainservice</artifactId>
+
+	<name>cal domainservice</name>
+	<description>cal application</description>
+
+	<packaging>jar</packaging>
+	<properties>
+		<godmonth-status.version>0.3.2-SNAPSHOT</godmonth-status.version>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>io.wexchain.cal</groupId>
+			<artifactId>cal-domain</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.wexchain.cal</groupId>
+			<artifactId>cal-common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.wexchain.cal</groupId>
+			<artifactId>cal-integration-service</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.wexchain.cal</groupId>
+			<artifactId>cal-repository</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.wexchain.cah</groupId>
+			<artifactId>crypto-asset-hosting-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.wexmarket.topia.commons</groupId>
+			<artifactId>commons-idempotence</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.barcsys</groupId>
+			<artifactId>barcsys_amqp_broker_2.11</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jodd</groupId>
+			<artifactId>jodd-bean</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.godmonth.status</groupId>
+			<artifactId>executor-core</artifactId>
+			<version>${godmonth-status.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.godmonth.status</groupId>
+			<artifactId>transitor-jpa</artifactId>
+			<version>${godmonth-status.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.godmonth.status</groupId>
+			<artifactId>transitor-def</artifactId>
+			<version>${godmonth-status.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.engio</groupId>
+			<artifactId>mbassador</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.log4jdbc</groupId>
+			<artifactId>log4jdbc</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.odysseus.juel</groupId>
+			<artifactId>juel-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.odysseus.juel</groupId>
+			<artifactId>juel-impl</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.weihui.basis.mq</groupId>
+			<artifactId>weihui-mq</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.weihui.basis.mq</groupId>
+			<artifactId>weihui-mq-jms</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.weihui.basis.mq</groupId>
+			<artifactId>weihui-mq-jms-listener</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.wnameless</groupId>
+			<artifactId>json-flattener</artifactId>
+		</dependency>
+
+
+	</dependencies>
+</project>

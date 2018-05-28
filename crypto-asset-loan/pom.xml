@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>io.wexchain.cal</groupId>
+	<artifactId>cal-platform-root</artifactId>
+	<version>0.1-SNAPSHOT</version>
+	<name>cal root</name>
+	<description>cal application</description>
+
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>common</module>
+		<module>domain</module>
+		<module>repository</module>
+		<module>domainservice</module>
+		<module>ext</module>
+		<module>web</module>
+		<module>test</module>
+	</modules>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+					<debug>true</debug>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.wexchain</groupId>
+				<artifactId>third-party-bom</artifactId>
+				<version>0.2.3-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.wexmarket.topia.commons</groupId>
+				<artifactId>commons-bom</artifactId>
+				<version>4.0.1</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.oracle</groupId>
+				<artifactId>ojdbc6</artifactId>
+				<version>11.2.0.3</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.wexmarket</groupId>
+				<artifactId>third-party-bom</artifactId>
+				<version>0.3.2</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>com.oracle</groupId>
+				<artifactId>ojdbc6</artifactId>
+				<version>11.2.0.3</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.wexchain.dcc</groupId>
+				<artifactId>loan-sdk</artifactId>
+				<version>0.1.4-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>io.wexchain.dcc</groupId>
+				<artifactId>ca-sdk</artifactId>
+				<version>0.2-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>io.wexchain.dcc</groupId>
+				<artifactId>cert-sdk</artifactId>
+				<version>0.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.weihui.common.basic</groupId>
+				<artifactId>basic-lang</artifactId>
+				<version>1.1.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.weihui.finance.wos</groupId>
+				<artifactId>wos-domain-notify</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.barcsys</groupId>
+				<artifactId>barcsys_amqp_broker_2.11</artifactId>
+				<version>0.0.8</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.weihui.basis.ufs</groupId>
+				<artifactId>ufs-client</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.engio</groupId>
+				<artifactId>mbassador</artifactId>
+				<version>1.3.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.integration</groupId>
+				<artifactId>spring-integration-redis</artifactId>
+				<version>5.0.4.RELEASE</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.github.ben-manes.caffeine</groupId>
+				<artifactId>caffeine</artifactId>
+				<version>2.6.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.curator</groupId>
+				<artifactId>curator-recipes</artifactId>
+				<version>4.0.1</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.apache.zookeeper</groupId>
+						<artifactId>zookeeper</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.zookeeper</groupId>
+				<artifactId>zookeeper</artifactId>
+				<version>3.4.11</version>
+				<exclusions>
+					<exclusion>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-log4j12</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>io.wexchain.cal</groupId>
+				<artifactId>crypto-asset-loan-api</artifactId>
+				<version>0.2-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.wexchain.cah</groupId>
+				<artifactId>crypto-asset-hosting-api</artifactId>
+				<version>0.3-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.wexyun</groupId>
+				<artifactId>wex-openapi</artifactId>
+				<version>1.4.blockChain-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.weihui.finance.common.credit2</groupId>
+				<artifactId>credit2-common-domain</artifactId>
+				<version>2.1.6-jiaoyihui-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.weihui.finance.contract</groupId>
+				<artifactId>contract-client</artifactId>
+				<version>1.0.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.weihui.finance.contract</groupId>
+				<artifactId>contract-api</artifactId>
+				<version>1.0.8</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.weihui.basis.mq</groupId>
+				<artifactId>weihui-mq</artifactId>
+				<version>1.1.3</version>
+			</dependency>
+			<dependency>
+				<groupId>com.weihui.basis.mq</groupId>
+				<artifactId>weihui-mq-jms</artifactId>
+				<version>1.1.3</version>
+			</dependency>
+			<dependency>
+				<groupId>com.weihui.basis.mq</groupId>
+				<artifactId>weihui-mq-jms-listener</artifactId>
+				<version>1.1.3</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>1.2.47</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.wexchain.dcc</groupId>
+				<artifactId>contract-client-sdk</artifactId>
+				<version>0.3.3-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.github.wnameless</groupId>
+				<artifactId>json-flattener</artifactId>
+				<version>0.5.0</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+</project>

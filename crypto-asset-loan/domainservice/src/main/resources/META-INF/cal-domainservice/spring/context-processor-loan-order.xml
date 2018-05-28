@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="loanOrderExecutor" class="com.godmonth.status.executor.impl.DefaultOrderExecutor"
+		p:advancerMappings-ref="loanOrderAdvancerMappings"
+		p:txStatusTransitor-ref="loanOrderStatusTransitor">
+		<property name="modelAnalysis">
+			<bean class="com.godmonth.status.executor.impl.BeanModelAnalysis"
+				p:statusPropertyName="status" p:modelClass="io.wexchain.cryptoasset.loan.domain.LoanOrder" />
+		</property>
+	</bean>
+
+	<bean id="loanOrderAdvancerMappings" class="com.godmonth.util.collections.List2MapFactoryBean"
+		p:propertyPath="key">
+		<property name="sourceList">
+			<list>
+				<bean class="io.wexchain.cryptoasset.loan.service.processor.order.loan.advancer.AuditAdvancer"  />
+				<bean class="io.wexchain.cryptoasset.loan.service.processor.order.loan.advancer.PassAdvancer"  />
+				<bean class="io.wexchain.cryptoasset.loan.service.processor.order.loan.advancer.DeliverAdvancer"  />
+				<bean class="io.wexchain.cryptoasset.loan.service.processor.order.loan.advancer.RepayAdvancer"  />
+				<bean class="io.wexchain.cryptoasset.loan.service.processor.order.loan.advancer.CancelAdvancer"  />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="loanOrderStatusTransitor" parent="statusRepositoryStatusTransitor"
+		p:statusPropertyName="status">
+		<property name="statusTransitor">
+			<bean factory-bean="loanOrderStatusTransitorBuilder"
+				factory-method="buildTransitor" />
+		</property>
+	</bean>
+	<bean id="loanOrderStatusTransitorBuilder"
+		class="com.godmonth.status.transitor.definition.impl.StatusTransitorBuilder"
+		p:definitionClass="io.wexchain.cryptoasset.loan.service.processor.order.loan.LoanOrderStatusDefinition"
+		p:resource="classpath:/META-INF/cal-domainservice/json/status-machine-loan-order.json">
+	</bean>
+</beans>

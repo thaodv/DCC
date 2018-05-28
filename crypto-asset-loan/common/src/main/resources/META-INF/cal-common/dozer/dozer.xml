@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<configuration>
+		<custom-converters>
+			<converter type="com.wexmarket.topia.commons.basic.dozer.converter.DateTimeConverter">
+				<class-a>org.joda.time.DateTime</class-a>
+				<class-b>java.util.Date</class-b>
+			</converter>
+			<!--<converter type="io.wexchain.cryptoasset.loan.common.converter.BigDecimalConverter">
+				<class-a>java.math.BigDecimal</class-a>
+				<class-b>java.math.BigDecimal</class-b>
+			</converter>-->
+		</custom-converters>
+		<copy-by-references>
+			<copy-by-reference>org.joda.*</copy-by-reference>
+		</copy-by-references>
+	</configuration>
+
+
+
+</mappings>
