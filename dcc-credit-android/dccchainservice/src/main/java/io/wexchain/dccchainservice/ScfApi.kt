@@ -135,6 +135,26 @@ interface ScfApi {
         @Header(ScfApi.HEADER_TOKEN) token: String?
     ):Single<Result<List<LoanReport>>>
 
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    @POST("member/register")
+    @FormUrlEncoded
+    fun scfRegister(
+        @Field("nonce") nonce: String,//否	活动code
+        @Field("address") address: String,//否	钱包地址
+        @Field("signature") sign: String,//否	签名
+        @Field("loginName") loginName: String,//否	用户名，值为钱包地址
+        @Field("inviteCode") inviteCode:String?
+    ):Single<Result<String>>
+
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    @POST("member/getByIdentity")
+    @FormUrlEncoded
+    fun getScfMemberInfo(
+        @Field("nonce") nonce: String,//否	活动code
+        @Field("address") address: String,//否	钱包地址
+        @Field("signature") sign: String//否	签名
+    ):Single<Result<ScfAccountInfo>>
+
     companion object {
         const val HEADER_TOKEN = "x-auth-token"
     }

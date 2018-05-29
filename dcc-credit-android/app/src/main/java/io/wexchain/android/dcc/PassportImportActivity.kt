@@ -7,11 +7,14 @@ import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.fragment.PasteKeystoreFragment
 import io.wexchain.android.dcc.fragment.PastePrivateKeyFragment
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.chain.PassportOperations
+import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportImportBinding
+import io.wexchain.dccchainservice.domain.ScfAccountInfo
 import kotlinx.android.synthetic.main.activity_passport_import.*
 import org.web3j.crypto.CipherException
 import org.web3j.crypto.Credentials
@@ -73,10 +76,26 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
 
     private fun onImportSuccess() {
         toast("导入成功")
-        finish()
-        navigateTo(PassportCreationSucceedActivity::class.java){
-            putExtra(Extras.FROM_IMPORT,true)
-        }
+        ScfOperations.getScfAccountInfo()
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                showLoadingDialog()
+            }
+            .doFinally {
+                hideLoadingDialog()
+            }
+            .subscribe({acc->
+                finish()
+                if(acc === ScfAccountInfo.ABSENT){
+                    navigateTo(CreateScfAccountActivity::class.java){
+                        putExtra(Extras.FROM_IMPORT,true)
+                    }
+                }else{
+                    navigateTo(PassportCreationSucceedActivity::class.java){
+                        putExtra(Extras.FROM_IMPORT,true)
+                    }
+                }
+            })
     }
 
     private fun showError(e: Throwable) {

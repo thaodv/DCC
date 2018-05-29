@@ -264,9 +264,13 @@
                 android:name="io.wexchain.android.dcc.DccAffiliateTermsActivity"
                 android:label="活动规则">
         </activity>
-        <activity android:name="io.wexchain.android.dcc.DccAffiliateRecordsActivity"
-                  android:label="邀请记录"
-                />
+        <activity
+                android:name="io.wexchain.android.dcc.DccAffiliateRecordsActivity"
+                android:label="邀请记录"/>
+        <activity android:name="io.wexchain.android.dcc.CreateScfAccountActivity"
+                android:label="填写邀请码"
+                >
+        </activity>
     </application>
 
 </manifest>

@@ -5,14 +5,14 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
-import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.setWindowExtended
-import io.wexchain.android.common.toast
-import io.wexchain.android.common.transitionBundle
+import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityHomeBinding
+import io.wexchain.dccchainservice.domain.ScfAccountInfo
 
 class HomeActivity : BindActivity<ActivityHomeBinding>() {
     override val contentLayoutId: Int = R.layout.activity_home
@@ -25,6 +25,28 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
             binding.cardPassport.passport = p
         })
         setupClicks()
+        checkScfAccount()
+    }
+
+    private fun checkScfAccount() {
+        val passportRepository = App.get().passportRepository
+        if(!passportRepository.scfAccountExists){
+            ScfOperations.getScfAccountInfo()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe{acc->
+                    if(acc === ScfAccountInfo.ABSENT){
+                        atLeastCreated {
+                            showRegisterScfWithInviteCodeDialog()
+                        }
+                    }else{
+                        passportRepository.scfAccountExists = true
+                    }
+                }
+        }
+    }
+
+    private fun showRegisterScfWithInviteCodeDialog() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun setupClicks() {
