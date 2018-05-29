@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -27,7 +28,8 @@ import io.wexchain.juzix.contract.cert.CertData;
 import io.wexchain.juzix.contract.cert.CertOrder;
 import io.wexchain.juzix.contract.cert.CertService;
 import io.wexchain.juzix.contract.cert.CertService.OrderUpdatedEventResponse;
-import io.wexchain.juzix.contract.cert.DataParser;
+import io.wexchain.juzix.contract.cert.CertServiceDataParser;
+import io.wexchain.juzix.contract.cert.CertOrderUpdatedEvent;
 import io.wexchain.passport.gateway.service.contract.ContractProxyJuzixImpl;
 
 public class CertServiceProxyJuzixImpl extends ContractProxyJuzixImpl<CertService>
@@ -130,7 +132,7 @@ public class CertServiceProxyJuzixImpl extends ContractProxyJuzixImpl<CertServic
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			throw new ContextedRuntimeException(e);
 		}
-		return DataParser.parseOrder(list, orderId);
+		return CertServiceDataParser.parseOrder(list, orderId);
 	}
 
 	@Override
@@ -158,6 +160,24 @@ public class CertServiceProxyJuzixImpl extends ContractProxyJuzixImpl<CertServic
 	}
 
 	@Override
+	public CertOrderUpdatedEvent getOrderUpdatedEvent(String txHash) {
+		EthGetTransactionReceipt ethGetTransactionReceipt = null;
+		try {
+			ethGetTransactionReceipt = web3j.ethGetTransactionReceipt(txHash).sendAsync().get(readTimeoutSecond,
+					TimeUnit.SECONDS);
+		} catch (InterruptedException | ExecutionException | TimeoutException e1) {
+			throw new ContextedRuntimeException(e1);
+		}
+		TransactionReceipt result = ethGetTransactionReceipt.getResult();
+		if (result == null) {
+			return null;
+		}
+		List<CertOrderUpdatedEvent> events = CertServiceDataParser.parseEvent(result.getLogs(), getContractAddress());
+		Validate.isTrue(events.size() == 1);
+		return events.get(0);
+	}
+
+	@Override
 	public CertData getDataAt(String address, Long blockNumber) {
 		@SuppressWarnings("rawtypes")
 		List<Type> list = null;
@@ -167,7 +187,7 @@ public class CertServiceProxyJuzixImpl extends ContractProxyJuzixImpl<CertServic
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			throw new ContextedRuntimeException(e);
 		}
-		return DataParser.parseData(list);
+		return CertServiceDataParser.parseData(list);
 	}
 
 	@Override
@@ -179,7 +199,7 @@ public class CertServiceProxyJuzixImpl extends ContractProxyJuzixImpl<CertServic
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			throw new ContextedRuntimeException(e);
 		}
-		return DataParser.parseData(list);
+		return CertServiceDataParser.parseData(list);
 	}
 
 	@Required

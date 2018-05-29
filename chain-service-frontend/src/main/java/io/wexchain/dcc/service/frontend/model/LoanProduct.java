@@ -20,7 +20,7 @@ public class LoanProduct {
 
 	private String description;
 
-	private List<BigInteger> volumeOptionList;
+	private List<BigDecimal> volumeOptionList;
 
 	private BigDecimal loanRate;
 
@@ -37,6 +37,18 @@ public class LoanProduct {
 	private int repayCyclesNo;
 
 	private String name;
+
+	private String logoUrl;
+
+	private String agreementTemplateUrl;
+
+	public String getAgreementTemplateUrl() {
+		return agreementTemplateUrl;
+	}
+
+	public void setAgreementTemplateUrl(String agreementTemplateUrl) {
+		this.agreementTemplateUrl = agreementTemplateUrl;
+	}
 
 	public String getName() {
 		return name;
@@ -94,11 +106,11 @@ public class LoanProduct {
 		this.description = description;
 	}
 
-	public List<BigInteger> getVolumeOptionList() {
+	public List<BigDecimal> getVolumeOptionList() {
 		return volumeOptionList;
 	}
 
-	public void setVolumeOptionList(List<BigInteger> volumeOptionList) {
+	public void setVolumeOptionList(List<BigDecimal> volumeOptionList) {
 		this.volumeOptionList = volumeOptionList;
 	}
 
@@ -148,5 +160,13 @@ public class LoanProduct {
 
 	public void setRepayAheadRate(BigDecimal repayAheadRate) {
 		this.repayAheadRate = repayAheadRate;
+	}
+
+	public String getLogoUrl() {
+		return logoUrl;
+	}
+
+	public void setLogoUrl(String logoUrl) {
+		this.logoUrl = logoUrl;
 	}
 }

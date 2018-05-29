@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<configuration scan="true" scanPeriod="30 seconds">
-	<insertFromJNDI env-entry-name="java:comp/env/logbackFileLocation"
-					as="logbackFileLocation" />
-	<include file="${logbackFileLocation}" />
+<configuration>
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<encoder>
+			<pattern>
+				%-4relative [%thread] %-5level %logger{30} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<root level="INFO">
+		<appender-ref ref="CONSOLE" />
+	</root>
 </configuration>

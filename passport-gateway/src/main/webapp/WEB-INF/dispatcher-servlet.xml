@@ -22,7 +22,7 @@
 
 	<bean class="io.wexchain.passport.gateway.ctrlr.cert.CertController"
 		p:certServiceProxyFactory-ref="certServiceProxyFactory" />
-	<bean class="io.wexchain.passport.gateway.ctrlr.cert.dcc.CertController"
+	<bean class="io.wexchain.passport.gateway.ctrlr.cert.dcc.DccCertController"
 		p:certServiceProxyFactory-ref="dccCertServiceProxyFactory" />
 
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" />

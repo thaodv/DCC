@@ -1,0 +1,706 @@
+[
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_moduleName",
+            "type": "string"
+          },
+          {
+            "name": "_moduleVersion",
+            "type": "string"
+          },
+          {
+            "name": "_contractName",
+            "type": "string"
+          },
+          {
+            "name": "_contractVersion",
+            "type": "string"
+          }
+        ],
+        "name": "register",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "operators",
+        "outputs": [
+          {
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getErrno",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "orderId",
+            "type": "uint256"
+          }
+        ],
+        "name": "payOff",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "orderId",
+            "type": "uint256"
+          },
+          {
+            "name": "nextStatus",
+            "type": "uint8"
+          }
+        ],
+        "name": "forceUpdateStatus",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          },
+          {
+            "name": "_str2",
+            "type": "string"
+          },
+          {
+            "name": "_str3",
+            "type": "string"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          },
+          {
+            "name": "_addr",
+            "type": "address"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "orderId",
+            "type": "uint256"
+          },
+          {
+            "name": "agreementHash",
+            "type": "bytes"
+          },
+          {
+            "name": "exptectedRepayTimes",
+            "type": "uint256[]"
+          }
+        ],
+        "name": "deposit",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          },
+          {
+            "name": "_i",
+            "type": "int256"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_moduleName",
+            "type": "string"
+          },
+          {
+            "name": "_moduleVersion",
+            "type": "string"
+          },
+          {
+            "name": "_newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "changeModuleRegisterOwner",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_moduleName",
+            "type": "string"
+          },
+          {
+            "name": "_moduleVersion",
+            "type": "string"
+          }
+        ],
+        "name": "register",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          },
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "repayPlans",
+        "outputs": [
+          {
+            "name": "expectedTime",
+            "type": "uint256"
+          },
+          {
+            "name": "actualTime",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [],
+        "name": "kill",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          },
+          {
+            "name": "_str2",
+            "type": "string"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getSender",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "string"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_moduleName",
+            "type": "string"
+          },
+          {
+            "name": "_moduleVersion",
+            "type": "string"
+          },
+          {
+            "name": "_contractName",
+            "type": "string"
+          },
+          {
+            "name": "_contractVersion",
+            "type": "string"
+          },
+          {
+            "name": "_newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "changeContractRegisterOwner",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_name",
+            "type": "string"
+          },
+          {
+            "name": "_key",
+            "type": "string"
+          },
+          {
+            "name": "_value",
+            "type": "string"
+          }
+        ],
+        "name": "writedb",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getOwner",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "string"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "operator",
+            "type": "address"
+          }
+        ],
+        "name": "addOperator",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [],
+        "name": "getOrderLength",
+        "outputs": [
+          {
+            "name": "length",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "orders",
+        "outputs": [
+          {
+            "name": "debit",
+            "type": "address"
+          },
+          {
+            "name": "credit",
+            "type": "address"
+          },
+          {
+            "name": "orderStatus",
+            "type": "uint8"
+          },
+          {
+            "name": "orderHash",
+            "type": "bytes"
+          },
+          {
+            "name": "agreementHash",
+            "type": "bytes"
+          },
+          {
+            "name": "appliedTime",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "operator",
+            "type": "address"
+          }
+        ],
+        "name": "deleteOperator",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          },
+          {
+            "name": "_ui",
+            "type": "uint256"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "orderId",
+            "type": "uint256"
+          }
+        ],
+        "name": "approve",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "orderId",
+            "type": "uint256"
+          }
+        ],
+        "name": "reject",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_orderId",
+            "type": "uint256"
+          }
+        ],
+        "name": "getOrder",
+        "outputs": [
+          {
+            "name": "orderId",
+            "type": "uint256"
+          },
+          {
+            "name": "debit",
+            "type": "address"
+          },
+          {
+            "name": "credit",
+            "type": "address"
+          },
+          {
+            "name": "status",
+            "type": "uint8"
+          },
+          {
+            "name": "orderHash",
+            "type": "bytes"
+          },
+          {
+            "name": "agreementHash",
+            "type": "bytes"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_orderId",
+            "type": "uint256"
+          }
+        ],
+        "name": "getReplayPlanLength",
+        "outputs": [
+          {
+            "name": "repayPlansLength",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "agreementContract",
+        "outputs": [
+          {
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_orderId",
+            "type": "uint256"
+          },
+          {
+            "name": "offset",
+            "type": "uint256"
+          }
+        ],
+        "name": "getReplayPlan",
+        "outputs": [
+          {
+            "name": "expectedTime",
+            "type": "uint256"
+          },
+          {
+            "name": "actualTime",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "orderId",
+            "type": "uint256"
+          },
+          {
+            "name": "offset",
+            "type": "uint256"
+          },
+          {
+            "name": "actualRepayTime",
+            "type": "uint256"
+          }
+        ],
+        "name": "recordRepay",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "debit",
+            "type": "address"
+          },
+          {
+            "name": "appliedTime",
+            "type": "uint256"
+          },
+          {
+            "name": "orderHash",
+            "type": "bytes"
+          }
+        ],
+        "name": "apply",
+        "outputs": [
+          {
+            "name": "_orderId",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "name": "agreementContractAddress",
+            "type": "address"
+          }
+        ],
+        "payable": false,
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "orderId",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "name": "debit",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "credit",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "status",
+            "type": "uint8"
+          }
+        ],
+        "name": "orderUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      }
+    ]

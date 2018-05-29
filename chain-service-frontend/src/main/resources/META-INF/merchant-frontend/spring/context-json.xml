@@ -18,7 +18,8 @@
 		</property>
 
 		<property name="modules">
-			<bean class="com.fasterxml.jackson.datatype.joda.JodaModule" />
+			<bean class="com.fasterxml.jackson.datatype.joda.JodaModule" >
+			</bean>
 		</property>
 
 		<property name="serializationInclusion">
@@ -36,15 +37,6 @@
 			</list>
 		</property>
 
-
-		<!--<property name="deserializers">
-			<list>
-				<bean
-					class="com.wexmarket.topia.commons.basic.json.converter.IntervalDeserializer" />
-				<bean
-					class="com.wexmarket.topia.commons.basic.json.converter.DateTimeDeserializer" />
-			</list>
-		</property>-->
 		<property name="serializers">
 			<list>
 				<bean

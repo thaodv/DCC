@@ -27,7 +27,7 @@
     <property name="certServiceProxyMap" ref="certServiceProxyMap"/>
   </bean>
   <bean id="dccCertServiceProxyFactory"
-        class="io.wexchain.passport.gateway.ctrlr.cert.dcc.CertServiceProxyFactory">
+        class="io.wexchain.passport.gateway.ctrlr.cert.dcc.DccCertServiceProxyFactory">
     <property name="certServiceProxyMap" ref="dccCertServiceProxyMap"/>
   </bean>
 

@@ -1,0 +1,40 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+			 xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd">
+	<http pattern="/login.html" security="none" />
+	<http pattern="/hello" security="none" />
+	<http  entry-point-ref="forbiddenEntryPoint">
+		<intercept-url pattern="/secure/**/*" access="hasRole('USER')" />
+		<form-login authentication-success-handler-ref="loginSuccessHandler"
+					authentication-failure-handler-ref="loginFailureHandler"
+					username-parameter="username"
+					password-parameter="password"/>
+		<logout success-handler-ref="logoutSuccessHandler" />
+		<csrf disabled="true" />
+		<custom-filter ref="nonceUsernamePasswordAuthenticationFilter" after="CAS_FILTER"/>
+		<custom-filter ref="myUsernamePasswordAuthenticationFilter" before="FORM_LOGIN_FILTER"/>
+	</http>
+
+	<authentication-manager id="authenticationManager">
+		<authentication-provider user-service-ref="userDetailsService" />
+	</authentication-manager>
+
+	<beans:bean id="loginSuccessHandler" class=" io.wexchain.dcc.service.frontend.ctrlr.security.LoginSuccessHandler"/>
+	<beans:bean id="loginFailureHandler" class="io.wexchain.dcc.service.frontend.ctrlr.security.LoginFailureHandler" />
+	<beans:bean id="logoutSuccessHandler" class="io.wexchain.dcc.service.frontend.ctrlr.security.LogoutSuccessHandler" />
+	<beans:bean id="userDetailsService" class="io.wexchain.dcc.service.frontend.ctrlr.security.UserDetailsServiceImpl">
+		<beans:property name="memberService" ref="memberService" />
+	</beans:bean>
+	<beans:bean id="forbiddenEntryPoint" class="io.wexchain.dcc.service.frontend.ctrlr.security.ForbiddenEntryPoint" />
+	<beans:bean id="myUsernamePasswordAuthenticationFilter" class="io.wexchain.dcc.service.frontend.ctrlr.security.SignAuthenticationFilter" >
+		<beans:constructor-arg index="0" ref="authenticationController"></beans:constructor-arg>
+		<beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
+	</beans:bean>
+	<beans:bean id="nonceUsernamePasswordAuthenticationFilter" class="io.wexchain.dcc.service.frontend.ctrlr.security.NonceAuthenticationFilter" >
+		<beans:constructor-arg index="0" ref="authenticationController"></beans:constructor-arg>
+		<beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
+	</beans:bean>
+</beans:beans>

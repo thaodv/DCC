@@ -3,8 +3,8 @@
  */
 package io.wexchain.dcc.service.frontend.utils;
 
-import io.wexchain.dcc.service.frontend.common.constants.ApiJsonStringConstants;
 
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -25,6 +25,8 @@ public class ReqNoUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(ApiJsonStringConstants.API_LIST.size());
+
+        Date date = new Date();
+        System.out.println(date.getTime());
     }
 }

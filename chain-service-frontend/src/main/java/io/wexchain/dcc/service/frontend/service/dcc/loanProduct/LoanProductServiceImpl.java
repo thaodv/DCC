@@ -16,6 +16,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +30,9 @@ public class LoanProductServiceImpl implements LoanProductService {
     @Resource(name = "loanProductConfigReader")
     private ConfigReader<String, LoanProduct> configReader;
 
+    @Autowired
+    private io.wexchain.dcc.loan.sdk.service.LoanService loanService;
+
     private Map<Long,LoanProduct> productByIdMap = new HashMap<>();
     private Map<String,List<LoanProduct>> productByLenderCodeMap = new HashMap<>();
 
@@ -36,11 +42,16 @@ public class LoanProductServiceImpl implements LoanProductService {
     private CurrencyService currencyService;
 
     @PostConstruct
-    public void prepare(){
+    public void prepare() throws IOException {
+        BigInteger minFee = loanService.getMinFee().divide(new BigInteger("1000000000000000000"));
+        BigInteger maxFee = minFee.add(new BigInteger("10"));
+        List<BigInteger> dccFeeScope = new ArrayList<>();
+        dccFeeScope.add(minFee);
+        dccFeeScope.add(maxFee);
         if (CollectionUtils.isNotEmpty(configReader.getConfigList())) {
             for (LoanProduct loanProduct : configReader.getConfigList()) {
+                loanProduct.setDccFeeScope(dccFeeScope);
                 productByIdMap.put(loanProduct.getId(),loanProduct);
-
                 if(productByLenderCodeMap.get(loanProduct.getLenderCode()) != null){
                     productByLenderCodeMap.get(loanProduct.getLenderCode()).add(loanProduct);
                 }else {

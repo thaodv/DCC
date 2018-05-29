@@ -21,8 +21,14 @@ public enum FrontendErrorCode implements ErrorCode {
 	LOAN_APPLY_FAIL("进件请求失败", "进件请求失败: %s"),
 
 	GET_LOAN_ORDER_DETAIL_FAIL("查询订单详情失败", "查询订单详情失败: %s"),
+	QUERY_LOAN_ORDER_BILL_FAIL("查询还币账单失败", "查询还币账单失败: %s"),
+
+	CONFIRM_REPAYMENT_FAIL("确认还币失败", "确认还币失败: %s"),
+	ADVANCE_FAIL("推进失败", "推进失败: %s"),
 
 	QUERY_LOAN_ORDER_FAIL("查询订单列表失败", "查询订单列表失败: %s"),
+
+	CANCEL_LOAN_ORDER_FAIL("取消订单失败", "取消订单失败: %s"),
 
 	LENDER_NOT_EXIST("借款方不存在", "借款方不存在"),
 
@@ -33,6 +39,10 @@ public enum FrontendErrorCode implements ErrorCode {
 	PUK_NOT_FOUNT("公钥未找到", "公钥未找到"),
 
 	GET_PUK_FAIL("获取公钥失败", "获取公钥失败"),
+
+	DOWNLOAD_FAIL("下载文件错误", "下载文件错误"),
+
+	FILE_NOT_EXIST("文件不存在", "文件不存在"),
 
 	CERT_ID_EXCEED("身份证认证未通过或已过期", "身份证认证未通过或未通过或已过期"),
 	BANK_CARD_EXCEED("银行卡认未通过或证已过期", "银行卡认证未通过或已过期"),

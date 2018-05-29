@@ -7,7 +7,6 @@
 
 	<bean id="loanContractParamV1" parent="contractParam"
 		p:contractAddress="${contract.loan.address.v1}" p:contractClass="io.wexchain.juzix.contract.loan.xiaoxinyong.LoanServiceV1" />
-
 	<bean id="loanServiceProxyV1"
 		  class="io.wexchain.passport.gateway.service.loan.xiaoxinyong.LoanServiceProxyJuzixImpl"
 		  p:abiResource="classpath:/META-INF/passport-gateway/abi/LoanServiceV1.abi">
@@ -23,29 +22,24 @@
 					class="io.wexchain.passport.gateway.service.loan.xiaoxinyong.LoanSignMessageValidator"
 					p:contractParam-ref="loanContractParamV1" />
 		</property>
-
 	</bean>
 
-
-<!--	<bean id="loanContractParam" parent="contractParam"
-		  p:contractAddress="${contract.loan.address}" p:contractClass="io.wexchain.juzix.contract.loan.wexCloud.LoanService" />
-
-	<bean id="loanServiceProxy"
-		  class="io.wexchain.passport.gateway.service.loan.wexCloud.LoanServiceProxyJuzixImpl"
-		  p:abiResource="classpath:/META-INF/passport-gateway/abi/LoanService.abi">
+	<bean id="dccLoanContractParam" parent="contractParam"
+		  p:contractAddress="${contract.dcc.loan.address}" p:contractClass="io.wexchain.juzix.contract.loan.dcc.LoanService" />
+	<bean id="dccLoanServiceProxy"
+		  class="io.wexchain.passport.gateway.service.loan.dcc.LoanServiceProxyJuzixImpl"
+		  p:abiResource="classpath:/META-INF/passport-gateway/abi/DccLoanService.abi">
 		<property name="contract">
 			<bean class="io.wexchain.juzix.contract.commons.ContractFactoryBean"
 				  p:web3j-ref="web3j"
 				  p:transactionManager-ref="transactionManager"
-				  p:contractParam-ref="loanContractParam"
+				  p:contractParam-ref="dccLoanContractParam"
 			/>
 		</property>
 		<property name="signMessageValidator">
 			<bean
-					class="io.wexchain.passport.gateway.service.loan.wexCloud.LoanSignMessageValidator"
-					p:contractParam-ref="loanContractParam" />
+					class="io.wexchain.passport.gateway.service.loan.dcc.LoanSignMessageValidator"
+					p:contractParam-ref="dccLoanContractParam" />
 		</property>
-
-	</bean>-->
-
+	</bean>
 </beans>

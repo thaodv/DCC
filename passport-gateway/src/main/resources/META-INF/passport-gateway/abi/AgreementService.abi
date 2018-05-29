@@ -1,0 +1,828 @@
+[
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "borrower",
+            "type": "address"
+          },
+          {
+            "name": "from",
+            "type": "uint256"
+          },
+          {
+            "name": "to",
+            "type": "uint256"
+          }
+        ],
+        "name": "queryOrderIdListByBorrowIndex",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256[]"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_moduleName",
+            "type": "string"
+          },
+          {
+            "name": "_moduleVersion",
+            "type": "string"
+          },
+          {
+            "name": "_contractName",
+            "type": "string"
+          },
+          {
+            "name": "_contractVersion",
+            "type": "string"
+          }
+        ],
+        "name": "register",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "operators",
+        "outputs": [
+          {
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getErrno",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_borrower",
+            "type": "address"
+          }
+        ],
+        "name": "getAgreementArrayLengthByBorrowerIndex",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "idHash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getAgreementArrayLengthByIdHashIndex",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "orderId",
+            "type": "uint256"
+          }
+        ],
+        "name": "finishAgreement",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          },
+          {
+            "name": "_str2",
+            "type": "string"
+          },
+          {
+            "name": "_str3",
+            "type": "string"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          },
+          {
+            "name": "_addr",
+            "type": "address"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "",
+            "type": "address"
+          },
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "orderIdIndex",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          },
+          {
+            "name": "_i",
+            "type": "int256"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_moduleName",
+            "type": "string"
+          },
+          {
+            "name": "_moduleVersion",
+            "type": "string"
+          },
+          {
+            "name": "_newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "changeModuleRegisterOwner",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_moduleName",
+            "type": "string"
+          },
+          {
+            "name": "_moduleVersion",
+            "type": "string"
+          }
+        ],
+        "name": "register",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [],
+        "name": "kill",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          },
+          {
+            "name": "_str2",
+            "type": "string"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_agreementId",
+            "type": "uint256"
+          }
+        ],
+        "name": "getAgreement",
+        "outputs": [
+          {
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "name": "version",
+            "type": "uint256"
+          },
+          {
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "name": "orderId",
+            "type": "uint256"
+          },
+          {
+            "name": "borrower",
+            "type": "address"
+          },
+          {
+            "name": "idHash",
+            "type": "bytes32"
+          },
+          {
+            "name": "status",
+            "type": "uint8"
+          },
+          {
+            "name": "applicationDigest",
+            "type": "bytes"
+          },
+          {
+            "name": "agreementDigest",
+            "type": "bytes"
+          },
+          {
+            "name": "repayDigest",
+            "type": "bytes"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "orderId",
+            "type": "uint256"
+          },
+          {
+            "name": "repayDigest",
+            "type": "bytes"
+          }
+        ],
+        "name": "updateRepayDigest",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getSender",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "string"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "",
+            "type": "address"
+          },
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "borrowIndex",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "",
+            "type": "bytes32"
+          },
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "idHashIndex",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_moduleName",
+            "type": "string"
+          },
+          {
+            "name": "_moduleVersion",
+            "type": "string"
+          },
+          {
+            "name": "_contractName",
+            "type": "string"
+          },
+          {
+            "name": "_contractVersion",
+            "type": "string"
+          },
+          {
+            "name": "_newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "changeContractRegisterOwner",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_name",
+            "type": "string"
+          },
+          {
+            "name": "_key",
+            "type": "string"
+          },
+          {
+            "name": "_value",
+            "type": "string"
+          }
+        ],
+        "name": "writedb",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getOwner",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "string"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_idHash",
+            "type": "bytes32"
+          },
+          {
+            "name": "from",
+            "type": "uint256"
+          },
+          {
+            "name": "to",
+            "type": "uint256"
+          }
+        ],
+        "name": "queryOrderIdListByIdHashIndex",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256[]"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "MAX_SIZE",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "operator",
+            "type": "address"
+          }
+        ],
+        "name": "addOperator",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "operator",
+            "type": "address"
+          }
+        ],
+        "name": "deleteOperator",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          },
+          {
+            "name": "_ui",
+            "type": "uint256"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_caller",
+            "type": "address"
+          },
+          {
+            "name": "_orderId",
+            "type": "uint256"
+          }
+        ],
+        "name": "getAgreementByOrderId",
+        "outputs": [
+          {
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "name": "version",
+            "type": "uint256"
+          },
+          {
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "name": "orderId",
+            "type": "uint256"
+          },
+          {
+            "name": "borrower",
+            "type": "address"
+          },
+          {
+            "name": "idHash",
+            "type": "bytes32"
+          },
+          {
+            "name": "status",
+            "type": "uint8"
+          },
+          {
+            "name": "applicationDigest",
+            "type": "bytes"
+          },
+          {
+            "name": "agreementDigest",
+            "type": "bytes"
+          },
+          {
+            "name": "repayDigest",
+            "type": "bytes"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "agreements",
+        "outputs": [
+          {
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "name": "version",
+            "type": "uint256"
+          },
+          {
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "name": "orderId",
+            "type": "uint256"
+          },
+          {
+            "name": "borrower",
+            "type": "address"
+          },
+          {
+            "name": "idHash",
+            "type": "bytes32"
+          },
+          {
+            "name": "status",
+            "type": "uint8"
+          },
+          {
+            "name": "applicationDigest",
+            "type": "bytes"
+          },
+          {
+            "name": "agreementDigest",
+            "type": "bytes"
+          },
+          {
+            "name": "repayDigest",
+            "type": "bytes"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "version",
+            "type": "uint256"
+          },
+          {
+            "name": "orderId",
+            "type": "uint256"
+          },
+          {
+            "name": "_borrower",
+            "type": "address"
+          },
+          {
+            "name": "idHash",
+            "type": "bytes32"
+          },
+          {
+            "name": "applicationDigest",
+            "type": "bytes"
+          },
+          {
+            "name": "agreementDigest",
+            "type": "bytes"
+          },
+          {
+            "name": "repayDigest",
+            "type": "bytes"
+          }
+        ],
+        "name": "createAgreement",
+        "outputs": [
+          {
+            "name": "agreementId",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getAgreementLength",
+        "outputs": [
+          {
+            "name": "length",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "payable": false,
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "name": "caller",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "orderId",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "name": "borrower",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "status",
+            "type": "uint8"
+          }
+        ],
+        "name": "agreementUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      }
+    ]

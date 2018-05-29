@@ -8,20 +8,22 @@ import com.wexmarket.topia.commons.pagination.SortPageParam;
 import io.wexchain.cryptoasset.loan.api.ApplyRequest;
 import io.wexchain.cryptoasset.loan.api.ConfirmRepaymentRequest;
 import io.wexchain.cryptoasset.loan.api.QueryLoanOrderPageRequest;
+import io.wexchain.cryptoasset.loan.api.QueryLoanReportRequest;
 import io.wexchain.cryptoasset.loan.api.constant.LoanOrderStatus;
+import io.wexchain.cryptoasset.loan.api.model.LoanReport;
+import io.wexchain.cryptoasset.loan.api.model.OrderIndex;
 import io.wexchain.cryptoasset.loan.api.model.RepaymentBill;
 import io.wexchain.dcc.loan.sdk.contract.LoanOrder;
 import io.wexchain.dcc.service.frontend.common.constants.FrontendWebConstants;
 import io.wexchain.dcc.service.frontend.common.constants.LoanExtParamConstants;
+import io.wexchain.dcc.service.frontend.common.convertor.LoanConvertor;
 import io.wexchain.dcc.service.frontend.common.enums.FrontendErrorCode;
 import io.wexchain.dcc.service.frontend.ctrlr.security.MemberDetails;
 import io.wexchain.dcc.service.frontend.integration.back.CryptoAssetLoanOperationClient;
+import io.wexchain.dcc.service.frontend.integration.wexyun.FileOperationClient;
 import io.wexchain.dcc.service.frontend.model.request.LoanCreditApplyRequest;
 import io.wexchain.dcc.service.frontend.model.request.LoanInterestRequest;
-import io.wexchain.dcc.service.frontend.model.vo.LoanOrderDetailVo;
-import io.wexchain.dcc.service.frontend.model.vo.LoanOrderVo;
-import io.wexchain.dcc.service.frontend.model.vo.LoanProductVo;
-import io.wexchain.dcc.service.frontend.model.vo.RepaymentBillVo;
+import io.wexchain.dcc.service.frontend.model.vo.*;
 import io.wexchain.dcc.service.frontend.service.dcc.loanProduct.LoanProductService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -56,7 +58,12 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
     private String appIdentity;
 
     @Autowired
+    private FileOperationClient fileOperationClient;
+
+    @Autowired
     private CryptoAssetLoanOperationClient cryptoAssetLoanOperationClient;
+
+
 
     @Override
     public LoanOrder getLastOrder(MemberDetails memberDetails) {
@@ -73,9 +80,7 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
         LoanProductVo loanProductVo = loanProductService.getLoanProductVo(loanCreditApplyRequest.getLoanProductId());
 
         ApplyRequest applyRequest = new ApplyRequest();
-        applyRequest.setChainOrderId(loanCreditApplyRequest.getOrderId());
-
-        applyRequest.setMemberId(memberDetails.getId());
+        applyRequest.setIndex(new OrderIndex(loanCreditApplyRequest.getOrderId(),memberDetails.getId().toString()));
         applyRequest.setLoanProductId(loanCreditApplyRequest.getLoanProductId().toString());
         applyRequest.setAmount(loanCreditApplyRequest.getBorrowAmount());
         applyRequest.setBorrowDuration(loanCreditApplyRequest.getBorrowDuration());
@@ -106,7 +111,7 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
         queryLoanOrderPageRequest.setMemberId(memberId.toString());
         queryLoanOrderPageRequest.setSortPageParam(new SortPageParam(pageParam.getNumber(),pageParam.getSize()));
         List<LoanOrderStatus> excludeStatusList = new ArrayList<>();
-        excludeStatusList.add(LoanOrderStatus.CANCELLED);
+        excludeStatusList.add(LoanOrderStatus.FAILURE);
         queryLoanOrderPageRequest.setExcludeStatusList(excludeStatusList);
         Pagination<io.wexchain.cryptoasset.loan.api.model.LoanOrder> loanOrderPagination = cryptoAssetLoanOperationClient.queryLoanOrderPage(queryLoanOrderPageRequest);
 
@@ -124,12 +129,14 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
     }
 
     @Override
-    public LoanOrderDetailVo getLoanOrderByChainOrderId(Long applyId) {
-        io.wexchain.cryptoasset.loan.api.model.LoanOrder loanOrder = cryptoAssetLoanOperationClient.getLoanOrderByChainOrderId(applyId);
+    public LoanOrderDetailVo getLoanOrderByChainOrderId(OrderIndex index) {
+        io.wexchain.cryptoasset.loan.api.model.LoanOrder loanOrder = cryptoAssetLoanOperationClient.getLoanOrderByChainOrderId(index);
         LoanProductVo loanProductVo = loanProductService.getLoanProductVo(Long.parseLong(loanOrder.getExtParam().get(LOAN_PRODUCT_ID)));
         LoanOrderDetailVo vo = new LoanOrderDetailVo();
         vo.setReceiverAddress(loanOrder.getReceiverAddress());
         vo.setAllowRepayPermit(loanProductVo.isRepayPermit());
+        vo.setLoanRate(loanProductVo.getLoanRate());
+
         Map<String, String> extParam = loanOrder.getExtParam();
         setBaseLoanOrderInfo(vo,loanOrder,loanProductVo);
         setLoanOrderDetailInfo(vo,extParam);
@@ -138,21 +145,68 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
     }
 
     @Override
-    public void confirmRepayment(ConfirmRepaymentRequest request) {
-        cryptoAssetLoanOperationClient.confirmRepayment(request);
+    public void confirmRepayment(OrderIndex index) {
+        cryptoAssetLoanOperationClient.confirmRepayment(index);
     }
 
     @Override
-    public RepaymentBillVo queryRepaymentBill(Long chainOrderId) {
-        RepaymentBill repaymentBill = cryptoAssetLoanOperationClient.queryRepaymentBill(chainOrderId);
+    public RepaymentBillVo queryRepaymentBill(OrderIndex index) {
+        RepaymentBill repaymentBill = cryptoAssetLoanOperationClient.queryRepaymentBill(index);
         return new RepaymentBillVo(repaymentBill);
     }
 
     @Override
     public BigDecimal getLoanInterest(LoanInterestRequest loanInterestRequest) {
         LoanProductVo loanProductVo = loanProductService.getLoanProductVo(loanInterestRequest.getProductId());
-        BigDecimal loanInterest = loanInterestRequest.getAmount().multiply(loanInterestRequest.getLoanPeriodValue()).multiply(loanProductVo.getLoanRate()).divide(new BigDecimal("365"),4,BigDecimal.ROUND_HALF_DOWN);
+        BigDecimal loanInterest = loanInterestRequest.getAmount().multiply(loanInterestRequest.getLoanPeriodValue()).multiply(loanProductVo.getLoanRate()).divide(new BigDecimal("365"),4,BigDecimal.ROUND_HALF_UP);
         return loanInterest;
+    }
+
+    @Override
+    public void cancel(OrderIndex index) {
+        cryptoAssetLoanOperationClient.cancel(index);
+    }
+
+    @Override
+    public void downloadAgreement(OutputStream outputStream, OrderIndex index) throws IOException {
+        io.wexchain.cryptoasset.loan.api.model.LoanOrder loanOrderByChainOrderId = cryptoAssetLoanOperationClient.getLoanOrderByChainOrderId(index);
+        Map<String, String> extParam = loanOrderByChainOrderId.getExtParam();
+        String filePath = extParam.get(AGREEMENT_PATH);
+        ErrorCodeValidate.isTrue(StringUtils.isNotBlank(filePath),FrontendErrorCode.FILE_NOT_EXIST,"文件不存在");
+        InputStream inputStream = fileOperationClient.download(filePath);
+        ErrorCodeValidate.isTrue(inputStream != null,FrontendErrorCode.FILE_NOT_EXIST,"文件不存在");
+        //写文件
+        try {
+            int b;
+            while((b=inputStream.read())!= -1)
+            {
+                outputStream.write(b);
+            }
+        }finally {
+            inputStream.close();
+            outputStream.close();
+        }
+    }
+
+    @Override
+    public io.wexchain.cryptoasset.loan.api.model.LoanOrder advance(Long chainOrderId) {
+        return cryptoAssetLoanOperationClient.advance(chainOrderId);
+    }
+
+    @Override
+    public List<LoanReportVo> queryLoanReport(QueryLoanReportRequest queryLoanReportRequest) {
+        List<LoanReport> loanReports = cryptoAssetLoanOperationClient.queryLoanReport(queryLoanReportRequest);
+        List<LoanReportVo> voList = new ArrayList<>();
+        for (LoanReport loanReport : loanReports) {
+            if(loanReport.getChainOrderId() == null){
+                continue;
+            }
+            LoanProductVo loanProductVo = loanProductService.getLoanProductVo(Long.parseLong(loanReport.getLoanProductId()));
+            LoanReportVo vo = LoanConvertor.convert(loanReport);
+            vo.setLenderName(loanProductVo.getLender().getName());
+            voList.add(vo);
+        }
+        return voList;
     }
 
     private static void setBaseLoanOrderInfo(LoanOrderVo loanOrderVo , io.wexchain.cryptoasset.loan.api.model.LoanOrder loanOrder,LoanProductVo loanProductVo ){
@@ -162,6 +216,7 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
         loanOrderVo.setCurrency(loanProductVo.getCurrency());
         loanOrderVo.setLender(loanProductVo.getLender());
         loanOrderVo.setAmount(loanOrder.getAmount());
+        loanOrderVo.setProductLogoUrl(loanProductVo.getLogoUrl());
     }
     private static void setLoanOrderDetailInfo(LoanOrderDetailVo vo , Map<String, String> extParam){
 
@@ -169,7 +224,7 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
             vo.setDurationUnit(extParam.get(BORROW_DURATION_UNIT));
         }
         if(StringUtils.isNotBlank(extParam.getOrDefault(LOAN_FEE,null))){
-            vo.setFee(new BigDecimal(extParam.get(LOAN_FEE)).setScale(4));
+            vo.setFee(new BigDecimal(extParam.get(LOAN_FEE)));
         }
         if(StringUtils.isNotBlank(extParam.getOrDefault(DELIVER_DATE,null))){
             vo.setDeliverDate(new Date(Long.parseLong(extParam.get(DELIVER_DATE))));
@@ -181,15 +236,17 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
             vo.setExpectRepayDate(new Date(Long.parseLong(extParam.get(EXPECT_REPAY_DATE))));
         }
         if(StringUtils.isNotBlank(extParam.getOrDefault(LOAN_INTEREST,null))){
-            vo.setFee(new BigDecimal(extParam.get(LOAN_INTEREST)).setScale(4));
+            vo.setLoanInterest(new BigDecimal(extParam.get(LOAN_INTEREST)).setScale(4,BigDecimal.ROUND_HALF_UP));
+        }
+        if(StringUtils.isNotBlank(extParam.getOrDefault(EXPECT_LOAN_INTEREST,null))){
+            vo.setExpectLoanInterest(new BigDecimal(extParam.get(EXPECT_LOAN_INTEREST)).setScale(4,BigDecimal.ROUND_HALF_UP));
         }
         if(StringUtils.isNotBlank(extParam.getOrDefault(BORROW_DURATION,null))){
             vo.setBorrowDuration(new Integer(extParam.get(BORROW_DURATION)));
         }
-        if(vo.getStatus() == LoanOrderStatus.DELIVERED){
+        if(vo.getStatus() == LoanOrderStatus.DELIVERED && vo.getRepayDate() != null){
             DateTime dateTime = new DateTime(vo.getRepayDate().getTime());
-            DateTime startOfDay = dateTime.withTimeAtStartOfDay();
-            if(startOfDay.isBeforeNow()){
+            if(dateTime.isAfterNow()){
                 vo.setEarlyRepayAvailable(true);
             }
         }

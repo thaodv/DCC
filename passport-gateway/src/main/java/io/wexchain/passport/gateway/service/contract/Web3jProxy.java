@@ -6,6 +6,6 @@ public interface Web3jProxy {
 	 * @param transactionHash
 	 * @return hasReceipt
 	 */
-	boolean hasReceipt(String transactionHash);
+	ReceiptResult getReceiptResult(String transactionHash, String emitter);
 
 }

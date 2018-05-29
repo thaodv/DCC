@@ -7,6 +7,8 @@ import org.apache.commons.text.RandomStringGenerator;
 import io.wexchain.juzix.contract.cert.CertContent;
 import io.wexchain.juzix.contract.cert.CertData;
 import io.wexchain.juzix.contract.cert.CertOrder;
+import io.wexchain.juzix.contract.cert.CertOrderUpdatedEvent;
+import io.wexchain.passport.gateway.service.contract.ReceiptResult;
 
 public class CertServiceProxyMock implements CertServiceProxy {
 	private RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder()
@@ -25,11 +27,6 @@ public class CertServiceProxyMock implements CertServiceProxy {
 	@Override
 	public String apply(String signMessageHex) {
 		return randomStringGenerator.generate(10);
-	}
-
-	@Override
-	public boolean hasReceipt(String transactionHash) {
-		return true;
 	}
 
 	@Override
@@ -87,6 +84,22 @@ public class CertServiceProxyMock implements CertServiceProxy {
 		icd.setDataVersion(1L);
 		icd.setContent(ici);
 		return icd;
+	}
+
+	@Override
+	public CertOrderUpdatedEvent getOrderUpdatedEvent(String txHash) {
+		return null;
+	}
+
+	@Override
+	public ReceiptResult getReceiptResult(String transactionHash, String emitter) {
+		return new ReceiptResult(false, null);
+	}
+
+	@Override
+	public String fastFail(String signMessageHex) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
