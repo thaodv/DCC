@@ -1,13 +1,17 @@
 package io.wexchain.passport.gateway.ctrlr.erc20;
 
-import com.alibaba.fastjson.JSONObject;
-import com.wexmarket.topia.commons.basic.exception.ErrorCodeException;
-import com.wexmarket.topia.commons.basic.rpc.utils.BaseResponseUtils;
-import com.wexmarket.topia.commons.basic.rpc.utils.ResultResponseUtils;
-import com.wexmarket.topia.commons.rpc.BaseResponse;
-import com.wexmarket.topia.commons.rpc.ResultResponse;
-import io.wexchain.passport.gateway.service.erc20.Erc20Validation;
-import io.wexchain.passport.gateway.service.erc20.FTCServiceProxy;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -19,21 +23,25 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.web3j.abi.datatypes.Address;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.alibaba.fastjson.JSONObject;
+import com.wexmarket.topia.commons.basic.exception.ErrorCodeException;
+import com.wexmarket.topia.commons.basic.rpc.utils.BaseResponseUtils;
+import com.wexmarket.topia.commons.basic.rpc.utils.ResultResponseUtils;
+import com.wexmarket.topia.commons.rpc.BaseResponse;
+import com.wexmarket.topia.commons.rpc.ResultResponse;
+
+import io.wexchain.passport.gateway.service.erc20.Erc20Validation;
+import io.wexchain.passport.gateway.service.erc20.FTCServiceProxy;
 
 @RestController
 @RequestMapping("/erc20/{path}/1")

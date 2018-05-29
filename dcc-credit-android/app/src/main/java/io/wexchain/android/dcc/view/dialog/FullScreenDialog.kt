@@ -54,7 +54,7 @@ class FullScreenDialog(context: Context, @StyleRes theme: Int = R.style.FullWidt
             return dialog
         }
 
-        fun Dialog.makeWindowFullscreenAndTransparent(){
+        fun Dialog.makeWindowFullscreenAndTransparent(onShowExtra:(()->Unit)?=null){
             setOnShowListener {
                 val window = this.window
                 window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
@@ -62,6 +62,7 @@ class FullScreenDialog(context: Context, @StyleRes theme: Int = R.style.FullWidt
                     window.statusBarColor = Color.TRANSPARENT
                     window.navigationBarColor = Color.TRANSPARENT
                 }
+                onShowExtra?.invoke()
             }
         }
     }

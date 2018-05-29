@@ -242,7 +242,30 @@
         <activity
                 android:name="io.wexchain.android.dcc.CmCertDataActivity"
                 android:label="报告原文"
-                android:screenOrientation="portrait"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name="io.wexchain.android.dcc.LoanReportActivity"
+                android:label="借贷报告"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name="io.wexchain.android.dcc.LoanReportDetailActivity"
+                android:label="借币详情">
+        </activity>
+        <activity
+                android:name=".LoanBillDetailActivity"
+                android:label="还款计划">
+        </activity>
+        <activity
+                android:name="io.wexchain.android.dcc.DccAffiliateActivity"
+                android:label="邀请好友"
+                android:theme="@style/DccLightTheme.App.Transparent.Aff"/>
+        <activity
+                android:name="io.wexchain.android.dcc.DccAffiliateTermsActivity"
+                android:label="活动规则">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.DccAffiliateRecordsActivity"
+                  android:label="邀请记录"
                 />
     </application>
 

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.support.v4.app.FragmentManager
 import android.util.Base64
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -544,7 +545,28 @@ object CertOperations {
     private val gson = Gson()
     private const val INVALID_CERT_ORDER_ID = -1L
 
+    private val reportListType = object:TypeToken<List<LoanReport>>(){}.type
+
+    var reportData:Pair<List<LoanReport>,Long>?
+        get() = certPrefs.run {
+            val report = reportData.get()?.run { gson.fromJson<List<LoanReport>>(this, reportListType) }
+            if (report == null) null else report to reportUpdateTime.get()
+        }
+        set(value) {
+            if (value!= null) {
+                certPrefs.reportData.set(gson.toJson(value.first))
+                certPrefs.reportUpdateTime.set(value.second)
+            }else{
+                certPrefs.reportData.clear()
+                certPrefs.reportUpdateTime.clear()
+            }
+        }
+
     private class CertPrefs(sp: SharedPreferences) : Prefs(sp) {
+        //report
+        val reportData = StringPref("loanReportDataList")
+        val reportUpdateTime = LongPref("loanReportUpdateTime",-1L)
+
         //id
         val certIdOrderId = LongPref("certIdOrderId", INVALID_CERT_ORDER_ID)
         val certIdStatus = StringPref("certIdStatus")

@@ -4,7 +4,7 @@ import io.wexchain.dcc.service.frontend.model.param.RegisterParam;
 
 public interface MemberOperationClient {
 
-    String register(RegisterParam request);
+    String register(RegisterParam param);
 
     String loginPasswordCheck(String loginName);
 

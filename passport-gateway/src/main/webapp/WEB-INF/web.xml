@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/restful/*</url-pattern>
+	</servlet-mapping>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:/META-INF/passport-gateway/spring/context-*.xml</param-value>
+	</context-param>
+
+	<filter>
+		<filter-name>cors</filter-name>
+		<filter-class>io.wexchain.passport.gateway.filter.CORSFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>cors</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<env-entry>
+		<env-entry-name>configLocation</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+	</env-entry>
+	<env-entry>
+		<env-entry-name>emptyConfigLocation</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+	</env-entry>
+	<env-entry>
+		<env-entry-name>overrideConfigLocation</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+	</env-entry>
+	<env-entry>
+		<env-entry-name>logbackFileLocation</env-entry-name>
+		<env-entry-type>java.lang.String</env-entry-type>
+	</env-entry>
+</web-app>

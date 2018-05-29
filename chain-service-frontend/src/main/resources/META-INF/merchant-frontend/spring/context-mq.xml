@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--	<bean id="flowExecuteMessageHandler"
+		  class="io.wexchain.dcc.service.frontend.uploaderhelper.FlowExecuteMessageHandler">
+		<property name="destination" value="${jms.flowExecuteQueue.name}"/>
+		<property name="failoverService" ref="commonFailoverService" />
+		<property name="concurrentConsumers" value="${jms.MailNotifyQueue.consumer}"/>
+		<property name="genericClass" value="com.weihui.finance.common.credit2.domain.result.UploadChainNotifyResult"/>
+	</bean>
+
+	<import resource="classpath:context/weihui-mq-jms-client.xml" />
+
+	<import resource="classpath:context/weihui-mq-jms-listener.xml" />
+
+
+	<bean id="messageHandlerContainer" class="com.weihui.mq.listener.DefaultMessageHandlerContainer" init-method="init" destroy-method="fireStopListeningEvent">
+		<property name="connectionFactory" ref="pooledConnectionFactory" />
+		<property name="destinationInfoFactory" ref="destinationInfoFactory" />
+		<property name="messageHandlers">
+			<list>
+				<ref bean="flowExecuteMessageHandler" />
+			</list>
+		</property>
+	</bean>-->
+
+
+</beans>

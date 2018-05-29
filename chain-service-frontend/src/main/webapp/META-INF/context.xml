@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiResourceLocking="false" privileged="true">
+	<Environment name="configLocation"
+				 value="file:E:/work/workspace/env_config/dev/wexchain/juzix/dcc/chain-service-frontend/my-config-integration.properties"
+				 type="java.lang.String" override="false" />
+	<Environment name="emptyConfigLocation"
+				 value="file:E:/work/workspace/env_config/dev/wexchain/juzix/dcc/chain-service-frontend/empty.properties"
+				 type="java.lang.String"
+				 override="false" />
+	<Environment name="overrideConfigLocation"
+				 value="file:E:/work/workspace/env_config/dev/wexchain/juzix/dcc/chain-service-frontend/override-config.properties"
+				 type="java.lang.String" override="false" />
+	<Environment name="logbackFileLocation"
+				 value="E:/work/workspace/env_config/dev/wexchain/juzix/dcc/chain-service-frontend/logback-fragment-integration.xml"
+				 type="java.lang.String" override="false" />
+</Context>

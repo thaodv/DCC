@@ -1,0 +1,606 @@
+[
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_moduleName",
+            "type": "string"
+          },
+          {
+            "name": "_moduleVersion",
+            "type": "string"
+          },
+          {
+            "name": "_contractName",
+            "type": "string"
+          },
+          {
+            "name": "_contractVersion",
+            "type": "string"
+          }
+        ],
+        "name": "register",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "operators",
+        "outputs": [
+          {
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getErrno",
+        "outputs": [
+          {
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          },
+          {
+            "name": "_str2",
+            "type": "string"
+          },
+          {
+            "name": "_str3",
+            "type": "string"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          },
+          {
+            "name": "_addr",
+            "type": "address"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          },
+          {
+            "name": "_i",
+            "type": "int256"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_moduleName",
+            "type": "string"
+          },
+          {
+            "name": "_moduleVersion",
+            "type": "string"
+          },
+          {
+            "name": "_newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "changeModuleRegisterOwner",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_moduleName",
+            "type": "string"
+          },
+          {
+            "name": "_moduleVersion",
+            "type": "string"
+          }
+        ],
+        "name": "register",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [],
+        "name": "kill",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          },
+          {
+            "name": "_str2",
+            "type": "string"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getSender",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "string"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "applicant",
+            "type": "address"
+          }
+        ],
+        "name": "revoke",
+        "outputs": [
+          {
+            "name": "_orderId",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "_moduleName",
+            "type": "string"
+          },
+          {
+            "name": "_moduleVersion",
+            "type": "string"
+          },
+          {
+            "name": "_contractName",
+            "type": "string"
+          },
+          {
+            "name": "_contractVersion",
+            "type": "string"
+          },
+          {
+            "name": "_newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "changeContractRegisterOwner",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_name",
+            "type": "string"
+          },
+          {
+            "name": "_key",
+            "type": "string"
+          },
+          {
+            "name": "_value",
+            "type": "string"
+          }
+        ],
+        "name": "writedb",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getOwner",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "string"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "operator",
+            "type": "address"
+          }
+        ],
+        "name": "addOperator",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getCertData",
+        "outputs": [
+          {
+            "name": "digest1",
+            "type": "bytes"
+          },
+          {
+            "name": "digest2",
+            "type": "bytes"
+          },
+          {
+            "name": "expired",
+            "type": "uint256"
+          },
+          {
+            "name": "dataVersion",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_orderId",
+            "type": "uint256"
+          }
+        ],
+        "name": "getCertOrder",
+        "outputs": [
+          {
+            "name": "applicant",
+            "type": "address"
+          },
+          {
+            "name": "status",
+            "type": "uint8"
+          },
+          {
+            "name": "digest1",
+            "type": "bytes"
+          },
+          {
+            "name": "digest2",
+            "type": "bytes"
+          },
+          {
+            "name": "expired",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "operator",
+            "type": "address"
+          }
+        ],
+        "name": "deleteOperator",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_str",
+            "type": "string"
+          },
+          {
+            "name": "_ui",
+            "type": "uint256"
+          }
+        ],
+        "name": "log",
+        "outputs": [
+          {
+            "name": "_ret",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "orderId",
+            "type": "uint256"
+          }
+        ],
+        "name": "reject",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_owner",
+            "type": "address"
+          },
+          {
+            "name": "_atBlock",
+            "type": "uint256"
+          }
+        ],
+        "name": "getCertDataAt",
+        "outputs": [
+          {
+            "name": "digest1",
+            "type": "bytes"
+          },
+          {
+            "name": "digest2",
+            "type": "bytes"
+          },
+          {
+            "name": "expired",
+            "type": "uint256"
+          },
+          {
+            "name": "dataVersion",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getCertOrderLength",
+        "outputs": [
+          {
+            "name": "length",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "orderId",
+            "type": "uint256"
+          }
+        ],
+        "name": "pass",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "_owner",
+            "type": "address"
+          }
+        ],
+        "name": "getCertData",
+        "outputs": [
+          {
+            "name": "digest1",
+            "type": "bytes"
+          },
+          {
+            "name": "digest2",
+            "type": "bytes"
+          },
+          {
+            "name": "expired",
+            "type": "uint256"
+          },
+          {
+            "name": "dataVersion",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "digest1",
+            "type": "bytes"
+          },
+          {
+            "name": "digest2",
+            "type": "bytes"
+          },
+          {
+            "name": "expired",
+            "type": "uint256"
+          }
+        ],
+        "name": "apply",
+        "outputs": [
+          {
+            "name": "_orderId",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "payable": false,
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "applicant",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "orderId",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "name": "status",
+            "type": "uint8"
+          }
+        ],
+        "name": "orderUpdated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      }
+    ]

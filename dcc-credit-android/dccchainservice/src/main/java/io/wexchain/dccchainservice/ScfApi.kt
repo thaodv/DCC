@@ -130,6 +130,11 @@ interface ScfApi {
         @Query("chainOrderId") chainOrderId: Long//否	链上订单id
     ):Single<ResponseBody>
 
+    @POST("secure/loan/queryReport")
+    fun queryLoanReport(
+        @Header(ScfApi.HEADER_TOKEN) token: String?
+    ):Single<Result<List<LoanReport>>>
+
     companion object {
         const val HEADER_TOKEN = "x-auth-token"
     }

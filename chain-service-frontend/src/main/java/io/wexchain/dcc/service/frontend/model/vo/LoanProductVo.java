@@ -21,7 +21,7 @@ public class LoanProductVo {
 
 	private String description;
 
-	private List<BigInteger> volumeOptionList;
+	private List<BigDecimal> volumeOptionList;
 
 	private BigDecimal loanRate;
 
@@ -40,6 +40,26 @@ public class LoanProductVo {
 	private String loanType;
 
 	private String name;
+
+	private String logoUrl;
+
+	private String agreementTemplateUrl;
+
+	public String getAgreementTemplateUrl() {
+		return agreementTemplateUrl;
+	}
+
+	public void setAgreementTemplateUrl(String agreementTemplateUrl) {
+		this.agreementTemplateUrl = agreementTemplateUrl;
+	}
+
+	public String getLogoUrl() {
+		return logoUrl;
+	}
+
+	public void setLogoUrl(String logoUrl) {
+		this.logoUrl = logoUrl;
+	}
 
 	public Long getId() {
 		return id;
@@ -97,11 +117,11 @@ public class LoanProductVo {
 		this.description = description;
 	}
 
-	public List<BigInteger> getVolumeOptionList() {
+	public List<BigDecimal> getVolumeOptionList() {
 		return volumeOptionList;
 	}
 
-	public void setVolumeOptionList(List<BigInteger> volumeOptionList) {
+	public void setVolumeOptionList(List<BigDecimal> volumeOptionList) {
 		this.volumeOptionList = volumeOptionList;
 	}
 
@@ -169,5 +189,7 @@ public class LoanProductVo {
 		this.repayCyclesNo = loanProduct.getRepayCyclesNo();
 		this.loanType = loanProduct.getLoanType();
 		this.name = loanProduct.getName();
+		this.logoUrl = loanProduct.getLogoUrl();
+		this.agreementTemplateUrl = loanProduct.getAgreementTemplateUrl();
 	}
 }

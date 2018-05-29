@@ -44,53 +44,95 @@
                         android:orientation="horizontal"
                         android:paddingLeft="@dimen/content_padding_horizontal"
                         android:paddingRight="@dimen/content_padding_horizontal"
+                        android:layout_marginTop="12dp"
                         >
-                    <TextView
+                    <FrameLayout
                             android:id="@+id/tv_candy"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="糖果领取"
-                            android:drawableTop="@drawable/rect_candy"
-                            android:gravity="center"
-                            android:drawablePadding="16dp"
-                            android:padding="4dp"
-                            />
-
-                    <View
-                            android:layout_width="@dimen/divider_stroke_width"
-                            android:layout_height="match_parent"
-                            style="@style/DividerVertical"
-                            />
-                    <TextView
+                            android:background="@drawable/bg_bar_red"
+                            >
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="100dp"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="糖果领取"
+                                android:drawableLeft="@drawable/ic_candy_2"
+                                android:drawablePadding="16dp"
+                                android:textColor="@color/text_white"
+                                />
+                    </FrameLayout>
+                    <FrameLayout
                             android:id="@+id/tv_credit"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="我的信用"
-                            android:drawableTop="@drawable/rect_credit"
-                            android:gravity="center"
-                            android:drawablePadding="16dp"
-                            android:padding="4dp"
-                            />
-
-                    <View
-                            android:layout_width="@dimen/divider_stroke_width"
-                            android:layout_height="match_parent"
-                            style="@style/DividerVertical"
-                            />
-                    <TextView
+                            android:background="@drawable/bg_bar_blue"
+                            android:layout_marginLeft="20dp"
+                            >
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="100dp"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="我的信用"
+                                android:drawableLeft="@drawable/ic_credit_star"
+                                android:drawablePadding="16dp"
+                                android:textColor="@color/text_white"
+                                />
+                    </FrameLayout>
+                </LinearLayout>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/content_padding_horizontal"
+                        android:paddingRight="@dimen/content_padding_horizontal"
+                        android:layout_marginTop="12dp"
+                        >
+                    <FrameLayout
                             android:id="@+id/tv_loan"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="信用借币"
-                            android:drawableTop="@drawable/rect_loan"
-                            android:gravity="center"
-                            android:drawablePadding="16dp"
-                            android:padding="4dp"
-                            />
-
+                            android:background="@drawable/bg_bar_purple"
+                            >
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="100dp"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="信用借币"
+                                android:drawableLeft="@drawable/ic_loan"
+                                android:drawablePadding="16dp"
+                                android:textColor="@color/text_white"
+                                />
+                    </FrameLayout>
+                    <FrameLayout
+                            android:id="@+id/tv_loan_report"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_bar_yellow"
+                            android:layout_marginLeft="20dp"
+                            >
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="100dp"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="借贷报告"
+                                android:drawableLeft="@drawable/ic_report"
+                                android:drawablePadding="16dp"
+                                android:textColor="@color/text_white"
+                                />
+                    </FrameLayout>
                 </LinearLayout>
 
                 <fragment

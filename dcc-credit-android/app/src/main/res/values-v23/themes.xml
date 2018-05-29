@@ -28,4 +28,11 @@
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowBackground">@color/blue_magenta_loading</item>
     </style>
+
+    <style name="DccLightTheme.App.Transparent.Aff">
+        <item name="android:windowBackground">@color/blue_magenta_loading</item>
+        <item name="android:actionMenuTextColor">?android:attr/textColorPrimary</item>
+        <item name="navigationIcon">@drawable/arrow_left_white</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
 </resources>

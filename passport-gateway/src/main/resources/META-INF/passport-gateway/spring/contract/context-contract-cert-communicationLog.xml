@@ -47,7 +47,7 @@
 
 		<property name="signMessageValidator">
 			<bean
-					class="io.wexchain.passport.gateway.service.cert.dcc.CertSignMessageValidator"
+					class="io.wexchain.passport.gateway.service.cert.dcc.DccCertSignMessageValidator"
 					p:contractParam-ref="dccCommunicationLogServiceContractParam" />
 		</property>
 

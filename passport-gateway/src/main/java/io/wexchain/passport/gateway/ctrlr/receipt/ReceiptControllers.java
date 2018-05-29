@@ -18,6 +18,7 @@ import com.wexmarket.topia.commons.basic.rpc.utils.ResultResponseUtils;
 import com.wexmarket.topia.commons.rpc.BaseResponse;
 import com.wexmarket.topia.commons.rpc.ResultResponse;
 
+import io.wexchain.passport.gateway.service.contract.ReceiptResult;
 import io.wexchain.passport.gateway.service.contract.Web3jProxy;
 
 @RequestMapping("/receipt/1")
@@ -29,9 +30,18 @@ public class ReceiptControllers {
 
 	@RequestMapping(value = "/hasReceipt", method = RequestMethod.GET)
 	@ResponseBody
-	public ResultResponse<Boolean> hasReceipt(@RequestParam @NotBlank String txHash) throws IOException {
-		boolean hasReceipt = web3jProxy.hasReceipt(txHash);
-		return ResultResponseUtils.successResultResponse(hasReceipt);
+	public ResultResponse<Boolean> hasReceipt(@RequestParam @NotBlank String txHash,
+			@RequestParam(required = false) String txFrom) throws IOException {
+		ReceiptResult receiptResult = web3jProxy.getReceiptResult(txHash, txFrom);
+		return ResultResponseUtils.successResultResponse(receiptResult.isHasReceipt());
+	}
+
+	@RequestMapping(value = "/getReceiptResult", method = RequestMethod.GET)
+	@ResponseBody
+	public ResultResponse<ReceiptResult> getReceiptResult(@RequestParam @NotBlank String txHash,
+			@RequestParam(required = false) String txFrom) throws IOException {
+		ReceiptResult receiptResult = web3jProxy.getReceiptResult(txHash, txFrom);
+		return ResultResponseUtils.successResultResponse(receiptResult);
 	}
 
 	@ExceptionHandler(ErrorCodeException.class)

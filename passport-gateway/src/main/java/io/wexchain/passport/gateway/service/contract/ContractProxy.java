@@ -13,5 +13,6 @@ public interface ContractProxy<T> extends Web3jProxy {
 	 */
 	String getAbi();
 
+	String fastFail(String signMessageHex);
 
 }

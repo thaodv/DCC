@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
@@ -29,8 +30,6 @@ import io.wexchain.passport.gateway.ctrlr.captcha.CaptchaQuestion;
 import io.wexchain.passport.gateway.ctrlr.commons.ChallengeForm;
 import io.wexchain.passport.gateway.service.risk.AccessRestriction;
 import io.wexchain.passport.gateway.service.risk.RiskMeasurer;
-
-import javax.annotation.Resource;
 
 @RequestMapping("/ticket/1")
 @RestController
