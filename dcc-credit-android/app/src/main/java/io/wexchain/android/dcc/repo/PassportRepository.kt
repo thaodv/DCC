@@ -282,6 +282,12 @@ class PassportRepository(
         }
     }
 
+    var scfAccountExists:Boolean
+        get() = passportPrefs.scfAccountExists.get()
+        set(value) {
+            passportPrefs.scfAccountExists.set(value)
+        }
+
     companion object {
         const val WALLET_ADDR_SHORT_NAME = "本地钱包"
 
@@ -293,6 +299,7 @@ class PassportRepository(
         private const val USER_AVATAR_URI = "user_avatar_uri"
         private const val AUTH_KEY_ALIAS = "auth_key_alias"
         private const val AUTH_KEY_PUB = "auth_key_pub"
+        private const val SCF_ACCOUNT_EXISTS = "scf_account_exists"
 
         private const val DEFAULT_BENEFICIARY_ADDRESS = "default_beneficiary_address"
 
@@ -313,6 +320,7 @@ class PassportRepository(
         val authKeyAlias = StringPref(AUTH_KEY_ALIAS)
         val authKeyPublicKey = StringPref(AUTH_KEY_PUB)
         val defaultBeneficiaryAddress = StringPref(DEFAULT_BENEFICIARY_ADDRESS)
+        val scfAccountExists = BoolPref(SCF_ACCOUNT_EXISTS,false)
 
         fun loadAuthKey(): AuthKey? {
             val keyAlias = authKeyAlias.get()

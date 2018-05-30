@@ -65,7 +65,7 @@ class CreatePassportActivity : BindActivity<ActivityCreatePassportBinding>() {
     private fun onCreateSuccess() {
         toast("创建成功")
         finish()
-        navigateTo(PassportCreationSucceedActivity::class.java)
+        navigateTo(CreateScfAccountActivity::class.java)
     }
 
     private fun ensurePassportIsAbsent() {

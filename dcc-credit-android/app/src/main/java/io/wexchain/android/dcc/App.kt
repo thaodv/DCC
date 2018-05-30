@@ -97,7 +97,7 @@ class App : MultiDexApplication() {
         this.networking = networking
         this.commonApi = networking.createApi(CommonApi::class.java,"https://www.google.com")//url is unused
 
-        chainGateway = networking.createApi(ChainGateway::class.java, cc.sisel.ewallet.BuildConfig.GATEWAY_BASE_URL)
+        chainGateway = networking.createApi(ChainGateway::class.java, BuildConfig.GATEWAY_BASE_URL)
         certApi = networking.createApi(CertApi::class.java, BuildConfig.CHAIN_FUNC_URL)
         chainFrontEndApi = networking.createApi(ChainFrontEndApi::class.java, BuildConfig.CHAIN_FRONTEND_URL)
         privateChainApi = networking.createApi(PrivateChainApi::class.java, BuildConfig.CHAIN_EXPLORER_URL)
@@ -120,7 +120,7 @@ class App : MultiDexApplication() {
         return when (dc.chain) {
             Chain.JUZIX_PRIVATE -> {
                 dc.contractAddress!!
-                val privateRpc = networking.createApi(EthJsonRpcApi::class.java, EthJsonRpcApi.juzixErc20RpcUrl(dc.symbol))
+                val privateRpc = networking.createApi(EthJsonRpcApi::class.java, EthJsonRpcApi.juzixErc20RpcUrl(BuildConfig.GATEWAY_BASE_URL,dc.symbol))
                         .getPrepared()
                 JuzixErc20Agent(dc, EthsRpcAgent.by(privateRpc), txAgentBy(privateChainApi, dc))
             }

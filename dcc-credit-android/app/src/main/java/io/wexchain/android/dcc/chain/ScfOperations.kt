@@ -16,10 +16,7 @@ import io.wexchain.android.dcc.vm.domain.LoanScratch
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.ScfApi
-import io.wexchain.dccchainservice.domain.BusinessCodes
-import io.wexchain.dccchainservice.domain.CertOrder
-import io.wexchain.dccchainservice.domain.LoanChainOrder
-import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.dccchainservice.domain.*
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import io.wexchain.digitalwallet.Currencies
 import okhttp3.MediaType
@@ -35,7 +32,7 @@ object ScfOperations {
     private const val DIGEST = "SHA256"
 
     @Deprecated("replaced")
-    fun cancelLoan(orderId:Long,passport: Passport): Single<String> {
+    fun cancelLoan(orderId: Long, passport: Passport): Single<String> {
         val credentials = passport.credential
         val nonce = privateChainNonce(credentials.address)
         val chainGateway = App.get().chainGateway
@@ -59,7 +56,7 @@ object ScfOperations {
 
     fun cancelLoan(orderId: Long): Single<String> {
         return withScfTokenInCurrentPassport("") {
-            App.get().scfApi.cancelLoan(it,orderId)
+            App.get().scfApi.cancelLoan(it, orderId)
         }
     }
 
@@ -100,7 +97,7 @@ object ScfOperations {
                         }
                 }
                 .loanOrderByTx(chainGateway)
-                .flatMap {order->
+                .flatMap { order ->
                     ScfOperations.withScfTokenInCurrentPassport(allowNull = "") {
                         scfApi.applyLoanCredit(
                             it,
@@ -134,7 +131,7 @@ object ScfOperations {
             }
     }
 
-    fun Single<String>.confirmOnChain(api:ChainGateway):Single<String>{
+    fun Single<String>.confirmOnChain(api: ChainGateway): Single<String> {
         return this.flatMap { txHash ->
             api.getReceiptResult(txHash)
                 .compose(Result.checked())
@@ -146,7 +143,7 @@ object ScfOperations {
                 }
                 .retryWhen(RetryWithDelay.createSimple(6, 5000L))
                 .map {
-                    if(!it.approximatelySuccess){
+                    if (!it.approximatelySuccess) {
                         throw DccChainServiceException()
                     }
                     txHash
@@ -198,8 +195,10 @@ object ScfOperations {
                             MediaType.parse("application/pdf") -> it.bytes()
                             MediaType.parse("application/json") -> {
                                 val result =
-                                    App.get().networking.networkGson.fromJson<Result<String>>(it.charStream(),
-                                        object : TypeToken<Result<String>>() {}.type)
+                                    App.get().networking.networkGson.fromJson<Result<String>>(
+                                        it.charStream(),
+                                        object : TypeToken<Result<String>>() {}.type
+                                    )
                                 throw result.asError()
                             }
                             else -> throw IllegalArgumentException()
@@ -288,10 +287,10 @@ object ScfOperations {
                         )
                         .map {
                             val body = it.body()
-                            if (it.isSuccessful && body != null ) {
-                                if(body.isSuccess) {
+                            if (it.isSuccessful && body != null) {
+                                if (body.isSuccess) {
                                     it.headers()[ScfApi.HEADER_TOKEN]!!
-                                }else{
+                                } else {
                                     throw body.asError()
                                 }
                             } else {
@@ -303,5 +302,57 @@ object ScfOperations {
                         }
                 }
         }
+    }
+
+    fun registerWithCurrentPassport(code: String?): Single<String> {
+        val scfApi = App.get().scfApi
+        val passport = App.get().passportRepository.getCurrentPassport()
+        passport?.authKey ?: return Single.error(IllegalStateException())
+        val address = passport.address
+        val privateKey = passport.authKey.getPrivateKey()
+        return scfApi.getNonce()
+            .compose(Result.checked())
+            .flatMap {
+                scfApi
+                    .scfRegister(
+                        nonce = it,
+                        address = address,
+                        loginName = address,
+                        inviteCode = code,
+                        sign = ParamSignatureUtil.sign(
+                            privateKey, mapOf(
+                                "nonce" to it,
+                                "address" to address,
+                                "loginName" to address,
+                                "inviteCode" to code
+                            )
+                        )
+                    )
+                    .compose(Result.checked())
+            }
+    }
+
+    fun getScfAccountInfo():Single<ScfAccountInfo>{
+        val scfApi = App.get().scfApi
+        val passport = App.get().passportRepository.getCurrentPassport()
+        passport?.authKey ?: return Single.error(IllegalStateException())
+        val address = passport.address
+        val privateKey = passport.authKey.getPrivateKey()
+        return scfApi.getNonce()
+            .compose(Result.checked())
+            .flatMap {
+                scfApi
+                    .getScfMemberInfo(
+                        nonce = it,
+                        address = address,
+                        sign = ParamSignatureUtil.sign(
+                            privateKey, mapOf(
+                                "nonce" to it,
+                                "address" to address
+                            )
+                        )
+                    )
+                    .compose(Result.checkedAllowingNull(ScfAccountInfo.ABSENT))
+            }
     }
 }
