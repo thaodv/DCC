@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ScenarioService {
 
+    Scenario getScenario(String activityCode, String scenarioCode);
+
     Scenario getScenario(String scenarioCode);
 
     List<Scenario> queryScenario(QueryScenarioRequest request);

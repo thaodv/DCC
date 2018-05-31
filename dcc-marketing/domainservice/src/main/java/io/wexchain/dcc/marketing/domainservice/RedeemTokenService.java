@@ -20,4 +20,6 @@ public interface RedeemTokenService {
     List<RedeemToken> queryRedeemToken(QueryRedeemTokenRequest request);
 
     List<IdRestriction> queryIdRestriction(QueryIdRestrictionRequest request);
+
+    RedeemToken createBonus(RedeemTokenRequest request);
 }

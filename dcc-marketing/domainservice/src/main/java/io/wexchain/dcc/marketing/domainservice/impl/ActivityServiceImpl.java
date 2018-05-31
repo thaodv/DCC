@@ -28,10 +28,6 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public List<Activity> queryActivity(QueryActivityRequest request) {
-        Sort sort = new Sort(
-                new Sort.Order(Sort.Direction.DESC, "startTime"),
-                new Sort.Order(Sort.Direction.ASC, "name"));
-
         if (CollectionUtils.isNotEmpty(request.getStatusList())) {
             request.getStatusList().remove(ActivityStatus.CREATED);
         } else {
@@ -39,7 +35,9 @@ public class ActivityServiceImpl implements ActivityService {
                     ActivityStatus.STARTED, ActivityStatus.ENDED));
         }
 
-        List<Activity> activityList = activityRepository.findAll(ActivityQueryBuilder.query(request), sort);
+        List<Activity> activityList = activityRepository.findAll(
+                ActivityQueryBuilder.query(request),
+                Sort.by(Sort.Order.desc("startTime"), Sort.Order.asc("name")));
         List<Activity> startedList = new ArrayList<>();
         List<Activity> shelvedList = new ArrayList<>();
         List<Activity> endedList = new ArrayList<>();
