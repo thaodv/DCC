@@ -27,6 +27,7 @@ public class LoanConvertor {
         to.setStatus(from.getStatus());
         to.setChainOrderId(from.getChainOrderId());
         to.setDeliverDate(from.getDeliverDate());
+        to.setBorrowerAddress(from.getBorrowerAddress());
         return to;
     }
 }

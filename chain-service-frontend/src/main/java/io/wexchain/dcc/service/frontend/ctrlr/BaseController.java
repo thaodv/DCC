@@ -4,6 +4,8 @@ import com.wexmarket.topia.commons.basic.rpc.utils.BaseResponseUtils;
 import com.wexmarket.topia.commons.rpc.BaseResponse;
 import com.wexmarket.topia.commons.rpc.SystemCode;
 import io.wexchain.dcc.service.frontend.common.enums.FrontendErrorCode;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -19,6 +21,13 @@ public class BaseController {
 		Iterator<ConstraintViolation<?>> iterator = e.getConstraintViolations().iterator();
 		return BaseResponseUtils.codeBaseResponse(
 				SystemCode.SUCCESS, FrontendErrorCode.ILLEGAL_ARGUMENT.name(), iterator.next().getMessage());
+	}
+
+	@ExceptionHandler(BindException.class)
+	@ResponseBody
+	public BaseResponse bindingResult(BindException e) {
+		return BaseResponseUtils.codeBaseResponse(
+				SystemCode.SUCCESS, FrontendErrorCode.ILLEGAL_ARGUMENT.name(), e.getBindingResult().getFieldError().getDefaultMessage());
 	}
 
 	@ExceptionHandler(Exception.class)

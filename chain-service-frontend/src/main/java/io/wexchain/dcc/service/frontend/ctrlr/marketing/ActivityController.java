@@ -1,23 +1,28 @@
 package io.wexchain.dcc.service.frontend.ctrlr.marketing;
 
 import com.wexmarket.topia.commons.basic.rpc.utils.BaseResponseUtils;
+import com.wexmarket.topia.commons.basic.rpc.utils.ListResultResponseUtils;
 import com.wexmarket.topia.commons.basic.rpc.utils.ResultResponseUtils;
 import com.wexmarket.topia.commons.rpc.BaseResponse;
+import com.wexmarket.topia.commons.rpc.ListResultResponse;
 import com.wexmarket.topia.commons.rpc.ResultResponse;
+import io.wexchain.dcc.marketing.api.model.RedeemToken;
+import io.wexchain.dcc.service.frontend.ctrlr.SecurityBaseController;
 import io.wexchain.dcc.service.frontend.model.request.ApplyRedeemTokenRequest;
 import io.wexchain.dcc.service.frontend.model.request.QueryActivityVoRequest;
 import io.wexchain.dcc.service.frontend.model.request.QueryRedeemTokenQualificationRequest;
 import io.wexchain.dcc.service.frontend.model.vo.ActivityVo;
 import io.wexchain.dcc.service.frontend.model.vo.RedeemTokenQualificationVo;
-import io.wexchain.dcc.service.frontend.model.vo.RedeemTokenVo;
 import io.wexchain.dcc.service.frontend.service.marketing.ActivityService;
 import io.wexchain.dcc.service.frontend.service.marketing.RedeemTokenService;
 import io.wexchain.dcc.service.frontend.service.marketing.ScenarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -26,7 +31,8 @@ import java.util.List;
  * @author zhengpeng
  */
 @RestController
-public class ActivityController {
+@Validated
+public class ActivityController extends SecurityBaseController{
 
     @Autowired
     private ActivityService activityService;
@@ -52,6 +58,18 @@ public class ActivityController {
     @PostMapping("/marketing/applyRedeemToken")
     public BaseResponse redeemToken(ApplyRedeemTokenRequest request) {
         redeemTokenService.applyRedeemToken(request);
+        return BaseResponseUtils.successBaseResponse();
+    }
+
+    @PostMapping("/secure/marketing/queryBonus")
+    public ListResultResponse<RedeemToken> queryBonus() {
+        List<RedeemToken> list = redeemTokenService.queryBonus(getMember().getUsername());
+        return ListResultResponseUtils.successListResultResponse(list);
+    }
+
+    @PostMapping("/secure/marketing/applyBonus")
+    public BaseResponse applyBonus(@NotNull(message = "链上订单号不能为空") Long redeemTokenId) {
+        redeemTokenService.getBonus(getMember().getUsername(),redeemTokenId);
         return BaseResponseUtils.successBaseResponse();
     }
 

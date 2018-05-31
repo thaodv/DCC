@@ -64,6 +64,8 @@ public class LoanReportVo {
 
     private String loanWay = "信用";
 
+    private String borrowerAddress;
+
     /**
      * 状态
      */
@@ -155,5 +157,13 @@ public class LoanReportVo {
 
     public void setStatus(LoanOrderStatus status) {
         this.status = status;
+    }
+
+    public String getBorrowerAddress() {
+        return borrowerAddress;
+    }
+
+    public void setBorrowerAddress(String borrowerAddress) {
+        this.borrowerAddress = borrowerAddress;
     }
 }

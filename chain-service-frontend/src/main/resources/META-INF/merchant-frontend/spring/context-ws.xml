@@ -26,6 +26,11 @@
 		<property name="clazz" value="io.wexchain.dcc.marketing.api.facade.RedeemTokenFacade" />
 		<property name="timeout" value="${dcc.marketing.remote.timeout}" />
 	</bean>
+	<bean id="bonusFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
+		<property name="remoteAddress" value="${dcc.marketing.ws.address}/bonusFacade" />
+		<property name="clazz" value="io.wexchain.dcc.marketing.api.facade.BonusFacade" />
+		<property name="timeout" value="${dcc.marketing.remote.timeout}" />
+	</bean>
 
 	<!-- crypto_asset_loan-api-->
 	<bean id="cryptoAssetLoanFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">

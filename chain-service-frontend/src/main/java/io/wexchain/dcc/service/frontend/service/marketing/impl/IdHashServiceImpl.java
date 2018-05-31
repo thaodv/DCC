@@ -6,6 +6,8 @@ import io.wexchain.dcc.service.frontend.service.marketing.IdHashService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ import java.io.IOException;
 @Service
 public class IdHashServiceImpl implements IdHashService {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private OkHttpClient okHttpClient;
 
@@ -33,10 +37,13 @@ public class IdHashServiceImpl implements IdHashService {
                     .url(logicUrl + "/dcc/endorsement/id/get/idHash?address=" + address)
                     .build();
             Response response = okHttpClient.newCall(request).execute();//得到Response 对象
+            logger.info("response code:{}", response.code());
             if (response.isSuccessful()) {
                 String json = response.body().string();
+                logger.info("getIdHashByAddress, json:{}", json);
                 JSONObject jsonObject = JSON.parseObject(json);
                 String idHash = jsonObject.getObject("result", String.class);
+                logger.info("id hash, hash:{}", idHash);
                 return idHash;
             }
         } catch (IOException e) {
