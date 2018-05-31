@@ -5,23 +5,30 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
+import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.Transitions
+import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityHomeBinding
+import io.wexchain.dccchainservice.domain.RedeemToken
+import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.ScfAccountInfo
+import java.math.BigInteger
 
-class HomeActivity : BindActivity<ActivityHomeBinding>() {
+class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
+
     override val contentLayoutId: Int = R.layout.activity_home
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setWindowExtended()
 
-        App.get().passportRepository.currPassport.observe(this, Observer {p->
+        App.get().passportRepository.currPassport.observe(this, Observer { p ->
             binding.cardPassport.passport = p
         })
         setupClicks()
@@ -30,32 +37,37 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
 
     private fun checkScfAccount() {
         val passportRepository = App.get().passportRepository
-        if(!passportRepository.scfAccountExists){
+        if (!passportRepository.scfAccountExists) {
             ScfOperations.getScfAccountInfo()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{acc->
-                    if(acc === ScfAccountInfo.ABSENT){
+                .withLoading()
+                .subscribe { acc ->
+                    if (acc === ScfAccountInfo.ABSENT) {
                         atLeastCreated {
                             showRegisterScfWithInviteCodeDialog()
                         }
-                    }else{
+                    } else {
                         passportRepository.scfAccountExists = true
                     }
                 }
         }
     }
 
+    private val registerScfDialog by lazy { RegisterScfDialog() }
+
     private fun showRegisterScfWithInviteCodeDialog() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        registerScfDialog.show()
     }
 
     private fun setupClicks() {
         val clickDigitalAssets: (View) -> Unit = {
             if (App.get().passportRepository.passportExists) {
-                navigateTo(DigitalAssetsActivity::class.java, transitionBundle(
+                navigateTo(
+                    DigitalAssetsActivity::class.java, transitionBundle(
                         Transitions.create(findViewById(R.id.rv_assets), Transitions.DIGITAL_ASSETS_LIST)
                         , Transitions.create(findViewById(R.id.assets_amount_value), Transitions.DIGITAL_ASSETS_AMOUNT)
-                ))
+                    )
+                )
             } else {
                 showIntroWalletDialog()
             }
@@ -84,7 +96,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
         }
         findViewById<View>(R.id.tv_candy).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
-                navigateTo(MarketingListActivity::class.java)
+                onClickCandy()
             } else {
                 showIntroWalletDialog()
             }
@@ -106,13 +118,56 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
         binding.cardPassport.root.setOnClickListener {
             if (!App.get().passportRepository.passportExists) {
                 showIntroWalletDialog()
-            }else{
-                navigateTo(PassportActivity::class.java,transitionBundle(
-                        Transitions.create(findViewById(R.id.card_passport),Transitions.CARD_PASSPORT),
-                        Transitions.create(findViewById<ViewGroup>(R.id.card_passport).findViewById(R.id.iv_avatar),Transitions.CARD_PASSPORT_AVATAR)
-                ))
+            } else {
+                navigateTo(
+                    PassportActivity::class.java, transitionBundle(
+                        Transitions.create(findViewById(R.id.card_passport), Transitions.CARD_PASSPORT),
+                        Transitions.create(
+                            findViewById<ViewGroup>(R.id.card_passport).findViewById(R.id.iv_avatar),
+                            Transitions.CARD_PASSPORT_AVATAR
+                        )
+                    )
+                )
             }
         }
+    }
+
+    private fun onClickCandy() {
+        val passportRepository = App.get().passportRepository
+        if (passportRepository.scfAccountExists) {
+            ScfOperations
+                .withScfTokenInCurrentPassport(emptyList()) {
+                    App.get().scfApi.queryBonus(it)
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .withLoading()
+                .subscribe { list ->
+                    if(list.isEmpty()){
+                        enterMarketingList()
+                    }else{
+                        val bonus = list.first()
+                        showRedeemToken(bonus)
+                    }
+                }
+        } else {
+            enterMarketingList()
+        }
+    }
+
+    private fun enterMarketingList() {
+        navigateTo(MarketingListActivity::class.java)
+    }
+
+    private fun showRedeemToken(redeemToken: RedeemToken) {
+        BonusDialog.create(redeemToken, this).show(supportFragmentManager, "BONUS#${redeemToken.scenarioCode}")
+    }
+
+    override fun onSkip() {
+        enterMarketingList()
+    }
+
+    override fun onComplete() {
+//        enterMarketingList()
     }
 
     private val introDialog by lazy { IntroDialog() }
@@ -128,7 +183,23 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
         navigateTo(PassportImportActivity::class.java)
     }
 
-    private inner class IntroDialog :Dialog(this,R.style.FullWidthDialog){
+    private fun registerScfAccount(code: String?) {
+        ScfOperations.registerWithCurrentPassport(code)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                showLoadingDialog()
+            }
+            .doFinally {
+                hideLoadingDialog()
+            }
+            .subscribe { _ ->
+                App.get().passportRepository.scfAccountExists = true
+                toast("成功")
+                registerScfDialog.dismiss()
+            }
+    }
+
+    private inner class IntroDialog : Dialog(this, R.style.FullWidthDialog) {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.dialog_intro_wallet)
@@ -143,6 +214,19 @@ class HomeActivity : BindActivity<ActivityHomeBinding>() {
             }
             findViewById<View>(R.id.ib_close).setOnClickListener {
                 dismiss()
+            }
+        }
+    }
+
+    private inner class RegisterScfDialog : Dialog(this) {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.dialog_register_scf)
+            setCancelable(false)
+            setCanceledOnTouchOutside(false)
+            findViewById<View>(R.id.btn_confirm).setOnClickListener {
+                val code = findViewById<EditText>(R.id.et_input_invite_code).text.toString()
+                registerScfAccount(if (code.isEmpty()) null else code)
             }
         }
     }

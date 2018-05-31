@@ -410,6 +410,12 @@ object ViewModelHelper {
             else -> null
         }
     }
+
+    @JvmStatic
+    fun bonusAmountStr(redeemToken: RedeemToken?): String {
+        redeemToken?:return ""
+        return Currencies.DCC.toDecimalAmount(redeemToken.amount).currencyToDisplayStr() + Currencies.DCC.symbol
+    }
 }
 
 fun BigDecimal.currencyToDisplayStr(): String {

@@ -20,6 +20,7 @@ import io.wexchain.dccchainservice.domain.*
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import io.wexchain.digitalwallet.Currencies
 import okhttp3.MediaType
+import retrofit2.HttpException
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -328,6 +329,18 @@ object ScfOperations {
                             )
                         )
                     )
+                    .map {
+                        if(it.isSuccessful){
+                            val result = it.body()!!
+                            if (result.isSuccess){
+                                val token = it.headers()[ScfApi.HEADER_TOKEN]!!
+                                App.get().scfTokenManager.scfToken = token
+                            }
+                            result
+                        }else{
+                            throw HttpException(it)
+                        }
+                    }
                     .compose(Result.checked())
             }
     }

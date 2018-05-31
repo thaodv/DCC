@@ -40,6 +40,7 @@ class CreateScfAccountActivity : BaseCompatActivity() {
             }
             .subscribe{_->
                 App.get().passportRepository.scfAccountExists = true
+                finish()
                 navigateTo(PassportCreationSucceedActivity::class.java){
                     putExtra(Extras.FROM_IMPORT,intent.getBooleanExtra(Extras.FROM_IMPORT,false))
                 }

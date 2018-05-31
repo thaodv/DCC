@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+                name="member"
+                type="io.wexchain.dccchainservice.domain.ScfAccountInfo"/>
+    </data>
+    <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="16dp"
+            >
+        <TextView
+                android:id="@+id/tv_invite_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/time_format_yyyymmdd_hhmmss(member.gmtCreate)}"
+                tools:text="@tools:sample/date/mmddyy"
+                android:textColor="@color/text_dark"
+                android:textStyle="bold"
+                />
+        <TextView
+                android:id="@+id/tv_invited_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{member.loginName}"
+                tools:text="@sample/address"
+                android:layout_marginTop="4dp"
+                />
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_stroke_width"
+                style="@style/DividerHorizontal"
+                android:layout_marginTop="8dp"
+                />
+    </LinearLayout>
+</layout>
