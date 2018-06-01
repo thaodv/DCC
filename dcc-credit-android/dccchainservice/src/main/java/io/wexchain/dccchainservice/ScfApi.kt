@@ -165,6 +165,14 @@ interface ScfApi {
         @Header(ScfApi.HEADER_TOKEN) token: String?
     ):Single<Result<List<RedeemToken>>>
 
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    @POST("secure/marketing/applyBonus")
+    @FormUrlEncoded
+    fun applyBonus(
+        @Header(ScfApi.HEADER_TOKEN) token: String?,
+        @Field("redeemTokenId") redeemTokenId:Long
+    ):Single<Result<RedeemToken>>
+
     companion object {
         const val HEADER_TOKEN = "x-auth-token"
     }

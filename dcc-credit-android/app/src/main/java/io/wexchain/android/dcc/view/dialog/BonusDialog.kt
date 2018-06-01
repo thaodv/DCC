@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.wexchain.android.common.commitTransaction
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.view.dialog.bonus.BonusAppearFragment
 import io.wexchain.android.dcc.view.dialog.bonus.BonusRedeemFragment
 import io.wexchain.android.dcc.vm.RedeemBonusVm
@@ -33,7 +35,9 @@ class BonusDialog : DialogFragment() {
             listener.onSkip()
         })
         vm.redeemEvent.observe(this, Observer {
-            tryRedeem()
+            it?.let {
+                tryRedeem(it.id)
+            }
         })
         vm.redeemCompleteEvent.observe(this, Observer {
             dismiss()
@@ -41,11 +45,19 @@ class BonusDialog : DialogFragment() {
         })
     }
 
-    private fun tryRedeem() {
-        //todo
-        childFragmentManager.commitTransaction {
-            replace(R.id.fl_container,bonusRedeemFragment)
-        }
+    private fun tryRedeem(id: Long) {
+        ScfOperations
+            .withScfTokenInCurrentPassport {
+                App.get().scfApi.applyBonus(it, id)
+            }
+            .doOnSubscribe { showLoadingDialog() }
+            .doFinally { hideLoadingDialog() }
+            .subscribe { token->
+                redeemBonusVm.setToken(token)
+                childFragmentManager.commitTransaction {
+                    replace(R.id.fl_container, bonusRedeemFragment)
+                }
+            }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,7 +67,7 @@ class BonusDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         childFragmentManager.commitTransaction {
-            replace(R.id.fl_container,bonusAppearFragment)
+            replace(R.id.fl_container, bonusAppearFragment)
         }
     }
 
@@ -65,15 +77,38 @@ class BonusDialog : DialogFragment() {
         return dialog
     }
 
-    interface Listener{
+
+    private var loadingDialog: FullScreenDialog? = null
+
+    fun showLoadingDialog() {
+        val context = this.context
+        context ?: return
+        var d = loadingDialog
+        if (d == null) {
+            d = FullScreenDialog.createLoading(context)
+            loadingDialog = d
+        }
+        d.show()
+    }
+
+    fun hideLoadingDialog() {
+        loadingDialog?.dismiss()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        loadingDialog = null
+    }
+
+    interface Listener {
         fun onSkip()
         fun onComplete()
     }
 
     companion object {
-        fun create(redeemToken: RedeemToken,listener: Listener): BonusDialog {
+        fun create(redeemToken: RedeemToken, listener: Listener): BonusDialog {
             val vm = RedeemBonusVm().apply {
-                init(redeemToken)
+                setToken(redeemToken)
             }
             return BonusDialog().apply {
                 this.redeemBonusVm = vm

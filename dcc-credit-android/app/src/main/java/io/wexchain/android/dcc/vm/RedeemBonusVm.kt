@@ -15,7 +15,7 @@ class RedeemBonusVm:ViewModel() {
 
     val redeemCompleteEvent = SingleLiveEvent<Void>()
 
-    fun init(redeemToken: RedeemToken){
+    fun setToken(redeemToken: RedeemToken){
         this.redeemToken.set(redeemToken)
     }
 

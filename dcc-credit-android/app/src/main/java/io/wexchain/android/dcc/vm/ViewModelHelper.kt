@@ -132,10 +132,10 @@ object ViewModelHelper {
     }
 
     @JvmStatic
-    fun maskCnId(id:String?): String? {
-        id?:return null
+    fun maskCnId(id: String?): String? {
+        id ?: return null
         require(id.length == 15 || id.length == 18)
-        return "${id.substring(0,6)}********${id.substring(id.length-4)}"
+        return "${id.substring(0, 6)}********${id.substring(id.length - 4)}"
     }
 
     @JvmStatic
@@ -389,11 +389,14 @@ object ViewModelHelper {
 
     @JvmStatic
     fun Context.loanReportBg(loanReport: LoanReport?): Drawable? {
-        return if(loanReport == null || loanReport.isFromOtherAddress()){
-             ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_other)
-        }else{
+        return if (loanReport == null || loanReport.isFromOtherAddress()) {
+            ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_other)
+        } else {
             when (loanReport?.status) {
-                LoanStatus.REPAID -> ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_complete)
+                LoanStatus.REPAID -> ContextCompat.getDrawable(
+                    this,
+                    R.drawable.bg_loan_report_status_settlement_complete
+                )
                 else -> ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_incomplete)
             }
         }
@@ -413,8 +416,10 @@ object ViewModelHelper {
 
     @JvmStatic
     fun bonusAmountStr(redeemToken: RedeemToken?): String {
-        redeemToken?:return ""
-        return Currencies.DCC.toDecimalAmount(redeemToken.amount).currencyToDisplayStr() + Currencies.DCC.symbol
+        redeemToken ?: return ""
+        val amount = redeemToken.amount
+        amount ?: return ""
+        return Currencies.DCC.toDecimalAmount(amount).currencyToDisplayStr() + Currencies.DCC.symbol
     }
 }
 
