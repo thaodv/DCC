@@ -68,9 +68,9 @@ public class ActivityController extends SecurityBaseController{
     }
 
     @PostMapping("/secure/marketing/applyBonus")
-    public BaseResponse applyBonus(@NotNull(message = "链上订单号不能为空") Long redeemTokenId) {
-        redeemTokenService.getBonus(getMember().getUsername(),redeemTokenId);
-        return BaseResponseUtils.successBaseResponse();
+    public ResultResponse<RedeemToken> applyBonus(@NotNull(message = "红包订单号不能为空") Long redeemTokenId) {
+        RedeemToken redeemToken = redeemTokenService.applyBonus(getMember().getUsername(), redeemTokenId);
+        return ResultResponseUtils.successResultResponse(redeemToken);
     }
 
 
