@@ -8,6 +8,8 @@ import android.webkit.WebView;
 import com.xxy.maple.tllibrary.utils.LogUtils;
 import com.xxy.maple.tllibrary.widget.TlX5WebView;
 
+import java.util.Locale;
+
 /**
  * Created by Gaoguanqi on 2018/5/24.
  */
@@ -31,6 +33,15 @@ public abstract class TlSampleJavascript {
         this.mAddress = address;
     }
 
+    @JavascriptInterface
+    public String getLanguage() {
+        String language = Locale.getDefault().getLanguage();
+        if(language.equalsIgnoreCase("zh")){
+            return "cn";
+        }else {
+            return "en";
+        }
+    }
 
     @JavascriptInterface
     public void close() {
