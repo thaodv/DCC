@@ -9,7 +9,9 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -47,6 +49,17 @@ public abstract class TlBrowserActivity extends AppCompatActivity implements Vie
     }
 
     private void initView() {
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
+        ActionBar supportActionBar = getSupportActionBar();
+        if(supportActionBar!=null){
+            supportActionBar.setDisplayShowHomeEnabled(false);
+            supportActionBar.setDisplayHomeAsUpEnabled(false);
+            supportActionBar.setDisplayShowTitleEnabled(false);
+        }
         ibtBack = (ImageButton) findViewById(R.id.ibt_back);
         tvTitle = (TextView) findViewById(R.id.tv_title);
         tvClose = (TextView) findViewById(R.id.tv_close);
