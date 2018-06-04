@@ -135,6 +135,14 @@
                     </FrameLayout>
                 </LinearLayout>
 
+                <TextView
+                        android:id="@+id/tv_tl"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:text="TL TEST"
+                        android:gravity="center"
+                        />
+
                 <fragment
                         android:id="@+id/section_assets"
                         android:name="io.wexchain.android.dcc.fragment.DigitalAssetsLimitedFragment"

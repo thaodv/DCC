@@ -1,0 +1,9 @@
+<resources>
+    <!--Dialog-->
+    <style name="loading_dialog" parent="@android:style/Theme.Dialog">
+        <!--背景透明-->
+        <item name="android:windowBackground">@color/trans</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+</resources>

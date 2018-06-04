@@ -1,0 +1,65 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 27
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'TL_SERVER_URL', '"http://tlsiren.xiaoxinyong.com"'
+        buildConfigField 'String', 'TL_H5_URL', '"http://tleos.xiaoxinyong.com"'
+    }
+
+    buildTypes {
+        debug {
+            //139.198.1.166    tlsiren.xiaoxinyong.com
+            //139.198.1.166    tleos.xiaoxinyong.com
+            buildConfigField 'String', 'TL_SERVER_RESOLVE_IP', '"139.198.1.166"'
+            buildConfigField 'String', 'TL_H5_RESOLVE_IP', '"139.198.1.166"'
+        }
+        release {
+            minifyEnabled false
+            consumerProguardFiles 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.android.support:appcompat-v7:$support_lib_version"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+   // testImplementation 'junit:junit:4.12'
+    //androidTestImplementation 'com.android.support.test:runner:1.1.0'
+   // androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    //retrofit2 + rxjava2
+
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+
+    // RxLifecycle
+    api 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.0'
+
+    //we3j
+//    implementation 'org.web3j:core-android:2.2.1'
+    //replace with juzix version
+    api('juzix:core-android:2.2.1') {
+        exclude group: 'io.reactivex', module: 'rxjava'
+        exclude group: 'com.squareup', module: 'javapoet'
+        exclude group: 'cz.msebera.android', module: 'httpclient'
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
+    }
+}

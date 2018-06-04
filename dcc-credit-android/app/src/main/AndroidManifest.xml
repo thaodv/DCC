@@ -271,6 +271,14 @@
                 android:name="io.wexchain.android.dcc.CreateScfAccountActivity"
                 android:label="填写邀请码">
         </activity>
+        <activity android:name="io.wexchain.android.dcc.tl.TlPayActivity"
+                android:exported="false">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="io.wexchain.intent.action.SIGN_ETH_TRANSACTION_TL"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.tl.TlWebPageActivity"/>
     </application>
 
 </manifest>
