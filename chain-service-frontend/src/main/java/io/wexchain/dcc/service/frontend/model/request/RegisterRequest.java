@@ -13,10 +13,20 @@ public class RegisterRequest extends AuthenticationRequest{
     /**
      * 登录名
      */
-    @NotBlank
+    @NotBlank(message = "登录名不能为空")
     private String        loginName;
 
     private String        loginPwd;
+
+    private String        inviteCode;
+
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
+    }
 
     public String getLoginName() {
         return loginName;

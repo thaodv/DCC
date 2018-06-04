@@ -111,7 +111,7 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
         queryLoanOrderPageRequest.setMemberId(memberId.toString());
         queryLoanOrderPageRequest.setSortPageParam(new SortPageParam(pageParam.getNumber(),pageParam.getSize()));
         List<LoanOrderStatus> excludeStatusList = new ArrayList<>();
-        excludeStatusList.add(LoanOrderStatus.FAILURE);
+        excludeStatusList.add(LoanOrderStatus.CANCELLED);
         queryLoanOrderPageRequest.setExcludeStatusList(excludeStatusList);
         Pagination<io.wexchain.cryptoasset.loan.api.model.LoanOrder> loanOrderPagination = cryptoAssetLoanOperationClient.queryLoanOrderPage(queryLoanOrderPageRequest);
 

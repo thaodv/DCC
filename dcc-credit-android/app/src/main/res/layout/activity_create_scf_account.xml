@@ -13,18 +13,32 @@
     <EditText
             android:id="@+id/et_input_invite_code"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="32dp"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginRight="@dimen/content_padding_horizontal"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:layout_marginTop="16dp"
             android:maxLength="10"
+            android:background="@null"
             />
+
+    <View
+            android:id="@+id/divider_h1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_stroke_width"
+            style="@style/DividerHorizontal"
+            app:layout_constraintTop_toBottomOf="@id/et_input_invite_code"
+            />
+
+
     <TextView
             android:id="@+id/tv_invite_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/et_input_invite_code"
+            app:layout_constraintTop_toBottomOf="@id/divider_h1"
+            android:layout_marginTop="4dp"
             android:text="输入邀请码可以获得更多奖励"
+            android:textColor="@color/text_dark"
             app:layout_constraintLeft_toLeftOf="@id/et_input_invite_code"
             />
 
@@ -37,6 +51,6 @@
             app:layout_constraintTop_toBottomOf="@id/tv_invite_hint"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginRight="@dimen/content_padding_horizontal"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             />
 </android.support.constraint.ConstraintLayout>

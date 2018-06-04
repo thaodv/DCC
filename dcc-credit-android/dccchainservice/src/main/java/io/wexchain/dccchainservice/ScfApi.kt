@@ -144,7 +144,7 @@ interface ScfApi {
         @Field("signature") sign: String,//否	签名
         @Field("loginName") loginName: String,//否	用户名，值为钱包地址
         @Field("inviteCode") inviteCode:String?
-    ):Single<Result<String>>
+    ):Single<Response<Result<String>>>
 
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @POST("member/getByIdentity")
@@ -154,6 +154,24 @@ interface ScfApi {
         @Field("address") address: String,//否	钱包地址
         @Field("signature") sign: String//否	签名
     ):Single<Result<ScfAccountInfo>>
+
+    @POST("secure/member/queryByInvited")
+    fun invitedList(
+        @Header(ScfApi.HEADER_TOKEN) token: String?
+    ):Single<Result<List<ScfAccountInfo>>>
+
+    @POST("secure/marketing/queryBonus")
+    fun queryBonus(
+        @Header(ScfApi.HEADER_TOKEN) token: String?
+    ):Single<Result<List<RedeemToken>>>
+
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    @POST("secure/marketing/applyBonus")
+    @FormUrlEncoded
+    fun applyBonus(
+        @Header(ScfApi.HEADER_TOKEN) token: String?,
+        @Field("redeemTokenId") redeemTokenId:Long
+    ):Single<Result<RedeemToken>>
 
     companion object {
         const val HEADER_TOKEN = "x-auth-token"

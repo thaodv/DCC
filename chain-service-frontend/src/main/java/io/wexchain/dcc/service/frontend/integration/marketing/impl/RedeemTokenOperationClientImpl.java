@@ -2,11 +2,13 @@ package io.wexchain.dcc.service.frontend.integration.marketing.impl;
 
 import com.weihui.basic.util.integration.IntegrationProxy;
 import com.wexmarket.topia.commons.rpc.ListResultResponse;
+import com.wexmarket.topia.commons.rpc.ResultResponse;
 import io.wexchain.dcc.marketing.api.facade.RedeemTokenFacade;
 import io.wexchain.dcc.marketing.api.model.IdRestriction;
 import io.wexchain.dcc.marketing.api.model.RedeemToken;
 import io.wexchain.dcc.marketing.api.model.request.QueryIdRestrictionRequest;
 import io.wexchain.dcc.marketing.api.model.request.QueryRedeemTokenRequest;
+import io.wexchain.dcc.marketing.api.model.request.RedeemTokenRequest;
 import io.wexchain.dcc.service.frontend.integration.common.ExecuteTemplate;
 import io.wexchain.dcc.service.frontend.integration.marketing.RedeemTokenOperationClient;
 import org.slf4j.Logger;
@@ -39,5 +41,11 @@ public class RedeemTokenOperationClientImpl implements RedeemTokenOperationClien
     public ListResultResponse<IdRestriction> queryIdRestriction(QueryIdRestrictionRequest request) {
         return ExecuteTemplate.execute(() ->
                 redeemTokenFacade.buildInst().queryIdRestriction(request), logger, "查询订单约束", request);
+    }
+
+    @Override
+    public ResultResponse<RedeemToken> applyRedeemToken(RedeemTokenRequest request) {
+        return ExecuteTemplate.execute(() ->
+                redeemTokenFacade.buildInst().applyRedeemToken(request), logger, "领取代币", request);
     }
 }

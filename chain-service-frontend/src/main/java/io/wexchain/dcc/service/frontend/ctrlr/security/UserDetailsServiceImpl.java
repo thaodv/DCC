@@ -1,5 +1,6 @@
 package io.wexchain.dcc.service.frontend.ctrlr.security;
 
+import com.wexyun.open.api.domain.member.Member;
 import io.wexchain.dcc.service.frontend.model.request.RegisterRequest;
 import io.wexchain.dcc.service.frontend.service.wexyun.MemberService;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -20,8 +21,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		try {
-			String memberId = memberService.getByIdentity(username);
-			if(memberId == null){
+			Member member = memberService.getByIdentity(username);
+
+			String memberId = null;
+			if(member != null && member.getMemberId() != null){
+				memberId = member.getMemberId().toString();
+			}
+
+			if(memberId ==null){
 				RegisterRequest registerRequest = new RegisterRequest();
 				registerRequest.setLoginName(username);
 				memberId = memberService.register(registerRequest);

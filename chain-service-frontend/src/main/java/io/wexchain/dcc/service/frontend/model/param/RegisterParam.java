@@ -16,6 +16,16 @@ public class RegisterParam {
 
     private String        loginPwd;
 
+    private String        inviteCode;
+
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
+    }
+
     public String getLoginName() {
         return loginName;
     }

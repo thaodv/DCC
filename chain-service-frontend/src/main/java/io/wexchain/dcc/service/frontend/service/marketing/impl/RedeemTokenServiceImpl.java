@@ -3,20 +3,30 @@ package io.wexchain.dcc.service.frontend.service.marketing.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.weihui.basic.util.marshaller.json.JsonUtil;
+import com.wexmarket.topia.commons.rpc.ListResultResponse;
 import io.wexchain.dcc.marketing.api.model.RedeemToken;
+import io.wexchain.dcc.marketing.api.model.request.GetBonusRequest;
+import io.wexchain.dcc.marketing.api.model.request.QueryRedeemTokenRequest;
+import io.wexchain.dcc.marketing.api.model.request.RedeemTokenRequest;
+import io.wexchain.dcc.service.frontend.integration.marketing.BonusOperationClient;
 import io.wexchain.dcc.service.frontend.integration.marketing.RedeemTokenOperationClient;
 import io.wexchain.dcc.service.frontend.model.request.ApplyRedeemTokenRequest;
 import io.wexchain.dcc.service.frontend.model.vo.RedeemTokenVo;
 import io.wexchain.dcc.service.frontend.service.marketing.RedeemTokenService;
+import io.wexchain.dcc.service.frontend.utils.ResultResponseValidator;
 import jodd.bean.BeanCopy;
 import okhttp3.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,8 +37,12 @@ import java.util.Map;
 @Service
 public class RedeemTokenServiceImpl implements RedeemTokenService {
 
+    private Logger logger = LoggerFactory.getLogger(RedeemTokenServiceImpl.class);
+
     @Resource
     private RedeemTokenOperationClient redeemTokenOperationClient;
+    @Resource
+    private BonusOperationClient bonusOperationClient;
 
     @Autowired
     private OkHttpClient okHttpClient;
@@ -51,6 +65,7 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
     public RedeemTokenVo applyRedeemToken(ApplyRedeemTokenRequest request) {
         try {
             String idHash = idHashService.getIdHashByAddress(request.getAddress());
+            logger.info("id hash:{}", idHash);
             RequestBody requestBody = new FormBody.Builder()
                             .add("scenarioCode", request.getScenarioCode())
                             .add("address", request.getAddress())
@@ -73,5 +88,26 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
         }
 
         return null;
+    }
+
+    @Override
+    public List<RedeemToken> queryBonus(String address) {
+        QueryRedeemTokenRequest queryRedeemTokenRequest = new QueryRedeemTokenRequest();
+        queryRedeemTokenRequest.setActivityCode("10002");
+        queryRedeemTokenRequest.setScenarioCodeList(Collections.singletonList("10002001"));
+        queryRedeemTokenRequest.setAddress(address);
+        ListResultResponse<RedeemToken> redeemTokenListResultResponse = redeemTokenOperationClient.queryRedeemToken(queryRedeemTokenRequest);
+        List<RedeemToken> listResult = ResultResponseValidator.getListResult(redeemTokenListResultResponse);
+        return listResult;
+    }
+
+    @Override
+    public RedeemToken getBonus(String address,Long redeemTokenId) {
+        GetBonusRequest getBonusRequest = new GetBonusRequest();
+        getBonusRequest.setAddress(address);
+        getBonusRequest.setActivityCode("10002");
+        getBonusRequest.setScenarioCode("10002001");
+        getBonusRequest.setRedeemTokenId(redeemTokenId);
+        return ResultResponseValidator.getResult(bonusOperationClient.getBonus(getBonusRequest));
     }
 }

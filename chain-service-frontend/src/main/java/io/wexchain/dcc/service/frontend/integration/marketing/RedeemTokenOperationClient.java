@@ -1,10 +1,12 @@
 package io.wexchain.dcc.service.frontend.integration.marketing;
 
 import com.wexmarket.topia.commons.rpc.ListResultResponse;
+import com.wexmarket.topia.commons.rpc.ResultResponse;
 import io.wexchain.dcc.marketing.api.model.IdRestriction;
 import io.wexchain.dcc.marketing.api.model.RedeemToken;
 import io.wexchain.dcc.marketing.api.model.request.QueryIdRestrictionRequest;
 import io.wexchain.dcc.marketing.api.model.request.QueryRedeemTokenRequest;
+import io.wexchain.dcc.marketing.api.model.request.RedeemTokenRequest;
 
 public interface RedeemTokenOperationClient {
 
@@ -19,5 +21,8 @@ public interface RedeemTokenOperationClient {
      */
     ListResultResponse<IdRestriction> queryIdRestriction(QueryIdRestrictionRequest request);
 
-
+    /**
+     * 领取代币
+     */
+    ResultResponse<RedeemToken> applyRedeemToken(RedeemTokenRequest request);
 }

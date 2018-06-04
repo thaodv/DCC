@@ -16,10 +16,11 @@
 
     <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             >
 
         <TextView
+                android:id="@+id/tv_no_records"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableTop="@drawable/logo_empty_aff_records"
@@ -27,39 +28,19 @@
                 android:layout_marginTop="80dp"
                 android:text="暂无邀请记录"
                 android:gravity="center"
+                android:visibility="gone"
                 />
 
-        <android.support.constraint.ConstraintLayout
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_dcc_affiliate_record"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
-                >
-            <TextView
-                    android:id="@+id/tv_invite_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="邀请时间"
-                    android:textStyle="bold"
-                    />
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="邀请人"
-                    android:textStyle="bold"
-                    app:layout_constraintBaseline_toBaselineOf="@id/tv_invite_time"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:minWidth="80dp"
-                    android:gravity="center"
-                    android:layout_marginRight="40dp"
-                    />
-        </android.support.constraint.ConstraintLayout>
+                />
     </FrameLayout>
 
-    <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            />
 
 </LinearLayout>

@@ -48,8 +48,6 @@ public enum FrontendErrorCode implements ErrorCode {
 	BANK_CARD_EXCEED("银行卡认未通过或证已过期", "银行卡认证未通过或已过期"),
 	COMMUNICATION_LOG_EXCEED("手机运营商认证未通过或已过期", "手机运营商认证未通过或已过期");
 
-
-
 	private String description;
 
 	private String template;

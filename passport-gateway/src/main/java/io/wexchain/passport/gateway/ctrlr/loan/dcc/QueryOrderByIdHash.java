@@ -20,11 +20,6 @@ public class QueryOrderByIdHash extends PageParam {
 	}
 
 	public byte[] getIdHash(){
-		try {
-			return Base64Utils.decode(idHashBase64.getBytes("UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return Base64Utils.decodeFromUrlSafeString(idHashBase64);
 	}
 }

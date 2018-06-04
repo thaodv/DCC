@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import io.reactivex.Single
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.view.dialog.FullScreenDialog
 import io.wexchain.dcc.R
@@ -77,7 +78,7 @@ abstract class BaseCompatActivity : AppCompatActivity() {
         return false
     }
 
-    open fun onResourceLoaded(@IdRes id:Int){
+    open fun onResourceLoaded(@IdRes id: Int) {
 
     }
 
@@ -94,5 +95,14 @@ abstract class BaseCompatActivity : AppCompatActivity() {
 
     fun hideLoadingDialog() {
         loadingDialog?.dismiss()
+    }
+
+    fun <T> Single<T>.withLoading(): Single<T> {
+        return this
+            .doOnSubscribe {
+                showLoadingDialog()
+            }.doFinally {
+                hideLoadingDialog()
+            }
     }
 }
