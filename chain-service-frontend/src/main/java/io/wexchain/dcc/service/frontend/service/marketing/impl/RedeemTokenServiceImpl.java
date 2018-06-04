@@ -2,12 +2,11 @@ package io.wexchain.dcc.service.frontend.service.marketing.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.weihui.basic.util.marshaller.json.JsonUtil;
 import com.wexmarket.topia.commons.rpc.ListResultResponse;
+import io.wexchain.dcc.marketing.api.constant.RedeemTokenStatus;
 import io.wexchain.dcc.marketing.api.model.RedeemToken;
-import io.wexchain.dcc.marketing.api.model.request.GetBonusRequest;
+import io.wexchain.dcc.marketing.api.model.request.ApplyBonusRequest;
 import io.wexchain.dcc.marketing.api.model.request.QueryRedeemTokenRequest;
-import io.wexchain.dcc.marketing.api.model.request.RedeemTokenRequest;
 import io.wexchain.dcc.service.frontend.integration.marketing.BonusOperationClient;
 import io.wexchain.dcc.service.frontend.integration.marketing.RedeemTokenOperationClient;
 import io.wexchain.dcc.service.frontend.model.request.ApplyRedeemTokenRequest;
@@ -96,18 +95,19 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
         queryRedeemTokenRequest.setActivityCode("10002");
         queryRedeemTokenRequest.setScenarioCodeList(Collections.singletonList("10002001"));
         queryRedeemTokenRequest.setAddress(address);
+        queryRedeemTokenRequest.setStatusList(Collections.singletonList(RedeemTokenStatus.CREATED));
         ListResultResponse<RedeemToken> redeemTokenListResultResponse = redeemTokenOperationClient.queryRedeemToken(queryRedeemTokenRequest);
         List<RedeemToken> listResult = ResultResponseValidator.getListResult(redeemTokenListResultResponse);
         return listResult;
     }
 
     @Override
-    public RedeemToken getBonus(String address,Long redeemTokenId) {
-        GetBonusRequest getBonusRequest = new GetBonusRequest();
-        getBonusRequest.setAddress(address);
-        getBonusRequest.setActivityCode("10002");
-        getBonusRequest.setScenarioCode("10002001");
-        getBonusRequest.setRedeemTokenId(redeemTokenId);
-        return ResultResponseValidator.getResult(bonusOperationClient.getBonus(getBonusRequest));
+    public RedeemToken applyBonus(String address, Long redeemTokenId) {
+        ApplyBonusRequest applyBonusRequest = new ApplyBonusRequest();
+        applyBonusRequest.setAddress(address);
+        applyBonusRequest.setActivityCode("10002");
+        applyBonusRequest.setScenarioCode("10002001");
+        applyBonusRequest.setRedeemTokenId(redeemTokenId);
+        return ResultResponseValidator.getResult(bonusOperationClient.applyBonus(applyBonusRequest));
     }
 }
