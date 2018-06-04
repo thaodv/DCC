@@ -12,12 +12,10 @@
     <include layout="@layout/include_toolbar"
              android:id="@+id/toolbar"/>
 
-    <TextView
+    <WebView
+            android:id="@+id/webView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="@tools:sample/lorem/random"
-            android:layout_marginLeft="@dimen/content_padding_horizontal"
-            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:layout_height="match_parent"
             />
 
 </LinearLayout>

@@ -262,7 +262,9 @@
                 android:theme="@style/DccLightTheme.App.Transparent.Aff"/>
         <activity
                 android:name="io.wexchain.android.dcc.DccAffiliateTermsActivity"
-                android:label="活动规则">
+                android:label="活动规则"
+                android:screenOrientation="portrait"
+                >
         </activity>
         <activity
                 android:name="io.wexchain.android.dcc.DccAffiliateRecordsActivity"
