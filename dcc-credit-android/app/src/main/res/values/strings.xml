@@ -134,14 +134,14 @@
     <string name="update_key">更新密钥</string>
     <string name="auth_key_change_log">统一登录变更记录</string>
     <string name="submit_new_token_title">如何提交新token给BitExpress?</string>
-    <string name="token_submit_info_general">如果需要在钱包显示你的Token信息，请务必使用官方邮箱提供一下信息，发送至dingnan@myassetapp.com我们会有专人处理。</string>
+    <string name="token_submit_info_general">如果需要在钱包显示你的Token信息，请务必使用官方邮箱提供一下信息，发送至yimtoken1@163.com我们会有专人处理。</string>
     <string name="app_introduction_description">BitExpress是基于Distributed Credit Chain发布的一款帮助用户解决去中心化场景中数字资产借贷问题的Dapp。需要借贷的用户在Dapp中将个人信息通过认证方认证后,用户可以将认证后的信息通过Dapp发送给数字资产出借方，出借方审核后，决定是否放款给需要借贷的用户。\n
 在BitExpress平台中借款方可以获得应急所需的数字资产，出借方可以获得出借本金及出借时间和金额所对应的利息。
 下面是我们的联系方式，如果您对我们感兴趣，寻求合作，业务咨询或发送简历等，欢迎与我们联系。\n
-邮箱 dingnan@myassetapp.com</string>
+邮箱 yimtoken1@163.com</string>
     <string name="common_service_error_toast">系统繁忙,请稍后重试</string>
     <string name="candy_release_notice">&#x3000;&#x3000;我们会在这里不定期的发放免费糖果，建议您打开系统通知，我们将在第一时间提醒您领取新活动的糖果。</string>
-    <string name="bitexpress_info_mail_address">dingnan@myassetapp.com</string>
+    <string name="bitexpress_info_mail_address">yimtoken1@163.com</string>
     <string name="coming_soon">Coming soon</string>
     <string name="affiliate_description">总共可邀请5位好友加入BitEXPRESS，\n每邀请一位好友注册并实名后，\n您将获得额外奖励</string>
     <string name="loan_period_colon">周期:</string>

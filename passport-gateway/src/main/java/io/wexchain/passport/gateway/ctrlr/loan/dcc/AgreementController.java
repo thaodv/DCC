@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 
 @RestController
-@RequestMapping("/dcc/agreement/1")
+@RequestMapping("/dcc/loan/agreement/1")
 public class AgreementController {
 
 	@Autowired

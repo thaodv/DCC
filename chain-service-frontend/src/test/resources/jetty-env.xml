@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!-- <!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd"> -->
+
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+	<New id="configLocation" class="org.eclipse.jetty.plus.jndi.EnvEntry">
+		<Arg>configLocation</Arg>
+		<Arg type="java.lang.String">file:src/test/resources/config-dev.properties</Arg>
+		<Arg type="boolean">true</Arg>
+	</New>
+	<New id="emptyConfigLocation" class="org.eclipse.jetty.plus.jndi.EnvEntry">
+		<Arg>emptyConfigLocation</Arg>
+		<Arg type="java.lang.String">file:src/test/resources/empty.properties</Arg>
+		<Arg type="boolean">true</Arg>
+	</New>
+	<New id="overrideConfigLocation" class="org.eclipse.jetty.plus.jndi.EnvEntry">
+		<Arg>overrideConfigLocation</Arg>
+		<Arg type="java.lang.String">file:src/test/resources/override-config.properties</Arg>
+		<Arg type="boolean">true</Arg>
+	</New>
+	<New id="logbackFileLocation" class="org.eclipse.jetty.plus.jndi.EnvEntry">
+		<Arg>logbackFileLocation</Arg>
+		<Arg type="java.lang.String">src/test/resources/logback-fragment-dev.xml</Arg>
+		<Arg type="boolean">true</Arg>
+	</New>
+</Configure>

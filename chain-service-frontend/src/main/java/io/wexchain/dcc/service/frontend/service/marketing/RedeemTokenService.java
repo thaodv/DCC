@@ -14,6 +14,6 @@ public interface RedeemTokenService {
 
     List<RedeemToken> queryBonus(String address);
 
-    RedeemToken getBonus(String address,Long redeemTokenId);
+    RedeemToken applyBonus(String address, Long redeemTokenId);
 
 }

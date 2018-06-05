@@ -10,12 +10,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.wexchain.android.common.commitTransaction
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.view.dialog.bonus.BonusAppearFragment
 import io.wexchain.android.dcc.view.dialog.bonus.BonusRedeemFragment
 import io.wexchain.android.dcc.vm.RedeemBonusVm
 import io.wexchain.dcc.R
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.RedeemToken
 
 class BonusDialog : DialogFragment() {
@@ -52,12 +54,17 @@ class BonusDialog : DialogFragment() {
             }
             .doOnSubscribe { showLoadingDialog() }
             .doFinally { hideLoadingDialog() }
-            .subscribe { token->
+            .subscribe({ token ->
                 redeemBonusVm.setToken(token)
                 childFragmentManager.commitTransaction {
                     replace(R.id.fl_container, bonusRedeemFragment)
                 }
-            }
+            }, {
+                if (it is DccChainServiceException && !it.message.isNullOrBlank()) {
+                    toast(it.message!!)
+                }
+                dismiss()
+            })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
