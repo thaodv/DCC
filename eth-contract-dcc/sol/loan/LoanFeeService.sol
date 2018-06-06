@@ -203,4 +203,10 @@ contract LoanFeeService is OperatorPermission, LoanFee {
     function balanceOf() view public returns (uint256) {
         return erc20.balanceOf(this);
     }
+
+    function withdrawToken(uint256 tokenAmount, address to) onlyOwner public {
+        require(tokenAmount > 0);
+        require((to != address(0)));
+        erc20.transfer(to, tokenAmount);
+    }
 }

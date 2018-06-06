@@ -8,6 +8,10 @@ contract OperatorPermission is OwnerPermission {
       */
     mapping(address => bool) public operators;
 
+    event OperatorPermissionAdded(address indexed operatorAddress);
+
+    event OperatorPermissionDeleted(address indexed operatorAddress);
+
     function onlyOperator() internal {
         if (!(operators[msg.sender] || msg.sender == owner) ) {
             log("!(operators[msg.sender] || meg.sender == owner)");
@@ -18,11 +22,13 @@ contract OperatorPermission is OwnerPermission {
     function addOperator(address operator)  {
         onlyOwner();
         operators[operator] = true;
+        OperatorPermissionAdded(operator);
     }
 
     function deleteOperator(address operator)  {
         onlyOwner();
         delete operators[operator];
+        OperatorPermissionDeleted(operator);
     }
 
 }
