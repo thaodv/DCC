@@ -421,6 +421,12 @@ object ViewModelHelper {
         amount ?: return ""
         return Currencies.DCC.toDecimalAmount(amount).currencyToDisplayStr() + Currencies.DCC.symbol
     }
+
+    @JvmStatic
+    fun ecoBonusRuleAmountStr(ecoBonusRule: EcoBonusRule?):CharSequence?{
+        ecoBonusRule?:return null
+        return "+${ecoBonusRule.bonusAmount.currencyToDisplayStr()}生态值"
+    }
 }
 
 fun BigDecimal.currencyToDisplayStr(): String {

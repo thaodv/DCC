@@ -133,6 +133,9 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
     }
 
     private fun onClickCandy() {
+        //todo delete this mock action
+        navigateTo(DccEcoRewardsActivity::class.java)
+        return
         val passportRepository = App.get().passportRepository
         if (passportRepository.scfAccountExists) {
             ScfOperations
