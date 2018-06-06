@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+    <script type="text/javascript" src="./js/lib/ABI.js"></script>
+    <script type="text/javascript" src="./js/lib/ethereumjs-all.js"></script>
+    <script type="text/javascript" src="./js/lib/wzrdin.js"></script>
+    <script type="text/javascript" src="./js/lib/keythereum.min.js"></script>
+    <script type="text/javascript" src="./js/lib/lightwallet.min.js"></script>
+    <script type="text/javascript" src="./js/lib/web3js0.16.0.js"></script>
+    <script type="text/javascript" src="./js/lib/ethers-wallet.min.js"></script>
+    
+    <script type="text/javascript" src="./js/wrap/transactionSender.js"></script>
+    <script type="text/javascript" src="./js/wrap/contractManager.js"></script>
+    <script type="text/javascript" src="./js/wrap/walletManager.js"></script>
+    <head>
+
+    
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+</head><body>
+    <h1>index Demo</h1>
+    <script>
+    
+    var myWeb3Provider;
+
+
+    
+    function setupWebViewJavascriptBridge(callback) {
+        if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+        if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+        window.WVJBCallbacks = [callback];
+        var WVJBIframe = document.createElement('iframe');
+        WVJBIframe.style.display = 'none';
+        WVJBIframe.src = 'https://__bridge_loaded__';
+        document.documentElement.appendChild(WVJBIframe);
+        setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0);
+    }
+    
+    setupWebViewJavascriptBridge(function(bridge) {
+                                 var uniqueId = 1;
+                                 function log(message, data) {
+                                 var log = document.getElementById('log');
+                                 var el = document.createElement('div');
+                                 el.className = 'logLine';
+                                 el.innerHTML = uniqueId++ + '. ' + message + ':<br/>' + JSON.stringify(data);
+                                 if (log.children.length) { log.insertBefore(el, log.children[0]) }
+                                 else { log.appendChild(el); }
+                                 };
+                                 
+                                 
+                                 bridge.registerHandler('ethInitProvider', function(data,responseCallback) {
+                                       myWeb3Provider=new window.Web3.providers.HttpProvider(data);
+                                                        responseCallback(myWeb3Provider);
+                                                        });
+                                 
+                                 bridge.registerHandler('ethSignTransaction', function(data,responseCallback) {
+                                                        var web3=new window.Web3(myWeb3Provider);
+                                                        
+                                                        var pk=data["pk"];
+                                                        var v_to=data["to"];
+                                                        var v_val=data["value"];
+                                                        var v_gas=data["gas"];
+                                                        var v_gasPrice=data["gasPrice"];
+                                                        var v_data=data["data"];
+                                                        
+                                                        var nonce = web3.nonce();
+                                                        var rawTx = {
+                                                        gasPrice: 21000000000,
+                                                        gasLimit: 200000000,
+                                                        value: 0,
+                                                        nonce:nonce,
+                                                        to: v_to,
+                                                        data: v_data
+                                                        };
+                                                        
+                                                        TransactionSender._nonce = nonce + 1;
+                                                        
+                                                        var Tx = EthJS.Tx;
+                                                        var tx = new Tx(rawTx);
+                                                        
+                                                        var Buffer = window.buffer.Buffer;
+                                                        var privateKey = new Buffer(pk, 'hex');
+                                                        tx.sign(privateKey);
+                                                        
+                                                        var serializedTx = tx.serialize();
+                                                        var serializedTxHex = "0x" + serializedTx.toString('hex');
+                                                        responseCallback(serializedTxHex);
+                                                        });
+
+       
+                                 })
+        </script>
+</body></html>

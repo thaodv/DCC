@@ -1,0 +1,411 @@
+<!doctype html>
+<html>
+    <script type="text/javascript" src="./js/lib/ABI.js">
+        </script>
+    <script type="text/javascript" src="./js/lib/ethereumjs-all.js">
+        </script>
+    <script type="text/javascript" src="./js/lib/wzrdin.js">
+        </script>
+    <script type="text/javascript" src="./js/lib/keythereum.min.js">
+        </script>
+    <script type="text/javascript" src="./js/lib/lightwallet.min.js">
+        </script>
+    <script type="text/javascript" src="./js/lib/web3js0.16.0.js">
+        </script>
+    <script type="text/javascript" src="./js/lib/ethers-wallet.min.js">
+        </script>
+    <script type="text/javascript" src="./js/wrap/transactionSender.js">
+        </script>
+    <script type="text/javascript" src="./js/wrap/contractManager.js">
+        </script>
+    <script type="text/javascript" src="./js/wrap/walletManager.js">
+        </script>
+    <head>
+        <meta name="viewport" content="user-scalable=no,width=device-width,initial-scale=1.0,maximum-scale=1.0">
+            </head>
+    <body>
+        <script>
+            var myWeb3Provider;
+            
+            function setupWebViewJavascriptBridge(callback) {
+                if (window.WebViewJavascriptBridge) {
+                    return callback(WebViewJavascriptBridge)
+                }
+                if (window.WVJBCallbacks) {
+                    return window.WVJBCallbacks.push(callback)
+                }
+                window.WVJBCallbacks = [callback];
+                var WVJBIframe = document.createElement('iframe');
+                WVJBIframe.style.display = 'none';
+                WVJBIframe.src = 'https://__bridge_loaded__';
+                document.documentElement.appendChild(WVJBIframe);
+                setTimeout(function() {
+                           document.documentElement.removeChild(WVJBIframe)
+                           }, 0)
+            }
+        setupWebViewJavascriptBridge(function(bridge) {
+                                     var uniqueId = 1;
+                                     
+                                     function log(message, data) {
+                                     var log = document.getElementById('log');
+                                     var el = document.createElement('div');
+                                     el.className = 'logLine';
+                                     el.innerHTML = uniqueId+++'. ' + message + ':<br/>' + JSON.stringify(data);
+                                     if (log.children.length) {
+                                     log.insertBefore(el, log.children[0])
+                                     } else {
+                                     log.appendChild(el)
+                                     }
+                                     };
+                                     bridge.registerHandler('ethInitProvider', function(data, responseCallback) {
+                                                            try {
+                                                            myWeb3Provider = new window.Web3.providers.HttpProvider(data);
+                                                            responseCallback(myWeb3Provider)
+                                                            } catch (err) {
+                                                            responseCallback(err);
+                                                            }
+                                                            });
+                                     bridge.registerHandler('ethQueryTransactionWithResponseParam', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var txInfo = web3.eth.getTransactionReceipt(data);
+                                                            var dict={
+                                                                result:txInfo,
+                                                                txhash:data
+                                                            };
+                                                            responseCallback(dict)
+                                                            });
+                                     bridge.registerHandler('ethQueryTransaction', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var txInfo = web3.eth.getTransactionReceipt(data);
+                                                            responseCallback(txInfo)
+                                                            });
+                                     bridge.registerHandler('ethSendRawTransaction', function(data, responseCallback) {
+                                                            try{
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var hash = web3.eth.sendRawTransaction(data);
+                                                            responseCallback(hash);
+                                                            }catch(err){
+                                                            responseCallback(err);
+                                                            }
+                                                            });
+                                     bridge.registerHandler('ethCreatePK', function(data, responseCallback) {
+                                                            var keythereumObj = window.keythereum;
+                                                            var params = {
+                                                            keyBytes: 32,
+                                                            ivBytes: 16
+                                                            };
+                                                            var dk = keythereumObj.create(params);
+                                                            var privateKeyBuf = window.buffer.Buffer(dk.privateKey);
+                                                            var pk = privateKeyBuf.toString("hex", 0);
+                                                            responseCallback(pk)
+                                                            });
+                                     bridge.registerHandler('ethCreateKeyStore', function(data, responseCallback) {
+                                                            var keythereumObj = window.keythereum;
+                                                            var params = {
+                                                            keyBytes: 32,
+                                                            ivBytes: 16
+                                                            };
+                                                            var dk = keythereumObj.create(params);
+                                                            var n = 65536;
+                                                            var options = {
+                                                            kdf: "scrypt",
+                                                            cipher: "aes-128-ctr",
+                                                            kdfparams: {
+                                                            n: n,
+                                                            p: 1,
+                                                            r: 8,
+                                                            dklen: 32,
+                                                            prf: "hmac-sha256"
+                                                            }
+                                                            };
+                                                            var pk = data["pk"];
+                                                            var password = data["pwd"];
+                                                            var result;
+                                                            try {
+                                                            result = keythereumObj.dump(password, pk, dk.salt, dk.iv, options)
+                                                            } catch (err) {
+                                                            var exception = {
+                                                            ethException: "ethException",
+                                                            message: err.message
+                                                            };
+                                                            responseCallback(exception);
+                                                            return
+                                                            }
+                                                            result["address"] = "0x" + result["address"];
+                                                            responseCallback(result)
+                                                            });
+                                     bridge.registerHandler('ethRecoverPrivateKey', function(data, responseCallback) {
+                                                            var keythereumObj = window.keythereum;
+                                                            var jsonStore = JSON.parse(data["keyVal"]);
+                                                            var password = data["pwd"];
+                                                            var keyGen;
+                                                            try {
+                                                            keyGen = keythereum.recover(password, jsonStore)
+                                                            } catch (err) {
+                                                            var exception = {
+                                                            ethException: "ethException",
+                                                            message: err.message
+                                                            };
+                                                            responseCallback(exception);
+                                                            return
+                                                            }
+                                                            var privateKeyBuf2 = window.buffer.Buffer(keyGen);
+                                                            var result = privateKeyBuf2.toString("hex", 0);
+                                                            responseCallback(result)
+                                                            });
+                                     bridge.registerHandler('ethSignTransaction', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var pk = data["pk"];
+                                                            var v_to = data["to"];
+                                                            var v_data = data["data"];
+                                                            var nonce = web3.nonce();
+                                                            var rawTx = {
+                                                            gasPrice: 21000000000,
+                                                            gasLimit: 200000000,
+                                                            value: 0,
+                                                            nonce: nonce,
+                                                            to: v_to,
+                                                            data: v_data
+                                                            };
+                                                            TransactionSender._nonce = nonce + 1;
+                                                            var Tx = EthJS.Tx;
+                                                            var tx = new Tx(rawTx);
+                                                            var Buffer = window.buffer.Buffer;
+                                                            var privateKey = new Buffer(pk, 'hex');
+                                                            tx.sign(privateKey);
+                                                            var serializedTx = tx.serialize();
+                                                            var serializedTxHex = "0x" + serializedTx.toString('hex');
+                                                            responseCallback(serializedTxHex)
+                                                            });
+                                     bridge.registerHandler('ethGetNonce', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var address = data["address"];
+                                                            //var nonce = web3.eth.getTransactionCount(address,"pending");
+                                            web3.eth.getTransactionCount(address,"pending").then(
+                                                                                                                                                      function(value) {
+                                                                                                                                                      responseCallback(value);
+                                                                                                                                                      }
+                                                                                                                                                    );
+                                                            });
+                                     bridge.registerHandler('ethGetBalance', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            try{
+                                                                var address = data["address"];
+                                                                var balance = web3.eth.getBalance(address);
+                                                                var bigRes =  web3.toBigNumber(balance).toString();
+                                                                responseCallback(bigRes);
+                                                            }
+                                                            catch(error)
+                                                            {
+                                                                var exception = {
+                                                                ethException: "ethException",
+                                                                message: error.message
+                                                                };
+                                                                responseCallback(exception);
+                                                            }
+                                                            });
+                                     bridge.registerHandler('ethGetBalance2', function(data, responseCallback) {
+                                                            var  web3Provider;
+                                                            var web3;
+                                                            var v_urlStr = data["urlStr"];
+                                                            web3Provider = new window.Web3.providers.HttpProvider(v_urlStr);
+                                                            web3 = new window.Web3(web3Provider);
+                                                            try{
+                                                            var address = data["address"];
+                                                            var balance = web3.eth.getBalance(address);
+                                                            var bigRes =  web3.toBigNumber(balance).toString();
+                                                            responseCallback(bigRes);
+                                                            }
+                                                            catch(error)
+                                                            {
+                                                            var exception = {
+                                                            ethException: "ethException",
+                                                            message: error.message
+                                                            };
+                                                            responseCallback(exception);
+                                                            }
+                                                            });
+                                     bridge.registerHandler('ethGetGasPrice', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var gasPrice = web3.eth.gasPrice;
+                                                              var bigRes = gasPrice.toString();
+                                                            responseCallback(bigRes);
+                                                            });
+                                     bridge.registerHandler('ethGetGasLimit', function(data, responseCallback) {
+                                                            try
+                                                            {
+                                                                var web3 = new window.Web3(myWeb3Provider);
+                                                                var to = data["to"];
+                                                                var v_data = data["data"];
+                                                                var result = web3.eth.estimateGas({
+                                                                                                  to: to,
+                                                                                                  data: v_data
+                                                                                                  });
+                                                                var bigRes = result.toString();
+                                                                responseCallback(bigRes);
+                                                            }
+                                                            catch(error)
+                                                            {
+                                                                var exception = {
+                                                                ethException: "ethException",
+                                                                message: error.message
+                                                                };
+                                                                responseCallback(exception);
+                                                                }
+                                                            });
+                                     bridge.registerHandler('ethCall', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var to = data["to"];
+                                                            var v_data = data["data"];
+                                                            var result = web3.eth.call({
+                                                                                       to: to,
+                                                                                       data: v_data
+                                                                                       })
+                                                                var bigRes = web3.toBigNumber(result).toString();
+                                                                responseCallback(bigRes);
+                                                            
+                                                             });
+                                     bridge.registerHandler('ethCallBack', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var to = data["to"];
+                                                            var v_data = data["data"];
+                                                            var result;
+                                                            try {
+                                                           
+                                                                result = web3.eth.call({to: to,data: v_data});
+                                                                if(result == "0x")
+                                                                {
+                                                                result = 0;
+                                                               }
+                                                            var bigRes = web3.toBigNumber(result).toString();
+                                                            var dict={
+                                                            result:bigRes,
+                                                            to:to
+                                                            };
+                                                            responseCallback(dict);
+                                                            } catch (err) {
+                                                            var exception = { ethException: "ethException",to:to,message: err.message,result:result};
+                                                            responseCallback(exception);
+                                                            }
+                                                            });
+                                     bridge.registerHandler('ethCallBack2', function(data, responseCallback) {
+                                                            var  web3Provider;
+                                                            var web3;
+                                                            var v_urlStr = data["urlStr"];
+                                                            web3Provider = new window.Web3.providers.HttpProvider(v_urlStr);
+                                                            web3 = new window.Web3(web3Provider);
+                                                            var to = data["to"];
+                                                            var v_data = data["data"];
+                                                            
+                                                            var result;
+                                                            try {
+                                                            
+                                                            result = web3.eth.call({to: to,data: v_data});
+                                                            if(result == "0x")
+                                                            {
+                                                            result = 0;
+                                                            }
+                                                            var bigRes = web3.toBigNumber(result).toString();
+                                                            var dict={
+                                                            result:bigRes,
+                                                            to:to
+                                                            };
+                                                            responseCallback(dict);
+                                                            } catch (err) {
+                                                            var exception = { ethException: "ethException",to:to,message: err.message,result:result};
+                                                            responseCallback(exception);
+                                                            }
+                                                            });
+                                     bridge.registerHandler('ethQueryTransactionAll', function(data, responseCallback) {
+                                                            try{
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var txInfo = web3.eth.getTransaction(data);
+                                                            responseCallback(txInfo)
+                                                            }
+                                                            catch(err)
+                                                            {
+                                                            responseCallback(err);
+                                                            }
+                                                            });
+                                     bridge.registerHandler('ethETHSignTransaction', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var pk = data["pk"];
+                                                            var v_to = data["to"];
+                                                            var v_data = data["data"];
+                                                            var v_gasPrice = data["gasPrice"];
+                                                            var v_gasLimit = data["gasLimit"];
+                                                            var v_nonce = data["nonce"];
+                                                            var v_value = data["value"];
+                                                            var rawTx = {
+                                                                gasPrice:web3.toBigNumber(v_gasPrice).toNumber(),
+                                                                gasLimit:web3.toBigNumber(v_gasLimit).toNumber(),
+                                                                value:web3.toBigNumber(v_value).toNumber(),
+                                                                nonce: v_nonce,
+                                                                to: v_to,
+                                                                data:v_data
+                                                            };
+                                                            try{
+                                                            var Tx = EthJS.Tx;
+                                                            var tx = new Tx(rawTx);
+                                                            var Buffer = window.buffer.Buffer;
+                                                            var privateKey = new Buffer(pk, 'hex');
+                                                            tx.sign(privateKey);
+                                                            var serializedTx = tx.serialize();
+                                                            var serializedTxHex = "0x" + serializedTx.toString('hex');
+                                                            var hash = web3.eth.sendRawTransaction(serializedTxHex);
+                                                                responseCallback(hash);
+                                                            }
+                                                            catch(error)
+                                                            {
+                                                            var exception = {
+                                                            ethException: "ethException",
+                                                            message: error.message
+                                                            };
+                                                            responseCallback(exception);
+                                                            }
+                                                            
+                                                            });
+                                     bridge.registerHandler('ethSendPrivateTransaction', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var pk = data["pk"];
+                                                            var v_to = data["to"];
+                                                            var v_data = data["data"];
+                                                            var v_gasPrice = data["gasPrice"];
+                                                            var v_gasLimit = data["gasLimit"];
+                                                            var v_nonce = web3.nonce();
+                                                            var v_value = data["value"];
+                                                            var rawTx = {
+                                                            gasPrice:web3.toBigNumber(v_gasPrice).toNumber(),
+                                                            gasLimit:web3.toBigNumber(v_gasLimit).toNumber(),
+                                                            value:web3.toBigNumber(v_value).toNumber(),
+                                                            nonce: v_nonce,
+                                                            to: v_to,
+                                                            data:v_data
+                                                            };
+                                                            try{
+                                                            TransactionSender._nonce = v_nonce + 1;
+                                                            var Tx = EthJS.Tx;
+                                                            var tx = new Tx(rawTx);
+                                                            var Buffer = window.buffer.Buffer;
+                                                            var privateKey = new Buffer(pk, 'hex');
+                                                            tx.sign(privateKey);
+                                                            var serializedTx = tx.serialize();
+                                                            var serializedTxHex = "0x" + serializedTx.toString('hex');
+                                                            var hash = web3.eth.sendRawTransaction(serializedTxHex);
+                                                            responseCallback(hash);
+                                                            }
+                                                            catch(error)
+                                                            {
+                                                            var exception = {
+                                                            ethException: "ethException",
+                                                            message: error.message
+                                                            };
+                                                            responseCallback(exception);
+                                                            }
+                                                            
+                                                            })
+                                     });
+            </script>
+    </body>
+    
+</html>

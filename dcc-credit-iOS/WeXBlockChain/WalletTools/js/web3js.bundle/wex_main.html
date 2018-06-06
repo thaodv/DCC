@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+    <head>
+        <script type="text/javascript" src="./js10/lib/web3.min.js">
+            </script>
+        <script src='./js10/lib/bignumber.js'>
+            </script>
+        <script src='./js10/lib/crunch.js'>
+            </script>
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+            </head>
+    <body>
+        <script>
+            window.onerror = function(err) {
+                log('window.onerror: ' + err)
+            };
+        var myWeb3Provider;
+        
+        function getNonce(nonceVal) {
+            var timestamp = new Date().getTime();
+            for (var i = 7; i >= 0; i--) {
+                nonce[i] = timestamp % 256;
+                timestamp /= 256
+            }
+            return nonce
+        }
+        
+        function setupWebViewJavascriptBridge(callback) {
+            if (window.WebViewJavascriptBridge) {
+                return callback(WebViewJavascriptBridge)
+            }
+            if (window.WVJBCallbacks) {
+                return window.WVJBCallbacks.push(callback)
+            }
+            window.WVJBCallbacks = [callback];
+            var WVJBIframe = document.createElement('iframe');
+            WVJBIframe.style.display = 'none';
+            WVJBIframe.src = 'https://__bridge_loaded__';
+            document.documentElement.appendChild(WVJBIframe);
+            setTimeout(function() {
+                       document.documentElement.removeChild(WVJBIframe)
+                       }, 0)
+        }
+        setupWebViewJavascriptBridge(function(bridge) {
+                                     bridge.registerHandler('ethInitProvider', function(data, responseCallback) {
+                                                            bridge.registerHandler('ethHexFromBytes', function(data, responseCallback) {
+                                                                                   var web3 = new window.Web3(myWeb3Provider);
+                                                                                   var hexVal = eval("(" + data + ")");
+                                                                                   var hexVal = web3.utils.bytesToHex(hexVal);
+                                                                                   responseCallback(hexVal)
+                                                                                   });
+                                                            myWeb3Provider = new window.Web3.providers.HttpProvider(data);
+                                                            responseCallback(myWeb3Provider)
+                                                            });
+                                     bridge.registerHandler('ethKeystoreEnc', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var pk = data["pk"];
+                                                            var pwd = data["pwd"];
+                                                            var keyVal = web3.eth.accounts.encrypt(pk, pwd);
+                                                            responseCallback(keyVal)
+                                                            });
+                                     bridge.registerHandler('ethKeystoreDec', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var keyVal = data["keyVal"];
+                                                            var pwd = data["pwd"];
+                                                            var account = web3.eth.accounts.decrypt(keyVal, pwd);
+                                                            responseCallback(account)
+                                                            });
+                                     bridge.registerHandler('accountsCreate', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var account = web3.eth.accounts.create();
+                                                            responseCallback(account)
+                                                            });
+                                     bridge.registerHandler('accountFromPrivateKey', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var account = web3.eth.accounts.privateKeyToAccount(data);
+                                                            responseCallback(account)
+                                                            });
+                                     bridge.registerHandler('ethNonce', function(data, responseCallback) {
+                                                            var nonce = getNonce(data);
+                                                            responseCallback(nonce)
+                                                            });
+                                     bridge.registerHandler('ethSha3', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var shaVal = web3.utils.sha3(data);
+                                                            responseCallback(shaVal)
+                                                            });
+                                     bridge.registerHandler('bigValue', function(data, responseCallback) {
+                                                            var x = new BigNumber(data);
+                                                            responseCallback(x.toFixed(0))
+                                                            });
+                                     bridge.registerHandler('crunchValue', function(data, responseCallback) {
+                                                            var crunch = Crunch();
+                                                            var byteList = eval("(" + data + ")");
+                                                            var valNumber = crunch.stringify(byteList);
+                                                            responseCallback(valNumber)
+                                                            });
+                                     bridge.registerHandler('ethFunCall', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var to = data["to"];
+                                                            var encData = data["data"];
+                                                            web3.eth.call({
+                                                                          to: to,
+                                                                          data: encData
+                                                                          }).then(function(value) {
+                                                                                  responseCallback(value)
+                                                                                  })
+                                                            });
+                                     bridge.registerHandler('ethGetNonce', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var address = data["address"];
+                                                            web3.eth.getTransactionCount(address,"pending").then(
+                                                                                                                                                      function(value) {
+                                                                                                                                                      responseCallback(value);
+                                                                                                                                                      }
+                                                                                                                                                      );
+                                                            });
+                                     bridge.registerHandler('ethCall', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var to = data["to"];
+                                                            var v_data = data["data"];
+                                                            var result = web3.eth.call({
+                                                                                       to: to,
+                                                                                       data: v_data
+                                                                                       });
+                                                            responseCallback(result);
+                                                            });
+                                     bridge.registerHandler('ethEncodeFunCall', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var abiJson = data["abiInterface"];
+                                                            var abiJson = eval("(" + abiJson + ")");
+                                                            var encodeValue;
+                                                            var params = data["params"];
+                                                            if (params != null) {
+                                                            params = eval("(" + params + ")");
+                                                            encodeValue = web3.eth.abi.encodeFunctionCall(abiJson, params)
+                                                            } else {
+                                                            encodeValue = web3.eth.abi.encodeFunctionCall(abiJson)
+                                                            }
+                                                            responseCallback(encodeValue)
+                                                            });
+                                     bridge.registerHandler('ethGetGasLimit', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var to = data["to"];
+                                                            var from = data["from"];
+                                                            var v_data = data["data"];
+                                                             web3.eth.estimateGas({
+                                                                                              to: to,
+                                                                                              data: v_data,
+                                                                    from:from
+                                                                                              }).then(function(value) {responseCallback(value)});
+                                                            //var bigRes = result.toString();
+                                                            //responseCallback(bigRes);
+                                                            });
+                                     bridge.registerHandler('ethSignTransaction', function(data, responseCallback) {
+                                                            var web3 = new window.Web3(myWeb3Provider);
+                                                            var pk = data["pk"];
+                                                            var v_to = data["to"];
+                                                            var v_val = data["value"];
+                                                            var v_gas = data["gas"];
+                                                            var v_gasPrice = data["gasPrice"];
+                                                            var v_data = data["data"];
+                                                            var v_nonce = data["nonce"];
+                                                            var jsonVal = JSON.stringify({
+                                                                                         to: v_to,
+                                                                                         value: v_val,
+                                                                                         gas: v_gas,
+                                                                                         gasPrice: v_gasPrice,
+                                                                                         nonce: v_nonce,
+                                                                                         data: v_data,
+                                                                                         chainId: 0
+                                                                                         });
+                                                            var sign = web3.eth.accounts.signTransaction({
+                                                                                                         to: v_to,
+                                                                                                         value: v_val,
+                                                                                                         gas: v_gas,
+                                                                                                         gasPrice: v_gasPrice,
+                                                                                                         nonce: v_nonce,
+                                                                                                         data: v_data
+                                                                                                         }, pk).then(function(value) {
+                                                                                                                     responseCallback(value)
+                                                                                                                     })
+                                                            })
+                                     });
+            </script>
+        <div id='buttons'>
+        </div>
+        <div id='log'>
+        </div>
+    </body>
+    
+</html>
