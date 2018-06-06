@@ -39,6 +39,15 @@ contract CertServiceFeeModuleStaticImpl  is CertServiceFeeModule ,HasWallet{
         return fee;
     }
 
+    function setErc20Address(address erc20Address) public {
+        onlyOwner();
+        if (!(erc20Address != address(0))) {
+            log("!(erc20Address != address(0))");
+            throw;
+        }
+        erc20 = ERC20Basic(erc20Address);
+    }
+
     function  getFee()constant  public returns(uint256){
         return fee;
     }
