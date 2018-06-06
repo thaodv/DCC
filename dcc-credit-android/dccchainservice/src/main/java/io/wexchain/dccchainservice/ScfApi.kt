@@ -173,6 +173,31 @@ interface ScfApi {
         @Field("redeemTokenId") redeemTokenId:Long
     ):Single<Result<RedeemToken>>
 
+    /**
+     * @param number start @ 0
+     */
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    @POST("secure/marketing/eco/queryBonus")
+    @FormUrlEncoded
+    fun queryEcoBonus(
+        @Header(ScfApi.HEADER_TOKEN) token: String?,
+        @Field("number") number:Long,
+        @Field("size") size:Long=10L
+    ):Single<Result<PagedList<EcoBonus>>>
+
+    @POST("secure/marketing/eco/getTotalBonus")
+    fun getTotalEcoBonus(
+        @Header(ScfApi.HEADER_TOKEN) token: String?
+    ):Single<Result<BigDecimal>>
+
+    @POST("secure/marketing/eco/getYesterdayBonus")
+    fun getYesterdayEcoBonus(
+        @Header(ScfApi.HEADER_TOKEN) token: String?
+    ):Single<Result<EcoDayIncome>>
+
+    @POST("marketing/eco/queryBonusRule")
+    fun queryBonusRule():Single<Result<List<EcoBonusRule>>>
+
     companion object {
         const val HEADER_TOKEN = "x-auth-token"
     }

@@ -26,6 +26,11 @@ contract BasicToken is ERC20Basic,SuperTransferPermission{
         transfersEnabledFlag = true;
     }
 
+    function disableTransfers() public {
+        onlyOwner();
+        transfersEnabledFlag = false;
+    }
+
     /**
   * @dev transfer token for a specified address
   * @param _to The address to transfer to.
@@ -67,7 +72,7 @@ contract BasicToken is ERC20Basic,SuperTransferPermission{
         // SafeMath.sub will throw if there is not enough balance.
         balances[_from] = balances[_from].sub(_value);
         balances[_to] = balances[_to].add(_value);
-        Transfer(msg.sender, _to, _value);
+        Transfer(_from, _to, _value);
         return true;
     }
 

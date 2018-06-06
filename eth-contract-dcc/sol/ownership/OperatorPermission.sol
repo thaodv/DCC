@@ -11,16 +11,22 @@ contract OperatorPermission is Ownable {
      */
     mapping(address => bool) public operators;
 
+    event OperatorPermissionAdded(address indexed operatorAddress);
+
+    event OperatorPermissionDeleted(address indexed operatorAddress);
+
     modifier onlyOperator() {
         require(operators[msg.sender] || msg.sender == owner);
         _;
     }
     function addOperator(address operator) public onlyOwner {
         operators[operator] = true;
+        OperatorPermissionAdded(operator);
     }
 
     function deleteOperator(address operator) public onlyOwner {
         delete operators[operator];
+        OperatorPermissionDeleted(operator);
     }
 
 }

@@ -4,11 +4,9 @@ import "../juzixtoken/ERC20Basic.sol";
 import "../permission/OperatorPermission.sol";
 import "../math/SafeMath.sol";
 import "./LoanFee.sol";
-
 contract LoanFeeService is OperatorPermission, LoanFee {
 
     using SafeMath for uint256;
-
     struct FeeOrder {
         uint256 orderId;
         address borrower;
@@ -239,9 +237,9 @@ contract LoanFeeService is OperatorPermission, LoanFee {
         return minFee;
     }
 
-    function setCaller(address _caller)  public {
+    function setCaller(address _caller) public {
         onlyOwner();
-        if(!(_caller != address(0))){
+        if (!(_caller != address(0))) {
             log("!(_caller != address(0))");
             throw;
         }
@@ -250,7 +248,7 @@ contract LoanFeeService is OperatorPermission, LoanFee {
 
     function setErc20Address(address erc20Address) public {
         onlyOwner();
-        if(!(erc20Address != address(0))){
+        if (!(erc20Address != address(0))) {
             log("!(erc20Address != address(0))");
             throw;
         }
@@ -261,4 +259,16 @@ contract LoanFeeService is OperatorPermission, LoanFee {
         return erc20.balanceOf(this);
     }
 
+    function withdrawToken(uint256 tokenAmount, address to) public {
+        onlyOwner();
+        if (!(tokenAmount > 0)) {
+            log("!(tokenAmount > 0)");
+            throw;
+        }
+        if (!(to != 0)) {
+            log("!(to != 0)");
+            throw;
+        }
+        erc20.transfer(to, tokenAmount);
+    }
 }
