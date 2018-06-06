@@ -1,6 +1,6 @@
 pragma solidity ^0.4.2;
 
-contract AgreementInfo {
+contract AgreementInfo2 {
 
     function createAgreement(
         uint256 version,
@@ -9,10 +9,11 @@ contract AgreementInfo {
         bytes32 idHash,
         bytes applicationDigest,
         bytes agreementDigest,
-        bytes repayDigest)
+        bytes repayDigest,
+        string status)
     external returns (uint256 agreementId);
 
-    function finishAgreement(uint256 orderId) external;
+    function updateStatus(uint256 orderId,string status) external;
 
     function updateRepayDigest(uint256 orderId, bytes repayDigest) external;
 }
