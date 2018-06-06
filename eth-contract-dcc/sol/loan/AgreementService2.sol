@@ -9,6 +9,8 @@ import "../math/SafeMath.sol";
 contract AgreementService2 is OperatorPermission, AgreementInfo, AgreementInfo2 {
 
     using SafeMath for uint256;
+    using ByteUtils for bytes;
+
     struct Agreement {
         uint256 id;
         uint256 version;
@@ -121,24 +123,29 @@ contract AgreementService2 is OperatorPermission, AgreementInfo, AgreementInfo2 
     }
 
     function finishAgreement(uint256 orderId) onlyOperator external {
-        innerUpdateStatus(orderId, "FULFILLED",msg.sender);
+        string[] memory expectedStatusArray=new string[](1);
+        expectedStatusArray[0]="CREATED";
+        innerUpdateStatus(orderId, "FULFILLED",msg.sender,expectedStatusArray);
     }
 
-    function updateStatus(uint256 orderId, string status) onlyOperator external {
-        innerUpdateStatus(orderId, status,msg.sender);
+    function updateStatus(uint256 orderId, string status,string[] expectedStatusArray) onlyOperator external {
+        innerUpdateStatus(orderId, status,msg.sender,expectedStatusArray);
     }
 
-    function updateStatus(uint256 orderId, string status,address caller) onlyOwner external {
-        innerUpdateStatus(orderId, status,caller);
+    function updateStatus(uint256 orderId, string status,address caller,string[] expectedStatusArray) onlyOwner external {
+        innerUpdateStatus(orderId, status,caller,expectedStatusArray);
     }
 
-    function innerUpdateStatus(uint256 orderId, string status,address caller) internal {
+    function innerUpdateStatus(uint256 orderId, string status,address caller,string[] expectedStatusArray) internal {
         require(orderId > 0);
         require(caller !=address(0));
         uint256 agreementId = orderIdIndex[caller][orderId];
         require(agreementId > 0 && agreementId < agreements.length);
 
         Agreement storage agreement = agreements[agreementId];
+        //检查状态
+        require(checkStatus(agreement.status,expectedStatusArray));
+        //修改状态
         agreement.status = status;
         agreementUpdated(agreement.id, agreement.caller, agreement.orderId, agreement.borrower, agreement.status);
     }
@@ -161,6 +168,18 @@ contract AgreementService2 is OperatorPermission, AgreementInfo, AgreementInfo2 
         Agreement storage agreement = agreements[agreementId];
         agreement.repayDigest = repayDigest;
         repayDigestUpdated(agreement.id,agreement.caller,agreement.orderId,agreement.borrower,agreement.repayDigest);
+    }
+
+    function checkStatus(string inputStatus, string[] expectedStatusArray) internal returns (bool){
+        if(expectedStatusArray.length==0){
+            return true;
+        }
+        for (uint256 i = 0; i < expectedStatusArray.length; i++) {
+            if (bytes(inputStatus).bytesEqual(bytes(expectedStatusArray[i]))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function getAgreementLength() public view returns (uint256 length) {
