@@ -272,14 +272,21 @@
                 android:name="io.wexchain.android.dcc.CreateScfAccountActivity"
                 android:label="填写邀请码">
         </activity>
-        <activity android:name="io.wexchain.android.dcc.DccEcoRewardsActivity"
+        <activity
+                android:name="io.wexchain.android.dcc.DccEcoRewardsActivity"
                 android:label="生态奖励"
                 >
         </activity>
-        <activity android:name="io.wexchain.android.dcc.DccEcoRewardsListActivity"
+        <activity
+                android:name="io.wexchain.android.dcc.DccEcoRewardsListActivity"
                 android:label="奖励详情"
                 >
         </activity>
+        <activity
+                android:name="io.wexchain.android.dcc.DccEcoRewardsTermsActivity"
+                android:label="活动规则"
+                android:screenOrientation="portrait"
+                />
     </application>
 
 </manifest>

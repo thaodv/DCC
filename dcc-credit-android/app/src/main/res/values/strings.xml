@@ -169,5 +169,6 @@
     <string name="incentive_program_2">传播激励\nBitExpress对推荐朋友使用app进行数字资产借贷的用户进行激励，您推荐的好友如果借贷申请成功，借贷服务费的50%将返还给您。</string>
     <string name="incentive_program_3">贡献奖励（挖矿奖励）\nBitExpress中用户的行为都会产生不同的贡献值，贡献值会进行累计，每3小时用户可以在糖果领取的功能中进行糖果领取，获得和BitExpress合作的机构投放的各种Token奖励。</string>
     <string name="incentive_program_4">生态奖励\nBitExpress的底层信用网络构建在Distributed Credit Chain上，因此根据DCC的生态激励规则，BitExpress的用户行为可以获得DCC自动发放的生态奖励。具体的方法规则，请关注DCC网站http://dcc.finance公布的各类策略。</string>
+    <string name="accumulative_income_dcc">累计获得%1$sDCC</string>
 
 </resources>
