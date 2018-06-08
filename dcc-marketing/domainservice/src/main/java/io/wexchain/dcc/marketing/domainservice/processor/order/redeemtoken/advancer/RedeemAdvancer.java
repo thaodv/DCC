@@ -9,6 +9,7 @@ import io.wexchain.dcc.marketing.api.constant.RedeemTokenStatus;
 import io.wexchain.dcc.marketing.common.constant.GeneralCommandStatus;
 import io.wexchain.dcc.marketing.domain.RedeemToken;
 import io.wexchain.dcc.marketing.domain.RetryableCommand;
+import io.wexchain.dcc.marketing.domain.RewardLog;
 import io.wexchain.dcc.marketing.domainservice.function.cah.CahFunction;
 import io.wexchain.dcc.marketing.domainservice.function.command.CommandIndex;
 import io.wexchain.dcc.marketing.domainservice.function.command.RetryableCommandHelper;
@@ -16,6 +17,7 @@ import io.wexchain.dcc.marketing.domainservice.function.command.RetryableCommand
 import io.wexchain.dcc.marketing.domainservice.processor.order.redeemtoken.RedeemTokenInstruction;
 import io.wexchain.dcc.marketing.domainservice.processor.order.redeemtoken.RedeemTokenTrigger;
 import io.wexchain.dcc.marketing.repository.RedeemTokenRepository;
+import io.wexchain.dcc.marketing.repository.RewardLogRepository;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +40,9 @@ public class RedeemAdvancer extends AbstractAdvancer<RedeemToken, RedeemTokenIns
 	@Autowired
 	private RedeemTokenRepository redeemTokenRepository;
 
+	@Autowired
+	private RewardLogRepository rewardLogRepository;
+
 	@Override
 	public AdvancedResult<RedeemToken, RedeemTokenTrigger> advance(
 			RedeemToken redeemToken, RedeemTokenInstruction instruction, Object message) {
@@ -45,7 +50,7 @@ public class RedeemAdvancer extends AbstractAdvancer<RedeemToken, RedeemTokenIns
 		RetryableCommand collectCommand = executeRedeem(redeemToken);
 
 		if (RetryableCommandHelper.isSuccess(collectCommand)) {
-			return new AdvancedResult<>(new TriggerBehavior<>(RedeemTokenTrigger.SUCCESS));
+			return new AdvancedResult<>(new TriggerBehavior<>(RedeemTokenTrigger.SUCCESS, this::saveRewardLog));
 		}
 		return null;
 	}
@@ -71,6 +76,15 @@ public class RedeemAdvancer extends AbstractAdvancer<RedeemToken, RedeemTokenIns
 				}
 				return command.getStatus();
 			});
+	}
+
+	private void saveRewardLog(RedeemToken redeemToken) {
+		RewardLog log = new RewardLog();
+		log.setAmount(redeemToken.getAmount());
+		log.setScenarioId(redeemToken.getScenario().getId());
+		log.setActivityId(redeemToken.getScenario().getActivity().getId());
+		log.setReceiverAddress(redeemToken.getReceiverAddress());
+		rewardLogRepository.save(log);
 	}
 
 

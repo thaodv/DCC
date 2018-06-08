@@ -1,6 +1,8 @@
 package io.wexchain.dcc.marketing.domainservice.impl;
 
+import com.wexmarket.topia.commons.basic.exception.ErrorCodeValidate;
 import io.wexchain.dcc.marketing.api.constant.ActivityStatus;
+import io.wexchain.dcc.marketing.api.constant.MarketingErrorCode;
 import io.wexchain.dcc.marketing.api.model.request.QueryActivityRequest;
 import io.wexchain.dcc.marketing.domain.Activity;
 import io.wexchain.dcc.marketing.domainservice.ActivityService;
@@ -25,6 +27,13 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Autowired
     private ActivityRepository activityRepository;
+
+    @Override
+    public Activity getActivityByCode(String code) {
+        return ErrorCodeValidate.notNull(
+                activityRepository.findByCode(code),
+                MarketingErrorCode.ACTIVITY_NOT_FOUND);
+    }
 
     @Override
     public List<Activity> queryActivity(QueryActivityRequest request) {

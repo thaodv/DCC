@@ -4,10 +4,7 @@ import com.godmonth.status.executor.intf.OrderExecutor;
 import com.wexmarket.topia.commons.basic.exception.ErrorCodeValidate;
 import io.wexchain.dcc.cert.sdk.service.CertService;
 import io.wexchain.dcc.marketing.api.constant.*;
-import io.wexchain.dcc.marketing.api.model.request.GetRedeemTokenQualificationRequest;
-import io.wexchain.dcc.marketing.api.model.request.QueryIdRestrictionRequest;
-import io.wexchain.dcc.marketing.api.model.request.QueryRedeemTokenRequest;
-import io.wexchain.dcc.marketing.api.model.request.RedeemTokenRequest;
+import io.wexchain.dcc.marketing.api.model.request.*;
 import io.wexchain.dcc.marketing.domain.IdRestriction;
 import io.wexchain.dcc.marketing.domain.RedeemToken;
 import io.wexchain.dcc.marketing.domain.Scenario;
@@ -17,6 +14,7 @@ import io.wexchain.dcc.marketing.domainservice.function.chain.ChainOrderService;
 import io.wexchain.dcc.marketing.domainservice.processor.order.redeemtoken.RedeemTokenInstruction;
 import io.wexchain.dcc.marketing.repository.IdRestrictionRepository;
 import io.wexchain.dcc.marketing.repository.RedeemTokenRepository;
+import io.wexchain.dcc.marketing.repository.query.RedeemTokenQueryBuilder;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,7 +102,7 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
 
     @Override
     public List<RedeemToken> queryRedeemToken(QueryRedeemTokenRequest request) {
-        List<RedeemToken> list = new ArrayList<>();
+        /*List<RedeemToken> list = new ArrayList<>();
         for (String scenario : request.getScenarioCodeList()) {
             RedeemToken redeemToken = redeemTokenRepository.findByScenarioCodeAndReceiverAddress(
                     scenario, request.getAddress());
@@ -112,7 +110,8 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
                 list.add(redeemToken);
             }
         }
-        return list;
+        return list;*/
+        return redeemTokenRepository.findAll(RedeemTokenQueryBuilder.query(request));
     }
 
     @Override
@@ -131,6 +130,7 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
     @Override
     public RedeemToken createBonus(RedeemTokenRequest request) {
         Scenario scenario = scenarioService.getScenario(request.getActivityCode(), request.getScenarioCode());
+
         ErrorCodeValidate.isTrue(
                 scenario.getActivity().getStatus() != ActivityStatus.CREATED,
                 MarketingErrorCode.ACTIVITY_IS_OFFLINE);
@@ -145,7 +145,7 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
             rt.setReceiverAddress(request.getAddress());
             rt.setStatus(RedeemTokenStatus.CREATED);
             if (scenario.getRestrictionType() == RestrictionType.ID) {
-                String idHashStr = idHash.orElseThrow(() -> new ContextedRuntimeException("ID_hash_not_found"));
+                String idHashStr = idHash.orElseThrow(() -> new ContextedRuntimeException("id_hash_not_found"));
                 IdRestriction idRestriction = new IdRestriction();
                 idRestriction.setScenario(scenario);
                 idRestriction.setIdHash(idHashStr);
@@ -154,5 +154,13 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
             }
             return redeemTokenRepository.save(rt);
         });
+    }
+
+    @Override
+    public RedeemToken applyBonus(ApplyBonusRequest request) {
+        Scenario scenario = scenarioService.getScenario(request.getActivityCode(), request.getScenarioCode());
+        RedeemToken redeemToken = redeemTokenRepository.findByIdAndScenarioIdAndReceiverAddress(request.getRedeemTokenId(),
+                scenario.getId(), request.getAddress());
+        return redeemTokenExecutor.execute(redeemToken, null, null).getModel();
     }
 }

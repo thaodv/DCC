@@ -4,14 +4,19 @@ import com.godmonth.status.advancer.impl.AbstractAdvancer;
 import com.godmonth.status.advancer.intf.AdvancedResult;
 import com.godmonth.status.advancer.intf.NextOperation;
 import com.godmonth.status.transitor.tx.intf.TriggerBehavior;
+import com.wexmarket.topia.commons.basic.exception.ErrorCodeValidate;
+import io.wexchain.dcc.marketing.api.constant.MarketingErrorCode;
 import io.wexchain.dcc.marketing.api.constant.RedeemTokenStatus;
 import io.wexchain.dcc.marketing.domain.BonusSlot;
 import io.wexchain.dcc.marketing.domain.RedeemToken;
 import io.wexchain.dcc.marketing.domainservice.processor.order.redeemtoken.RedeemTokenInstruction;
 import io.wexchain.dcc.marketing.domainservice.processor.order.redeemtoken.RedeemTokenTrigger;
 import io.wexchain.dcc.marketing.repository.BonusSlotRepository;
+import io.wexchain.dcc.marketing.repository.query.BonusSlotQueryBuilder;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -33,7 +38,10 @@ public class DecideAmountAdvancer extends AbstractAdvancer<RedeemToken, RedeemTo
 		}
 
 		return new AdvancedResult<>(new TriggerBehavior<>(RedeemTokenTrigger.DECIDE, rt -> {
-			List<BonusSlot> slotList = bonusSlotRepository.findByScenarioIdOrderByRankAsc(redeemToken.getScenario().getId());
+			List<BonusSlot> slotList = bonusSlotRepository.findAll(BonusSlotQueryBuilder.query(
+					redeemToken.getScenario().getId()), Sort.by(Sort.Order.asc("rank")));
+			ErrorCodeValidate.isTrue(CollectionUtils.isNotEmpty(slotList), MarketingErrorCode.BONUS_IS_EMPTY);
+
 			int currentCountSum = slotList.stream().mapToInt(BonusSlot::getCurrentCount).sum();
 			int random = RandomUtils.nextInt(0, currentCountSum);
 			slotList = putRank(slotList);
@@ -53,9 +61,9 @@ public class DecideAmountAdvancer extends AbstractAdvancer<RedeemToken, RedeemTo
 		return null;
 	}
 
-	public List<BonusSlot> putRank(List<BonusSlot> list) {
+	private List<BonusSlot> putRank(List<BonusSlot> list) {
 		for (int i = 0; i < list.size(); i++) {
-			BonusSlot bonusSlot = list.get(0);
+			BonusSlot bonusSlot = list.get(i);
 			if (i == 0) {
 				bonusSlot.setRank(bonusSlot.getCurrentCount());
 				continue;

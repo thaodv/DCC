@@ -43,7 +43,7 @@ public class RedeemTokenFacadeImpl implements RedeemTokenFacade {
     private IdRestrictionResponseHelper idRestrictionResponseHelper;
 
     @Override
-    public ListResultResponse<RedeemToken> queryRedeemToken(@NotNull @Valid QueryRedeemTokenRequest request) {
+    public ListResultResponse<RedeemToken> queryRedeemToken(QueryRedeemTokenRequest request) {
         try {
             List<io.wexchain.dcc.marketing.domain.RedeemToken > result = redeemTokenService.queryRedeemToken(request);
             return redeemTokenResponseHelper.returnListSuccess(result);
@@ -53,7 +53,7 @@ public class RedeemTokenFacadeImpl implements RedeemTokenFacade {
     }
 
     @Override
-    public ListResultResponse<IdRestriction> queryIdRestriction(@NotNull @Valid QueryIdRestrictionRequest request) {
+    public ListResultResponse<IdRestriction> queryIdRestriction(QueryIdRestrictionRequest request) {
         try {
             List<io.wexchain.dcc.marketing.domain.IdRestriction> result = redeemTokenService.queryIdRestriction(request);
             return idRestrictionResponseHelper.returnListSuccess(result);
@@ -64,7 +64,7 @@ public class RedeemTokenFacadeImpl implements RedeemTokenFacade {
 
     @Override
     public ResultResponse<RedeemTokenQualification> getRedeemTokenQualification(
-            @NotNull @Valid GetRedeemTokenQualificationRequest request) {
+            GetRedeemTokenQualificationRequest request) {
         try {
             RedeemTokenQualification result = redeemTokenService.getRedeemTokenQualification(request);
             return ResultResponseUtils.successResultResponse(result);
@@ -74,7 +74,7 @@ public class RedeemTokenFacadeImpl implements RedeemTokenFacade {
     }
 
     @Override
-    public ResultResponse<RedeemToken> applyRedeemToken(@NotNull @Valid RedeemTokenRequest request) {
+    public ResultResponse<RedeemToken> applyRedeemToken(RedeemTokenRequest request) {
         try {
             io.wexchain.dcc.marketing.domain.RedeemToken result = redeemTokenService.redeemToken(request);
             return redeemTokenResponseHelper.returnSuccess(result);
@@ -82,4 +82,6 @@ public class RedeemTokenFacadeImpl implements RedeemTokenFacade {
             return ResultResponseUtils.exceptionResultResponse(e);
         }
     }
+
+
 }

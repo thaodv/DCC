@@ -16,6 +16,8 @@ public interface CahFunction {
 
     BigInteger getBalance(String address, String assetCode);
 
+    BigInteger getJuzixDccBalance(String address);
+
     CryptoWallet prepareEthWallet(String address, String privateKey);
 
     TransferOrder redeem(String requestNo, BigInteger amount, String payerAddress, String receiverAddress) ;

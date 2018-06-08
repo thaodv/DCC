@@ -20,6 +20,6 @@ public class AllowanceAmountReaderImpl implements AllowanceAmountReader {
 
     @Override
     public BigInteger getAllowanceAmount(String address) {
-        return cahFunction.getBalance(address, "JUZIX_DCC");
+        return cahFunction.getBalance(address, "DCC_JUZIX");
     }
 }
