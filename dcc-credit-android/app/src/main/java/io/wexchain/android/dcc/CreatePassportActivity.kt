@@ -55,7 +55,6 @@ class CreatePassportActivity : BindActivity<ActivityCreatePassportBinding>() {
                     hideLoadingDialog()
                 }
                 .subscribe({
-                    //todo
                     onCreateSuccess()
                 },{
                     it.printStackTrace()

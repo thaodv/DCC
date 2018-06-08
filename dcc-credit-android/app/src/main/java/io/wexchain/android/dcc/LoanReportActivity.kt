@@ -90,7 +90,6 @@ class LoanReportActivity : BindActivity<ActivityLoanReportBinding>(), ItemViewCl
                 scheduleDismissUpdateDialog()
             }
             .subscribe({
-                //todo save it
                 onNewReportReceived(it)
             }, {})
     }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
+    <data>
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+        <variable
+                name="bonus"
+                type="io.wexchain.dccchainservice.domain.EcoBonus"/>
+    </data>
+    <android.support.constraint.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        <TextView
+                android:id="@+id/tv_reward_time"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:text="@{@string/time_format_yyyymmdd(bonus.createdTime)}"
+                android:gravity="center_vertical"
+                tools:text="@tools:sample/date/mmddyy"
+                />
+
+        <TextView
+                android:id="@+id/tv_reward_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{ViewModelHelper.concatWithoutNull(bonus.amount.toPlainString(),`DCC`)}"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_reward_time"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="5.0000DCC"
+                />
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_stroke_width"
+                style="@style/DividerHorizontal"
+                app:layout_constraintTop_toBottomOf="@id/tv_reward_time"
+                />
+    </android.support.constraint.ConstraintLayout>
+</layout>

@@ -1,9 +1,6 @@
 package io.wexchain.android.dcc
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.dcc.base.BindActivity
@@ -12,7 +9,6 @@ import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.android.dcc.view.recycler.DividerDecoration
 import io.wexchain.dcc.BR
-import io.wexchain.dcc.LoanBillDetailActivity
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityLoanReportDetailBinding
 import io.wexchain.dcc.databinding.ItemReportBillBinding

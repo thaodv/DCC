@@ -71,82 +71,126 @@
                 android:layout_marginTop="102dp"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
-                android:minHeight="280dp"
                 android:theme="@style/ThemeOverlay.AppCompat.Light"
                 >
 
-            <!--cert undone-->
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="你还未进行实名认证"
-                    android:layout_gravity="center"
-                    android:drawableTop="@drawable/logo_cert_aff"
-                    android:layout_marginBottom="20dp"
-                    visibleOrGone="@{!certDone}"
-                    />
-
-            <Button
-                    android:id="@+id/btn_to_cert"
+            <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:text="去实名"
-                    android:textSize="16sp"
-                    style="@style/Widget.AppCompat.Button.Dcc.Medium"
-                    android:layout_gravity="bottom"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginRight="24dp"
-                    android:layout_marginBottom="24dp"
-                    visibleOrGone="@{!certDone}"
-                    />
-            <!--cert done-->
+                    android:layout_height="wrap_content"
+                    android:minHeight="280dp"
+                    >
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="您的邀请码"
-                    android:layout_gravity="center_horizontal|top"
-                    android:layout_marginTop="20dp"
-                    android:textStyle="bold"
-                    visibleOrGone="@{certDone}"
-                    />
+                <!--cert undone-->
+                <Button
+                        android:id="@+id/btn_to_cert"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text="去实名"
+                        android:textSize="16sp"
+                        style="@style/Widget.AppCompat.Button.Dcc.Medium"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginRight="24dp"
+                        android:layout_marginBottom="24dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        visibleOrGone="@{!certDone}"
+                        tools:visibility="gone"
+                        />
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="24sp"
-                    android:layout_gravity="center"
-                    android:text="@{account.inviteCode}"
-                    tools:text="AD2018M"
-                    android:layout_marginBottom="40dp"
-                    visibleOrGone="@{certDone}"
-                    />
+                <TextView
+                        android:id="@+id/tv_cert_undone_notice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="你还未进行实名认证"
+                        android:layout_gravity="center"
+                        android:drawableTop="@drawable/logo_cert_aff"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/btn_to_cert"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        visibleOrGone="@{!certDone}"
+                        tools:visibility="gone"
+                        />
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="邀请人需实名认证"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginBottom="20dp"
-                    android:drawableLeft="@drawable/ic_cert_aff"
-                    visibleOrGone="@{certDone}"
-                    />
-            <Button
-                    android:id="@+id/btn_copy_invite_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="复制"
-                    android:textSize="16sp"
-                    style="@style/Widget.AppCompat.Button.Dcc.Medium"
-                    android:paddingLeft="32dp"
-                    android:paddingRight="32dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginBottom="60dp"
-                    visibleOrGone="@{certDone}"
-                    />
+                <!--cert done-->
+
+                <TextView
+                        android:id="@+id/tv_aff_code_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="28sp"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@{account.inviteCode}"
+                        tools:text="AD2018M"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="8dp"
+                        visibleOrGone="@{certDone}"
+                        />
+                <TextView
+                        android:id="@+id/tv_aff_code_copy_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:layout_gravity="center_horizontal"
+                        android:text="长按按钮复制邀请码"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_aff_code_value"
+                        android:layout_marginTop="4dp"
+                        visibleOrGone="@{certDone}"
+                        />
+
+                <ImageView
+                        android:id="@+id/iv_qr_code"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        qrContent="@{account.inviteCode}"
+                        visibleOrGone="@{certDone}"
+                        app:layout_constraintTop_toBottomOf="@id/tv_aff_code_copy_hint"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/tv_aff_code_scan_hint"
+                        app:layout_constraintVertical_chainStyle="packed"
+                        />
+
+                <TextView
+                        android:id="@+id/tv_aff_code_scan_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:layout_gravity="center_horizontal"
+                        android:text="新用户可扫码领取奖励"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/iv_qr_code"
+                        app:layout_constraintBottom_toTopOf="@id/btn_share_invite_code"
+                        android:layout_marginTop="4dp"
+                        visibleOrGone="@{certDone}"
+                        />
+
+                <Button
+                        android:id="@+id/btn_share_invite_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="分享邀请码"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_blue_magenta"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:paddingLeft="32dp"
+                        android:paddingRight="32dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        visibleOrGone="@{certDone}"
+                        />
+            </android.support.constraint.ConstraintLayout>
+
 
         </android.support.v7.widget.CardView>
 
