@@ -26,6 +26,9 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+
+        buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_ID', '"wxb9733394b8133087"'
+        buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_KEY', '"3e6bb4bcbdee5c1089ca007d0dafe240"'
     }
     signingConfigs {
         debug {
@@ -56,6 +59,8 @@ android {
             buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://gateway.wexpass.cn/passport-gateway/restful/"'
         }
         debug {
+            signingConfig signingConfigs.wexchain
+
 //            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://func.wexchain.io/passport-logic/"'
 //            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.103.28:1212/passport-logic/"'
             buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.178.12:9101/passport-logic/"'//mock
@@ -123,6 +128,9 @@ dependencies {
     implementation 'com.lyft:scissors:1.1.1'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
     implementation 'com.github.barteksc:android-pdf-viewer:3.0.0-beta.5'
+
+    //third party sdk
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.4'
 
     implementation project(':common')
     implementation project(':idverify')

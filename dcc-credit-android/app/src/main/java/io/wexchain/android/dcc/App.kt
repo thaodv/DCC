@@ -17,6 +17,7 @@ import io.wexchain.android.dcc.tools.JuzixData
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.dcc.BuildConfig
+import io.wexchain.dcc.WxApiManager
 import io.wexchain.dccchainservice.*
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.Chain
@@ -114,6 +115,7 @@ class App : MultiDexApplication() {
 
     private fun initLibraries(context: App) {
         idVerifyHelper = IdVerifyHelper(context)
+        WxApiManager.init()
     }
 
     private fun buildAgent(dc: DigitalCurrency): Erc20Agent {

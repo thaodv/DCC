@@ -13,4 +13,5 @@
     <color name="colorAccent">@color/blue_magenta</color>
     <color name="gray_mask">#B2484848</color>
 
+    <color name="light_dim">#c8c8ff</color>
 </resources>

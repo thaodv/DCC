@@ -23,12 +23,12 @@ class MarketingListActivity : BaseCompatActivity(), ItemViewClickListener<Market
 
     private val adapter = Adapter(this::onItemClick)
 
-    private val insertFixItemAdapter = InsertFixItemAdapter(
+    private val wrappedAdapter = BottomMoreItemsAdapter(
         adapter,
-        object : InsertFixItemAdapter.InsertFixViewProvider {
+        object : BottomMoreItemsAdapter.BottomViewProvider {
             override fun inflateBottomView(parent: ViewGroup): View {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_business_contact, parent, false)
-                view.setOnClickListener {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.bottom_more_candy, parent, false)
+                view.findViewById<View>(R.id.item_business_contact).setOnClickListener {
                     toBusinessEmail()
                 }
                 return view
@@ -36,21 +36,6 @@ class MarketingListActivity : BaseCompatActivity(), ItemViewClickListener<Market
 
             override fun onBind(bottomView: View?, position: Int) {
             }
-
-            override val insertionPos: Int = 1
-
-        }
-    )
-    private val wrappedAdapter = BottomMoreItemsAdapter(
-        insertFixItemAdapter,
-        object : BottomMoreItemsAdapter.BottomViewProvider {
-            override fun inflateBottomView(parent: ViewGroup): View {
-                return LayoutInflater.from(parent.context).inflate(R.layout.bottom_more_candy, parent, false)
-            }
-
-            override fun onBind(bottomView: View?, position: Int) {
-            }
-
         }
     )
 
@@ -70,20 +55,27 @@ class MarketingListActivity : BaseCompatActivity(), ItemViewClickListener<Market
     }
 
     fun onItemClick(position: Int, viewId: Int) {
-        val pos = insertFixItemAdapter.getOriginalPos(position)
+        val pos = position
         onItemClick(adapter.getItemOnPos(pos), pos, viewId)
     }
 
     override fun onItemClick(item: MarketingActivity?, position: Int, viewId: Int) {
         item?.let {
-            if (it.code == "10002") {
-                navigateTo(DccAffiliateActivity::class.java)
-            } else
-                if (it.status == MarketingActivity.Status.STARTED) {
-                    navigateTo(MarketingScenariosActivity::class.java) {
-                        putExtra(Extras.EXTRA_MARKETING_ACTIVITY, it)
+            when(it.code){
+                "10002"->{
+                    navigateTo(DccAffiliateActivity::class.java)
+                }
+                "10003"->{
+                    navigateTo(DccEcoRewardsActivity::class.java)
+                }
+                else->{
+                    if (it.status == MarketingActivity.Status.STARTED) {
+                        navigateTo(MarketingScenariosActivity::class.java) {
+                            putExtra(Extras.EXTRA_MARKETING_ACTIVITY, it)
+                        }
                     }
                 }
+            }
         }
     }
 
