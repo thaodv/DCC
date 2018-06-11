@@ -1,28 +1,40 @@
 package io.wexchain.android.dcc
 
 import android.os.Bundle
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.kotlin.Either
+import io.wexchain.android.common.kotlin.Left
+import io.wexchain.android.common.kotlin.Right
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
+import io.wexchain.android.dcc.view.adapter.MultiTypeListAdapter
+import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback
+import io.wexchain.android.dcc.view.adapter.multitype.BindingTypeViewBinder
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityDccEcoRewardsBinding
+import io.wexchain.dcc.databinding.ItemEcoRewardRuleBinding
+import io.wexchain.dcc.databinding.ItemEcoRewardRuleGroupBinding
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.BusinessCodes
+import io.wexchain.dccchainservice.domain.EcoBonusRule
 import io.wexchain.dccchainservice.domain.Result
 
 class DccEcoRewardsActivity : BindActivity<ActivityDccEcoRewardsBinding>() {
     override val contentLayoutId: Int
         get() = R.layout.activity_dcc_eco_rewards
 
+    private val adapter = RulesAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-        initClicks()
+        initView()
         initialLoad()
     }
 
@@ -49,14 +61,20 @@ class DccEcoRewardsActivity : BindActivity<ActivityDccEcoRewardsBinding>() {
             .compose(Result.checked())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe{rules->
-                binding.rules = rules.associateBy { it.bonusCode }
+                val grouped = rules.groupBy { it.groupCode }.entries.fold(mutableListOf<Either<String, EcoBonusRule>>(),{acc,i->
+                    acc.add(Left(i.key))
+                    acc.addAll(i.value.map { Right(it) })
+                    acc
+                })
+                binding.rules = grouped
             }
     }
 
-    private fun initClicks() {
+    private fun initView() {
         findViewById<View>(R.id.btn_income_detail).setOnClickListener {
             navigateTo(DccEcoRewardsListActivity::class.java)
         }
+        binding.rvList.adapter = adapter
     }
 
 
@@ -68,11 +86,52 @@ class DccEcoRewardsActivity : BindActivity<ActivityDccEcoRewardsBinding>() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.action_reward_terms -> {
-                //todo replace it
                 navigateTo(DccEcoRewardsTermsActivity::class.java)
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private class RulesAdapter:MultiTypeListAdapter<Either<String, EcoBonusRule>>(
+        defaultItemDiffCallback(),
+        ::viewTypeOf,
+        TYPE_GROUP to groupBinder,
+        TYPE_RULE to ruleBinder
+    ){
+
+        companion object {
+            val ruleBinder = object :BindingTypeViewBinder<Either<String, EcoBonusRule>,ItemEcoRewardRuleBinding>{
+                override val layout: Int
+                    get() = R.layout.item_eco_reward_rule
+
+                override fun bindData(binding: ItemEcoRewardRuleBinding, item: Either<String, EcoBonusRule>?) {
+                    binding.rule = item?.let {
+                        (it as Right<EcoBonusRule>).value
+                    }
+                }
+            }
+            val groupBinder = object :BindingTypeViewBinder<Either<String, EcoBonusRule>,ItemEcoRewardRuleGroupBinding>{
+                override val layout: Int
+                    get() = R.layout.item_eco_reward_rule_group
+
+                override fun bindData(binding: ItemEcoRewardRuleGroupBinding, item: Either<String, EcoBonusRule>?) {
+                    binding.group = item?.let {
+                        (it as Left<String>).value
+                    }
+                }
+            }
+
+            @JvmStatic
+            fun viewTypeOf(either:Either<String, EcoBonusRule>):Int{
+                return if (either is Left){
+                    TYPE_GROUP
+                }else if(either is Right){
+                    TYPE_RULE
+                }else RecyclerView.INVALID_TYPE
+            }
+            const val TYPE_RULE = 1
+            const val TYPE_GROUP = 2
         }
     }
 }

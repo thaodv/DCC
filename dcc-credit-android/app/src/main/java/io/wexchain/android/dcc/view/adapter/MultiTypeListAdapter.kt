@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import io.wexchain.android.dcc.view.adapter.multitype.TypeViewBinder
 
-class MutliTypeListAdapter<T>(
+open class MultiTypeListAdapter<T>(
     itemDiffCallback: DiffUtil.ItemCallback<T> = defaultItemDiffCallback(),
     val itemTypeDispatcher: (T) -> Int,
     vararg binders: Pair<Int, TypeViewBinder<T, *>>

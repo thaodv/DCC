@@ -8,4 +8,10 @@ data class EcoBonusRule(
     @SerializedName("bonusName") val bonusName: String,
     @SerializedName("bonusCode") val bonusCode: String,
     @SerializedName("bonusAmount") val bonusAmount: BigDecimal
-)
+){
+    companion object {
+        const val GROUP_BASE = "BASE"
+        const val GROUP_BORROW = "BORROW"
+        const val GROUP_REPAY = "REPAY"
+    }
+}

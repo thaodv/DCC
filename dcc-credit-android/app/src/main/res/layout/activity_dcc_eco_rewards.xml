@@ -4,7 +4,7 @@
         <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
         <variable
                 name="rules"
-                type="java.util.Map&lt;String,io.wexchain.dccchainservice.domain.EcoBonusRule&gt;"/>
+                type="java.util.List&lt;io.wexchain.android.common.kotlin.Either&lt;String,io.wexchain.dccchainservice.domain.EcoBonusRule&gt;&gt;"/>
         <variable
                 name="incomePtStr"
                 type="String"/>
@@ -25,7 +25,7 @@
         <include layout="@layout/include_toolbar"
                  android:id="@+id/toolbar"/>
 
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >
@@ -116,210 +116,19 @@
                         android:layout_marginRight="@dimen/content_padding_horizontal"
                         />
 
-                <TextView
-                        android:id="@+id/tv_base_rewards_label"
-                        android:layout_width="wrap_content"
+                <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_list"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="基础奖励"
-                        android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
+                        android:layout_marginLeft="@dimen/content_padding_horizontal"
+                        android:layout_marginRight="@dimen/content_padding_horizontal"
+                        dataList="@{rules}"
+                        app:layoutManager="io.wexchain.android.dcc.view.recycler.ExplodeLinearLayoutManager"
                         app:layout_constraintTop_toBottomOf="@id/btn_income_detail"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        android:layout_marginLeft="@dimen/content_padding_horizontal"
-                        android:gravity="center"
-                        android:drawableLeft="@drawable/ic_cert_rewards"
                         />
-
-                <TextView
-                        android:id="@+id/tv_base_rewards_hint"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="认证就有奖"
-                        app:layout_constraintBaseline_toBaselineOf="@id/tv_base_rewards_label"
-                        app:layout_constraintLeft_toRightOf="@id/tv_base_rewards_label"
-                        android:layout_marginLeft="8dp"
-                        />
-
-                <FrameLayout
-                        android:id="@+id/fl_cert_id"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:background="@drawable/bg_round_rect_frame"
-                        app:layout_constraintTop_toBottomOf="@id/tv_base_rewards_label"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginLeft="@dimen/content_padding_horizontal"
-                        android:layout_marginRight="@dimen/content_padding_horizontal"
-                        >
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="实名认证"
-                            android:layout_gravity="center_vertical|left"
-                            />
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{ViewModelHelper.ecoBonusRuleAmountStr(rules[`CERT_ID`])}"
-                            tools:text="+10生态值"
-                            android:layout_gravity="center_vertical|right"
-                            />
-                </FrameLayout>
-
-                <FrameLayout
-                        android:id="@+id/fl_cert_bank"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:background="@drawable/bg_round_rect_frame"
-                        app:layout_constraintTop_toBottomOf="@id/fl_cert_id"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginLeft="@dimen/content_padding_horizontal"
-                        android:layout_marginRight="@dimen/content_padding_horizontal"
-                        >
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="银行卡认证"
-                            android:layout_gravity="center_vertical|left"
-                            />
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{ViewModelHelper.ecoBonusRuleAmountStr(rules[`CERT_BANK_CARD`])}"
-                            tools:text="+10生态值"
-                            android:layout_gravity="center_vertical|right"
-                            />
-                </FrameLayout>
-
-                <FrameLayout
-                        android:id="@+id/fl_cert_cm"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:background="@drawable/bg_round_rect_frame"
-                        app:layout_constraintTop_toBottomOf="@id/fl_cert_bank"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginLeft="@dimen/content_padding_horizontal"
-                        android:layout_marginRight="@dimen/content_padding_horizontal"
-                        >
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="运营商认证"
-                            android:layout_gravity="center_vertical|left"
-                            />
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{ViewModelHelper.ecoBonusRuleAmountStr(rules[`CERT_COMMUNICATION`])}"
-                            tools:text="+10生态值"
-                            android:layout_gravity="center_vertical|right"
-                            />
-                </FrameLayout>
-
-                <TextView
-                        android:id="@+id/tv_loan_rewards_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="借币奖励"
-                        android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
-                        app:layout_constraintTop_toBottomOf="@id/fl_cert_cm"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        android:layout_marginLeft="@dimen/content_padding_horizontal"
-                        android:layout_marginTop="32dp"
-                        android:gravity="center"
-                        android:drawableLeft="@drawable/ic_loan_rewards"
-                        />
-
-                <TextView
-                        android:id="@+id/tv_loan_rewards_hint"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="次数无上限，奖励无上限"
-                        app:layout_constraintBaseline_toBaselineOf="@id/tv_loan_rewards_label"
-                        app:layout_constraintLeft_toRightOf="@id/tv_loan_rewards_label"
-                        android:layout_marginLeft="8dp"
-                        />
-
-
-                <FrameLayout
-                        android:id="@+id/fl_loan_reward"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:background="@drawable/bg_round_rect_frame"
-                        app:layout_constraintTop_toBottomOf="@id/tv_loan_rewards_label"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginLeft="@dimen/content_padding_horizontal"
-                        android:layout_marginRight="@dimen/content_padding_horizontal"
-                        >
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="借款成功奖励"
-                            android:layout_gravity="center_vertical|left"
-                            />
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{ViewModelHelper.ecoBonusRuleAmountStr(rules[`BORROW_SUCCESS`])}"
-                            tools:text="+15生态值"
-                            android:layout_gravity="center_vertical|right"
-                            />
-                </FrameLayout>
-                <TextView
-                        android:id="@+id/tv_repay_rewards_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="还币奖励"
-                        android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
-                        app:layout_constraintTop_toBottomOf="@id/fl_loan_reward"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        android:layout_marginLeft="@dimen/content_padding_horizontal"
-                        android:layout_marginTop="32dp"
-                        android:gravity="center"
-                        android:drawableLeft="@drawable/ic_repay_rewards"
-                        />
-
-                <TextView
-                        android:id="@+id/tv_repay_rewards_hint"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="按时还款，给信用加分"
-                        app:layout_constraintBaseline_toBaselineOf="@id/tv_repay_rewards_label"
-                        app:layout_constraintLeft_toRightOf="@id/tv_repay_rewards_label"
-                        android:layout_marginLeft="8dp"
-                        />
-
-
-                <FrameLayout
-                        android:id="@+id/fl_repay_reward"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:background="@drawable/bg_round_rect_frame"
-                        app:layout_constraintTop_toBottomOf="@id/tv_repay_rewards_label"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginLeft="@dimen/content_padding_horizontal"
-                        android:layout_marginRight="@dimen/content_padding_horizontal"
-                        >
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="借款成功奖励"
-                            android:layout_gravity="center_vertical|left"
-                            />
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{ViewModelHelper.ecoBonusRuleAmountStr(rules[`REPAY_SUCCESS`])}"
-                            tools:text="+15生态值"
-                            android:layout_gravity="center_vertical|right"
-                            />
-                </FrameLayout>
 
             </android.support.constraint.ConstraintLayout>
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
 
     </LinearLayout>
 </layout>
