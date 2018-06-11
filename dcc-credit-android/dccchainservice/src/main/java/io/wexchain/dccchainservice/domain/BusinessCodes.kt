@@ -28,4 +28,6 @@ object BusinessCodes {
     const val GET_RECEIPT_TIMEOUT = "GET_RECEIPT_TIMEOUT"//获取回执超时
     const val UPDATE_ORDER_FAIL = "UPDATE_ORDER_FAIL"//修改订单失败
     const val OCR_VALIDATE_FAIL = "OCR_VALIDATE_FAIL"//OCR验证失败
+
+    const val INVALID_STATUS = "INVALID_STATUS"//昨日生态奖励 表示当前统计中
 }

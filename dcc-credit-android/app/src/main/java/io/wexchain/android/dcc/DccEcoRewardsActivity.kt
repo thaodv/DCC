@@ -1,17 +1,18 @@
 package io.wexchain.android.dcc
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityDccEcoRewardsBinding
+import io.wexchain.dccchainservice.DccChainServiceException
+import io.wexchain.dccchainservice.domain.BusinessCodes
 import io.wexchain.dccchainservice.domain.Result
 
 class DccEcoRewardsActivity : BindActivity<ActivityDccEcoRewardsBinding>() {
@@ -32,9 +33,18 @@ class DccEcoRewardsActivity : BindActivity<ActivityDccEcoRewardsBinding>() {
                 scfApi.getYesterdayEcoBonus(it)
             }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{income->
-                binding.income = income
-            }
+            .subscribe({income->
+                binding.incomePtStr = income.yesterdayAmount.toPlainString()
+                binding.incomeAmountStr = "${income.amount.toPlainString()}DCC"
+            },{
+                val e = it.cause?:it
+                if (e is DccChainServiceException && e.businessCode == BusinessCodes.INVALID_STATUS){
+                    binding.incomePtStr = "统计中"
+                    binding.incomeAmountStr = "发放中"
+                }else{
+                    stackTrace(it)
+                }
+            })
         scfApi.queryBonusRule()
             .compose(Result.checked())
             .observeOn(AndroidSchedulers.mainThread())
