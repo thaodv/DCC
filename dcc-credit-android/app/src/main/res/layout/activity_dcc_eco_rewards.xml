@@ -122,11 +122,10 @@
                         android:id="@+id/rv_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/content_padding_horizontal"
-                        android:layout_marginRight="@dimen/content_padding_horizontal"
                         dataList="@{rules}"
                         app:layoutManager="io.wexchain.android.dcc.view.recycler.ExplodeLinearLayoutManager"
                         app:layout_constraintTop_toBottomOf="@id/btn_income_detail"
+                        tools:listitem="@layout/item_eco_reward_rule"
                         />
 
             </android.support.constraint.ConstraintLayout>

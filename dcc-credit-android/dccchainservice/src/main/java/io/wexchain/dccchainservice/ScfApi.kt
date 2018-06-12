@@ -6,6 +6,7 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
 import java.math.BigDecimal
+import java.math.BigInteger
 
 interface ScfApi {
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
@@ -188,7 +189,7 @@ interface ScfApi {
     @POST("secure/marketing/eco/getTotalBonus")
     fun getTotalEcoBonus(
         @Header(ScfApi.HEADER_TOKEN) token: String?
-    ):Single<Result<BigDecimal>>
+    ):Single<Result<BigInteger>>
 
     @POST("secure/marketing/eco/getYesterdayBonus")
     fun getYesterdayEcoBonus(
