@@ -2,7 +2,9 @@ pragma solidity ^0.4.11;
 
 import "../ownership/OperatorPermission.sol";
 import "./CertServiceFeeModule.sol";
-
+/**
+ * deprecated
+ */
 contract CertService2 is OperatorPermission {
 
     mapping(address => Checkpoint[]) checkpoints;

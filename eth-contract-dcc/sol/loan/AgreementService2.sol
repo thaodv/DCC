@@ -123,20 +123,18 @@ contract AgreementService2 is OperatorPermission, AgreementInfo, AgreementInfo2 
     }
 
     function finishAgreement(uint256 orderId) onlyOperator external {
-        string[] memory expectedStatusArray=new string[](1);
-        expectedStatusArray[0]="CREATED";
-        innerUpdateStatus(orderId, "FULFILLED",msg.sender,expectedStatusArray);
+        innerUpdateStatus(orderId, "FULFILLED",msg.sender,"CREATED");
     }
 
-    function updateStatus(uint256 orderId, string status,string[] expectedStatusArray) onlyOperator external {
-        innerUpdateStatus(orderId, status,msg.sender,expectedStatusArray);
+    function updateStatus(uint256 orderId, string status,string expectedStatus) onlyOperator external {
+        innerUpdateStatus(orderId, status,msg.sender,expectedStatus);
     }
 
-    function updateStatus(uint256 orderId, string status,address caller,string[] expectedStatusArray) onlyOwner external {
-        innerUpdateStatus(orderId, status,caller,expectedStatusArray);
+    function updateStatus(uint256 orderId, string status,address caller,string expectedStatus) onlyOwner external {
+        innerUpdateStatus(orderId, status,caller,expectedStatus);
     }
 
-    function innerUpdateStatus(uint256 orderId, string status,address caller,string[] expectedStatusArray) internal {
+    function innerUpdateStatus(uint256 orderId, string status,address caller,string expectedStatus) internal {
         require(orderId > 0);
         require(caller !=address(0));
         uint256 agreementId = orderIdIndex[caller][orderId];
@@ -144,7 +142,7 @@ contract AgreementService2 is OperatorPermission, AgreementInfo, AgreementInfo2 
 
         Agreement storage agreement = agreements[agreementId];
         //检查状态
-        require(checkStatus(agreement.status,expectedStatusArray));
+        require(checkStatus(agreement.status,expectedStatus));
         //修改状态
         agreement.status = status;
         agreementUpdated(agreement.id, agreement.caller, agreement.orderId, agreement.borrower, agreement.status);
@@ -170,14 +168,12 @@ contract AgreementService2 is OperatorPermission, AgreementInfo, AgreementInfo2 
         repayDigestUpdated(agreement.id,agreement.caller,agreement.orderId,agreement.borrower,agreement.repayDigest);
     }
 
-    function checkStatus(string inputStatus, string[] expectedStatusArray) internal returns (bool){
-        if(expectedStatusArray.length==0){
+    function checkStatus(string inputStatus, string expectedStatus) internal returns (bool){
+        if(bytes(expectedStatus).length==0){
             return true;
         }
-        for (uint256 i = 0; i < expectedStatusArray.length; i++) {
-            if (bytes(inputStatus).bytesEqual(bytes(expectedStatusArray[i]))) {
-                return true;
-            }
+        if(bytes(inputStatus).bytesEqual(bytes(expectedStatus))){
+            return true;
         }
         return false;
     }
@@ -266,5 +262,4 @@ contract AgreementService2 is OperatorPermission, AgreementInfo, AgreementInfo2 
         }
         return orderIdList;
     }
-
 }

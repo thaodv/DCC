@@ -13,7 +13,7 @@ contract AgreementInfo2 {
         string status)
     external returns (uint256 agreementId);
 
-    function updateStatus(uint256 orderId,string status) external;
+    function updateStatus(uint256 orderId,string status,string expectedStatus) external;
 
     function updateRepayDigest(uint256 orderId, bytes repayDigest) external;
 }
