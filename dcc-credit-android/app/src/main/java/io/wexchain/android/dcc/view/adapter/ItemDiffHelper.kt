@@ -9,9 +9,7 @@ import android.support.v7.util.DiffUtil
  */
 inline fun <T> itemDiffCallback(
     crossinline compareId: (T, T) -> Boolean,
-    crossinline compareContent: (T, T) -> Boolean = { a, b ->
-        ObjectsCompat.equals(a, b)
-    }
+    crossinline compareContent: (T, T) -> Boolean = ObjectsCompat::equals
 ): DiffUtil.ItemCallback<T> {
     return object : DiffUtil.ItemCallback<T>() {
         override fun areItemsTheSame(@NonNull oldItem: T, @NonNull newItem: T): Boolean {

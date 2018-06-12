@@ -4,16 +4,20 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.dp2px
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.view.adapter.*
+import io.wexchain.android.dcc.view.recycler.SpacingDecoration
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ItemMarketingActivityBinding
 import io.wexchain.dccchainservice.domain.MarketingActivity
@@ -50,7 +54,11 @@ class MarketingListActivity : BaseCompatActivity(), ItemViewClickListener<Market
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_marketing_list)
         initToolbar()
-        findViewById<RecyclerView>(R.id.rv_list).adapter = wrappedAdapter
+        val rvList = findViewById<RecyclerView>(R.id.rv_list)
+        rvList.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL).apply {
+            setDrawable(ContextCompat.getDrawable(this@MarketingListActivity,R.drawable.divider_space)!!)
+        })
+        rvList.adapter = wrappedAdapter
         loadMa()
     }
 

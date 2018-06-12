@@ -22,6 +22,9 @@
             app:contentPadding="0dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
+            android:layout_margin="-1dp"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
             >
 
         <android.support.constraint.ConstraintLayout

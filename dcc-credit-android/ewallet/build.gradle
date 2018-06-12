@@ -38,7 +38,7 @@ android {
 
             buildConfigField 'java.lang.String', 'PUBLIC_CHAIN', '"Ethereum"'
             buildConfigField 'java.lang.String', 'ETH_INFURA_NETWORK', '"mainnet"'
-            buildConfigField 'java.lang.String', 'PUBLIC_CHAIN_RPC', '"http://rpc.wexpass.cn:8545"'
+            buildConfigField 'java.lang.String', 'PUBLIC_CHAIN_RPC', '"http://rpc.dcc.finance:8545"'
             buildConfigField 'java.lang.String', 'QX_CONTRACT_ADDRESS', '"0xae5e4e27f10d97f86a753d2c49637a23bbb444ac"'
             buildConfigField 'java.lang.String', 'DCC_JUZIX_CONTRACT_ADDRESS', '"0x5fdce7d146c6920d0a06192166fd74b6e126a57b"'
             buildConfigField 'java.lang.String', 'DCC_PUBLIC_ADDRESS', '"0xFFa93Aacf49297D51E211817452839052FDFB961"'
