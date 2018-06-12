@@ -27,7 +27,7 @@
                 android:id="@+id/tv_reward_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{ViewModelHelper.concatWithoutNull(bonus.amount.toPlainString(),`DCC`)}"
+                android:text="@{ViewModelHelper.ecoBonusRewardAmountStr(bonus)}"
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_reward_time"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:text="5.0000DCC"

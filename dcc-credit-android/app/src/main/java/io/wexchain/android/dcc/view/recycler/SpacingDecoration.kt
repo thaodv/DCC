@@ -37,7 +37,7 @@ class SpacingDecoration(context: Context) : RecyclerView.ItemDecoration() {
         outRect: Rect, view: View, parent: RecyclerView,
         state: RecyclerView.State?
     ) {
-        val position = parent.getChildLayoutPosition(view)
+        val position = parent.getChildAdapterPosition(view)
         if (position == 0) {
             outRect.set(0, 0, 0, 0)
         } else {

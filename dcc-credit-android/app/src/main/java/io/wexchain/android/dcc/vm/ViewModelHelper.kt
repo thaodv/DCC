@@ -429,6 +429,13 @@ object ViewModelHelper {
     }
 
     @JvmStatic
+    fun ecoBonusRewardAmountStr(ecoBonus: EcoBonus?):CharSequence?{
+        val amount = ecoBonus?.amount
+        amount ?:return null
+        return "${Currencies.DCC.toDecimalAmount(amount).currencyToDisplayStr()}DCC"
+    }
+
+    @JvmStatic
     fun ecoBonusRuleGroupTitle(group:String?):CharSequence?{
         return when(group){
             EcoBonusRule.GROUP_BASE -> "基础奖励"
