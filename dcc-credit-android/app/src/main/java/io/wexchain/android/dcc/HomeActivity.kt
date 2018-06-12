@@ -117,7 +117,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
                 showIntroWalletDialog()
             }
         }
-        findViewById<View>(R.id.tv_tl).setOnClickListener {
+        findViewById<View>(R.id.banner_tl).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
                 val address = App.get().passportRepository.getCurrentPassport()!!.address
                 navigateTo(TlWebPageActivity::class.java){

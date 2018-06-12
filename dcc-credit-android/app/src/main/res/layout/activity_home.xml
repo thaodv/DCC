@@ -135,11 +135,16 @@
                     </FrameLayout>
                 </LinearLayout>
 
-                <TextView
-                        android:id="@+id/tv_tl"
+                <ImageView
+                        android:id="@+id/banner_tl"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:text="TL TEST"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:src="@drawable/banner_tl"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"
+                        android:layout_marginLeft="@dimen/content_padding_horizontal"
+                        android:layout_marginRight="@dimen/content_padding_horizontal"
                         android:gravity="center"
                         />
 
