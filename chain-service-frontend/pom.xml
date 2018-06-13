@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>io.wexchain.dcc.marketing</groupId>
 			<artifactId>dcc-marketing-api</artifactId>
-			<version>0.2-SNAPSHOT</version>
+			<version>0.3-SNAPSHOT</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/ma.glasnost.orika/orika-core -->

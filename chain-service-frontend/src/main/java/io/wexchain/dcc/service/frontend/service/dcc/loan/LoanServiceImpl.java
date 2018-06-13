@@ -112,6 +112,7 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
         queryLoanOrderPageRequest.setSortPageParam(new SortPageParam(pageParam.getNumber(),pageParam.getSize()));
         List<LoanOrderStatus> excludeStatusList = new ArrayList<>();
         excludeStatusList.add(LoanOrderStatus.CANCELLED);
+        excludeStatusList.add(LoanOrderStatus.FAILURE);
         queryLoanOrderPageRequest.setExcludeStatusList(excludeStatusList);
         Pagination<io.wexchain.cryptoasset.loan.api.model.LoanOrder> loanOrderPagination = cryptoAssetLoanOperationClient.queryLoanOrderPage(queryLoanOrderPageRequest);
 
@@ -124,7 +125,11 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
                 loanOrderVoList.add(loanOrderVo);
             }
         }
-        Pagination<LoanOrderVo> loanOrderVoPagination = PaginationUtils.list2Page(loanOrderVoList, loanOrderPagination.getSortPageParam());
+        Pagination<LoanOrderVo> loanOrderVoPagination = new Pagination<>();
+        loanOrderVoPagination.setItems(loanOrderVoList);
+        loanOrderVoPagination.setSortPageParam(loanOrderPagination.getSortPageParam());
+        loanOrderVoPagination.setTotalElements(loanOrderPagination.getTotalElements());
+        loanOrderVoPagination.setTotalPages(loanOrderPagination.getTotalPages());
         return loanOrderVoPagination;
     }
 
@@ -139,7 +144,7 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
 
         Map<String, String> extParam = loanOrder.getExtParam();
         setBaseLoanOrderInfo(vo,loanOrder,loanProductVo);
-        setLoanOrderDetailInfo(vo,extParam);
+        setLoanOrderDetailInfo(vo,  extParam);
 
         return vo;
     }

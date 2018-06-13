@@ -8,6 +8,7 @@ import com.wexmarket.topia.commons.pagination.Pagination;
 import com.wexmarket.topia.commons.rpc.BaseResponse;
 import com.wexmarket.topia.commons.rpc.ResultResponse;
 import io.wexchain.juzix.contract.loan.dcc.Agreement;
+import io.wexchain.juzix.contract.loan.dcc.Agreement2;
 import io.wexchain.passport.gateway.service.loan.dcc.AgreementServiceProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,8 +41,8 @@ public class AgreementController {
 
 	@RequestMapping(value = "/getAgreement", method = RequestMethod.GET)
 	@ResponseBody
-	public ResultResponse<Agreement> getAgreement(@RequestParam @NotBlank Long agreementId) throws IOException {
-		Agreement agreement = agreementServiceProxy.getAgreement(agreementId);
+	public ResultResponse<Agreement2> getAgreement(@RequestParam @NotBlank Long agreementId) throws IOException {
+		Agreement2 agreement = agreementServiceProxy.getAgreement(agreementId);
 		return ResultResponseUtils.successResultResponse(agreement);
 	}
 
@@ -54,10 +55,10 @@ public class AgreementController {
 
 	@RequestMapping(value = "/queryAgreementPageByIdHashIndex", method = RequestMethod.GET)
 	@ResponseBody
-	public ResultResponse<Pagination<Agreement>> queryAgreementPageByIdHashIndex(@NotNull @Valid QueryOrderByIdHash queryOrderParam)
+	public ResultResponse<Pagination<Agreement2>> queryAgreementPageByIdHashIndex(@NotNull @Valid QueryOrderByIdHash queryOrderParam)
 			throws IOException {
-		Page<Agreement> queryOrderPageByBorrowIndex = agreementServiceProxy.queryAgreementPageByIdHashIndex(queryOrderParam);
-		Pagination<Agreement> transform = PageTransformer.transform(queryOrderPageByBorrowIndex);
+		Page<Agreement2> queryOrderPageByBorrowIndex = agreementServiceProxy.queryAgreementPageByIdHashIndex(queryOrderParam);
+		Pagination<Agreement2> transform = PageTransformer.transform(queryOrderPageByBorrowIndex);
 		return ResultResponseUtils.successResultResponse(transform);
 	}
 
