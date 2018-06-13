@@ -2,6 +2,9 @@ package io.wexchain.dcc.service.frontend.service.marketing.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.wexmarket.topia.commons.pagination.PageParam;
+import com.wexmarket.topia.commons.pagination.Pagination;
+import com.wexmarket.topia.commons.pagination.SortPageParam;
 import com.wexmarket.topia.commons.rpc.ListResultResponse;
 import io.wexchain.dcc.marketing.api.constant.RedeemTokenStatus;
 import io.wexchain.dcc.marketing.api.model.RedeemToken;
@@ -15,6 +18,7 @@ import io.wexchain.dcc.service.frontend.service.marketing.RedeemTokenService;
 import io.wexchain.dcc.service.frontend.utils.ResultResponseValidator;
 import jodd.bean.BeanCopy;
 import okhttp3.*;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +27,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * RedeemTokenServiceImpl
@@ -80,6 +81,9 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
                 RedeemToken redeemToken = jsonObject.getObject("result", RedeemToken.class);
                 RedeemTokenVo vo = new RedeemTokenVo();
                 BeanCopy.fromBean(redeemToken).toBean(vo).copy();
+                if(vo.getAmount() != null){
+                    vo.getAmount().setScale(0);
+                }
                 return vo;
             }
         } catch (IOException e) {
@@ -98,6 +102,14 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
         queryRedeemTokenRequest.setStatusList(Collections.singletonList(RedeemTokenStatus.CREATED));
         ListResultResponse<RedeemToken> redeemTokenListResultResponse = redeemTokenOperationClient.queryRedeemToken(queryRedeemTokenRequest);
         List<RedeemToken> listResult = ResultResponseValidator.getListResult(redeemTokenListResultResponse);
+        if(CollectionUtils.isNotEmpty(listResult)){
+            listResult.forEach(redeemToken -> {
+                if(redeemToken.getAmount() != null){
+                    redeemToken.getAmount().setScale(0);
+                }
+            });
+        }
+
         return listResult;
     }
 
@@ -108,6 +120,11 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
         applyBonusRequest.setActivityCode("10002");
         applyBonusRequest.setScenarioCode("10002001");
         applyBonusRequest.setRedeemTokenId(redeemTokenId);
-        return ResultResponseValidator.getResult(bonusOperationClient.applyBonus(applyBonusRequest));
+        RedeemToken redeemToken = ResultResponseValidator.getResult(bonusOperationClient.applyBonus(applyBonusRequest));
+        if(redeemToken != null){
+            redeemToken.getAmount().setScale(0);
+        }
+        return redeemToken;
     }
+
 }

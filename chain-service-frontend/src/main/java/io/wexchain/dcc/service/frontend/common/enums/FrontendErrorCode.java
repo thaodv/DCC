@@ -21,9 +21,11 @@ public enum FrontendErrorCode implements ErrorCode {
 	LOAN_APPLY_FAIL("进件请求失败", "进件请求失败: %s"),
 
 	GET_LOAN_ORDER_DETAIL_FAIL("查询订单详情失败", "查询订单详情失败: %s"),
+
 	QUERY_LOAN_ORDER_BILL_FAIL("查询还币账单失败", "查询还币账单失败: %s"),
 
 	CONFIRM_REPAYMENT_FAIL("确认还币失败", "确认还币失败: %s"),
+
 	ADVANCE_FAIL("推进失败", "推进失败: %s"),
 
 	QUERY_LOAN_ORDER_FAIL("查询订单列表失败", "查询订单列表失败: %s"),
@@ -43,6 +45,14 @@ public enum FrontendErrorCode implements ErrorCode {
 	DOWNLOAD_FAIL("下载文件错误", "下载文件错误"),
 
 	FILE_NOT_EXIST("文件不存在", "文件不存在"),
+
+	QUERY_REWARD_LOG_FAIL("查询奖励记录失败", "查询奖励记录失败：%s"),
+
+	GET_TOTAL_REWARD_AMOUNT_FAIL("查询用户奖励金额", "查询用户奖励金额：%s"),
+
+	QUERY_ECO_REWARD_RULE_FAIL("查询奖励规则失败", "查询奖励规则失败"),
+
+	GET_ECO_REWARD_STATISTICS_INFO("查询生态奖励统计失败", "查询生态奖励统计失败"),
 
 	CERT_ID_EXCEED("身份证认证未通过或已过期", "身份证认证未通过或未通过或已过期"),
 	BANK_CARD_EXCEED("银行卡认未通过或证已过期", "银行卡认证未通过或已过期"),

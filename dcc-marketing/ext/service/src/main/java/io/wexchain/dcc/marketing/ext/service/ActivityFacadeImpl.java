@@ -31,7 +31,7 @@ public class ActivityFacadeImpl implements ActivityFacade {
     private ActivityService activityService;
 
     @Override
-    public ListResultResponse<Activity> queryActivity(@NotNull @Valid QueryActivityRequest request) {
+    public ListResultResponse<Activity> queryActivity(QueryActivityRequest request) {
         try {
             List<io.wexchain.dcc.marketing.domain.Activity> result = activityService.queryActivity(request);
             return activityResponseHelper.returnListSuccess(result);

@@ -3,7 +3,7 @@ package io.wexchain.dcc.service.frontend.model.vo;
 import io.wexchain.dcc.service.frontend.common.enums.RedeemTokenQualification;
 import org.joda.time.DateTime;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 /**
  * RedeemTokenQualificationVo
@@ -30,7 +30,7 @@ public class RedeemTokenQualificationVo {
     /**
      * 奖励数量
      */
-    private BigInteger amount;
+    private BigDecimal amount;
 
     /**
      * 创建时间
@@ -66,11 +66,11 @@ public class RedeemTokenQualificationVo {
         this.name = name;
     }
 
-    public BigInteger getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(BigInteger amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

@@ -6,7 +6,7 @@
         http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
 	<bean id="dccAgreementContractParam" parent="contractParam"
-		  p:contractAddress="${contract.dcc.agreement.address}" p:contractClass="io.wexchain.juzix.contract.loan.dcc.AgreementService" />
+		  p:contractAddress="${contract.dcc.agreement.address}" p:contractClass="io.wexchain.juzix.contract.loan.dcc.AgreementService2" />
 	<bean id="dccAgreementServiceProxy"
 		  class="io.wexchain.passport.gateway.service.loan.dcc.AgreementServiceProxyJuzixImpl"
 		  p:abiResource="classpath:/META-INF/passport-gateway/abi/AgreementService.abi">

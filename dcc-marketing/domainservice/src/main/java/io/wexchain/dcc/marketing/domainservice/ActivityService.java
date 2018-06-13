@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ActivityService {
 
+    Activity getActivityByCode(String code);
+
     List<Activity> queryActivity(QueryActivityRequest request);
 
 }

@@ -174,12 +174,12 @@ object ViewModelHelper {
     }
 
     @JvmStatic
-    fun getDccStr(holding: BigInteger?): String {
+    fun getDccStr(holding: BigInteger?): String? {
         return holding?.let {
             val holdingStr = Currencies.DCC.toDecimalAmount(it)
-                .setScale(2, RoundingMode.DOWN).toPlainString()
+                .currencyToDisplayStr()
             "$holdingStr DCC"
-        } ?: "--"
+        } ?: ""
     }
 
     @JvmStatic
@@ -425,7 +425,34 @@ object ViewModelHelper {
     @JvmStatic
     fun ecoBonusRuleAmountStr(ecoBonusRule: EcoBonusRule?):CharSequence?{
         ecoBonusRule?:return null
-        return "+${ecoBonusRule.bonusAmount.currencyToDisplayStr()}生态值"
+        return "+${ecoBonusRule.bonusAmount.toPlainString()}生态值"
+    }
+
+    @JvmStatic
+    fun ecoBonusRewardAmountStr(ecoBonus: EcoBonus?):CharSequence?{
+        val amount = ecoBonus?.amount
+        amount ?:return null
+        return "${Currencies.DCC.toDecimalAmount(amount).currencyToDisplayStr()}DCC"
+    }
+
+    @JvmStatic
+    fun ecoBonusRuleGroupTitle(group:String?):CharSequence?{
+        return when(group){
+            EcoBonusRule.GROUP_BASE -> "基础奖励"
+            EcoBonusRule.GROUP_BORROW -> "借币奖励"
+            EcoBonusRule.GROUP_REPAY -> "还币奖励"
+            else->null
+        }
+    }
+
+    @JvmStatic
+    fun ecoBonusRuleGroupSlogan(group:String?):CharSequence?{
+        return when(group){
+            EcoBonusRule.GROUP_BASE -> "认证就有奖"
+            EcoBonusRule.GROUP_BORROW -> "次数无上限，奖励无上限"
+            EcoBonusRule.GROUP_REPAY -> "按时还款，给信用加分"
+            else->null
+        }
     }
 }
 

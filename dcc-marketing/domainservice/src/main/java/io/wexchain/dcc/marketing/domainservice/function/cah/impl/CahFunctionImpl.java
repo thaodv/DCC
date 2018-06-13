@@ -41,6 +41,8 @@ public class CahFunctionImpl implements CahFunction {
 	@Autowired
 	private BalanceFacade balanceFacade;
 
+	private final static String DCC_JUZIX_ASSET_CODE = "DCC_JUZIX";
+
 	@Override
 	public CryptoWallet createEthWallet() {
 		ResultResponse<CryptoWallet> createResult = cryptoWalletFacade.createWallet(ChainCode.ETH.name());
@@ -53,6 +55,11 @@ public class CahFunctionImpl implements CahFunction {
 		balanceRequest.setAssetCode(assetCode);
 		balanceRequest.setOwnerAddress(address);
 		return Code2Exception.handleResultResponse(balanceFacade.getBalance(balanceRequest));
+	}
+
+	@Override
+	public BigInteger getJuzixDccBalance(String address) {
+		return getBalance(address, DCC_JUZIX_ASSET_CODE);
 	}
 
 	@Override
@@ -77,7 +84,7 @@ public class CahFunctionImpl implements CahFunction {
 		TransferRequest transferRequest = new TransferRequest();
 		transferRequest.setRequestIdentity(new RequestIdentity("DCC-MARKETING", requestNo));
 		transferRequest.setPayerAddress(payerAddress);
-		transferRequest.setAssetCode("JUZIX_DCC");
+		transferRequest.setAssetCode("DCC_JUZIX");
 		transferRequest.setReceiverAddress(receiverAddress);
 		transferRequest.setAmount(amount);
 		return transfer(transferRequest);

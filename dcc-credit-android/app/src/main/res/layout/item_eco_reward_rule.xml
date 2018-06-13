@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+        <variable
+                name="rule"
+                type="io.wexchain.dccchainservice.domain.EcoBonusRule"/>
+    </data>
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/bg_round_rect_frame"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            >
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{rule.bonusName}"
+                android:layout_gravity="center_vertical|left"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{ViewModelHelper.ecoBonusRuleAmountStr(rule)}"
+                tools:text="+10生态值"
+                android:layout_gravity="center_vertical|right"
+                />
+    </FrameLayout>
+</layout>

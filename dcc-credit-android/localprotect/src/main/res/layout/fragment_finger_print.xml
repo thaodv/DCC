@@ -64,7 +64,6 @@
         android:textSize="17sp"
         style="@style/Widget.AppCompat.Button.Borderless"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:textColor="@color/text_dark"
         />
 
 </android.support.constraint.ConstraintLayout>

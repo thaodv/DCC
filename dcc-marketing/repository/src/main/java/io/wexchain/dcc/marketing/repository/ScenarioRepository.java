@@ -14,4 +14,6 @@ public interface ScenarioRepository
 
     List<Scenario> findByActivityCodeOrderById(String activityCode);
 
+    Scenario findByActivityCodeAndCode(String activityCode, String scenarioCode);
+
 }

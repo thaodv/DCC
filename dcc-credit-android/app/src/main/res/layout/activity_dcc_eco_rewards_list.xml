@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
         <variable
                 name="vm"
                 type="io.wexchain.android.dcc.DccEcoRewardsListActivity.RewardsListVm"/>
         <variable
                 name="accumIncome"
-                type="java.math.BigDecimal"/>
+                type="java.math.BigInteger"/>
     </data>
     <android.support.constraint.ConstraintLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -25,12 +26,25 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
-                android:text="@{accumIncome==null?null:@string/accumulative_income_dcc(accumIncome.toPlainString())}"
+                android:text="@{accumIncome==null?null:@string/accumulative_income(ViewModelHelper.getDccStr(accumIncome))}"
                 tools:text="累计获得XX.0000DCC"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
+                />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_accumulative_income"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="80dp"
+                android:drawableTop="@drawable/logo_empty_reward_records"
+                android:text="暂无奖励"
+                android:gravity="center"
+                visibleOrGone="@{vm.records == null || vm.records.isEmpty()}"
                 />
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -52,6 +66,7 @@
                     android:layout_marginLeft="@dimen/content_padding_horizontal"
                     android:layout_marginRight="@dimen/content_padding_horizontal"
                     dataList="@{vm.records}"
+                    tools:listitem="@layout/item_eco_reward_rule"
                     />
             <com.scwang.smartrefresh.layout.footer.ClassicsFooter
                     android:layout_width="match_parent"

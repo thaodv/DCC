@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
-public class AgreementServiceProxyJuzixImpl extends ContractProxyJuzixImpl<AgreementService> implements AgreementServiceProxy {
+public class AgreementServiceProxyJuzixImpl extends ContractProxyJuzixImpl<AgreementService2> implements AgreementServiceProxy {
 
 	@Override
 	public String getContractAddress() {
@@ -29,7 +29,7 @@ public class AgreementServiceProxyJuzixImpl extends ContractProxyJuzixImpl<Agree
 	}
 
 	@Override
-	public Agreement getAgreement(Long agreementId) {
+	public Agreement2 getAgreement(Long agreementId) {
 		@SuppressWarnings("rawtypes")
 		List<Type> list = null;
 		try {
@@ -37,7 +37,7 @@ public class AgreementServiceProxyJuzixImpl extends ContractProxyJuzixImpl<Agree
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			throw new ContextedRuntimeException(e);
 		}
-		return DataParser.parseLoanAgreement(list, agreementId);
+		return DataParser.parseLoanAgreement2(list);
 	}
 
 	@Override
@@ -82,9 +82,9 @@ public class AgreementServiceProxyJuzixImpl extends ContractProxyJuzixImpl<Agree
 	}
 
 	@Override
-	public Page<Agreement> queryAgreementPageByIdHashIndex(QueryOrderByIdHash queryOrderParam) {
+	public Page<Agreement2> queryAgreementPageByIdHashIndex(QueryOrderByIdHash queryOrderParam) {
 		Page<BigInteger> page = getAgreementArrayLengthByIdHashIndex(queryOrderParam);
-		List<Agreement> collect = page.getContent().stream().map(BigInteger::longValueExact).map(this::getAgreement)
+		List<Agreement2> collect = page.getContent().stream().map(BigInteger::longValueExact).map(this::getAgreement)
 				.collect(Collectors.toList());
 		return new PageImpl<>(collect, page.getPageable(), page.getTotalElements());
 	}

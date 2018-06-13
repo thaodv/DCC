@@ -11,6 +11,7 @@
 	<util:map id="erc20ContractAddressMap">
 		<entry key="FTC" value="${erc20.address.ftc}"/>
 		<entry key="DCC" value="${erc20.address.dcc}"/>
+		<entry key="RNS" value="${erc20.address.rns}"/>
 	</util:map>
 </beans>
 

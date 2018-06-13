@@ -2,9 +2,7 @@ package io.wexchain.dcc.service.frontend.model.vo;
 
 import io.wexchain.dcc.marketing.api.constant.RedeemTokenStatus;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 /**
  * 发币订单
@@ -26,7 +24,7 @@ public class RedeemTokenVo {
     /**
      * 发币数量
      */
-    private BigInteger amount;
+    private BigDecimal amount;
 
     /**
      * 接收人钱包地址
@@ -41,7 +39,7 @@ public class RedeemTokenVo {
     public RedeemTokenVo() {
     }
 
-    public RedeemTokenVo(Long id, String scenarioCode, BigInteger amount, RedeemTokenStatus status) {
+    public RedeemTokenVo(Long id, String scenarioCode, BigDecimal amount, RedeemTokenStatus status) {
         this.id = id;
         this.scenarioCode = scenarioCode;
         this.amount = amount;
@@ -64,11 +62,11 @@ public class RedeemTokenVo {
         this.scenarioCode = scenarioCode;
     }
 
-    public BigInteger getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(BigInteger amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

@@ -17,4 +17,5 @@ public interface ActivityRepository
 
     Page<Activity> findByCreatedTimeBetweenAndStatusIn(Date from, Date to, List<ActivityStatus> statusList, Pageable pageable);
 
+    Activity findByCode(String code);
 }

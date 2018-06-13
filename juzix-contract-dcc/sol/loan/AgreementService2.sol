@@ -160,22 +160,20 @@ contract AgreementService2 is OperatorPermission, AgreementInfo, AgreementInfo2 
 
     function finishAgreement(uint256 orderId)  external {
         onlyOperator();
-        string[] memory expectedStatusArray=new string[](1);
-        expectedStatusArray[0]="CREATED";
-        innerUpdateStatus(orderId, "FULFILLED",msg.sender,expectedStatusArray);
+        innerUpdateStatus(orderId, "FULFILLED",msg.sender,"CREATED");
     }
 
-    function updateStatus(uint256 orderId, string status,string[] expectedStatusArray) external {
+    function updateStatus(uint256 orderId, string status,string expectedStatus) external {
         onlyOperator();
-        innerUpdateStatus(orderId, status,msg.sender,expectedStatusArray);
+        innerUpdateStatus(orderId, status,msg.sender,expectedStatus);
     }
 
-    function updateStatus(uint256 orderId, string status,address caller,string[] expectedStatusArray) external {
+    function updateStatus(uint256 orderId, string status,address caller,string expectedStatus) external {
         onlyOwner();
-        innerUpdateStatus(orderId, status,caller,expectedStatusArray);
+        innerUpdateStatus(orderId, status,caller,expectedStatus);
     }
 
-    function innerUpdateStatus(uint256 orderId, string status,address caller,string[] expectedStatusArray) internal {
+    function innerUpdateStatus(uint256 orderId, string status,address caller,string expectedStatus) internal {
         if (!(orderId > 0)) {
             log("!(orderId > 0)");
             throw;
@@ -192,7 +190,7 @@ contract AgreementService2 is OperatorPermission, AgreementInfo, AgreementInfo2 
 
         Agreement storage agreement = agreements[agreementId];
         //检查状态
-        if(!(checkStatus(agreement.status,expectedStatusArray))){
+        if(!(checkStatus(agreement.status,expectedStatus))){
             log("!(checkStatus(agreement.status,expectedStatusArray))");
             throw;
         }
@@ -235,14 +233,12 @@ contract AgreementService2 is OperatorPermission, AgreementInfo, AgreementInfo2 
         repayDigestUpdated(agreement.id,agreement.caller,agreement.orderId,agreement.borrower,agreement.repayDigest);
     }
 
-    function checkStatus(string inputStatus, string[] expectedStatusArray) internal returns (bool){
-        if(expectedStatusArray.length==0){
+    function checkStatus(string inputStatus, string expectedStatus) internal returns (bool){
+        if(bytes(expectedStatus).length==0){
             return true;
         }
-        for (uint256 i = 0; i < expectedStatusArray.length; i++) {
-            if (bytes(inputStatus).bytesEqual(bytes(expectedStatusArray[i]))) {
-                return true;
-            }
+        if(bytes(inputStatus).bytesEqual(bytes(expectedStatus))){
+            return true;
         }
         return false;
     }
