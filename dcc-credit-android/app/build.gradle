@@ -59,7 +59,7 @@ android {
             buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://gateway.wexpass.cn/passport-gateway/restful/"'
         }
         debug {
-            signingConfig signingConfigs.wexchain
+//            signingConfig signingConfigs.wexchain
 
 //            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://func.wexchain.io/passport-logic/"'
 //            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.103.28:1212/passport-logic/"'

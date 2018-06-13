@@ -115,6 +115,13 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
                 showIntroWalletDialog()
             }
         }
+        findViewById<View>(R.id.iv_invite).setOnClickListener {
+            if (App.get().passportRepository.passportExists) {
+                navigateTo(DccAffiliateActivity::class.java)
+            } else {
+                showIntroWalletDialog()
+            }
+        }
         binding.cardPassport.root.setOnClickListener {
             if (!App.get().passportRepository.passportExists) {
                 showIntroWalletDialog()

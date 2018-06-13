@@ -135,11 +135,22 @@
                     </FrameLayout>
                 </LinearLayout>
 
+                <ImageView
+                        android:id="@+id/iv_invite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/content_padding_horizontal"
+                        android:layout_marginRight="@dimen/content_padding_horizontal"
+                        android:layout_marginTop="16dp"
+                        android:src="@drawable/banner_invite"
+                        android:adjustViewBounds="true"
+                        />
+
                 <fragment
                         android:id="@+id/section_assets"
                         android:name="io.wexchain.android.dcc.fragment.DigitalAssetsLimitedFragment"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:layout_marginTop="16dp"
                         tools:layout="@layout/fragment_digital_assets_limited"

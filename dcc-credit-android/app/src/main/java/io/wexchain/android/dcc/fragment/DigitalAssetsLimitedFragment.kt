@@ -29,7 +29,6 @@ class DigitalAssetsLimitedFragment : BindFragment<FragmentDigitalAssetsLimitedBi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvAssets.layoutManager.isAutoMeasureEnabled = true
         binding.rvAssets.isNestedScrollingEnabled = false
         binding.rvAssets.adapter = adapter
         val assetsVm: DigitalAssetsVm = getViewModel()
