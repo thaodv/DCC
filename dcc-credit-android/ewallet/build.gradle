@@ -38,9 +38,10 @@ android {
 
             buildConfigField 'java.lang.String', 'PUBLIC_CHAIN', '"Ethereum"'
             buildConfigField 'java.lang.String', 'ETH_INFURA_NETWORK', '"mainnet"'
-            buildConfigField 'java.lang.String', 'PUBLIC_CHAIN_RPC', '"http://rpc.dcc.finance:8545"'
+//            buildConfigField 'java.lang.String', 'PUBLIC_CHAIN_RPC', '"http://rpc.dcc.finance:8545"'
+            buildConfigField 'java.lang.String', 'PUBLIC_CHAIN_RPC', '"http://rpc.wexpass.cn:8545"'
             buildConfigField 'java.lang.String', 'QX_CONTRACT_ADDRESS', '"0xae5e4e27f10d97f86a753d2c49637a23bbb444ac"'
-            buildConfigField 'java.lang.String', 'DCC_JUZIX_CONTRACT_ADDRESS', '"0x5fdce7d146c6920d0a06192166fd74b6e126a57b"'
+            buildConfigField 'java.lang.String', 'DCC_JUZIX_CONTRACT_ADDRESS', '"0x531df08ca92539b5b2e07ffc5e25772ad416be61"'
             buildConfigField 'java.lang.String', 'DCC_PUBLIC_ADDRESS', '"0xFFa93Aacf49297D51E211817452839052FDFB961"'
             externalNativeBuild {
                 cmake {
@@ -56,7 +57,7 @@ android {
             buildConfigField 'java.lang.String', 'ETH_INFURA_NETWORK', '"rinkeby"'
             buildConfigField 'java.lang.String', 'PUBLIC_CHAIN_RPC', '"http://120.78.145.175:8545"'
             buildConfigField 'java.lang.String', 'QX_CONTRACT_ADDRESS', '"0xe15a095c0150038150e9b5b4cd15a9f4aef0ba20"'
-            buildConfigField 'java.lang.String', 'DCC_JUZIX_CONTRACT_ADDRESS', '"0x454d870dc322ce9da6f5d22ca015f3ce42a13ba8"'
+            buildConfigField 'java.lang.String', 'DCC_JUZIX_CONTRACT_ADDRESS', '"0x7c3094c46329a9964c17b40588f62a9f1a30e4ca"'
 //            buildConfigField 'java.lang.String', 'DCC_PUBLIC_ADDRESS', '"0x3261fb28c4582c1ef67e2e2c243be622aec199c7"'
             buildConfigField 'java.lang.String', 'DCC_PUBLIC_ADDRESS', '"0x5512611d713aef81a96bfe18e25a57f8dcae25d7"'
         }

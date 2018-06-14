@@ -16,6 +16,7 @@ import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.view.adapter.MultiTypeListAdapter
 import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback
 import io.wexchain.android.dcc.view.adapter.multitype.BindingTypeViewBinder
+import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityDccEcoRewardsBinding
 import io.wexchain.dcc.databinding.ItemEcoRewardRuleBinding
@@ -24,6 +25,9 @@ import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.BusinessCodes
 import io.wexchain.dccchainservice.domain.EcoBonusRule
 import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.digitalwallet.Currencies
+import java.math.BigDecimal
+import java.math.BigInteger
 
 class DccEcoRewardsActivity : BindActivity<ActivityDccEcoRewardsBinding>() {
     override val contentLayoutId: Int
@@ -46,8 +50,8 @@ class DccEcoRewardsActivity : BindActivity<ActivityDccEcoRewardsBinding>() {
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({income->
-                binding.incomePtStr = income.yesterdayAmount.toPlainString()
-                binding.incomeAmountStr = "${income.amount.toPlainString()}DCC"
+                binding.incomePtStr = (income.yesterdayAmount?:BigDecimal.ZERO).toPlainString()
+                binding.incomeAmountStr = "${Currencies.DCC.toDecimalAmount(income.amount?: BigInteger.ZERO).currencyToDisplayStr()}DCC"
             },{
                 val e = it.cause?:it
                 if (e is DccChainServiceException && e.businessCode == BusinessCodes.INVALID_STATUS){

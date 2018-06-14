@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface ChainOrderService {
 
     Optional<String> getIdHash(String address);
+
 }

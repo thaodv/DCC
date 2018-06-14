@@ -90,7 +90,9 @@ public class ScenarioServiceImpl implements ScenarioService {
                 vo.setActivityCode(scenario.getActivityCode());
                 vo.setCode(scenario.getCode());
                 vo.setName(scenario.getName());
-                vo.setAmount(scenario.getAmount());
+                if(scenario.getAmount() != null){
+                    vo.setAmount(scenario.getAmount().setScale(0));
+                }
                 vo.setCreatedTime(scenario.getCreatedTime());
 
                 // 是否认证通过

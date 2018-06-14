@@ -64,7 +64,7 @@ public class RedeemAdvancer extends AbstractAdvancer<RedeemToken, RedeemTokenIns
 				if (RetryableCommandHelper.isCreated(command)) {
 					TransferOrder transferOrder = cahFunction.redeem(
 							String.valueOf(command.getId()),
-							redeemToken.getAmount(),
+							redeemToken.getAmount().toBigInteger(),
 							redeemToken.getScenario().getActivity().getSupplierAddress(),
 							redeemToken.getReceiverAddress());
 					if (transferOrder.getStatus() == TransferOrderStatus.SUCCESS) {

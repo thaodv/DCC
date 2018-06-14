@@ -174,12 +174,12 @@ object ViewModelHelper {
     }
 
     @JvmStatic
-    fun getDccStr(holding: BigInteger?): String {
+    fun getDccStr(holding: BigInteger?): String? {
         return holding?.let {
             val holdingStr = Currencies.DCC.toDecimalAmount(it)
-                .setScale(2, RoundingMode.DOWN).toPlainString()
+                .currencyToDisplayStr()
             "$holdingStr DCC"
-        } ?: "--"
+        } ?: ""
     }
 
     @JvmStatic
@@ -425,7 +425,7 @@ object ViewModelHelper {
     @JvmStatic
     fun ecoBonusRuleAmountStr(ecoBonusRule: EcoBonusRule?):CharSequence?{
         ecoBonusRule?:return null
-        return "+${ecoBonusRule.bonusAmount.currencyToDisplayStr()}生态值"
+        return "+${ecoBonusRule.bonusAmount.toPlainString()}生态值"
     }
 
     @JvmStatic

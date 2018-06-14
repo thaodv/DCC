@@ -78,7 +78,7 @@ public class DeliverAdvancer extends AbstractAdvancer<RewardDelivery, RewardDeli
 
 	private void saveRewardLog(RewardDelivery rewardDelivery) {
 		RewardLog log = new RewardLog();
-		log.setAmount(rewardDelivery.getAmount().toBigInteger());
+		log.setAmount(rewardDelivery.getAmount());
 		log.setActivityId(rewardDelivery.getRewardRound().getActivity().getId());
 		log.setReceiverAddress(rewardDelivery.getBeneficiaryAddress());
 		rewardLogRepository.save(log);

@@ -4,27 +4,21 @@ import com.wexmarket.topia.commons.basic.rpc.utils.ListResultResponseUtils;
 import com.wexmarket.topia.commons.basic.rpc.utils.ResultResponseUtils;
 import com.wexmarket.topia.commons.rpc.ListResultResponse;
 import com.wexmarket.topia.commons.rpc.ResultResponse;
-import io.wexchain.dcc.marketing.api.facade.ActivityFacade;
 import io.wexchain.dcc.marketing.api.facade.EcoRewardFacade;
-import io.wexchain.dcc.marketing.api.model.Activity;
 import io.wexchain.dcc.marketing.api.model.EcoRewardRule;
 import io.wexchain.dcc.marketing.api.model.EcoRewardStatisticsInfo;
 import io.wexchain.dcc.marketing.api.model.QueryEcoRewardRuleRequest;
-import io.wexchain.dcc.marketing.api.model.request.QueryActivityRequest;
-import io.wexchain.dcc.marketing.domain.RewardRound;
+import io.wexchain.dcc.marketing.api.model.RewardRound;
+import io.wexchain.dcc.marketing.api.model.request.CreateRewardRoundRequest;
 import io.wexchain.dcc.marketing.domainservice.ActivityService;
 import io.wexchain.dcc.marketing.domainservice.EcoRewardRuleService;
 import io.wexchain.dcc.marketing.domainservice.RewardRoundService;
-import io.wexchain.dcc.marketing.domainservice.impl.EcoRewardRuleServiceImpl;
-import io.wexchain.dcc.marketing.ext.service.helper.ActivityResponseHelper;
 import io.wexchain.dcc.marketing.ext.service.helper.EcoRewardRuleResponseHelper;
+import io.wexchain.dcc.marketing.ext.service.helper.RewardRoundResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -47,6 +41,20 @@ public class EcoRewardFacadeImpl implements EcoRewardFacade {
 
     @Autowired
     private RewardRoundService rewardRoundService;
+
+    @Autowired
+    private RewardRoundResponseHelper rewardRoundResponseHelper;
+
+    @Override
+    public ResultResponse<RewardRound> createRewardRound(CreateRewardRoundRequest request) {
+        try {
+            io.wexchain.dcc.marketing.domain.RewardRound  rewardRound =
+                    rewardRoundService.createRewardRound(request.getBonusDay().toDate());
+            return rewardRoundResponseHelper.returnSuccess(rewardRound);
+        } catch (Exception e) {
+            return ResultResponseUtils.exceptionResultResponse(e);
+        }
+    }
 
     @Override
     public ListResultResponse<EcoRewardRule> queryEcoRewardRule(QueryEcoRewardRuleRequest request) {

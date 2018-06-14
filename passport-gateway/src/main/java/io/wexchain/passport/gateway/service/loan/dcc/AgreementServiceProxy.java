@@ -7,13 +7,13 @@ import org.springframework.data.domain.Page;
 
 import java.math.BigInteger;
 
-public interface AgreementServiceProxy extends ContractProxy<AgreementService> {
+public interface AgreementServiceProxy extends ContractProxy<AgreementService2> {
 
-	Agreement getAgreement(Long agreementId);
+	Agreement2 getAgreement(Long agreementId);
 
 	BigInteger getAgreementArrayLengthByIdHashIndex(byte[] idHash);
 
 	Page<BigInteger> getAgreementArrayLengthByIdHashIndex(QueryOrderByIdHash queryOrderParam);
 
-	Page<Agreement> queryAgreementPageByIdHashIndex(QueryOrderByIdHash queryOrderParam);
+	Page<Agreement2> queryAgreementPageByIdHashIndex(QueryOrderByIdHash queryOrderParam);
 }
