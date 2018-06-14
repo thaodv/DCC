@@ -12,7 +12,6 @@ import io.wexchain.dcc.marketing.api.model.request.GetRedeemTokenQualificationRe
 import io.wexchain.dcc.marketing.api.model.request.QueryIdRestrictionRequest;
 import io.wexchain.dcc.marketing.api.model.request.QueryRedeemTokenRequest;
 import io.wexchain.dcc.marketing.api.model.request.RedeemTokenRequest;
-import io.wexchain.dcc.marketing.domain.Activity;
 import io.wexchain.dcc.marketing.domainservice.RedeemTokenService;
 import io.wexchain.dcc.marketing.ext.service.helper.IdRestrictionResponseHelper;
 import io.wexchain.dcc.marketing.ext.service.helper.RedeemTokenResponseHelper;
@@ -20,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
