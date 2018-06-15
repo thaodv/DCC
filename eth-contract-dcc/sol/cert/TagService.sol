@@ -9,6 +9,8 @@ contract TagService is OperatorPermission {
 
     uint256[] public tagKeys;
 
+    uint256 public tagKeysMaxIndex=1;
+
     mapping(uint256=>string) public tagNames;
 
     uint256 constant TAGNAME_MAXSIZE=50;
@@ -19,41 +21,6 @@ contract TagService is OperatorPermission {
     function TagService(){
         tagKeys.push(0);
         tagNames[0]="";
-    }
-
-    function getExistedTagNameIndex(string tagName) public view returns(uint256){
-        for(uint256 i=1;i<tagKeys.length;i++){
-            uint256 key=tagKeys[i];
-            if(bytes(tagName).bytesEqual(bytes(tagNames[key]))){
-                return key;
-            }
-        }
-        return 0;
-    }
-
-    function addTagName(string tagName) public onlyOperator returns(uint256){
-        require(bytes(tagName).length>0 && bytes(tagName).length<=TAGNAME_MAXSIZE);
-        if(getExistedTagNameIndex(tagName)==0){
-            uint256 index=tagKeys.length;
-            tagKeys.push(index);
-            tagNames[index]=tagName;
-        }
-        return index;
-    }
-
-    function deleteTageName(string tagName)public onlyOperator{
-        require(bytes(tagName).length>0 && bytes(tagName).length<=TAGNAME_MAXSIZE);
-
-        uint256 tagNameIndex= getExistedTagNameIndex(tagName);
-        if(tagNameIndex==0){
-            require(false);
-        }
-        for(uint256 i=tagNameIndex;i<tagKeys.length-1;i++){
-            tagKeys[i]=tagKeys[i+1];
-        }
-
-        tagKeys.length--;
-        delete tagNames[tagNameIndex];
     }
 
     function addTag(address add, string tagName,string tagValue)public onlyOperator{
@@ -80,6 +47,43 @@ contract TagService is OperatorPermission {
             require(false);
         }
         return(addr,tagNameIndex,tagName,tags[addr][tagNameIndex]);
+    }
+
+    function addTagName(string tagName) public onlyOperator {
+        require(bytes(tagName).length>0 && bytes(tagName).length<=TAGNAME_MAXSIZE);
+        if(getExistedTagNameIndex(tagName)!=0){
+            require(false);
+        }
+        tagKeys.push(tagKeysMaxIndex);
+        tagNames[tagKeysMaxIndex]=tagName;
+
+        tagKeysMaxIndex++;
+    }
+
+
+    function deleteTageName(string tagName)public onlyOperator{
+        require(bytes(tagName).length>0 && bytes(tagName).length<=TAGNAME_MAXSIZE);
+
+        uint256 tagNameIndex= getExistedTagNameIndex(tagName);
+        if(tagNameIndex==0){
+            require(false);
+        }
+        for(uint256 i=tagNameIndex;i<tagKeys.length-1;i++){
+            tagKeys[i]=tagKeys[i+1];
+        }
+
+        tagKeys.length--;
+        delete tagNames[tagNameIndex];
+    }
+
+    function getExistedTagNameIndex(string tagName) public view returns(uint256){
+        for(uint256 i=1;i<tagKeys.length;i++){
+            uint256 key=tagKeys[i];
+            if(bytes(tagName).bytesEqual(bytes(tagNames[key]))){
+                return key;
+            }
+        }
+        return 0;
     }
 
     function tagKeysLength()public view returns(uint256){
