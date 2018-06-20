@@ -42,4 +42,23 @@
 					p:contractParam-ref="dccLoanContractParam" />
 		</property>
 	</bean>
+
+	<bean id="mortgageLoanService" parent="contractParam"
+		  p:contractAddress="${contract.dcc.mortgageLoan.address}" p:contractClass="io.wexchain.juzix.contract.loan.dcc.MortgageLoanService" />
+	<bean id="mortgageLoanServiceProxy"
+		  class="io.wexchain.passport.gateway.service.loan.dcc.MortgageLoanServiceProxyJuzixImpl"
+		  p:abiResource="classpath:/META-INF/passport-gateway/abi/MortgageLoanService.abi">
+		<property name="contract">
+			<bean class="io.wexchain.juzix.contract.commons.ContractFactoryBean"
+				  p:web3j-ref="web3j"
+				  p:transactionManager-ref="transactionManager"
+				  p:contractParam-ref="mortgageLoanService"
+			/>
+		</property>
+		<property name="signMessageValidator">
+			<bean
+					class="io.wexchain.passport.gateway.service.loan.dcc.MortgageLoanSignMessageValidator"
+					p:contractParam-ref="mortgageLoanService" />
+		</property>
+	</bean>
 </beans>

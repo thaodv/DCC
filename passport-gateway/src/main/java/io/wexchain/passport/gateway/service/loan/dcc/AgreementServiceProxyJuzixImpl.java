@@ -37,7 +37,7 @@ public class AgreementServiceProxyJuzixImpl extends ContractProxyJuzixImpl<Agree
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			throw new ContextedRuntimeException(e);
 		}
-		return DataParser.parseLoanAgreement2(list);
+		return DataParser.parseLoanAgreement2(list,0l);
 	}
 
 	@Override
