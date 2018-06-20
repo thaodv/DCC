@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: de.odysseus.juel:juel-impl:unknown">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.m2/repository/de/odysseus/juel/juel-impl/unknown/juel-impl-unknown.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.m2/repository/de/odysseus/juel/juel-impl/unknown/juel-impl-unknown-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.m2/repository/de/odysseus/juel/juel-impl/unknown/juel-impl-unknown-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

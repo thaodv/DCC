@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.googlecode.log4jdbc:log4jdbc:unknown">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.m2/repository/com/googlecode/log4jdbc/log4jdbc/unknown/log4jdbc-unknown.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.m2/repository/com/googlecode/log4jdbc/log4jdbc/unknown/log4jdbc-unknown-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.m2/repository/com/googlecode/log4jdbc/log4jdbc/unknown/log4jdbc-unknown-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

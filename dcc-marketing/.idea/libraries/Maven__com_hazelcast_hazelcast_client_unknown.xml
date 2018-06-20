@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.hazelcast:hazelcast-client:unknown">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.m2/repository/com/hazelcast/hazelcast-client/unknown/hazelcast-client-unknown.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.m2/repository/com/hazelcast/hazelcast-client/unknown/hazelcast-client-unknown-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.m2/repository/com/hazelcast/hazelcast-client/unknown/hazelcast-client-unknown-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

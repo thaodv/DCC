@@ -133,4 +133,49 @@ public class RewardRoundServiceImpl implements RewardRoundService {
         Activity activity = activityService.getActivityByCode(ECO_REWARD_ACTIVITY_CODE);
         BigInteger juzixDccBalance = cahFunction.getJuzixDccBalance(activity.getSupplierAddress());
     }
+
+    public static void main(String[] args) throws IOException {
+        Web3j build = Web3j.build(new HttpService("http://10.65.209.49:6789"));
+       /* p(build, "0xedec58f327173b7d2cae70daedce81f1895af0acd144aeccc7384261f2625ac0");
+        p(build, "0x23811a7415f5e1dddbd7860f83005b2b99892e0a78b43a4d2ee4b57965e0e32d");
+        p(build, "0x2bbc2f3851193b3a12233e5c972f09bdfabc7f9275a51e48388ddaad6a81e435");
+        p(build, "0xe31359c9cd11f34541eda87b76676febde2c9337dc7825f532ada0b463ca3102");
+        p(build, "0x11218d4dd6696ad3c07a3eecc31f3bc49abe5478d540ff52a62903674d72ed51");
+        p(build, "0x98a9becb00c25fc1e436d71ac9b47fae2bc3b0795229c479c5c2992e4c904d9b");
+*/
+        try {
+            Function function = new Function("getOwner",
+                    Arrays.<Type>asList(),
+                    Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
+            String encodedFunction = FunctionEncoder.encode(function);
+
+            EthCall response = build.ethCall(
+                    Transaction.createEthCallTransaction("0x0000000000000000000000000000000000000000",
+                            "0x032d2ae1712bb936ebdfe0e738317197b4a02735", encodedFunction),
+                    DefaultBlockParameterName.LATEST)
+                    .sendAsync().get();
+
+            List<Type> someTypes = FunctionReturnDecoder.decode(
+                    response.getValue(), function.getOutputParameters());
+
+            System.out.println(someTypes.get(0));
+
+        } catch (Exception e) {
+            throw new ContextedRuntimeException(e);
+        }
+
+    }
+
+    public static void p(Web3j web3j, String address) throws IOException {
+        EthGetTransactionReceipt receipt = web3j.ethGetTransactionReceipt(address).send();
+        TransactionReceipt result = receipt.getResult();
+        List<Log> logs = result.getLogs();
+        Log log = logs.get(0);
+        System.out.println("address: " + address);
+        System.out.println("data: " + log.getData());
+        System.out.println("topic: " + log.getTopics());
+        System.out.println("----------------------------------------------");
+    }
+
+
 }

@@ -12,13 +12,9 @@ import io.wexchain.dcc.marketing.domainservice.processor.order.rewarddelivery.Re
 import io.wexchain.dcc.marketing.domainservice.processor.order.rewardround.RewardRoundInstruction;
 import io.wexchain.dcc.marketing.domainservice.processor.order.rewardround.RewardRoundTrigger;
 import io.wexchain.dcc.marketing.repository.RewardDeliveryRepository;
-import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Future;
 
 
 public class DeliverAdvancer extends AbstractAdvancer<RewardRound, RewardRoundInstruction, RewardRoundTrigger> {
@@ -38,17 +34,8 @@ public class DeliverAdvancer extends AbstractAdvancer<RewardRound, RewardRoundIn
 			RewardRound rewardRound, RewardRoundInstruction instruction, Object message) {
 
 		// 发放奖励
-		List<Future<?>> futureList = new ArrayList<>();
 		rewardDeliveryRepository.findByRewardRoundId(rewardRound.getId()).forEach(delivery ->
-				futureList.add(rewardDeliveryExecutor.executeAsync(delivery, null, null)));
-
-		while (!futureList.stream().allMatch(Future::isDone)) {
-			try {
-				Thread.sleep(60 * 1000L);
-			} catch (InterruptedException e) {
-				throw new ContextedRuntimeException(e);
-			}
-		}
+				rewardDeliveryExecutor.execute(delivery, null, null));
 
 		// 确认发放完毕
 		if (rewardDeliveryRepository.countByRewardRoundIdAndStatus(
