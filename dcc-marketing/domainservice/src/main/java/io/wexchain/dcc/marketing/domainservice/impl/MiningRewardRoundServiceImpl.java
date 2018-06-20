@@ -13,8 +13,11 @@ import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardroun
 import io.wexchain.dcc.marketing.repository.LastLoginTimeRepository;
 import io.wexchain.dcc.marketing.repository.MiningRewardRoundItemRepository;
 import io.wexchain.dcc.marketing.repository.MiningRewardRoundRepository;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -32,6 +35,8 @@ import java.util.Optional;
  */
 @Service
 public class MiningRewardRoundServiceImpl implements MiningRewardRoundService {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private TransactionTemplate transactionTemplate;
@@ -65,15 +70,23 @@ public class MiningRewardRoundServiceImpl implements MiningRewardRoundService {
 
         MiningRewardRound miningRewardRound = getMiningRewardRoundNullable(roundTime)
                 .orElseGet(() -> transactionTemplate.execute(transactionStatus -> {
+
+            List<LastLoginTime> loginList =
+                    lastLoginTimeRepository.findByLastLoginTimeAfter(DateTime.now().minusHours(48).toDate());
+            if (CollectionUtils.isEmpty(loginList)) {
+                logger.info("No user login in latest 48 hours, skip reward round");
+                MiningRewardRound newRound = new MiningRewardRound();
+                newRound.setRoundTime(roundTime);
+                newRound.setStatus(MiningRewardRoundStatus.SKIPPED);
+                newRound.setActivity(activity);
+                return  miningRewardRoundRepository.save(newRound);
+            }
+
             MiningRewardRound newRound = new MiningRewardRound();
             newRound.setRoundTime(roundTime);
             newRound.setStatus(MiningRewardRoundStatus.CREATED);
             newRound.setActivity(activity);
             newRound =  miningRewardRoundRepository.save(newRound);
-
-            List<LastLoginTime> loginList =
-                    lastLoginTimeRepository.findByLastLoginTimeAfter(DateTime.now().minusHours(48).toDate());
-            Validate.notEmpty(loginList, "No user login in latest 48 hours, skip create reward round");
 
             List<MiningRewardRoundItem> itemList = new ArrayList<>(loginList.size());
             for (LastLoginTime lastLoginTime : loginList) {

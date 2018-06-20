@@ -23,6 +23,6 @@ public interface RewardDeliveryRepository
 
     int countByRewardRoundIdAndStatus(Long rewardRoundId, RewardDeliveryStatus status);
 
-    @Query("SELECT SUM(amount) FROM RewardDelivery WHERE rewardRoundId = ?1")
-    BigDecimal sumAmountByRewardRoundId(Long rewardRoundId);
+    @Query("SELECT SUM(amount) FROM RewardDelivery WHERE rewardRound.id = ?1 AND beneficiaryAddress = ?2")
+    BigDecimal sumAmountByAddress(Long rewardRoundId, String address);
 }

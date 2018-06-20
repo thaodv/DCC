@@ -11,6 +11,8 @@ import io.wexchain.dcc.marketing.domainservice.processor.order.rewardround.Rewar
 import io.wexchain.dcc.marketing.domainservice.processor.order.rewardround.RewardRoundTrigger;
 import io.wexchain.dcc.marketing.repository.RewardActionRecordRepository;
 import io.wexchain.dcc.marketing.repository.RewardDeliveryRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -26,6 +28,8 @@ public class AnalyzeAdvancer extends AbstractAdvancer<RewardRound, RewardRoundIn
 	{
 		availableStatus = RewardRoundStatus.SCANNED;
 	}
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private RewardActionRecordRepository rewardActionRecordRepository;
@@ -51,14 +55,19 @@ public class AnalyzeAdvancer extends AbstractAdvancer<RewardRound, RewardRoundIn
 
 		List<RewardDelivery> deliveryList = new ArrayList<>();
 		for (Map<String, Object> addressScore : addressScoreGroup) {
-			RewardDelivery delivery = new RewardDelivery();
-			delivery.setRewardRound(rewardRound);
-			delivery.setBeneficiaryAddress((String) addressScore.get("address"));
-			delivery.setAmount(
-					calcEcoAmount(totalScore, (BigDecimal) addressScore.get("totalScore"))
-							.multiply(BigDecimal.TEN.pow(18)));
-			delivery.setStatus(RewardDeliveryStatus.CREATED);
-			deliveryList.add(delivery);
+
+			BigDecimal ecoAmount = calcEcoAmount(totalScore,
+					(BigDecimal) addressScore.get("totalScore")).multiply(BigDecimal.TEN.pow(18));
+			if (ecoAmount.compareTo(BigDecimal.ZERO) > 0) {
+				RewardDelivery delivery = new RewardDelivery();
+				delivery.setRewardRound(rewardRound);
+				delivery.setBeneficiaryAddress((String) addressScore.get("address"));
+				delivery.setAmount(ecoAmount);
+				delivery.setStatus(RewardDeliveryStatus.CREATED);
+				deliveryList.add(delivery);
+			} else {
+				logger.info("Eco reward amount is 0, address:{}", addressScore.get("address"));
+			}
 		}
 
 		rewardDeliveryRepository.saveAll(deliveryList);
@@ -67,7 +76,10 @@ public class AnalyzeAdvancer extends AbstractAdvancer<RewardRound, RewardRoundIn
 	}
 
 	private BigDecimal calcEcoAmount(BigDecimal totalScore, BigDecimal addressScore) {
-		BigDecimal ecoBonus = addressScore.divide(totalScore, 4, RoundingMode.DOWN).multiply(ecoRewardDailyBonus);
+		BigDecimal ecoBonus = (addressScore
+				.divide(totalScore, 15, RoundingMode.DOWN)
+				.multiply(ecoRewardDailyBonus))
+				.setScale(4, RoundingMode.DOWN);
 		return ecoBonus.min(ecoRewardMaxBonus);
 	}
 

@@ -44,6 +44,7 @@ public class MiningLoanEventHandler implements MiningEventHandler {
             rewardRecord.setScore(ecoRewardRule.getScore());
             rewardRecord.setAddress(event.getAddress());
             rewardRecord.setStatus(MiningActionRecordStatus.ACCEPTED);
+            rewardRecord.setRewardRule(ecoRewardRule);
             miningRewardRecordService.saveMiningRewardFromEvent(rewardRecord);
 
             return rewardRecord;

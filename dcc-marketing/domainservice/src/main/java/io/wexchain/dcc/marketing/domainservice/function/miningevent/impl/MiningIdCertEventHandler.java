@@ -1,5 +1,6 @@
 package io.wexchain.dcc.marketing.domainservice.function.miningevent.impl;
 
+import com.godmonth.status.executor.intf.OrderExecutor;
 import com.wexyun.open.api.domain.member.Member;
 import io.wexchain.dcc.marketing.api.constant.RestrictionType;
 import io.wexchain.dcc.marketing.common.constant.MiningActionRecordStatus;
@@ -8,16 +9,17 @@ import io.wexchain.dcc.marketing.domain.IdRestriction;
 import io.wexchain.dcc.marketing.domain.MiningRewardRecord;
 import io.wexchain.dcc.marketing.domainservice.EcoRewardRuleService;
 import io.wexchain.dcc.marketing.domainservice.function.chain.ChainOrderService;
-import io.wexchain.dcc.marketing.domainservice.function.miningevent.MiningEventHandler;
 import io.wexchain.dcc.marketing.domainservice.function.wexyun.WexyunLoanClient;
+import io.wexchain.dcc.marketing.domainservice.processor.order.miningrecordaction.MiningRewardRecordInstruction;
 import io.wexchain.dcc.marketing.repository.IdRestrictionRepository;
 import io.wexchain.dcc.marketing.repository.MiningRewardRecordRepository;
-import io.wexchain.notify.domain.dcc.CertOrderStatus;
 import io.wexchain.notify.domain.dcc.VerifiedEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -33,9 +35,6 @@ public class MiningIdCertEventHandler extends MiningCertEventHandler {
     private EcoRewardRuleService ecoRewardRuleService;
 
     @Autowired
-    private IdRestrictionRepository idRestrictionRepository;
-
-    @Autowired
     private ChainOrderService chainOrderService;
 
     @Autowired
@@ -47,14 +46,15 @@ public class MiningIdCertEventHandler extends MiningCertEventHandler {
     @Autowired
     private MiningRewardRecordRepository miningRewardRecordRepository;
 
-    private static final String BONUS_CODE_ID_CERT_BASIC = "MINING_ID_CERT_PASS_BASIC";
+    @Resource(name = "miningRewardRecordExecutor")
+    private OrderExecutor<MiningRewardRecord, MiningRewardRecordInstruction> miningRwdRecExecutor;
+
+    @Autowired
+    private IdRestrictionRepository idRestrictionRepository;
+
+    private static final String BONUS_CODE_ID_CERT_BASIC =  "MINING_ID_CERT_PASS_BASIC";
     private static final String BONUS_CODE_ID_CERT_INVITE = "MINING_ID_CERT_PASS_INVITE";
     private static final String BONUS_CODE_ID_CERT_FRIEND = "MINING_ID_CERT_PASS_FRIEND";
-
-    @Override
-    public boolean canHandle(Object obj) {
-        return super.canHandle(obj) && ((VerifiedEvent) obj).getStatus() == CertOrderStatus.PASSED;
-    }
 
     @Override
     public MiningRewardRecord handle(Object obj) {
@@ -65,68 +65,54 @@ public class MiningIdCertEventHandler extends MiningCertEventHandler {
         VerifiedEvent event = (VerifiedEvent) obj;
         List<EcoRewardRule> ruleList = ecoRewardRuleService.queryEcoRewardRuleByEventName(getEventName());
         EcoRewardRule rule = ruleList.get(0);
-        if (rule.getScenario().getRestrictionType() == RestrictionType.ID) {
-            Optional<String> idHashOpt = chainOrderService.getIdHash(event.getAddress());
-            if (idHashOpt.isPresent()) {
-                IdRestriction idRestriction = idRestrictionRepository.findByScenarioIdAndIdHash(rule.getId(), idHashOpt.get());
-                if (idRestriction != null) {
-                    return null;
-                }
-            } else {
-                return null;
-            }
+
+        String idHash = checkIdRestriction(rule, event.getAddress());
+        if (idHash == null) {
+            return null;
         }
 
-        Stream<EcoRewardRule> ruleStream = ruleList.stream();
-        EcoRewardRule basicRule = ruleStream.filter(r -> r.getBonusCode().equals(BONUS_CODE_ID_CERT_BASIC))
+        EcoRewardRule basicRule = ruleList.stream().filter(r -> r.getBonusCode().equals(BONUS_CODE_ID_CERT_BASIC))
                 .findFirst().orElseGet(null);
-        EcoRewardRule inviteRule = ruleStream.filter(r -> r.getBonusCode().equals(BONUS_CODE_ID_CERT_INVITE))
+        EcoRewardRule inviteRule = ruleList.stream().filter(r -> r.getBonusCode().equals(BONUS_CODE_ID_CERT_INVITE))
                 .findFirst().orElseGet(null);
-        EcoRewardRule friendRule = ruleStream.filter(r -> r.getBonusCode().equals(BONUS_CODE_ID_CERT_FRIEND))
+        EcoRewardRule friendRule = ruleList.stream().filter(r -> r.getBonusCode().equals(BONUS_CODE_ID_CERT_FRIEND))
                 .findFirst().orElseGet(null);
-
 
         String inviteAddress = getInviteMemberAddress(event.getAddress());
 
-
-
-        transactionTemplate.execute(status -> {
-
+        String idHash1 = idHash;
+        List<MiningRewardRecord> recordList = transactionTemplate.execute(status -> {
+            List<MiningRewardRecord> list = new ArrayList<>();
             MiningRewardRecord rewardRecord = new MiningRewardRecord();
             rewardRecord.setAddress(event.getAddress());
             rewardRecord.setStatus(MiningActionRecordStatus.ACCEPTED);
             rewardRecord.setScore(basicRule.getScore());
+            rewardRecord.setRewardRule(basicRule);
             if (StringUtils.isNotEmpty(inviteAddress)) {
+                // 被邀请人额外加分
                 rewardRecord.setScore(inviteRule.getScore());
+                rewardRecord.setRewardRule(inviteRule);
+                // 好友贡献值
                 MiningRewardRecord friendRecord = new MiningRewardRecord();
                 friendRecord.setAddress(inviteAddress);
                 friendRecord.setStatus(MiningActionRecordStatus.ACCEPTED);
                 friendRecord.setScore(friendRule.getScore());
-                friendRecord = miningRewardRecordRepository.save(friendRecord);
-
+                friendRecord.setRewardRule(friendRule);
+                list.add(miningRewardRecordRepository.save(friendRecord));
             }
+            list.add(miningRewardRecordRepository.save(rewardRecord));
 
-zd
+            IdRestriction idRestriction = new IdRestriction();
+            idRestriction.setScenario(basicRule.getScenario());
+            idRestriction.setIdHash(idHash1);
+            idRestrictionRepository.save(idRestriction);
 
+            return list;
+        });
 
+        recordList.forEach(record -> miningRwdRecExecutor.executeAsync(record, null, null));
 
-            miningRewardRecordService.saveMiningRewardFromEvent(rewardRecord);
-
-            MiningRewardRecord rewardRecord = new MiningRewardRecord();
-            rewardRecord.setAddress(event.getAddress());
-            rewardRecord.setStatus(Ming);
-
-
-        })
-
-
-
-
-
-
-
-        //TODO
-        return rewardRecord;
+        return null;
     }
 
     private String getInviteMemberAddress(String address) {
@@ -140,19 +126,5 @@ zd
         return null;
     }
 
-    public String getEventName() {
-        return eventName;
-    }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

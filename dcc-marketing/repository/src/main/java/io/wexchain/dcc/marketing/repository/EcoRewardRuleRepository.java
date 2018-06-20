@@ -11,4 +11,7 @@ public interface EcoRewardRuleRepository
         extends PagingAndSortingRepository<EcoRewardRule, Long>, JpaSpecificationExecutor<EcoRewardRule> {
 
     List<EcoRewardRule> findByParticipatorRoleOrderByIdAsc(ParticipatorRole participatorRole);
+
+    List<EcoRewardRule> findByScenarioActivityCodeAndParticipatorRoleOrderByIdAsc(
+            String activityCode, ParticipatorRole participatorRole);
 }

@@ -22,10 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.web3j.protocol.core.methods.response.Log;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 public class ScanAdvancer extends AbstractAdvancer<RewardRound, RewardRoundInstruction, RewardRoundTrigger> {
@@ -98,8 +95,16 @@ public class ScanAdvancer extends AbstractAdvancer<RewardRound, RewardRoundInstr
 
 			if (record.getEcoRewardRule().getScenario().getRestrictionType() == RestrictionType.ID) {
 				if (record.getEcoRewardRule().getParticipatorRole() == ParticipatorRole.USER) {
-					String idHash = chainOrderService.getIdHash(record.getAddress())
-							.orElseThrow(() -> new ContextedRuntimeException("Id hash no found"));
+					Optional<String> idHashOpt = chainOrderService.getIdHash(record.getAddress());
+					if (!idHashOpt.isPresent()) {
+						record.setStatus(RewardActionRecordStatus.REJECTED);
+						rejectTmp.add(record.getTransactionHash() + "_" + record.getLogIndex());
+						logger.info("Address {} not found id hash, tx hash:{}, event name:{}",
+								record.getAddress(), record.getTransactionHash(), record.getEcoRewardRule().getEventName());
+						continue;
+					}
+					String idHash = idHashOpt.get();
+					//.orElseThrow(() -> new ContextedRuntimeException("Id hash no found, address:" + record.getAddress()));
 					record.setIdHash(idHash);
 					// 数据库约束
 					if (rewardActionRecordRepository.countByEcoRewardRuleIdAndIdHash(

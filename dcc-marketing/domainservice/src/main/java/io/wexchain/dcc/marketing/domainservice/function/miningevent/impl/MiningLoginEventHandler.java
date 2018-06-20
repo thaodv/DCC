@@ -84,6 +84,7 @@ public class MiningLoginEventHandler implements MiningEventHandler {
             newRewardRecord.setScore(rule.getScore());
             newRewardRecord.setAddress(event.getAddress());
             newRewardRecord.setStatus(MiningActionRecordStatus.ACCEPTED);
+            newRewardRecord.setRewardRule(rule);
             return miningRewardRecordRepository.save(newRewardRecord);
         });
 
