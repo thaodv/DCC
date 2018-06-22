@@ -197,7 +197,62 @@ interface ScfApi {
     ):Single<Result<EcoDayIncome>>
 
     @POST("marketing/eco/queryBonusRule")
-    fun queryBonusRule():Single<Result<List<EcoBonusRule>>>
+    fun queryBonusRule():Single<Result<List<BonusRule>>>
+
+    /* mining reward */
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    @POST("secure/marketing/candy/queryList")
+    @FormUrlEncoded
+    fun queryMineCandyList(
+        @Header(ScfApi.HEADER_TOKEN) token: String?,
+        @Field("boxCode") boxCode:String = "BITEXPRESS_MINING_CANDY_BOX"//所有环境固定
+    ):Single<Result<List<MineCandy>>>
+
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    @POST("secure/marketing/candy/pick")
+    @FormUrlEncoded
+    fun pickMineCandy(
+        @Header(ScfApi.HEADER_TOKEN) token: String?,
+        @Field("candyId")candyId:Long
+    ):Single<Result<MineCandy>>
+
+    @POST("marketing/mining/queryRule")
+    fun queryMinePtRule():Single<Result<List<BonusRule>>>
+
+    @POST("secure/marketing/mining/queryContributionScore")
+    fun queryMineContributionScore(
+        @Header(ScfApi.HEADER_TOKEN) token: String?
+    ):Single<Result<BigDecimal>>
+
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    @POST("secure/marketing/mining/queryRecord")
+    @FormUrlEncoded
+    fun queryMineContributionRecord(
+        @Header(ScfApi.HEADER_TOKEN) token: String?,
+        /**
+         * start @ 0
+         */
+        @Field("number") number:Long,
+        @Field("size") size:Long = 20L
+    ):Single<Result<PagedList<MineContributionRecord>>>
+
+
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    @POST("secure/marketing/mining/queryBonus")
+    @FormUrlEncoded
+    fun queryMineRewardRecords(
+        @Header(ScfApi.HEADER_TOKEN) token: String?,
+        /**
+         * start @ 0
+         */
+        @Field("number") number:Long,
+        @Field("size") size:Long = 20L
+    ):Single<Result<PagedList<EcoBonus>>>
+
+    @POST("secure/marketing/mining/getTotalBonus")
+    fun queryMineRewardTotalAmount(
+        @Header(ScfApi.HEADER_TOKEN) token: String?
+    ):Single<Result<BigInteger>>
 
     companion object {
         const val HEADER_TOKEN = "x-auth-token"

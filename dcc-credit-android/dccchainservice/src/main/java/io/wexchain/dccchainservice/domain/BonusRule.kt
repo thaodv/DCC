@@ -3,7 +3,7 @@ import com.google.gson.annotations.SerializedName
 import java.math.BigDecimal
 
 
-data class EcoBonusRule(
+data class BonusRule(
     @SerializedName("groupCode") val groupCode: String,
     @SerializedName("bonusName") val bonusName: String,
     @SerializedName("bonusCode") val bonusCode: String,

@@ -6,18 +6,14 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
-    <!--for wechat sdk-->
+    <!-- for wechat sdk -->
     <uses-permission android:name="android.permission.INTERNET"/>
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <!--end of wechat sdk-->
 
+    <!-- end of wechat sdk -->
     <application
             android:name="io.wexchain.android.dcc.App"
             android:allowBackup="false"
@@ -286,22 +282,38 @@
         </activity>
         <activity
                 android:name="io.wexchain.android.dcc.DccEcoRewardsActivity"
-                android:label="生态奖励"
-                >
+                android:label="生态奖励">
         </activity>
         <activity
                 android:name="io.wexchain.android.dcc.DccEcoRewardsListActivity"
-                android:label="奖励详情"
-                >
+                android:label="奖励详情">
         </activity>
         <activity
                 android:name="io.wexchain.android.dcc.DccEcoRewardsTermsActivity"
                 android:label="活动规则"
-                android:screenOrientation="portrait"
-                />
-        <activity android:name=".wxapi.WXEntryActivity"
-                android:exported="true"
-                />
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".wxapi.WXEntryActivity"
+                android:exported="true"/>
+        <activity
+                android:name="io.wexchain.android.dcc.MineRewardsActivity"
+                android:label="挖矿奖励">
+        </activity>
+        <activity
+                android:name="io.wexchain.android.dcc.DccMineRewardsTermsActivity"
+                android:label="活动规则"/>
+        <activity android:name="io.wexchain.android.dcc.MinePtRulesActivity"
+                android:label="加速挖矿"
+                >
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.MinePtListActivity"
+                android:label="贡献值详情"
+                >
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.MineRewardRecordsActivity"
+                android:label="领取记录"
+                >
+        </activity>
     </application>
 
 </manifest>

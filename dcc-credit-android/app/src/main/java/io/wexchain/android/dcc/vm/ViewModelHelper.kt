@@ -423,36 +423,59 @@ object ViewModelHelper {
     }
 
     @JvmStatic
-    fun ecoBonusRuleAmountStr(ecoBonusRule: EcoBonusRule?):CharSequence?{
-        ecoBonusRule?:return null
+    fun ecoBonusRuleAmountStr(ecoBonusRule: BonusRule?): CharSequence? {
+        ecoBonusRule ?: return null
         return "+${ecoBonusRule.bonusAmount.toPlainString()}生态值"
     }
 
     @JvmStatic
-    fun ecoBonusRewardAmountStr(ecoBonus: EcoBonus?):CharSequence?{
+    fun ecoBonusRewardAmountStr(ecoBonus: EcoBonus?): CharSequence? {
         val amount = ecoBonus?.amount
-        amount ?:return null
+        amount ?: return null
         return "${Currencies.DCC.toDecimalAmount(amount).currencyToDisplayStr()}DCC"
     }
 
     @JvmStatic
-    fun ecoBonusRuleGroupTitle(group:String?):CharSequence?{
-        return when(group){
-            EcoBonusRule.GROUP_BASE -> "基础奖励"
-            EcoBonusRule.GROUP_BORROW -> "借币奖励"
-            EcoBonusRule.GROUP_REPAY -> "还币奖励"
-            else->null
+    fun ecoBonusRuleGroupTitle(group: String?): CharSequence? {
+        return when (group) {
+            BonusRule.GROUP_BASE -> "基础奖励"
+            BonusRule.GROUP_BORROW -> "借币奖励"
+            BonusRule.GROUP_REPAY -> "还币奖励"
+            else -> null
         }
     }
 
     @JvmStatic
-    fun ecoBonusRuleGroupSlogan(group:String?):CharSequence?{
-        return when(group){
-            EcoBonusRule.GROUP_BASE -> "认证就有奖"
-            EcoBonusRule.GROUP_BORROW -> "次数无上限，奖励无上限"
-            EcoBonusRule.GROUP_REPAY -> "按时还款，给信用加分"
-            else->null
+    fun ecoBonusRuleGroupSlogan(group: String?): CharSequence? {
+        return when (group) {
+            BonusRule.GROUP_BASE -> "认证就有奖"
+            BonusRule.GROUP_BORROW -> "次数无上限，奖励无上限"
+            BonusRule.GROUP_REPAY -> "按时还款，给信用加分"
+            else -> null
         }
+    }
+
+    @JvmStatic
+    fun Context.mineRewardIcon(mineCandy: MineCandy?): Drawable? {
+        mineCandy ?: return null
+        val drawable = when (mineCandy.id.rem(8L)) {
+            1L -> R.drawable.ic_mine_reward_01
+            2L -> R.drawable.ic_mine_reward_02
+            3L -> R.drawable.ic_mine_reward_03
+            4L -> R.drawable.ic_mine_reward_04
+            5L -> R.drawable.ic_mine_reward_05
+            6L -> R.drawable.ic_mine_reward_06
+            7L -> R.drawable.ic_mine_reward_07
+            0L -> R.drawable.ic_mine_reward_08
+            else -> 0
+        }
+        return ContextCompat.getDrawable(this, drawable)
+    }
+
+    @JvmStatic
+    fun mineRewardAmountStr(mineCandy: MineCandy?): CharSequence? {
+        mineCandy ?: return null
+        return "+${Currencies.DCC.toDecimalAmount(mineCandy.amount).currencyToDisplayStr()}${Currencies.DCC.symbol}"
     }
 }
 

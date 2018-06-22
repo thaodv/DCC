@@ -50,8 +50,6 @@ class App : MultiDexApplication() {
     lateinit var scfApi: ScfApi
 
     //public services
-    lateinit var infuraApi: InfuraApi
-    lateinit var customPublicJsonRpc: EthJsonRpcApi
     lateinit var etherScanApi: EtherScanApi
     lateinit var ethplorerApi: EthplorerApi
     lateinit var publicRpc: EthsRpcAgent
@@ -107,10 +105,17 @@ class App : MultiDexApplication() {
 
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))
         ethplorerApi = networking.createApi(EthplorerApi::class.java, EthplorerApi.API_URL)
-//        infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
+        if(BuildConfig.DEBUG){
+            val infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
+            publicRpc = EthsRpcAgent.by(infuraApi)
+        }else{
+//        val infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
 //        publicRpc = EthsRpcAgent.by(infuraApi)
-        customPublicJsonRpc = networking.createApi(EthJsonRpcApi::class.java, cc.sisel.ewallet.BuildConfig.PUBLIC_CHAIN_RPC).getPrepared()
-        publicRpc = EthsRpcAgent.by(customPublicJsonRpc)
+//            val customPublicJsonRpc = networking.createApi(EthJsonRpcApi::class.java, EthJsonRpcApi.PUBLIC_RPC_URL).getPrepared()
+//            publicRpc = EthsRpcAgent.by(customPublicJsonRpc)
+            val wfJsonRpc = networking.createApi(EthJsonRpcApiWithAuth::class.java,EthJsonRpcApiWithAuth.RPC_URL)
+            publicRpc = EthsRpcAgent.by(wfJsonRpc)
+        }
     }
 
     private fun initLibraries(context: App) {

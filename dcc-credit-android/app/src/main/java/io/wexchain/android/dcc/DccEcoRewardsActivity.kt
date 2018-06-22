@@ -23,7 +23,7 @@ import io.wexchain.dcc.databinding.ItemEcoRewardRuleBinding
 import io.wexchain.dcc.databinding.ItemEcoRewardRuleGroupBinding
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.BusinessCodes
-import io.wexchain.dccchainservice.domain.EcoBonusRule
+import io.wexchain.dccchainservice.domain.BonusRule
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.Currencies
 import java.math.BigDecimal
@@ -65,11 +65,11 @@ class DccEcoRewardsActivity : BindActivity<ActivityDccEcoRewardsBinding>() {
             .compose(Result.checked())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe{rules->
-                val grouped = rules.groupBy { it.groupCode }.entries.fold(mutableListOf<Either<String, EcoBonusRule>>(),{acc,i->
+                val grouped = rules.groupBy { it.groupCode }.entries.fold(mutableListOf<Either<String, BonusRule>>()) { acc, i->
                     acc.add(Left(i.key))
                     acc.addAll(i.value.map { Right(it) })
                     acc
-                })
+                }
                 binding.rules = grouped
             }
     }
@@ -97,7 +97,7 @@ class DccEcoRewardsActivity : BindActivity<ActivityDccEcoRewardsBinding>() {
         }
     }
 
-    private class RulesAdapter:MultiTypeListAdapter<Either<String, EcoBonusRule>>(
+    private class RulesAdapter:MultiTypeListAdapter<Either<String, BonusRule>>(
         defaultItemDiffCallback(),
         ::viewTypeOf,
         TYPE_GROUP to groupBinder,
@@ -105,21 +105,21 @@ class DccEcoRewardsActivity : BindActivity<ActivityDccEcoRewardsBinding>() {
     ){
 
         companion object {
-            val ruleBinder = object :BindingTypeViewBinder<Either<String, EcoBonusRule>,ItemEcoRewardRuleBinding>{
+            val ruleBinder = object :BindingTypeViewBinder<Either<String, BonusRule>,ItemEcoRewardRuleBinding>{
                 override val layout: Int
                     get() = R.layout.item_eco_reward_rule
 
-                override fun bindData(binding: ItemEcoRewardRuleBinding, item: Either<String, EcoBonusRule>?) {
+                override fun bindData(binding: ItemEcoRewardRuleBinding, item: Either<String, BonusRule>?) {
                     binding.rule = item?.let {
-                        (it as Right<EcoBonusRule>).value
+                        (it as Right<BonusRule>).value
                     }
                 }
             }
-            val groupBinder = object :BindingTypeViewBinder<Either<String, EcoBonusRule>,ItemEcoRewardRuleGroupBinding>{
+            val groupBinder = object :BindingTypeViewBinder<Either<String, BonusRule>,ItemEcoRewardRuleGroupBinding>{
                 override val layout: Int
                     get() = R.layout.item_eco_reward_rule_group
 
-                override fun bindData(binding: ItemEcoRewardRuleGroupBinding, item: Either<String, EcoBonusRule>?) {
+                override fun bindData(binding: ItemEcoRewardRuleGroupBinding, item: Either<String, BonusRule>?) {
                     binding.group = item?.let {
                         (it as Left<String>).value
                     }
@@ -127,12 +127,12 @@ class DccEcoRewardsActivity : BindActivity<ActivityDccEcoRewardsBinding>() {
             }
 
             @JvmStatic
-            fun viewTypeOf(either:Either<String, EcoBonusRule>):Int{
-                return if (either is Left){
-                    TYPE_GROUP
-                }else if(either is Right){
-                    TYPE_RULE
-                }else RecyclerView.INVALID_TYPE
+            fun viewTypeOf(either:Either<String, BonusRule>):Int{
+                return when (either) {
+                    is Left -> TYPE_GROUP
+                    is Right -> TYPE_RULE
+                    else -> RecyclerView.INVALID_TYPE
+                }
             }
             const val TYPE_RULE = 1
             const val TYPE_GROUP = 2

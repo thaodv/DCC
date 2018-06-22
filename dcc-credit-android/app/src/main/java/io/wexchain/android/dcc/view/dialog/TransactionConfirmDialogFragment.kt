@@ -45,6 +45,11 @@ class TransactionConfirmDialogFragment : DialogFragment() {
                 activity?.finish()
             }
         })
+        vm.txSendFailEvent.observe(this, Observer {
+            it?.let {
+                toast("转账提交失败")
+            }
+        })
         vm.busySendingEvent.observe(this, Observer {
             it?.let {
                 if (it) {
