@@ -1,15 +1,17 @@
 package io.wexchain.dcc.marketing.domainservice.function.miningevent.impl;
 
+import com.godmonth.status.executor.intf.OrderExecutor;
 import io.wexchain.dcc.marketing.common.constant.MiningActionRecordStatus;
 import io.wexchain.dcc.marketing.domain.EcoRewardRule;
 import io.wexchain.dcc.marketing.domain.MiningRewardRecord;
 import io.wexchain.dcc.marketing.domainservice.EcoRewardRuleService;
-import io.wexchain.dcc.marketing.domainservice.MiningRewardRecordService;
 import io.wexchain.dcc.marketing.domainservice.function.miningevent.MiningEventHandler;
+import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.MiningRewardRecordInstruction;
+import io.wexchain.dcc.marketing.repository.MiningRewardRecordRepository;
 import io.wexchain.notify.domain.dcc.OrderUpdatedEvent;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -26,7 +28,10 @@ public class MiningLoanEventHandler implements MiningEventHandler {
     private EcoRewardRuleService ecoRewardRuleService;
 
     @Autowired
-    private MiningRewardRecordService miningRewardRecordService;
+    private MiningRewardRecordRepository miningRewardRecordRepository;
+
+    @Resource(name = "miningRewardRecordExecutor")
+    private OrderExecutor<MiningRewardRecord, MiningRewardRecordInstruction> miningRwdRecExecutor;
 
     @Override
     public boolean canHandle(Object obj) {
@@ -45,7 +50,9 @@ public class MiningLoanEventHandler implements MiningEventHandler {
             rewardRecord.setAddress(event.getAddress());
             rewardRecord.setStatus(MiningActionRecordStatus.ACCEPTED);
             rewardRecord.setRewardRule(ecoRewardRule);
-            miningRewardRecordService.saveMiningRewardFromEvent(rewardRecord);
+
+            rewardRecord = miningRewardRecordRepository.save(rewardRecord);
+            miningRwdRecExecutor.executeAsync(rewardRecord, null, null);
 
             return rewardRecord;
         }

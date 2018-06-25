@@ -9,7 +9,7 @@ import io.wexchain.dcc.marketing.domain.MiningRewardRecord;
 import io.wexchain.dcc.marketing.domainservice.EcoRewardRuleService;
 import io.wexchain.dcc.marketing.domainservice.function.chain.ChainOrderService;
 import io.wexchain.dcc.marketing.domainservice.function.miningevent.MiningEventHandler;
-import io.wexchain.dcc.marketing.domainservice.processor.order.miningrecordaction.MiningRewardRecordInstruction;
+import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.MiningRewardRecordInstruction;
 import io.wexchain.dcc.marketing.repository.IdRestrictionRepository;
 import io.wexchain.dcc.marketing.repository.MiningRewardRecordRepository;
 import io.wexchain.notify.domain.dcc.VerifiedEvent;
@@ -27,10 +27,19 @@ import java.util.Optional;
  */
 public class MiningCertEventHandler implements MiningEventHandler {
 
+    /**
+     * 时间名称
+     */
     private String eventName;
 
+    /**
+     * 响应状态
+     */
     private String status;
 
+    /**
+     * 认证类型
+     */
     private String certType;
 
     @Autowired

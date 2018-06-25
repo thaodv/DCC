@@ -8,7 +8,7 @@ import io.wexchain.dcc.marketing.domain.MiningRewardRecord;
 import io.wexchain.dcc.marketing.domainservice.EcoRewardRuleService;
 import io.wexchain.dcc.marketing.domainservice.MiningRewardRecordService;
 import io.wexchain.dcc.marketing.domainservice.function.miningevent.MiningEventHandler;
-import io.wexchain.dcc.marketing.domainservice.processor.order.miningrecordaction.MiningRewardRecordInstruction;
+import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.MiningRewardRecordInstruction;
 import io.wexchain.dcc.marketing.repository.LastLoginTimeRepository;
 import io.wexchain.dcc.marketing.repository.MiningRewardRecordRepository;
 import io.wexchain.notify.domain.dcc.LoginEvent;

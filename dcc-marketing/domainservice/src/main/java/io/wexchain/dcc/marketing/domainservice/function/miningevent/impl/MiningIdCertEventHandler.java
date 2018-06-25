@@ -2,7 +2,6 @@ package io.wexchain.dcc.marketing.domainservice.function.miningevent.impl;
 
 import com.godmonth.status.executor.intf.OrderExecutor;
 import com.wexyun.open.api.domain.member.Member;
-import io.wexchain.dcc.marketing.api.constant.RestrictionType;
 import io.wexchain.dcc.marketing.common.constant.MiningActionRecordStatus;
 import io.wexchain.dcc.marketing.domain.EcoRewardRule;
 import io.wexchain.dcc.marketing.domain.IdRestriction;
@@ -10,7 +9,7 @@ import io.wexchain.dcc.marketing.domain.MiningRewardRecord;
 import io.wexchain.dcc.marketing.domainservice.EcoRewardRuleService;
 import io.wexchain.dcc.marketing.domainservice.function.chain.ChainOrderService;
 import io.wexchain.dcc.marketing.domainservice.function.wexyun.WexyunLoanClient;
-import io.wexchain.dcc.marketing.domainservice.processor.order.miningrecordaction.MiningRewardRecordInstruction;
+import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.MiningRewardRecordInstruction;
 import io.wexchain.dcc.marketing.repository.IdRestrictionRepository;
 import io.wexchain.dcc.marketing.repository.MiningRewardRecordRepository;
 import io.wexchain.notify.domain.dcc.VerifiedEvent;
@@ -21,8 +20,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * MiningEventHandlerImpl

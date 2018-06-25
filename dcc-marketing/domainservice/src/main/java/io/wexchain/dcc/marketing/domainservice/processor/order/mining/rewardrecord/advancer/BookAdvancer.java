@@ -1,4 +1,4 @@
-package io.wexchain.dcc.marketing.domainservice.processor.order.miningrecordaction.advancer;
+package io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.advancer;
 
 import com.godmonth.status.advancer.impl.AbstractAdvancer;
 import com.godmonth.status.advancer.intf.AdvancedResult;
@@ -14,8 +14,8 @@ import io.wexchain.dcc.marketing.domainservice.function.booking.BookingService;
 import io.wexchain.dcc.marketing.domainservice.function.command.CommandIndex;
 import io.wexchain.dcc.marketing.domainservice.function.command.RetryableCommandHelper;
 import io.wexchain.dcc.marketing.domainservice.function.command.RetryableCommandTemplate;
-import io.wexchain.dcc.marketing.domainservice.processor.order.miningrecordaction.MiningRewardRecordInstruction;
-import io.wexchain.dcc.marketing.domainservice.processor.order.miningrecordaction.MiningRewardRecordTrigger;
+import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.MiningRewardRecordInstruction;
+import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.MiningRewardRecordTrigger;
 import io.wexchain.dcc.marketing.repository.MiningRewardRecordRepository;
 
 import org.apache.commons.lang3.Validate;

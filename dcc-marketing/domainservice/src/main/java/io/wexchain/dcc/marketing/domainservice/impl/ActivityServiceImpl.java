@@ -29,6 +29,13 @@ public class ActivityServiceImpl implements ActivityService {
     private ActivityRepository activityRepository;
 
     @Override
+    public Activity getActivityById(Long id) {
+        return ErrorCodeValidate.notNull(
+                activityRepository.findById(id).orElse(null),
+                MarketingErrorCode.ACTIVITY_NOT_FOUND);
+    }
+
+    @Override
     public Activity getActivityByCode(String code) {
         return ErrorCodeValidate.notNull(
                 activityRepository.findByCode(code),
