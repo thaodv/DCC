@@ -83,7 +83,7 @@ class App : MultiDexApplication() {
                 dao,
                 chainFrontEndApi,
                 EthereumAgent(publicRpc, EthsTxAgent.by(etherScanApi)),
-                { buildAgent(it) }
+                ::buildAgent
         )
         scfTokenManager = ScfTokenManager(app)
         CertOperations.init(app)
