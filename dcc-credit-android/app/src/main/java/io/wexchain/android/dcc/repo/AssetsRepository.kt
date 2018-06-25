@@ -37,10 +37,18 @@ class AssetsRepository(
         )
     }
 
+    /**
+     * user selected digital currencies
+     * [pinned] not included
+     */
     val selectedCurrencies: LiveData<List<DigitalCurrency>> = dao.listCurrencyMeta(true).map {
         it?.map { it.toDigitalCurrency() } ?: emptyList()
     }
 
+    /**
+     * digital currencies list to be shown in ui
+     * concat [pinned] and [selectedCurrencies]
+     */
     val displayCurrencies: LiveData<List<DigitalCurrency>> = zipLiveData(pinned, selectedCurrencies) { a, b -> a + b }
 
     private val quoteCache = mutableMapOf<String, Quote>()

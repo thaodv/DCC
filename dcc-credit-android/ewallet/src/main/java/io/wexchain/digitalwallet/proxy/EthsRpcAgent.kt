@@ -73,9 +73,7 @@ interface EthsRpcAgent {
                     return nonce
                             .observeOn(Schedulers.computation())
                             .map {
-                                //nonce = transactionCount + 1
-                                val nonce = it
-                                encodeTx(nonce)
+                                encodeTx(it)
                             }
                             .observeOn(Schedulers.io())
                             .flatMap { api.sendRawTransaction(it) }
@@ -123,9 +121,7 @@ interface EthsRpcAgent {
                     return nonce
                             .observeOn(Schedulers.computation())
                             .map {
-                                //nonce = transactionCount + 1
-                                val nonce = it
-                                encodeTx(nonce)
+                                encodeTx(it)
                             }
                             .observeOn(Schedulers.io())
                             .flatMap { api.sendRawTransaction(it) }

@@ -8,6 +8,10 @@ import retrofit2.http.*
 import java.math.BigDecimal
 import java.math.BigInteger
 
+/**
+ * Api doc see below
+ * @see [http://wiki.weihui.com:9080/pages/viewpage.action?pageId=60065557]
+ */
 interface ScfApi {
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @POST("login")

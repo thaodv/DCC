@@ -29,6 +29,10 @@ object EthsHelper{
         return Credentials.create(Keys.createEcKeyPair())
     }
 
+    /**
+     * @see [Wallet.create]
+     * choose n=65536, and we got a difficulty-time cost balance
+     */
     fun makeWalletFile(password: String, ecKeyPair: ECKeyPair?): WalletFile {
         return Wallet.create(password, ecKeyPair, 65536, 1)
     }

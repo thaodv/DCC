@@ -4,7 +4,10 @@ import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
 import retrofit2.http.*
 
-
+/**
+ * Api doc see below
+ * @see [http://wiki.weihui.com:9080/pages/viewpage.action?pageId=58757265]
+ */
 interface ChainGateway {
 
     /* generic */

@@ -9,17 +9,26 @@ import retrofit2.http.*
 
 interface MarketingApi {
 
+    /**
+     * @see [http://wiki.weihui.com:9080/pages/viewpage.action?pageId=60065559]
+     */
     @GET("marketing/queryActivity")
     fun queryActivity(
             @Query("merchantCode") merchantCode:String?=null
     ):Single<Result<List<MarketingActivity>>>
 
+    /**
+     * @see [http://wiki.weihui.com:9080/pages/viewpage.action?pageId=60065561]
+     */
     @GET("marketing/queryScenario")
     fun queryScenario(
             @Query("activityCode") activityCode:String,
             @Query("address") address:String
     ):Single<Result<List<MarketingActivityScenario>>>
 
+    /**
+     * @see [http://wiki.weihui.com:9080/pages/viewpage.action?pageId=60065563]
+     */
     @POST("marketing/applyRedeemToken")
     @FormUrlEncoded
     fun applyRedeemToken(
@@ -27,6 +36,9 @@ interface MarketingApi {
             @Field("address") address:String
     ):Single<Result<String>>
 
+    /**
+     * @see [http://wiki.weihui.com:9080/pages/viewpage.action?pageId=60065854]
+     */
     @GET("bank/list")
     fun getBankList():Single<Result<List<Bank>>>
 }
