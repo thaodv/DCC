@@ -2,7 +2,7 @@ pragma solidity ^0.4.2;
 
 import "../permission/OperatorPermission.sol";
 import "../utils/ByteUtils.sol";
-
+//标签认证合约
 contract TagService is OperatorPermission {
 
     using ByteUtils for bytes;

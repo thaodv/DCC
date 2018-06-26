@@ -1,6 +1,5 @@
 package io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrounditem.advancer;
 
-import afu.org.checkerframework.checker.units.qual.A;
 import com.godmonth.status.advancer.impl.AbstractAdvancer;
 import com.godmonth.status.advancer.intf.AdvancedResult;
 import com.godmonth.status.transitor.tx.intf.TriggerBehavior;
@@ -57,7 +56,7 @@ public class DeliverAdvancer extends AbstractAdvancer<
 		Integer candyNum = candyRepository.countByOwnerAndBoxCodeAndStatus(
 				rewardRoundItem.getAddress(), MINING_REWARD_BOX_CODE, CandyStatus.CREATED);
 		if (Integer.compare(candyNum, maxCandyNum) >= 0) {
-			return new AdvancedResult<>(new TriggerBehavior<>(MiningRewardRoundItemTrigger.DELIVER));
+			return new AdvancedResult<>(new TriggerBehavior<>(MiningRewardRoundItemTrigger.SKIP));
 		}
 		BigDecimal totalScore = miningRewardRoundItemRepository
 				.sumScoreByRoundId(rewardRoundItem.getMiningRewardRound().getId());
@@ -84,10 +83,10 @@ public class DeliverAdvancer extends AbstractAdvancer<
 			amount = amount.setScale(4, RoundingMode.DOWN);
 		}
 		if (amount.compareTo(maxCandyAmount) >= 0) {
-			return maxCandyAmount;
+			return maxCandyAmount.scaleByPowerOfTen(18);
 		}
 		if (amount.compareTo(minCandyAmount) <= 0) {
-			return minCandyAmount;
+			return minCandyAmount.scaleByPowerOfTen(18);
 		}
 		return amount.scaleByPowerOfTen(18);
 	}

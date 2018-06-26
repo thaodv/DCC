@@ -4,8 +4,10 @@ import com.godmonth.status.executor.intf.OrderExecutor;
 import com.wexmarket.topia.commons.basic.exception.CustomeValidate;
 import io.wexchain.dcc.marketing.api.constant.MarketingErrorCode;
 import io.wexchain.dcc.marketing.api.constant.RewardRoundStatus;
+import io.wexchain.dcc.marketing.api.model.EcoRewardRankVo;
 import io.wexchain.dcc.marketing.api.model.EcoRewardStatisticsInfo;
 import io.wexchain.dcc.marketing.domain.Activity;
+import io.wexchain.dcc.marketing.domain.RewardDelivery;
 import io.wexchain.dcc.marketing.domain.RewardRound;
 import io.wexchain.dcc.marketing.domainservice.ActivityService;
 import io.wexchain.dcc.marketing.domainservice.RewardRoundService;
@@ -19,29 +21,12 @@ import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.web3j.abi.FunctionEncoder;
-import org.web3j.abi.FunctionReturnDecoder;
-import org.web3j.abi.TypeReference;
-import org.web3j.abi.datatypes.Function;
-import org.web3j.abi.datatypes.Type;
-import org.web3j.abi.datatypes.Utf8String;
-import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.DefaultBlockParameterName;
-import org.web3j.protocol.core.methods.request.Transaction;
-import org.web3j.protocol.core.methods.response.EthCall;
-import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
-import org.web3j.protocol.core.methods.response.Log;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import org.web3j.protocol.http.HttpService;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * RewardRoundServiceImpl
@@ -113,6 +98,27 @@ public class RewardRoundServiceImpl implements RewardRoundService {
             info.setYesterdayAmount(amount);
         });
         return info;
+    }
+
+    @Override
+    public List<EcoRewardRankVo> queryEcoRewardRankList(DateTime roundTime) {
+        DateTime trimRoundTime = roundTime.withTimeAtStartOfDay();
+        RewardRound rewardRound = findRewardRoundByBonusDay(trimRoundTime.toDate())
+                .orElseThrow(() -> new ContextedRuntimeException("轮次不存在"));
+        List<RewardDelivery> rewardDeliveryList =
+                rewardDeliveryRepository.findByRewardRoundId(rewardRound.getId());
+        Map<String, RewardDelivery> deliveryMap =
+                rewardDeliveryList.stream().collect(Collectors.toMap(RewardDelivery::getBeneficiaryAddress, a -> a));
+        List<Map<String, Object>> actionList = rewardActionRecordRepository.sumScoreGroupByAddress(rewardRound.getId());
+        List<EcoRewardRankVo> voList = new ArrayList<>();
+        for (Map<String, Object> action : actionList) {
+            EcoRewardRankVo vo = new EcoRewardRankVo();
+            vo.setAddress(action.get("address") + "");
+            vo.setScore(new BigDecimal(action.get("totalScore") + ""));
+            vo.setAmount(deliveryMap.get(vo.getAddress()).getAmount());
+            voList.add(vo);
+        }
+        return voList;
     }
 
     private Long getStartBlockNumber(Date bonusDay) {

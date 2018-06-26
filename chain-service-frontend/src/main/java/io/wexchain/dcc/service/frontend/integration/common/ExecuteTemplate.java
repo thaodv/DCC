@@ -29,7 +29,7 @@ public class ExecuteTemplate {
                     logMessage, watch.getTime(), JsonUtil.toJson(t));
         } catch (Exception e) {
             logger.info("clearing-frontend <= remoteServer,msg={},throws Exception", logMessage, e);
-            throw new SystemErrorCodeException(FrontendErrorCode.SYSTEM_ERROR.name(), "RPC异常");
+            throw new SystemErrorCodeException(FrontendErrorCode.SYSTEM_ERROR.name(), "系统异常");
         }
         return t;
     }

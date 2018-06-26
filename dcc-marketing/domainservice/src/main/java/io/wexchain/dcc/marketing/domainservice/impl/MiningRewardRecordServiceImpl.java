@@ -4,12 +4,10 @@ import com.godmonth.status.executor.intf.OrderExecutor;
 import com.wexmarket.topia.commons.data.page.PageUtils;
 import io.wexchain.dcc.marketing.api.model.request.QueryMiningRewardRecordPageRequest;
 import io.wexchain.dcc.marketing.api.model.request.QueryRewardRuleRequest;
-import io.wexchain.dcc.marketing.common.constant.MiningActionRecordStatus;
 import io.wexchain.dcc.marketing.domain.EcoRewardRule;
 import io.wexchain.dcc.marketing.domain.MiningRewardRecord;
 import io.wexchain.dcc.marketing.domainservice.MiningRewardRecordService;
-import io.wexchain.dcc.marketing.domainservice.event.OrderUpdatedEvent;
-import io.wexchain.dcc.marketing.domainservice.processor.order.miningrecordaction.MiningRewardRecordInstruction;
+import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.MiningRewardRecordInstruction;
 import io.wexchain.dcc.marketing.repository.EcoRewardRuleRepository;
 import io.wexchain.dcc.marketing.repository.MiningRewardRecordRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -19,7 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 

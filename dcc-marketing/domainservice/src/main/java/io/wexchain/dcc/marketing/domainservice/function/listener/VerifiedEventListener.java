@@ -1,9 +1,8 @@
-package io.wexchain.dcc.marketing.domainservice.listener;
+package io.wexchain.dcc.marketing.domainservice.function.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.wexchain.dcc.marketing.domainservice.function.miningevent.MiningEventHandler;
 import io.wexchain.dcc.marketing.domainservice.function.miningevent.MiningEventHandlers;
-import io.wexchain.notify.domain.dcc.LoginEvent;
 import io.wexchain.notify.domain.dcc.VerifiedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package io.wexchain.dcc.marketing.domainservice.listener;
+package io.wexchain.dcc.marketing.domainservice.function.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

@@ -9,10 +9,11 @@ import java.util.List;
 
 public interface ScenarioService {
 
-    Scenario getScenario(String activityCode, String scenarioCode);
+    Scenario getScenarioById(Long id);
 
-    Scenario getScenario(String scenarioCode);
+    Scenario getScenarioByCode(String activityCode, String scenarioCode);
+
+    Scenario getScenarioByCode(String scenarioCode);
 
     List<Scenario> queryScenario(QueryScenarioRequest request);
-
 }
