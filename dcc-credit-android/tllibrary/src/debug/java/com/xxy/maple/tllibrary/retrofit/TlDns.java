@@ -47,10 +47,10 @@ public class TlDns implements Dns {
     @Nullable
     private static InetAddress resolveTl(String host) {
         switch (host.toLowerCase()) {
-            case "tlsiren.xiaoxinyong.com": {
+            case BuildConfig.TL_SERVER_URL: {
                 return TL_SERVER_ADDRESS;
             }
-            case "tleos.xiaoxinyong.com": {
+            case BuildConfig.TL_H5_URL: {
                 return TL_H5_ADDRESS;
             }
             default: {
