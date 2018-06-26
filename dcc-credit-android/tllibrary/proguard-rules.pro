@@ -24,3 +24,4 @@
 -keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;
 }
+-keep,includedescriptorclasses class com.xxy.maple.tllibrary.entity.**{*;}
