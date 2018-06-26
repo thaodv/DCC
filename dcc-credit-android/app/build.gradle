@@ -139,6 +139,7 @@ dependencies {
     implementation project(':network')
     implementation project(':barcode')
     implementation project(':localprotect')
+    implementation project(':tllibrary')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

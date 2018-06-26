@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorWhite">@android:color/white</color>
+    <color name="colorBackground">#E9E9E9</color>
+    <color name="colorTitle">@android:color/black</color>
+
+    <color name="colorCommon">#4C7BFE</color>
+    <color name="colorPress">#013169 </color>
+    <color name="colorGray">@android:color/darker_gray </color>
+
+    <color name="trans">#00000000</color>
+</resources>

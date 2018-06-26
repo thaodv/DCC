@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">TLLibrary</string>
+
+    <string name="text_close">关闭</string>
+
+
+    <string name="text_title">钱包</string>
+    <string name="text_detail">详情</string>
+    <string name="text_loadn_address">借用地址:</string>
+    <string name="text_contract_address">合约地址:</string>
+    <string name="text_fee">手续费:</string>
+    <string name="text_mining_fee">矿工费:</string>
+    <string name="text_min">慢</string>
+    <string name="text_max">快</string>
+    <string name="text_submit">确认支付</string>
+
+    <string name="loading">请稍候…</string>
+
+    <string name="text_transaction_amount_create">创建合约费用:</string>
+    <string name="text_transaction_amount_mortgage">抵押数量:</string>
+    <string name="text_transaction_amount_lend">出让数量:</string>
+    <string name="text_transaction_amount_revert">归还数量:</string>
+    <string name="text_transaction_amount_indemnity">赔付数量:</string>
+    <string name="text_transaction_amount_cancle">取消数量:</string>
+
+</resources>

@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import com.xxy.maple.tllibrary.activity.TlBrowserActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.Transitions
+import io.wexchain.android.dcc.tl.TlWebPageActivity
 import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityHomeBinding
@@ -111,6 +113,16 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         findViewById<View>(R.id.tv_loan_report).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
                 navigateTo(LoanReportActivity::class.java)
+            } else {
+                showIntroWalletDialog()
+            }
+        }
+        findViewById<View>(R.id.banner_tl).setOnClickListener {
+            if (App.get().passportRepository.passportExists) {
+                val address = App.get().passportRepository.getCurrentPassport()!!.address
+                navigateTo(TlWebPageActivity::class.java){
+                    putExtra(TlBrowserActivity.ADDRESS,address)
+                }
             } else {
                 showIntroWalletDialog()
             }
