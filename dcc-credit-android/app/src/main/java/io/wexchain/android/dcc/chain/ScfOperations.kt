@@ -261,6 +261,11 @@ object ScfOperations {
         return e is DccChainServiceException && e.businessCode == BusinessCodes.TOKEN_FORBIDDEN
     }
 
+    fun loginWithCurrentPassport(): Single<String> {
+        val passport = App.get().passportRepository.getCurrentPassport()
+        return loginWithPassport(passport?.address, passport?.authKey?.getPrivateKey())
+    }
+
     private fun loginWithPassport(address: String?, privateKey: PrivateKey?): Single<String> {
         val app = App.get()
         val scfApi = App.get().scfApi
