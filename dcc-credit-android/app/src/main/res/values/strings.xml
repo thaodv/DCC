@@ -21,7 +21,9 @@
     <string name="communication_log_submit_hint">
         温馨提示\n\n1、请使用本人实名制手机号进行认证\n2、服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3、点击“提交”按钮会收到运营商的通知短信，无需回复\n4、如忘记服务密码,请登录运营商官网找回服务密码
     </string>
-
+    <string name="dcc_exchange_explain">
+        DCC业务链上的token只能在DCC业务链钱包地址间互转，和以太坊业务链的钱包是通用的，若需要将DCC业务链上的token转入以太坊链，请使用跨链转移功能。
+    </string>
     <string name="import_and_enable_passport">导入已有钱包</string>
     <string name="enable_passport_will_disable_other_warning">导入口袋成功后，其他设备统一登录功能将不可用</string>
     <string name="loading">loading…</string>

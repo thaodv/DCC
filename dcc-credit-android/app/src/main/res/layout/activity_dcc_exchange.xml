@@ -18,7 +18,7 @@
 
         <include layout="@layout/include_toolbar"/>
 
-        <include layout="@layout/include_card_dc"
+        <include layout="@layout/include_card_dc_orange"
             android:id="@+id/card_juzix"
             app:dc="@{vm.dcc}"
             app:quote="@{vm.quote}"
