@@ -1,0 +1,2 @@
+juzix是vue项目
+index和static是juzix打包后的dist文件，由于上线加载缓慢所以请将vue打包后的dista->static->js(map文件删除)
