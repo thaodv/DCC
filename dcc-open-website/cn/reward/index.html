@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>生态奖励-DCC开放平台</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="keywords" content="DCC,Distributed Credit,Distributed Bank,Blockchain,分布式银行,DCC开放平台" />
+  <meta name="description" content="开放平台主要提供数据、服务市场功能，该交易市场服务于数据机构、AI风控算法服务商、信贷结构等机构合作者，机构合作者在使用链上服务的同时通过该平台可以查看、筛选、接洽自己需要的其他合作机构，利用DCC达成合作"/>
+  <link rel="shortcut icon" href="../../favicon.ico">
+
+  <link href="../../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/common.css">
+  <link rel="stylesheet" href="../../css/reward.css">
+  <link rel="stylesheet" href="../../lib/mCustomScrollbar/jquery.mCustomScrollbar.css">
+  <script src="https://cdn.bootcss.com/bignumber.js/7.2.1/bignumber.js"></script>
+  <script src="../../lib/jquery-3.3.1.min.js"></script>
+  <script src="../../lib/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="../../lib/template-web.js"></script>
+  <script src="../../lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="../../lib/percent.js"></script>
+  <script src="../../js/reward.js"></script>
+
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7ebdd6ce1e64ddfc4c27b2eaca23a85d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+</head>
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="./index.html">
+          <img alt="Brand" src="../../images/logo-cn.svg">
+        </a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="../index.html" >首页</a>
+        </li>
+        <li>
+          <a href="../introduction/index.html" >业务说明</a>
+        </li>
+        <li>
+          <a href="../about_us/index.html" >关于我们</a>
+        </li>
+        <li>
+          <a href="../reward/index.html" class="active">生态奖励</a>
+        </li>
+        <li>
+          <a href="http://explorer.dcc.finance" target="_blank">区块链浏览器</a>
+        </li>
+        <li>
+          <a href="../coming_soon/index.html"  class="ctm-btn">立即加入</a>
+        </li>
+        <li class="li-i18n">
+          <div>
+            <a href="../../reward/index.html">English</a>&nbsp;/&nbsp;<a href="./index.html">中文</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <section class="reward-view">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="reward-title">
+                    <img src="../../images/reward-icon1.png" alt="transactions">
+                    <h3 class="panel-title explorer-panel-title">&nbsp;&nbsp;生态值获取规则</h3>
+                </div>
+                <div class="all reward-table">
+                  <div class="title">  
+                    <div class="title_left">  
+                    <table class="main_table">  
+                        <tr>  
+                          <th style="width:30%"> 合约地址 </th>
+                          <th> 合约名称 </th>
+                          <th> 方法名称 </th>
+                          <th> 用户获得生态值 </th>
+                          <th> 商户获得生态值 </th> 
+                        </tr>  
+                    </table>  
+                    </div>  
+                  </div>  
+                  <div class="content mCustomScrollbar">  
+                    <div class="content_left">  
+                    <table class="main_table">  
+                        <tr>
+                          <td style="width:30%">0xe1a903ed503cf7388b4f5f328b372081c95ebe4f</td>
+                          <td>实名认证合约</td>
+                          <td>pass</td>
+                          <td>10</td>
+                          <td>0.05</td>
+                        </tr>
+                        <tr>
+                          <td>0xbbe73e925ab76bb015730651aae34db990046d9e</td>
+                          <td>银行卡认证合约</td>
+                          <td>pass</td>
+                          <td>10</td>
+                          <td>0.05</td>
+                        </tr>
+                        <tr>
+                          <td>0xbbe73e925ab76bb015730651aae34db990046d9e</td>
+                          <td>运营商通讯记录认证合约  </td>
+                          <td>pass</td>
+                          <td>10</td>
+                          <td>0.05</td>
+                        </tr>
+                        <tr>
+                          <td>0x9b1b425e66a7b7122c159aacf5b21230a7272ed4 </td>
+                          <td>借贷合约 </td>
+                          <td>reject</td>
+                          <td>0</td>
+                          <td>0.05</td>
+                        </tr>
+                        <tr>
+                          <td>0x9b1b425e66a7b7122c159aacf5b21230a7272ed4 </td>
+                          <td>借贷合约</td>
+                          <td>pass</td>
+                          <td>10</td>
+                          <td>1.05</td>
+                        </tr>
+                        <tr>
+                          <td>0x9b1b425e66a7b7122c159aacf5b21230a7272ed4 </td>
+                          <td>借贷合约</td>
+                          <td>confirmRepay</td>
+                          <td>40</td>
+                          <td>1</td>
+                        </tr>
+                        
+                    </table>  
+                    </div>  
+                  </div>  
+                </div>
+                <p class='reward-time'><span>更新日期 </span><span id="rewardTime">2018-06-24</span> </p>
+            </div>
+        </div>
+    </div>
+    </div>
+  </section>
+  <section class="reward-view">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="panel panel-default">
+              <div class="panel-body">
+                  <div class="reward-title">
+                      <img src="../../images/reward-icon1.png" alt="transactions">
+                      <h3 class="panel-title explorer-panel-title">&nbsp;&nbsp;生态值获取规则</h3>
+                  </div>
+                  <p class='reward-intro'>生态值统计于次日0时进行统计，统计完成后自动给获得生态值的用户发送奖励，奖励数量为=单个用户生态贡献值/当日总用户生态贡献值*每日奖励额</p>
+                  <p class='reward-intro'>每日奖励额度自2018年7月1日起为10000DCC/日，若实名用户累积至10万或累积5家商户进驻，则每日奖励额增加至270000DCC奖励由生态基金会的的发奖地址直接转到用户钱包地址，无须用户领取。</p>
+              </div>
+          </div>
+      </div>
+      </div>
+    </section>
+    <section class="reward-view reward-statistics">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="reward-title">
+                        <img src="../../images/reward-icon2.png" alt="transactions">
+                        <h3 class="panel-title explorer-panel-title">&nbsp;&nbsp;发放统计</h3>
+                    </div>
+                    <dl>
+                      <dt >累计发放</dt>
+                      <dd class="fa">1000.0000DCC</dd>
+                    </dl>
+                    <dl>
+                      <dt>昨日发放</dt>
+                      <dd class="fa">1000.0000DCC</dd>
+                    </dl>
+                    <dl>
+                      <dt>昨日发放人数</dt>
+                      <dd class="fa">100</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        </div>
+      </section>
+      <section class="reward-view reward-ranking" >
+          <div class="container-fluid">
+            <div class="row">
+              <div class="panel panel-default" style="padding-bottom:40px;">
+                  <div class="panel-body">
+                      <div class="reward-title">
+                          &nbsp;&nbsp;&nbsp;&nbsp;<span class="panel-title explorer-panel-title">昨日排行</span>
+                      </div>
+                  </div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th style="width:500px">用户钱包ID</th>
+                        <th>生态值</th>
+                        <th>生态奖励DCC</th>
+                      </tr>
+                    </thead>
+                    <tbody id="con" >
+                        <script id="js-tmp" type="text/html">
+                          {{if resultList.length>0}}
+                            {{each resultList  value i}}
+                            <tr>
+                                <td title={{value.tip}}><span>{{i+1}} </span>{{value.address}}</td>
+                                <td>{{value.score}}</td>
+                                <td>{{value.amount}}</td>
+                              </tr>
+                            {{/each}}
+                          {{else}}
+                          <tr><td colspan="3"> 暂无排行...</td></tr>
+                          {{/if}}
+                      </script>
+                    </tbody>
+                  </table>
+              </div>
+          </div>
+          </div>
+        </section>
+        
+</body>
+</html>
