@@ -26,7 +26,7 @@ interface EthsRpcAgent {
     /**
      * @return TxId of successfully submitted transaction
      */
-    fun sendTransaction(nonce: Single<BigInteger>, encodeTx: (BigInteger) -> String): Single<String>
+    fun sendTransaction(nonce: Single<BigInteger>, encodeTx: (BigInteger) -> String): Single<Pair<BigInteger,String>>
 
     fun transactionByHash(txId: String): Single<EthJsonTxInfo>
     fun transactionReceipt(txId: String): Single<EthJsonTxReceipt>
@@ -69,16 +69,20 @@ interface EthsRpcAgent {
                 override fun sendTransaction(
                         nonce: Single<BigInteger>,
                         encodeTx: (BigInteger) -> String
-                ): Single<String> {
+                ): Single<Pair<BigInteger,String>> {
                     return nonce
                             .observeOn(Schedulers.computation())
                             .map {
                                 //nonce = transactionCount + 1
                                 val nonce = it
-                                encodeTx(nonce)
+                                nonce to encodeTx(nonce)
+
                             }
                             .observeOn(Schedulers.io())
-                            .flatMap { api.sendRawTransaction(it) }
+                            .flatMap {(nonce,rtx)->
+                                api.sendRawTransaction(rtx)
+                                        .map { nonce to it }
+                            }
                 }
             }
         }
@@ -120,12 +124,14 @@ interface EthsRpcAgent {
                 override fun sendTransaction(
                         nonce: Single<BigInteger>,
                         encodeTx: (BigInteger) -> String
-                ): Single<String> {
+                ): Single<Pair<BigInteger,String>> {
                     return nonce
                             .observeOn(Schedulers.computation())
-                            .map { encodeTx(it) }
+                            .map { encodeTx(it) to it }
                             .observeOn(Schedulers.io())
-                            .flatMap { api.sendRawTransaction(it) }
+                            .flatMap {
+                                val no=it.second
+                                api.sendRawTransaction(it.first).map { no to it } }
                 }
             }
         }

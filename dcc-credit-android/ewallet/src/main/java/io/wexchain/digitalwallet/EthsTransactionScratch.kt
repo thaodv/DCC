@@ -19,8 +19,10 @@ data class EthsTransactionScratch(
         val gasPrice: BigDecimal,
         val gasLimit: BigInteger,
         val remarks: String? = null,
-        val transferFeeRate: BigDecimal? = null
-) : Serializable {
+        val transferFeeRate: BigDecimal? = null,
+        var nonce: BigInteger=BigInteger("1")
+
+        ) : Serializable {
     /**
      * 预计最大矿工费
      */

@@ -112,7 +112,7 @@ class TransactionConfirmVm(
             notEnoughFundsEvent.call()
         } else {
             verifyProtect {
-                val scratch = tx
+                var scratch = tx
                 val dc = scratch.currency
                 val agent = assetsRepository.getDigitalCurrencyAgent(dc)
                 val p = passport
@@ -135,7 +135,8 @@ class TransactionConfirmVm(
                             busySendingEvent.value = false
                         }
                         .subscribe({
-                            txSentEvent.value = scratch to it
+                            scratch.nonce=it.first
+                            txSentEvent.value = scratch to it.second
                         }, {
                             stackTrace(it)
                         })

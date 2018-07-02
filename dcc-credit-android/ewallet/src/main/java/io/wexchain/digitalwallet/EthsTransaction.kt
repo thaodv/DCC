@@ -29,7 +29,9 @@ data class EthsTransaction(
         @JvmField var gas: BigInteger,
         @JvmField var gasUsed: BigInteger,
         @JvmField var gasPrice: BigInteger,
-        @JvmField var status: Status
+        @JvmField var status: Status,
+        @JvmField val nonce: BigInteger=BigInteger("1")
+
 ) : Serializable {
     enum class Status {
         PENDING,

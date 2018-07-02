@@ -6,6 +6,7 @@ import io.wexchain.android.dcc.base.BindActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityDigitalTransactionDetailBinding
 import io.wexchain.digitalwallet.Chain
@@ -15,6 +16,7 @@ import java.math.BigInteger
 
 class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransactionDetailBinding>() {
     override val contentLayoutId: Int = R.layout.activity_digital_transaction_detail
+    val assetsRepository: AssetsRepository=App.get().assetsRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +29,12 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
             binding.tvTransactionIdValue.movementMethod = LinkMovementMethod.getInstance()
         }
         updateInfoIfRequired(tx)
+        binding.tvCancel.setOnClickListener {
+            val agent = assetsRepository.getDigitalCurrencyAgent(tx.digitalCurrency)
+           // agent.sendTransferTransaction(tx.from,tx.to,tx.amount,tx.gasPrice+1,,)
+
+
+        }
     }
 
     private fun updateInfoIfRequired(tx: EthsTransaction) {

@@ -20,6 +20,9 @@
             type="String"
             />
     </data>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -287,5 +290,13 @@
 
 
     </LinearLayout>
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom"
+            android:text="sssssssssssssssssss"
 
+            />
+    </FrameLayout>
 </layout>

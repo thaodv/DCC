@@ -36,12 +36,18 @@ abstract class EthCurrencyAgent(
     abstract fun getBalanceOf(address: String): Single<BigInteger>
 
     /**
-     * @return TxId of successfully submitted transaction
+     * @return TxId of successfully submitted transaction 转账接口
      */
-    fun sendTransferTransaction(from: Credentials, to: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, remarks: String? = null): Single<String> {
+    fun sendTransferTransaction(from: Credentials, to: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, remarks: String? = null): Single<Pair<BigInteger,String>> {
         return rpcAgent.sendTransaction(getNonce(from.address), { nonce -> encodeTransfer(nonce, from, to, amount, gasPrice, gasLimit, remarks) })
     }
-    
+    /**
+     * @return TxId of successfully submitted transaction 编辑撤销转账接口
+     */
+   /* fun editTransferTransaction(from: Credentials, to: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, remarks: String? = null): Single<String> {
+       // return rpcAgent.sendTransaction(getNonce(from.address), { nonce -> encodeTransfer(nonce, from, to, amount, gasPrice, gasLimit, remarks) })
+    }
+    */
     /**
      * @param address the address queried
      * @param start block
