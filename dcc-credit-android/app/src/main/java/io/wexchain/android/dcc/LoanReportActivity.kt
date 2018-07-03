@@ -77,6 +77,7 @@ class LoanReportActivity : BindActivity<ActivityLoanReportBinding>(), ItemViewCl
     }
 
     private fun updateReport() {
+
         ScfOperations
             .withScfTokenInCurrentPassport(emptyList()) {
                 App.get().scfApi.queryLoanReport(it)

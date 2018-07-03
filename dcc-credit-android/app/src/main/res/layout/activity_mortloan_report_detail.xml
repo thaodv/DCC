@@ -7,7 +7,6 @@
         >
 
     <data>
-        <import type="android.view.View" />
         <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
         <variable
                 name="report"
@@ -33,7 +32,7 @@
                     android:id="@+id/tv_info_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{report.titleinfo}"
+                    android:text="借币信息"
                     android:drawableLeft="@drawable/leading_rect_bm"
                     android:drawablePadding="4dp"
                     app:layout_constraintTop_toBottomOf="@id/toolbar"
@@ -240,11 +239,10 @@
 
 
             <TextView
-                android:visibility="@{report.mort?View.GONE:View.VISIBLE}"
                     android:id="@+id/tv_bills_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="还款账单"
+                    android:text="还款信息"
                     android:drawableLeft="@drawable/leading_rect_bm"
                     android:drawablePadding="4dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
@@ -255,110 +253,98 @@
                     />
 
 
-            <android.support.v7.widget.RecyclerView
-                android:visibility="@{report.mort?View.GONE:View.VISIBLE}"
-                    android:id="@+id/rv_bills"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layoutManager="io.wexchain.android.dcc.view.recycler.ExplodeLinearLayoutManager"
-                    android:listDivider="@drawable/divider_line"
-                    android:nestedScrollingEnabled="false"
-                    app:layout_constraintTop_toBottomOf="@id/tv_bills_label"
-                    android:layout_marginLeft="@dimen/content_padding_horizontal"
-                    android:layout_marginRight="@dimen/content_padding_horizontal"
-                    android:layout_marginTop="4dp"
-                    dataList="@{report.billList}"
-                    />
-
-
-
-            <View
-                android:visibility="@{report.mort?View.VISIBLE:View.GONE}"
-                android:id="@+id/v_frame_info2"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@color/light_blue_magenta"
-                app:layout_constraintTop_toBottomOf="@id/v_frame_info"
-                app:layout_constraintBottom_toBottomOf="@id/tv_orderstatu_value"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
-                android:layout_marginRight="@dimen/content_padding_horizontal"
-                />
 
 
 
             <TextView
-                android:visibility="@{report.mort?View.VISIBLE:View.GONE}"
                 android:id="@+id/tv_shoupaydate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/v_frame_info2"
-                app:layout_constraintLeft_toLeftOf="@id/v_frame_info2"
+                app:layout_constraintTop_toTopOf="@id/v_frame_info"
+                app:layout_constraintLeft_toLeftOf="@id/v_frame_info"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="8dp"
                 android:text="应还日期"
                 />
 
             <TextView
-                android:visibility="@{report.mort?View.VISIBLE:View.GONE}"
                 android:id="@+id/tv_shoupaydate_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBaseline_toBaselineOf="@id/tv_shoupaydate"
-                app:layout_constraintRight_toRightOf="@id/v_frame_info2"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_loan_amount_label"
+                app:layout_constraintRight_toRightOf="@id/v_frame_info"
                 android:layout_marginRight="8dp"
-                android:text="@{@string/period_format_yyyymmdd_dot(report.shouldlong(report.billList[0].expectRepayDate),report.borrowDurationTo)}"
+                android:text="@{ViewModelHelper.concatWithoutNull(report.amount.toPlainString(),report.assetCode)}"
                 tools:text="100.0000ETH"
                 />
             <TextView
-                android:visibility="@{report.mort?View.VISIBLE:View.GONE}"
                 android:id="@+id/tv_shoupayamount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_shoupaydate"
-                app:layout_constraintLeft_toLeftOf="@id/v_frame_info2"
+                app:layout_constraintTop_toTopOf="@id/v_frame_info"
+                app:layout_constraintLeft_toLeftOf="@id/v_frame_info"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="8dp"
                 android:text="应还金额"
                 />
 
             <TextView
-                android:visibility="@{report.mort?View.VISIBLE:View.GONE}"
                 android:id="@+id/tv_shoupayamount_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBaseline_toBaselineOf="@id/tv_shoupayamount"
-                app:layout_constraintRight_toRightOf="@id/v_frame_info2"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_loan_amount_label"
+                app:layout_constraintRight_toRightOf="@id/v_frame_info"
                 android:layout_marginRight="8dp"
-                android:text="@{ViewModelHelper.concatWithoutNull(report.billList[0].amount.toPlainString(),report.assetCode)}"
+                android:text="@{ViewModelHelper.concatWithoutNull(report.amount.toPlainString(),report.assetCode)}"
                 tools:text="100.0000ETH"
+                />
+            <TextView
+                android:id="@+id/tv_realpaydate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/v_frame_info"
+                app:layout_constraintLeft_toLeftOf="@id/v_frame_info"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="8dp"
+                android:text="实际还币日期"
                 />
 
             <TextView
-                android:visibility="@{report.mort?View.VISIBLE:View.GONE}"
-                android:paddingBottom="8dp"
+                android:id="@+id/tv_realpaydate_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_loan_amount_label"
+                app:layout_constraintRight_toRightOf="@id/v_frame_info"
+                android:layout_marginRight="8dp"
+                android:text="@{ViewModelHelper.concatWithoutNull(report.amount.toPlainString(),report.assetCode)}"
+                tools:text="100.0000ETH"
+                />
+            <TextView
                 android:id="@+id/tv_orderstatu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_shoupayamount"
-                app:layout_constraintLeft_toLeftOf="@id/v_frame_info2"
+                app:layout_constraintTop_toTopOf="@id/v_frame_info"
+                app:layout_constraintLeft_toLeftOf="@id/v_frame_info"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="8dp"
                 android:text="订单状态"
                 />
 
             <TextView
-                android:visibility="@{report.mort?View.VISIBLE:View.GONE}"
-                android:paddingBottom="8dp"
                 android:id="@+id/tv_orderstatu_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBaseline_toBaselineOf="@id/tv_orderstatu"
-                app:layout_constraintRight_toRightOf="@id/v_frame_info2"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_loan_amount_label"
+                app:layout_constraintRight_toRightOf="@id/v_frame_info"
                 android:layout_marginRight="8dp"
-                android:text="@{report.mortgageStatus.description}"
+                android:text="@{ViewModelHelper.concatWithoutNull(report.amount.toPlainString(),report.assetCode)}"
                 tools:text="100.0000ETH"
                 />
+
+
+
+
+
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>

@@ -52,5 +52,7 @@ class LoanReportDetailActivity : BindActivity<ActivityLoanReportDetailBinding>()
         }else{
             binding.report = report
         }
+
+
     }
 }

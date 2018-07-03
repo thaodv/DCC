@@ -15,9 +15,18 @@ data class LoanReport(
     @SerializedName("applyDate") val applyDate: Long,
     @SerializedName("amount") val amount: BigDecimal,
     @SerializedName("assetCode") val assetCode: String,
+
     @SerializedName("loanWay") val loanWay: String,
     @SerializedName("status") val status: LoanStatus,
-    @SerializedName("borrowerAddress") val borrowerAddress: String
+    @SerializedName("borrowerAddress") val borrowerAddress: String,
+
+    @SerializedName("mortgageAmount") val mortgageAmount: BigDecimal,
+    @SerializedName("mortgageUnit") val mortgageUnit: String,
+    @SerializedName("mortgageStatus") val mortgageStatus: MortgageStatus,
+    @SerializedName("loanType") val loanType: LoanType
+
+
+
 ) : Serializable {
 
     fun getOrderIdStr() = chainOrderId.toString()
@@ -30,6 +39,21 @@ data class LoanReport(
 
     fun isFromOtherAddress(): Boolean {
         return billList == null
+    }
+    fun isMort():Boolean{
+        return loanType == LoanType.MORTGAGE
+    }
+    fun titleinfo():String{
+        if(isMort()){
+            return  "订单信息"
+        }else{
+            return  "借币信息"
+        }
+    }
+    fun shouldlong( le:Long):Long{
+        var l:Long=0L
+        if(null!=le) l=le
+        return l
     }
 
     data class Bill(
