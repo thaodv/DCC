@@ -1,7 +1,6 @@
 package io.wexchain.dcc.marketing.domainservice.function.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.wexchain.dcc.marketing.domainservice.function.miningevent.MiningEventHandler;
 import io.wexchain.dcc.marketing.domainservice.function.miningevent.MiningEventHandlers;
 import io.wexchain.notify.domain.dcc.LoginEvent;
 import org.slf4j.Logger;
@@ -24,17 +23,6 @@ public class LoginEventListener {
 	@RabbitListener(queues = "${queue.login}")
 	public void received(LoginEvent loginEvent) {
 		logger.trace("接收登录事件通知loginEvent:{}", loginEvent);
-		try {
-			logger.info("收到登录事件消息: {}" ,objectMapper.writeValueAsString(loginEvent));
-			for (MiningEventHandler handler : handlers.getLoginHandlerList()) {
-				if (handler.canHandle(loginEvent)) {
-					handler.handle(loginEvent);
-				}
-			}
-		} catch (Exception e) {
-			logger.error("", e);
-		}
-
 	}
 
 }

@@ -107,7 +107,8 @@ public class MiningCertEventHandler implements MiningEventHandler {
             Optional<String> idHashOpt = chainOrderService.getIdHash(address);
             if (idHashOpt.isPresent()) {
                 String idHash =  idHashOpt.get();
-                IdRestriction idRestriction = idRestrictionRepository.findByScenarioIdAndIdHash(rule.getId(), idHashOpt.get());
+                IdRestriction idRestriction = idRestrictionRepository.findByScenarioIdAndIdHash(
+                        rule.getScenario().getId(), idHashOpt.get());
                 if (idRestriction != null) {
                     return null;
                 }

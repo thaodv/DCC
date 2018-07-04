@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +19,14 @@ import io.wexchain.dcc.marketing.api.facade.CandyBoxIndex;
 import io.wexchain.dcc.marketing.api.facade.PickCandyRequest;
 import io.wexchain.dcc.marketing.domain.Candy;
 import io.wexchain.dcc.marketing.domainservice.CandyService;
+import io.wexchain.dcc.marketing.domainservice.Patroller;
 import io.wexchain.dcc.marketing.domainservice.processor.candy.CandyInstruction;
 import io.wexchain.dcc.marketing.repository.CandyRepository;
 
-@Service
-public class CandyServiceImpl implements CandyService {
+@Service("candyService")
+public class CandyServiceImpl implements CandyService, Patroller {
+
+	private static final Logger logger = LoggerFactory.getLogger(CandyServiceImpl.class);
 
 	@Autowired
 	private CandyRepository candyRepository;
@@ -47,6 +52,7 @@ public class CandyServiceImpl implements CandyService {
 	public void patrol() {
 		List<Candy> findTop1000ByStatusOrderByIdAsc = candyRepository
 				.findTop1000ByStatusOrderByIdAsc(CandyStatus.PICKED);
+		logger.info("patrol candy size :{}", findTop1000ByStatusOrderByIdAsc.size());
 		for (Candy candy : findTop1000ByStatusOrderByIdAsc) {
 			candyExecutor.executeAsync(candy, null, null);
 		}
