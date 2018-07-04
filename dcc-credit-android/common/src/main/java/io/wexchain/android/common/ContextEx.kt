@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.graphics.drawable.Drawable
 import android.hardware.fingerprint.FingerprintManager
 import android.os.Build
@@ -13,6 +14,7 @@ import android.support.annotation.RequiresApi
 import android.support.annotation.RequiresPermission
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat
 import android.util.TypedValue
+import android.webkit.WebView
 
 /**
  * Created by lulingzhi on 2017/10/25.
@@ -39,7 +41,7 @@ fun Context.getFingerPrintManager(): FingerprintManager {
 fun Context.getAttrDrawable(@AttrRes attr: Int): Drawable {
     return this.obtainStyledAttributes(kotlin.intArrayOf(attr))
             .run {
-                val drawable = getDrawable(attr)
+                val drawable = getDrawable(0)
                 recycle()
                 drawable
             }
@@ -64,4 +66,12 @@ fun Context.fingerPrintAvailable(): Boolean {
 @RequiresPermission(android.Manifest.permission.USE_FINGERPRINT)
 fun Context.fingerPrintEnrolled(): Boolean {
     return FingerprintManagerCompat.from(this).hasEnrolledFingerprints()
+}
+
+fun Context.setWebViewDebuggable(){
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (0 != (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE)) {
+            WebView.setWebContentsDebuggingEnabled(true)
+        }
+    }
 }

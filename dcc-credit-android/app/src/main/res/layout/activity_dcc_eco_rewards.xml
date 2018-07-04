@@ -4,7 +4,7 @@
         <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
         <variable
                 name="rules"
-                type="java.util.List&lt;io.wexchain.android.common.kotlin.Either&lt;String,io.wexchain.dccchainservice.domain.EcoBonusRule&gt;&gt;"/>
+                type="java.util.List&lt;io.wexchain.android.common.kotlin.Either&lt;String,io.wexchain.dccchainservice.domain.BonusRule&gt;&gt;"/>
         <variable
                 name="incomePtStr"
                 type="String"/>
@@ -45,7 +45,7 @@
                         app:layout_constraintRight_toLeftOf="@id/ll_eco_dcc_income"
                         android:layout_marginLeft="@dimen/content_padding_horizontal"
                         android:padding="12dp"
-                        android:background="#f8f8ff"
+                        android:background="@color/thin_light_blue_magenta"
                         >
                     <TextView
                             android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
                         android:layout_marginRight="@dimen/content_padding_horizontal"
                         android:layout_marginLeft="16dp"
                         android:padding="12dp"
-                        android:background="#f8f8ff"
+                        android:background="@color/thin_light_blue_magenta"
                         >
                     <TextView
                             android:layout_width="wrap_content"

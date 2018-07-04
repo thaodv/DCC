@@ -31,7 +31,7 @@ public class RetryableCommandTemplate {
 	public void setCmdFailureStatus(String cmdFailureStatus) {
 		this.cmdFailureStatus = cmdFailureStatus;
 	}
-
+	
 	public RetryableCommand execute(CommandIndex commandIndex, Consumer<CommandIndex> lockCallback,
 									Supplier<Map<String, String>> params, Function<RetryableCommand, String> function) {
 

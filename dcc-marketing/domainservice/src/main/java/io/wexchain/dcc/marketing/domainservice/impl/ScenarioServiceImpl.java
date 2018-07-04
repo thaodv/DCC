@@ -23,14 +23,21 @@ public class ScenarioServiceImpl implements ScenarioService {
     private ScenarioRepository scenarioRepository;
 
     @Override
-    public Scenario getScenario(String activityCode, String scenarioCode) {
+    public Scenario getScenarioById(Long id) {
+        return ErrorCodeValidate.notNull(
+                scenarioRepository.findById(id).orElse(null),
+                MarketingErrorCode.SCENARIO_NOT_FOUND);
+    }
+
+    @Override
+    public Scenario getScenarioByCode(String activityCode, String scenarioCode) {
         return ErrorCodeValidate.notNull(
                 scenarioRepository.findByActivityCodeAndCode(activityCode, scenarioCode),
                 MarketingErrorCode.SCENARIO_NOT_FOUND);
     }
 
     @Override
-    public Scenario getScenario(String scenarioCode) {
+    public Scenario getScenarioByCode(String scenarioCode) {
         return ErrorCodeValidate.notNull(
                 scenarioRepository.findByCode(scenarioCode), MarketingErrorCode.SCENARIO_NOT_FOUND);
     }

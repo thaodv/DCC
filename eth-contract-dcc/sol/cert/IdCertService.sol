@@ -12,6 +12,7 @@ contract IdCertService is CertService3 {
 
     }
 
+    //digest1如果有值，那么只能和当前参数值一样
     function apply(bytes digest1, bytes digest2, uint256 expired) public returns (uint256 _orderId){
 
         if (digest1Integrity == DigestIntegrity.APPLICANT) {

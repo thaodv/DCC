@@ -14,10 +14,15 @@ public interface RewardActionRecordRepository
 
     int countByEcoRewardRuleIdAndIdHash(Long ruleId, String idHash);
 
-    @Query("SELECT AR.address, SUM(AR.score) AS totalScore " +
+    @Query("SELECT AR.address AS address, SUM(AR.score) AS totalScore " +
             "FROM RewardActionRecord AR " +
             "WHERE AR.rewardRound.id = ?1 AND AR.status = 'ACCEPTED' GROUP BY AR.address")
-    List<Map<String, String>> sumScoreGroupByAddress(Long rewardRoundId);
+    List<Map<String, Object>> sumScoreGroupByAddress(Long rewardRoundId);
+
+    @Query("SELECT SUM(AR.score) " +
+           "FROM RewardActionRecord AR " +
+           "WHERE AR.rewardRound.id = ?1 AND AR.address = ?2 AND AR.status = 'ACCEPTED'")
+    BigDecimal sumScoreByAddress(Long rewardRoundId, String address);
 
     @Query("SELECT SUM(AR.score) " +
             "FROM RewardActionRecord AR " +

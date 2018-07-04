@@ -12,16 +12,18 @@ import java.math.BigInteger;
  */
 public interface CahFunction {
 
-    CryptoWallet createEthWallet();
+	CryptoWallet createEthWallet();
 
-    BigInteger getBalance(String address, String assetCode);
+	BigInteger getBalance(String address, String assetCode);
 
-    BigInteger getJuzixDccBalance(String address);
+	BigInteger getJuzixDccBalance(String address);
 
-    CryptoWallet prepareEthWallet(String address, String privateKey);
+	CryptoWallet prepareEthWallet(String address, String privateKey);
 
-    TransferOrder redeem(String requestNo, BigInteger amount, String payerAddress, String receiverAddress) ;
+	TransferOrder redeem(String requestNo, BigInteger amount, String payerAddress, String receiverAddress);
 
-    BigInteger getGasPrice(String assetsCode);
+	BigInteger getGasPrice(String assetsCode);
+
+	TransferOrder transferDccJuzix(String requestNo, BigInteger amount, String payerAddress, String receiverAddress);
 
 }

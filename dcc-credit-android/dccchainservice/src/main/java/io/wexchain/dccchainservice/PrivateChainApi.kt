@@ -12,6 +12,9 @@ import retrofit2.http.POST
  */
 interface PrivateChainApi {
 
+    /**
+     * @see [wiki](http://wiki.weihui.com:9080/pages/viewpage.action?pageId=59507986)
+     */
     @POST("juzix/tokenTransfer")
     @FormUrlEncoded
     fun tokenTransfer(

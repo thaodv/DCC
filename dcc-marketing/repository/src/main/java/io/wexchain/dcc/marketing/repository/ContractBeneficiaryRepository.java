@@ -7,5 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface ContractBeneficiaryRepository
         extends PagingAndSortingRepository<ContractBeneficiary, Long>, JpaSpecificationExecutor<ContractBeneficiary> {
 
-
+    ContractBeneficiary findByContractAddress(String address);
 }

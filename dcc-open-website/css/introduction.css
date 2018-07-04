@@ -1,1 +1,263 @@
-body{font-family:Helvetica Neue,Helvetica,Arial,sans-serif,Microsoft YaHei,STHeitiSC-Light,simsun,WenQuanYi Zen Hei,WenQuanYi Micro Hei,sans-serif;margin:0;padding:0;-webkit-font-smoothing:antialiased}body .container-fluid{width:1280px}.contactIcon{overflow:hidden;background-image:url(../images/contactIcon.png);background-repeat:no-repeat}.contactIcon-email{float:left;width:26px;height:26px;background-position:0 0}.contactIcon-Telegram{float:left;width:25px;height:25px;background-position:-1px -36px}.navbar{border:none;background-color:#fff}.navbar img[alt=Brand]{height:40px;margin-top:5px;margin-left:40px}.navbar .navbar-nav>li>a{font-size:16px;padding:30px 40px!important;color:#6b61e1}.navbar .navbar-nav>li>a.active,.navbar .navbar-nav>li>a:hover{color:#34c6fa}.navbar .navbar-nav>li>a.ctm-btn{background-color:#6b61e1;color:#fff!important;padding:6px 20px!important;border-radius:4px;margin-top:24px;margin-left:40px;margin-right:60px}.loan-part .title{text-align:right}.loan-part .title img{margin-left:6px}.business{margin:100px auto 0;width:1280px}.business .nav-bar{height:44px;line-height:44px;border-bottom:1px solid #e7e7e7;display:block;width:1280px;margin-bottom:60px}.business .nav-bar .cell{display:inline-block;margin:0 60px;cursor:pointer}.business .nav-bar .active{border-bottom:2px solid #6250dd}.business .content{margin-top:30px;display:flex;justify-content:center;flex:1;padding:0 20px}.business .content .title{width:400px;line-height:600px;font-size:20px}.business .content .title img{margin-right:6px;vertical-align:-3px}.business .content .details{display:flex;width:600px}.business .content .details .title{height:400px;line-height:400px}.business .content .details .decorate{position:absolute;display:block;border:2px dashed #8372c4;border-radius:6px;padding:20px 12px;z-index:-1}.business .content .details .left ul{list-style:none;margin:0;padding:0;text-align:center}.business .content .details .right{margin-left:40px}.business .content .details .right .paragraph{margin-bottom:80px}.business .content .details .right .paragraph .emphasis{font-size:22px;line-height:30px}.business .content .details .right .paragraph .words{font-size:14px;color:#3a3a3a}footer,footer .inline-contact span a{color:#666}.business .loan-content{margin-top:40px;margin-bottom:60px}.business .loan-content .bg-img__value{height:400px;width:600px;display:block;position:relative;background:url(../images/value.png) center no-repeat;margin-top:100px}.business .loan-content .left-up{top:40px;left:30px;width:170px}.business .loan-content .right-up{right:45px;top:10px;width:170px}.business .loan-content .left-middle{top:170px;left:-30px;width:200px}.business .loan-content .right-middle{top:160px;right:-60px;width:230px}.business .loan-content .left-bottom{bottom:-10px;left:100px;width:200px}.business .loan-content .right-bottom{bottom:0;right:50px;width:180px}.business .bottom-content{margin-top:40px;margin-bottom:60px}.business .bottom-content .bg-img__join{height:400px;width:600px;display:block;position:relative;background:url(../images/join.png) center no-repeat;margin-top:100px}.business .bottom-content .left-up{top:10px;left:80px;width:170px}.business .bottom-content .right-up{right:35px;top:40px;width:170px}.business .bottom-content .left-middle{top:170px;left:0;width:170px}.business .bottom-content .right-middle{top:180px;right:-10px;width:180px}.business .bottom-content .left-bottom{bottom:0;left:100px;width:180px}.business .bottom-content .right-bottom{bottom:30px;right:30px;width:180px}footer{height:150px;background-color:#0d0f12}footer .between-flex{display:flex;justify-content:space-between}footer .between-flex>div{height:150px;line-height:150px}footer .between-flex p{font-size:18px;margin-bottom:0}footer img{display:inline-block;width:100px;margin-right:30px}footer .flex-space{display:flex}footer .inline-contact{display:flex;flex-direction:column;justify-content:center}footer .inline-contact span{line-height:30px}footer .inline-contact span i{margin-right:10px}footer .inline-contact span a:hover{color:#fff}
+body {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif, Microsoft YaHei, STHeitiSC-Light, simsun, WenQuanYi Zen Hei, WenQuanYi Micro Hei, sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased
+}
+
+body .container-fluid {
+  width: 1280px
+}
+
+.contactIcon {
+  overflow: hidden;
+  background-image: url(../images/contactIcon.png);
+  background-repeat: no-repeat
+}
+
+.contactIcon-email {
+  float: left;
+  width: 26px;
+  height: 26px;
+  background-position: 0 0
+}
+
+.contactIcon-Telegram {
+  float: left;
+  width: 25px;
+  height: 25px;
+  background-position: -1px -36px
+}
+
+.navbar {
+  border: none;
+  background-color: #fff
+}
+
+.navbar img[alt=Brand] {
+  height: 40px;
+  margin-top: 5px;
+  margin-left: 40px
+}
+
+.navbar .navbar-nav>li>a {
+  font-size: 16px;
+  padding: 30px!important;
+  color: #6b61e1
+}
+
+.navbar .navbar-nav>li>a.active,
+.navbar .navbar-nav>li>a:hover {
+  color: #34c6fa
+}
+
+.navbar .navbar-nav>li>a.ctm-btn {
+  background-color: #6b61e1;
+  color: #fff !important;
+  padding: 6px 20px !important;
+  border-radius: 4px;
+  margin-top: 24px;
+  margin-left: 40px;
+  margin-right: 60px
+}
+
+.loan-part .title {
+  text-align: right
+}
+
+.loan-part .title img {
+  margin-left: 6px
+}
+
+.business {
+  margin: 100px auto 0;
+  width: 1280px
+}
+
+.business .nav-bar {
+  height: 44px;
+  line-height: 44px;
+  border-bottom: 1px solid #e7e7e7;
+  display: block;
+  width: 1280px;
+  margin-bottom: 60px
+}
+
+.business .nav-bar .cell {
+  display: inline-block;
+  margin: 0 60px;
+  cursor: pointer
+}
+
+.business .nav-bar .active {
+  border-bottom: 2px solid #6250dd
+}
+
+.business .content {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  padding: 0 20px
+}
+
+.business .content .title {
+  width: 400px;
+  line-height: 600px;
+  font-size: 20px
+}
+
+.business .content .title img {
+  margin-right: 6px;
+  vertical-align: -3px
+}
+
+.business .content .details {
+  display: flex;
+  width: 600px
+}
+
+.business .content .details .title {
+  height: 400px;
+  line-height: 400px
+}
+
+.business .content .details .decorate {
+  position: absolute;
+  display: block;
+  border: 2px dashed #8372c4;
+  border-radius: 6px;
+  padding: 20px 12px;
+  z-index: -1
+}
+
+.business .content .details .left ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center
+}
+
+.business .content .details .right {
+  margin-left: 40px
+}
+
+.business .content .details .right .paragraph {
+  margin-bottom: 80px
+}
+
+.business .content .details .right .paragraph .emphasis {
+  font-size: 22px;
+  line-height: 30px
+}
+
+.business .content .details .right .paragraph .words {
+  font-size: 14px;
+  color: #3a3a3a
+}
+
+footer,
+footer .inline-contact span a {
+  color: #666
+}
+
+.business .loan-content {
+  margin-top: 40px;
+  margin-bottom: 60px
+}
+
+.business .loan-content .bg-img__value {
+  height: 400px;
+  width: 600px;
+  display: block;
+  position: relative;
+  background: url(../images/value.png) center no-repeat;
+  margin-top: 100px
+}
+
+.business .loan-content .left-up {
+  top: 40px;
+  left: 30px;
+  width: 170px
+}
+
+.business .loan-content .right-up {
+  right: 45px;
+  top: 10px;
+  width: 170px
+}
+
+.business .loan-content .left-middle {
+  top: 170px;
+  left: -30px;
+  width: 200px
+}
+
+.business .loan-content .right-middle {
+  top: 160px;
+  right: -60px;
+  width: 230px
+}
+
+.business .loan-content .left-bottom {
+  bottom: -10px;
+  left: 100px;
+  width: 200px
+}
+
+.business .loan-content .right-bottom {
+  bottom: 0;
+  right: 50px;
+  width: 180px
+}
+
+.business .bottom-content {
+  margin-top: 40px;
+  margin-bottom: 60px
+}
+
+.business .bottom-content .bg-img__join {
+  height: 400px;
+  width: 600px;
+  display: block;
+  position: relative;
+  background: url(../images/join.png) center no-repeat;
+  margin-top: 100px
+}
+
+.business .bottom-content .left-up {
+  top: 10px;
+  left: 80px;
+  width: 170px
+}
+
+.business .bottom-content .right-up {
+  right: 35px;
+  top: 40px;
+  width: 170px
+}
+
+.business .bottom-content .left-middle {
+  top: 170px;
+  left: 0;
+  width: 170px
+}
+
+.business .bottom-content .right-middle {
+  top: 180px;
+  right: -10px;
+  width: 180px
+}
+
+.business .bottom-content .left-bottom {
+  bottom: 0;
+  left: 100px;
+  width: 180px
+}
+
+.business .bottom-content .right-bottom {
+  bottom: 30px;
+  right: 30px;
+  width: 180px
+}
+

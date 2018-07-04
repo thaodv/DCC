@@ -27,7 +27,8 @@ open class Erc20Agent(
     val contractAddress = erc20.contractAddress!!
 
     override fun getNonce(address: String): Single<BigInteger> {
-        return rpcAgent.getTransactionCount(address, "pending")
+        return rpcAgent.getTransactionCount(address, "latest")
+//        return rpcAgent.getTransactionCount(address, "pending")
     }
 
     override fun encodeTransfer(nonce: BigInteger, from: Credentials, to: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, remarks: String?): String {

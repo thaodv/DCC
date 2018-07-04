@@ -12,6 +12,7 @@ import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.fragment.InputIdInfoFragment
 import io.wexchain.android.dcc.fragment.LivenessDetectionFragment
 import io.wexchain.android.idverify.IdCardEssentialData
@@ -70,12 +71,18 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
     private fun handleCertResult(certOrder: CertOrder, idData: IdCardEssentialData, photo: ByteArray) {
         if (certOrder.status.isPassed()) {
             toast("认证成功")
+            scheduleReDoLoginToRefreshMinePts()
             CertOperations.saveIdCertData(certOrder, idData, photo)
             finish()
         } else {
             toast("认证失败")
             supportFragmentManager.popBackStack()
         }
+    }
+
+    private fun scheduleReDoLoginToRefreshMinePts() {
+        ScfOperations.loginWithCurrentPassport()
+            .subscribe()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,52 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<import resource="classpath:META-INF/cxf/cxf.xml" />
-	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
-	<!-- clearing-merchant-api-->
-	<bean id="activityFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
-		<property name="remoteAddress" value="${dcc.marketing.ws.address}/activityFacade" />
-		<property name="clazz" value="io.wexchain.dcc.marketing.api.facade.ActivityFacade" />
-		<property name="timeout" value="${dcc.marketing.remote.timeout}" />
-	</bean>
+    <!-- clearing-merchant-api-->
+    <bean id="activityFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
+        <property name="remoteAddress" value="${dcc.marketing.ws.address}/activityFacade" />
+        <property name="clazz" value="io.wexchain.dcc.marketing.api.facade.ActivityFacade" />
+        <property name="timeout" value="${dcc.marketing.remote.timeout}" />
+    </bean>
 
-	<!-- clearing-merchant-api-->
-	<bean id="scenarioFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
-		<property name="remoteAddress" value="${dcc.marketing.ws.address}/scenarioFacade" />
-		<property name="clazz" value="io.wexchain.dcc.marketing.api.facade.ScenarioFacade" />
-		<property name="timeout" value="${dcc.marketing.remote.timeout}" />
-	</bean>
+    <!-- clearing-merchant-api-->
+    <bean id="scenarioFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
+        <property name="remoteAddress" value="${dcc.marketing.ws.address}/scenarioFacade" />
+        <property name="clazz" value="io.wexchain.dcc.marketing.api.facade.ScenarioFacade" />
+        <property name="timeout" value="${dcc.marketing.remote.timeout}" />
+    </bean>
 
-	<!-- clearing-merchant-api-->
-	<bean id="redeemTokenFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
-		<property name="remoteAddress" value="${dcc.marketing.ws.address}/redeemTokenFacade" />
-		<property name="clazz" value="io.wexchain.dcc.marketing.api.facade.RedeemTokenFacade" />
-		<property name="timeout" value="${dcc.marketing.remote.timeout}" />
-	</bean>
-	<bean id="bonusFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
-		<property name="remoteAddress" value="${dcc.marketing.ws.address}/bonusFacade" />
-		<property name="clazz" value="io.wexchain.dcc.marketing.api.facade.BonusFacade" />
-		<property name="timeout" value="${dcc.marketing.remote.timeout}" />
-	</bean>
-	<bean id="ecoRewardFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
-		<property name="remoteAddress" value="${dcc.marketing.ws.address}/ecoRewardFacade" />
-		<property name="clazz" value="io.wexchain.dcc.marketing.api.facade.EcoRewardFacade" />
-		<property name="timeout" value="${dcc.marketing.remote.timeout}" />
-	</bean>
-	<bean id="rewardLogFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
-		<property name="remoteAddress" value="${dcc.marketing.ws.address}/rewardLogFacade" />
-		<property name="clazz" value="io.wexchain.dcc.marketing.api.facade.RewardLogFacade" />
-		<property name="timeout" value="${dcc.marketing.remote.timeout}" />
-	</bean>
+    <!-- clearing-marketing-api-->
+    <bean id="redeemTokenFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
+        <property name="remoteAddress" value="${dcc.marketing.ws.address}/redeemTokenFacade" />
+        <property name="clazz" value="io.wexchain.dcc.marketing.api.facade.RedeemTokenFacade" />
+        <property name="timeout" value="${dcc.marketing.remote.timeout}" />
+    </bean>
+    <bean id="bonusFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
+        <property name="remoteAddress" value="${dcc.marketing.ws.address}/bonusFacade" />
+        <property name="clazz" value="io.wexchain.dcc.marketing.api.facade.BonusFacade" />
+        <property name="timeout" value="${dcc.marketing.remote.timeout}" />
+    </bean>
+    <bean id="ecoRewardFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
+        <property name="remoteAddress" value="${dcc.marketing.ws.address}/ecoRewardFacade" />
+        <property name="clazz" value="io.wexchain.dcc.marketing.api.facade.EcoRewardFacade" />
+        <property name="timeout" value="${dcc.marketing.remote.timeout}" />
+    </bean>
+    <bean id="rewardLogFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
+        <property name="remoteAddress" value="${dcc.marketing.ws.address}/rewardLogFacade" />
+        <property name="clazz" value="io.wexchain.dcc.marketing.api.facade.RewardLogFacade" />
+        <property name="timeout" value="${dcc.marketing.remote.timeout}" />
+    </bean>
+    <bean id="candyFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
+        <property name="remoteAddress" value="${dcc.marketing.ws.address}/candyFacade" />
+        <property name="clazz" value="io.wexchain.dcc.marketing.api.facade.CandyFacade" />
+        <property name="timeout" value="${dcc.marketing.remote.timeout}" />
+    </bean>
+    <bean id="miningRewardFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
+        <property name="remoteAddress" value="${dcc.marketing.ws.address}/miningRewardFacade" />
+        <property name="clazz" value="io.wexchain.dcc.marketing.api.facade.MiningRewardFacade" />
+        <property name="timeout" value="${dcc.marketing.remote.timeout}" />
+    </bean>
 
-	<!-- crypto_asset_loan-api-->
-	<bean id="cryptoAssetLoanFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
-		<property name="remoteAddress" value="${crypto.asset.loan.ws.address}/cryptoAssetLoanFacade" />
-		<property name="clazz" value="io.wexchain.cryptoasset.loan.api.CryptoAssetLoanFacade" />
-		<property name="timeout" value="40000" />
-	</bean>
+    <!-- crypto_asset_loan-api-->
+    <bean id="cryptoAssetLoanFacade" class="com.weihui.basic.util.integration.IntegrationProxy4Cxf" init-method="init">
+        <property name="remoteAddress" value="${crypto.asset.loan.ws.address}/cryptoAssetLoanFacade" />
+        <property name="clazz" value="io.wexchain.cryptoasset.loan.api.CryptoAssetLoanFacade" />
+        <property name="timeout" value="40000" />
+    </bean>
 
 </beans>

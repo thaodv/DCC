@@ -76,6 +76,9 @@ class MarketingListActivity : BaseCompatActivity(), ItemViewClickListener<Market
                 "10003"->{
                     navigateTo(DccEcoRewardsActivity::class.java)
                 }
+                "10004"->{
+                    navigateTo(MineRewardsActivity::class.java)
+                }
                 else->{
                     if (it.status == MarketingActivity.Status.STARTED) {
                         navigateTo(MarketingScenariosActivity::class.java) {

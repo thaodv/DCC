@@ -37,7 +37,7 @@ class Networking {
     private val retrofit: Retrofit
     val networkGson:Gson
 
-    constructor(context: Application, debug: Boolean = false) {
+    constructor(context: Application, debug: Boolean = BuildConfig.DEBUG) {
         networkGson = createGson()
         cookieStore = CookieStoreFactory.create(context,{
             networkGson.fromJson(it,HttpCookie::class.java)
@@ -69,9 +69,9 @@ class Networking {
                     .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                     .apply {
                         if (debug) {
-                            addInterceptor(HttpLoggingInterceptor({
+                            addInterceptor(HttpLoggingInterceptor {
                                 Log.d(LOG_TAG_OKHTTP, it)
-                            }).setLevel(HttpLoggingInterceptor.Level.BODY))
+                            }.setLevel(HttpLoggingInterceptor.Level.BODY))
                             addNetworkInterceptor(CookieSendLoggingInterceptor())
                         }
                     }

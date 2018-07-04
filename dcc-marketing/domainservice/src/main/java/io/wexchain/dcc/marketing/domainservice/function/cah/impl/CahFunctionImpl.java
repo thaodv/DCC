@@ -1,7 +1,16 @@
 package io.wexchain.dcc.marketing.domainservice.function.cah.impl;
 
+import java.math.BigInteger;
+
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.wexmarket.topia.commons.rpc.RequestIdentity;
 import com.wexmarket.topia.commons.rpc.ResultResponse;
+
 import io.wexchain.cryptoasset.hosting.constant.ChainCode;
 import io.wexchain.cryptoasset.hosting.constant.TransferOrderStatus;
 import io.wexchain.cryptoasset.hosting.frontier.BalanceFacade;
@@ -14,13 +23,6 @@ import io.wexchain.cryptoasset.hosting.wallet.CryptoWalletFacade;
 import io.wexchain.cryptoasset.hosting.wallet.ImportWalletRequest;
 import io.wexchain.dcc.marketing.domainservice.function.cah.CahFunction;
 import io.wexchain.dcc.marketing.domainservice.function.validator.Code2Exception;
-import org.apache.commons.lang3.exception.ContextedRuntimeException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.math.BigInteger;
 
 /**
  * CahFunctionImpl
@@ -78,8 +80,13 @@ public class CahFunctionImpl implements CahFunction {
 	}
 
 	@Override
-	public TransferOrder redeem(String requestNo, BigInteger amount, String payerAddress,
-								String receiverAddress) {
+	public TransferOrder redeem(String requestNo, BigInteger amount, String payerAddress, String receiverAddress) {
+		return transferDccJuzix(requestNo, amount, payerAddress, receiverAddress);
+	}
+
+	@Override
+	public TransferOrder transferDccJuzix(String requestNo, BigInteger amount, String payerAddress,
+			String receiverAddress) {
 
 		TransferRequest transferRequest = new TransferRequest();
 		transferRequest.setRequestIdentity(new RequestIdentity("DCC-MARKETING", requestNo));
@@ -103,7 +110,7 @@ public class CahFunctionImpl implements CahFunction {
 	}
 
 	private TransferOrder loopQueryTransferResult(RequestIdentity requestIdentity) {
-		for (int i = 0; i < 60; i++) {
+		for (int i = 0; i < 6000; i++) {
 			try {
 				ResultResponse<TransferOrder> getOrdeResult = transferFacade.getTransferOrder(requestIdentity);
 				TransferOrder transferOrder = Code2Exception.handleResultResponse(getOrdeResult);

@@ -43,7 +43,7 @@ contract MortgageLoanService is OperatorPermission, GateControl, FastFailure {
 
     function MortgageLoanService(address agreement2ContractAddress) public {
         register("MortgageLoanServiceModule", "0.0.1.0", "MortgageLoanService", "0.0.1.0");
-        setAgreement2Contract(agreement2ContractAddr:wess);
+        setAgreement2Contract(agreement2ContractAddress);
         orders.push(Order(0, 0, address(0), "", Status.INVALID, 0, "", "", "", ""));
     }
 

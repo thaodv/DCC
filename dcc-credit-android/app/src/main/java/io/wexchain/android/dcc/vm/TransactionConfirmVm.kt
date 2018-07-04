@@ -42,6 +42,7 @@ class TransactionConfirmVm(
     val withTransferFee = tx.transferFeeRate!=null
 
     val txSentEvent = SingleLiveEvent<Pair<EthsTransactionScratch, String>>()
+    val txSendFailEvent = SingleLiveEvent<String>()
 
     val notEnoughFundsEvent = SingleLiveEvent<Void>()
     val busySendingEvent = SingleLiveEvent<Boolean>()
@@ -138,7 +139,7 @@ class TransactionConfirmVm(
                             scratch.nonce=it.first
                             txSentEvent.value = scratch to it.second
                         }, {
-                            stackTrace(it)
+                            txSendFailEvent.value = it.message?:"提交交易失败"
                         })
 
             }

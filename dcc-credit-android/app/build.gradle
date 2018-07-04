@@ -18,8 +18,8 @@ android {
         applicationId "io.wexchain.dcc"
         minSdkVersion min_sdk
         targetSdkVersion target_sdk
-        versionCode 3
-        versionName "1.0.3"
+        versionCode 10
+        versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -139,6 +139,7 @@ dependencies {
     implementation project(':network')
     implementation project(':barcode')
     implementation project(':localprotect')
+    implementation project(':tllibrary')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+        <variable
+                name="bonus"
+                type="io.wexchain.dccchainservice.domain.EcoBonus"/>
+    </data>
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            >
+        <TextView
+                android:id="@+id/tv_mine_reward_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/time_format_yyyymmdd(bonus.createdTime)}"
+                tools:text="@tools:sample/date/mmddyy"
+                />
+
+        <TextView
+                android:id="@+id/tv_mine_reward_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{ViewModelHelper.ecoBonusRewardAmountStr(bonus)}"
+                tools:text="5.0000DCC"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_mine_reward_time"
+                />
+
+        <android.support.constraint.Barrier
+                android:id="@+id/barrier_bottom"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="tv_mine_reward_time,tv_mine_reward_amount"
+                />
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_stroke_width"
+                style="@style/DividerHorizontal"
+                app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
+                android:layout_marginTop="12dp"
+                />
+    </android.support.constraint.ConstraintLayout>
+</layout>

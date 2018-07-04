@@ -7,7 +7,7 @@
         <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
         <variable
                 name="rule"
-                type="io.wexchain.dccchainservice.domain.EcoBonusRule"/>
+                type="io.wexchain.dccchainservice.domain.BonusRule"/>
     </data>
     <FrameLayout
             android:layout_width="match_parent"

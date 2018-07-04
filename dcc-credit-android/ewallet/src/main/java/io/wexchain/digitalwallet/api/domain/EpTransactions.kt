@@ -59,8 +59,7 @@ data class EpTransactions(
             val transfersCount: Int,
             val lastUpdated: Int,
             val issuancesCount: Int,
-            val holdersCount: Int,
-            val price: Boolean
+            val holdersCount: Int
     ) {
         fun toDigitalCurrency(): DigitalCurrency {
             return DigitalCurrency(

@@ -1,0 +1,208 @@
+body {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif, Microsoft YaHei, STHeitiSC-Light, simsun, WenQuanYi Zen Hei, WenQuanYi Micro Hei, sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  background:#f2f2f2;
+}
+
+body .container-fluid {
+  width: 1280px
+}
+
+.contactIcon {
+  overflow: hidden;
+  background-image: url(../images/contactIcon.png);
+  background-repeat: no-repeat
+}
+
+.contactIcon-email {
+  float: left;
+  width: 26px;
+  height: 26px;
+  background-position: 0 0
+}
+
+.contactIcon-Telegram {
+  float: left;
+  width: 25px;
+  height: 25px;
+  background-position: -1px -36px
+}
+
+.navbar {
+  border: none;
+  background-color: #fff
+}
+
+.navbar img[alt=Brand] {
+  height: 40px;
+  margin-top: 5px;
+  margin-left: 40px
+}
+
+.navbar .navbar-nav>li>a {
+  font-size: 16px;
+  padding: 30px!important;
+  color: #6b61e1
+}
+
+.navbar .navbar-nav>li>a.active,
+.navbar .navbar-nav>li>a:hover {
+  color: #34c6fa
+}
+
+.navbar .navbar-nav>li>a.ctm-btn {
+  background-color: #6b61e1;
+  color: #fff !important;
+  padding: 6px 20px !important;
+  border-radius: 4px;
+  margin-top: 24px;
+  margin-left: 40px;
+  margin-right: 60px
+}
+
+.loan-part .title {
+  text-align: right
+}
+
+.loan-part .title img {
+  margin-left: 6px
+}
+/* 生态奖励 */
+.reward-view .panel{
+  border:0;
+  border-radius:0;
+}
+.reward-view:nth-of-type(1){
+  margin-top:100px;
+}
+.reward-view .panel-body{
+  padding:20px;
+}
+.reward-view .reward-title{
+  height:60px;
+}
+.reward-view .reward-title img{
+  float:left;
+  height:32px;
+}
+.reward-view .reward-title h3{
+  height:40px;
+  line-height:40px;
+}
+.reward-intro{
+  margin: 0 34px 10px;
+}
+.reward-table{
+  /* height:457px; */
+  overflow:auto;
+}
+.all .mCSB_inside > .mCSB_container {
+  margin-right: 14px;
+}
+.mCSB_scrollTools .mCSB_draggerRail {
+  width: 4px !important;    
+}
+ div.all {  
+  clear: right;  
+}  
+div.title {  
+  width: 100%;  
+}  
+div.content {  
+  width: 100%;  
+  overflow: auto;
+  overflow-x: hidden; 
+  height: 462px;  
+}  
+div.title_left {  
+  float: left;  
+  /* margin-right: 17px;   */
+}  
+div.content_left {  
+  float: left;  
+  text-align:center;
+}  
+
+.main_table {  
+  width: 100%;  
+  border-collapse: collapse;  
+  table-layout:fixed;  
+}  
+.main_table tr th { 
+  text-align:center;   
+  overflow: hidden;
+  word-break: break-all;  
+  text-overflow: ellipsis;  
+  white-space: nowrap;    
+}    
+.main_table tr td {    
+  overflow: hidden;    
+  word-break: break-all;    
+  text-overflow: ellipsis;    
+  white-space: nowrap;    
+}    
+
+
+.reward-table tr th{
+  height:57px;
+  line-height: 57px;
+  background:#edeaf8;
+  border:0;
+}
+.reward-table tbody tr td{
+  height:66px;
+  line-height:66px;
+}
+.reward-table tbody tr:nth-of-type(2n){
+  background:#f8f6fc;
+}
+.reward-time{
+  margin-top:10px;
+  text-align:center;
+  color:#b0b0b0
+}
+.reward-tip{
+  text-align:right;
+}
+
+.reward-statistics dl{
+  float:left;
+  padding:30px 0;
+  text-align:center;
+  width:33%;
+}
+.reward-statistics dt{
+font-size:20px;
+margin-bottom:10px;
+}
+.reward-statistics dd{
+  font-size:28px;
+  color:#33216a;
+}
+.reward-ranking .reward-title{
+  border-bottom: 1px solid #e6e6e6;
+  height: 47px;
+  line-height:47px;
+}
+.reward-ranking .reward-title span{
+  display: inline-block;
+  padding:5px;
+  height:47px;
+  border-bottom:2px solid #6950b3;
+}
+.reward-ranking table{
+  width:100%;
+  text-align:center;
+}
+.reward-ranking table th{
+  text-align:center;
+  font-size:18px;
+  font-weight: 500;
+  padding:20px 0;
+}
+.reward-ranking table tbody td{
+  font-size:16px;
+  padding:10px 0;
+}

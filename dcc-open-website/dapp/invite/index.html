@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>BitExpress</title>
+  <style>
+  html,body,.container{
+    width:100%;
+    height:100%;
+    padding:0;
+    margin:0;
+    text-align:center;
+    color:#fff;
+    box-sizing: border-box;
+  }
+  .container{
+    background:linear-gradient(to bottom,#6766CC, #6D44B1);
+  }
+  .invite{
+    padding-top:84px;
+  }
+  .invite .logo{
+   height:30%;
+   background:url("./invitebg.png") no-repeat;
+   background-position: bottom center;
+   background-size:80% 80%
+
+  }
+  .invite .logo img{
+    width:20%;
+  }
+  .invite .logo h4{
+    font-size:18px;
+    color:#fff;
+  }
+  .invite p{
+    font-size:14px;
+    margin-top:20%;
+  }
+  .invite p.code{
+    font-size:30px;
+    margin-top:20px;
+  }
+  .footer{
+    position:absolute;
+    bottom:10%;
+    width:100%;
+    text-align:center;
+  }
+  .footer img{
+    width:35%;
+  }
+  .footer a{
+    text-decoration: none;
+  }
+  .footer a.first{
+    margin-right:10px;
+  }
+
+  </style>
+</head>
+<body>
+  <div class="container invite">
+    <div class="logo">
+      <img src="./logo.png" alt="">
+      <h4>Bit Express</h4>
+    </div>
+    <p>邀请码</p>
+    <p class="code"></p>
+    <div class="footer">
+      <a href="https://www.pgyer.com/w8eM" class="first">
+        <img src="./ios-button.png" alt="">
+      </a>
+      <a href="https://www.pgyer.com/ixBF">
+        <img src="./android-button.png" alt="">
+      </a>
+
+    </div>
+  </div>
+  <script>
+    window.onload=function(){
+      var link = window.location.href;
+      var parsedUrl = new URL(window.location.href);
+      var code =parsedUrl.searchParams.get("code");
+      document.getElementsByClassName("code")[0].innerHTML = code;
+    }
+  </script>
+</body>
+</html>

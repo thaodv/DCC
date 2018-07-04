@@ -9,6 +9,7 @@ import io.wexchain.dcc.marketing.domainservice.ActivityService;
 import io.wexchain.dcc.marketing.ext.service.helper.ActivityResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;

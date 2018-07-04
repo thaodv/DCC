@@ -56,7 +56,7 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
 
     @Override
     public RedeemTokenQualification getRedeemTokenQualification(GetRedeemTokenQualificationRequest request) {
-        Scenario scenario = scenarioService.getScenario(request.getScenarioCode());
+        Scenario scenario = scenarioService.getScenarioByCode(request.getScenarioCode());
         if (redeemTokenRepository.findByScenarioCodeAndReceiverAddress(
                 scenario.getCode(), request.getAddress()) != null) {
             return RedeemTokenQualification.REDEEMED;
@@ -73,7 +73,7 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
 
     @Override
     public RedeemToken redeemToken(RedeemTokenRequest request) {
-        Scenario scenario = scenarioService.getScenario(request.getScenarioCode());
+        Scenario scenario = scenarioService.getScenarioByCode(request.getScenarioCode());
         ErrorCodeValidate.isTrue(
                 scenario.getActivity().getStatus() != ActivityStatus.CREATED,
                 MarketingErrorCode.ACTIVITY_IS_OFFLINE);
@@ -129,7 +129,7 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
 
     @Override
     public RedeemToken createBonus(RedeemTokenRequest request) {
-        Scenario scenario = scenarioService.getScenario(request.getActivityCode(), request.getScenarioCode());
+        Scenario scenario = scenarioService.getScenarioByCode(request.getActivityCode(), request.getScenarioCode());
 
         ErrorCodeValidate.isTrue(
                 scenario.getActivity().getStatus() != ActivityStatus.CREATED,
@@ -158,7 +158,7 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
 
     @Override
     public RedeemToken applyBonus(ApplyBonusRequest request) {
-        Scenario scenario = scenarioService.getScenario(request.getActivityCode(), request.getScenarioCode());
+        Scenario scenario = scenarioService.getScenarioByCode(request.getActivityCode(), request.getScenarioCode());
         RedeemToken redeemToken = redeemTokenRepository.findByIdAndScenarioIdAndReceiverAddress(request.getRedeemTokenId(),
                 scenario.getId(), request.getAddress());
         return redeemTokenExecutor.execute(redeemToken, null, null).getModel();

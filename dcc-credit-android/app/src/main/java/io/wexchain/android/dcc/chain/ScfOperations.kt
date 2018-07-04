@@ -6,6 +6,7 @@ import io.reactivex.Flowable
 import io.reactivex.SingleTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import io.wexchain.android.common.toHex
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.ScfOperations.loanOrderByTx
 import io.wexchain.android.dcc.domain.Passport
@@ -105,7 +106,7 @@ object ScfOperations {
                             order.id,
                             loanScratch.product.id,
                             certIdData.name,
-                            loanScratch.amount.toLoanFormatString(),
+                            loanScratch.amount.toPlainString(),
                             loanScratch.period.value,
                             loanScratch.period.unit.name,
                             certIdData.id,
@@ -163,6 +164,9 @@ object ScfOperations {
         val period = "${loanScratch.period.value}${loanScratch.period.unit.name.first()}"
         val digestStr =
             "$lenderName$currencySymbol$amountStr$period${loanScratch.product.repayCyclesNo}${loanScratch.product.loanType}${loanScratch.createTime}"
+        println("loanApplicationDigest Str = $digestStr")
+        println("loanApplicationDigest Raw Bytes = ${digestStr.toByteArray(Charsets.UTF_8).toHex()}")
+        println("loanApplicationDigest Hash Bytes = ${MessageDigest.getInstance(DIGEST).digest(digestStr.toByteArray(Charsets.UTF_8)).toHex()}")
         return MessageDigest.getInstance(DIGEST).digest(digestStr.toByteArray(Charsets.UTF_8))
     }
 
@@ -259,6 +263,11 @@ object ScfOperations {
 
     private fun isTokenFail(e: Throwable): Boolean {
         return e is DccChainServiceException && e.businessCode == BusinessCodes.TOKEN_FORBIDDEN
+    }
+
+    fun loginWithCurrentPassport(): Single<String> {
+        val passport = App.get().passportRepository.getCurrentPassport()
+        return loginWithPassport(passport?.address, passport?.authKey?.getPrivateKey())
     }
 
     private fun loginWithPassport(address: String?, privateKey: PrivateKey?): Single<String> {

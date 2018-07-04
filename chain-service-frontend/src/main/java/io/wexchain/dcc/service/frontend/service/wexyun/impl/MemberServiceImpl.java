@@ -4,11 +4,14 @@ import com.wexmarket.topia.commons.basic.exception.ErrorCodeException;
 import com.wexyun.open.api.domain.member.Member;
 import io.wexchain.dcc.service.frontend.common.enums.FrontendErrorCode;
 import io.wexchain.dcc.service.frontend.ctrlr.security.MemberDetails;
+import io.wexchain.dcc.service.frontend.integration.message.impl.LoginRouter;
 import io.wexchain.dcc.service.frontend.integration.wexyun.MemberOperationClient;
 import io.wexchain.dcc.service.frontend.model.param.RegisterParam;
 import io.wexchain.dcc.service.frontend.model.request.RegisterRequest;
 import io.wexchain.dcc.service.frontend.service.dcc.cert.CertService;
 import io.wexchain.dcc.service.frontend.service.wexyun.MemberService;
+import io.wexchain.notify.domain.dcc.LoginEvent;
+import io.wexchain.notify.domain.dcc.MessageBusinessType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,6 +44,9 @@ public class MemberServiceImpl implements MemberService{
 
     @Autowired
     private CertService certService;
+
+    @Autowired
+    private LoginRouter loginRouter;
 
     @Override
     public String register(RegisterRequest request) {
@@ -69,7 +76,10 @@ public class MemberServiceImpl implements MemberService{
         catch( Exception e ){
             throw new ErrorCodeException(FrontendErrorCode.LOGIN_FAILURE.name(),FrontendErrorCode.LOGIN_FAILURE.getDescription());
         }
-
+        try {
+            loginRouter.route(new LoginEvent(registerRequest.getAddress(), new Date()));
+        }catch (Exception e){
+        }
         return memberId;
 
     }

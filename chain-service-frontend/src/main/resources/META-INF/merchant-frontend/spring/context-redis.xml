@@ -15,6 +15,6 @@
 
 	<bean id="redisRepository" class="org.springframework.session.data.redis.RedisOperationsSessionRepository">
 		<constructor-arg ref="jedisConnectionFactory" />
-		<property name="defaultMaxInactiveInterval" value="432000"></property>
+		<property name="defaultMaxInactiveInterval" value="28800"></property>
 	</bean>
 </beans>

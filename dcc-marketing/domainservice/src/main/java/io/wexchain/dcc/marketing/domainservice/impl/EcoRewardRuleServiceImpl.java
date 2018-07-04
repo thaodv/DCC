@@ -31,7 +31,8 @@ public class EcoRewardRuleServiceImpl implements EcoRewardRuleService {
     @Override
     public List<EcoRewardRule> queryEcoRewardRule(QueryEcoRewardRuleRequest request) {
         if (request.getParticipatorRole() != null) {
-            return rewardRuleRepository.findByParticipatorRoleOrderByIdAsc(request.getParticipatorRole());
+            return rewardRuleRepository.findByScenarioActivityCodeAndParticipatorRoleOrderByIdAsc("10003",
+                    request.getParticipatorRole());
         }
         return queryEcoRewardRule();
     }

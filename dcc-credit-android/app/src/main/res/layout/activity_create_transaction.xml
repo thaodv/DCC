@@ -263,12 +263,14 @@
 
         <TextView
                 visibleOrGone="@{tx.onPrivateChain}"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:layout_marginTop="8dp"
                 android:text="@{tx.transferFeeHintText}"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_transaction_fee"
                 tools:text="@string/ftc_transfer_fee_hint"
                 android:textColor="@color/text_dark"

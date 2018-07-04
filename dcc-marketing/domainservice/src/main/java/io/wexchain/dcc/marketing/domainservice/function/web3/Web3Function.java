@@ -1,5 +1,6 @@
 package io.wexchain.dcc.marketing.domainservice.function.web3;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.web3j.protocol.core.methods.response.EthBlock;
 import org.web3j.protocol.core.methods.response.Log;
 
@@ -18,5 +19,8 @@ public interface Web3Function {
     List<Log> getEventLogList(long startNumber, long endNumber);
 
     Long getBlockNumberAfterTime(Date time);
+
+    @Cacheable(cacheNames = "CONTRACT_OWNER", key = "#contractAddress")
+    String getContractOwner(String contractAddress);
 
 }
