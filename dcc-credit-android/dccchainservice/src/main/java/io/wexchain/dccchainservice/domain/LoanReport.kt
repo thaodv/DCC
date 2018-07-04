@@ -34,7 +34,11 @@ data class LoanReport(
     fun getStageCountStr() = (this.billList?.size?:0).toString()
 
     fun isSettlementComplete(): Boolean {
-        return status == LoanStatus.REPAID
+        if(isMort()){
+            return mortgageStatus == MortgageStatus.REPAID
+        }else{
+            return status == LoanStatus.REPAID
+        }
     }
 
     fun isFromOtherAddress(): Boolean {
@@ -48,6 +52,13 @@ data class LoanReport(
             return  "订单信息"
         }else{
             return  "借币信息"
+        }
+    }
+    fun titleinfo2():String{
+        if(isMort()){
+            return  "还款账单"
+        }else{
+            return  "还币信息"
         }
     }
     fun shouldlong( le:Long):Long{
