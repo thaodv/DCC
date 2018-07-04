@@ -392,13 +392,24 @@ object ViewModelHelper {
         return if (loanReport == null || loanReport.isFromOtherAddress()) {
             ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_other)
         } else {
-            when (loanReport?.status) {
-                LoanStatus.REPAID -> ContextCompat.getDrawable(
-                    this,
-                    R.drawable.bg_loan_report_status_settlement_complete
-                )
-                else -> ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_incomplete)
+            if(!loanReport.isMort()){
+                when (loanReport?.status) {
+                    LoanStatus.REPAID -> ContextCompat.getDrawable(
+                            this,
+                            R.drawable.bg_loan_report_status_settlement_complete
+                    )
+                    else -> ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_incomplete)
+                }
+            }else{
+                when (loanReport?.mortgageStatus) {
+                    MortgageStatus.REPAID -> ContextCompat.getDrawable(
+                            this,
+                            R.drawable.bg_loan_report_status_settlement_complete
+                    )
+                    else -> ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_incomplete)
+                }
             }
+
         }
     }
 

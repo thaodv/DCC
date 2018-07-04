@@ -307,7 +307,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_shoupaydate"
                 app:layout_constraintRight_toRightOf="@id/v_frame_info2"
                 android:layout_marginRight="8dp"
-                android:text="@{@string/period_format_yyyymmdd_dot(report.shouldlong(report.billList[0].expectRepayDate),report.borrowDurationTo)}"
+                android:text="@{@string/time_format_yyyymmdd(report.shouldlong(report.billList[0].expectRepayDate))}"
                 tools:text="100.0000ETH"
                 />
             <TextView
