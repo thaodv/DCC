@@ -86,6 +86,57 @@ interface EthsRpcAgent {
                 }
             }
         }
+        fun by(ethJsonRpcApi: EthJsonRpcApiWithAuth): EthsRpcAgent {
+            val api = ethJsonRpcApi
+            return object : EthsRpcAgent {
+                override fun transactionByHash(txId: String): Single<EthJsonTxInfo> {
+                    return api.transactionByHash(txId)
+                }
+
+                override fun transactionReceipt(txId: String): Single<EthJsonTxReceipt> {
+                    return api.transactionReceipt(txId)
+                }
+
+                override fun estimateGas(ethJsonTxScratch: EthJsonTxScratch): Single<BigInteger> {
+                    return api.estimateGas(ethJsonTxScratch).map { it.hexToBigIntegerOrThrow() }
+                }
+
+                override fun getErc20Balance(contractAddress: String, address: String): Single<BigInteger> {
+                    return api.getErc20Balance(contractAddress, address)
+                }
+
+                override fun getTransactionCount(
+                        address: String,
+                        block: String
+                ): Single<BigInteger> {
+                    return api.transactionCount(address, block).map { it.hexToBigIntegerOrThrow() }
+                }
+
+                override fun getGasPrice(): Single<BigInteger> {
+                    return api.gasPrice().map { it.hexToBigIntegerOrThrow() }
+                }
+
+                override fun getBalanceOf(address: String): Single<BigInteger> {
+                    return api.balanceOf(address).map { it.hexToBigIntegerOrThrow() }
+                }
+
+                override fun sendTransaction(
+                        nonce: Single<BigInteger>,
+                        encodeTx: (BigInteger) -> String
+                ): Single<Pair<BigInteger,String>> {
+                    return nonce
+                            .observeOn(Schedulers.computation())
+                            .map {
+                                encodeTx(it) to it
+                            }
+                            .observeOn(Schedulers.io())
+                            .flatMap {
+                                val no=it.second
+                                api.sendRawTransaction(it.first).map { no to it }
+                                }
+                }
+            }
+        }
 
         fun by(infuraApi: InfuraApi): EthsRpcAgent {
             val api = infuraApi
