@@ -1,14 +1,12 @@
 package io.wexchain.android.dcc.chain
 
+import android.util.Base64
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Single
-import io.reactivex.Flowable
 import io.reactivex.SingleTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import io.wexchain.android.common.toHex
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.chain.ScfOperations.loanOrderByTx
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.android.dcc.tools.RetryWithDelay
@@ -72,34 +70,39 @@ object ScfOperations {
         val scfApi = App.get().scfApi
         return if (certIdData != null && certBankCardData != null && cmLogPhoneNo != null) {
             Single.just(loanScratch)
-                .observeOn(Schedulers.computation())
-                .map {
-                    val applicationDigest = loanApplicationDigest(loanScratch)
+                .observeOn(Schedulers.io())
+                .flatMap {
+                    val pics = CertOperations.getCertIdPics()!!
+                    val applicationDigest = loanApplicationDigest(loanScratch, pics)
                     val idDigest = CertOperations.digestIdName(certIdData.name, certIdData.id)
                     val feeUint256 = Currencies.DCC.toIntExact(it.fee)
-                    EthsFunctions.applyLoan(
+                    val applyLoan = EthsFunctions.applyLoan(
                         LOAN_DIGEST_VERSION_1,
                         idDigest,
                         applicationDigest,
                         feeUint256,
                         it.beneficiaryAddress.address
                     )
-                }
-                .observeOn(Schedulers.io())
-                .flatMap { applyFunc ->
-                    Single.zip(
-                        chainGateway.getTicket().compose(Result.checked()),
-                        chainGateway.getLoanContractAddress().compose(Result.checked()),
-                        pair()
-                    )
+                    Single
+                        .zip(
+                            chainGateway.getTicket().compose(Result.checked()),
+                            chainGateway.getLoanContractAddress().compose(Result.checked()),
+                            pair()
+                        )
                         .flatMap { (ticket, contractAddress) ->
-                            val tx = applyFunc.txSigned(passport.credential, contractAddress, nonce)
+                            val tx = applyLoan.txSigned(passport.credential, contractAddress, nonce)
                             chainGateway.applyLoan(ticket.ticket, tx)
                                 .compose(Result.checked())
                         }
+                        .loanOrderByTx(chainGateway)
+                        .map {
+                            it to pics
+                        }
                 }
-                .loanOrderByTx(chainGateway)
-                .flatMap { order ->
+                .flatMap { (order,pics) ->
+                    val idFrontBase64 = Base64.encodeToString(pics.first, Base64.DEFAULT)
+                    val idBackBase64 = Base64.encodeToString(pics.second, Base64.DEFAULT)
+                    val photoBase64 = Base64.encodeToString(pics.third, Base64.DEFAULT)
                     ScfOperations.withScfTokenInCurrentPassport(allowNull = "") {
                         scfApi.applyLoanCredit(
                             it,
@@ -113,8 +116,11 @@ object ScfOperations {
                             cmLogPhoneNo,
                             certBankCardData.bankCardNo,
                             certBankCardData.phoneNo,
-                            loanScratch.createTime
-                        )
+                            loanScratch.createTime,
+                            photoBase64,
+                            idFrontBase64,
+                            idBackBase64
+                            )
                     }
                 }
         } else {
@@ -157,16 +163,19 @@ object ScfOperations {
      * //申请数字摘要applicationDigest：sha256(utf8_to_bytes(放款机构名称+tostring(币种代码)+tostring(借款金额)+tostring(day(借款期限+'D'))+tostring(借款期数)+tostring(借款方式(XinYong))+ tostring(mills(申请时间))))
      */
     @JvmStatic
-    fun loanApplicationDigest(loanScratch: LoanScratch): ByteArray {
+    fun loanApplicationDigest(
+        loanScratch: LoanScratch,
+        pics: Triple<ByteArray, ByteArray, ByteArray>
+    ): ByteArray {
         val lenderName = loanScratch.product.lender.name
         val currencySymbol = loanScratch.product.currency.symbol
         val amountStr = loanScratch.amount.toLoanFormatString()
         val period = "${loanScratch.period.value}${loanScratch.period.unit.name.first()}"
+        val idFrontBase64 = Base64.encodeToString(pics.first, Base64.DEFAULT)
+        val idBackBase64 = Base64.encodeToString(pics.second, Base64.DEFAULT)
+        val photoBase64 = Base64.encodeToString(pics.third, Base64.DEFAULT)
         val digestStr =
-            "$lenderName$currencySymbol$amountStr$period${loanScratch.product.repayCyclesNo}${loanScratch.product.loanType}${loanScratch.createTime}"
-        println("loanApplicationDigest Str = $digestStr")
-        println("loanApplicationDigest Raw Bytes = ${digestStr.toByteArray(Charsets.UTF_8).toHex()}")
-        println("loanApplicationDigest Hash Bytes = ${MessageDigest.getInstance(DIGEST).digest(digestStr.toByteArray(Charsets.UTF_8)).toHex()}")
+            "$lenderName$currencySymbol$amountStr$period${loanScratch.product.repayCyclesNo}${loanScratch.product.loanType}${loanScratch.createTime}$idFrontBase64$idBackBase64$photoBase64"
         return MessageDigest.getInstance(DIGEST).digest(digestStr.toByteArray(Charsets.UTF_8))
     }
 
@@ -339,14 +348,14 @@ object ScfOperations {
                         )
                     )
                     .map {
-                        if(it.isSuccessful){
+                        if (it.isSuccessful) {
                             val result = it.body()!!
-                            if (result.isSuccess){
+                            if (result.isSuccess) {
                                 val token = it.headers()[ScfApi.HEADER_TOKEN]!!
                                 App.get().scfTokenManager.scfToken = token
                             }
                             result
-                        }else{
+                        } else {
                             throw HttpException(it)
                         }
                     }
@@ -354,7 +363,7 @@ object ScfOperations {
             }
     }
 
-    fun getScfAccountInfo():Single<ScfAccountInfo>{
+    fun getScfAccountInfo(): Single<ScfAccountInfo> {
         val scfApi = App.get().scfApi
         val passport = App.get().passportRepository.getCurrentPassport()
         passport?.authKey ?: return Single.error(IllegalStateException())

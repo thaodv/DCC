@@ -6,6 +6,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.vm.domain.IdCardCertData
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.dccchainservice.CertApi
@@ -36,7 +37,7 @@ class EditIdCardInfoVm : ViewModel() {
     val ocrEvent = SingleLiveEvent<IdOcrInfo.IdCardInfo>()
     val ocrFailEvent = SingleLiveEvent<Throwable>()
     val ocrProcessing = SingleLiveEvent<Boolean>()
-    val proceedEvent = SingleLiveEvent<IdCardEssentialData>()
+    val proceedEvent = SingleLiveEvent<IdCardCertData>()
     val informationIncompleteEvent = SingleLiveEvent<CharSequence>()
 
     private fun setInfoFromIdCardInfo(info: IdOcrInfo.IdCardInfo) {
@@ -71,18 +72,31 @@ class EditIdCardInfoVm : ViewModel() {
             informationIncompleteEvent.value = "请输入正确的有效期"
             return
         }
-        IdCardEssentialData.from(
-                n,
-                id,
-                tl,
-                sex.get(),
-                race.get(),
-                year, month, dayOfMonth,
-                address.get(),
-                authority.get()
-        )?.let {
-            proceedEvent.value = it
+        val front = imgFront.get()
+        val back = imgBack.get()
+        if (front==null){
+            informationIncompleteEvent.value = "请扫描身份证正面"
+            return
         }
+        if (back==null){
+            informationIncompleteEvent.value = "请扫描身份证反面"
+            return
+        }
+        val essentialData = IdCardEssentialData.from(
+            n,
+            id,
+            tl,
+            sex.get(),
+            race.get(),
+            year, month, dayOfMonth,
+            address.get(),
+            authority.get()
+        )
+        if(essentialData == null){
+            informationIncompleteEvent.value = "身份证信息不合法"
+            return
+        }
+        proceedEvent.value = IdCardCertData(essentialData,null,front,back)
     }
 
     private fun updateBirthText() {

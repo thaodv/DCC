@@ -15,6 +15,7 @@ import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.fragment.InputIdInfoFragment
 import io.wexchain.android.dcc.fragment.LivenessDetectionFragment
+import io.wexchain.android.dcc.vm.domain.IdCardCertData
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
@@ -25,11 +26,11 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
     private val inputIdInfoFragment by lazy { InputIdInfoFragment.create(this) }
     private val livenessDetectionFragment by lazy { LivenessDetectionFragment.create(this) }
 
-    private var idCardEssentialData: IdCardEssentialData? = null
+    private var idCardCertData:IdCardCertData? = null
     private var portrait: ByteArray? = null
 
-    override fun onProceed(idCardEssentialData: IdCardEssentialData) {
-        this.idCardEssentialData = idCardEssentialData
+    override fun onProceed(idCardCertData: IdCardCertData) {
+        this.idCardCertData = idCardCertData
         enterStep(STEP_LIVENESS_DETECT)
     }
 
@@ -45,11 +46,11 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
     }
 
     private fun doSubmitIdCert() {
-        val idData = idCardEssentialData
         val photo = portrait
+        val idData = idCardCertData?.copy(photo = photo)
         val passport = App.get().passportRepository.getCurrentPassport()
         if (passport?.authKey != null && idData != null && photo != null) {
-            CertOperations.submitIdCert(passport, idData, photo)
+            CertOperations.submitIdCert(passport, idData)
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSubscribe {
                         showLoadingDialog()
@@ -58,7 +59,7 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
                         hideLoadingDialog()
                     }
                     .subscribe({
-                        handleCertResult(it, idData, photo)
+                        handleCertResult(it, idData)
                     }, {
                         if (it is IllegalStateException && it.message == CertOperations.ERROR_SUBMIT_ID_NOT_MATCH) {
                             INMDialog().show(supportFragmentManager,null)
@@ -68,11 +69,11 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
         }
     }
 
-    private fun handleCertResult(certOrder: CertOrder, idData: IdCardEssentialData, photo: ByteArray) {
+    private fun handleCertResult(certOrder: CertOrder, idData: IdCardCertData) {
         if (certOrder.status.isPassed()) {
             toast("认证成功")
             scheduleReDoLoginToRefreshMinePts()
-            CertOperations.saveIdCertData(certOrder, idData, photo)
+            CertOperations.saveIdCertData(certOrder, idData)
             finish()
         } else {
             toast("认证失败")

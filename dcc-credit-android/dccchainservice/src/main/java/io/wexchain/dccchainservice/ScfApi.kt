@@ -93,7 +93,10 @@ interface ScfApi {
         @Field("mobile") mobile: String,//否	借款人手机号（手机认证）
         @Field("bankCard") bankCard: String,//否	银行卡号
         @Field("bankMobile") bankMobile: String,//否	银行卡预留绑定手机号
-        @Field("applyDate") applyDate: Long//否	申请时间（时间戳）
+        @Field("applyDate") applyDate: Long,//否	申请时间（时间戳）
+        @Field("personalPhoto") personalPhoto: String,//活体照片 urlEncode(base64(pic))
+        @Field("frontPhoto") frontPhoto: String,//	身份证正面 urlEncode(base64(pic))
+        @Field("backPhoto") backPhoto: String//	身份证反面 urlEncode(base64(pic))
     ): Single<Result<String>>
 
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")

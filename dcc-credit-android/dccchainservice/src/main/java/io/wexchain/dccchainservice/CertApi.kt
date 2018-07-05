@@ -19,7 +19,9 @@ interface CertApi {
             @Part("orderId") orderId: Long,
             @Part("realName") realName: String,
             @Part("certNo") certNo: String,
-            @Part file: MultipartBody.Part,
+            @Part personalPhoto: MultipartBody.Part,
+            @Part frontPhoto: MultipartBody.Part,
+            @Part backPhoto: MultipartBody.Part,
             @Part("signature") signature: String
     ):Single<Result<CertOrder>>
 
@@ -92,10 +94,10 @@ interface CertApi {
 
     companion object {
 
-        fun uploadFilePart(data: ByteArray, name: String, mimeType: String): MultipartBody.Part {
+        fun uploadFilePart(data: ByteArray, fileName: String, mimeType: String,name:String="file"): MultipartBody.Part {
             return MultipartBody.Part.createFormData(
-                    "file",
                     name,
+                    fileName,
                     RequestBody.create(
                             MediaType.parse(mimeType),
                             data

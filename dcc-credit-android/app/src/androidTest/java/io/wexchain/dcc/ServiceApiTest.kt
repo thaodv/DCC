@@ -183,7 +183,9 @@ class ServiceApiTest {
                         orderId = order.orderId,
                         realName = name,
                         certNo = id,
-                        file = CertApi.uploadFilePart(mockPic, "user.jpg", "image/jpeg"),
+                        personalPhoto = CertApi.uploadFilePart(mockPic, "user.jpg", "image/jpeg","personalPhoto"),
+                        frontPhoto = CertApi.uploadFilePart(mockPic, "front.jpg", "image/jpeg","frontPhoto"),
+                        backPhoto = CertApi.uploadFilePart(mockPic, "back.jpg", "image/jpeg","backPhoto"),
                         signature = ParamSignatureUtil.sign(keyPair.private, mapOf<String, String>(
                                 "address" to credentials.address,
                                 "orderId" to order.orderId.toString(),

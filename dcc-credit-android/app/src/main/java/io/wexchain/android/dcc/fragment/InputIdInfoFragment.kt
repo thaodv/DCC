@@ -16,6 +16,7 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.vm.EditIdCardInfoVm
+import io.wexchain.android.dcc.vm.domain.IdCardCertData
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.idverify.IdVerifyHelper.Companion.SIDE_BACK
@@ -118,7 +119,7 @@ class InputIdInfoFragment : BindFragment<FragmentEditIdInfoBinding>() {
     }
 
     interface Listener {
-        fun onProceed(idCardEssentialData: IdCardEssentialData)
+        fun onProceed(idCardCertData: IdCardCertData)
     }
 
     companion object {
