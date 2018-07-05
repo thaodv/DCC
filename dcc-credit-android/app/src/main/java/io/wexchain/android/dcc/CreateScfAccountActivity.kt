@@ -28,7 +28,11 @@ class CreateScfAccountActivity : BaseCompatActivity() {
     private fun initClicks() {
         findViewById<View>(R.id.btn_confirm).setOnClickListener {
             val code = findViewById<EditText>(R.id.et_input_invite_code).text.toString()
-            registerScfAccount(if(code.isEmpty()) null else code)
+            if(code.isEmpty()){
+                toast("邀请码不能为空")
+            }else {
+                registerScfAccount(code)
+            }
         }
         findViewById<View>(R.id.ib_scan_code).setOnClickListener {
             requestScanCode()
