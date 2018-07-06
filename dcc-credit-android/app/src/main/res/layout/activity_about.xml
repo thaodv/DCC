@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="io.wexchain.android.dcc.AboutActivity"
+    android:orientation="vertical"
     >
 
     <include
@@ -13,17 +14,10 @@
         layout="@layout/include_toolbar"
         />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_content_horizontal"
-        android:layout_marginRight="@dimen/margin_content_horizontal"
-        android:lineSpacingMultiplier="1.5"
-        android:text="@string/app_introduction_description"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="17sp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        />
+    <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
 
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

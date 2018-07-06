@@ -190,8 +190,10 @@ class ServiceApiTest {
                                 "address" to credentials.address,
                                 "orderId" to order.orderId.toString(),
                                 "realName" to name,
-                                "certNo" to id
-                        ))
+                                "certNo" to id,
+                                "version" to "1.1.0"
+                        )),
+                        version = "1.1.0"
                 )
                 .compose(Result.checked())
                 .blockingGet()

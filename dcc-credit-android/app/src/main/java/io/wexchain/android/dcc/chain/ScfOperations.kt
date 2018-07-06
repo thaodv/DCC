@@ -12,6 +12,7 @@ import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.android.dcc.tools.pair
 import io.wexchain.android.dcc.vm.domain.LoanScratch
+import io.wexchain.dcc.BuildConfig
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.ScfApi
@@ -100,9 +101,9 @@ object ScfOperations {
                         }
                 }
                 .flatMap { (order,pics) ->
-                    val idFrontBase64 = Base64.encodeToString(pics.first, Base64.DEFAULT)
-                    val idBackBase64 = Base64.encodeToString(pics.second, Base64.DEFAULT)
-                    val photoBase64 = Base64.encodeToString(pics.third, Base64.DEFAULT)
+                    val idFrontBase64 = Base64.encodeToString(pics.first, Base64.NO_WRAP)
+                    val idBackBase64 = Base64.encodeToString(pics.second, Base64.NO_WRAP)
+                    val photoBase64 = Base64.encodeToString(pics.third, Base64.NO_WRAP)
                     ScfOperations.withScfTokenInCurrentPassport(allowNull = "") {
                         scfApi.applyLoanCredit(
                             it,
@@ -119,7 +120,8 @@ object ScfOperations {
                             loanScratch.createTime,
                             photoBase64,
                             idFrontBase64,
-                            idBackBase64
+                            idBackBase64,
+                            BuildConfig.VERSION_NAME
                             )
                     }
                 }

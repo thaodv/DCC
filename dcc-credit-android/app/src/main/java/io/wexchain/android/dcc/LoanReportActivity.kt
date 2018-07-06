@@ -21,6 +21,7 @@ import io.wexchain.android.dcc.view.dialog.FullScreenDialog
 import io.wexchain.android.dcc.view.dialog.FullScreenDialog.Companion.makeWindowFullscreenAndTransparent
 import io.wexchain.android.dcc.view.recycler.SpacingDecoration
 import io.wexchain.dcc.BR
+import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityLoanReportBinding
 import io.wexchain.dcc.databinding.ItemLoanReportRecordBinding
@@ -80,7 +81,7 @@ class LoanReportActivity : BindActivity<ActivityLoanReportBinding>(), ItemViewCl
 
         ScfOperations
             .withScfTokenInCurrentPassport(emptyList()) {
-                App.get().scfApi.queryLoanReport(it)
+                App.get().scfApi.queryLoanReport(it,BuildConfig.VERSION_NAME)
             }
             .zipWith(Single.timer(4100,TimeUnit.MILLISECONDS), BiFunction<List<LoanReport>,Long,List<LoanReport>> { t1, t2 -> t1 })
             .observeOn(AndroidSchedulers.mainThread())
