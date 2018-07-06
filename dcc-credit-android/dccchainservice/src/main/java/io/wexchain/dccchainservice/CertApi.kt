@@ -22,7 +22,8 @@ interface CertApi {
             @Part personalPhoto: MultipartBody.Part,
             @Part frontPhoto: MultipartBody.Part,
             @Part backPhoto: MultipartBody.Part,
-            @Part("signature") signature: String
+            @Part("signature") signature: String,
+            @Part("version") version:String
     ):Single<Result<CertOrder>>
 
     @POST("dcc/endorsement/id/ocr")

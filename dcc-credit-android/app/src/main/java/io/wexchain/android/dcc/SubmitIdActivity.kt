@@ -6,10 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.postOnMainThread
-import io.wexchain.android.common.replaceFragment
-import io.wexchain.android.common.stackTrace
-import io.wexchain.android.common.toast
+import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.ScfOperations
@@ -19,6 +16,7 @@ import io.wexchain.android.dcc.vm.domain.IdCardCertData
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CertOrder
 
 class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, LivenessDetectionFragment.Listener {
@@ -63,6 +61,8 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
                     }, {
                         if (it is IllegalStateException && it.message == CertOperations.ERROR_SUBMIT_ID_NOT_MATCH) {
                             INMDialog().show(supportFragmentManager,null)
+                        }else if (it is DccChainServiceException && !it.message.isNullOrBlank()) {
+                            toast(it.message!!)
                         }
                         stackTrace(it)
                     })

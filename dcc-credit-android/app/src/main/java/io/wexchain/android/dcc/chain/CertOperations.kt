@@ -23,6 +23,7 @@ import io.wexchain.android.dcc.vm.domain.BankCardInfo
 import io.wexchain.android.dcc.vm.domain.IdCardCertData
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.android.idverify.IdCardEssentialData
+import io.wexchain.dcc.BuildConfig
 import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
@@ -146,9 +147,11 @@ object CertOperations {
                                 "address" to address,
                                 "orderId" to it.orderId.toString(),
                                 "realName" to name,
-                                "certNo" to id
+                                "certNo" to id,
+                                "version" to BuildConfig.VERSION_NAME
                             )
-                        )
+                        ),
+                        version = BuildConfig.VERSION_NAME
                     )
                     .compose(Result.checked())
             }
@@ -526,6 +529,7 @@ object CertOperations {
     fun saveIdCertData(order: CertOrder, idData: IdCardCertData) {
         certPrefs.certIdOrderId.set(order.orderId)
         certPrefs.certIdStatus.set(order.status.name)
+        certPrefs.certIdSimilarity.set(order.similarity!!)
         certPrefs.certRealName.set(idData.essentialData.name)
         certPrefs.certRealId.set(idData.essentialData.id)
         certPrefs.certIdData.set(gson.toJson(idData.essentialData))
@@ -633,25 +637,28 @@ object CertOperations {
         }
 
     private class CertPrefs(sp: SharedPreferences) : Prefs(sp) {
+        // id cert order id key changed to invalidate previous cert record ; modified@2018-07-06
+
         //report
-        val reportData = StringPref("loanReportDataList")
-        val reportUpdateTime = LongPref("loanReportUpdateTime", -1L)
+        val reportData = StringPref("loanReportDataList_v2")
+        val reportUpdateTime = LongPref("loanReportUpdateTime_v2", -1L)
 
         //id
-        val certIdOrderId = LongPref("certIdOrderId", INVALID_CERT_ORDER_ID)
+        val certIdOrderId = LongPref("certIdOrderId_v2", INVALID_CERT_ORDER_ID)
         val certIdStatus = StringPref("certIdStatus")
+        val certIdSimilarity = StringPref("certIdSimilarity")
         val certRealName = StringPref("certRealName")
         val certRealId = StringPref("certRealId")
         val certIdData = StringPref("certIdData")
 
         //bank card
-        val certBankOrderId = LongPref("certBankOrderId", INVALID_CERT_ORDER_ID)
+        val certBankOrderId = LongPref("certBankOrderId_v2", INVALID_CERT_ORDER_ID)
         val certBankStatus = StringPref("certBankStatus")
         val certBankExpired = LongPref("certBankExpired", -1L)
         val certBankCardData = StringPref("certBankCardData")
 
         //communication log
-        val certCmLogOrderId = LongPref("certCmLogOrderId", INVALID_CERT_ORDER_ID)
+        val certCmLogOrderId = LongPref("certCmLogOrderId_v2", INVALID_CERT_ORDER_ID)
         val certCmLogState = StringPref("certCmLogState")
         val certCmLogPhoneNo = StringPref("certCmLogPhoneNo")
         val certCmLogPassword = StringPref("certCmLogPassword")

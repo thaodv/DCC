@@ -96,7 +96,8 @@ interface ScfApi {
         @Field("applyDate") applyDate: Long,//否	申请时间（时间戳）
         @Field("personalPhoto") personalPhoto: String,//活体照片 urlEncode(base64(pic))
         @Field("frontPhoto") frontPhoto: String,//	身份证正面 urlEncode(base64(pic))
-        @Field("backPhoto") backPhoto: String//	身份证反面 urlEncode(base64(pic))
+        @Field("backPhoto") backPhoto: String,//	身份证反面 urlEncode(base64(pic))
+        @Field("version") version:String
     ): Single<Result<String>>
 
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
@@ -138,9 +139,12 @@ interface ScfApi {
         @Query("chainOrderId") chainOrderId: Long//否	链上订单id
     ):Single<ResponseBody>
 
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @POST("secure/loan/queryReport")
+    @FormUrlEncoded
     fun queryLoanReport(
-        @Header(ScfApi.HEADER_TOKEN) token: String?
+        @Header(ScfApi.HEADER_TOKEN) token: String?,
+        @Field("version") version: String
     ):Single<Result<List<LoanReport>>>
 
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")

@@ -12,6 +12,7 @@ import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.android.dcc.tools.pair
 import io.wexchain.android.dcc.vm.domain.LoanScratch
+import io.wexchain.dcc.BuildConfig
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.ScfApi
@@ -119,7 +120,8 @@ object ScfOperations {
                             loanScratch.createTime,
                             photoBase64,
                             idFrontBase64,
-                            idBackBase64
+                            idBackBase64,
+                            BuildConfig.VERSION_NAME
                             )
                     }
                 }
