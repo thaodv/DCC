@@ -100,9 +100,9 @@ object ScfOperations {
                         }
                 }
                 .flatMap { (order,pics) ->
-                    val idFrontBase64 = Base64.encodeToString(pics.first, Base64.DEFAULT)
-                    val idBackBase64 = Base64.encodeToString(pics.second, Base64.DEFAULT)
-                    val photoBase64 = Base64.encodeToString(pics.third, Base64.DEFAULT)
+                    val idFrontBase64 = Base64.encodeToString(pics.first, Base64.NO_WRAP)
+                    val idBackBase64 = Base64.encodeToString(pics.second, Base64.NO_WRAP)
+                    val photoBase64 = Base64.encodeToString(pics.third, Base64.NO_WRAP)
                     ScfOperations.withScfTokenInCurrentPassport(allowNull = "") {
                         scfApi.applyLoanCredit(
                             it,
