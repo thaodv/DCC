@@ -17,4 +17,7 @@ object RequestCodes {
     const val PASSPORT_REQUIRED = 0x5001
     const val AUTH_KEY_REQUIRED = 0x5002
     const val SET_LOCAL_PROTECT = 0x5003
+
+    const val CANCLE_TRANSACTION = 0x5005
+    const val Edit_TRANSACTION = 0x5006
 }

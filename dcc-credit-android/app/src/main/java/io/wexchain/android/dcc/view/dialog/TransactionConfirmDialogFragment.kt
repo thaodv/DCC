@@ -21,6 +21,7 @@ import io.wexchain.digitalwallet.EthsTransactionScratch
  * Created by sisel on 2018/1/22.
  */
 class TransactionConfirmDialogFragment : DialogFragment() {
+    var isEdit=false
 
     private lateinit var binding: DialogConfirmTransactionBinding
 
@@ -33,7 +34,7 @@ class TransactionConfirmDialogFragment : DialogFragment() {
         val scratch = getScratch()
         val app = App.get()
         val passport = app.passportRepository.getCurrentPassport()!!
-        val vm = TransactionConfirmVm(scratch, passport, app.assetsRepository)
+        val vm = TransactionConfirmVm(scratch, passport, app.assetsRepository,isEdit)
         vm.syncProtect(this)
         vm.txSentEvent.observe(this, Observer {
             it?.let {
@@ -49,6 +50,8 @@ class TransactionConfirmDialogFragment : DialogFragment() {
             it?.let {
                 toast("转账提交失败")
             }
+            if(isEdit) activity?.finish()
+
         })
         vm.busySendingEvent.observe(this, Observer {
             it?.let {
@@ -110,11 +113,12 @@ class TransactionConfirmDialogFragment : DialogFragment() {
     companion object {
         const val ARG_SCRATCH = "argument_transaction_scratch"
 
-        fun create(ethsTransactionScratch: EthsTransactionScratch): TransactionConfirmDialogFragment {
+        fun create(ethsTransactionScratch: EthsTransactionScratch,isEdit:Boolean=false): TransactionConfirmDialogFragment {
             return TransactionConfirmDialogFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_SCRATCH, ethsTransactionScratch)
                 }
+                this.isEdit=isEdit
             }
         }
     }

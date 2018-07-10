@@ -170,7 +170,7 @@ class App : MultiDexApplication() {
 
 
         private lateinit var instance: WeakReference<App>
-
+@JvmStatic
         fun get(): App = instance.get()!!
     }
 

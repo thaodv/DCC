@@ -41,13 +41,12 @@ abstract class EthCurrencyAgent(
     fun sendTransferTransaction(from: Credentials, to: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, remarks: String? = null): Single<Pair<BigInteger,String>> {
         return rpcAgent.sendTransaction(getNonce(from.address), { nonce -> encodeTransfer(nonce, from, to, amount, gasPrice, gasLimit, remarks) })
     }
-    /**
+   /* *//**
      * @return TxId of successfully submitted transaction 编辑撤销转账接口
      */
-   /* fun editTransferTransaction(from: Credentials, to: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, remarks: String? = null): Single<String> {
-       // return rpcAgent.sendTransaction(getNonce(from.address), { nonce -> encodeTransfer(nonce, from, to, amount, gasPrice, gasLimit, remarks) })
+    fun editTransferTransaction(nonceo: Single<BigInteger>,from: Credentials, to: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, remarks: String? = null): Single<Pair<BigInteger,String>> {
+        return rpcAgent.sendTransaction(nonceo, { nonce -> encodeTransfer(nonce, from, to, amount, gasPrice, gasLimit, remarks) })
     }
-    */
     /**
      * @param address the address queried
      * @param start block

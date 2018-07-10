@@ -29,6 +29,9 @@ fun extractStandardEthAddress(text: String): String? {
 fun computeEthTxFee(price: BigDecimal, limit: BigInteger): BigDecimal {
     return (price.scaleByPowerOfTen(9) * limit.toBigDecimal()).scaleByPowerOfTen(-18).stripTrailingZeros()
 }
+fun computeEthTxFeebyW(price: BigInteger, limit: BigInteger): BigDecimal {
+    return (price * limit).toBigDecimal().scaleByPowerOfTen(-18).stripTrailingZeros()
+}
 
 private val g = BigDecimal("1000000000")
 

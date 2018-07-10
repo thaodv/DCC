@@ -11,10 +11,14 @@ import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.android.common.SingleLiveEvent
+import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.tools.SharedPreferenceUtil
+import io.wexchain.android.dcc.tools.TransHelper
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.UseProtect
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
+import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.EthsTransactionScratch
 import io.wexchain.digitalwallet.util.gweiTowei
 import java.math.BigDecimal
@@ -26,7 +30,8 @@ import java.math.BigInteger
 class TransactionConfirmVm(
         val tx: EthsTransactionScratch,
         val passport: Passport,
-        val assetsRepository: AssetsRepository
+        val assetsRepository: AssetsRepository,
+var isedit:Boolean=false
 ):UseProtect {
     override val type = ObservableField<LocalProtectType>()
     override val protectChallengeEvent = SingleLiveEvent<(Boolean) -> Unit>()
@@ -124,9 +129,30 @@ class TransactionConfirmVm(
                             p.credential
                         }
                         .observeOn(Schedulers.io())
-                        .flatMap {
+                        .flatMap {cre->
                             val price = gweiTowei(scratch.gasPrice)
-                            agent.sendTransferTransaction(it, scratch.to, dc.toIntExact(scratch.amount), price, scratch.gasLimit, scratch.remarks)
+
+                            if(dc.chain== Chain.publicEthChain){//公链
+                               val eth= SharedPreferenceUtil.get(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING) as? EthsTransaction
+                                if (null!=eth){
+                                    if(isedit||scratch.CancelType){//是否是编辑撤销操作 默认不是
+                                        agent.editTransferTransaction(Single.just(eth.nonce),cre, scratch.to, dc.toIntExact(scratch.amount), price, scratch.gasLimit, scratch.remarks)
+                                    }else{
+                                    agent.getNonce(p.address).flatMap {
+                                        if (it>eth.nonce){
+                                            agent.sendTransferTransaction(cre, scratch.to, dc.toIntExact(scratch.amount), price, scratch.gasLimit, scratch.remarks)
+                                        }else{
+                                                Single.error<Pair<BigInteger,String>>(IllegalStateException(""))
+                                        }
+                                    }
+                                    }
+                                }else{
+                                    agent.sendTransferTransaction(cre, scratch.to, dc.toIntExact(scratch.amount), price, scratch.gasLimit, scratch.remarks)
+                                }
+                            }else{
+                                agent.sendTransferTransaction(cre, scratch.to, dc.toIntExact(scratch.amount), price, scratch.gasLimit, scratch.remarks)
+                            }
+
                         }
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe {
@@ -137,7 +163,8 @@ class TransactionConfirmVm(
                         }
                         .subscribe({
                             scratch.nonce=it.first
-                            txSentEvent.value = scratch to it.second
+                           txSentEvent.value = scratch to it.second
+                            TransHelper.afterTransSuc(scratch,it.second)
                         }, {
                             txSendFailEvent.value = it.message?:"提交交易失败"
                         })
@@ -145,4 +172,6 @@ class TransactionConfirmVm(
             }
         }
     }
+
+
 }

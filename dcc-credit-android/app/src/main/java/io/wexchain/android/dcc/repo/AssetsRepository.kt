@@ -146,6 +146,7 @@ class AssetsRepository(
 
     @MainThread
     fun pushPendingTx(ethsTransaction: EthsTransaction) {
+        removePendingTx("",ethsTransaction.nonce)
         pendingTxList.value = (pendingTxList.value ?: emptyList()).toMutableList().apply {
             add(0, ethsTransaction)
         }
@@ -154,6 +155,10 @@ class AssetsRepository(
     @MainThread
     fun removePendingTx(txId: String) {
         pendingTxList.value = (pendingTxList.value ?: emptyList()).filter { it.txId != txId }
+    }
+    @MainThread
+    fun removePendingTx(txId: String,nonce:BigInteger) {
+        pendingTxList.value = (pendingTxList.value ?: emptyList()).filter { it.txId != txId }.filter { it.nonce != nonce }
     }
 
     fun setPinnedList(pinnedList: List<DigitalCurrency>) {

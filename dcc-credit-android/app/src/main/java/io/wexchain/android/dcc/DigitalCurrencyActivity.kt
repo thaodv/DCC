@@ -12,6 +12,8 @@ import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.tools.SharedPreferenceUtil
+import io.wexchain.android.dcc.tools.TransHelper
 import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.TransactionRecordAdapter
@@ -62,38 +64,22 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
 //    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            RequestCodes.CREATE_TRANSACTION -> {
+       /* when (requestCode) {
+            RequestCodes.CREATE_TRANSACTION,RequestCodes.CANCLE_TRANSACTION -> {
                 val txId = data?.getStringExtra(Extras.EXTRA_DIGITAL_TRANSACTION_ID)
                 val scratch = data?.getSerializableExtra(Extras.EXTRA_DIGITAL_TRANSACTION_SCRATCH) as? EthsTransactionScratch
-                if (resultCode == ResultCodes.RESULT_OK && txId != null && scratch != null) {
-                    App.get().assetsRepository.pushPendingTx(EthsTransaction(
-                            digitalCurrency = scratch.currency,
-                            txId = txId,
-                            from = scratch.from,
-                            to = scratch.to,
-                            nonce=scratch.nonce,
-                            amount = scratch.currency.toIntExact(scratch.amount),
-                            transactionType = EthsTransaction.TYPE_TRANSFER,
-                            remarks = scratch.remarks,
-                            time = -1L,
-                            blockNumber = -1L,
-                            gas = scratch.gasLimit,
-                            gasUsed = BigInteger.ZERO,
-                            gasPrice = gweiTowei(scratch.gasPrice),
-                            status = EthsTransaction.Status.PENDING
-                    ))
-                }
+                TransHelper.afterTransSuc(scratch,txId)
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
-        }
+        }*/
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onItemClick(item: EthsTransaction?, position: Int, viewId: Int) {
         item ?: return
-        startActivity(Intent(this, DigitalTransactionDetailActivity::class.java).apply {
+        startActivityForResult(Intent(this, DigitalTransactionDetailActivity::class.java).apply {
             putExtra(Extras.EXTRA_DIGITAL_TRANSACTION, item)
-        })
+        },RequestCodes.CANCLE_TRANSACTION)
     }
 
     private fun initVm() {

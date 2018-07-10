@@ -92,10 +92,11 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
                         Single
                                 .zip(pl.map {
                                     val txhash = it.txId
+                                    val nn=it.nonce
                                     agent.transactionReceipt(txhash)
                                             .observeOn(AndroidSchedulers.mainThread())
                                             .doOnSuccess {
-                                                assetsRepository.removePendingTx(txhash)
+                                                assetsRepository.removePendingTx(txhash,nn)
                                                 pendingTxDoneEvent.value = txhash
                                             }
                                             .map { txhash }

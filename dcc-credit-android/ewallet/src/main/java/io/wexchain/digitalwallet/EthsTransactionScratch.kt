@@ -11,16 +11,18 @@ import java.math.BigInteger
 data class EthsTransactionScratch(
         val currency: DigitalCurrency,
         val from: String,
-        val to: String,
+        var to: String,
         /**
          * in currency unit with decimals
          */
-        val amount: BigDecimal,
-        val gasPrice: BigDecimal,
-        val gasLimit: BigInteger,
+        var amount: BigDecimal,
+        var gasPrice: BigDecimal,
+        var gasLimit: BigInteger,
         val remarks: String? = null,
         val transferFeeRate: BigDecimal? = null,
-        var nonce: BigInteger=BigInteger("1")
+        var nonce: BigInteger=BigInteger("1"),
+
+         var CancelType:Boolean=false //默认不是撤销操作
 
         ) : Serializable {
     /**

@@ -58,7 +58,8 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
             RequestCodes.CHOOSE_BENEFICIARY_ADDRESS -> {
                 if (resultCode == ResultCodes.RESULT_OK) {
                     val vm = binding.vm
-                    val ba = data?.getSerializableExtra(Extras.EXTRA_BENEFICIARY_ADDRESS) as? BeneficiaryAddress
+                    val ba =
+                        data?.getSerializableExtra(Extras.EXTRA_BENEFICIARY_ADDRESS) as? BeneficiaryAddress
                     if (vm != null && ba != null) {
                         vm.address.set(ba)
                     }
@@ -89,7 +90,7 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
                 if (it != -1) {
                     binding.etInputVol.hideIme()
                     binding.etInputVol.clearFocus()
-                }else{
+                } else {
                     binding.etInputVol.requestFocus()
                 }
             }
@@ -133,8 +134,8 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
         }
         binding.tvAgreementNoticeLink.setOnClickListener {
             product?.agreementTemplateUrl?.let {
-                navigateTo(ViewPdfActivity::class.java){
-                    putExtra(Extras.EXTRA_PDF_URL,it)
+                navigateTo(ViewPdfActivity::class.java) {
+                    putExtra(Extras.EXTRA_PDF_URL, it)
                 }
             }
         }
@@ -170,9 +171,9 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
             .subscribe({ _ ->
                 toast("提交贷款申请成功")
                 navigateTo(LoanSubmitResultActivity::class.java)
-            },{
+            }, {
                 if (it is DccChainServiceException) {
-                    Pop.toast(it.message?:"系统错误",this)
+                    Pop.toast(it.message ?: "系统错误", this)
                 }
             })
     }
@@ -206,9 +207,9 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
             }
             .subscribe({ _ ->
                 toast("取消成功")
-            },{
+            }, {
                 if (it is DccChainServiceException) {
-                    Pop.toast(it.message?:"系统错误",this)
+                    Pop.toast(it.message ?: "系统错误", this)
                 }
             })
     }
