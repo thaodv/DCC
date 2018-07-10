@@ -13,12 +13,11 @@ import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardroun
 import io.wexchain.dcc.marketing.repository.LastLoginTimeRepository;
 import io.wexchain.dcc.marketing.repository.MiningRewardRoundItemRepository;
 import io.wexchain.dcc.marketing.repository.MiningRewardRoundRepository;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.Validate;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -58,6 +57,8 @@ public class MiningRewardRoundServiceImpl implements MiningRewardRoundService {
 
     private String miningActivityCode = "10004";
 
+    private static final int PAGE_SIZE = 200;
+
     @Override
     public Optional<MiningRewardRound> getMiningRewardRoundNullable(Date roundTime) {
         return Optional.ofNullable(miningRewardRoundRepository.findByRoundTime(roundTime));
@@ -71,10 +72,8 @@ public class MiningRewardRoundServiceImpl implements MiningRewardRoundService {
         MiningRewardRound miningRewardRound = getMiningRewardRoundNullable(roundTime)
                 .orElseGet(() -> transactionTemplate.execute(transactionStatus -> {
 
-            List<LastLoginTime> loginList =
-                    lastLoginTimeRepository.findByLastLoginTimeAfter(DateTime.now().minusHours(48).toDate());
-            if (CollectionUtils.isEmpty(loginList)) {
-                logger.info("No user login in latest 48 hours, skip reward round");
+            long totalCount = lastLoginTimeRepository.count();
+            if (totalCount == 0) {
                 MiningRewardRound newRound = new MiningRewardRound();
                 newRound.setRoundTime(roundTime);
                 newRound.setStatus(MiningRewardRoundStatus.SKIPPED);
@@ -88,16 +87,20 @@ public class MiningRewardRoundServiceImpl implements MiningRewardRoundService {
             newRound.setActivity(activity);
             newRound =  miningRewardRoundRepository.save(newRound);
 
-            List<MiningRewardRoundItem> itemList = new ArrayList<>(loginList.size());
-            for (LastLoginTime lastLoginTime : loginList) {
-                MiningRewardRoundItem item = new MiningRewardRoundItem();
-                item.setAddress(lastLoginTime.getAddress());
-                item.setStatus(MiningRewardRoundItemStatus.CREATED);
-                item.setMiningRewardRound(newRound);
-                itemList.add(item);
+            long totalPage = (totalCount + PAGE_SIZE - 1) / PAGE_SIZE;
+            for (int page = 0; page <= totalPage; page++) {
+                Page<LastLoginTime> pageResult = lastLoginTimeRepository.findAll(PageRequest.of(page, PAGE_SIZE));
+                List<LastLoginTime> loginList = pageResult.getContent();
+                List<MiningRewardRoundItem> itemList = new ArrayList<>(loginList.size());
+                for (LastLoginTime lastLoginTime : loginList) {
+                    MiningRewardRoundItem item = new MiningRewardRoundItem();
+                    item.setAddress(lastLoginTime.getAddress());
+                    item.setStatus(MiningRewardRoundItemStatus.CREATED);
+                    item.setMiningRewardRound(newRound);
+                    itemList.add(item);
+                }
+                miningRewardRoundItemRepository.saveAll(itemList);
             }
-            miningRewardRoundItemRepository.saveAll(itemList);
-
             return newRound;
         }));
 

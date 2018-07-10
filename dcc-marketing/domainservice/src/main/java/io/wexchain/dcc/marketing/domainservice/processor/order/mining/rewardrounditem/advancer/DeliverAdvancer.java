@@ -58,6 +58,10 @@ public class DeliverAdvancer extends AbstractAdvancer<
 		if (Integer.compare(candyNum, maxCandyNum) >= 0) {
 			return new AdvancedResult<>(new TriggerBehavior<>(MiningRewardRoundItemTrigger.SKIP));
 		}
+		if (rewardRoundItem.getScoreSnapshot() == null ||
+				rewardRoundItem.getScoreSnapshot().compareTo(BigDecimal.ZERO) == 0) {
+			return new AdvancedResult<>(new TriggerBehavior<>(MiningRewardRoundItemTrigger.SKIP));
+		}
 		BigDecimal totalScore = miningRewardRoundItemRepository
 				.sumScoreByRoundId(rewardRoundItem.getMiningRewardRound().getId());
 		return new AdvancedResult<>(new TriggerBehavior<>(MiningRewardRoundItemTrigger.DELIVER, item -> {

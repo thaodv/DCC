@@ -21,4 +21,6 @@ public interface MiningRewardRecordService {
     Page<MiningRewardRecord> queryMiningRewardRecordPage(QueryMiningRewardRecordPageRequest request);
 
 	List<EcoRewardRule> queryRewardRule(QueryRewardRuleRequest request);
+
+    void signIn(String address);
 }

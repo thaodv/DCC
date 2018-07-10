@@ -1,10 +1,29 @@
 package io.wexchain.dcc.marketing.domainservice.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionTemplate;
+
 import com.godmonth.status.executor.intf.OrderExecutor;
 import com.wexmarket.topia.commons.basic.exception.ErrorCodeValidate;
-import io.wexchain.dcc.cert.sdk.service.CertService;
-import io.wexchain.dcc.marketing.api.constant.*;
-import io.wexchain.dcc.marketing.api.model.request.*;
+
+import io.wexchain.dcc.marketing.api.constant.ActivityStatus;
+import io.wexchain.dcc.marketing.api.constant.MarketingErrorCode;
+import io.wexchain.dcc.marketing.api.constant.RedeemTokenQualification;
+import io.wexchain.dcc.marketing.api.constant.RedeemTokenStatus;
+import io.wexchain.dcc.marketing.api.constant.RestrictionType;
+import io.wexchain.dcc.marketing.api.model.request.ApplyBonusRequest;
+import io.wexchain.dcc.marketing.api.model.request.GetRedeemTokenQualificationRequest;
+import io.wexchain.dcc.marketing.api.model.request.QueryIdRestrictionRequest;
+import io.wexchain.dcc.marketing.api.model.request.QueryRedeemTokenRequest;
+import io.wexchain.dcc.marketing.api.model.request.RedeemTokenRequest;
 import io.wexchain.dcc.marketing.domain.IdRestriction;
 import io.wexchain.dcc.marketing.domain.RedeemToken;
 import io.wexchain.dcc.marketing.domain.Scenario;
@@ -15,15 +34,6 @@ import io.wexchain.dcc.marketing.domainservice.processor.order.redeemtoken.Redee
 import io.wexchain.dcc.marketing.repository.IdRestrictionRepository;
 import io.wexchain.dcc.marketing.repository.RedeemTokenRepository;
 import io.wexchain.dcc.marketing.repository.query.RedeemTokenQueryBuilder;
-import org.apache.commons.lang3.exception.ContextedRuntimeException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.support.TransactionTemplate;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * RedeemTokenServiceImpl
@@ -48,8 +58,6 @@ public class RedeemTokenServiceImpl implements RedeemTokenService {
     @Resource(name = "redeemTokenExecutor")
     private OrderExecutor<RedeemToken, RedeemTokenInstruction> redeemTokenExecutor;
 
-    @Autowired
-    private CertService certService;
 
     @Autowired
     private ChainOrderService chainOrderService;

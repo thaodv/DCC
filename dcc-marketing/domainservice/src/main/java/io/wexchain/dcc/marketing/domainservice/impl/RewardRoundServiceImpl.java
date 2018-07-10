@@ -106,16 +106,22 @@ public class RewardRoundServiceImpl implements RewardRoundService {
         RewardRound rewardRound = findRewardRoundByBonusDay(trimRoundTime.toDate())
                 .orElseThrow(() -> new ContextedRuntimeException("轮次不存在"));
         List<RewardDelivery> rewardDeliveryList =
-                rewardDeliveryRepository.findByRewardRoundId(rewardRound.getId());
-        Map<String, RewardDelivery> deliveryMap =
-                rewardDeliveryList.stream().collect(Collectors.toMap(RewardDelivery::getBeneficiaryAddress, a -> a));
-        List<Map<String, Object>> actionList = rewardActionRecordRepository.sumScoreGroupByAddress(rewardRound.getId());
+                rewardDeliveryRepository.findTop10ByRewardRoundIdOrderByAmountDesc(rewardRound.getId());
+        List<String> addressList = rewardDeliveryList.stream().map(RewardDelivery::getBeneficiaryAddress)
+                .collect(Collectors.toList());
+        List<Map<String, Object>> actionList = rewardActionRecordRepository.sumScoreGroupByAddressAndAddressIn(
+                rewardRound.getId(), addressList);
         List<EcoRewardRankVo> voList = new ArrayList<>();
-        for (Map<String, Object> action : actionList) {
+
+        for (RewardDelivery delivery : rewardDeliveryList) {
             EcoRewardRankVo vo = new EcoRewardRankVo();
-            vo.setAddress(action.get("address") + "");
-            vo.setScore(new BigDecimal(action.get("totalScore") + ""));
-            vo.setAmount(deliveryMap.get(vo.getAddress()).getAmount());
+            vo.setAddress(delivery.getBeneficiaryAddress());
+            actionList.forEach(map -> {
+                if (map.get("address").toString().equalsIgnoreCase(delivery.getBeneficiaryAddress())) {
+                    vo.setScore(new BigDecimal(map.get("totalScore") + ""));
+                }
+            });
+            vo.setAmount(delivery.getAmount());
             voList.add(vo);
         }
         return voList;

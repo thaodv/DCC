@@ -1,23 +1,25 @@
 package io.wexchain.dcc.marketing.domainservice.function.miningevent.impl;
 
 import com.godmonth.status.executor.intf.OrderExecutor;
-import io.wexchain.dcc.marketing.common.constant.MiningActionRecordStatus;
-import io.wexchain.dcc.marketing.domain.EcoRewardRule;
-import io.wexchain.dcc.marketing.domain.LastLoginTime;
+import com.wexmarket.topia.commons.basic.competition.LockTemplate2;
 import io.wexchain.dcc.marketing.domain.MiningRewardRecord;
 import io.wexchain.dcc.marketing.domainservice.EcoRewardRuleService;
 import io.wexchain.dcc.marketing.domainservice.MiningRewardRecordService;
+import io.wexchain.dcc.marketing.domainservice.function.chain.ChainOrderService;
 import io.wexchain.dcc.marketing.domainservice.function.miningevent.MiningEventHandler;
 import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.MiningRewardRecordInstruction;
+import io.wexchain.dcc.marketing.repository.IdRestrictionRepository;
 import io.wexchain.dcc.marketing.repository.LastLoginTimeRepository;
 import io.wexchain.dcc.marketing.repository.MiningRewardRecordRepository;
 import io.wexchain.notify.domain.dcc.LoginEvent;
-import org.apache.commons.lang3.Validate;
-import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 
 /**
  * MiningLoginEventHandler
@@ -25,6 +27,8 @@ import javax.annotation.Resource;
  * @author zhengpeng
  */
 public class MiningLoginEventHandler implements MiningEventHandler {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     private String eventName;
 
@@ -46,6 +50,18 @@ public class MiningLoginEventHandler implements MiningEventHandler {
     @Autowired
     private LastLoginTimeRepository lastLoginTimeRepository;
 
+    @Autowired
+    private ChainOrderService chainOrderService;
+
+    @Autowired
+    private IdRestrictionRepository idRestrictionRepository;
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    @Autowired
+    @Qualifier("cronLockTemplate")
+    private LockTemplate2 lockTemplate;
+
     @Override
     public boolean canHandle(Object obj) {
         return obj instanceof LoginEvent;
@@ -56,41 +72,7 @@ public class MiningLoginEventHandler implements MiningEventHandler {
         if (!(obj instanceof LoginEvent)) {
             return null;
         }
-        LoginEvent event = (LoginEvent) obj;
-
-        LastLoginTime lastLoginTime = lastLoginTimeRepository.findByAddress(event.getAddress());
-        if (lastLoginTime != null) {
-            DateTime loginDateTime = new DateTime(event.getLoginDate()).withTimeAtStartOfDay();
-            DateTime lastLoginDateTime = new DateTime(lastLoginTime.getLastLoginTime()).withTimeAtStartOfDay();
-            if (loginDateTime.getMillis() <= lastLoginDateTime.getMillis()) {
-                return null;
-            }
-        }
-
-        EcoRewardRule rule = ecoRewardRuleService.queryEcoRewardRuleByEventName(eventName).get(0);
-        Validate.notNull(rule, "Login event rule is null, even address:{}", event.getAddress());
-
-        MiningRewardRecord rewardRecord = transactionTemplate.execute(status -> {
-            if (lastLoginTime != null) {
-                lastLoginTime.setLastLoginTime(event.getLoginDate());
-                lastLoginTimeRepository.save(lastLoginTime);
-            } else {
-                LastLoginTime newOne = new LastLoginTime();
-                newOne.setAddress(event.getAddress());
-                newOne.setLastLoginTime(event.getLoginDate());
-                lastLoginTimeRepository.save(newOne);
-            }
-            MiningRewardRecord newRewardRecord = new MiningRewardRecord();
-            newRewardRecord.setScore(rule.getScore());
-            newRewardRecord.setAddress(event.getAddress());
-            newRewardRecord.setStatus(MiningActionRecordStatus.ACCEPTED);
-            newRewardRecord.setRewardRule(rule);
-            return miningRewardRecordRepository.save(newRewardRecord);
-        });
-
-        miningRwdRecExecutor.executeAsync(rewardRecord, null, null);
-
-        return rewardRecord;
+        return null;
     }
 
     public String getEventName() {

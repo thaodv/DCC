@@ -6,18 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.postOnMainThread
-import io.wexchain.android.common.replaceFragment
-import io.wexchain.android.common.stackTrace
-import io.wexchain.android.common.toast
+import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.fragment.InputIdInfoFragment
 import io.wexchain.android.dcc.fragment.LivenessDetectionFragment
+import io.wexchain.android.dcc.vm.domain.IdCardCertData
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CertOrder
 
 class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, LivenessDetectionFragment.Listener {
@@ -25,11 +24,11 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
     private val inputIdInfoFragment by lazy { InputIdInfoFragment.create(this) }
     private val livenessDetectionFragment by lazy { LivenessDetectionFragment.create(this) }
 
-    private var idCardEssentialData: IdCardEssentialData? = null
+    private var idCardCertData:IdCardCertData? = null
     private var portrait: ByteArray? = null
 
-    override fun onProceed(idCardEssentialData: IdCardEssentialData) {
-        this.idCardEssentialData = idCardEssentialData
+    override fun onProceed(idCardCertData: IdCardCertData) {
+        this.idCardCertData = idCardCertData
         enterStep(STEP_LIVENESS_DETECT)
     }
 
@@ -45,11 +44,11 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
     }
 
     private fun doSubmitIdCert() {
-        val idData = idCardEssentialData
         val photo = portrait
+        val idData = idCardCertData?.copy(photo = photo)
         val passport = App.get().passportRepository.getCurrentPassport()
         if (passport?.authKey != null && idData != null && photo != null) {
-            CertOperations.submitIdCert(passport, idData, photo)
+            CertOperations.submitIdCert(passport, idData)
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSubscribe {
                         showLoadingDialog()
@@ -58,21 +57,23 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
                         hideLoadingDialog()
                     }
                     .subscribe({
-                        handleCertResult(it, idData, photo)
+                        handleCertResult(it, idData)
                     }, {
                         if (it is IllegalStateException && it.message == CertOperations.ERROR_SUBMIT_ID_NOT_MATCH) {
                             INMDialog().show(supportFragmentManager,null)
+                        }else if (it is DccChainServiceException && !it.message.isNullOrBlank()) {
+                            toast(it.message!!)
                         }
                         stackTrace(it)
                     })
         }
     }
 
-    private fun handleCertResult(certOrder: CertOrder, idData: IdCardEssentialData, photo: ByteArray) {
+    private fun handleCertResult(certOrder: CertOrder, idData: IdCardCertData) {
         if (certOrder.status.isPassed()) {
             toast("认证成功")
             scheduleReDoLoginToRefreshMinePts()
-            CertOperations.saveIdCertData(certOrder, idData, photo)
+            CertOperations.saveIdCertData(certOrder, idData)
             finish()
         } else {
             toast("认证失败")

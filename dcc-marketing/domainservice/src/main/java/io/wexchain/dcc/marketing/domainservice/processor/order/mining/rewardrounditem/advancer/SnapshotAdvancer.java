@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
+
 public class SnapshotAdvancer extends AbstractAdvancer<MiningRewardRoundItem,
 		MiningRewardRoundItemInstruction, MiningRewardRoundItemTrigger> {
 
@@ -31,7 +33,12 @@ public class SnapshotAdvancer extends AbstractAdvancer<MiningRewardRoundItem,
 			MiningRewardRoundItem rewardRoundItem, MiningRewardRoundItemInstruction instruction, Object message) {
 
 		Account account = bookingService.getAccountByCode(rewardRoundItem.getAddress());
-
+		if (account == null) {
+			logger.warn("Mining reward item address {} is null", rewardRoundItem.getAddress());
+			return new AdvancedResult<>(new TriggerBehavior<>(MiningRewardRoundItemTrigger.SNAPSHOT, item -> {
+				item.setScoreSnapshot(BigDecimal.ZERO);
+			}), NextOperation.PAUSE);
+		}
 		return new AdvancedResult<>(new TriggerBehavior<>(MiningRewardRoundItemTrigger.SNAPSHOT, item -> {
 			item.setScoreSnapshot(account.getBalance());
 		}), NextOperation.PAUSE);
