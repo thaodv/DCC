@@ -1,5 +1,7 @@
 package io.wexchain.dccchainservice.domain
 
+import java.math.BigInteger
+
 /**
  * Created by sisel on 2018/3/17.
  */
@@ -20,7 +22,8 @@ data class PrivateTokenTransferList(
             val transactionIndex: Int,
             val fromAddress: String,
             val toAddress: String,
-            val value: String
+            val value: String,
+            val nonce: BigInteger
     )
 
     data class SortPageParam(

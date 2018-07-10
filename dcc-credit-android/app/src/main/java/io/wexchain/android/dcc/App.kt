@@ -158,7 +158,8 @@ class App : MultiDexApplication() {
                                     gas = BigInteger.ZERO,
                                     gasPrice = BigInteger.ZERO,
                                     gasUsed = BigInteger.ZERO,
-                                    status = EthsTransaction.Status.MINED
+                                    status = EthsTransaction.Status.MINED,
+                                            nonce=it.nonce
                             )
                         }
                     }

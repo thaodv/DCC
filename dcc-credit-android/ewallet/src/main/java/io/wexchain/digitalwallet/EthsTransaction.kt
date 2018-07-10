@@ -30,7 +30,7 @@ data class EthsTransaction (
         @JvmField var gasUsed: BigInteger,
         @JvmField var gasPrice: BigInteger,
         @JvmField var status: Status,
-        @JvmField val nonce: BigInteger=BigInteger("1")
+        @JvmField val nonce: BigInteger
 
 ) : Serializable {
     enum class Status {
