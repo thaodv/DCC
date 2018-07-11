@@ -52,8 +52,10 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
             )
             Single
                 .zip(
-                    agent.getGasLimit(scratch)
-                        .onErrorReturn { BigInteger.valueOf(100000) },
+                    /*agent.getGasLimit(scratch)
+                        .onErrorReturn { BigInteger.valueOf(100000) }*/
+                    Single.just(BigInteger.valueOf(200000))
+                    ,
                     agent.getGasPrice(),
                     pair()
                 )
