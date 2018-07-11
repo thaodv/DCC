@@ -55,7 +55,7 @@ public class MiningRewardRoundServiceImpl implements MiningRewardRoundService {
     @Resource(name = "miningRewardRoundExecutor")
     private OrderExecutor<MiningRewardRound, MiningRewardRoundInstruction> miningRewardRoundExecutor;
 
-    private String miningActivityCode = "10004";
+    private final static String MINING_ACTIVITY_CODE = "10004";
 
     private static final int PAGE_SIZE = 200;
 
@@ -67,10 +67,10 @@ public class MiningRewardRoundServiceImpl implements MiningRewardRoundService {
     @Override
     public MiningRewardRound createMiningRewardRound(Date roundTime) {
 
-        Activity activity = activityService.getActivityByCode(miningActivityCode);
+        Activity activity = activityService.getActivityByCode(MINING_ACTIVITY_CODE);
 
         MiningRewardRound miningRewardRound = getMiningRewardRoundNullable(roundTime)
-                .orElseGet(() -> transactionTemplate.execute(transactionStatus -> {
+            .orElseGet(() -> transactionTemplate.execute(transactionStatus -> {
 
             long totalCount = lastLoginTimeRepository.count();
             if (totalCount == 0) {
