@@ -20,7 +20,8 @@ data class EpTransactions(
             val type: String,
             val value: String,
             val from: String,
-            val to: String
+            val to: String,
+            val nonce: BigInteger
     ) {
         fun toEthsTransaction(): EthsTransaction {
             return EthsTransaction(
@@ -36,7 +37,8 @@ data class EpTransactions(
                     gas = BigInteger.ZERO,
                     gasPrice = BigInteger.ZERO,
                     gasUsed = BigInteger.ZERO,
-                    status = EthsTransaction.Status.MINED
+                    status = EthsTransaction.Status.MINED,
+                            nonce=this.nonce
             )
         }
 

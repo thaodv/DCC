@@ -19,6 +19,9 @@
             name="owner"
             type="String"
             />
+        <import type="android.view.View" />
+        <import type="io.wexchain.android.dcc.tools.TransHelper"/>
+
     </data>
     <FrameLayout
         android:layout_width="match_parent"
@@ -289,15 +292,80 @@
         </android.support.constraint.ConstraintLayout>
 
 
-    </LinearLayout>
-        <TextView
-            android:id="@+id/tv_cancel"
+    </LinearLayout >
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            android:clickable="false"
             android:layout_gravity="bottom"
-            android:text="sssssssssssssssssss"
-            android:visibility="gone"
+            android:visibility="@{TransHelper.ispenddingitem(tx.txId,tx.issuc())?View.VISIBLE:View.GONE}"
 
-            />
+            >
+
+            <LinearLayout
+                android:id="@+id/btn_to_edit"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@drawable/background_button"
+                android:clickable="true"
+                android:focusable="true"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="4dp"
+                    android:text="编辑"
+                    android:textColor="@color/text_color_button"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_to_cancle"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@drawable/background_button"
+                android:clickable="true"
+                android:focusable="true"
+
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="4dp"
+                    android:text="撤销"
+                    android:textColor="@color/text_color_button"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
     </FrameLayout>
 </layout>

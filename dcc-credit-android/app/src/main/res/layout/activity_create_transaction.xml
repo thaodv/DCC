@@ -262,6 +262,7 @@
                 />
 
         <TextView
+            android:id="@+id/ftclable"
                 visibleOrGone="@{tx.onPrivateChain}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -275,6 +276,36 @@
                 tools:text="@string/ftc_transfer_fee_hint"
                 android:textColor="@color/text_dark"
                 />
+
+               <TextView
+                   android:id="@+id/tip"
+            visibleOrGone="@{tx.isEdit}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="温馨提示："
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ftclable"
+            android:textColor="@color/text_dark"
+            />
+        <TextView
+            android:id="@+id/tipdetail"
+            visibleOrGone="@{tx.isEdit}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="用区块链技术实现编辑交易的实际业务逻辑为：用一笔新的交易（Gas Price大于原交易的Gas Price）覆盖之前的转账交易。提交成功后，原交易状态为【已撤销】，系统不显示，只显示当前提交的交易记录"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tip"
+            android:textColor="@color/text_gray"
+            />
+
 
         <Button
                 style="@style/Widget.AppCompat.Button.Dcc.Full"

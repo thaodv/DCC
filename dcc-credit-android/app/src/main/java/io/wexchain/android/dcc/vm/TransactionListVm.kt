@@ -43,11 +43,14 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
 
     private var pv: List<EthsTransaction>? = null
 
+    private var hol:List<EthsTransaction>?=null
+
     private val history = AutoLoadLiveData<List<EthsTransaction>>({
         val addr = address
         assetsRepository.getDigitalCurrencyAgent(dc)
                 .listTransactionsOf(addr, 0, Long.MAX_VALUE)
                 .doOnSuccess {
+                    hol=it
                     pv = pending.value
                 }
                 .toFlowable()
@@ -92,16 +95,35 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
                         Single
                                 .zip(pl.map {
                                     val txhash = it.txId
+                                    val nn=it.nonce
                                     agent.transactionReceipt(txhash)
                                             .observeOn(AndroidSchedulers.mainThread())
                                             .doOnSuccess {
-                                                assetsRepository.removePendingTx(txhash)
+                                                assetsRepository.removePendingTx(txhash,nn)
                                                 pendingTxDoneEvent.value = txhash
                                             }
                                             .map { txhash }
                                             .onErrorReturn {
                                                 ""
                                             }
+                                }.map {
+                                    if(hol!=null&&!hol!!.isEmpty()){
+                                        for (i in hol!!){
+                                            assetsRepository.removePendingTx(i.txId,i.nonce)
+                                        }
+                                    }
+                                  /*  val addr = address
+                                    assetsRepository.getDigitalCurrencyAgent(dc)
+                                        .listTransactionsOf(addr, 0, Long.MAX_VALUE)
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .doOnSuccess {
+                                            if (it!=null&&!it.isEmpty()){
+                                                for (i in it){
+                                                    assetsRepository.removePendingTx(i.txId,i.nonce)
+                                                }
+                                            }
+                                        }*/
+                                    it
                                 }, {
                                     it
                                 })

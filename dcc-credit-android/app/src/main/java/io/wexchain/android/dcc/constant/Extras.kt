@@ -27,4 +27,8 @@ object Extras {
     const val EXTRA_PDF_URL = "common_pdf_url"
     const val FROM_AUTH = "from_auth"
     const val FROM_IMPORT = "from_import"
+
+    const val NEEDSAVEPENDDING = "needsavependding"
+    const val SAVEDPENDDING = "savedpendding"
+    const val EXTRA_EDIT_TRANSACTION = "edit_transaction"
 }

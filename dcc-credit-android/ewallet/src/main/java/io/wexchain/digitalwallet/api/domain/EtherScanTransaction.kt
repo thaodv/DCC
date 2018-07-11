@@ -16,7 +16,7 @@ data class EtherScanTransaction(
         val blockNumber: Long,
         val timeStamp: Long,
         val hash: String,
-        val nonce: String,
+        val nonce: BigInteger,
         val blockHash: String,
         val transactionIndex: String,
         val from: String,
@@ -55,7 +55,8 @@ data class EtherScanTransaction(
                 gas = this.gas,
                 gasUsed = this.gasUsed,
                 gasPrice = this.gasPrice,
-                status = deferStatus()
+                status = deferStatus(),
+            nonce=this.nonce
         )
     }
 

@@ -10,7 +10,7 @@ import java.math.BigInteger
  * Created by sisel on 2018/1/16.
  * Ethereum standard transaction
  */
-data class EthsTransaction(
+data class EthsTransaction (
         @JvmField val digitalCurrency: DigitalCurrency,
         /**
          * tx hash
@@ -30,7 +30,7 @@ data class EthsTransaction(
         @JvmField var gasUsed: BigInteger,
         @JvmField var gasPrice: BigInteger,
         @JvmField var status: Status,
-        @JvmField val nonce: BigInteger=BigInteger("1")
+        @JvmField val nonce: BigInteger
 
 ) : Serializable {
     enum class Status {
@@ -49,6 +49,12 @@ data class EthsTransaction(
             }
         }
     }
+
+    fun issuc():Boolean{
+        return status==Status.MINED||status==Status.CONFIRMED
+    }
+
+
 
     fun txFeeStr(): String {
         return "${(Currencies.Ethereum.toDecimalAmount(gasPrice) * gasUsed.toBigDecimal()).stripTrailingZeros().toPlainString()} ${Currencies.Ethereum.symbol}"

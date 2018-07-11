@@ -12,19 +12,36 @@ import io.wexchain.android.dcc.vm.TransactionVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityCreateTransactionBinding
 import io.wexchain.digitalwallet.DigitalCurrency
+import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.EthsTransactionScratch
+import java.math.BigDecimal
 
 class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>() {
     override val contentLayoutId: Int = R.layout.activity_create_transaction
+     var isEdit=false//是否是编辑转账
+    val txVm = TransactionVm()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar(true)
-        val dc = intent.getSerializableExtra(Extras.EXTRA_DIGITAL_CURRENCY)!! as DigitalCurrency
+        var dc = intent.getSerializableExtra(Extras.EXTRA_DIGITAL_CURRENCY) as? DigitalCurrency
         val feeRate = intent.getStringExtra(Extras.EXTRA_FTC_TRANSFER_FEE_RATE)
+
+        val tx = intent.getSerializableExtra(Extras.EXTRA_EDIT_TRANSACTION) as? EthsTransaction
+        if(null!=tx){
+            isEdit=true
+            txVm.isEdit=true
+            txVm.tx=tx
+            dc=tx.digitalCurrency
+            binding.etInputAmount.setText(dc.toDecimalAmount(tx.amount).toString())
+            txVm.toAddress.set(tx.to)
+         //   binding.etInputAddress.setText(tx.to)
+         //   binding.etInputGasPrice.setText(dc.toDecimalAmount(tx.gasPrice).toString())
+        }
+        title = ("${dc!!.symbol} 转账")
         setupEvents(dc,feeRate)
         setupButtons()
-        title = ("${dc.symbol} 转账")
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -56,7 +73,6 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
                 showConfirmDialog(it)
             }
         }
-        val txVm = TransactionVm()
         binding.tx = txVm.apply {
             ensureDigitalCurrency(dc,feeRate)
             this.txProceedEvent.observe(this@CreateTransactionActivity, observer)
@@ -82,7 +98,7 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
     }
 
     private fun showConfirmDialog(ethsTransactionScratch: EthsTransactionScratch) {
-        TransactionConfirmDialogFragment.create(ethsTransactionScratch)
+        TransactionConfirmDialogFragment.create(ethsTransactionScratch,isEdit)
                 .show(supportFragmentManager, null)
     }
 }

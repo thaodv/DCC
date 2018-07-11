@@ -14,10 +14,7 @@ import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.App
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.dcc.R
-import io.wexchain.digitalwallet.Chain
-import io.wexchain.digitalwallet.Currencies
-import io.wexchain.digitalwallet.DigitalCurrency
-import io.wexchain.digitalwallet.EthsTransactionScratch
+import io.wexchain.digitalwallet.*
 import io.wexchain.digitalwallet.proxy.JuzixErc20Agent
 import io.wexchain.digitalwallet.util.*
 import java.math.BigDecimal
@@ -28,6 +25,8 @@ import java.math.BigInteger
  */
 class TransactionVm {
     private lateinit var currency: DigitalCurrency
+    var isEdit=false
+    lateinit var tx: EthsTransaction
 
     val txTitle = ObservableField<String>()
 
@@ -93,6 +92,10 @@ class TransactionVm {
                 throw IllegalStateException()
             }
         } else {
+            if(isEdit&&null!=tx){
+               // amount=tx.amount
+            }
+
             currency = dc
             txTitle.set("${dc.symbol} 转账")
             updateGasPrice()
@@ -123,7 +126,14 @@ class TransactionVm {
                 .getGasPrice()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    gasPrice.set(weiToGwei(it).stripTrailingZeros().toPlainString())
+                    var fpp=it
+                    if(isEdit){
+                         fpp = maxOf(
+                            tx.gasPrice,
+                            it + BigDecimal("0.5").scaleByPowerOfTen(9).toBigInteger()
+                        )
+                    }
+                    gasPrice.set(weiToGwei(fpp).stripTrailingZeros().toPlainString())
                     dataInvalidatedEvent.call()
                 }, {
                     stackTrace(it)
@@ -170,6 +180,7 @@ class TransactionVm {
         }
     }
 
+
     fun checkAndProceed(from: String?) {
         from ?: return
         val to = toAddress.get()
@@ -181,6 +192,13 @@ class TransactionVm {
         if (value == null || value == BigDecimal.ZERO) {
             inputNotSatisfiedEvent.value = "金额不能为空"
             return
+        }
+        if(isEdit){
+            val gasprice = gasPrice.get()?.toBigDecimalSafe()
+            if (gasprice == null || gasprice <weiToGwei(tx.gasPrice)) {
+                inputNotSatisfiedEvent.value = "Gas Price必须高于原交易的Gas price"
+                return
+            }
         }
         val dc = currency
         val isOnPrivate = onPrivateChain.get()
