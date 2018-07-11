@@ -8,12 +8,13 @@
 
     <data>
 
-        <import type="android.text.TextUtils" />
+        <import type="android.text.TextUtils"/>
 
         <variable
             name="passport"
             type="io.wexchain.android.dcc.domain.Passport"
             />
+
         <variable
             name="protect"
             type="io.wexchain.android.dcc.vm.Protect"
@@ -30,22 +31,28 @@
             layout="@layout/include_toolbar"
             />
 
+        <View
+            style="@style/DividerHorizontal"
+            android:layout_height="10dp"
+            android:background="#F8F8FF"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            />
+
         <TextView
             android:id="@+id/tv_user_avatar"
             style="@style/TextActionLine"
-            android:layout_height="88dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:text="@string/user_avatar"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             />
 
         <io.wexchain.android.dcc.view.RoundImageView
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginRight="40dp"
             android:scaleType="centerCrop"
-            app:imageUri="@{passport.avatarUri}"
             app:errorRes="@{@drawable/default_user_avatar}"
+            app:imageUri="@{passport.avatarUri}"
             app:layout_constraintBottom_toBottomOf="@id/tv_user_avatar"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_user_avatar"
@@ -66,12 +73,15 @@
 
         <View
             style="@style/DividerHorizontal"
+            android:layout_height="10dp"
+            android:background="#F8F8FF"
             app:layout_constraintTop_toBottomOf="@id/tv_user_nickname"
             />
 
         <TextView
             android:id="@+id/tv_passport_address"
             style="@style/TextActionLine"
+            android:layout_marginTop="10dp"
             android:text="@string/passport_address"
             app:layout_constraintTop_toBottomOf="@id/tv_user_nickname"
             />
@@ -102,16 +112,33 @@
 
         <View
             style="@style/DividerHorizontal"
+            android:layout_height="10dp"
+            android:background="#F8F8FF"
             app:layout_constraintTop_toBottomOf="@id/tv_modify_passport_password"
             />
 
+        <TextView
+            android:id="@+id/tv_address_book"
+            style="@style/TextActionLine"
+            android:layout_marginTop="10dp"
+            android:text="@string/address_book"
+            app:layout_constraintTop_toBottomOf="@id/tv_modify_passport_password"
+            />
+
+        <View
+            style="@style/DividerHorizontal"
+            android:layout_height="10dp"
+            android:background="#F8F8FF"
+            app:layout_constraintTop_toBottomOf="@id/tv_address_book"
+            />
 
         <TextView
             android:id="@+id/tv_passport_protect"
             style="@style/TextActionLine"
+            android:layout_marginTop="10dp"
             android:onClick="@{(v)->protect.switchProtectEnable()}"
             android:text="@string/local_protect"
-            app:layout_constraintTop_toBottomOf="@id/tv_modify_passport_password"
+            app:layout_constraintTop_toBottomOf="@id/tv_address_book"
             />
 
         <View

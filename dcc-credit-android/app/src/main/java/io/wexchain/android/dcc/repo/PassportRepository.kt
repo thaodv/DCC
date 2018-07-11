@@ -24,6 +24,7 @@ import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.repo.db.AuthKeyChangeRecord
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 import io.wexchain.android.dcc.repo.db.PassportDao
+import io.wexchain.android.dcc.repo.db.QueryHistory
 import io.wexchain.android.dcc.tools.RoomHelper
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.Wallet
@@ -36,8 +37,8 @@ import java.io.File
  *
  */
 class PassportRepository(
-    context: Context,
-    val dao: PassportDao
+        context: Context,
+        val dao: PassportDao
 ) {
 
     private val passportPrefs = PassportPrefs(context.getSharedPreferences(PASSPORT_SP_NAME, Context.MODE_PRIVATE))
@@ -47,13 +48,13 @@ class PassportRepository(
     val currAddress = currPassport.map { it?.address }.distinct()
 
     val authRecords = currPassport
-        .switchMap { it?.let { dao.listAuthRecords(it.address) } ?: MutableLiveData() }
+            .switchMap { it?.let { dao.listAuthRecords(it.address) } ?: MutableLiveData() }
 
     val authKeyChangeRecords: LiveData<List<AuthKeyChangeRecord>> = currPassport
-        .switchMap { it?.let { dao.listAuthKeyChangeRecords(it.address) } ?: MutableLiveData() }
+            .switchMap { it?.let { dao.listAuthKeyChangeRecords(it.address) } ?: MutableLiveData() }
 
     val beneficiaryAddresses: LiveData<List<BeneficiaryAddress>> = MediatorLiveData<List<BeneficiaryAddress>>().apply {
-        var list: List<BeneficiaryAddress>? = null
+        var list: List<BeneficiaryAddress>?
         var walletAddr: String? = null
         addSource(dao.listBeneficiaryAddresses()) {
             list = it
@@ -66,7 +67,7 @@ class PassportRepository(
             }
             postValue(composite)
         }
-        addSource(currAddress) {
+        /*addSource(currAddress) {
             walletAddr = it
             val addr = walletAddr
             val l = list ?: emptyList()
@@ -76,6 +77,45 @@ class PassportRepository(
                 listOf(BeneficiaryAddress(addr, WALLET_ADDR_SHORT_NAME)) + l
             }
             postValue(composite)
+        }*/
+    }
+
+    fun addOrReplaceQueryHistory(queryHistory: QueryHistory) {
+        RoomHelper.onRoomIoThread {
+            dao.addOrUpdateAddressBookQueryHistory(queryHistory)
+        }
+    }
+
+    fun getAddressBookQueryHistory(): LiveData<List<QueryHistory>> {
+        return MediatorLiveData<List<QueryHistory>>().apply {
+            addSource(dao.getAddressBookQueryHistory()) {
+                postValue(it)
+            }
+        }
+    }
+
+    fun deleteAddressBookQueryHistory() {
+        RoomHelper.onRoomIoThread {
+            dao.deleteAddressBookQueryHistory()
+        }
+    }
+
+
+    fun queryBookAddress(name: String): LiveData<List<BeneficiaryAddress>> {
+        return MediatorLiveData<List<BeneficiaryAddress>>().apply {
+            var list: List<BeneficiaryAddress>?
+            var walletAddr: String? = null
+            addSource(dao.queryAddressesByShortName(name)) {
+                list = it
+                val addr = walletAddr
+                val l = list ?: emptyList()
+                val composite = if (addr == null) {
+                    l
+                } else {
+                    listOf(BeneficiaryAddress(addr, WALLET_ADDR_SHORT_NAME)) + l
+                }
+                postValue(composite)
+            }
         }
     }
 
@@ -96,23 +136,24 @@ class PassportRepository(
 
     fun getDefaultBeneficiaryAddress(): Single<BeneficiaryAddress> {
         val defaultAddr = selectedBeneficiaryAddress.value
-        return if(defaultAddr == null){
+        return if (defaultAddr == null) {
             val walletAddr = getCurrentPassport()?.address
-            if(walletAddr == null){
+            if (walletAddr == null) {
                 Single.error<BeneficiaryAddress>(IllegalStateException())
-            }else{
+            } else {
                 Single.just(BeneficiaryAddress(walletAddr, WALLET_ADDR_SHORT_NAME))
             }
-        }else{
+        } else {
             return Single.just(defaultAddr)
-                .observeOn(RoomHelper.roomScheduler)
-                .map {
-                    dao.getBeneficiaryAddresseByAddress(defaultAddr)
-                        .first()
-                }
-                .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(RoomHelper.roomScheduler)
+                    .map {
+                        dao.getBeneficiaryAddresseByAddress(defaultAddr)
+                                .first()
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
         }
     }
+
 
     fun addAuthKeyChangedRecord(authKeyChangeRecord: AuthKeyChangeRecord) {
         RoomHelper.onRoomIoThread {
@@ -142,10 +183,10 @@ class PassportRepository(
 
         val authKey = passportPrefs.loadAuthKey()
         currPassport.value = Passport(
-            credential = Credentials.create(credential),
-            authKey = authKey,
-            avatarUri = passportPrefs.avatar.get()?.let { Uri.parse(it) },
-            nickname = passportPrefs.nickname.get()
+                credential = Credentials.create(credential),
+                authKey = authKey,
+                avatarUri = passportPrefs.avatar.get()?.let { Uri.parse(it) },
+                nickname = passportPrefs.nickname.get()
         )
         selectedBeneficiaryAddress.value = passportPrefs.defaultBeneficiaryAddress.get()
     }
@@ -164,10 +205,10 @@ class PassportRepository(
     fun saveNewPassport(credential: Credentials, password: String, authKey: AuthKey?) {
         val walletFile = EthsHelper.makeWalletFile(password, credential.ecKeyPair)
         val passport = Passport(
-            credential = credential,
-            authKey = authKey,
-            avatarUri = null,
-            nickname = null
+                credential = credential,
+                authKey = authKey,
+                avatarUri = null,
+                nickname = null
         )
         currPassport.postValue(passport)
         passportPrefs.let {
@@ -206,28 +247,28 @@ class PassportRepository(
         val passport = getCurrentPassport()!!
         val filesDir = App.get().filesDir
         return Single.just(passport to bitmap)
-            .map { (passport, bitmap) ->
-                val imgDir = File(filesDir, ChooseCutImageActivity.IMG_DIR)
-                if (!imgDir.exists()) {
-                    val mkdirs = imgDir.mkdirs()
-                    assert(mkdirs)
-                }
-                val fileName =
-                    "${passport.address}-${System.currentTimeMillis().toString(16).padStart(
-                        16,
-                        '0'
-                    )}.png"
-                val imgFile = File(filesDir, fileName)
-                imgFile.outputStream()
-                    .use {
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 87, it)
+                .map { (passport, bitmap) ->
+                    val imgDir = File(filesDir, ChooseCutImageActivity.IMG_DIR)
+                    if (!imgDir.exists()) {
+                        val mkdirs = imgDir.mkdirs()
+                        assert(mkdirs)
                     }
-                passport to Uri.fromFile(imgFile)
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSuccess {
-                updatePassportUserAvatar(it.first, it.second)
-            }
+                    val fileName =
+                            "${passport.address}-${System.currentTimeMillis().toString(16).padStart(
+                                    16,
+                                    '0'
+                            )}.png"
+                    val imgFile = File(filesDir, fileName)
+                    imgFile.outputStream()
+                            .use {
+                                bitmap.compress(Bitmap.CompressFormat.PNG, 87, it)
+                            }
+                    passport to Uri.fromFile(imgFile)
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSuccess {
+                    updatePassportUserAvatar(it.first, it.second)
+                }
     }
 
     fun updatePassportUserAvatar(passport: Passport, uri: Uri?) {
@@ -282,7 +323,7 @@ class PassportRepository(
         }
     }
 
-    var scfAccountExists:Boolean
+    var scfAccountExists: Boolean
         get() = passportPrefs.scfAccountExists.get()
         set(value) {
             passportPrefs.scfAccountExists.set(value)
@@ -305,8 +346,8 @@ class PassportRepository(
 
         @JvmStatic
         val gson = GsonBuilder()
-            .registerTypeAdapter(WalletFile::class.java, WalletFileDeserializer())
-            .create()
+                .registerTypeAdapter(WalletFile::class.java, WalletFileDeserializer())
+                .create()
 
         @JvmStatic
         fun parseWalletFile(wallet: String?) = gson.fromJson(wallet, WalletFile::class.java)
@@ -320,7 +361,7 @@ class PassportRepository(
         val authKeyAlias = StringPref(AUTH_KEY_ALIAS)
         val authKeyPublicKey = StringPref(AUTH_KEY_PUB)
         val defaultBeneficiaryAddress = StringPref(DEFAULT_BENEFICIARY_ADDRESS)
-        val scfAccountExists = BoolPref(SCF_ACCOUNT_EXISTS,false)
+        val scfAccountExists = BoolPref(SCF_ACCOUNT_EXISTS, false)
 
         fun loadAuthKey(): AuthKey? {
             val keyAlias = authKeyAlias.get()

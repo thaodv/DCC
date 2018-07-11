@@ -15,4 +15,10 @@
 
     <color name="light_dim">#c8c8ff</color>
     <color name="thin_light_blue_magenta">#f8f8ff</color>
+
+    <color name="item_decoration_title_background">#F8F8FF</color>
+    <color name="item_decoration_title_fontcolor">#5756B3</color>
+
+    <color name="indexbar_letter_color">#7FFFFFFF</color>
+
 </resources>

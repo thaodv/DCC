@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <color name="text_dark">#b7000000</color>
     <color name="lightGray">#FFCCCCCC</color>
     <color name="lightBlueMagenta">#FFBCBBE7</color>
     <color name="alphaGray">#5FCCCCCC</color>

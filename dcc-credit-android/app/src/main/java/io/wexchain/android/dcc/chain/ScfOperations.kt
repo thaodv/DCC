@@ -16,7 +16,10 @@ import io.wexchain.dcc.BuildConfig
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.ScfApi
-import io.wexchain.dccchainservice.domain.*
+import io.wexchain.dccchainservice.domain.BusinessCodes
+import io.wexchain.dccchainservice.domain.LoanChainOrder
+import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.dccchainservice.domain.ScfAccountInfo
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import io.wexchain.digitalwallet.Currencies
 import okhttp3.MediaType
@@ -251,7 +254,7 @@ object ScfOperations {
 
     fun <T> withScfTokenInCurrentPassport(): SingleTransformer<T, T> {
         val passport = App.get().passportRepository.getCurrentPassport()
-        return withScfToken<T>(passport?.address, passport?.authKey?.getPrivateKey())
+        return withScfToken(passport?.address, passport?.authKey?.getPrivateKey())
     }
 
     inline fun <T> withScfTokenInCurrentPassport(

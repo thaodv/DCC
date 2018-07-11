@@ -77,6 +77,7 @@ class App : MultiDexApplication() {
 
     private fun initData(app: App) {
         val dao = PassportDatabase.createDatabase(this).dao
+
         passportRepository = PassportRepository(app, dao)
         passportRepository.load()
         assetsRepository = AssetsRepository(
@@ -85,6 +86,9 @@ class App : MultiDexApplication() {
                 EthereumAgent(publicRpc, EthsTxAgent.by(etherScanApi)),
                 ::buildAgent
         )
+
+        //App.get().assetsRepository.putPresetCurrencies()
+
         scfTokenManager = ScfTokenManager(app)
         CertOperations.init(app)
         JuzixData.init(app)
@@ -94,26 +98,26 @@ class App : MultiDexApplication() {
     private fun initServices(app: App) {
         val networking = Networking(app, BuildConfig.DEBUG)
         this.networking = networking
-        this.commonApi = networking.createApi(CommonApi::class.java,"https://www.google.com")//url is unused
+        this.commonApi = networking.createApi(CommonApi::class.java, "https://www.google.com")//url is unused
 
         chainGateway = networking.createApi(ChainGateway::class.java, BuildConfig.GATEWAY_BASE_URL)
         certApi = networking.createApi(CertApi::class.java, BuildConfig.CHAIN_FUNC_URL)
         chainFrontEndApi = networking.createApi(ChainFrontEndApi::class.java, BuildConfig.CHAIN_FRONTEND_URL)
         privateChainApi = networking.createApi(PrivateChainApi::class.java, BuildConfig.CHAIN_EXPLORER_URL)
         marketingApi = networking.createApi(MarketingApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
-        scfApi = networking.createApi(ScfApi::class.java,BuildConfig.DCC_MARKETING_API_URL)
+        scfApi = networking.createApi(ScfApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
 
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))
         ethplorerApi = networking.createApi(EthplorerApi::class.java, EthplorerApi.API_URL)
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             val infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
             publicRpc = EthsRpcAgent.by(infuraApi)
-        }else{
+        } else {
 //        val infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
 //        publicRpc = EthsRpcAgent.by(infuraApi)
 //            val customPublicJsonRpc = networking.createApi(EthJsonRpcApi::class.java, EthJsonRpcApi.PUBLIC_RPC_URL).getPrepared()
 //            publicRpc = EthsRpcAgent.by(customPublicJsonRpc)
-            val wfJsonRpc = networking.createApi(EthJsonRpcApiWithAuth::class.java,EthJsonRpcApiWithAuth.RPC_URL)
+            val wfJsonRpc = networking.createApi(EthJsonRpcApiWithAuth::class.java, EthJsonRpcApiWithAuth.RPC_URL)
             publicRpc = EthsRpcAgent.by(wfJsonRpc)
         }
     }
@@ -127,7 +131,7 @@ class App : MultiDexApplication() {
         return when (dc.chain) {
             Chain.JUZIX_PRIVATE -> {
                 dc.contractAddress!!
-                val privateRpc = networking.createApi(EthJsonRpcApi::class.java, EthJsonRpcApi.juzixErc20RpcUrl(BuildConfig.GATEWAY_BASE_URL,dc.symbol))
+                val privateRpc = networking.createApi(EthJsonRpcApi::class.java, EthJsonRpcApi.juzixErc20RpcUrl(BuildConfig.GATEWAY_BASE_URL, dc.symbol))
                         .getPrepared()
                 JuzixErc20Agent(dc, EthsRpcAgent.by(privateRpc), txAgentBy(privateChainApi, dc))
             }

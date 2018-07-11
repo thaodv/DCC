@@ -33,6 +33,7 @@
     <string name="local_protect">本地安全保护</string>
     <string name="export_passport">备份钱包</string>
     <string name="modify_passport_password">修改钱包密码</string>
+    <string name="address_book">地址薄</string>
     <string name="about_us">关于我们</string>
     <string name="remove_passport">删除钱包(注销)</string>
 </resources>

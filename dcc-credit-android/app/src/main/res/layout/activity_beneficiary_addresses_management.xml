@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context="io.wexchain.android.dcc.BeneficiaryAddressesManagementActivity"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-    <include layout="@layout/include_toolbar"
-             android:id="@+id/toolbar"/>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="io.wexchain.android.dcc.BeneficiaryAddressesManagementActivity"
+    >
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/include_toolbar"/>
 
     <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_list"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            tools:listitem="@layout/item_beneficiary_address"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            />
+        android:id="@+id/rv_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/toolbar"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_beneficiary_address"
+        />
 
-    <Button
-            android:id="@+id/btn_add_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/content_padding_horizontal"
-            android:layout_marginRight="@dimen/content_padding_horizontal"
-            style="@style/Widget.AppCompat.Button.Dcc.Full"
-            android:text="添加收款地址"
-            android:layout_marginBottom="24dp"
-            />
-</LinearLayout>
+    <io.wexchain.android.dcc.view.addressbook.IndexBar
+        android:id="@+id/share_add_contact_sidebar"
+        android:layout_width="16dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        app:focusLetterColor="#6766CC"
+        app:letterColor="#4A4A4A"
+        app:letterSize="10sp"
+        app:letterSpacingExtra="1.4"/>
+
+
+</RelativeLayout>

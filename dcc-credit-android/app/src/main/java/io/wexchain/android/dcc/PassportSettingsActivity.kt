@@ -6,23 +6,23 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v4.app.DialogFragment
-import io.wexchain.android.dcc.base.BindActivity
+import android.support.v4.view.ViewCompat
+import android.view.*
+import com.tbruyelle.rxpermissions2.RxPermissions
+import com.wexmarket.android.passport.ResultCodes
 import io.wexchain.android.common.getViewModel
+import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
+import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.fragment.CreateProtectFragment
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportSettingsBinding
-import android.provider.MediaStore
-import android.support.v4.view.ViewCompat
-import android.view.*
-import com.tbruyelle.rxpermissions2.RxPermissions
-import com.wexmarket.android.passport.ResultCodes
-import io.wexchain.android.common.stackTrace
-import io.wexchain.android.dcc.constant.RequestCodes
 
 
 class PassportSettingsActivity: BindActivity<ActivityPassportSettingsBinding>() {
@@ -89,6 +89,9 @@ class PassportSettingsActivity: BindActivity<ActivityPassportSettingsBinding>() 
         }
         binding.tvDeletePassport.setOnClickListener {
             startActivity(Intent(this, PassportRemovalActivity::class.java))
+        }
+        binding.tvAddressBook.setOnClickListener {
+            startActivity(Intent(this, BeneficiaryAddressesManagementActivity::class.java))
         }
     }
 

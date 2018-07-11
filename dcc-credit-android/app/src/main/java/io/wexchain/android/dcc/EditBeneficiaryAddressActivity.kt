@@ -2,8 +2,9 @@ package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.EditText
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.toast
@@ -26,40 +27,41 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
+        title = "编辑地址"
         val beneficiaryAddress = ba
-        if (beneficiaryAddress == null){
+        if (beneficiaryAddress == null) {
             postOnMainThread { finish() }
-        }else{
+        } else {
             App.get().passportRepository.defaultBeneficiaryAddress.observe(this, Observer {})
             binding.etInputAddress.setText(beneficiaryAddress.address)
-            binding.etInputAddressShortName.setText(beneficiaryAddress.shortName)
-            binding.checkDefaultAddress.isChecked = App.get().passportRepository.defaultBeneficiaryAddress.value == beneficiaryAddress.address
+            binding.etAddressShortName.setText(beneficiaryAddress.shortName)
+            //binding.checkDefaultAddress.isChecked = App.get().passportRepository.defaultBeneficiaryAddress.value == beneficiaryAddress.address
             initClicks()
         }
     }
 
     private fun initClicks() {
-        binding.ibScanAddress.setOnClickListener {
+        /*binding.ibScanAddress.setOnClickListener {
             startActivityForResult(Intent(this, QrScannerActivity::class.java).apply {
                 putExtra(Extras.EXPECTED_SCAN_TYPE, QrScannerActivity.SCAN_TYPE_ADDRESS)
             }, RequestCodes.SCAN)
-        }
+        }*/
         binding.btnSave.setOnClickListener {
             val inputAddr = binding.etInputAddress.text.toString()
-            val inputShortName = binding.etInputAddressShortName.text.toString()
-            if(!isEthAddress(inputAddr)){
+            val inputShortName = binding.etAddressShortName.text.toString()
+            if (!isEthAddress(inputAddr)) {
                 toast("地址格式不符,请核对后重新输入")
-            }else if (!isAddressShortNameValid(inputShortName)){
+            } else if (!isAddressShortNameValid(inputShortName)) {
                 toast("请输入有效的简称")
-            }else{
-                val setDefault = binding.checkDefaultAddress.isChecked
+            } else {
+                //val setDefault = binding.checkDefaultAddress.isChecked
                 val passportRepository = App.get().passportRepository
-                passportRepository.addBeneficiaryAddress(BeneficiaryAddress(inputAddr,inputShortName))
-                if (setDefault) {
+                passportRepository.addBeneficiaryAddress(BeneficiaryAddress(inputAddr, inputShortName))
+                /*if (setDefault) {
                     passportRepository.setDefaultBeneficiaryAddress(inputAddr)
                 }else if(passportRepository.defaultBeneficiaryAddress.value == inputAddr){
                     passportRepository.setDefaultBeneficiaryAddress(null)
-                }
+                }*/
                 toast("修改成功")
                 finish()
             }
@@ -70,12 +72,32 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
         when (requestCode) {
             RequestCodes.SCAN -> {
                 val address = data?.getStringExtra(QrScannerActivity.EXTRA_SCAN_RESULT)
-                if (address != null ) {
+                if (address != null) {
                     findViewById<EditText>(R.id.et_input_address).setText(address)
                 }
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.menu_asset_scan, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.action_asset_scan -> {
+                startActivityForResult(Intent(this, QrScannerActivity::class.java).apply {
+                    putExtra(Extras.EXPECTED_SCAN_TYPE, QrScannerActivity.SCAN_TYPE_ADDRESS)
+                }, RequestCodes.SCAN)
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 
 }

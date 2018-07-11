@@ -3,4 +3,12 @@
     <declare-styleable name="exceed_aware">
         <attr name="state_exceeded" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="IndexBar">
+        <attr name="letterSize" format="dimension" />
+        <attr name="letterColor" format="color" />
+        <attr name="focusLetterColor" format="color" />
+        <attr name="letterSpacingExtra" format="float" />
+    </declare-styleable>
+
 </resources>

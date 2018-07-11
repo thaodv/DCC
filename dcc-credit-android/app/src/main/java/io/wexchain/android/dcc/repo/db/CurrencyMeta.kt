@@ -10,8 +10,7 @@ import io.wexchain.digitalwallet.DigitalCurrency
  * known digital currencies meta data
  * erc20 tokens only now
  */
-@Entity(tableName = CurrencyMeta.TABLE_NAME,
-        primaryKeys = [CurrencyMeta.COLUMN_CONTRACT_ADDRESS, CurrencyMeta.COLUMN_CHAIN])
+@Entity(tableName = CurrencyMeta.TABLE_NAME, primaryKeys = [CurrencyMeta.COLUMN_CONTRACT_ADDRESS, CurrencyMeta.COLUMN_CHAIN])
 data class CurrencyMeta(
         @ColumnInfo(name = COLUMN_CHAIN)
         val chain: Chain,

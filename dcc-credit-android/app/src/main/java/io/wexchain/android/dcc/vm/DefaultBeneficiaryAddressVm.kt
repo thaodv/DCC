@@ -2,12 +2,11 @@ package io.wexchain.android.dcc.vm
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
-import io.wexchain.android.common.map
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 
 class DefaultBeneficiaryAddressVm(application: Application):AndroidViewModel(application) {
+
     val defaultAddr = getApplication<App>().passportRepository.defaultBeneficiaryAddress
 
     val walletAddr = getApplication<App>().passportRepository.currAddress

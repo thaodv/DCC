@@ -11,40 +11,57 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import io.wexchain.android.dcc.repo.AssetsRepository
 
-@Database(entities = [CaAuthRecord::class, AuthKeyChangeRecord::class,CurrencyMeta::class,BeneficiaryAddress::class],
-        version = PassportDatabase.VERSION_2
+@Database(entities = [CaAuthRecord::class, AuthKeyChangeRecord::class, CurrencyMeta::class, BeneficiaryAddress::class, QueryHistory::class],
+        version = PassportDatabase.VERSION_3
 )
 @TypeConverters(Converters::class)
-abstract class PassportDatabase:RoomDatabase() {
+abstract class PassportDatabase : RoomDatabase() {
 
-    abstract val dao:PassportDao
+    abstract val dao: PassportDao
 
     companion object {
         const val DATABASE_NAME = "passport"
         const val VERSION_1 = 1
         const val VERSION_2 = 2
+        const val VERSION_3 = 3
 
-        private val migration_1_2 = object :Migration(VERSION_1, VERSION_2){
+        private val migration_1_2 = object : Migration(VERSION_1, VERSION_2) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("CREATE TABLE IF NOT EXISTS `${BeneficiaryAddress.TABLE_NAME}` (`address` TEXT NOT NULL, `short_name` TEXT, PRIMARY KEY(`address`))")
             }
         }
 
-        fun createDatabase(context: Context) =
-                Room.databaseBuilder(context, PassportDatabase::class.java, DATABASE_NAME)
-                        .addMigrations(migration_1_2)
-                        .addCallback(object : RoomDatabase.Callback() {
-                            override fun onCreate(db: SupportSQLiteDatabase) {
-                                super.onCreate(db)
-                                putPresetCurrencies(db)
-                            }
-                        })
-                        .build()
+        private val migration_2_3 = object : Migration(VERSION_2, VERSION_3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE IF NOT EXISTS `${QueryHistory.TABLE_NAME}` (`id` INTEGER NOT NULL, `short_name` TEXT NOT NULL, PRIMARY KEY(`id`))")
+            }
+        }
 
-        private fun putPresetCurrencies(db: SupportSQLiteDatabase) {
+        fun createDatabase(context: Context): PassportDatabase {
+
+            return Room.databaseBuilder(context, PassportDatabase::class.java, DATABASE_NAME)
+                    .addMigrations(migration_1_2, migration_2_3)
+                    .addCallback(object : RoomDatabase.Callback() {
+                        override fun onCreate(db: SupportSQLiteDatabase) {
+                            super.onCreate(db)
+                            putPresetCurrencies(db)
+                        }
+                    })
+                    .build()
+
+        }
+
+        fun putPresetCurrencies(db: SupportSQLiteDatabase) {
             val preset = AssetsRepository.preset
+
+            val datas = ArrayList<CurrencyMeta>()
+
             val contentValues = ContentValues()
             preset.forEach {
+
+                //datas.add(CurrencyMeta.from(it))
+
+
                 contentValues.clear()
                 contentValues.put(CurrencyMeta.COLUMN_CHAIN, it.chain.name)
                 contentValues.put(CurrencyMeta.COLUMN_CONTRACT_ADDRESS, it.contractAddress)
@@ -59,6 +76,12 @@ abstract class PassportDatabase:RoomDatabase() {
                 contentValues.put(CurrencyMeta.COLUMN_SELECTED, true)
                 db.insert(CurrencyMeta.TABLE_NAME, SQLiteDatabase.CONFLICT_REPLACE, contentValues)
             }
+            /*RoomHelper.onRoomIoThread {
+                dao.addOrReplaceCurrencyMeta(datas)
+            }*/
+
         }
     }
+
+
 }

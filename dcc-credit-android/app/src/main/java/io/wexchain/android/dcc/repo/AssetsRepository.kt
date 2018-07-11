@@ -21,7 +21,6 @@ import io.wexchain.digitalwallet.proxy.Erc20Agent
 import io.wexchain.digitalwallet.proxy.EthCurrencyAgent
 import io.wexchain.digitalwallet.proxy.EthereumAgent
 import java.math.BigInteger
-import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 class AssetsRepository(
@@ -117,7 +116,7 @@ class AssetsRepository(
     }
 
     fun addSelected(dc: DigitalCurrency) {
-        val pinned = pinned.value?: emptyList()
+        val pinned = pinned.value ?: emptyList()
         if (!pinned.contains(dc) || dc.contractAddress != null) {
             RoomHelper.onRoomIoThread {
                 if (dao.addSelected(CurrencyMeta.from(dc)) > 0) {
@@ -132,7 +131,7 @@ class AssetsRepository(
     }
 
     fun setCurrencySelected(dc: DigitalCurrency, sel: Boolean) {
-        val pinned = this.pinned.value?: emptyList()
+        val pinned = this.pinned.value ?: emptyList()
         if (!pinned.contains(dc) || dc.contractAddress != null) {
             RoomHelper.onRoomIoThread {
                 dao.updateCurrencyMeta(CurrencyMeta.from(dc, sel))
@@ -166,15 +165,27 @@ class AssetsRepository(
     }
 
     fun isPinned(digitalCurrency: DigitalCurrency): Boolean {
-        if (digitalCurrency.symbol == Currencies.DCC.symbol){
+        if (digitalCurrency.symbol == Currencies.DCC.symbol) {
             return true
         }
         return this.pinned.value?.contains(digitalCurrency) == true
     }
 
+    /*fun putPresetCurrencies() {
+        val preset = AssetsRepository.preset
+        val datas = ArrayList<CurrencyMeta>()
+        preset.forEach {
+
+            datas.add(CurrencyMeta.from(it))
+        }
+        RoomHelper.onRoomIoThread {
+            dao.addOrReplaceCurrencyMeta(datas)
+        }
+    }*/
+
     companion object {
 
-        val preset = listOf<DigitalCurrency>(
+        val preset = listOf(
                 DigitalCurrency("DATA", Chain.publicEthChain, 18, "DATA", "http://open.dcc.finance/images/dapp/product_bata.png", "0x69b148395ce0015c13e36bffbad63f49ef874e03"),
                 DigitalCurrency("BNB", Chain.publicEthChain, 18, "BNB", "http://open.dcc.finance/images/dapp/product_bnb.png", "0xB8c77482e45F1F44dE1745F52C74426C631bDD52"),
                 DigitalCurrency("TUSD", Chain.publicEthChain, 18, "TrueUSD", "http://open.dcc.finance/images/dapp/product_tusd.png", "0x8dd5fbce2f6a956c3022ba3663759011dd51e73e"),

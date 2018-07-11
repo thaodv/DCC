@@ -11,16 +11,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.tl.TlWebPageActivity
 import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityHomeBinding
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.RedeemToken
-import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.ScfAccountInfo
-import java.math.BigInteger
 
 class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
 
@@ -35,24 +33,41 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         })
         setupClicks()
         checkScfAccount()
+
+        signin()
     }
 
     private fun checkScfAccount() {
         val passportRepository = App.get().passportRepository
         if (!passportRepository.scfAccountExists) {
             ScfOperations.getScfAccountInfo()
-                .observeOn(AndroidSchedulers.mainThread())
-                .withLoading()
-                .subscribe { acc ->
-                    if (acc === ScfAccountInfo.ABSENT) {
-                        atLeastCreated {
-                            showRegisterScfWithInviteCodeDialog()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .withLoading()
+                    .subscribe { acc ->
+                        if (acc === ScfAccountInfo.ABSENT) {
+                            atLeastCreated {
+                                showRegisterScfWithInviteCodeDialog()
+                            }
+                        } else {
+                            passportRepository.scfAccountExists = true
                         }
-                    } else {
-                        passportRepository.scfAccountExists = true
                     }
-                }
         }
+    }
+
+    private fun signin() {
+
+        ScfOperations.loginWithCurrentPassport()
+                .subscribe()
+
+        ScfOperations.withScfTokenInCurrentPassport {
+            App.get().scfApi.signIn(it)
+        }.subscribe({
+        }, {
+            if (it is DccChainServiceException) {
+                print(it.message)
+            }
+        })
     }
 
     private val registerScfDialog by lazy { RegisterScfDialog() }
@@ -65,10 +80,10 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         val clickDigitalAssets: (View) -> Unit = {
             if (App.get().passportRepository.passportExists) {
                 navigateTo(
-                    DigitalAssetsActivity::class.java, transitionBundle(
+                        DigitalAssetsActivity::class.java, transitionBundle(
                         Transitions.create(findViewById(R.id.rv_assets), Transitions.DIGITAL_ASSETS_LIST)
                         , Transitions.create(findViewById(R.id.assets_amount_value), Transitions.DIGITAL_ASSETS_AMOUNT)
-                    )
+                )
                 )
             } else {
                 showIntroWalletDialog()
@@ -120,8 +135,8 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         findViewById<View>(R.id.banner_tl).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
                 val address = App.get().passportRepository.getCurrentPassport()!!.address
-                navigateTo(TlWebPageActivity::class.java){
-                    putExtra(TlBrowserActivity.ADDRESS,address)
+                navigateTo(TlWebPageActivity::class.java) {
+                    putExtra(TlBrowserActivity.ADDRESS, address)
                 }
             } else {
                 showIntroWalletDialog()
@@ -139,13 +154,13 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
                 showIntroWalletDialog()
             } else {
                 navigateTo(
-                    PassportActivity::class.java, transitionBundle(
+                        PassportActivity::class.java, transitionBundle(
                         Transitions.create(findViewById(R.id.card_passport), Transitions.CARD_PASSPORT),
                         Transitions.create(
-                            findViewById<ViewGroup>(R.id.card_passport).findViewById(R.id.iv_avatar),
-                            Transitions.CARD_PASSPORT_AVATAR
+                                findViewById<ViewGroup>(R.id.card_passport).findViewById(R.id.iv_avatar),
+                                Transitions.CARD_PASSPORT_AVATAR
                         )
-                    )
+                )
                 )
             }
         }
@@ -158,19 +173,19 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         val passportRepository = App.get().passportRepository
         if (passportRepository.scfAccountExists) {
             ScfOperations
-                .withScfTokenInCurrentPassport(emptyList()) {
-                    App.get().scfApi.queryBonus(it)
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .withLoading()
-                .subscribe { list ->
-                    if(list.isEmpty()){
-                        enterMarketingList()
-                    }else{
-                        val bonus = list.first()
-                        showRedeemToken(bonus)
+                    .withScfTokenInCurrentPassport(emptyList()) {
+                        App.get().scfApi.queryBonus(it)
                     }
-                }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .withLoading()
+                    .subscribe { list ->
+                        if (list.isEmpty()) {
+                            enterMarketingList()
+                        } else {
+                            val bonus = list.first()
+                            showRedeemToken(bonus)
+                        }
+                    }
         } else {
             enterMarketingList()
         }
@@ -207,18 +222,18 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
 
     private fun registerScfAccount(code: String?) {
         ScfOperations.registerWithCurrentPassport(code)
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe {
-                showLoadingDialog()
-            }
-            .doFinally {
-                hideLoadingDialog()
-            }
-            .subscribe { _ ->
-                App.get().passportRepository.scfAccountExists = true
-                toast("成功")
-                registerScfDialog.dismiss()
-            }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    showLoadingDialog()
+                }
+                .doFinally {
+                    hideLoadingDialog()
+                }
+                .subscribe { _ ->
+                    App.get().passportRepository.scfAccountExists = true
+                    toast("成功")
+                    registerScfDialog.dismiss()
+                }
     }
 
     private inner class IntroDialog : Dialog(this, R.style.FullWidthDialog) {
