@@ -12,7 +12,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.PopupWindow
 import android.widget.TextView
-import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
@@ -22,7 +21,6 @@ import io.wexchain.android.dcc.view.adapters.BeneficiaryAddressAdapter
 import io.wexchain.android.dcc.view.addressbook.FloatingBarItemDecoration
 import io.wexchain.android.dcc.view.addressbook.IndexBar
 import io.wexchain.android.dcc.view.dialog.CustomDialog
-import io.wexchain.android.dcc.vm.DefaultBeneficiaryAddressVm
 import io.wexchain.dcc.R
 import java.io.Serializable
 import java.util.*
@@ -41,7 +39,7 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
     private var mIndexBar: IndexBar? = null
     private var mFloatingBarItemDecoration: FloatingBarItemDecoration? = null
 
-    val passportRepository = App.get().passportRepository
+    private val passportRepository = App.get().passportRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,14 +49,6 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
         mRecyclerView = findViewById(R.id.rv_list)
         mIndexBar = findViewById(R.id.share_add_contact_sidebar)
 
-        fetchData()
-        initView()
-    }
-
-    private fun initView() {
-
-        initData()
-
         mRecyclerView!!.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
         mFloatingBarItemDecoration = FloatingBarItemDecoration(this)
@@ -66,82 +56,62 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
         mRecyclerView!!.removeItemDecoration(mFloatingBarItemDecoration)
         mRecyclerView!!.addItemDecoration(mFloatingBarItemDecoration)
 
-        mIndexBar!!.setNavigators(java.util.ArrayList(mHeaderList!!.values))
-        mIndexBar!!.setOnTouchingLetterChangedListener(object : IndexBar.OnTouchingLetterChangeListener {
-            override fun onTouchingLetterChanged(s: String) {
-                showLetterHintDialog(s)
-                for (position in mHeaderList!!.keys) {
-                    if (mHeaderList!![position] == s) {
-                        mLayoutManager!!.scrollToPositionWithOffset(position, 0)
-                        return
-                    }
+    }
+
+    fun getDataFormDataBase() {
+        passportRepository.beneficiaryAddresses.observe(this, Observer {
+
+            if (mHeaderList == null) {
+                mHeaderList = LinkedHashMap()
+            }
+
+            mContactList = it as ArrayList<BeneficiaryAddress>?
+            mContactList!!.sortWith(Comparator { l, r -> l.compareTo(r) })
+
+            mHeaderList!!.clear()
+            if (mContactList!!.size == 0) {
+                return@Observer
+            }
+            addHeaderToList(0, mContactList!![0].initial)
+            for (i in 1 until mContactList!!.size) {
+                if (!mContactList!![i - 1].initial.equals(mContactList!![i].initial, ignoreCase = true)) {
+                    addHeaderToList(i, mContactList!![i].initial)
                 }
             }
 
-            override fun onTouchingStart(s: String) {
-                showLetterHintDialog(s)
-            }
+            mFloatingBarItemDecoration!!.setList(mHeaderList)
 
-            override fun onTouchingEnd(s: String) {
-                hideLetterHintDialog()
-            }
+            val adapter = BeneficiaryAddressAdapter(this)
+            adapter.setList(mContactList)
+            mRecyclerView!!.adapter = adapter
+
+            mIndexBar!!.setNavigators(ArrayList(mHeaderList!!.values))
+            mIndexBar!!.setOnTouchingLetterChangedListener(object : IndexBar.OnTouchingLetterChangeListener {
+                override fun onTouchingLetterChanged(s: String) {
+                    showLetterHintDialog(s)
+                    for (position in mHeaderList!!.keys) {
+                        if (mHeaderList!![position] == s) {
+                            mLayoutManager!!.scrollToPositionWithOffset(position, 0)
+                            return
+                        }
+                    }
+                }
+
+                override fun onTouchingStart(s: String) {
+                    showLetterHintDialog(s)
+                }
+
+                override fun onTouchingEnd(s: String) {
+                    hideLetterHintDialog()
+                }
+            })
         })
-    }
-
-    private fun fetchData() {
-        if (mHeaderList == null) {
-            mHeaderList = LinkedHashMap()
-        }
-
-        val addressbookList = passportRepository.beneficiaryAddresses.value
-
-        if (addressbookList != null) {
-            mContactList = addressbookList as ArrayList<BeneficiaryAddress>?
-            /*for (item in addressbookList) {
-                mContactList!!.add(ShareContactsBean(item.shortName, item.address))
-            }*/
-            mContactList!!.sortWith(Comparator { l, r -> l.compareTo(r) })
-        } else {
-            mContactList = ArrayList(0)
-        }
-
-        preOperation()
-
     }
 
     override fun onResume() {
         super.onResume()
+        getDataFormDataBase()
 
-        if (null != mFloatingBarItemDecoration) {
-            mFloatingBarItemDecoration!!.setList(mHeaderList)
-        }
-    }
-
-    private fun initData() {
-
-        val defaultBeneficiaryAddressVm = getViewModel<DefaultBeneficiaryAddressVm>()
-        defaultBeneficiaryAddressVm.walletAddr.observe(this, Observer { })
-        val adapter = BeneficiaryAddressAdapter(this)
-        adapter.lifecycleOwner = this
-
-        mRecyclerView!!.adapter = adapter
-
-        passportRepository.beneficiaryAddresses.observe(this, Observer {
-            adapter.setList(it)
-        })
-    }
-
-    private fun preOperation() {
-        mHeaderList!!.clear()
-        if (mContactList!!.size == 0) {
-            return
-        }
-        addHeaderToList(0, mContactList!![0].initial)
-        for (i in 1 until mContactList!!.size) {
-            if (!mContactList!![i - 1].initial.equals(mContactList!![i].initial, ignoreCase = true)) {
-                addHeaderToList(i, mContactList!![i].initial)
-            }
-        }
     }
 
     private fun addHeaderToList(index: Int, header: String) {
@@ -185,11 +155,10 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
     }
 
     private fun confirmDelete(ba: BeneficiaryAddress) {
-        CustomDialog(this)
-                .apply {
-                    setTitle("确认删除以下信息")
-                    textContent = "${ba.shortName}\n${ba.address}"
-                }
+        CustomDialog(this).apply {
+            setTitle("确认删除以下信息")
+            textContent = "${ba.shortName}\n${ba.address}"
+        }
                 .withPositiveButton("删除") {
                     App.get().passportRepository.removeBeneficiaryAddress(ba)
                     true
@@ -217,5 +186,4 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 }

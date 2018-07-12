@@ -20,4 +20,7 @@ object RequestCodes {
 
     const val CANCLE_TRANSACTION = 0x5005
     const val Edit_TRANSACTION = 0x5006
+
+    const val PICK_AVATAR = 0x5007
+    const val PICK_AVATAR_BACK = 0x5008
 }

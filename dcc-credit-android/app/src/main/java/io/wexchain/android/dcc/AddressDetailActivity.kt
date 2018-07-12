@@ -7,6 +7,7 @@ import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
+import io.wexchain.android.dcc.tools.CommonUtils
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityAddressDetailBinding
@@ -35,6 +36,7 @@ class AddressDetailActivity : BindActivity<ActivityAddressDetailBinding>() {
             App.get().passportRepository.defaultBeneficiaryAddress.observe(this, Observer {})
             binding.tvWalletAddress.setText(beneficiaryAddress!!.address)
             binding.tvAddressName.setText(beneficiaryAddress!!.shortName)
+            binding.ivAvatar.setImageURI(CommonUtils.str2Uri(beneficiaryAddress!!.avatarUrl))
 
             initClick()
         }

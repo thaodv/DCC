@@ -34,6 +34,11 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         setupClicks()
         checkScfAccount()
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         signin()
     }
 

@@ -48,6 +48,9 @@ abstract class PassportDao {
     @Query("SELECT * FROM ${BeneficiaryAddress.TABLE_NAME}")
     abstract fun listBeneficiaryAddresses(): LiveData<List<BeneficiaryAddress>>
 
+    @Query("SELECT * FROM ${BeneficiaryAddress.TABLE_NAME}")
+    abstract fun getAddressBookList(): List<BeneficiaryAddress>
+
     @Query("SELECT * FROM ${BeneficiaryAddress.TABLE_NAME} WHERE ${BeneficiaryAddress.COLUMN_SHORT_NAME} LIKE :name")
     abstract fun queryAddressesByShortName(name: String): LiveData<List<BeneficiaryAddress>>
 

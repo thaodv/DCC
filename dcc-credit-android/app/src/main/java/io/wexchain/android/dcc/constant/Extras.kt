@@ -31,4 +31,7 @@ object Extras {
     const val NEEDSAVEPENDDING = "needsavependding"
     const val SAVEDPENDDING = "savedpendding"
     const val EXTRA_EDIT_TRANSACTION = "edit_transaction"
+
+    const val EXTRA_PICKAVATAR ="pick_avatar"
+    const val EXTRA_PICKAVATAR_BACK ="pick_avatar_back"
 }

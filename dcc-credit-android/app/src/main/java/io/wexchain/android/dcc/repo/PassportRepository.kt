@@ -80,6 +80,15 @@ class PassportRepository(
         }*/
     }
 
+    fun getAllAddressBook(): LiveData<List<BeneficiaryAddress>> {
+        return MediatorLiveData<List<BeneficiaryAddress>>().apply {
+            addSource(dao.listBeneficiaryAddresses()) {
+                postValue(it)
+            }
+        }
+    }
+
+
     fun addOrReplaceQueryHistory(queryHistory: QueryHistory) {
         RoomHelper.onRoomIoThread {
             dao.addOrUpdateAddressBookQueryHistory(queryHistory)

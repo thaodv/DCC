@@ -5,6 +5,8 @@
 
         <import type="android.support.v4.util.ObjectsCompat"/>
 
+        <import type="io.wexchain.android.dcc.tools.CommonUtils"/>
+
         <variable
             name="addr"
             type="io.wexchain.android.dcc.repo.db.BeneficiaryAddress"
@@ -28,7 +30,8 @@
             android:layout_height="40dp"
             android:layout_marginLeft="5dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_default_avatar"
+            app:errorRes="@{@drawable/default_user_avatar}"
+            app:imageUri="@{CommonUtils.str2Uri(addr.avatarUrl)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"

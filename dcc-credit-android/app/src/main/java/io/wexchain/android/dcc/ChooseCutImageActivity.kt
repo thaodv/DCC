@@ -6,10 +6,10 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.widget.Button
 import com.lyft.android.scissors.CropView
-import io.wexchain.android.dcc.constant.RequestCodes
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,6 +17,8 @@ import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.network.GlideApp
 import io.wexchain.dcc.R
 import java.io.File
@@ -25,6 +27,8 @@ class ChooseCutImageActivity : BaseCompatActivity() {
 
     private lateinit var cropView: CropView
 
+    private var preInt: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
@@ -32,10 +36,19 @@ class ChooseCutImageActivity : BaseCompatActivity() {
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setContentView(R.layout.activity_choose_cut_image)
         initToolbar(true)
-        cropView = findViewById<CropView>(R.id.iv_cut_preview)
+
+        preInt = intent.getIntExtra(Extras.EXTRA_PICKAVATAR, 0)
+
+        cropView = findViewById(R.id.iv_cut_preview)
         cropView.extensions().pickUsing(this, RequestCodes.GET_PICTURE)
         findViewById<Button>(R.id.btn_use_crop).setOnClickListener {
-            performCropAndSavePic()
+            if (preInt == 1) {
+
+                setResult(RequestCodes.PICK_AVATAR_BACK, Intent().putExtra(Extras.EXTRA_PICKAVATAR_BACK, Uri.parse(MediaStore.Images.Media.insertImage(contentResolver, cropView.crop(), null, null)).toString()))
+                finish()
+            } else {
+                performCropAndSavePic()
+            }
         }
     }
 
@@ -44,47 +57,47 @@ class ChooseCutImageActivity : BaseCompatActivity() {
         val passport = passportRepo.getCurrentPassport()
         if (passport != null) {
             Single.just(passport)
-                .observeOn(Schedulers.computation())
-                .map {
-                    val crop = cropView.crop()!!
-                    it to crop
-                }
-                .observeOn(Schedulers.io())
-                .map { (passport, bitmap) ->
-                    val imgDir = File(filesDir, IMG_DIR)
-                    if (!imgDir.exists()) {
-                        val mkdirs = imgDir.mkdirs()
-                        assert(mkdirs)
+                    .observeOn(Schedulers.computation())
+                    .map {
+                        val crop = cropView.crop()!!
+                        it to crop
                     }
-                    val fileName =
-                        "${passport.address}-${System.currentTimeMillis().toString(16).padStart(
-                            16,
-                            '0'
-                        )}.png"
-                    val imgFile = File(filesDir, fileName)
-                    imgFile.outputStream()
-                        .use {
-                            bitmap.compress(Bitmap.CompressFormat.PNG, 87, it)
+                    .observeOn(Schedulers.io())
+                    .map { (passport, bitmap) ->
+                        val imgDir = File(filesDir, IMG_DIR)
+                        if (!imgDir.exists()) {
+                            val mkdirs = imgDir.mkdirs()
+                            assert(mkdirs)
                         }
-                    passport to Uri.fromFile(imgFile)
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .map {
-                    passportRepo.updatePassportUserAvatar(it.first, it.second)
-                    it
-                }
-                .doOnSubscribe {
-                    showLoadingDialog()
-                }
-                .doFinally {
-                    hideLoadingDialog()
-                }
-                .subscribe({
-                    toast("头像修改成功")
-                    finish()
-                }, {
-                    stackTrace(it)
-                })
+                        val fileName =
+                                "${passport.address}-${System.currentTimeMillis().toString(16).padStart(
+                                        16,
+                                        '0'
+                                )}.png"
+                        val imgFile = File(filesDir, fileName)
+                        imgFile.outputStream()
+                                .use {
+                                    bitmap.compress(Bitmap.CompressFormat.PNG, 87, it)
+                                }
+                        passport to Uri.fromFile(imgFile)
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .map {
+                        passportRepo.updatePassportUserAvatar(it.first, it.second)
+                        it
+                    }
+                    .doOnSubscribe {
+                        showLoadingDialog()
+                    }
+                    .doFinally {
+                        hideLoadingDialog()
+                    }
+                    .subscribe({
+                        toast("头像修改成功")
+                        finish()
+                    }, {
+                        stackTrace(it)
+                    })
         } else {
             // todo
         }

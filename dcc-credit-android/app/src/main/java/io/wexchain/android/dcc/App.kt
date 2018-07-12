@@ -75,6 +75,7 @@ class App : MultiDexApplication() {
         initData(this)
     }
 
+
     private fun initData(app: App) {
         val dao = PassportDatabase.createDatabase(this).dao
 

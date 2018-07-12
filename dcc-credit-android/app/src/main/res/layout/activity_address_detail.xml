@@ -16,9 +16,10 @@
 
         <ImageView
             android:id="@+id/iv_avatar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:scaleType="centerCrop"
             android:src="@drawable/icon_default_avatar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"/>
@@ -62,9 +63,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginTop="@dimen/content_padding_horizontal"
             android:textColor="#4A4A4A"
             android:textSize="12sp"
-            android:layout_marginTop="@dimen/content_padding_horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_wallet_address_tip"
             tools:text="0x4567890876543276543"/>
@@ -89,10 +90,10 @@
             <Button
                 android:id="@+id/bt_edit"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="40dp"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_weight="1"
                 android:background="@drawable/background_button"
                 android:text="编辑"
                 android:textColor="#FFF"
@@ -101,10 +102,10 @@
             <Button
                 android:id="@+id/bt_delete"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="40dp"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_weight="1"
                 android:background="@drawable/background_button"
                 android:text="删除"
                 android:textColor="#FFF"
