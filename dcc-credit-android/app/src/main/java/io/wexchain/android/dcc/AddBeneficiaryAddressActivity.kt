@@ -135,7 +135,6 @@ class AddBeneficiaryAddressActivity : BindActivity<ActivityAddBeneficiaryAddress
                 }, RequestCodes.SCAN)
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }

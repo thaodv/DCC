@@ -34,4 +34,6 @@ object Extras {
 
     const val EXTRA_PICKAVATAR ="pick_avatar"
     const val EXTRA_PICKAVATAR_BACK ="pick_avatar_back"
+
+    const val EXTRA_SELECT_ADDRESS ="select_address"
 }

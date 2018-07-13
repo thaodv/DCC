@@ -59,7 +59,7 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
                 if (resultCode == ResultCodes.RESULT_OK) {
                     val vm = binding.vm
                     val ba =
-                        data?.getSerializableExtra(Extras.EXTRA_BENEFICIARY_ADDRESS) as? BeneficiaryAddress
+                            data?.getSerializableExtra(Extras.EXTRA_BENEFICIARY_ADDRESS) as? BeneficiaryAddress
                     if (vm != null && ba != null) {
                         vm.address.set(ba)
                     }
@@ -76,7 +76,7 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
         vm.proceedEvent.observe(this, Observer {
             it?.let {
                 ConfirmLoanSubmitDialog.create(it, this@StartLoanActivity::checkOrderAndProceed)
-                    .show(supportFragmentManager, "confirm_loan")
+                        .show(supportFragmentManager, "confirm_loan")
             }
         })
         vm.failEvent.observe(this, Observer {
@@ -97,13 +97,13 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
         })
         binding.vm = vm
         App.get().passportRepository.getDefaultBeneficiaryAddress()
-            .subscribe { ba ->
-                binding.vm?.let {
-                    if (it.address.get() == null) {
-                        it.address.set(ba)
+                .subscribe { ba ->
+                    binding.vm?.let {
+                        if (it.address.get() == null) {
+                            it.address.set(ba)
+                        }
                     }
                 }
-            }
         binding.btnProceed.setOnClickListener {
             binding.vm?.checkAndProceed()
         }
@@ -121,8 +121,8 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
         })
         binding.tvBeneficiaryAddress.setOnClickListener {
             startActivityForResult(
-                Intent(this, ChooseBeneficiaryAddressActivity::class.java),
-                RequestCodes.CHOOSE_BENEFICIARY_ADDRESS
+                    Intent(this, BeneficiaryAddressesManagementActivity::class.java).putExtra("usage", 1),
+                    RequestCodes.CHOOSE_BENEFICIARY_ADDRESS
             )
         }
         binding.tvRequisiteValue.setOnClickListener {
@@ -144,38 +144,38 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
     private fun checkOrderAndProceed(loanScratch: LoanScratch) {
         val scfApi = App.get().scfApi
         ScfOperations
-            .withScfTokenInCurrentPassport(LoanChainOrder.ABSENT_ORDER) {
-                scfApi.getLastOrder(it)
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { it ->
-                if (it.isNextOrderRestricted()) {
-                    showCancelPrevOrderDialog(it)
-                } else {
-                    doSubmitLoan(loanScratch)
+                .withScfTokenInCurrentPassport(LoanChainOrder.ABSENT_ORDER) {
+                    scfApi.getLastOrder(it)
                 }
-            }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { it ->
+                    if (it.isNextOrderRestricted()) {
+                        showCancelPrevOrderDialog(it)
+                    } else {
+                        doSubmitLoan(loanScratch)
+                    }
+                }
     }
 
     private fun doSubmitLoan(loanScratch: LoanScratch) {
         val passport = App.get().passportRepository.getCurrentPassport()
         passport ?: return
         ScfOperations.submitLoan(loanScratch, passport)
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe {
-                showLoadingDialog()
-            }
-            .doFinally {
-                hideLoadingDialog()
-            }
-            .subscribe({ _ ->
-                toast("提交贷款申请成功")
-                navigateTo(LoanSubmitResultActivity::class.java)
-            }, {
-                if (it is DccChainServiceException) {
-                    Pop.toast(it.message ?: "系统错误", this)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    showLoadingDialog()
                 }
-            })
+                .doFinally {
+                    hideLoadingDialog()
+                }
+                .subscribe({ _ ->
+                    toast("提交贷款申请成功")
+                    navigateTo(LoanSubmitResultActivity::class.java)
+                }, {
+                    if (it is DccChainServiceException) {
+                        Pop.toast(it.message ?: "系统错误", this)
+                    }
+                })
     }
 
     private fun showCancelPrevOrderDialog(it: LoanChainOrder) {
@@ -198,19 +198,19 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
 
     private fun doCancelOrder(order: LoanChainOrder) {
         ScfOperations.cancelLoan(order.id)
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe {
-                showLoadingDialog()
-            }
-            .doFinally {
-                hideLoadingDialog()
-            }
-            .subscribe({ _ ->
-                toast("取消成功")
-            }, {
-                if (it is DccChainServiceException) {
-                    Pop.toast(it.message ?: "系统错误", this)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    showLoadingDialog()
                 }
-            })
+                .doFinally {
+                    hideLoadingDialog()
+                }
+                .subscribe({ _ ->
+                    toast("取消成功")
+                }, {
+                    if (it is DccChainServiceException) {
+                        Pop.toast(it.message ?: "系统错误", this)
+                    }
+                })
     }
 }

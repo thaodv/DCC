@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.PopupWindow
 import android.widget.TextView
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.resultOk
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
@@ -39,13 +40,23 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
     private var mIndexBar: IndexBar? = null
     private var mFloatingBarItemDecoration: FloatingBarItemDecoration? = null
 
+    private var mUsage: Int = 0
+
     private val passportRepository = App.get().passportRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_beneficiary_addresses_management)
         initToolbar()
-        title = "地址簿"
+
+        mUsage = intent.getIntExtra("usage", 0)
+
+        if (0 == mUsage) {
+            title = "地址簿"
+        } else {
+            title = "选择地址"
+        }
+
         mRecyclerView = findViewById(R.id.rv_list)
         mIndexBar = findViewById(R.id.share_add_contact_sidebar)
 
@@ -138,7 +149,13 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
 
     override fun onItemClick(item: BeneficiaryAddress?, position: Int, viewId: Int) {
         item?.let { ba ->
-            toDetail(ba)
+            if (0 == mUsage) {
+                toDetail(ba)
+            } else {
+                resultOk {
+                    putExtra(Extras.EXTRA_SELECT_ADDRESS, ba)
+                }
+            }
         }
     }
 
@@ -170,6 +187,9 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.menu_address_book, menu)
+
+        menu!!.findItem(R.id.address_book_add).isVisible = (0 == mUsage)
+
         return true
     }
 
