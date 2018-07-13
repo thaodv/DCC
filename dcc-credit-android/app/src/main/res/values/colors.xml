@@ -21,4 +21,6 @@
 
     <color name="indexbar_letter_color">#7FFFFFFF</color>
 
+    <color name="upgrade_title_color">#FF404040</color>
+
 </resources>

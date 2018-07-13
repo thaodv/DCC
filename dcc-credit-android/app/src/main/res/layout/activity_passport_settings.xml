@@ -183,6 +183,28 @@
             app:layout_constraintTop_toBottomOf="@id/tv_delete_passport"
             />
 
+        <TextView
+            android:id="@+id/tv_check_update"
+            style="@style/TextActionLine"
+            android:text="@string/check_update"
+            app:layout_constraintTop_toBottomOf="@id/tv_delete_passport"
+            />
+
+        <TextView
+            android:id="@+id/tv_current_vs"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_check_update"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="30dp"
+            android:textSize="14sp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textColor="@color/text_min"
+            android:layout_height="wrap_content" />
+
+        <View
+            style="@style/DividerHorizontal"
+            app:layout_constraintTop_toBottomOf="@id/tv_check_update"
+            />
+
     </android.support.constraint.ConstraintLayout>
 
 </layout>

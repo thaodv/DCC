@@ -25,6 +25,7 @@ import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.api.*
 import io.wexchain.digitalwallet.proxy.*
+import zlc.season.rxdownload3.core.DownloadConfig
 import java.lang.ref.WeakReference
 import java.math.BigInteger
 
@@ -73,6 +74,17 @@ class App : MultiDexApplication() {
         initLibraries(this)
         initServices(this)
         initData(this)
+        initRxDownload(this)
+    }
+
+    private fun initRxDownload(app: App) {
+        val builder = DownloadConfig.Builder.create(this)
+                .enableAutoStart(true)
+                .enableDb(true)
+                .enableNotification(true)
+
+
+        DownloadConfig.init(builder)
     }
 
 

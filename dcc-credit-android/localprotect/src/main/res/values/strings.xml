@@ -36,4 +36,5 @@
     <string name="address_book">地址薄</string>
     <string name="about_us">关于我们</string>
     <string name="remove_passport">删除钱包(注销)</string>
+    <string name="check_update">版本更新</string>
 </resources>

@@ -1,10 +1,8 @@
 package io.wexchain.dccchainservice
 
 import io.reactivex.Single
-import io.wexchain.dccchainservice.domain.Bank
-import io.wexchain.dccchainservice.domain.MarketingActivity
-import io.wexchain.dccchainservice.domain.MarketingActivityScenario
-import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.dccchainservice.domain.*
+import okhttp3.Response
 import retrofit2.http.*
 
 interface MarketingApi {
@@ -41,4 +39,7 @@ interface MarketingApi {
      */
     @GET("bank/list")
     fun getBankList():Single<Result<List<Bank>>>
+
+    @GET("version/checkUpgrade")
+    fun checkUpgrade(@Query("version") version:String):Single<Result<CheckUpgrade>>
 }

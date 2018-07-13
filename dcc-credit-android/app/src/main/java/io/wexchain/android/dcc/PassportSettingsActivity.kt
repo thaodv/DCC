@@ -5,27 +5,37 @@ import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.app.DialogFragment
+import android.support.v4.content.FileProvider
 import android.support.v4.view.ViewCompat
 import android.view.*
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wexmarket.android.passport.ResultCodes
-import io.wexchain.android.common.getViewModel
-import io.wexchain.android.common.stackTrace
-import io.wexchain.android.common.toast
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.RequestCodes
+import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.fragment.CreateProtectFragment
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportSettingsBinding
+import io.wexchain.dccchainservice.DccChainServiceException
+import io.wexchain.dccchainservice.domain.CheckUpgrade
+import io.wexchain.dccchainservice.domain.Result
+import kotlinx.android.synthetic.main.activity_passport_settings.*
+import zlc.season.rxdownload3.core.Mission
+import java.io.File
 
 
-class PassportSettingsActivity: BindActivity<ActivityPassportSettingsBinding>() {
+class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>() {
     override val contentLayoutId: Int = R.layout.activity_passport_settings
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,12 +72,14 @@ class PassportSettingsActivity: BindActivity<ActivityPassportSettingsBinding>() 
         App.get().passportRepository.currPassport.observe(this, Observer {
             binding.passport = it
         })
+
+        tv_current_vs.text = "当前版本" + getVersionName()
     }
 
     private fun setupClicks() {
         val binding = binding
         binding.tvUserAvatar.setOnClickListener {
-            ChooseImageFromDialog.create(this).show(supportFragmentManager,null)
+            ChooseImageFromDialog.create(this).show(supportFragmentManager, null)
         }
         binding.tvUserNickname.setOnClickListener {
             startActivity(Intent(this, EditNicknameActivity::class.java))
@@ -93,7 +105,69 @@ class PassportSettingsActivity: BindActivity<ActivityPassportSettingsBinding>() 
         binding.tvAddressBook.setOnClickListener {
             startActivity(Intent(this, BeneficiaryAddressesManagementActivity::class.java))
         }
+        binding.tvCheckUpdate.setOnClickListener {
+            App.get().marketingApi.checkUpgrade(getVersionName())
+                    .compose(Result.checked())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            {
+                                showUpgradeDialog(it)
+                            },
+                            {
+                                if (it is DccChainServiceException) {
+                                    toast("当前已是最新版本")
+                                }
+                            })
+        }
     }
+
+    private fun showUpgradeDialog(it: CheckUpgrade) {
+        val dialog = UpgradeDialog(this)
+        if (it.mandatoryUpgrade) {
+            dialog.createHomeDialog(
+                    it.versionNumber, it.updateLog,
+                    onConfirm = {
+                        dialog.dismiss()
+                        downloadApk(it.versionNumber, it.updateUrl)
+                    })
+        } else {
+            dialog.createCheckDialog(
+                    it.versionNumber, it.updateLog,
+                    onCancle = {
+                        dialog.dismiss()
+                    },
+                    onConfirm = {
+                        dialog.dismiss()
+                        downloadApk(it.versionNumber, it.updateUrl)
+                    })
+        }
+
+    }
+
+    private fun downloadApk(versionNumber: String, updateUrl: String) {
+        RxPermissions(this)
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe {
+                    if (it) {
+                        val savepath = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress")
+                        if (!savepath.exists()) {
+                            savepath.mkdirs()
+                        }
+                        val filename = "BitExpress$versionNumber.apk"
+                        val file = File(savepath, filename)
+                        if (file.exists()) {
+                            installApk(file)
+                        } else {
+                            val mission = Mission(updateUrl, filename, savepath.absolutePath)
+                            UpgradeDialog(this).crateDownloadDialog(mission)
+                        }
+                    } else {
+                        toast("没有读写文件权限,授权后才能下载")
+                    }
+                }
+    }
+
+
 
     private fun pickImage() {
         startActivity(Intent(this, ChooseCutImageActivity::class.java))
@@ -116,9 +190,9 @@ class PassportSettingsActivity: BindActivity<ActivityPassportSettingsBinding>() 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when(requestCode){
-            RequestCodes.CAPTURE_IMAGE->{
-                if(resultCode == ResultCodes.RESULT_OK){
+        when (requestCode) {
+            RequestCodes.CAPTURE_IMAGE -> {
+                if (resultCode == ResultCodes.RESULT_OK) {
                     val bitmap = data?.extras?.get("data") as? Bitmap
                     bitmap?.let {
                         App.get().passportRepository.saveAvatar(it)
@@ -136,11 +210,11 @@ class PassportSettingsActivity: BindActivity<ActivityPassportSettingsBinding>() 
                     }
                 }
             }
-            else-> super.onActivityResult(requestCode, resultCode, data)
+            else -> super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
-    class ChooseImageFromDialog:DialogFragment(){
+    class ChooseImageFromDialog : DialogFragment() {
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
             val view = inflater.inflate(R.layout.dialog_choose_image_from, container, false)
             view.findViewById<View>(R.id.tv_capture).setOnClickListener {
@@ -154,12 +228,12 @@ class PassportSettingsActivity: BindActivity<ActivityPassportSettingsBinding>() 
             view.findViewById<View>(R.id.btn_cancel).setOnClickListener {
                 dismiss()
             }
-            ViewCompat.setElevation(view,resources.getDimension(R.dimen.dialog_elevation))
+            ViewCompat.setElevation(view, resources.getDimension(R.dimen.dialog_elevation))
             return view
         }
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            setStyle(STYLE_NORMAL,R.style.Theme_AppCompat_Light_Dialog_Alert_Dcc)
+            setStyle(STYLE_NORMAL, R.style.Theme_AppCompat_Light_Dialog_Alert_Dcc)
             val dialog = super.onCreateDialog(savedInstanceState)
             dialog.window.apply {
                 setGravity(Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM)
@@ -168,7 +242,7 @@ class PassportSettingsActivity: BindActivity<ActivityPassportSettingsBinding>() 
             return dialog
         }
 
-        private var host:PassportSettingsActivity? = null
+        private var host: PassportSettingsActivity? = null
 
         companion object {
             fun create(activity: PassportSettingsActivity): ChooseImageFromDialog {

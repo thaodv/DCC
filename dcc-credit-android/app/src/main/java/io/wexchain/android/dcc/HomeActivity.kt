@@ -1,11 +1,14 @@
 package io.wexchain.android.dcc
 
+import android.Manifest
 import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.os.Bundle
+import android.os.Environment
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import com.tbruyelle.rxpermissions2.RxPermissions
 import com.xxy.maple.tllibrary.activity.TlBrowserActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.*
@@ -14,11 +17,16 @@ import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.tl.TlWebPageActivity
 import io.wexchain.android.dcc.view.dialog.BonusDialog
+import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityHomeBinding
 import io.wexchain.dccchainservice.DccChainServiceException
+import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
+import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.ScfAccountInfo
+import zlc.season.rxdownload3.core.Mission
+import java.io.File
 
 class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
 
@@ -40,6 +48,53 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
     override fun onResume() {
         super.onResume()
         signin()
+        checkUpgrade()
+    }
+
+    private fun checkUpgrade() {
+        App.get().marketingApi.checkUpgrade(getVersionName())
+                .compose(Result.checked())
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter {
+                    it.mandatoryUpgrade
+                }
+                .subscribe({ it ->
+                    showUpgradeDialog(it)
+                })
+    }
+
+    private fun showUpgradeDialog(it: CheckUpgrade) {
+        val dialog = UpgradeDialog(this)
+        dialog.createHomeDialog(
+                it.versionNumber, it.updateLog,
+                onConfirm = {
+                    dialog.dismiss()
+                    downloadApk(it.versionNumber, it.updateUrl)
+                })
+    }
+
+    private fun downloadApk(versionNumber: String, updateUrl: String) {
+        RxPermissions(this)
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe {
+                    if (it) {
+                        val savepath = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress")
+                        if (!savepath.exists()) {
+                            savepath.mkdirs()
+                        }
+                        val filename = "BitExpress$versionNumber.apk"
+                        val file = File(savepath, filename)
+                        if (file.exists()) {
+                            installApk(file)
+                        } else {
+                            val mission = Mission(updateUrl, filename, savepath.absolutePath)
+                            UpgradeDialog(this).crateDownloadDialog(mission)
+                        }
+                    } else {
+                        toast("没有读写文件权限,请重新打开App授权")
+                        finish()
+                    }
+                }
     }
 
     private fun checkScfAccount() {

@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.IdRes
@@ -13,9 +15,11 @@ import android.support.annotation.StringRes
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
+import android.support.v4.content.FileProvider
 import android.support.v4.util.Pair
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import java.io.File
 
 /**
  * Created by sisel on 2018/3/27.
@@ -89,4 +93,28 @@ inline fun <T> withTransitionEnabled(block: () -> T): T? {
             block()
         } else null
     }
+}
+
+fun Context.getVersionName(): String {
+    var versionName = "1.0.0"
+    try {
+        versionName = this.packageManager.getPackageInfo(this.packageName, 0).versionName
+    } catch (e: PackageManager.NameNotFoundException) {
+        e.printStackTrace()
+    }
+    return versionName
+}
+
+ fun Context.installApk(file: File) {
+    val data: Uri
+    val intent = Intent(Intent.ACTION_VIEW)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        data = FileProvider.getUriForFile(this, "io.wexchain.dcc.fileprovider", file)
+        intent.setDataAndType(data, "application/vnd.android.package-archive")
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    } else {
+        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive")
+    }
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    startActivity(intent)
 }

@@ -98,6 +98,7 @@ android {
 
 kapt {
     mapDiagnosticLocations = true
+    generateStubs = true
 }
 
 dependencies {
@@ -127,12 +128,15 @@ dependencies {
     implementation "com.google.code.gson:gson:$gson_version"
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
     implementation 'com.github.zellius:rxlocationmanager-rxjava2:1.0.0'
+
     implementation 'com.lyft:scissors:1.1.1'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-5'
     implementation 'com.github.barteksc:android-pdf-viewer:3.0.0-beta.5'
 
     //third party sdk
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.4'
+
+    implementation 'zlc.season:rxdownload3:1.2.7'
 
     implementation project(':common')
     implementation project(':idverify')

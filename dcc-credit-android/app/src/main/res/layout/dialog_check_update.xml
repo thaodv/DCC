@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="270dp"
+    android:layout_height="wrap_content">
+
+    <ScrollView
+        android:id="@+id/check_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/check_upgrade_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/upgrade_title_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/check_upgrade_vs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/upgrade_title_color"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/check_upgrade_body"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/upgrade_title_color"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </ScrollView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/check_scroll"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin">
+
+        <LinearLayout
+            android:visibility="invisible"
+            android:id="@+id/check_btn_tag"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                android:id="@+id/check_upgrade_cancle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_button"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="@color/text_color_button" />
+
+            <TextView
+                android:id="@+id/check_upgrade_confirm"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
+                android:background="@drawable/background_button"
+                android:gravity="center"
+                android:text="确认"
+                android:textColor="@color/text_color_button" />
+        </LinearLayout>
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/home_upgrade_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="@drawable/background_button"
+            android:gravity="center"
+            android:text="确认"
+            android:textColor="@color/text_color_button" />
+    </FrameLayout>
+
+</RelativeLayout>
+
