@@ -1,17 +1,14 @@
 package io.wexchain.android.dcc.view.adapter
 
 import android.arch.lifecycle.LifecycleOwner
-import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.support.annotation.IdRes
 import android.support.annotation.LayoutRes
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import io.wexchain.android.common.kotlin.weak
 import io.wexchain.android.dcc.view.adapter.multitype.BindingTypeViewBinder
-import java.lang.ref.WeakReference
 
 /**
  * Created by lulingzhi on 2017/8/22.
@@ -53,7 +50,7 @@ abstract class DataBindAdapter<B : ViewDataBinding, T>(
         itemViewClickListener?.onItemClick(getItem(position), position, viewId)
     }
 
-    public fun getItemOnPos(pos:Int): T {
+    fun getItemOnPos(pos:Int): T {
         return getItem(pos)
     }
 }

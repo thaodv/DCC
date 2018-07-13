@@ -80,9 +80,9 @@ class PassportRepository(
         }*/
     }
 
-    fun getAllAddressBook(): LiveData<List<BeneficiaryAddress>> {
+    fun listLatestUsedAddressBook(): LiveData<List<BeneficiaryAddress>> {
         return MediatorLiveData<List<BeneficiaryAddress>>().apply {
-            addSource(dao.listBeneficiaryAddresses()) {
+            addSource(dao.listLatestUsedAddressBook()) {
                 postValue(it)
             }
         }

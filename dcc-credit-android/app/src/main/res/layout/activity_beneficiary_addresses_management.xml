@@ -28,7 +28,7 @@
         android:layout_width="16dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/toolbar"
         app:focusLetterColor="#6766CC"
         app:letterColor="#4A4A4A"
         app:letterSize="10sp"

@@ -25,15 +25,15 @@ import java.io.File
  * Created by sisel on 2018/3/27.
  */
 
-inline fun <T : Activity> Activity.navigateTo(activity: Class<T>,options:Bundle?=null, crossinline extras: Intent.() -> Unit = {}) {
+inline fun <T : Activity> Activity.navigateTo(activity: Class<T>, options: Bundle? = null, crossinline extras: Intent.() -> Unit = {}) {
     this.startActivity(Intent(this, activity).apply {
         this.extras()
-    },options)
+    }, options)
 }
 
-fun Activity.resultOk(data:(Intent.()->Unit)? = null){
+fun Activity.resultOk(data: (Intent.() -> Unit)? = null) {
     val resultData = data?.run { Intent().apply { data() } }
-    this.setResult(Activity.RESULT_OK,resultData)
+    this.setResult(Activity.RESULT_OK, resultData)
     finish()
 }
 
@@ -63,7 +63,7 @@ fun FragmentActivity.replaceFragment(
     }
 }
 
-fun Activity.setWindowExtended(){
+fun Activity.setWindowExtended() {
     window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 }
 
@@ -105,7 +105,18 @@ fun Context.getVersionName(): String {
     return versionName
 }
 
- fun Context.installApk(file: File) {
+fun Context.getVersionCode(): Int {
+    var versionCode = 1
+    try {
+        versionCode = this.packageManager.getPackageInfo(this.packageName, 0).versionCode
+    } catch (e: PackageManager.NameNotFoundException) {
+        e.printStackTrace()
+    }
+    return versionCode
+}
+
+
+fun Context.installApk(file: File) {
     val data: Uri
     val intent = Intent(Intent.ACTION_VIEW)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

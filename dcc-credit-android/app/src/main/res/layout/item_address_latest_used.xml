@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.support.v4.util.ObjectsCompat"/>
+
+        <import type="io.wexchain.android.dcc.tools.CommonUtils"/>
+
+        <variable
+            name="addr"
+            type="io.wexchain.android.dcc.repo.db.BeneficiaryAddress"
+            />
+
+    </data>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#FFF"
+        >
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:scaleType="centerCrop"
+            app:errorRes="@{@drawable/default_user_avatar}"
+            app:imageUri="@{CommonUtils.str2Uri(addr.avatarUrl)}"
+            tools:src="@drawable/icon_default_avatar"
+            />
+
+        <TextView
+            android:id="@+id/tv_short_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="5dp"
+            android:singleLine="true"
+            android:text="@{addr.shortName}"
+            android:textSize="16sp"
+            tools:text="冷钱包"
+            />
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tv_short_name"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="5dp"
+            android:text="@{addr.address}"
+            android:textSize="13sp"
+            app:autoSizeMaxTextSize="13sp"
+            app:autoSizeTextType="uniform"
+            tools:text="@sample/address"
+            />
+
+        <View
+            style="@style/DividerHorizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="60dp"/>
+
+        <TextView
+            android:id="@+id/tv_add_to_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@{addr.is_added==0?@drawable/shape_bg_address_latest_used:null}"
+            android:padding="10dp"
+            android:text="@{CommonUtils.setStatusName(addr.is_added) }"
+            android:textColor="@{addr.is_added==0?@color/white:@color/FF4A4A4A}"
+            android:textSize="14sp"
+            tools:background="@drawable/shape_bg_address_latest_used"
+            tools:text="添加"
+            tools:textColor="@color/white"/>
+
+    </RelativeLayout>
+
+</layout>

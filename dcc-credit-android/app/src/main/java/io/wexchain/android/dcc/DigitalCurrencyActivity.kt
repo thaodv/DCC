@@ -5,15 +5,14 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.view.*
-import io.wexchain.android.dcc.constant.RequestCodes
-import com.wexmarket.android.passport.ResultCodes
-import io.wexchain.android.dcc.base.BindActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.android.dcc.tools.SharedPreferenceUtil
-import io.wexchain.android.dcc.tools.TransHelper
+import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.TransactionRecordAdapter
@@ -24,9 +23,10 @@ import io.wexchain.android.dcc.vm.TransactionListVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityDigitalCurrencyBinding
 import io.wexchain.dcc.databinding.ItemBottomMoreTextBinding
-import io.wexchain.digitalwallet.*
-import io.wexchain.digitalwallet.util.gweiTowei
-import java.math.BigInteger
+import io.wexchain.digitalwallet.Chain
+import io.wexchain.digitalwallet.Currencies
+import io.wexchain.digitalwallet.DigitalCurrency
+import io.wexchain.digitalwallet.EthsTransaction
 
 /**
  * Digital currency detail
@@ -64,14 +64,14 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
 //    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-       /* when (requestCode) {
-            RequestCodes.CREATE_TRANSACTION,RequestCodes.CANCLE_TRANSACTION -> {
-                val txId = data?.getStringExtra(Extras.EXTRA_DIGITAL_TRANSACTION_ID)
-                val scratch = data?.getSerializableExtra(Extras.EXTRA_DIGITAL_TRANSACTION_SCRATCH) as? EthsTransactionScratch
-                TransHelper.afterTransSuc(scratch,txId)
-            }
-            else -> super.onActivityResult(requestCode, resultCode, data)
-        }*/
+        /* when (requestCode) {
+             RequestCodes.CREATE_TRANSACTION,RequestCodes.CANCLE_TRANSACTION -> {
+                 val txId = data?.getStringExtra(Extras.EXTRA_DIGITAL_TRANSACTION_ID)
+                 val scratch = data?.getSerializableExtra(Extras.EXTRA_DIGITAL_TRANSACTION_SCRATCH) as? EthsTransactionScratch
+                 TransHelper.afterTransSuc(scratch,txId)
+             }
+             else -> super.onActivityResult(requestCode, resultCode, data)
+         }*/
         super.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -79,7 +79,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
         item ?: return
         startActivityForResult(Intent(this, DigitalTransactionDetailActivity::class.java).apply {
             putExtra(Extras.EXTRA_DIGITAL_TRANSACTION, item)
-        },RequestCodes.CANCLE_TRANSACTION)
+        }, RequestCodes.CANCLE_TRANSACTION)
     }
 
     private fun initVm() {
@@ -132,7 +132,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
         val bottomMoreItemsAdapter = BottomMoreItemsAdapter(adapter, object : BottomMoreItemsAdapter.BottomViewProvider {
 
             override fun inflateBottomView(parent: ViewGroup): View {
-                parent ?: throw IllegalArgumentException()
+                parent
                 val b = DataBindingUtil.inflate<ItemBottomMoreTextBinding>(LayoutInflater.from(parent.context), R.layout.item_bottom_more_text, parent, false)
                 b.bm = bm
                 b.tvLoadMore.setOnClickListener {
@@ -173,7 +173,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
 
     private fun toCreateTransaction() {
         val dc = getDc()
-        if(dc.chain == Chain.JUZIX_PRIVATE && dc.symbol == Currencies.FTC.symbol){
+        if (dc.chain == Chain.JUZIX_PRIVATE && dc.symbol == Currencies.FTC.symbol) {
 //            App.get().ftcApi.getFeeRate()
 //                    .compose(Result.checked())
 //                    .observeOn(AndroidSchedulers.mainThread())
@@ -192,10 +192,16 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
 //                        //todo
 //                        stackTrace(it)
 //                    })
-        }else {
-            startActivityForResult(Intent(this, CreateTransactionActivity::class.java).apply {
+        } else {
+            /*startActivityForResult(Intent(this, CreateTransactionActivity::class.java).apply {
+                putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dc)
+            }, RequestCodes.CREATE_TRANSACTION)*/
+
+            startActivityForResult(Intent(this, SelectTransStyleActivity::class.java).apply {
                 putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dc)
             }, RequestCodes.CREATE_TRANSACTION)
+
+
         }
     }
 

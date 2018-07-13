@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.support.v4.app.DialogFragment
 import android.support.v4.view.ViewCompat
@@ -27,14 +28,31 @@ import io.wexchain.digitalwallet.util.isEthAddress
 import java.io.File
 
 class AddBeneficiaryAddressActivity : BindActivity<ActivityAddBeneficiaryAddressBinding>() {
+
     override val contentLayoutId: Int = R.layout.activity_add_beneficiary_address
 
     var realFilePath: String? = ""
+
+    private val isadd get() = intent.getIntExtra("added", 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
         initClicks()
+
+        var address = intent.getStringExtra("address")
+
+        var name = intent.getStringExtra("name")
+
+        var avatar = intent.getStringExtra("avatar")
+
+        if (null != address) binding.etInputAddress.setText(address)
+        if (null != name) binding.etAddressShortName.setText(name)
+        if (null != avatar) {
+            realFilePath = avatar
+            binding.ivAvatar.setImageURI(Uri.parse(avatar))
+        }
+
     }
 
     private fun initClicks() {
@@ -47,7 +65,7 @@ class AddBeneficiaryAddressActivity : BindActivity<ActivityAddBeneficiaryAddress
             } else if (inputAddr.isEmpty() || !isEthAddress(inputAddr)) {
                 toast("请输入有效的地址")
             } else {
-                App.get().passportRepository.addBeneficiaryAddress(BeneficiaryAddress(inputAddr, inputShortName, avatarUrl = realFilePath))
+                App.get().passportRepository.addBeneficiaryAddress(BeneficiaryAddress(inputAddr, inputShortName, avatarUrl = realFilePath, create_time = SystemClock.currentThreadTimeMillis(), is_added = isadd))
                 toast("添加成功")
                 finish()
             }
@@ -141,7 +159,7 @@ class AddBeneficiaryAddressActivity : BindActivity<ActivityAddBeneficiaryAddress
 
     private fun pickImage() {
         startActivityForResult(Intent(this, ChooseCutImageActivity::class.java).apply {
-            putExtra(Extras.EXTRA_PICKAVATAR, "1")
+            putExtra(Extras.EXTRA_PICKAVATAR, 1)
         }, RequestCodes.PICK_AVATAR)
     }
 

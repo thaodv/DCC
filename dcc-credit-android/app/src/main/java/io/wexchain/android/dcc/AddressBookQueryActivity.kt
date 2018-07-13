@@ -2,6 +2,7 @@ package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
 import android.support.v7.widget.GridLayoutManager
@@ -26,6 +27,7 @@ import io.wexchain.android.dcc.view.adapters.BookAddressQueryAdapter
 import io.wexchain.android.dcc.view.adapters.BookAddressQueryHistoryAdapter
 import io.wexchain.android.dcc.vm.QueryBookAddressVm
 import io.wexchain.dcc.R
+import io.wexchain.digitalwallet.DigitalCurrency
 import java.io.Serializable
 
 class AddressBookQueryActivity : BaseCompatActivity(), TextWatcher, View.OnKeyListener, ItemViewClickListener<BeneficiaryAddress> {
@@ -43,9 +45,19 @@ class AddressBookQueryActivity : BaseCompatActivity(), TextWatcher, View.OnKeyLi
 
     private var queryBookAddressVm: QueryBookAddressVm? = null
 
+    private var mUsage: Int = 0
+
+    private var dc: DigitalCurrency? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_address_book_query)
+
+        mUsage = intent.getIntExtra("usage", 0)
+
+        if (mUsage != 0) {
+            dc = intent.getSerializableExtra(Extras.EXTRA_DIGITAL_CURRENCY) as DigitalCurrency
+        }
 
         findViewById<ImageButton>(R.id.iv_back).setOnClickListener { finish() }
 
@@ -126,7 +138,7 @@ class AddressBookQueryActivity : BaseCompatActivity(), TextWatcher, View.OnKeyLi
 
             val name = mEtSearch!!.text.toString().trim()
 
-            App.get().passportRepository.addOrReplaceQueryHistory(QueryHistory(name,SystemClock.currentThreadTimeMillis()))
+            App.get().passportRepository.addOrReplaceQueryHistory(QueryHistory(name, SystemClock.currentThreadTimeMillis()))
 
             mEtSearch!!.text.clear()
 
@@ -137,7 +149,13 @@ class AddressBookQueryActivity : BaseCompatActivity(), TextWatcher, View.OnKeyLi
 
     override fun onItemClick(item: BeneficiaryAddress?, position: Int, viewId: Int) {
         item?.let { ba ->
-            toDetail(ba)
+            if (0 == mUsage) {
+                toDetail(ba)
+            } else {
+                startActivity(Intent(this, CreateTransactionActivity::class.java).apply {
+                    putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dc).putExtra(Extras.EXTRA_SELECT_ADDRESS, ba)
+                })
+            }
         }
     }
 

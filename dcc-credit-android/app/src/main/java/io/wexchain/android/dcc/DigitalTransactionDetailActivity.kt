@@ -42,72 +42,72 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
             val agent = assetsRepository.getDigitalCurrencyAgent(tx.digitalCurrency)
             val cancelGasPrice: BigInteger = tx.gasPrice
             val scratch = EthsTransactionScratch(
-                currency = tx.digitalCurrency,
-                from = tx.from,
-                to = tx.to,
-                amount = tx.amount.toBigDecimal(),
-                gasPrice = BigDecimal.ZERO,
-                gasLimit = BigInteger.ZERO,
-                remarks = tx.remarks
+                    currency = tx.digitalCurrency,
+                    from = tx.from,
+                    to = tx.to,
+                    amount = tx.amount.toBigDecimal(),
+                    gasPrice = BigDecimal.ZERO,
+                    gasLimit = BigInteger.ZERO,
+                    remarks = tx.remarks
             )
             Single
-                .zip(
-                    /*agent.getGasLimit(scratch)
-                        .onErrorReturn { BigInteger.valueOf(100000) }*/
-                    Single.just(BigInteger.valueOf(200000))
-                    ,
-                    agent.getGasPrice(),
-                    pair()
-                )
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    { (gasLimit, gasprice) ->
-                        val fpp = maxOf(
-                            gasprice,
-                            cancelGasPrice + BigDecimal("0.5").scaleByPowerOfTen(9).toBigInteger()
-                        )
-                        val ss = computeEthTxFeebyW(gasLimit, gasprice)
-                        CustomDialog(this)
-                            .apply {
-                                title = "提示"
-                                textContent = "撤销后的交易记录将覆盖原交易记录（nonce=" + tx.nonce + "）。撤销交易需消耗" +
-                                        ss +
-                                        "ETH。确认撤销此交易吗？\n"
-                                withPositiveButton("确定") {
-                                    agent.editTransferTransaction(
-                                        Single.just(tx.nonce),
-                                        App.get().passportRepository.getCurrentPassport()!!.credential,
-                                        address,
-                                        BigInteger("1"),
-                                        fpp,
-                                        gasLimit
-                                    ).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                                        {
-                                            //  AlertDialog.
-                                            toast("请求成功")
-                                            var ss = scratch
-                                            ss.nonce = tx.nonce
-                                            ss.amount = ss.currency.toDecimalAmount(BigInteger("1"))
-                                            ss.to = address
-                                            ss.gasPrice = fpp.toBigDecimal()
-                                            ss.gasLimit = gasLimit
-                                            TransHelper.afterTransSuc(scratch, it.second)
-                                            finish()
+                    .zip(
+                            /*agent.getGasLimit(scratch)
+                                .onErrorReturn { BigInteger.valueOf(100000) }*/
+                            Single.just(BigInteger.valueOf(200000))
+                            ,
+                            agent.getGasPrice(),
+                            pair()
+                    )
+                    .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                            { (gasLimit, gasprice) ->
+                                val fpp = maxOf(
+                                        gasprice,
+                                        cancelGasPrice + BigDecimal("0.5").scaleByPowerOfTen(9).toBigInteger()
+                                )
+                                val ss = computeEthTxFeebyW(gasLimit, gasprice)
+                                CustomDialog(this)
+                                        .apply {
+                                            title = "提示"
+                                            textContent = "撤销后的交易记录将覆盖原交易记录（nonce=" + tx.nonce + "）。撤销交易需消耗" +
+                                                    ss +
+                                                    "ETH。确认撤销此交易吗？\n"
+                                            withPositiveButton("确定") {
+                                                agent.editTransferTransaction(
+                                                        Single.just(tx.nonce),
+                                                        App.get().passportRepository.getCurrentPassport()!!.credential,
+                                                        address,
+                                                        BigInteger("1"),
+                                                        fpp,
+                                                        gasLimit
+                                                ).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                                                        {
+                                                            //  AlertDialog.
+                                                            toast("请求成功")
+                                                            var ss = scratch
+                                                            ss.nonce = tx.nonce
+                                                            ss.amount = ss.currency.toDecimalAmount(BigInteger("1"))
+                                                            ss.to = address
+                                                            ss.gasPrice = fpp.toBigDecimal()
+                                                            ss.gasLimit = gasLimit
+                                                            TransHelper.afterTransSuc(scratch, it.second)
+                                                            finish()
 
-                                        }, {
-                                            toast("请求失败")
-                                            stackTrace(it)
-                                            finish()
+                                                        }, {
+                                                    toast("请求失败")
+                                                    stackTrace(it)
+                                                    finish()
+                                                }
+                                                )
+                                                true
+                                            }
+                                            withNegativeButton("取消")
                                         }
-                                    )
-                                    true
-                                }
-                                withNegativeButton("取消")
-                            }
-                            .assembleAndShow()
-                    }, {
+                                        .assembleAndShow()
+                            }, {
 
                     }
-                )
+                    )
             /*  .flatMap { (gasLimit, gasprice) ->
           val fpp= maxOf(gasprice,cancelGasPrice+BigDecimal("0.5").scaleByPowerOfTen(9).toBigInteger())
           val ss=computeEthTxFeebyW(gasLimit,gasprice)
@@ -136,27 +136,36 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
         }
         binding.btnToEdit.setOnClickListener {
             CustomDialog(this)
-                .apply {
-                    title = "提示"
-                    textContent = "撤销后的交易记录将覆盖原交易记录（nonce=" + tx.nonce + "）。" +
-                            "确认编辑此交易吗？\n"
-                    withPositiveButton("确定") {
-                       // navigateTo(CreateTransactionActivity::class.java)
-                        startActivityForResult(Intent(this@DigitalTransactionDetailActivity, CreateTransactionActivity::class.java).apply {
-                            putExtra(Extras.EXTRA_EDIT_TRANSACTION, tx)
-                        },RequestCodes.Edit_TRANSACTION)
-                        true
+                    .apply {
+                        title = "提示"
+                        textContent = "撤销后的交易记录将覆盖原交易记录（nonce=" + tx.nonce + "）。" +
+                                "确认编辑此交易吗？\n"
+                        withPositiveButton("确定") {
+                            // navigateTo(CreateTransactionActivity::class.java)
+                            startActivityForResult(Intent(this@DigitalTransactionDetailActivity, CreateTransactionActivity::class.java).apply {
+                                putExtra(Extras.EXTRA_EDIT_TRANSACTION, tx)
+                            }, RequestCodes.Edit_TRANSACTION)
+                            true
+                        }
+                        withNegativeButton("取消")
                     }
-                    withNegativeButton("取消")
-                }
-                .assembleAndShow()
+                    .assembleAndShow()
         }
+
+        binding.llAddAddressBook.setOnClickListener {
+            startActivity(Intent(this, AddBeneficiaryAddressActivity::class.java).apply {
+                putExtra("address", binding.tvToAddressValue.text.toString())
+                        .putExtra("added", 1)
+                finish()
+            })
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            RequestCodes.Edit_TRANSACTION-> {
-              finish()
+            RequestCodes.Edit_TRANSACTION -> {
+                finish()
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
@@ -166,28 +175,28 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
     private fun updateInfoIfRequired(tx: EthsTransaction) {
         val agent = App.get().assetsRepository.getDigitalCurrencyAgent(tx.digitalCurrency)
         val gasUnknown =
-            !tx.onPrivateChain() && (tx.gas == BigInteger.ZERO || tx.gasPrice == BigInteger.ZERO)
+                !tx.onPrivateChain() && (tx.gas == BigInteger.ZERO || tx.gasPrice == BigInteger.ZERO)
         if (tx.blockNumber == 0L || gasUnknown) {
             agent.transactionByHash(tx.txId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    tx.blockNumber = Numeric.toBigInt(it.blockNumber).toLong()
-                    tx.gas = Numeric.toBigInt(it.gas)
-                    tx.gasPrice = Numeric.toBigInt(it.gasPrice)
-                    binding.tx = tx
-                }, {
-                    stackTrace(it)
-                })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        tx.blockNumber = Numeric.toBigInt(it.blockNumber).toLong()
+                        tx.gas = Numeric.toBigInt(it.gas)
+                        tx.gasPrice = Numeric.toBigInt(it.gasPrice)
+                        binding.tx = tx
+                    }, {
+                        stackTrace(it)
+                    })
         }
         if (tx.gasUsed == BigInteger.ZERO) {
             agent.transactionReceipt(tx.txId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    tx.gasUsed = Numeric.toBigInt(it.gasUsed)
-                    binding.tx = tx
-                }, {
-                    stackTrace(it)
-                })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        tx.gasUsed = Numeric.toBigInt(it.gasUsed)
+                        binding.tx = tx
+                    }, {
+                        stackTrace(it)
+                    })
         }
     }
 }

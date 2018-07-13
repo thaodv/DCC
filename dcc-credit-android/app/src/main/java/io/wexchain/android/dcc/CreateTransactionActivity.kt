@@ -24,6 +24,8 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
     var isEdit = false//是否是编辑转账
     val txVm = TransactionVm()
 
+    private val addr get() = intent.getSerializableExtra(Extras.EXTRA_SELECT_ADDRESS) as? BeneficiaryAddress
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar(true)
@@ -44,6 +46,11 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
         title = ("${dc!!.symbol} 转账")
         setupEvents(dc, feeRate)
         setupButtons()
+
+        if (null != addr) {
+            txVm.toAddress.set(addr!!.address)
+        }
+
 
     }
 

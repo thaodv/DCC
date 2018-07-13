@@ -42,6 +42,7 @@ abstract class PassportDatabase : RoomDatabase() {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE `${BeneficiaryAddress.TABLE_NAME}` ADD COLUMN '${BeneficiaryAddress.COLUM_AVATAR}' TEXT")
                 database.execSQL("ALTER TABLE `${BeneficiaryAddress.TABLE_NAME}` ADD COLUMN '${BeneficiaryAddress.COLUM_ISADD}' INTEGER")
+                database.execSQL("ALTER TABLE `${BeneficiaryAddress.TABLE_NAME}` ADD COLUMN '${BeneficiaryAddress.COLUM_CREATE_TIME}' LONG")
             }
         }
 

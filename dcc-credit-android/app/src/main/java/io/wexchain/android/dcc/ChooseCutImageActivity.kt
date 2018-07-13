@@ -20,6 +20,7 @@ import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.network.GlideApp
+import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.dcc.R
 import java.io.File
 
@@ -38,6 +39,8 @@ class ChooseCutImageActivity : BaseCompatActivity() {
         initToolbar(true)
 
         preInt = intent.getIntExtra(Extras.EXTRA_PICKAVATAR, 0)
+
+        LogUtils.i("preInt", preInt)
 
         cropView = findViewById(R.id.iv_cut_preview)
         cropView.extensions().pickUsing(this, RequestCodes.GET_PICTURE)

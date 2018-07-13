@@ -5,13 +5,10 @@ import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.app.DialogFragment
-import android.support.v4.content.FileProvider
 import android.support.v4.view.ViewCompat
 import android.view.*
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -106,7 +103,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
             startActivity(Intent(this, BeneficiaryAddressesManagementActivity::class.java))
         }
         binding.tvCheckUpdate.setOnClickListener {
-            App.get().marketingApi.checkUpgrade(getVersionName())
+            App.get().marketingApi.checkUpgrade(getVersionCode().toString())
                     .compose(Result.checked())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -166,7 +163,6 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
                     }
                 }
     }
-
 
 
     private fun pickImage() {

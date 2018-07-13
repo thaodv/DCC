@@ -89,4 +89,12 @@ public class CommonUtils {
         return Uri.parse(path);
     }
     
+    public static String setStatusName(int code) {
+        if (0 == code) {
+            return "添加";
+        } else {
+            return "已添加";
+        }
+    }
+    
 }

@@ -2,7 +2,6 @@ package io.wexchain.dccchainservice
 
 import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
-import okhttp3.Response
 import retrofit2.http.*
 
 interface MarketingApi {

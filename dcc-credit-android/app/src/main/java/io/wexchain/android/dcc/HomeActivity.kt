@@ -41,8 +41,6 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         })
         setupClicks()
         checkScfAccount()
-
-
     }
 
     override fun onResume() {
@@ -52,15 +50,15 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
     }
 
     private fun checkUpgrade() {
-        App.get().marketingApi.checkUpgrade(getVersionName())
+        App.get().marketingApi.checkUpgrade(getVersionCode().toString())
                 .compose(Result.checked())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter {
                     it.mandatoryUpgrade
                 }
-                .subscribe({ it ->
+                .subscribe { it ->
                     showUpgradeDialog(it)
-                })
+                }
     }
 
     private fun showUpgradeDialog(it: CheckUpgrade) {

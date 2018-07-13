@@ -2,6 +2,7 @@ package io.wexchain.android.dcc
 
 import android.app.ActionBar
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -23,11 +24,14 @@ import io.wexchain.android.dcc.view.addressbook.FloatingBarItemDecoration
 import io.wexchain.android.dcc.view.addressbook.IndexBar
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.dcc.R
+import io.wexchain.digitalwallet.DigitalCurrency
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
 class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewClickListener<BeneficiaryAddress> {
+
+    private val dc get() = intent.getSerializableExtra(Extras.EXTRA_DIGITAL_CURRENCY) as DigitalCurrency
 
     private var mHeaderList: LinkedHashMap<Int, String>? = null
     private var mContactList: ArrayList<BeneficiaryAddress>? = null
@@ -69,7 +73,7 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
 
     }
 
-    fun getDataFormDataBase() {
+    private fun getDataFormDataBase() {
         passportRepository.beneficiaryAddresses.observe(this, Observer {
 
             if (mHeaderList == null) {
@@ -123,6 +127,9 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
         super.onResume()
         getDataFormDataBase()
 
+        if (null != mFloatingBarItemDecoration) {
+            mFloatingBarItemDecoration!!.setList(mHeaderList)
+        }
     }
 
     private fun addHeaderToList(index: Int, header: String) {
@@ -151,10 +158,14 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
         item?.let { ba ->
             if (0 == mUsage) {
                 toDetail(ba)
-            } else {
+            } else if (1 == mUsage) {
                 resultOk {
                     putExtra(Extras.EXTRA_SELECT_ADDRESS, ba)
                 }
+            } else if (2 == mUsage) {
+                startActivity(Intent(this, CreateTransactionActivity::class.java).apply {
+                    putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dc).putExtra(Extras.EXTRA_SELECT_ADDRESS, ba)
+                })
             }
         }
     }
@@ -196,7 +207,18 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.address_book_query -> {
-                navigateTo(AddressBookQueryActivity::class.java)
+                if (mUsage == 0) {
+                    navigateTo(AddressBookQueryActivity::class.java) {
+                        putExtra("usage", mUsage)
+                    }
+                } else {
+                    navigateTo(AddressBookQueryActivity::class.java) {
+                        putExtra("usage", mUsage)
+                                .putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dc)
+                    }
+                }
+
+
                 true
             }
             R.id.address_book_add -> {

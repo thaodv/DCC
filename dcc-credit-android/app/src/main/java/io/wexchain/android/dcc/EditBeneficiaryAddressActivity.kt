@@ -16,7 +16,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BindActivity
@@ -24,6 +23,7 @@ import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 import io.wexchain.android.dcc.tools.CommonUtils
+import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.android.dcc.tools.isAddressShortNameValid
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityEditBeneficiaryAddressBinding
@@ -38,23 +38,20 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
         get() = R.layout.activity_edit_beneficiary_address
 
     private val ba
-        get() = intent.getSerializableExtra(Extras.EXTRA_BENEFICIARY_ADDRESS) as? BeneficiaryAddress
+        get() = intent.getSerializableExtra(Extras.EXTRA_BENEFICIARY_ADDRESS) as BeneficiaryAddress
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
         title = "编辑地址"
-        val beneficiaryAddress = ba
-        if (beneficiaryAddress == null) {
-            postOnMainThread { finish() }
-        } else {
-            App.get().passportRepository.defaultBeneficiaryAddress.observe(this, Observer {})
-            binding.etInputAddress.setText(beneficiaryAddress.address)
-            binding.etAddressShortName.setText(beneficiaryAddress.shortName)
-            binding.ivAvatar.setImageURI(CommonUtils.str2Uri(beneficiaryAddress!!.avatarUrl))
-            //binding.checkDefaultAddress.isChecked = App.get().passportRepository.defaultBeneficiaryAddress.value == beneficiaryAddress.address
-            initClicks()
-        }
+
+        App.get().passportRepository.defaultBeneficiaryAddress.observe(this, Observer {})
+        binding.etInputAddress.setText(ba.address)
+        binding.etAddressShortName.setText(ba.shortName)
+        binding.ivAvatar.setImageURI(CommonUtils.str2Uri(ba.avatarUrl))
+        //binding.checkDefaultAddress.isChecked = App.get().passportRepository.defaultBeneficiaryAddress.value == beneficiaryAddress.address
+        initClicks()
+
     }
 
     private fun initClicks() {
@@ -73,7 +70,7 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
             } else {
                 //val setDefault = binding.checkDefaultAddress.isChecked
                 val passportRepository = App.get().passportRepository
-                passportRepository.addBeneficiaryAddress(BeneficiaryAddress(inputAddr, inputShortName, realFilePath))
+                passportRepository.addBeneficiaryAddress(BeneficiaryAddress(inputAddr, inputShortName, avatarUrl = realFilePath, is_added = ba.is_added))
                 /*if (setDefault) {
                     passportRepository.setDefaultBeneficiaryAddress(inputAddr)
                 }else if(passportRepository.defaultBeneficiaryAddress.value == inputAddr){
@@ -122,6 +119,9 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
             RequestCodes.PICK_AVATAR -> {
                 if (RequestCodes.PICK_AVATAR_BACK == resultCode) {
                     realFilePath = data?.getStringExtra(Extras.EXTRA_PICKAVATAR_BACK)
+
+                    LogUtils.i("path", realFilePath)
+
                     binding.ivAvatar.setImageURI(Uri.parse(realFilePath))
                 }
             }
@@ -175,9 +175,17 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
     }
 
     private fun pickImage() {
-        startActivityForResult(Intent(this, ChooseCutImageActivity::class.java).apply {
-            putExtra(Extras.EXTRA_PICKAVATAR, "1")
-        }, RequestCodes.PICK_AVATAR)
+
+        RxPermissions(this)
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                .subscribe {
+                    if (it) {
+                        //granted
+                        startActivityForResult(Intent(this, ChooseCutImageActivity::class.java).putExtra(Extras.EXTRA_PICKAVATAR, 1), RequestCodes.PICK_AVATAR)
+                    } else {
+                        toast("读写权限")
+                    }
+                }
     }
 
     private fun captureImage() {

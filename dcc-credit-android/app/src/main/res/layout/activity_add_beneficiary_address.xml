@@ -17,8 +17,8 @@
 
         <ImageView
             android:id="@+id/iv_avatar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:src="@drawable/icon_default_avatar"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -32,6 +32,9 @@
             android:background="@null"
             android:gravity="center_vertical"
             android:hint="名称"
+            android:maxLength="20"
+            android:paddingRight="20dp"
+            android:singleLine="true"
             android:textColor="#404040"
             android:textSize="16sp"
             app:layout_constraintLeft_toRightOf="@id/iv_avatar"
@@ -72,6 +75,7 @@
             android:background="@null"
             android:gravity="center_vertical"
             android:hint="扫码或输入收款人钱包地址"
+            android:maxLines="1"
             android:singleLine="true"
             android:textColor="#4A4A4A"
             android:textSize="12sp"
@@ -88,7 +92,6 @@
             android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/et_input_address"
             />
-
 
         <RelativeLayout
             android:layout_width="match_parent"

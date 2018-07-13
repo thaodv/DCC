@@ -48,6 +48,9 @@ abstract class PassportDao {
     @Query("SELECT * FROM ${BeneficiaryAddress.TABLE_NAME}")
     abstract fun listBeneficiaryAddresses(): LiveData<List<BeneficiaryAddress>>
 
+    @Query("SELECT * FROM ${BeneficiaryAddress.TABLE_NAME} ORDER BY ${BeneficiaryAddress.COLUM_ISADD} DESC, ${BeneficiaryAddress.COLUM_CREATE_TIME} DESC LIMIT 10")
+    abstract fun listLatestUsedAddressBook(): LiveData<List<BeneficiaryAddress>>
+
     @Query("SELECT * FROM ${BeneficiaryAddress.TABLE_NAME}")
     abstract fun getAddressBookList(): List<BeneficiaryAddress>
 

@@ -348,7 +348,6 @@
             android:screenOrientation="portrait">
         </activity>
 
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="io.wexchain.dcc.fileprovider"
@@ -356,8 +355,11 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
+                android:resource="@xml/file_paths"/>
         </provider>
+
+        <activity android:name="io.wexchain.android.dcc.SelectTransStyleActivity">
+        </activity>
     </application>
 
 </manifest>

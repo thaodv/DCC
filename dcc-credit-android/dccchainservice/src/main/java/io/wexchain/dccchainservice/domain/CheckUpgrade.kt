@@ -1,7 +1,5 @@
 package io.wexchain.dccchainservice.domain
 
-
-
 data class CheckUpgrade(
     val versionNumber: String,
     val updateLog: String,
