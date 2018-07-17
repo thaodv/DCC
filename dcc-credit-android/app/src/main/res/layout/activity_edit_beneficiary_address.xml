@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="io.wexchain.android.dcc.EditBeneficiaryAddressActivity"
+    tools:context="io.wexchain.android.dcc.modules.addressbook.activity.EditBeneficiaryAddressActivity"
     >
 
     <android.support.constraint.ConstraintLayout
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginTop="@dimen/content_padding_horizontal"
-            android:text="收款钱包地址"
+            android:text="钱包地址"
             android:textColor="#404040"
             android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"

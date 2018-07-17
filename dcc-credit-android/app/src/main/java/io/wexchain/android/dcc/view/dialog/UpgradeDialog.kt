@@ -2,11 +2,13 @@ package io.wexchain.android.dcc.view.dialog
 
 import android.app.Dialog
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.dcc.R
 import kotlinx.android.synthetic.main.dialog_check_update.*
 import kotlinx.android.synthetic.main.dialog_download.*
@@ -52,7 +54,7 @@ class UpgradeDialog(context: Context) : Dialog(context) {
         show()
     }
 
-    fun createHomeDialog(newvs: String, body: String,  onConfirm: (() -> Unit)) {
+    fun createHomeDialog(newvs: String, body: String, onConfirm: (() -> Unit)) {
         this.setCancelable(false)
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.dialog_check_update, null)
@@ -75,7 +77,7 @@ class UpgradeDialog(context: Context) : Dialog(context) {
         show()
     }
 
-    fun crateDownloadDialog(mission: Mission){
+    fun crateDownloadDialog(mission: Mission) {
         this.setCancelable(false)
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.dialog_download, null)
@@ -96,13 +98,18 @@ class UpgradeDialog(context: Context) : Dialog(context) {
         disposable = RxDownload.create(mission, autoStart = true)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { status ->
-                    if(status is Failed){
-                        Log.e("Failed",status .throwable.message)
-                    }
-                    setProgress(status)
-                    if (status is Succeed){
+                    if (status is Failed) {
+                        LogUtils.e("Failed", status.throwable.message)
+                        Toast.makeText(App.get(), status.throwable.message, Toast.LENGTH_SHORT).show()
+
+                    } else if (status is Succeed) {
+                        setProgress(status)
                         RxDownload.extension(mission, ApkInstallExtension::class.java).subscribe()
                     }
+                    /*setProgress(status)
+                    if (status is Succeed) {
+                        RxDownload.extension(mission, ApkInstallExtension::class.java).subscribe()
+                    }*/
                 }
     }
 

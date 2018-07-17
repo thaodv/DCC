@@ -5,6 +5,7 @@ object Extras {
 
 
     const val EXTRA_DIGITAL_CURRENCY = "digital_currency"
+    const val EXTRA_TRANSRECORE = "trans_record"
     const val EXTRA_DC_SELECTED = "digital_currency_selected"
     const val EXPECTED_SCAN_TYPE = "expected_scan_type"
     const val EXTRA_DIGITAL_TRANSACTION_ID = "digital_transaction_id"
@@ -36,4 +37,5 @@ object Extras {
     const val EXTRA_PICKAVATAR_BACK ="pick_avatar_back"
 
     const val EXTRA_SELECT_ADDRESS ="select_address"
+    const val EXTRA_SELECT_TRANSRECORD ="select_trans_record"
 }

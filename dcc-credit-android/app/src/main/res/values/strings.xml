@@ -59,7 +59,7 @@
     <string name="quote_source_colon">来源:%1$s</string>
     <string name="status_pending">待上链</string>
     <string name="transaction_record_detail">交易记录详情</string>
-    <string name="to_address_colon">接受地址:</string>
+    <string name="to_address_colon">接收地址:</string>
     <string name="from_address_colon">付款地址:</string>
     <string name="transaction_fee_colon">矿\u2002工\u2002费:</string>
     <string name="extra">备\u3000\u3000注:</string>

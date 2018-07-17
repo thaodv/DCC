@@ -23,6 +23,6 @@ data class QueryHistory(
         const val TABLE_NAME = "query_history"
         const val COLUMN_ID = "id"
         const val COLUMN_NAME = "short_name"
-        const val COLUME_TIME = "create_time"
+        const val COLUMN_TIME = "create_time"
     }
 }

@@ -1,7 +1,8 @@
-package io.wexchain.android.dcc
+package io.wexchain.android.dcc.modules.addressbook.activity
 
 import android.Manifest
 import android.app.Dialog
+import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -18,10 +19,14 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.ChooseCutImageActivity
+import io.wexchain.android.dcc.QrScannerActivity
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
+import io.wexchain.android.dcc.repo.db.TransRecord
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityAddBeneficiaryAddressBinding
 import io.wexchain.digitalwallet.util.isEthAddress
@@ -31,28 +36,27 @@ class AddBeneficiaryAddressActivity : BindActivity<ActivityAddBeneficiaryAddress
 
     override val contentLayoutId: Int = R.layout.activity_add_beneficiary_address
 
-    var realFilePath: String? = ""
+    private var realFilePath: String? = ""
 
-    private val isadd get() = intent.getIntExtra("added", 0)
+    private var mTransRecord: TransRecord? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
         initClicks()
 
-        var address = intent.getStringExtra("address")
+        mTransRecord = intent.getSerializableExtra(Extras.EXTRA_TRANSRECORE) as TransRecord?
 
-        var name = intent.getStringExtra("name")
-
-        var avatar = intent.getStringExtra("avatar")
-
-        if (null != address) binding.etInputAddress.setText(address)
-        if (null != name) binding.etAddressShortName.setText(name)
-        if (null != avatar) {
-            realFilePath = avatar
-            binding.ivAvatar.setImageURI(Uri.parse(avatar))
+        if (null != mTransRecord) {
+            if (null != mTransRecord!!.address) binding.etInputAddress.setText(mTransRecord!!.address)
+            if (null != mTransRecord!!.shortName) binding.etAddressShortName.setText(mTransRecord!!.shortName)
+            if (null != mTransRecord!!.avatarUrl && "" != mTransRecord!!.avatarUrl) {
+                realFilePath = mTransRecord!!.avatarUrl
+                binding.ivAvatar.setImageURI(Uri.parse(mTransRecord!!.avatarUrl))
+            } else {
+                binding.ivAvatar.setImageResource(R.drawable.icon_default_avatar)
+            }
         }
-
     }
 
     private fun initClicks() {
@@ -65,14 +69,27 @@ class AddBeneficiaryAddressActivity : BindActivity<ActivityAddBeneficiaryAddress
             } else if (inputAddr.isEmpty() || !isEthAddress(inputAddr)) {
                 toast("请输入有效的地址")
             } else {
-                App.get().passportRepository.addBeneficiaryAddress(BeneficiaryAddress(inputAddr, inputShortName, avatarUrl = realFilePath, create_time = SystemClock.currentThreadTimeMillis(), is_added = isadd))
+                App.get().passportRepository.addBeneficiaryAddress(BeneficiaryAddress(inputAddr, inputShortName, avatarUrl = realFilePath, create_time = SystemClock.currentThreadTimeMillis()))
+
+                if (null != mTransRecord) {
+
+                    App.get().passportRepository.getTransRecordByAddress(inputAddr).observe(this, Observer {
+                        var mTrans: ArrayList<TransRecord> = ArrayList()
+                        if (null != it) {
+                            for (item in it) {
+                                mTrans.add(TransRecord(item.id, item.address, shortName = inputShortName, avatarUrl = realFilePath, is_add = 1, create_time = item.create_time, update_time = SystemClock.currentThreadTimeMillis()))
+                            }
+                            App.get().passportRepository.updateTransRecord(mTrans)
+                        }
+                    })
+                }
                 toast("添加成功")
                 finish()
             }
         }
 
         binding.ivAvatar.setOnClickListener {
-            AddBeneficiaryAddressActivity.ChooseImageFromDialog.create(this).show(supportFragmentManager, null)
+            ChooseImageFromDialog.create(this).show(supportFragmentManager, null)
         }
     }
 
@@ -158,9 +175,19 @@ class AddBeneficiaryAddressActivity : BindActivity<ActivityAddBeneficiaryAddress
     }
 
     private fun pickImage() {
-        startActivityForResult(Intent(this, ChooseCutImageActivity::class.java).apply {
-            putExtra(Extras.EXTRA_PICKAVATAR, 1)
-        }, RequestCodes.PICK_AVATAR)
+
+        RxPermissions(this)
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                .subscribe {
+                    if (it) {
+                        //granted
+                        startActivityForResult(Intent(this, ChooseCutImageActivity::class.java).apply {
+                            putExtra(Extras.EXTRA_PICKAVATAR, 1)
+                        }, RequestCodes.PICK_AVATAR)
+                    } else {
+                        toast("没有读写权限")
+                    }
+                }
     }
 
     private fun captureImage() {

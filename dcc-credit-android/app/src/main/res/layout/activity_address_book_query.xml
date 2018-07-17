@@ -5,14 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.wexchain.android.dcc.AddressBookQueryActivity">
+    tools:context="io.wexchain.android.dcc.modules.addressbook.activity.AddressBookQueryActivity">
 
     <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/iv_back"
@@ -23,9 +24,10 @@
 
         <io.wexchain.android.dcc.view.ClearEditText
             android:id="@+id/et_search"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_marginRight="10dp"
+            android:layout_weight="1"
             android:background="@drawable/shape_bg_address_book_query"
             android:drawableLeft="@drawable/icon_address_book_query_find"
             android:hint="搜索"
@@ -34,6 +36,16 @@
             android:paddingRight="10dp"
             android:textColorHint="#909092"
             android:textSize="15sp"/>
+
+        <Button
+            android:id="@+id/bt_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/shape_bg_address_latest_used"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="搜索"/>
 
     </LinearLayout>
 
@@ -76,8 +88,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar"
-            app:spanCount="3"
             app:layoutManager="android.support.v7.widget.GridLayoutManager"
+            app:spanCount="3"
             tools:listitem="@layout/item_query_history_address"
             />
 
@@ -88,6 +100,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:visibility="gone"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:listitem="@layout/item_beneficiary_address"

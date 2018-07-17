@@ -1,4 +1,5 @@
 <resources>
+
     <style name="CardView.Light.Dcc">
         <item name="cardCornerRadius">12dp</item>
         <item name="android:layout_margin">16dp</item>
@@ -88,14 +89,17 @@
         <item name="android:textSize">@dimen/text_size_title</item>
         <item name="android:textColor">@color/text_dark</item>
     </style>
+
     <style name="TextAppearance.AppCompat.DccSubTitle">
         <item name="android:textSize">@dimen/text_size_sub_title</item>
         <item name="android:textColor">@color/text_dark</item>
     </style>
+
     <style name="TextAppearance.AppCompat.DccMainTitle">
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:textColor">@color/text_dark</item>
     </style>
+
     <style name="TextAppearance.AppCompat.DccSupplementary">
         <item name="android:textSize">@dimen/text_size_supplementary</item>
         <item name="android:textColor">@color/text_gray</item>
@@ -111,6 +115,7 @@
         <item name="android:layout_height">@dimen/divider_stroke_width</item>
         <item name="android:background">@color/light_gray_alpha</item>
     </style>
+
     <style name="DividerVertical">
         <item name="android:layout_width">@dimen/divider_stroke_width</item>
         <item name="android:background">@color/light_gray_alpha</item>
@@ -137,6 +142,15 @@
         <item name="android:button">@null</item>
         <item name="android:background">@drawable/bg_radio_label</item>
         <item name="android:textColor">@color/text_white</item>
+    </style>
+
+    <style name="deleteAddressBookDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
 
 </resources>

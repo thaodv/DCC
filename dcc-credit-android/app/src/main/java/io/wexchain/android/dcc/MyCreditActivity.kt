@@ -4,10 +4,10 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
-import io.wexchain.android.dcc.base.BindActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.setWindowExtended
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.domain.CertificationType
@@ -17,6 +17,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityMyCreditBinding
 
 class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
+
     override val contentLayoutId: Int = R.layout.activity_my_credit
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +51,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
     private fun obtainAuthStatus(certificationType: CertificationType): AuthenticationStatusVm? {
         return ViewModelProviders.of(this)[certificationType.name, AuthenticationStatusVm::class.java]
                 .apply {
-                    //todo 
+                    //todo
                     title.set(getCertTypeTitle(certificationType))
                     authDetail.set(getDescription(certificationType))
                     this.status.set(CertOperations.getCertStatus(certificationType))

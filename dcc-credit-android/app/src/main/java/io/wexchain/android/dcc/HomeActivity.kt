@@ -64,10 +64,10 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
     private fun showUpgradeDialog(it: CheckUpgrade) {
         val dialog = UpgradeDialog(this)
         dialog.createHomeDialog(
-                it.versionNumber, it.updateLog,
+                it.version, it.updateLog,
                 onConfirm = {
                     dialog.dismiss()
-                    downloadApk(it.versionNumber, it.updateUrl)
+                    downloadApk(it.version, it.updateUrl)
                 })
     }
 

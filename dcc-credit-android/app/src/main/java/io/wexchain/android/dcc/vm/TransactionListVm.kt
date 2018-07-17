@@ -8,12 +8,12 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
+import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.common.filter
 import io.wexchain.android.common.observing
 import io.wexchain.android.common.zipLiveData
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.tools.AutoLoadLiveData
-import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
 import java.util.concurrent.TimeUnit
@@ -43,18 +43,18 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
 
     private var pv: List<EthsTransaction>? = null
 
-    private var hol:List<EthsTransaction>?=null
+    private var hol: List<EthsTransaction>? = null
 
-    private val history = AutoLoadLiveData<List<EthsTransaction>>({
+    private val history = AutoLoadLiveData<List<EthsTransaction>> {
         val addr = address
         assetsRepository.getDigitalCurrencyAgent(dc)
                 .listTransactionsOf(addr, 0, Long.MAX_VALUE)
                 .doOnSuccess {
-                    hol=it
+                    hol = it
                     pv = pending.value
                 }
                 .toFlowable()
-    })
+    }
 
     private val pending: LiveData<List<EthsTransaction>> = assetsRepository.pendingTxList
             .filter {
@@ -77,7 +77,6 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
                     }
             )
 
-
     private var fetchPendingEnabled = false
     private var fetchDisposable: Disposable? = null
 
@@ -95,11 +94,11 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
                         Single
                                 .zip(pl.map {
                                     val txhash = it.txId
-                                    val nn=it.nonce
+                                    val nn = it.nonce
                                     agent.transactionReceipt(txhash)
                                             .observeOn(AndroidSchedulers.mainThread())
                                             .doOnSuccess {
-                                                assetsRepository.removePendingTx(txhash,nn)
+                                                assetsRepository.removePendingTx(txhash, nn)
                                                 pendingTxDoneEvent.value = txhash
                                             }
                                             .map { txhash }
@@ -107,26 +106,26 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
                                                 ""
                                             }
                                 }.map {
-                                    if(hol!=null&&!hol!!.isEmpty()){
-                                        for (i in hol!!){
-                                            assetsRepository.removePendingTx(i.txId,i.nonce)
+                                    if (hol != null && !hol!!.isEmpty()) {
+                                        for (i in hol!!) {
+                                            assetsRepository.removePendingTx(i.txId, i.nonce)
                                         }
                                     }
-                                  /*  val addr = address
-                                    assetsRepository.getDigitalCurrencyAgent(dc)
-                                        .listTransactionsOf(addr, 0, Long.MAX_VALUE)
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .doOnSuccess {
-                                            if (it!=null&&!it.isEmpty()){
-                                                for (i in it){
-                                                    assetsRepository.removePendingTx(i.txId,i.nonce)
-                                                }
-                                            }
-                                        }*/
+                                    /*  val addr = address
+                                      assetsRepository.getDigitalCurrencyAgent(dc)
+                                          .listTransactionsOf(addr, 0, Long.MAX_VALUE)
+                                          .observeOn(AndroidSchedulers.mainThread())
+                                          .doOnSuccess {
+                                              if (it!=null&&!it.isEmpty()){
+                                                  for (i in it){
+                                                      assetsRepository.removePendingTx(i.txId,i.nonce)
+                                                  }
+                                              }
+                                          }*/
                                     it
-                                }, {
+                                }) {
                                     it
-                                })
+                                }
                                 .zipWith(timer, BiFunction { t1, t2 ->
                                     t2
                                 })
@@ -134,9 +133,9 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
                         timer
                     }
                 }
-                .repeatUntil({
+                .repeatUntil {
                     !fetchPendingEnabled
-                })
+                }
                 .subscribe()
     }
 

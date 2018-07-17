@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.vm
+package io.wexchain.android.dcc.modules.addressbook.vm
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel

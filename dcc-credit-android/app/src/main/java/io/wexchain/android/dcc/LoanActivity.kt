@@ -1,11 +1,11 @@
 package io.wexchain.android.dcc
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.dcc.modules.addressbook.activity.BeneficiaryAddressesManagementActivity
 import io.wexchain.dcc.R
 
 class LoanActivity : BaseCompatActivity() {

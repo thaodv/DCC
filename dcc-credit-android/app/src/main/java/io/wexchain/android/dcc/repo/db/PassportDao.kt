@@ -13,7 +13,6 @@ abstract class PassportDao {
     @Insert
     abstract fun saveAuthKeyChangeRecord(authKeyChangeRecord: AuthKeyChangeRecord): Long
 
-
     @Query("SELECT * FROM ${CaAuthRecord.TABLE_NAME} WHERE ${CaAuthRecord.COLUMN_PASSPORT_ADDRESS} = :address ORDER BY ${CaAuthRecord.COLUMN_TIME} DESC")
     abstract fun listAuthRecords(address: String): LiveData<List<CaAuthRecord>>
 
@@ -48,8 +47,11 @@ abstract class PassportDao {
     @Query("SELECT * FROM ${BeneficiaryAddress.TABLE_NAME}")
     abstract fun listBeneficiaryAddresses(): LiveData<List<BeneficiaryAddress>>
 
-    @Query("SELECT * FROM ${BeneficiaryAddress.TABLE_NAME} ORDER BY ${BeneficiaryAddress.COLUM_ISADD} DESC, ${BeneficiaryAddress.COLUM_CREATE_TIME} DESC LIMIT 10")
-    abstract fun listLatestUsedAddressBook(): LiveData<List<BeneficiaryAddress>>
+    @Query("SELECT * FROM ${BeneficiaryAddress.TABLE_NAME} WHERE ${BeneficiaryAddress.COLUMN_ADDRESS} = :address")
+    abstract fun getAddressByAddress(address: String): LiveData<BeneficiaryAddress>
+
+    @Query("SELECT distinct ${TransRecord.COLUMN_ADDRESS},${TransRecord.COLUNN_ID},${TransRecord.COLUMN_ADDRESS},${TransRecord.COLUMN_SHORT_NAME},${TransRecord.COLUMN_AVATAR},${TransRecord.COLUMN_ISADD} from ${TransRecord.TABLE_NAME} group by ${TransRecord.COLUMN_ADDRESS} ORDER BY ${TransRecord.COLUMN_ISADD} DESC, ${TransRecord.COLUMN_CREATE_TIME} DESC LIMIT 10")
+    abstract fun getTransRecord(): LiveData<List<TransRecord>>
 
     @Query("SELECT * FROM ${BeneficiaryAddress.TABLE_NAME}")
     abstract fun getAddressBookList(): List<BeneficiaryAddress>
@@ -74,6 +76,15 @@ abstract class PassportDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun addOrUpdateBeneficiaryAddress(beneficiaryAddress: BeneficiaryAddress)
+
+    @Query("SELECT * FROM ${TransRecord.TABLE_NAME} WHERE ${TransRecord.COLUMN_ADDRESS} = :address")
+    abstract fun getTransRecordByAddress(address: String): LiveData<List<TransRecord>>
+
+    @Update
+    abstract fun updateTransRecord(record: List<TransRecord>): Int
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun addTransRecord(transRecord: TransRecord): Long
 
     @Delete
     abstract fun removeBeneficiaryAddress(beneficiaryAddress: BeneficiaryAddress)

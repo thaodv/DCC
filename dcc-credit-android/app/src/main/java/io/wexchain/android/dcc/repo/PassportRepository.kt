@@ -21,10 +21,7 @@ import io.wexchain.android.dcc.ChooseCutImageActivity
 import io.wexchain.android.dcc.chain.EthsHelper
 import io.wexchain.android.dcc.domain.AuthKey
 import io.wexchain.android.dcc.domain.Passport
-import io.wexchain.android.dcc.repo.db.AuthKeyChangeRecord
-import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
-import io.wexchain.android.dcc.repo.db.PassportDao
-import io.wexchain.android.dcc.repo.db.QueryHistory
+import io.wexchain.android.dcc.repo.db.*
 import io.wexchain.android.dcc.tools.RoomHelper
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.Wallet
@@ -80,14 +77,49 @@ class PassportRepository(
         }*/
     }
 
-    fun listLatestUsedAddressBook(): LiveData<List<BeneficiaryAddress>> {
+    fun getAllAddressBook(): LiveData<List<BeneficiaryAddress>> {
         return MediatorLiveData<List<BeneficiaryAddress>>().apply {
-            addSource(dao.listLatestUsedAddressBook()) {
+            addSource(dao.listBeneficiaryAddresses()) {
                 postValue(it)
             }
         }
     }
 
+    fun getAddressByAddress(address: String): LiveData<BeneficiaryAddress> {
+        return MediatorLiveData<BeneficiaryAddress>().apply {
+            addSource(dao.getAddressByAddress(address)) {
+                postValue(it)
+            }
+        }
+    }
+
+    fun addTransRecord(transRecord: TransRecord) {
+        RoomHelper.onRoomIoThread {
+            dao.addTransRecord(transRecord)
+        }
+    }
+
+    fun getTransRecord(): LiveData<List<TransRecord>> {
+        return MediatorLiveData<List<TransRecord>>().apply {
+            addSource(dao.getTransRecord()) {
+                postValue(it)
+            }
+        }
+    }
+
+    fun getTransRecordByAddress(address: String): LiveData<List<TransRecord>> {
+        return MediatorLiveData<List<TransRecord>>().apply {
+            addSource(dao.getTransRecordByAddress(address)) {
+                postValue(it)
+            }
+        }
+    }
+
+    fun updateTransRecord(record: List<TransRecord>) {
+        RoomHelper.onRoomIoThread {
+            dao.updateTransRecord(record)
+        }
+    }
 
     fun addOrReplaceQueryHistory(queryHistory: QueryHistory) {
         RoomHelper.onRoomIoThread {

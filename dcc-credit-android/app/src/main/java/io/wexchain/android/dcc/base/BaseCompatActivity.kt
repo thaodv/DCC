@@ -1,13 +1,11 @@
 package io.wexchain.android.dcc.base
 
 import android.graphics.Color
-import android.os.Build
 import android.support.annotation.IdRes
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-import android.view.View
 import android.widget.TextView
 import io.reactivex.Single
 import io.wexchain.android.dcc.constant.Extras
@@ -53,7 +51,6 @@ abstract class BaseCompatActivity : AppCompatActivity() {
             if (color != Color.TRANSPARENT) setTextColor(color)
         }
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         item ?: return super.onOptionsItemSelected(item)

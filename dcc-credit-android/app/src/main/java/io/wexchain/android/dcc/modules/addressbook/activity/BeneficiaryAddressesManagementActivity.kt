@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc
+package io.wexchain.android.dcc.modules.addressbook.activity
 
 import android.app.ActionBar
 import android.arch.lifecycle.Observer
@@ -11,10 +11,13 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.resultOk
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.CreateTransactionActivity
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
@@ -31,7 +34,7 @@ import kotlin.collections.ArrayList
 
 class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewClickListener<BeneficiaryAddress> {
 
-    private val dc get() = intent.getSerializableExtra(Extras.EXTRA_DIGITAL_CURRENCY) as DigitalCurrency
+    private val dc get() = intent.getSerializableExtra(Extras.EXTRA_DIGITAL_CURRENCY) as DigitalCurrency?
 
     private var mHeaderList: LinkedHashMap<Int, String>? = null
     private var mContactList: ArrayList<BeneficiaryAddress>? = null
@@ -42,9 +45,12 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
     private var mOperationInfoDialog: PopupWindow? = null
     private var mLetterHintView: View? = null
     private var mIndexBar: IndexBar? = null
+    private var mLlEmpty: LinearLayout? = null
     private var mFloatingBarItemDecoration: FloatingBarItemDecoration? = null
 
     private var mUsage: Int = 0
+
+    private var mHideSearch = 0
 
     private val passportRepository = App.get().passportRepository
 
@@ -63,63 +69,77 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
 
         mRecyclerView = findViewById(R.id.rv_list)
         mIndexBar = findViewById(R.id.share_add_contact_sidebar)
+        mLlEmpty = findViewById(R.id.ll_empty)
 
         mRecyclerView!!.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
         mFloatingBarItemDecoration = FloatingBarItemDecoration(this)
-
         mRecyclerView!!.removeItemDecoration(mFloatingBarItemDecoration)
         mRecyclerView!!.addItemDecoration(mFloatingBarItemDecoration)
 
     }
 
     private fun getDataFormDataBase() {
-        passportRepository.beneficiaryAddresses.observe(this, Observer {
-
-            if (mHeaderList == null) {
-                mHeaderList = LinkedHashMap()
-            }
+        passportRepository.getAllAddressBook().observe(this, Observer {
 
             mContactList = it as ArrayList<BeneficiaryAddress>?
-            mContactList!!.sortWith(Comparator { l, r -> l.compareTo(r) })
 
-            mHeaderList!!.clear()
-            if (mContactList!!.size == 0) {
-                return@Observer
-            }
-            addHeaderToList(0, mContactList!![0].initial)
-            for (i in 1 until mContactList!!.size) {
-                if (!mContactList!![i - 1].initial.equals(mContactList!![i].initial, ignoreCase = true)) {
-                    addHeaderToList(i, mContactList!![i].initial)
+            if (mContactList!!.isEmpty()) {
+                mRecyclerView!!.visibility = View.GONE
+                mIndexBar!!.visibility = View.GONE
+                mLlEmpty!!.visibility = View.VISIBLE
+
+                mHideSearch = 10
+            } else {
+
+                if (mHeaderList == null) {
+                    mHeaderList = LinkedHashMap()
                 }
-            }
 
-            mFloatingBarItemDecoration!!.setList(mHeaderList)
+                mRecyclerView!!.visibility = View.VISIBLE
+                mIndexBar!!.visibility = View.VISIBLE
+                mLlEmpty!!.visibility = View.GONE
 
-            val adapter = BeneficiaryAddressAdapter(this)
-            adapter.setList(mContactList)
-            mRecyclerView!!.adapter = adapter
+                mContactList!!.sortWith(Comparator { l, r -> l.compareTo(r) })
 
-            mIndexBar!!.setNavigators(ArrayList(mHeaderList!!.values))
-            mIndexBar!!.setOnTouchingLetterChangedListener(object : IndexBar.OnTouchingLetterChangeListener {
-                override fun onTouchingLetterChanged(s: String) {
-                    showLetterHintDialog(s)
-                    for (position in mHeaderList!!.keys) {
-                        if (mHeaderList!![position] == s) {
-                            mLayoutManager!!.scrollToPositionWithOffset(position, 0)
-                            return
-                        }
+                mHeaderList!!.clear()
+                if (mContactList!!.size == 0) {
+                    return@Observer
+                }
+                addHeaderToList(0, mContactList!![0].initial)
+                for (i in 1 until mContactList!!.size) {
+                    if (!mContactList!![i - 1].initial.equals(mContactList!![i].initial, ignoreCase = true)) {
+                        addHeaderToList(i, mContactList!![i].initial)
                     }
                 }
 
-                override fun onTouchingStart(s: String) {
-                    showLetterHintDialog(s)
-                }
+                mFloatingBarItemDecoration!!.setList(mHeaderList)
 
-                override fun onTouchingEnd(s: String) {
-                    hideLetterHintDialog()
-                }
-            })
+                val adapter = BeneficiaryAddressAdapter(this)
+                adapter.setList(mContactList)
+                mRecyclerView!!.adapter = adapter
+
+                mIndexBar!!.setNavigators(ArrayList(mHeaderList!!.values))
+                mIndexBar!!.setOnTouchingLetterChangedListener(object : IndexBar.OnTouchingLetterChangeListener {
+                    override fun onTouchingLetterChanged(s: String) {
+                        showLetterHintDialog(s)
+                        for (position in mHeaderList!!.keys) {
+                            if (mHeaderList!![position] == s) {
+                                mLayoutManager!!.scrollToPositionWithOffset(position, 0)
+                                return
+                            }
+                        }
+                    }
+
+                    override fun onTouchingStart(s: String) {
+                        showLetterHintDialog(s)
+                    }
+
+                    override fun onTouchingEnd(s: String) {
+                        hideLetterHintDialog()
+                    }
+                })
+            }
         })
     }
 
@@ -166,6 +186,7 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
                 startActivity(Intent(this, CreateTransactionActivity::class.java).apply {
                     putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dc).putExtra(Extras.EXTRA_SELECT_ADDRESS, ba)
                 })
+                finish()
             }
         }
     }
@@ -200,6 +221,10 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
         menuInflater.inflate(R.menu.menu_address_book, menu)
 
         menu!!.findItem(R.id.address_book_add).isVisible = (0 == mUsage)
+
+        if (mHideSearch == 10) {
+            menu!!.findItem(R.id.address_book_query).isVisible = (false)
+        }
 
         return true
     }

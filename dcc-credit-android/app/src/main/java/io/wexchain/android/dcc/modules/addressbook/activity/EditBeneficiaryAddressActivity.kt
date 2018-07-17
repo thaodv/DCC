@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc
+package io.wexchain.android.dcc.modules.addressbook.activity
 
 import android.Manifest
 import android.app.Dialog
@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.support.v4.app.DialogFragment
 import android.support.v4.view.ViewCompat
@@ -18,10 +19,14 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.ChooseCutImageActivity
+import io.wexchain.android.dcc.QrScannerActivity
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
+import io.wexchain.android.dcc.repo.db.TransRecord
 import io.wexchain.android.dcc.tools.CommonUtils
 import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.android.dcc.tools.isAddressShortNameValid
@@ -70,19 +75,31 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
             } else {
                 //val setDefault = binding.checkDefaultAddress.isChecked
                 val passportRepository = App.get().passportRepository
-                passportRepository.addBeneficiaryAddress(BeneficiaryAddress(inputAddr, inputShortName, avatarUrl = realFilePath, is_added = ba.is_added))
+                passportRepository.addBeneficiaryAddress(BeneficiaryAddress(inputAddr, inputShortName, avatarUrl = realFilePath, create_time = ba.create_time, update_time = SystemClock.currentThreadTimeMillis()))
                 /*if (setDefault) {
                     passportRepository.setDefaultBeneficiaryAddress(inputAddr)
                 }else if(passportRepository.defaultBeneficiaryAddress.value == inputAddr){
                     passportRepository.setDefaultBeneficiaryAddress(null)
                 }*/
+
+
+                App.get().passportRepository.getTransRecordByAddress(inputAddr).observe(this, Observer {
+                    var mTrans: ArrayList<TransRecord> = ArrayList()
+                    if (null != it) {
+                        for (item in it) {
+                            mTrans.add(TransRecord(item.id, inputAddr, inputShortName, avatarUrl = realFilePath, is_add = 1, create_time = item.create_time, update_time = SystemClock.currentThreadTimeMillis()))
+                        }
+                        App.get().passportRepository.updateTransRecord(mTrans)
+                    }
+                })
+
                 toast("修改成功")
                 finish()
             }
         }
 
         binding.ivAvatar.setOnClickListener {
-            EditBeneficiaryAddressActivity.ChooseImageFromDialog.create(this).show(supportFragmentManager, null)
+            ChooseImageFromDialog.create(this).show(supportFragmentManager, null)
         }
 
     }
@@ -183,7 +200,7 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
                         //granted
                         startActivityForResult(Intent(this, ChooseCutImageActivity::class.java).putExtra(Extras.EXTRA_PICKAVATAR, 1), RequestCodes.PICK_AVATAR)
                     } else {
-                        toast("读写权限")
+                        toast("没有读写权限")
                     }
                 }
     }

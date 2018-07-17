@@ -18,12 +18,12 @@ data class BeneficiaryAddress(
         val address: String,
         @ColumnInfo(name = COLUMN_SHORT_NAME)
         val shortName: String?,
-        @ColumnInfo(name = COLUM_AVATAR)
+        @ColumnInfo(name = COLUMN_AVATAR)
         val avatarUrl: String? = "",
-        @ColumnInfo(name = COLUM_ISADD)
-        val is_added: Int? = 0,
-        @ColumnInfo(name = COLUM_CREATE_TIME)
-        val create_time: Long? = 0
+        @ColumnInfo(name = COLUMN_CREATE_TIME)
+        val create_time: Long? = 0,
+        @ColumnInfo(name = COLUMN_UPDATE_TIME)
+        val update_time: Long? = 0
 ) : Abbreviated, Comparable<BeneficiaryAddress>, Serializable {
 
     @Ignore
@@ -54,8 +54,8 @@ data class BeneficiaryAddress(
         const val TABLE_NAME = "beneficiary_address"
         const val COLUMN_ADDRESS = "address"
         const val COLUMN_SHORT_NAME = "short_name"
-        const val COLUM_AVATAR = "avatar_url"
-        const val COLUM_ISADD = "is_add"
-        const val COLUM_CREATE_TIME = "create_time"
+        const val COLUMN_AVATAR = "avatar_url"
+        const val COLUMN_CREATE_TIME = "create_time"
+        const val COLUMN_UPDATE_TIME = "update_time"
     }
 }

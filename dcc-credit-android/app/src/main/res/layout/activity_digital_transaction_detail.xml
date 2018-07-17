@@ -358,19 +358,19 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_add_address_book"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:clickable="false"
             android:orientation="horizontal"
-            android:visibility="@{TransHelper.ispenddingitem(tx.txId,tx.issuc())?View.GONE:View.VISIBLE}"
+            android:visibility="gone"
+            tools:visibility="@{TransHelper.ispenddingitem(tx.txId,tx.issuc())?View.GONE:View.VISIBLE}"
             >
 
             <LinearLayout
-                android:id="@+id/ll_add_address_book"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"

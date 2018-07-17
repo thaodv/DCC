@@ -7,7 +7,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="io.wexchain.android.dcc.AddressDetailActivity">
+        tools:context="io.wexchain.android.dcc.modules.addressbook.activity.AddressDetailActivity">
 
         <include
             android:id="@+id/toolbar"
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginTop="@dimen/content_padding_horizontal"
-            android:text="收款钱包地址"
+            android:text="钱包地址"
             android:textColor="#404040"
             android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"

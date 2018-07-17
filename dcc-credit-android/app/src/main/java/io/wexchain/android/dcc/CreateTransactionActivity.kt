@@ -9,7 +9,9 @@ import com.wexmarket.android.passport.ResultCodes
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
+import io.wexchain.android.dcc.modules.addressbook.activity.BeneficiaryAddressesManagementActivity
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
+import io.wexchain.android.dcc.repo.db.TransRecord
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.view.dialog.TransactionConfirmDialogFragment
 import io.wexchain.android.dcc.vm.TransactionVm
@@ -20,11 +22,13 @@ import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.EthsTransactionScratch
 
 class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>() {
+
     override val contentLayoutId: Int = R.layout.activity_create_transaction
     var isEdit = false//是否是编辑转账
     val txVm = TransactionVm()
 
     private val addr get() = intent.getSerializableExtra(Extras.EXTRA_SELECT_ADDRESS) as? BeneficiaryAddress
+    private val transRecord get() = intent.getSerializableExtra(Extras.EXTRA_SELECT_TRANSRECORD) as? TransRecord
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +54,9 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
         if (null != addr) {
             txVm.toAddress.set(addr!!.address)
         }
-
+        if (null != transRecord) {
+            txVm.toAddress.set(transRecord!!.address)
+        }
 
     }
 

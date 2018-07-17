@@ -17,9 +17,9 @@
             />
 
         <variable
-            name="owner"
-            type="String"
-            />
+        name="owner"
+        type="String"
+        />
     </data>
 
     <android.support.constraint.ConstraintLayout

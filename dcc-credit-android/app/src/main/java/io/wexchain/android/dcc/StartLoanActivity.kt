@@ -12,6 +12,7 @@ import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
+import io.wexchain.android.dcc.modules.addressbook.activity.BeneficiaryAddressesManagementActivity
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 import io.wexchain.android.dcc.view.dialog.ConfirmLoanSubmitDialog
 import io.wexchain.android.dcc.view.dialog.CustomDialog

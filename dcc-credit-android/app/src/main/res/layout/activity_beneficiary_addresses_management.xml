@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.wexchain.android.dcc.BeneficiaryAddressesManagementActivity"
+    tools:context="io.wexchain.android.dcc.modules.addressbook.activity.BeneficiaryAddressesManagementActivity"
     >
 
     <include
@@ -33,6 +33,30 @@
         app:letterColor="#4A4A4A"
         app:letterSize="10sp"
         app:letterSpacingExtra="1.4"/>
+
+    <LinearLayout
+        android:id="@+id/ll_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_address_book_query_empty"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="未找到相关内容"
+            android:textColor="#9B9B9B"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
 
 
 </RelativeLayout>

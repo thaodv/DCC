@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:background="#F8F8FF"
         android:orientation="vertical"
-        tools:context="io.wexchain.android.dcc.SelectTransStyleActivity">
+        tools:context="io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity">
 
         <include
             android:id="@+id/toolbar"

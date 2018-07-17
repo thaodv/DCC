@@ -8,6 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.domain.Passport
+import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.android.dcc.tools.pair
@@ -41,21 +42,21 @@ object ScfOperations {
         val nonce = privateChainNonce(credentials.address)
         val chainGateway = App.get().chainGateway
         return Single.just(orderId)
-            .observeOn(Schedulers.computation())
-            .map {
-                EthsFunctions.cancelLoan(orderId)
-            }
-            .observeOn(Schedulers.io())
-            .flatMap { cancelFunc ->
-                chainGateway.getLoanContractAddress()
-                    .compose(Result.checked())
-                    .flatMap {
-                        val tx = cancelFunc.txSigned(passport.credential, it, nonce)
-                        chainGateway.cancelLoanOrder(tx)
+                .observeOn(Schedulers.computation())
+                .map {
+                    EthsFunctions.cancelLoan(orderId)
+                }
+                .observeOn(Schedulers.io())
+                .flatMap { cancelFunc ->
+                    chainGateway.getLoanContractAddress()
                             .compose(Result.checked())
-                    }
-            }
-            .confirmOnChain(chainGateway)
+                            .flatMap {
+                                val tx = cancelFunc.txSigned(passport.credential, it, nonce)
+                                chainGateway.cancelLoanOrder(tx)
+                                        .compose(Result.checked())
+                            }
+                }
+                .confirmOnChain(chainGateway)
     }
 
     fun cancelLoan(orderId: Long): Single<String> {
@@ -74,60 +75,60 @@ object ScfOperations {
         val scfApi = App.get().scfApi
         return if (certIdData != null && certBankCardData != null && cmLogPhoneNo != null) {
             Single.just(loanScratch)
-                .observeOn(Schedulers.io())
-                .flatMap {
-                    val pics = CertOperations.getCertIdPics()!!
-                    val applicationDigest = loanApplicationDigest(loanScratch, pics)
-                    val idDigest = CertOperations.digestIdName(certIdData.name, certIdData.id)
-                    val feeUint256 = Currencies.DCC.toIntExact(it.fee)
-                    val applyLoan = EthsFunctions.applyLoan(
-                        LOAN_DIGEST_VERSION_1,
-                        idDigest,
-                        applicationDigest,
-                        feeUint256,
-                        it.beneficiaryAddress.address
-                    )
-                    Single
-                        .zip(
-                            chainGateway.getTicket().compose(Result.checked()),
-                            chainGateway.getLoanContractAddress().compose(Result.checked()),
-                            pair()
+                    .observeOn(Schedulers.io())
+                    .flatMap {
+                        val pics = CertOperations.getCertIdPics()!!
+                        val applicationDigest = loanApplicationDigest(loanScratch, pics)
+                        val idDigest = CertOperations.digestIdName(certIdData.name, certIdData.id)
+                        val feeUint256 = Currencies.DCC.toIntExact(it.fee)
+                        val applyLoan = EthsFunctions.applyLoan(
+                                LOAN_DIGEST_VERSION_1,
+                                idDigest,
+                                applicationDigest,
+                                feeUint256,
+                                it.beneficiaryAddress.address
                         )
-                        .flatMap { (ticket, contractAddress) ->
-                            val tx = applyLoan.txSigned(passport.credential, contractAddress, nonce)
-                            chainGateway.applyLoan(ticket.ticket, tx)
-                                .compose(Result.checked())
-                        }
-                        .loanOrderByTx(chainGateway)
-                        .map {
-                            it to pics
-                        }
-                }
-                .flatMap { (order,pics) ->
-                    val idFrontBase64 = Base64.encodeToString(pics.first, Base64.NO_WRAP)
-                    val idBackBase64 = Base64.encodeToString(pics.second, Base64.NO_WRAP)
-                    val photoBase64 = Base64.encodeToString(pics.third, Base64.NO_WRAP)
-                    ScfOperations.withScfTokenInCurrentPassport(allowNull = "") {
-                        scfApi.applyLoanCredit(
-                            it,
-                            order.id,
-                            loanScratch.product.id,
-                            certIdData.name,
-                            loanScratch.amount.toPlainString(),
-                            loanScratch.period.value,
-                            loanScratch.period.unit.name,
-                            certIdData.id,
-                            cmLogPhoneNo,
-                            certBankCardData.bankCardNo,
-                            certBankCardData.phoneNo,
-                            loanScratch.createTime,
-                            photoBase64,
-                            idFrontBase64,
-                            idBackBase64,
-                            BuildConfig.VERSION_NAME
-                            )
+                        Single
+                                .zip(
+                                        chainGateway.getTicket().compose(Result.checked()),
+                                        chainGateway.getLoanContractAddress().compose(Result.checked()),
+                                        pair()
+                                )
+                                .flatMap { (ticket, contractAddress) ->
+                                    val tx = applyLoan.txSigned(passport.credential, contractAddress, nonce)
+                                    chainGateway.applyLoan(ticket.ticket, tx)
+                                            .compose(Result.checked())
+                                }
+                                .loanOrderByTx(chainGateway)
+                                .map {
+                                    it to pics
+                                }
                     }
-                }
+                    .flatMap { (order, pics) ->
+                        val idFrontBase64 = Base64.encodeToString(pics.first, Base64.NO_WRAP)
+                        val idBackBase64 = Base64.encodeToString(pics.second, Base64.NO_WRAP)
+                        val photoBase64 = Base64.encodeToString(pics.third, Base64.NO_WRAP)
+                        ScfOperations.withScfTokenInCurrentPassport(allowNull = "") {
+                            scfApi.applyLoanCredit(
+                                    it,
+                                    order.id,
+                                    loanScratch.product.id,
+                                    certIdData.name,
+                                    loanScratch.amount.toPlainString(),
+                                    loanScratch.period.value,
+                                    loanScratch.period.unit.name,
+                                    certIdData.id,
+                                    cmLogPhoneNo,
+                                    certBankCardData.bankCardNo,
+                                    certBankCardData.phoneNo,
+                                    loanScratch.createTime,
+                                    photoBase64,
+                                    idFrontBase64,
+                                    idBackBase64,
+                                    BuildConfig.VERSION_NAME
+                            )
+                        }
+                    }
         } else {
             Single.error<String>(IllegalStateException())
         }
@@ -135,32 +136,32 @@ object ScfOperations {
 
     fun Single<String>.loanOrderByTx(api: ChainGateway): Single<LoanChainOrder> {
         return this.confirmOnChain(api)
-            .flatMap {
-                api.getLoanOrdersByTx(it)
-                    .compose(Result.checked())
-                    .map {
-                        it.first()
-                    }
-            }
+                .flatMap {
+                    api.getLoanOrdersByTx(it)
+                            .compose(Result.checked())
+                            .map {
+                                it.first()
+                            }
+                }
     }
 
     fun Single<String>.confirmOnChain(api: ChainGateway): Single<String> {
         return this.flatMap { txHash ->
             api.getReceiptResult(txHash)
-                .compose(Result.checked())
-                .map {
-                    if (!it.hasReceipt) {
-                        throw DccChainServiceException("no receipt yet")
+                    .compose(Result.checked())
+                    .map {
+                        if (!it.hasReceipt) {
+                            throw DccChainServiceException("no receipt yet")
+                        }
+                        it
                     }
-                    it
-                }
-                .retryWhen(RetryWithDelay.createSimple(6, 5000L))
-                .map {
-                    if (!it.approximatelySuccess) {
-                        throw DccChainServiceException()
+                    .retryWhen(RetryWithDelay.createSimple(6, 5000L))
+                    .map {
+                        if (!it.approximatelySuccess) {
+                            throw DccChainServiceException()
+                        }
+                        txHash
                     }
-                    txHash
-                }
         }
     }
 
@@ -169,8 +170,8 @@ object ScfOperations {
      */
     @JvmStatic
     fun loanApplicationDigest(
-        loanScratch: LoanScratch,
-        pics: Triple<ByteArray, ByteArray, ByteArray>
+            loanScratch: LoanScratch,
+            pics: Triple<ByteArray, ByteArray, ByteArray>
     ): ByteArray {
         val lenderName = loanScratch.product.lender.name
         val currencySymbol = loanScratch.product.currency.symbol
@@ -180,7 +181,8 @@ object ScfOperations {
         val idBackBase64 = Base64.encodeToString(pics.second, Base64.DEFAULT)
         val photoBase64 = Base64.encodeToString(pics.third, Base64.DEFAULT)
         val digestStr =
-            "$lenderName$currencySymbol$amountStr$period${loanScratch.product.repayCyclesNo}${loanScratch.product.loanType}${loanScratch.createTime}$idFrontBase64$idBackBase64$photoBase64"
+                "$lenderName$currencySymbol$amountStr$period${loanScratch.product.repayCyclesNo}${loanScratch.product.loanType}${loanScratch.createTime}$idFrontBase64$idBackBase64$photoBase64"
+        LogUtils.i("digestStr", digestStr)
         return MessageDigest.getInstance(DIGEST).digest(digestStr.toByteArray(Charsets.UTF_8))
     }
 
@@ -194,11 +196,11 @@ object ScfOperations {
         return if (passport != null) {
             val dccPrivate = MultiChainHelper.getDccPrivate()
             App.get().assetsRepository.getDigitalCurrencyAgent(dccPrivate)
-                .getBalanceOf(passport.address)
-                .map {
-                    dccPrivate.toDecimalAmount(it)
-                }
-                .observeOn(AndroidSchedulers.mainThread())
+                    .getBalanceOf(passport.address)
+                    .map {
+                        dccPrivate.toDecimalAmount(it)
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
         } else {
             Single.error<BigDecimal>(IllegalStateException())
         }
@@ -206,25 +208,25 @@ object ScfOperations {
 
     fun loadContractPdf(orderId: Long): Single<ByteArray> {
         return ScfOperations.currentToken
-            .flatMap {
-                App.get().scfApi
-                    .loanAgreement(it, orderId)
-                    .map {
-                        when (it.contentType()) {
-                            MediaType.parse("application/pdf") -> it.bytes()
-                            MediaType.parse("application/json") -> {
-                                val result =
-                                    App.get().networking.networkGson.fromJson<Result<String>>(
-                                        it.charStream(),
-                                        object : TypeToken<Result<String>>() {}.type
-                                    )
-                                throw result.asError()
+                .flatMap {
+                    App.get().scfApi
+                            .loanAgreement(it, orderId)
+                            .map {
+                                when (it.contentType()) {
+                                    MediaType.parse("application/pdf") -> it.bytes()
+                                    MediaType.parse("application/json") -> {
+                                        val result =
+                                                App.get().networking.networkGson.fromJson<Result<String>>(
+                                                        it.charStream(),
+                                                        object : TypeToken<Result<String>>() {}.type
+                                                )
+                                        throw result.asError()
+                                    }
+                                    else -> throw IllegalArgumentException()
+                                }
                             }
-                            else -> throw IllegalArgumentException()
-                        }
-                    }
-            }
-            .compose(ScfOperations.withScfTokenInCurrentPassport())
+                }
+                .compose(ScfOperations.withScfTokenInCurrentPassport())
     }
 
     /**
@@ -237,7 +239,7 @@ object ScfOperations {
             val call = it
             if (App.get().scfTokenManager.scfToken == null) {
                 loginWithPassport(address, privateKey)
-                    .flatMap { call }
+                        .flatMap { call }
             } else {
                 it.retryWhen {
                     it.flatMap {
@@ -258,19 +260,19 @@ object ScfOperations {
     }
 
     inline fun <T> withScfTokenInCurrentPassport(
-        allowNull: T? = null,
-        crossinline call: (String) -> Single<Result<T>>
+            allowNull: T? = null,
+            crossinline call: (String) -> Single<Result<T>>
     ): Single<T> {
         return currentToken
-            .flatMap {
-                val check = if (allowNull == null) {
-                    Result.checked<T>()
-                } else {
-                    Result.checkedAllowingNull(allowNull)
+                .flatMap {
+                    val check = if (allowNull == null) {
+                        Result.checked<T>()
+                    } else {
+                        Result.checkedAllowingNull(allowNull)
+                    }
+                    call(it).compose(check)
                 }
-                call(it).compose(check)
-            }
-            .compose(withScfTokenInCurrentPassport())
+                .compose(withScfTokenInCurrentPassport())
     }
 
     val currentToken = Single.fromCallable { App.get().scfTokenManager.scfToken }
@@ -291,40 +293,40 @@ object ScfOperations {
             return Single.error<String>(IllegalStateException())
         } else {
             return scfApi
-                .getNonce()
-                .compose(Result.checked())
-                .flatMap {
-                    scfApi
-                        .login(
-                            nonce = it,
-                            address = address,
-                            username = address,
-                            password = null,
-                            sign = ParamSignatureUtil.sign(
-                                privateKey, mapOf(
-                                    "nonce" to it,
-                                    "address" to address,
-                                    "username" to address,
-                                    "password" to null
+                    .getNonce()
+                    .compose(Result.checked())
+                    .flatMap {
+                        scfApi
+                                .login(
+                                        nonce = it,
+                                        address = address,
+                                        username = address,
+                                        password = null,
+                                        sign = ParamSignatureUtil.sign(
+                                                privateKey, mapOf(
+                                                "nonce" to it,
+                                                "address" to address,
+                                                "username" to address,
+                                                "password" to null
+                                        )
+                                        )
                                 )
-                            )
-                        )
-                        .map {
-                            val body = it.body()
-                            if (it.isSuccessful && body != null) {
-                                if (body.isSuccess) {
-                                    it.headers()[ScfApi.HEADER_TOKEN]!!
-                                } else {
-                                    throw body.asError()
+                                .map {
+                                    val body = it.body()
+                                    if (it.isSuccessful && body != null) {
+                                        if (body.isSuccess) {
+                                            it.headers()[ScfApi.HEADER_TOKEN]!!
+                                        } else {
+                                            throw body.asError()
+                                        }
+                                    } else {
+                                        throw IllegalStateException()
+                                    }
                                 }
-                            } else {
-                                throw IllegalStateException()
-                            }
-                        }
-                        .doOnSuccess {
-                            app.scfTokenManager.scfToken = it
-                        }
-                }
+                                .doOnSuccess {
+                                    app.scfTokenManager.scfToken = it
+                                }
+                    }
         }
     }
 
@@ -335,37 +337,37 @@ object ScfOperations {
         val address = passport.address
         val privateKey = passport.authKey.getPrivateKey()
         return scfApi.getNonce()
-            .compose(Result.checked())
-            .flatMap {
-                scfApi
-                    .scfRegister(
-                        nonce = it,
-                        address = address,
-                        loginName = address,
-                        inviteCode = code,
-                        sign = ParamSignatureUtil.sign(
-                            privateKey, mapOf(
-                                "nonce" to it,
-                                "address" to address,
-                                "loginName" to address,
-                                "inviteCode" to code
+                .compose(Result.checked())
+                .flatMap {
+                    scfApi
+                            .scfRegister(
+                                    nonce = it,
+                                    address = address,
+                                    loginName = address,
+                                    inviteCode = code,
+                                    sign = ParamSignatureUtil.sign(
+                                            privateKey, mapOf(
+                                            "nonce" to it,
+                                            "address" to address,
+                                            "loginName" to address,
+                                            "inviteCode" to code
+                                    )
+                                    )
                             )
-                        )
-                    )
-                    .map {
-                        if (it.isSuccessful) {
-                            val result = it.body()!!
-                            if (result.isSuccess) {
-                                val token = it.headers()[ScfApi.HEADER_TOKEN]!!
-                                App.get().scfTokenManager.scfToken = token
+                            .map {
+                                if (it.isSuccessful) {
+                                    val result = it.body()!!
+                                    if (result.isSuccess) {
+                                        val token = it.headers()[ScfApi.HEADER_TOKEN]!!
+                                        App.get().scfTokenManager.scfToken = token
+                                    }
+                                    result
+                                } else {
+                                    throw HttpException(it)
+                                }
                             }
-                            result
-                        } else {
-                            throw HttpException(it)
-                        }
-                    }
-                    .compose(Result.checked())
-            }
+                            .compose(Result.checked())
+                }
     }
 
     fun getScfAccountInfo(): Single<ScfAccountInfo> {
@@ -375,20 +377,20 @@ object ScfOperations {
         val address = passport.address
         val privateKey = passport.authKey.getPrivateKey()
         return scfApi.getNonce()
-            .compose(Result.checked())
-            .flatMap {
-                scfApi
-                    .getScfMemberInfo(
-                        nonce = it,
-                        address = address,
-                        sign = ParamSignatureUtil.sign(
-                            privateKey, mapOf(
-                                "nonce" to it,
-                                "address" to address
+                .compose(Result.checked())
+                .flatMap {
+                    scfApi
+                            .getScfMemberInfo(
+                                    nonce = it,
+                                    address = address,
+                                    sign = ParamSignatureUtil.sign(
+                                            privateKey, mapOf(
+                                            "nonce" to it,
+                                            "address" to address
+                                    )
+                                    )
                             )
-                        )
-                    )
-                    .compose(Result.checkedAllowingNull(ScfAccountInfo.ABSENT))
-            }
+                            .compose(Result.checkedAllowingNull(ScfAccountInfo.ABSENT))
+                }
     }
 }

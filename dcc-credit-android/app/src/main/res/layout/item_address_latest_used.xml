@@ -9,7 +9,7 @@
 
         <variable
             name="addr"
-            type="io.wexchain.android.dcc.repo.db.BeneficiaryAddress"
+            type="io.wexchain.android.dcc.repo.db.TransRecord"
             />
 
     </data>
@@ -76,10 +76,10 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
-            android:background="@{addr.is_added==0?@drawable/shape_bg_address_latest_used:null}"
+            android:background="@{addr.is_add==0?@drawable/shape_bg_address_latest_used:null}"
             android:padding="10dp"
-            android:text="@{CommonUtils.setStatusName(addr.is_added) }"
-            android:textColor="@{addr.is_added==0?@color/white:@color/FF4A4A4A}"
+            android:text="@{CommonUtils.setStatusName(addr.is_add) }"
+            android:textColor="@{addr.is_add==0?@color/white:@color/FF4A4A4A}"
             android:textSize="14sp"
             tools:background="@drawable/shape_bg_address_latest_used"
             tools:text="添加"

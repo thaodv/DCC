@@ -172,11 +172,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/DccLightTheme.App.Transparent"/>
         <activity
-            android:name="io.wexchain.android.dcc.AddBeneficiaryAddressActivity"
+            android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddBeneficiaryAddressActivity"
             android:label="添加地址">
         </activity>
         <activity
-            android:name="io.wexchain.android.dcc.BeneficiaryAddressesManagementActivity"
+            android:name="io.wexchain.android.dcc.modules.addressbook.activity.BeneficiaryAddressesManagementActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.MyLoansActivity"
@@ -207,7 +207,7 @@
             android:label="借币记录"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="io.wexchain.android.dcc.EditBeneficiaryAddressActivity"
+            android:name="io.wexchain.android.dcc.modules.addressbook.activity.EditBeneficiaryAddressActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.LoanRecordDetailActivity"
@@ -340,11 +340,11 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name="io.wexchain.android.dcc.AddressDetailActivity"
+            android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddressDetailActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name="io.wexchain.android.dcc.AddressBookQueryActivity"
+            android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddressBookQueryActivity"
             android:screenOrientation="portrait">
         </activity>
 
@@ -358,7 +358,7 @@
                 android:resource="@xml/file_paths"/>
         </provider>
 
-        <activity android:name="io.wexchain.android.dcc.SelectTransStyleActivity">
+        <activity android:name="io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity">
         </activity>
     </application>
 

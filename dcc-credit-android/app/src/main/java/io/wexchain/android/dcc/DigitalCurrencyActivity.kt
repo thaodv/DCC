@@ -13,6 +13,7 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
+import io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity
 import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.TransactionRecordAdapter

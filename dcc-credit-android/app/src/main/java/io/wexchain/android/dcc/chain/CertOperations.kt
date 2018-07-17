@@ -49,20 +49,20 @@ object CertOperations {
 
     fun confirmCertFee(context: () -> FragmentManager, business: String, proceedAction: () -> Unit) {
         App.get().chainGateway.getExpectedFee(business)
-            .compose(Result.checked())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                val fee = it.toLong()
-                CertFeeConfirmDialog.create(fee, proceedAction).show(context(), "confirm_cert_fee")
+                .compose(Result.checked())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    val fee = it.toLong()
+                    CertFeeConfirmDialog.create(fee, proceedAction).show(context(), "confirm_cert_fee")
 //                    if (fee > 0){
 //                        CertFeeConfirmDialog.create(proceedAction).show(context(),"confirm_cert_fee")
 //                    }else{
 //                        proceedAction()
 //                    }
-            }, {
-                //todo
-                stackTrace(it)
-            })
+                }, {
+                    //todo
+                    stackTrace(it)
+                })
     }
 
     fun submitIdCert(passport: Passport, idCardData: IdCardCertData): Single<CertOrder> {
@@ -91,78 +91,78 @@ object CertOperations {
         val nonce = privateChainNonce(address)
 
         return api.getCertData(address, business)
-            .compose(Result.checked())
-            .map {
-                val digest1 = digestIdName(name, id)
-                val content = it.content
-                if (content == null || content.digest1.isEmpty()) {
-                    //ok
-                } else {
-                    val de = Base64.decode(content.digest1, Base64.DEFAULT)
-                    if (Arrays.equals(de, digest1)) {
+                .compose(Result.checked())
+                .map {
+                    val digest1 = digestIdName(name, id)
+                    val content = it.content
+                    if (content == null || content.digest1.isEmpty()) {
                         //ok
                     } else {
-                        throw IllegalStateException(ERROR_SUBMIT_ID_NOT_MATCH)
+                        val de = Base64.decode(content.digest1, Base64.DEFAULT)
+                        if (Arrays.equals(de, digest1)) {
+                            //ok
+                        } else {
+                            throw IllegalStateException(ERROR_SUBMIT_ID_NOT_MATCH)
+                        }
+                    }
+                    credentials
+                }
+                .observeOn(Schedulers.computation())
+                .map {
+
+                    val digest1 = digestIdName(name, id)
+                    val digest2 = MessageDigest.getInstance(DIGEST).run {
+                        update(digest1)
+                        update(MessageDigest.getInstance(DIGEST).digest(front))
+                        update(MessageDigest.getInstance(DIGEST).digest(back))
+                        digest(MessageDigest.getInstance(DIGEST).digest(photo))
+                    }
+                    EthsFunctions.apply(digest1, digest2, BigInteger.valueOf(expired))
+                }
+                .observeOn(Schedulers.io())
+                .flatMap { applyCall ->
+                    Single.zip(
+                            api.getCertContractAddress(business).compose(Result.checked()),
+                            api.getTicket().compose(Result.checked()),
+                            pair()
+                    ).flatMap { (contractAddress, ticket) ->
+                        val tx = applyCall.txSigned(credentials, contractAddress, nonce)
+                        api.certApply(ticket.ticket, tx, null, business)
+                                .compose(Result.checked())
                     }
                 }
-                credentials
-            }
-            .observeOn(Schedulers.computation())
-            .map {
-
-                val digest1 = digestIdName(name, id)
-                val digest2 = MessageDigest.getInstance(DIGEST).run {
-                    update(digest1)
-                    update(MessageDigest.getInstance(DIGEST).digest(front))
-                    update(MessageDigest.getInstance(DIGEST).digest(back))
-                    digest(MessageDigest.getInstance(DIGEST).digest(photo))
-                }
-                EthsFunctions.apply(digest1, digest2, BigInteger.valueOf(expired))
-            }
-            .observeOn(Schedulers.io())
-            .flatMap { applyCall ->
-                Single.zip(
-                    api.getCertContractAddress(business).compose(Result.checked()),
-                    api.getTicket().compose(Result.checked()),
-                    pair()
-                ).flatMap { (contractAddress, ticket) ->
-                    val tx = applyCall.txSigned(credentials, contractAddress, nonce)
-                    api.certApply(ticket.ticket, tx, null, business)
-                        .compose(Result.checked())
-                }
-            }
-            .certOrderByTx(api, business)
-            .flatMap {
-                certApi
-                    .idVerify(
-                        address = address,
-                        orderId = it.orderId,
-                        realName = name,
-                        certNo = id,
-                        personalPhoto = CertApi.uploadFilePart(photo, "user.jpg", "image/jpeg", "personalPhoto"),
-                        frontPhoto = CertApi.uploadFilePart(front, "front.jpg", "image/jpeg", "frontPhoto"),
-                        backPhoto = CertApi.uploadFilePart(back, "back.jpg", "image/jpeg", "backPhoto"),
-                        signature = ParamSignatureUtil.sign(
-                            authKey.getPrivateKey(), mapOf<String, String>(
-                                "address" to address,
-                                "orderId" to it.orderId.toString(),
-                                "realName" to name,
-                                "certNo" to id,
-                                "version" to BuildConfig.VERSION_NAME
+                .certOrderByTx(api, business)
+                .flatMap {
+                    certApi
+                            .idVerify(
+                                    address = address,
+                                    orderId = it.orderId,
+                                    realName = name,
+                                    certNo = id,
+                                    personalPhoto = CertApi.uploadFilePart(photo, "user.jpg", "image/jpeg", "personalPhoto"),
+                                    frontPhoto = CertApi.uploadFilePart(front, "front.jpg", "image/jpeg", "frontPhoto"),
+                                    backPhoto = CertApi.uploadFilePart(back, "back.jpg", "image/jpeg", "backPhoto"),
+                                    signature = ParamSignatureUtil.sign(
+                                            authKey.getPrivateKey(), mapOf<String, String>(
+                                            "address" to address,
+                                            "orderId" to it.orderId.toString(),
+                                            "realName" to name,
+                                            "certNo" to id,
+                                            "version" to BuildConfig.VERSION_NAME
+                                    )
+                                    ),
+                                    version = BuildConfig.VERSION_NAME
                             )
-                        ),
-                        version = BuildConfig.VERSION_NAME
-                    )
-                    .compose(Result.checked())
-            }
+                            .compose(Result.checked())
+                }
     }
 
     fun submitBankCardCert(
-        passport: Passport,
-        bankCardInfo: BankCardInfo,
-        accountName: String,
-        id: String,
-        onOrderCreated: (Long) -> Unit
+            passport: Passport,
+            bankCardInfo: BankCardInfo,
+            accountName: String,
+            id: String,
+            onOrderCreated: (Long) -> Unit
     ): Single<String> {
         require(passport.authKey != null)
         require(bankCardInfo.bankCardNo.isNotBlank())
@@ -175,32 +175,32 @@ object CertOperations {
         val authKey = passport.authKey!!
         val nonce = privateChainNonce(credentials.address)
         return Single.just(bankCardInfo)
-            .observeOn(Schedulers.computation())
-            .map {
-                val data = it.bankCardNo.toByteArray(Charsets.UTF_8) + it.phoneNo.toByteArray(Charsets.UTF_8)
-                val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
-                val digest2 = byteArrayOf()
-                EthsFunctions.apply(digest1, digest2, BigInteger.ZERO)
-            }
-            .observeOn(Schedulers.io())
-            .flatMap { applyCall ->
-                Single.zip(
-                    api.getCertContractAddress(business).compose(Result.checked()),
-                    api.getTicket().compose(Result.checked()),
-                    pair()
-                ).flatMap { (contractAddress, ticket) ->
-                    val tx = applyCall.txSigned(credentials, contractAddress, nonce)
-                    api.certApply(ticket.ticket, tx, null, business)
-                        .compose(Result.checked())
+                .observeOn(Schedulers.computation())
+                .map {
+                    val data = it.bankCardNo.toByteArray(Charsets.UTF_8) + it.phoneNo.toByteArray(Charsets.UTF_8)
+                    val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
+                    val digest2 = byteArrayOf()
+                    EthsFunctions.apply(digest1, digest2, BigInteger.ZERO)
                 }
-            }
-            .certOrderByTx(api, business)
-            .doOnSuccess {
-                onOrderCreated(it.orderId)
-            }
-            .flatMap {
-                verifyBankCardCert(passport, bankCardInfo, accountName, id, it.orderId)
-            }
+                .observeOn(Schedulers.io())
+                .flatMap { applyCall ->
+                    Single.zip(
+                            api.getCertContractAddress(business).compose(Result.checked()),
+                            api.getTicket().compose(Result.checked()),
+                            pair()
+                    ).flatMap { (contractAddress, ticket) ->
+                        val tx = applyCall.txSigned(credentials, contractAddress, nonce)
+                        api.certApply(ticket.ticket, tx, null, business)
+                                .compose(Result.checked())
+                    }
+                }
+                .certOrderByTx(api, business)
+                .doOnSuccess {
+                    onOrderCreated(it.orderId)
+                }
+                .flatMap {
+                    verifyBankCardCert(passport, bankCardInfo, accountName, id, it.orderId)
+                }
     }
 
     @JvmStatic
@@ -210,37 +210,37 @@ object CertOperations {
     }
 
     fun verifyBankCardCert(
-        passport: Passport,
-        bankCardInfo: BankCardInfo,
-        accountName: String,
-        id: String,
-        orderId: Long
+            passport: Passport,
+            bankCardInfo: BankCardInfo,
+            accountName: String,
+            id: String,
+            orderId: Long
     ): Single<String> {
         require(passport.authKey != null)
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
         return App.get().certApi
-            .bankCardVerify(
-                address = address,
-                orderId = orderId,
-                bankCode = bankCardInfo.bankCode,
-                bankAccountNo = bankCardInfo.bankCardNo,
-                accountName = accountName,
-                certNo = id,
-                phoneNo = bankCardInfo.phoneNo,
-                signature = ParamSignatureUtil.sign(
-                    privateKey, mapOf<String, String>(
-                        "address" to address,
-                        "orderId" to orderId.toString(),
-                        "bankCode" to bankCardInfo.bankCode,
-                        "bankAccountNo" to bankCardInfo.bankCardNo,
-                        "accountName" to accountName,
-                        "certNo" to id,
-                        "phoneNo" to bankCardInfo.phoneNo
-                    )
+                .bankCardVerify(
+                        address = address,
+                        orderId = orderId,
+                        bankCode = bankCardInfo.bankCode,
+                        bankAccountNo = bankCardInfo.bankCardNo,
+                        accountName = accountName,
+                        certNo = id,
+                        phoneNo = bankCardInfo.phoneNo,
+                        signature = ParamSignatureUtil.sign(
+                                privateKey, mapOf<String, String>(
+                                "address" to address,
+                                "orderId" to orderId.toString(),
+                                "bankCode" to bankCardInfo.bankCode,
+                                "bankAccountNo" to bankCardInfo.bankCardNo,
+                                "accountName" to accountName,
+                                "certNo" to id,
+                                "phoneNo" to bankCardInfo.phoneNo
+                        )
+                        )
                 )
-            )
-            .compose(Result.checked())
+                .compose(Result.checked())
     }
 
     fun advanceBankCardCert(passport: Passport, orderId: Long, ticket: String, code: String): Single<CertOrder> {
@@ -249,18 +249,18 @@ object CertOperations {
         requireNotNull(authKey)
         authKey!!
         return App.get().certApi.bankCardAdvance(
-            address = passport.address,
-            orderId = orderId,
-            ticket = ticket,
-            validCode = code,
-            signature = ParamSignatureUtil.sign(
-                authKey.getPrivateKey(), mapOf(
-                    "address" to passport.address,
-                    "orderId" to orderId.toString(),
-                    "ticket" to ticket,
-                    "validCode" to code
+                address = passport.address,
+                orderId = orderId,
+                ticket = ticket,
+                validCode = code,
+                signature = ParamSignatureUtil.sign(
+                        authKey.getPrivateKey(), mapOf(
+                        "address" to passport.address,
+                        "orderId" to orderId.toString(),
+                        "ticket" to ticket,
+                        "validCode" to code
                 )
-            )
+                )
         ).compose(Result.checked())
     }
 
@@ -271,88 +271,88 @@ object CertOperations {
         val api = App.get().chainGateway
         val nonce = privateChainNonce(passport.address)
         return Single.zip(
-            api.getCertContractAddress(business).compose(Result.checked()),
-            api.getTicket().compose(Result.checked()),
-            pair()
+                api.getCertContractAddress(business).compose(Result.checked()),
+                api.getTicket().compose(Result.checked()),
+                pair()
         ).flatMap { (contractAddress, ticket) ->
             val tx = cmLogApply.txSigned(passport.credential, contractAddress, nonce)
             api.certApply(ticket.ticket, tx, null, business)
-                .compose(Result.checked())
+                    .compose(Result.checked())
         }.certOrderByTx(api, business)
     }
 
     fun requestCommunicationLog(
-        passport: Passport,
-        orderId: Long,
-        name: String,
-        id: String,
-        phoneNo: String,
-        password: String
+            passport: Passport,
+            orderId: Long,
+            name: String,
+            id: String,
+            phoneNo: String,
+            password: String
     ): Single<CertProcess> {
         require(passport.authKey != null)
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
         return App.get().certApi.requestCommunicationLogData(
-            address = address,
-            orderId = orderId,
-            userName = name,
-            certNo = id,
-            phoneNo = phoneNo,
-            password = password,
-            signature = ParamSignatureUtil.sign(
-                privateKey, mapOf(
-                    "address" to address,
-                    "orderId" to orderId.toString(),
-                    "userName" to name,
-                    "certNo" to id,
-                    "phoneNo" to phoneNo,
-                    "password" to password
+                address = address,
+                orderId = orderId,
+                userName = name,
+                certNo = id,
+                phoneNo = phoneNo,
+                password = password,
+                signature = ParamSignatureUtil.sign(
+                        privateKey, mapOf(
+                        "address" to address,
+                        "orderId" to orderId.toString(),
+                        "userName" to name,
+                        "certNo" to id,
+                        "phoneNo" to phoneNo,
+                        "password" to password
                 )
-            )
+                )
         ).compose(Result.checked())
     }
 
     fun advanceCommunicationLog(
-        passport: Passport,
-        orderId: Long,
-        name: String,
-        id: String,
-        phoneNo: String,
-        password: String,
-        process: CertProcess,
-        captcha: String? = null,
-        queryPwd: String? = null
+            passport: Passport,
+            orderId: Long,
+            name: String,
+            id: String,
+            phoneNo: String,
+            password: String,
+            process: CertProcess,
+            captcha: String? = null,
+            queryPwd: String? = null
     ): Single<CertProcess> {
         require(passport.authKey != null)
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
         return App.get().certApi.requestCommunicationLogDataAdvance(
-            address = address,
-            orderId = orderId,
-            userName = name,
-            certNo = id,
-            phoneNo = phoneNo,
-            password = password,
-            token = process.token,
-            processCode = process.processCode,
-            website = process.website,
-            captcha = captcha,
-            queryPwd = queryPwd,
-            signature = ParamSignatureUtil.sign(
-                privateKey, mapOf(
-                    "address" to address,
-                    "orderId" to orderId.toString(),
-                    "userName" to name,
-                    "certNo" to id,
-                    "phoneNo" to phoneNo,
-                    "password" to password,
-                    "token" to process.token,
-                    "processCode" to process.processCode,
-                    "website" to process.website,
-                    "captcha" to captcha,
-                    "queryPwd" to queryPwd
+                address = address,
+                orderId = orderId,
+                userName = name,
+                certNo = id,
+                phoneNo = phoneNo,
+                password = password,
+                token = process.token,
+                processCode = process.processCode,
+                website = process.website,
+                captcha = captcha,
+                queryPwd = queryPwd,
+                signature = ParamSignatureUtil.sign(
+                        privateKey, mapOf(
+                        "address" to address,
+                        "orderId" to orderId.toString(),
+                        "userName" to name,
+                        "certNo" to id,
+                        "phoneNo" to phoneNo,
+                        "password" to password,
+                        "token" to process.token,
+                        "processCode" to process.processCode,
+                        "website" to process.website,
+                        "captcha" to captcha,
+                        "queryPwd" to queryPwd
                 )
-            )
+                )
         ).compose(Result.checked())
 
     }
@@ -365,42 +365,42 @@ object CertOperations {
         val (name, id) = getCertId()!!
         val phoneNo = certPrefs.certCmLogPhoneNo.get()!!
         return App.get().certApi.getCommunicationLogReport(
-            address = address,
-            orderId = orderId,
-            userName = name,
-            certNo = id,
-            phoneNo = phoneNo,
-            signature = ParamSignatureUtil.sign(
-                privateKey, mapOf(
-                    "address" to address,
-                    "orderId" to orderId.toString(),
-                    "userName" to name,
-                    "certNo" to id,
-                    "phoneNo" to phoneNo
+                address = address,
+                orderId = orderId,
+                userName = name,
+                certNo = id,
+                phoneNo = phoneNo,
+                signature = ParamSignatureUtil.sign(
+                        privateKey, mapOf(
+                        "address" to address,
+                        "orderId" to orderId.toString(),
+                        "userName" to name,
+                        "certNo" to id,
+                        "phoneNo" to phoneNo
                 )
-            )
+                )
         ).compose(Result.checked())
     }
 
     fun Single<String>.certOrderByTx(api: ChainGateway, business: String): Single<CertOrder> {
         return this.flatMap { txHash ->
             api.hasReceipt(txHash)
-                .compose(Result.checked())
-                .map {
-                    if (!it) {
-                        throw DccChainServiceException("no receipt yet")
-                    }
-                    txHash
-                }
-                .retryWhen(RetryWithDelay.createSimple(4, 5000L))
-        }
-            .flatMap {
-                api.getOrdersByTx(it, business)
                     .compose(Result.checked())
                     .map {
-                        it.first()
+                        if (!it) {
+                            throw DccChainServiceException("no receipt yet")
+                        }
+                        txHash
                     }
-            }
+                    .retryWhen(RetryWithDelay.createSimple(4, 5000L))
+        }
+                .flatMap {
+                    api.getOrdersByTx(it, business)
+                            .compose(Result.checked())
+                            .map {
+                                it.first()
+                            }
+                }
     }
 
     fun getCompletedCerts(): List<String> {
@@ -579,11 +579,11 @@ object CertOperations {
 
     fun getCmLogData(orderId: Long): Single<ByteArray> {
         return Single.just(certCmLogReportFileName(orderId))
-            .observeOn(Schedulers.io())
-            .map {
-                File(App.get().filesDir, it).readBytes()
-            }
-            .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
+                .map {
+                    File(App.get().filesDir, it).readBytes()
+                }
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun onCmLogRequestSuccess(orderId: Long, phoneNo: String, password: String) {
@@ -614,7 +614,7 @@ object CertOperations {
     }
 
     private fun certCmLogReportFileName(orderId: Long) =
-        "cert${File.separator}cmlog${File.separator}$orderId.dat"
+            "cert${File.separator}cmlog${File.separator}$orderId.dat"
 
     private val gson = Gson()
     private const val INVALID_CERT_ORDER_ID = -1L
