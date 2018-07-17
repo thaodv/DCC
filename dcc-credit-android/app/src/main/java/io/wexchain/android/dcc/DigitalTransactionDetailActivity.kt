@@ -24,6 +24,7 @@ import io.wexchain.dcc.databinding.ActivityDigitalTransactionDetailBinding
 import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.EthsTransactionScratch
 import io.wexchain.digitalwallet.util.computeEthTxFeebyW
+import io.wexchain.digitalwallet.util.weiToGwei
 import org.web3j.utils.Numeric
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -93,9 +94,9 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
                                                     ss.nonce = tx.nonce
                                                     ss.amount = ss.currency.toDecimalAmount(BigInteger("1"))
                                                     ss.to = address
-                                                    ss.gasPrice = fpp.toBigDecimal()
+                                                    ss.gasPrice = weiToGwei(fpp)
                                                     ss.gasLimit = gasLimit
-                                                    TransHelper.afterTransSuc(scratch, it.second)
+                                                    TransHelper.afterTransSuc(ss, it.second)
                                                     finish()
 
                                                 }, {
