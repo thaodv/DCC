@@ -172,11 +172,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/DccLightTheme.App.Transparent"/>
         <activity
-            android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddBeneficiaryAddressActivity"
+            android:name="io.wexchain.android.dcc.AddBeneficiaryAddressActivity"
+            android:label="添加收款地址">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.BeneficiaryAddressesManagementActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddAddressBookActivity"
             android:label="添加地址">
         </activity>
         <activity
-            android:name="io.wexchain.android.dcc.modules.addressbook.activity.BeneficiaryAddressesManagementActivity"
+            android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.MyLoansActivity"
@@ -207,7 +214,10 @@
             android:label="借币记录"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="io.wexchain.android.dcc.modules.addressbook.activity.EditBeneficiaryAddressActivity"
+            android:name="io.wexchain.android.dcc.EditBeneficiaryAddressActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.addressbook.activity.EditAddressBookActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.LoanRecordDetailActivity"
@@ -225,6 +235,10 @@
         <activity
             android:name="io.wexchain.android.dcc.ChooseBeneficiaryAddressActivity"
             android:label="选择收币地址"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.addressbook.activity.ChooseAddressBookActivity"
+            android:label="选择地址"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.ReviewRepayActivity"
@@ -358,7 +372,9 @@
                 android:resource="@xml/file_paths"/>
         </provider>
 
-        <activity android:name="io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity">
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

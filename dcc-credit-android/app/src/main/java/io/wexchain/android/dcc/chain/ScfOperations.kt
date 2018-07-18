@@ -177,9 +177,9 @@ object ScfOperations {
         val currencySymbol = loanScratch.product.currency.symbol
         val amountStr = loanScratch.amount.toLoanFormatString()
         val period = "${loanScratch.period.value}${loanScratch.period.unit.name.first()}"
-        val idFrontBase64 = Base64.encodeToString(pics.first, Base64.DEFAULT)
-        val idBackBase64 = Base64.encodeToString(pics.second, Base64.DEFAULT)
-        val photoBase64 = Base64.encodeToString(pics.third, Base64.DEFAULT)
+        val idFrontBase64 = Base64.encodeToString(pics.first, Base64.NO_WRAP)
+        val idBackBase64 = Base64.encodeToString(pics.second, Base64.NO_WRAP)
+        val photoBase64 = Base64.encodeToString(pics.third, Base64.NO_WRAP)
         val digestStr =
                 "$lenderName$currencySymbol$amountStr$period${loanScratch.product.repayCyclesNo}${loanScratch.product.loanType}${loanScratch.createTime}$idFrontBase64$idBackBase64$photoBase64"
         LogUtils.i("digestStr", digestStr)

@@ -7,7 +7,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.SystemClock
 import android.provider.MediaStore
 import android.support.v4.app.DialogFragment
 import android.support.v4.view.ViewCompat
@@ -25,75 +24,65 @@ import io.wexchain.android.dcc.QrScannerActivity
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
-import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
+import io.wexchain.android.dcc.repo.db.AddressBook
 import io.wexchain.android.dcc.repo.db.TransRecord
-import io.wexchain.android.dcc.tools.CommonUtils
-import io.wexchain.android.dcc.tools.LogUtils
-import io.wexchain.android.dcc.tools.isAddressShortNameValid
 import io.wexchain.dcc.R
-import io.wexchain.dcc.databinding.ActivityEditBeneficiaryAddressBinding
+import io.wexchain.dcc.databinding.ActivityAddAddressBookBinding
 import io.wexchain.digitalwallet.util.isEthAddress
 import java.io.File
 
-class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddressBinding>() {
+class AddAddressBookActivity : BindActivity<ActivityAddAddressBookBinding>() {
 
-    var realFilePath: String? = ""
+    override val contentLayoutId: Int = R.layout.activity_add_address_book
 
-    override val contentLayoutId: Int
-        get() = R.layout.activity_edit_beneficiary_address
+    private var realFilePath: String? = ""
 
-    private val ba
-        get() = intent.getSerializableExtra(Extras.EXTRA_BENEFICIARY_ADDRESS) as BeneficiaryAddress
+    private var mTransRecord: TransRecord? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-        title = "编辑地址"
-
-        App.get().passportRepository.defaultBeneficiaryAddress.observe(this, Observer {})
-        binding.etInputAddress.setText(ba.address)
-        binding.etAddressShortName.setText(ba.shortName)
-        binding.ivAvatar.setImageURI(CommonUtils.str2Uri(ba.avatarUrl))
-        //binding.checkDefaultAddress.isChecked = App.get().passportRepository.defaultBeneficiaryAddress.value == beneficiaryAddress.address
         initClicks()
 
+        mTransRecord = intent.getSerializableExtra(Extras.EXTRA_TRANSRECORE) as TransRecord?
+
+        if (null != mTransRecord) {
+            if (null != mTransRecord!!.address) binding.etInputAddress.setText(mTransRecord!!.address)
+            if (null != mTransRecord!!.shortName) binding.etAddressShortName.setText(mTransRecord!!.shortName)
+            if (null != mTransRecord!!.avatarUrl && "" != mTransRecord!!.avatarUrl) {
+                realFilePath = mTransRecord!!.avatarUrl
+                binding.ivAvatar.setImageURI(Uri.parse(mTransRecord!!.avatarUrl))
+            } else {
+                binding.ivAvatar.setImageResource(R.drawable.icon_default_avatar)
+            }
+        }
     }
 
     private fun initClicks() {
-        /*binding.ibScanAddress.setOnClickListener {
-            startActivityForResult(Intent(this, QrScannerActivity::class.java).apply {
-                putExtra(Extras.EXPECTED_SCAN_TYPE, QrScannerActivity.SCAN_TYPE_ADDRESS)
-            }, RequestCodes.SCAN)
-        }*/
-        binding.btnSave.setOnClickListener {
+        binding.btnAdd.setOnClickListener {
             val inputAddr = binding.etInputAddress.text.toString()
             val inputShortName = binding.etAddressShortName.text.toString()
-            if (!isEthAddress(inputAddr)) {
-                toast("地址格式不符,请核对后重新输入")
-            } else if (inputAddr.isEmpty() || !isAddressShortNameValid(inputShortName)) {
-                toast("请输入有效的简称")
+
+            if (inputShortName.isEmpty()) {
+                toast("名称不能为空")
+            } else if (inputAddr.isEmpty() || !isEthAddress(inputAddr)) {
+                toast("请输入有效的地址")
             } else {
-                //val setDefault = binding.checkDefaultAddress.isChecked
-                val passportRepository = App.get().passportRepository
-                passportRepository.addBeneficiaryAddress(BeneficiaryAddress(inputAddr, inputShortName, avatarUrl = realFilePath, create_time = ba.create_time, update_time = SystemClock.currentThreadTimeMillis()))
-                /*if (setDefault) {
-                    passportRepository.setDefaultBeneficiaryAddress(inputAddr)
-                }else if(passportRepository.defaultBeneficiaryAddress.value == inputAddr){
-                    passportRepository.setDefaultBeneficiaryAddress(null)
-                }*/
+                App.get().passportRepository.addOrUpdateAddressBook(AddressBook(inputAddr, inputShortName, avatarUrl = realFilePath, create_time = System.currentTimeMillis().toString()))
 
+                if (null != mTransRecord) {
 
-                App.get().passportRepository.getTransRecordByAddress(inputAddr).observe(this, Observer {
-                    var mTrans: ArrayList<TransRecord> = ArrayList()
-                    if (null != it) {
-                        for (item in it) {
-                            mTrans.add(TransRecord(item.id, inputAddr, inputShortName, avatarUrl = realFilePath, is_add = 1, create_time = item.create_time, update_time = SystemClock.currentThreadTimeMillis()))
+                    App.get().passportRepository.getTransRecordByAddress(inputAddr).observe(this, Observer {
+                        var mTrans: ArrayList<TransRecord> = ArrayList()
+                        if (null != it) {
+                            for (item in it) {
+                                mTrans.add(TransRecord(item.id, item.address, shortName = inputShortName, avatarUrl = realFilePath, is_add = 1, create_time = item.create_time, update_time = System.currentTimeMillis().toString()))
+                            }
+                            App.get().passportRepository.updateTransRecord(mTrans)
                         }
-                        App.get().passportRepository.updateTransRecord(mTrans)
-                    }
-                })
-
-                toast("修改成功")
+                    })
+                }
+                toast("添加成功")
                 finish()
             }
         }
@@ -101,7 +90,6 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
         binding.ivAvatar.setOnClickListener {
             ChooseImageFromDialog.create(this).show(supportFragmentManager, null)
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -112,7 +100,6 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
                     findViewById<EditText>(R.id.et_input_address).setText(address)
                 }
             }
-
             RequestCodes.CAPTURE_IMAGE -> {
                 if (resultCode == ResultCodes.RESULT_OK) {
                     val bitmap = data?.extras?.get("data") as? Bitmap
@@ -136,9 +123,6 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
             RequestCodes.PICK_AVATAR -> {
                 if (RequestCodes.PICK_AVATAR_BACK == resultCode) {
                     realFilePath = data?.getStringExtra(Extras.EXTRA_PICKAVATAR_BACK)
-
-                    LogUtils.i("path", realFilePath)
-
                     binding.ivAvatar.setImageURI(Uri.parse(realFilePath))
                 }
             }
@@ -151,7 +135,7 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
         val filesDir = App.get().filesDir
         return Single.just(bitmap)
                 .map { bitmap ->
-                    val imgDir = File(filesDir, ChooseCutImageActivity.IMG_DIR)
+                    val imgDir = File(filesDir, ChooseCutImageActivity.IMG_DIR_ADDRESS)
                     if (!imgDir.exists()) {
                         val mkdirs = imgDir.mkdirs()
                         assert(mkdirs)
@@ -171,7 +155,6 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.menu_asset_scan, menu)
@@ -186,7 +169,6 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
                 }, RequestCodes.SCAN)
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -198,7 +180,9 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
                 .subscribe {
                     if (it) {
                         //granted
-                        startActivityForResult(Intent(this, ChooseCutImageActivity::class.java).putExtra(Extras.EXTRA_PICKAVATAR, 1), RequestCodes.PICK_AVATAR)
+                        startActivityForResult(Intent(this, ChooseCutImageActivity::class.java).apply {
+                            putExtra(Extras.EXTRA_PICKAVATAR, 1)
+                        }, RequestCodes.PICK_AVATAR)
                     } else {
                         toast("没有读写权限")
                     }
@@ -226,11 +210,11 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
             val view = inflater.inflate(R.layout.dialog_choose_image_from, container, false)
             view.findViewById<View>(R.id.tv_capture).setOnClickListener {
                 dismiss()
-                host?.captureImage()
+                mHost?.captureImage()
             }
             view.findViewById<View>(R.id.tv_pick).setOnClickListener {
                 dismiss()
-                host?.pickImage()
+                mHost?.pickImage()
             }
             view.findViewById<View>(R.id.btn_cancel).setOnClickListener {
                 dismiss()
@@ -249,16 +233,15 @@ class EditBeneficiaryAddressActivity : BindActivity<ActivityEditBeneficiaryAddre
             return dialog
         }
 
-        private var host: EditBeneficiaryAddressActivity? = null
+        private var mHost: AddAddressBookActivity? = null
 
         companion object {
-            fun create(activity: EditBeneficiaryAddressActivity): ChooseImageFromDialog {
+            fun create(bookActivity: AddAddressBookActivity): ChooseImageFromDialog {
                 val dialog = ChooseImageFromDialog()
-                dialog.host = activity
+                dialog.mHost = bookActivity
                 return dialog
             }
         }
     }
-
 
 }

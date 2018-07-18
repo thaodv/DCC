@@ -5,17 +5,17 @@ import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.itemDiffCallback
 import io.wexchain.dcc.R
-import io.wexchain.dcc.databinding.ItemBookAddressQueryBinding
+import io.wexchain.dcc.databinding.ItemAddressBookBinding
 
-class BookAddressQueryAdapter(
+class AddressBookAdapter(
         itemViewClickListener: ItemViewClickListener<AddressBook>
-) : DataBindAdapter<ItemBookAddressQueryBinding, AddressBook>(
-        layout = R.layout.item_book_address_query,
+) : DataBindAdapter<ItemAddressBookBinding, AddressBook>(
+        layout = R.layout.item_address_book,
         itemDiffCallback = itemDiffCallback({ a, b -> a.address == b.address }),
         itemViewClickListener = itemViewClickListener
 ) {
-    override fun bindData(binding: ItemBookAddressQueryBinding, item: AddressBook?) {
+
+    override fun bindData(binding: ItemAddressBookBinding, item: AddressBook?) {
         binding.addr = item
     }
-
 }

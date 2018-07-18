@@ -126,5 +126,6 @@ class ChooseCutImageActivity : BaseCompatActivity() {
 
     companion object {
         const val IMG_DIR = "avatar_images"
+        const val IMG_DIR_ADDRESS = "addressbook_avatar_images"
     }
 }

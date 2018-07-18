@@ -8,8 +8,8 @@ import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.CreateTransactionActivity
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.android.dcc.modules.addressbook.activity.AddBeneficiaryAddressActivity
-import io.wexchain.android.dcc.modules.addressbook.activity.BeneficiaryAddressesManagementActivity
+import io.wexchain.android.dcc.modules.addressbook.activity.AddAddressBookActivity
+import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.repo.db.TransRecord
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.TransAddressBookAdapter
@@ -43,37 +43,30 @@ class SelectTransStyleActivity : BindActivity<ActivitySelectTransStyleBinding>()
 
     private fun initClick() {
         binding.rlAddressBook.setOnClickListener {
-            startActivity(Intent(this, BeneficiaryAddressesManagementActivity::class.java).apply {
+            startActivity(Intent(this, AddressBookActivity::class.java).apply {
                 putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dc).putExtra("usage", 2)
             })
-            finish()
         }
 
         binding.rlWalletAddress.setOnClickListener {
             startActivity(Intent(this, CreateTransactionActivity::class.java).apply {
                 putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dc)
             })
-            finish()
         }
     }
 
     override fun onItemClick(item: TransRecord?, position: Int, viewId: Int) {
 
         item?.let {
-            when (viewId) {
-                R.id.tv_add_to_address -> {
-                    if (item.is_add == 0) {
-                        startActivity(Intent(this, AddBeneficiaryAddressActivity::class.java).apply {
-                            putExtra(Extras.EXTRA_TRANSRECORE, item)
-                            finish()
-                        })
-                    } else {
-                        startActivity(Intent(this, CreateTransactionActivity::class.java).apply {
-                            putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dc)
-                                    .putExtra(Extras.EXTRA_SELECT_TRANSRECORD, item)
-                        })
-                    }
-                }
+            if (item.is_add == 0) {
+                startActivity(Intent(this, AddAddressBookActivity::class.java).apply {
+                    putExtra(Extras.EXTRA_TRANSRECORE, item)
+                })
+            } else {
+                startActivity(Intent(this, CreateTransactionActivity::class.java).apply {
+                    putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dc)
+                            .putExtra(Extras.EXTRA_SELECT_TRANSRECORD, item)
+                })
             }
         }
     }

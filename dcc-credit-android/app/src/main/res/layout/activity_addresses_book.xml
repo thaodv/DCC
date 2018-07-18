@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity"
+    >
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/include_toolbar"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/toolbar"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_address_book"
+        />
+
+    <io.wexchain.android.dcc.view.addressbook.IndexBar
+        android:id="@+id/share_add_contact_sidebar"
+        android:layout_width="16dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/toolbar"
+        android:visibility="gone"
+        app:focusLetterColor="#6766CC"
+        app:letterColor="#4A4A4A"
+        app:letterSize="10sp"
+        app:letterSpacingExtra="1.4"/>
+
+    <LinearLayout
+        android:id="@+id/ll_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_address_book_query_empty"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="未找到相关内容"
+            android:textColor="#9B9B9B"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

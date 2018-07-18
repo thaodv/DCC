@@ -1,6 +1,7 @@
 package io.wexchain.android.dcc.base
 
 import android.graphics.Color
+import android.os.Bundle
 import android.support.annotation.IdRes
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
@@ -38,7 +39,13 @@ abstract class BaseCompatActivity : AppCompatActivity() {
         return toolbar
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        ActivityCollector.addActivity(this)
+    }
+
     override fun onDestroy() {
+        ActivityCollector.removeActivity(this)
         super.onDestroy()
         toolbar = null
         toolbarTitle = null
@@ -96,10 +103,10 @@ abstract class BaseCompatActivity : AppCompatActivity() {
 
     fun <T> Single<T>.withLoading(): Single<T> {
         return this
-            .doOnSubscribe {
-                showLoadingDialog()
-            }.doFinally {
-                hideLoadingDialog()
-            }
+                .doOnSubscribe {
+                    showLoadingDialog()
+                }.doFinally {
+                    hideLoadingDialog()
+                }
     }
 }

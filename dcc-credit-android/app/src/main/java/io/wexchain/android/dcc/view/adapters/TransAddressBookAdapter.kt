@@ -12,8 +12,7 @@ class TransAddressBookAdapter(
 ) : DataBindAdapter<ItemAddressLatestUsedBinding, TransRecord>(
         layout = R.layout.item_address_latest_used,
         itemDiffCallback = itemDiffCallback({ a, b -> a.address == b.address }),
-        itemViewClickListener = itemViewClickListener,
-        clickAwareViewIds = * kotlin.intArrayOf(R.id.tv_add_to_address)
+        itemViewClickListener = itemViewClickListener
 ) {
 
     override fun bindData(binding: ItemAddressLatestUsedBinding, item: TransRecord?) {

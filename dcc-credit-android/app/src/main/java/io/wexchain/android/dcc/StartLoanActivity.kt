@@ -12,7 +12,6 @@ import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
-import io.wexchain.android.dcc.modules.addressbook.activity.BeneficiaryAddressesManagementActivity
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 import io.wexchain.android.dcc.view.dialog.ConfirmLoanSubmitDialog
 import io.wexchain.android.dcc.view.dialog.CustomDialog
@@ -122,7 +121,7 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
         })
         binding.tvBeneficiaryAddress.setOnClickListener {
             startActivityForResult(
-                    Intent(this, BeneficiaryAddressesManagementActivity::class.java).putExtra("usage", 1),
+                    Intent(this, ChooseBeneficiaryAddressActivity::class.java),
                     RequestCodes.CHOOSE_BENEFICIARY_ADDRESS
             )
         }

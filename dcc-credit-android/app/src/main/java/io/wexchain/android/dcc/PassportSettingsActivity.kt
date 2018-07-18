@@ -17,7 +17,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.RequestCodes
-import io.wexchain.android.dcc.modules.addressbook.activity.BeneficiaryAddressesManagementActivity
+import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtectType
@@ -101,7 +101,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
             startActivity(Intent(this, PassportRemovalActivity::class.java))
         }
         binding.tvAddressBook.setOnClickListener {
-            startActivity(Intent(this, BeneficiaryAddressesManagementActivity::class.java))
+            startActivity(Intent(this, AddressBookActivity::class.java))
         }
         binding.tvCheckUpdate.setOnClickListener {
             App.get().marketingApi.checkUpgrade(getVersionCode().toString())

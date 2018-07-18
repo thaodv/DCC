@@ -10,8 +10,10 @@ import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.domain.Passport
+import io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.db.TransRecord
 import io.wexchain.android.dcc.tools.RetryWithDelay
@@ -209,15 +211,16 @@ class TransactionConfirmVm(
                             TransHelper.afterTransSuc(scratch, it.second)
 
                             // 保存交易记录
-                            App.get().passportRepository.getAddressByAddress(scratch.to).observeForever {
+                            App.get().passportRepository.getAddressBookByAddress(scratch.to).observeForever {
                                 if (null != it) {
                                     App.get().passportRepository.addTransRecord(
-                                            TransRecord(SystemClock.currentThreadTimeMillis(), scratch.to, it.shortName, it.avatarUrl, create_time = it.create_time, update_time = SystemClock.currentThreadTimeMillis(), is_add = 1))
+                                            TransRecord(System.currentTimeMillis().toString(), scratch.to, it.shortName, it.avatarUrl, create_time = it.create_time, update_time = SystemClock.currentThreadTimeMillis().toString(), is_add = 1))
                                 } else {
                                     App.get().passportRepository.addTransRecord(
-                                            TransRecord(SystemClock.currentThreadTimeMillis(), scratch.to, shortName = "", avatarUrl = "", create_time = SystemClock.currentThreadTimeMillis(), is_add = 0))
+                                            TransRecord(System.currentTimeMillis().toString(), scratch.to, shortName = "", avatarUrl = "", create_time = SystemClock.currentThreadTimeMillis().toString(), is_add = 0))
                                 }
                             }
+                            ActivityCollector.finishActivity(SelectTransStyleActivity::class.java)
                         }, {
                             txSendFailEvent.value = it.message ?: "提交交易失败"
                         })

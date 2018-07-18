@@ -51,7 +51,7 @@ class PassportRepository(
             .switchMap { it?.let { dao.listAuthKeyChangeRecords(it.address) } ?: MutableLiveData() }
 
     val beneficiaryAddresses: LiveData<List<BeneficiaryAddress>> = MediatorLiveData<List<BeneficiaryAddress>>().apply {
-        var list: List<BeneficiaryAddress>?
+        var list: List<BeneficiaryAddress>? = null
         var walletAddr: String? = null
         addSource(dao.listBeneficiaryAddresses()) {
             list = it
@@ -64,7 +64,7 @@ class PassportRepository(
             }
             postValue(composite)
         }
-        /*addSource(currAddress) {
+        addSource(currAddress) {
             walletAddr = it
             val addr = walletAddr
             val l = list ?: emptyList()
@@ -74,20 +74,18 @@ class PassportRepository(
                 listOf(BeneficiaryAddress(addr, WALLET_ADDR_SHORT_NAME)) + l
             }
             postValue(composite)
-        }*/
-    }
-
-    fun getAllAddressBook(): LiveData<List<BeneficiaryAddress>> {
-        return MediatorLiveData<List<BeneficiaryAddress>>().apply {
-            addSource(dao.listBeneficiaryAddresses()) {
-                postValue(it)
-            }
         }
     }
 
-    fun getAddressByAddress(address: String): LiveData<BeneficiaryAddress> {
-        return MediatorLiveData<BeneficiaryAddress>().apply {
-            addSource(dao.getAddressByAddress(address)) {
+    val addressBooks: LiveData<List<AddressBook>> = MediatorLiveData<List<AddressBook>>().apply {
+        addSource(dao.getAllAddressBook()) {
+            postValue(it)
+        }
+    }
+
+    fun getAddressBookByAddress(address: String): LiveData<AddressBook> {
+        return MediatorLiveData<AddressBook>().apply {
+            addSource(dao.getAddressBookByAddress(address)) {
                 postValue(it)
             }
         }
@@ -141,21 +139,10 @@ class PassportRepository(
         }
     }
 
-
-    fun queryBookAddress(name: String): LiveData<List<BeneficiaryAddress>> {
-        return MediatorLiveData<List<BeneficiaryAddress>>().apply {
-            var list: List<BeneficiaryAddress>?
-            var walletAddr: String? = null
-            addSource(dao.queryAddressesByShortName(name)) {
-                list = it
-                val addr = walletAddr
-                val l = list ?: emptyList()
-                val composite = if (addr == null) {
-                    l
-                } else {
-                    listOf(BeneficiaryAddress(addr, WALLET_ADDR_SHORT_NAME)) + l
-                }
-                postValue(composite)
+    fun queryBookAddress(name: String): LiveData<List<AddressBook>> {
+        return MediatorLiveData<List<AddressBook>>().apply {
+            addSource(dao.queryAddressBookByShortName(name)) {
+                postValue(it)
             }
         }
     }
@@ -299,7 +286,7 @@ class PassportRepository(
                                     16,
                                     '0'
                             )}.png"
-                    val imgFile = File(filesDir, fileName)
+                    val imgFile = File(imgDir, fileName)
                     imgFile.outputStream()
                             .use {
                                 bitmap.compress(Bitmap.CompressFormat.PNG, 87, it)
@@ -361,6 +348,18 @@ class PassportRepository(
         }
         if (selectedBeneficiaryAddress.value == beneficiaryAddress.address) {
             selectedBeneficiaryAddress.value = null
+        }
+    }
+
+    fun addOrUpdateAddressBook(addressBook: AddressBook) {
+        RoomHelper.onRoomIoThread {
+            dao.addOrUpdateAddressBook(addressBook)
+        }
+    }
+
+    fun removeAddressBook(addressBook: AddressBook) {
+        RoomHelper.onRoomIoThread {
+            dao.removeAddressBook(addressBook)
         }
     }
 

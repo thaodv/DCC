@@ -26,8 +26,8 @@
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
             android:scaleType="centerCrop"
             app:errorRes="@{@drawable/default_user_avatar}"
             app:imageUri="@{CommonUtils.str2Uri(addr.avatarUrl)}"

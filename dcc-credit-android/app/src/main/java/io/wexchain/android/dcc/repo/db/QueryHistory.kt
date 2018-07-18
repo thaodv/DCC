@@ -15,7 +15,7 @@ data class QueryHistory(
         var name: String,
         @PrimaryKey
         @ColumnInfo(name = COLUMN_ID)
-        var id: Long
+        var id: String
 
 ) : Serializable {
 
@@ -23,6 +23,5 @@ data class QueryHistory(
         const val TABLE_NAME = "query_history"
         const val COLUMN_ID = "id"
         const val COLUMN_NAME = "short_name"
-        const val COLUMN_TIME = "create_time"
     }
 }

@@ -3,7 +3,6 @@ package io.wexchain.android.dcc.modules.addressbook.activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
-import android.os.SystemClock
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
@@ -22,7 +21,7 @@ import io.wexchain.android.dcc.CreateTransactionActivity
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.addressbook.vm.QueryBookAddressVm
-import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
+import io.wexchain.android.dcc.repo.db.AddressBook
 import io.wexchain.android.dcc.repo.db.QueryHistory
 import io.wexchain.android.dcc.view.ClearEditText
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
@@ -32,8 +31,7 @@ import io.wexchain.dcc.R
 import io.wexchain.digitalwallet.DigitalCurrency
 import java.io.Serializable
 
-class AddressBookQueryActivity : BaseCompatActivity(), TextWatcher, ItemViewClickListener<BeneficiaryAddress> {
-
+class AddressBookQueryActivity : BaseCompatActivity(), TextWatcher, ItemViewClickListener<AddressBook> {
 
     private var mRecyclerView: RecyclerView? = null
     private var mRvHistory: RecyclerView? = null
@@ -95,11 +93,9 @@ class AddressBookQueryActivity : BaseCompatActivity(), TextWatcher, ItemViewClic
         queryBookAddressVm!!.getHistory().observe(this, Observer {
             if (it!!.isEmpty()) {
                 mRvHistory!!.visibility = View.GONE
-                mRecyclerView!!.visibility = View.GONE
                 mEmpty!!.visibility = View.GONE
                 mIbtDelete!!.visibility = View.GONE
             } else {
-                mRecyclerView!!.visibility = View.GONE
                 mEmpty!!.visibility = View.GONE
                 mRvHistory!!.visibility = View.VISIBLE
                 mIbtDelete!!.visibility = View.VISIBLE
@@ -112,16 +108,30 @@ class AddressBookQueryActivity : BaseCompatActivity(), TextWatcher, ItemViewClic
         }
 
         mBtSerrch!!.setOnClickListener {
+
             val name = mEtSearch!!.text.toString().trim()
 
             if (TextUtils.isEmpty(name)) {
                 toast("请输入搜索关键词")
             } else {
-                App.get().passportRepository.addOrReplaceQueryHistory(QueryHistory(name, SystemClock.currentThreadTimeMillis()))
-                mEtSearch!!.text.clear()
+                App.get().passportRepository.addOrReplaceQueryHistory(QueryHistory(name, System.currentTimeMillis().toString()))
+
+                // mEtSearch!!.text.clear()
+
+                queryBookAddressVm!!.getRes("%$name%").observe(this, Observer {
+                    if (it!!.isEmpty()) {
+                        mEmpty!!.visibility = View.VISIBLE
+                        mRvHistory!!.visibility = View.VISIBLE
+                        mRecyclerView!!.visibility = View.GONE
+                    } else {
+                        mRecyclerView!!.visibility = View.VISIBLE
+                        mEmpty!!.visibility = View.GONE
+                        mRvHistory!!.visibility = View.GONE
+                        mAdapter!!.setList(it)
+                    }
+                })
             }
         }
-
     }
 
     override fun afterTextChanged(s: Editable?) {
@@ -134,26 +144,29 @@ class AddressBookQueryActivity : BaseCompatActivity(), TextWatcher, ItemViewClic
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         var text = s.toString().trim()
+        mEtSearch!!.setSelection(text.length)
         if (text.isEmpty()) {
             mRecyclerView!!.visibility = View.GONE
             mEmpty!!.visibility = View.GONE
+            mRvHistory!!.visibility = View.VISIBLE
         } else {
             mRvHistory!!.visibility = View.GONE
             mRecyclerView!!.visibility = View.VISIBLE
             queryBookAddressVm!!.getRes("%$text%").observe(this, Observer {
                 if (it!!.isEmpty()) {
                     mEmpty!!.visibility = View.VISIBLE
+                    mRvHistory!!.visibility = View.VISIBLE
                     mRecyclerView!!.visibility = View.GONE
                 } else {
                     mEmpty!!.visibility = View.GONE
+                    mRvHistory!!.visibility = View.GONE
                     mAdapter!!.setList(it)
                 }
             })
         }
     }
 
-
-    override fun onItemClick(item: BeneficiaryAddress?, position: Int, viewId: Int) {
+    override fun onItemClick(item: AddressBook?, position: Int, viewId: Int) {
         item?.let { ba ->
             if (0 == mUsage) {
                 toDetail(ba)
@@ -165,7 +178,7 @@ class AddressBookQueryActivity : BaseCompatActivity(), TextWatcher, ItemViewClic
         }
     }
 
-    private fun toDetail(ba: BeneficiaryAddress) {
+    private fun toDetail(ba: AddressBook) {
         navigateTo(AddressDetailActivity::class.java) {
             putExtra(Extras.EXTRA_BENEFICIARY_ADDRESS, ba as Serializable)
         }

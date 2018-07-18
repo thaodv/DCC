@@ -13,9 +13,9 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
-import io.wexchain.android.dcc.modules.addressbook.activity.AddBeneficiaryAddressActivity
+import io.wexchain.android.dcc.modules.addressbook.activity.AddAddressBookActivity
 import io.wexchain.android.dcc.repo.AssetsRepository
-import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
+import io.wexchain.android.dcc.repo.db.TransRecord
 import io.wexchain.android.dcc.tools.TransHelper
 import io.wexchain.android.dcc.tools.pair
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
@@ -74,7 +74,7 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
                                 deleteDialog.mIvWarning.visibility = View.VISIBLE
 
                                 deleteDialog.mTvText.text = "撤销后的交易记录将覆盖原交易记录（nonce=" + tx.nonce + "）。撤销交易需消耗" + ss + "ETH。确认撤销此交易吗？"
-                                deleteDialog.mTvText.gravity = Gravity.CENTER_HORIZONTAL
+                                deleteDialog.mTvText.gravity = Gravity.LEFT
                                 deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                                     override fun cancel() {}
 
@@ -183,7 +183,7 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
             deleteDialog.mIvWarning.visibility = View.VISIBLE
 
             deleteDialog.mTvText.text = "撤销后的交易记录将覆盖原交易记录（nonce=" + tx.nonce + "）。确认编辑此交易吗？"
-            deleteDialog.mTvText.gravity = Gravity.CENTER_HORIZONTAL
+            deleteDialog.mTvText.gravity = Gravity.LEFT
             deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                 override fun cancel() {}
 
@@ -198,13 +198,9 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
 
 
         if (tx.issuc()) {
-            App.get().passportRepository.getAddressByAddress(tx.to).observe(this, Observer {
+            App.get().passportRepository.getAddressBookByAddress(tx.to).observe(this, Observer {
                 if (null == it) {
                     binding.llAddAddressBook.visibility = View.VISIBLE
-                    startActivity(Intent(this, AddBeneficiaryAddressActivity::class.java).apply {
-                        putExtra(Extras.EXTRA_TRANSRECORE, BeneficiaryAddress(tx.to, shortName = ""))
-                        finish()
-                    })
                 } else {
                     binding.llAddAddressBook.visibility = View.GONE
                 }
@@ -212,11 +208,10 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
         }
 
         binding.llAddAddressBook.setOnClickListener {
-            startActivity(Intent(this, AddBeneficiaryAddressActivity::class.java).apply {
-                putExtra("address", binding.tvToAddressValue.text.toString())
-                        .putExtra("added", 1)
-                finish()
+            startActivity(Intent(this, AddAddressBookActivity::class.java).apply {
+                putExtra(Extras.EXTRA_TRANSRECORE, TransRecord(System.currentTimeMillis().toString(), tx.to, shortName = ""))
             })
+            finish()
         }
 
     }
