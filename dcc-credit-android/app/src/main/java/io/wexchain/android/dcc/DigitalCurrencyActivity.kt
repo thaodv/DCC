@@ -18,6 +18,7 @@ import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.TransactionRecordAdapter
 import io.wexchain.android.dcc.view.dialog.CustomDialog
+import io.wexchain.android.dcc.view.dialog.WaitTransDialog
 import io.wexchain.android.dcc.vm.BottomMoreVm
 import io.wexchain.android.dcc.vm.DigitalCurrencyVm
 import io.wexchain.android.dcc.vm.TransactionListVm
@@ -36,6 +37,9 @@ import io.wexchain.digitalwallet.EthsTransaction
 class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), ItemViewClickListener<EthsTransaction> {
 
     override val contentLayoutId: Int = R.layout.activity_digital_currency
+
+    private var isPending: Boolean = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -151,6 +155,11 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
             adapter.setList(list3)
             txListVm.empty.set(list3.isEmpty())
             bm.hasMore.set(it != null && it.size > 3)
+
+            if (list3 != null && list3.size > 1) {
+                isPending = list3[0].isPending()
+            }
+
         })
     }
 
@@ -165,7 +174,14 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
 
     private fun initBtn() {
         binding.btnToTransfer.setOnClickListener {
-            toCreateTransaction()
+
+            if (isPending) {
+                val waitTransDialog = WaitTransDialog(this)
+                waitTransDialog.mTvText.text = "请待「待上链」交易变为「已上链」后再提交新的交易。"
+                waitTransDialog.show()
+            } else {
+                toCreateTransaction()
+            }
         }
         binding.btnToCollect.setOnClickListener {
             startActivity(Intent(this, PassportAddressActivity::class.java))

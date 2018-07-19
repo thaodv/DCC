@@ -119,26 +119,6 @@ class PassportRepository(
         }
     }
 
-    fun addOrReplaceQueryHistory(queryHistory: QueryHistory) {
-        RoomHelper.onRoomIoThread {
-            dao.addOrUpdateAddressBookQueryHistory(queryHistory)
-        }
-    }
-
-    fun getAddressBookQueryHistory(): LiveData<List<QueryHistory>> {
-        return MediatorLiveData<List<QueryHistory>>().apply {
-            addSource(dao.getAddressBookQueryHistory()) {
-                postValue(it)
-            }
-        }
-    }
-
-    fun deleteAddressBookQueryHistory() {
-        RoomHelper.onRoomIoThread {
-            dao.deleteAddressBookQueryHistory()
-        }
-    }
-
     fun queryBookAddress(name: String): LiveData<List<AddressBook>> {
         return MediatorLiveData<List<AddressBook>>().apply {
             addSource(dao.queryAddressBookByShortName(name)) {

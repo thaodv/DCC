@@ -5,7 +5,6 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.repo.db.AddressBook
-import io.wexchain.android.dcc.repo.db.QueryHistory
 
 class QueryBookAddressVm(application: Application) : AndroidViewModel(application) {
 
@@ -13,9 +12,9 @@ class QueryBookAddressVm(application: Application) : AndroidViewModel(applicatio
         return getApplication<App>().passportRepository.queryBookAddress(name)
     }
 
-    open fun getHistory(): LiveData<List<QueryHistory>>{
+    /*open fun getHistory(): LiveData<List<QueryHistory>>{
         return  getApplication<App>().passportRepository.getAddressBookQueryHistory()
-    }
+    }*/
 
 
 }

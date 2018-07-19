@@ -13,7 +13,7 @@ import java.io.Serializable
 data class TransRecord(
         @PrimaryKey
         @ColumnInfo(name = COLUNN_ID)
-        val id: String,
+        val id: Long,
         @ColumnInfo(name = COLUMN_ADDRESS)
         val address: String,
         @ColumnInfo(name = COLUMN_SHORT_NAME)
@@ -23,9 +23,9 @@ data class TransRecord(
         @ColumnInfo(name = COLUMN_ISADD)
         val is_add: Int? = 0,
         @ColumnInfo(name = COLUMN_CREATE_TIME)
-        val create_time: String? = "",
+        val create_time: Long? = 0,
         @ColumnInfo(name = COLUMN_UPDATE_TIME)
-        val update_time: String? = ""
+        val update_time: Long? = 0
 ) : Serializable {
 
     companion object {

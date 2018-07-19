@@ -11,7 +11,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import io.wexchain.android.dcc.repo.AssetsRepository
 
-@Database(entities = [CaAuthRecord::class, AuthKeyChangeRecord::class, CurrencyMeta::class, BeneficiaryAddress::class, AddressBook::class, QueryHistory::class, TransRecord::class],
+@Database(entities = [CaAuthRecord::class, AuthKeyChangeRecord::class, CurrencyMeta::class, BeneficiaryAddress::class, AddressBook::class, TransRecord::class],
         version = PassportDatabase.VERSION_3
 )
 @TypeConverters(Converters::class)
@@ -33,9 +33,8 @@ abstract class PassportDatabase : RoomDatabase() {
 
         private val migration_2_3 = object : Migration(VERSION_2, VERSION_3) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("CREATE TABLE IF NOT EXISTS `${QueryHistory.TABLE_NAME}` (`id` TEXT NOT NULL, `short_name` TEXT NOT NULL, PRIMARY KEY(`id`))")
-                database.execSQL("CREATE TABLE IF NOT EXISTS `${AddressBook.TABLE_NAME}` (`address` TEXT NOT NULL, `short_name` TEXT NOT NULL,`avatar_url` TEXT, `create_time` TEXT,`update_time` TEXT, PRIMARY KEY(`address`))")
-                database.execSQL("CREATE TABLE IF NOT EXISTS `${TransRecord.TABLE_NAME}` (`id` TEXT NOT NULL,`address` TEXT NOT NULL, `short_name` TEXT, `avatar_url` TEXT,`is_add` INTEGER,`create_time` TEXT,`update_time` TEXT, PRIMARY KEY(`id`))")
+                database.execSQL("CREATE TABLE IF NOT EXISTS `${AddressBook.TABLE_NAME}` (`address` TEXT NOT NULL, `short_name` TEXT NOT NULL,`avatar_url` TEXT, `create_time` LONG,`update_time` LONG, PRIMARY KEY(`address`))")
+                database.execSQL("CREATE TABLE IF NOT EXISTS `${TransRecord.TABLE_NAME}` (`id` LONG NOT NULL,`address` TEXT NOT NULL, `short_name` TEXT, `avatar_url` TEXT,`is_add` INTEGER,`create_time` LONG,`update_time` LONG, PRIMARY KEY(`id`))")
             }
         }
 

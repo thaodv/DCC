@@ -3,14 +3,15 @@
 
     <data>
 
+        <import type="android.view.View"/>
+
         <import type="android.support.v4.util.ObjectsCompat"/>
 
         <import type="io.wexchain.android.dcc.tools.CommonUtils"/>
 
         <variable
             name="addr"
-            type="io.wexchain.android.dcc.repo.db.TransRecord"
-            />
+            type="io.wexchain.android.dcc.repo.db.TransRecord"/>
 
     </data>
 
@@ -24,10 +25,11 @@
         >
 
         <ImageView
+            android:id="@+id/iv_avatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
             android:scaleType="centerCrop"
             app:errorRes="@{@drawable/default_user_avatar}"
             app:imageUri="@{CommonUtils.str2Uri(addr.avatarUrl)}"
@@ -39,11 +41,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="60dp"
             android:layout_marginTop="5dp"
             android:singleLine="true"
             android:text="@{addr.shortName}"
             android:textSize="16sp"
+            android:visibility="@{addr.is_add()==0?View.GONE:View.VISIBLE}"
             tools:text="冷钱包"
             />
 
@@ -53,10 +57,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/tv_short_name"
+            android:layout_centerVertical="true"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="100dp"
-            android:layout_marginTop="5dp"
             android:text="@{addr.address}"
             android:textSize="13sp"
             app:autoSizeMaxTextSize="13sp"

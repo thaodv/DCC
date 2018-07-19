@@ -47,7 +47,7 @@ abstract class PassportDao {
     @Query("SELECT * FROM ${BeneficiaryAddress.TABLE_NAME}")
     abstract fun listBeneficiaryAddresses(): LiveData<List<BeneficiaryAddress>>
 
-    @Query("SELECT distinct ${TransRecord.COLUMN_ADDRESS},${TransRecord.COLUNN_ID},${TransRecord.COLUMN_ADDRESS},${TransRecord.COLUMN_SHORT_NAME},${TransRecord.COLUMN_AVATAR},${TransRecord.COLUMN_ISADD} from ${TransRecord.TABLE_NAME} group by ${TransRecord.COLUMN_ADDRESS} ORDER BY ${TransRecord.COLUMN_CREATE_TIME} DESC LIMIT 10")
+    @Query("SELECT distinct ${TransRecord.COLUMN_ADDRESS},${TransRecord.COLUNN_ID},${TransRecord.COLUMN_ADDRESS},${TransRecord.COLUMN_SHORT_NAME},${TransRecord.COLUMN_AVATAR},${TransRecord.COLUMN_ISADD},${TransRecord.COLUMN_CREATE_TIME},${TransRecord.COLUMN_UPDATE_TIME} from ${TransRecord.TABLE_NAME} group by ${TransRecord.COLUMN_ADDRESS} ORDER BY ${TransRecord.COLUMN_CREATE_TIME} DESC LIMIT 10")
     abstract fun getTransRecord(): LiveData<List<TransRecord>>
 
     @Query("SELECT * FROM ${BeneficiaryAddress.TABLE_NAME} WHERE ${BeneficiaryAddress.COLUMN_SHORT_NAME} LIKE :name")
@@ -56,14 +56,14 @@ abstract class PassportDao {
     @Query("SELECT * FROM ${BeneficiaryAddress.TABLE_NAME} WHERE ${BeneficiaryAddress.COLUMN_ADDRESS} = :address")
     abstract fun getBeneficiaryAddresseByAddress(address: String): List<BeneficiaryAddress>
 
-    @Query("SELECT distinct ${QueryHistory.COLUMN_NAME},${QueryHistory.COLUMN_ID} FROM ${QueryHistory.TABLE_NAME} group by ${QueryHistory.COLUMN_NAME} ORDER BY ${QueryHistory.COLUMN_ID} DESC LIMIT 6")
+    /*@Query("SELECT distinct ${QueryHistory.COLUMN_NAME},${QueryHistory.COLUMN_ID} FROM ${QueryHistory.TABLE_NAME} group by ${QueryHistory.COLUMN_NAME} ORDER BY ${QueryHistory.COLUMN_ID} DESC LIMIT 6")
     abstract fun getAddressBookQueryHistory(): LiveData<List<QueryHistory>>
 
     @Query("DELETE FROM ${QueryHistory.TABLE_NAME}")
     abstract fun deleteAddressBookQueryHistory()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun addOrUpdateAddressBookQueryHistory(queryHistory: QueryHistory)
+    abstract fun addOrUpdateAddressBookQueryHistory(queryHistory: QueryHistory)*/
 
     @Query("DELETE FROM ${BeneficiaryAddress.TABLE_NAME}")
     abstract fun deleteBeneficiaryAddresses()

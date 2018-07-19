@@ -64,9 +64,9 @@ class AddressDetailActivity : BindActivity<ActivityAddressDetailBinding>() {
 
                     App.get().passportRepository.getTransRecordByAddress(addressBook!!.address).observe(this@AddressDetailActivity, Observer {
                         var mTrans: ArrayList<TransRecord> = ArrayList()
-                        if (null != it) {
+                        if (null != it && it.isNotEmpty()) {
                             for (item in it) {
-                                mTrans.add(TransRecord(item.id, item.address, shortName = "", avatarUrl = "", is_add = 0, create_time = item.create_time, update_time = System.currentTimeMillis().toString()))
+                                mTrans.add(TransRecord(item.id, item.address, shortName = "", avatarUrl = "", is_add = 0, create_time = item.create_time, update_time = System.currentTimeMillis()))
                             }
                             App.get().passportRepository.updateTransRecord(mTrans)
                         }

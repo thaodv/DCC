@@ -21,9 +21,9 @@ data class AddressBook(
         @ColumnInfo(name = COLUMN_AVATAR)
         val avatarUrl: String? = "",
         @ColumnInfo(name = COLUMN_CREATE_TIME)
-        val create_time: String? = "",
+        val create_time: Long? = 0,
         @ColumnInfo(name = COLUMN_UPDATE_TIME)
-        val update_time: String? = ""
+        val update_time: Long? = 0
 ) : Abbreviated, Comparable<AddressBook>, Serializable {
 
     @Ignore
