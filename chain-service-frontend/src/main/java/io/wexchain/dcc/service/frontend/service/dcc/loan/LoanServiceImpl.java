@@ -1,15 +1,15 @@
 package io.wexchain.dcc.service.frontend.service.dcc.loan;
 
 import com.wexmarket.topia.commons.basic.exception.ErrorCodeValidate;
-import com.wexmarket.topia.commons.basic.rpc.utils.PaginationUtils;
 import com.wexmarket.topia.commons.pagination.PageParam;
 import com.wexmarket.topia.commons.pagination.Pagination;
 import com.wexmarket.topia.commons.pagination.SortPageParam;
+import com.wexyun.open.api.domain.member.Member;
 import io.wexchain.cryptoasset.loan.api.ApplyRequest;
-import io.wexchain.cryptoasset.loan.api.ConfirmRepaymentRequest;
 import io.wexchain.cryptoasset.loan.api.QueryLoanOrderPageRequest;
 import io.wexchain.cryptoasset.loan.api.QueryLoanReportRequest;
 import io.wexchain.cryptoasset.loan.api.constant.LoanOrderStatus;
+import io.wexchain.cryptoasset.loan.api.constant.LoanType;
 import io.wexchain.cryptoasset.loan.api.model.LoanReport;
 import io.wexchain.cryptoasset.loan.api.model.OrderIndex;
 import io.wexchain.cryptoasset.loan.api.model.RepaymentBill;
@@ -21,10 +21,13 @@ import io.wexchain.dcc.service.frontend.common.enums.FrontendErrorCode;
 import io.wexchain.dcc.service.frontend.ctrlr.security.MemberDetails;
 import io.wexchain.dcc.service.frontend.integration.back.CryptoAssetLoanOperationClient;
 import io.wexchain.dcc.service.frontend.integration.wexyun.FileOperationClient;
+import io.wexchain.dcc.service.frontend.model.Period;
 import io.wexchain.dcc.service.frontend.model.request.LoanCreditApplyRequest;
 import io.wexchain.dcc.service.frontend.model.request.LoanInterestRequest;
 import io.wexchain.dcc.service.frontend.model.vo.*;
 import io.wexchain.dcc.service.frontend.service.dcc.loanProduct.LoanProductService;
+import io.wexchain.dcc.service.frontend.service.wexyun.MemberService;
+import io.wexchain.dcc.service.frontend.utils.AddressUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -63,6 +66,8 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
     @Autowired
     private CryptoAssetLoanOperationClient cryptoAssetLoanOperationClient;
 
+    @Autowired
+    private MemberService memberService;
 
 
     @Override
@@ -77,8 +82,20 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
 
     @Override
     public void apply(LoanCreditApplyRequest loanCreditApplyRequest,MemberDetails memberDetails) {
-        LoanProductVo loanProductVo = loanProductService.getLoanProductVo(loanCreditApplyRequest.getLoanProductId());
 
+        LoanProductVo loanProductVo = loanProductService.getLoanProductVo(loanCreditApplyRequest.getLoanProductId());
+        List<BigDecimal> volumeOptionList = loanProductVo.getVolumeOptionList();
+        List<Period> loanPeriodList = loanProductVo.getLoanPeriodList();
+
+        boolean volumeValidateResult = false;
+        for (BigDecimal volumeOption : volumeOptionList) {
+            if(volumeOption.compareTo(loanCreditApplyRequest.getBorrowAmount())==0){
+                volumeValidateResult = true;
+                break;
+            }
+        }
+        ErrorCodeValidate.isTrue(volumeValidateResult, FrontendErrorCode.LOAN_APPLY_FAIL, "不合法的借款金额");
+        ErrorCodeValidate.isTrue(borrowDuration(loanPeriodList,loanCreditApplyRequest.getBorrowDuration()), FrontendErrorCode.LOAN_APPLY_FAIL, "不合法的借款期限");
         ApplyRequest applyRequest = new ApplyRequest();
         applyRequest.setIndex(new OrderIndex(loanCreditApplyRequest.getOrderId(),memberDetails.getId().toString()));
         applyRequest.setLoanProductId(loanCreditApplyRequest.getLoanProductId().toString());
@@ -96,13 +113,17 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
         applyRequest.setAssetCode(loanProductVo.getCurrency().getSymbol());
         applyRequest.setRepayMode("TOGETHER");
         applyRequest.setAppIdentity(appIdentity);
+        applyRequest.setRepaymentCycleNo(loanProductVo.getRepayCyclesNo());
+        applyRequest.setFacePic(loanCreditApplyRequest.getPersonalPhoto());
+        applyRequest.setIdCardBackPic(loanCreditApplyRequest.getBackPhoto());
+        applyRequest.setIdCardFrontPic(loanCreditApplyRequest.getFrontPhoto());
+
 
         Map<String, String> stringStringHashMap = new HashMap<>();
         applyRequest.setApplicationDigestClearingText(stringStringHashMap);
 
         io.wexchain.cryptoasset.loan.api.model.LoanOrder apply = cryptoAssetLoanOperationClient.apply(applyRequest);
         ErrorCodeValidate.isTrue(StringUtils.isBlank(apply.getFailCode()), FrontendErrorCode.LOAN_APPLY_FAIL, apply.getFailMessage());
-
     }
 
     @Override
@@ -203,15 +224,34 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
         List<LoanReport> loanReports = cryptoAssetLoanOperationClient.queryLoanReport(queryLoanReportRequest);
         List<LoanReportVo> voList = new ArrayList<>();
         for (LoanReport loanReport : loanReports) {
+            LoanReportVo vo = LoanConvertor.convert(loanReport);
             if(loanReport.getChainOrderId() == null){
                 continue;
             }
-            LoanProductVo loanProductVo = loanProductService.getLoanProductVo(Long.parseLong(loanReport.getLoanProductId()));
-            LoanReportVo vo = LoanConvertor.convert(loanReport);
-            vo.setLenderName(loanProductVo.getLender().getName());
+            if(loanReport.getLoanType() == LoanType.LOAN){
+                LoanProductVo loanProductVo = loanProductService.getLoanProductVo(Long.parseLong(loanReport.getLoanProductId()));
+                vo.setLenderName(loanProductVo.getLender().getName());
+            }
+            if(loanReport.getLoanType() == LoanType.MORTGAGE){
+                vo.setLenderName(loanReport.getDeliverDept());
+            }
             voList.add(vo);
+
         }
         return voList;
+    }
+
+    @Override
+    public List<LoanReportVo> introQueryLoanReport(String address) {
+        Member member = memberService.getByIdentity(address);
+
+        if(member != null){
+            QueryLoanReportRequest queryLoanReportRequest = new QueryLoanReportRequest();
+            queryLoanReportRequest.setMemberId(member.getMemberId());
+            queryLoanReportRequest.setAddress(address);
+            return queryLoanReport(queryLoanReportRequest);
+        }
+        return null;
     }
 
     private static void setBaseLoanOrderInfo(LoanOrderVo loanOrderVo , io.wexchain.cryptoasset.loan.api.model.LoanOrder loanOrder,LoanProductVo loanProductVo ){
@@ -256,5 +296,14 @@ public class LoanServiceImpl implements LoanService,FrontendWebConstants,LoanExt
             }
         }
 
+    }
+
+    private static boolean borrowDuration(List<Period> loanPeriodList , int borrowDuration){
+        for (Period period : loanPeriodList) {
+            if(period.getValue() == borrowDuration){
+                return true;
+            }
+        }
+        return false;
     }
 }

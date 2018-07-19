@@ -50,6 +50,7 @@ public class LoanProductServiceImpl implements LoanProductService {
         if (CollectionUtils.isNotEmpty(configReader.getConfigList())) {
             for (LoanProduct loanProduct : configReader.getConfigList()) {
                 loanProduct.setDccFeeScope(dccFeeScope);
+                loanProduct.setLoanType("3C");
                 productByIdMap.put(loanProduct.getId(),loanProduct);
                 if(productByLenderCodeMap.get(loanProduct.getLenderCode()) != null){
                     productByLenderCodeMap.get(loanProduct.getLenderCode()).add(loanProduct);

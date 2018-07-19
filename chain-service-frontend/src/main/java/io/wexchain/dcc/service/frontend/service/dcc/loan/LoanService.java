@@ -17,6 +17,7 @@ import io.wexchain.dcc.service.frontend.model.vo.LoanReportVo;
 import io.wexchain.dcc.service.frontend.model.vo.RepaymentBillVo;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
@@ -67,4 +68,6 @@ public interface LoanService {
      * 查询借贷报告
      */
     List<LoanReportVo> queryLoanReport(QueryLoanReportRequest queryLoanReportRequest);
+
+    List<LoanReportVo> introQueryLoanReport(String address);
 }

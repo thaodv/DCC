@@ -11,7 +11,6 @@ import io.wexchain.dcc.service.frontend.model.request.RegisterRequest;
 import io.wexchain.dcc.service.frontend.service.dcc.cert.CertService;
 import io.wexchain.dcc.service.frontend.service.wexyun.MemberService;
 import io.wexchain.notify.domain.dcc.LoginEvent;
-import io.wexchain.notify.domain.dcc.MessageBusinessType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -108,6 +107,12 @@ public class MemberServiceImpl implements MemberService{
         return memberOperationClient.queryByInvited(memberId);
     }
 
+    @Override
+    public void identityUpd(String loginName, String newIdentity) {
+        Member member = memberOperationClient.getByIdentity(loginName);
+        memberOperationClient.identityUpd(loginName,member.getMemberId(),newIdentity);
+    }
+
     public String getDefaultPwd() {
         return defaultPwd;
     }
@@ -116,3 +121,4 @@ public class MemberServiceImpl implements MemberService{
         this.defaultPwd = defaultPwd;
     }
 }
+

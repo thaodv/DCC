@@ -64,4 +64,10 @@ public class LoginController extends SecurityBaseController {
         return ListResultResponseUtils.successListResultResponse(MemberConvertor.convert(members));
     }
 
+    /*@PostMapping("/member/upd")
+    public BaseResponse upd(String loginName,String newLoginName) {
+        memberService.identityUpd(loginName,newLoginName);
+        return BaseResponseUtils.successBaseResponse();
+    }*/
+
 }

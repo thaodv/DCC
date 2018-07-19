@@ -22,4 +22,7 @@ public interface MemberService {
     Member getByIdentity(String loginName);
 
     List<Member> queryByInvited(String memberId);
+
+    void identityUpd(String loginName,String newIdentity);
+
 }

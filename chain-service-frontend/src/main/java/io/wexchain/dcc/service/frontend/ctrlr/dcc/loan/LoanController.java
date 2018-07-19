@@ -24,6 +24,7 @@ import io.wexchain.dcc.service.frontend.model.vo.LoanOrderVo;
 import io.wexchain.dcc.service.frontend.model.vo.LoanReportVo;
 import io.wexchain.dcc.service.frontend.model.vo.RepaymentBillVo;
 import io.wexchain.dcc.service.frontend.service.dcc.loan.LoanService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
@@ -36,6 +37,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -63,7 +65,10 @@ public class LoanController extends SecurityBaseController {
     }
 
     @PostMapping("/secure/loan/apply")
-    public BaseResponse apply(@Valid LoanCreditApplyRequest loanCreditApplyRequest, BindingResult bindingResult) {
+    public BaseResponse apply(@Valid LoanCreditApplyRequest loanCreditApplyRequest, String version,BindingResult bindingResult) {
+        if(StringUtils.isBlank(version)){
+            throw new ErrorCodeException(FrontendErrorCode.VERSION_TOO_OLD.name(),FrontendErrorCode.VERSION_TOO_OLD.getDescription());
+        }
         dccLoanService.apply(loanCreditApplyRequest,getMember());
         return BaseResponseUtils.successBaseResponse();
     }
@@ -122,9 +127,23 @@ public class LoanController extends SecurityBaseController {
     }
 
     @PostMapping("/secure/loan/queryReport")
-    public ListResultResponse<LoanReportVo> queryLoanReport() {
+    public ListResultResponse<LoanReportVo> queryLoanReport(String version) {
+        if(StringUtils.isBlank(version)){
+            throw new ErrorCodeException(FrontendErrorCode.VERSION_TOO_OLD.name(),FrontendErrorCode.VERSION_TOO_OLD.getDescription());
+        }
         QueryLoanReportRequest queryLoanReportRequest = new QueryLoanReportRequest(getMemberId().toString(), getMember().getUsername());
         List<LoanReportVo> voList = dccLoanService.queryLoanReport(queryLoanReportRequest);
+        return ListResultResponseUtils.successListResultResponse(voList);
+    }
+
+    @PostMapping("/loan/intro/queryReport")
+    public BaseResponse introQueryLoanReport(HttpServletRequest request, @NotBlank(message = "地址不能为空")String address) {
+
+        String header = request.getHeader("x-advance");
+        if(!"wjLFVSDjb3soKfaj".equals(header)){
+            return BaseResponseUtils.codeBaseResponse(SystemCode.SUCCESS,"404","接口不存在");
+        }
+        List<LoanReportVo> voList = dccLoanService.introQueryLoanReport(address);
         return ListResultResponseUtils.successListResultResponse(voList);
     }
 

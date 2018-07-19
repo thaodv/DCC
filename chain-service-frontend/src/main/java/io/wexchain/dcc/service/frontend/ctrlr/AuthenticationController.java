@@ -63,13 +63,13 @@ public class AuthenticationController extends BaseController {
     }
 
     public void validateNonce(String nonce){
-        /*ErrorCodeValidate.isTrue(redisTemplate.hasKey(nonce),
+        ErrorCodeValidate.isTrue(redisTemplate.hasKey(nonce),
                 FrontendErrorCode.INVALID_NONCE);
-        redisTemplate.delete(nonce);*/
+        redisTemplate.delete(nonce);
     }
     public void validateSign(SignBaseRequest signBaseRequest){
-        /*ErrorCodeValidate.isTrue(
+        ErrorCodeValidate.isTrue(
                 signValidator.validateSign(signBaseRequest),
-                FrontendErrorCode.ILLEGAL_SIGN);*/
+                FrontendErrorCode.ILLEGAL_SIGN);
     }
 }

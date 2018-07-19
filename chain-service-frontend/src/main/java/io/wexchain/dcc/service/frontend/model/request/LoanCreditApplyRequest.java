@@ -1,8 +1,12 @@
 package io.wexchain.dcc.service.frontend.model.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.wexchain.cryptoasset.loan.api.constant.DurationUnit;
+import io.wexchain.dcc.service.frontend.utils.Base64Util;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
@@ -74,6 +78,42 @@ public class LoanCreditApplyRequest {
      */
     @NotNull(message = "申请日期不能为空")
     private Long applyDate;
+
+    /** 上传活体图片 */
+    //@NotBlank(message = "上传活体图片文件不能为空")
+    private String personalPhoto;
+
+    /** 身份证正面图片 */
+   // @NotBlank(message = "上传身份证正面图片文件不能为空")
+    private String frontPhoto;
+
+    /** 身份证背面图片 */
+   // @NotBlank(message = "上传身份证背面图片文件不能为空")
+    private String backPhoto;
+
+    public String getPersonalPhoto() {
+        return personalPhoto;
+    }
+
+    public void setPersonalPhoto(String personalPhoto) {
+        this.personalPhoto = personalPhoto;
+    }
+
+    public String getFrontPhoto() {
+        return frontPhoto;
+    }
+
+    public void setFrontPhoto(String frontPhoto) {
+        this.frontPhoto = frontPhoto;
+    }
+
+    public String getBackPhoto() {
+        return backPhoto;
+    }
+
+    public void setBackPhoto(String backPhoto) {
+        this.backPhoto = backPhoto;
+    }
 
     public Long getApplyDate() {
         return applyDate;

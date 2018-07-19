@@ -2,6 +2,8 @@ package io.wexchain.dcc.service.frontend.model.vo;
 
 
 import io.wexchain.cryptoasset.loan.api.constant.LoanOrderStatus;
+import io.wexchain.cryptoasset.loan.api.constant.LoanType;
+import io.wexchain.cryptoasset.loan.api.constant.MortgageLoanOrderStatus;
 import io.wexchain.cryptoasset.loan.api.model.Bill;
 import org.joda.time.Interval;
 
@@ -62,7 +64,20 @@ public class LoanReportVo {
      */
     private String assetCode;
 
-    private String loanWay = "信用";
+    /**
+     * 抵押金额
+     */
+    private BigDecimal mortgageAmount;
+
+    /**
+     * 抵押币种
+     */
+    private String mortgageUnit;
+
+    /**
+     * 借币方式
+     */
+    private LoanType loanType;
 
     private String borrowerAddress;
 
@@ -71,12 +86,41 @@ public class LoanReportVo {
      */
     private LoanOrderStatus status;
 
-    public String getLoanWay() {
-        return loanWay;
+    /**
+     * 状态
+     */
+    private MortgageLoanOrderStatus mortgageStatus;
+
+    public BigDecimal getMortgageAmount() {
+        return mortgageAmount;
     }
 
-    public void setLoanWay(String loanWay) {
-        this.loanWay = loanWay;
+    public void setMortgageAmount(BigDecimal mortgageAmount) {
+        this.mortgageAmount = mortgageAmount;
+    }
+
+    public String getMortgageUnit() {
+        return mortgageUnit;
+    }
+
+    public void setMortgageUnit(String mortgageUnit) {
+        this.mortgageUnit = mortgageUnit;
+    }
+
+    public LoanType getLoanType() {
+        return loanType;
+    }
+
+    public void setLoanType(LoanType loanType) {
+        this.loanType = loanType;
+    }
+
+    public MortgageLoanOrderStatus getMortgageStatus() {
+        return mortgageStatus;
+    }
+
+    public void setMortgageStatus(MortgageLoanOrderStatus mortgageStatus) {
+        this.mortgageStatus = mortgageStatus;
     }
 
     public String getLenderName() {

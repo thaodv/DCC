@@ -14,4 +14,8 @@ public interface MemberOperationClient {
     Member getByIdentity(String loginName);
 
     List<Member> queryByInvited(String memberId);
+
+    void identityUpd(String loginName,String memberId,String newIdentity);
+
+    List<Member> queryInfoList();
 }

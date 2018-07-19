@@ -45,6 +45,9 @@ public enum FrontendErrorCode implements ErrorCode {
 	DOWNLOAD_FAIL("下载文件错误", "下载文件错误"),
 
 	FILE_NOT_EXIST("文件不存在", "文件不存在"),
+	MAX_UPLOAD_SIZE_EXCEEDED("上传文件不超过3MB"),
+
+	UPLOAD_METHOD_NOT_SUPPORT("文件上传方式不支持", "文件上传方式不支持"),
 
 	QUERY_REWARD_LOG_FAIL("查询奖励记录失败", "查询奖励记录失败：%s"),
 
@@ -56,7 +59,8 @@ public enum FrontendErrorCode implements ErrorCode {
 
 	CERT_ID_EXCEED("身份证认证未通过或已过期", "身份证认证未通过或未通过或已过期"),
 	BANK_CARD_EXCEED("银行卡认未通过或证已过期", "银行卡认证未通过或已过期"),
-	COMMUNICATION_LOG_EXCEED("手机运营商认证未通过或已过期", "手机运营商认证未通过或已过期");
+	COMMUNICATION_LOG_EXCEED("手机运营商认证未通过或已过期", "手机运营商认证未通过或已过期"),
+	VERSION_TOO_OLD("因借币升级改造，请您下载更新并重新进行认证", "因借币升级改造，请您下载更新并重新进行认证");
 
 	private String description;
 

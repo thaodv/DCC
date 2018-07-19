@@ -28,6 +28,10 @@ public class LoanConvertor {
         to.setChainOrderId(from.getChainOrderId());
         to.setDeliverDate(from.getDeliverDate());
         to.setBorrowerAddress(from.getBorrowerAddress());
+        to.setLoanType(from.getLoanType());
+        to.setMortgageStatus(from.getMortgageStatus());
+        to.setMortgageUnit(from.getMortgageUnit());
+        to.setMortgageAmount(from.getMortgageAmount());
         return to;
     }
 }

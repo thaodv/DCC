@@ -1,6 +1,7 @@
 package io.wexchain.dcc.service.frontend.utils;
 
 import com.wexmarket.topia.commons.basic.exception.ErrorCodeException;
+import com.wexmarket.topia.commons.rpc.BaseResponse;
 import com.wexmarket.topia.commons.rpc.ListResultResponse;
 import com.wexmarket.topia.commons.rpc.ResultResponse;
 import com.wexmarket.topia.commons.rpc.SystemCode;
@@ -36,4 +37,13 @@ public class ResultResponseValidator {
         return resultResponse.getResultList();
     }
 
+    public static BaseResponse validate(BaseResponse baseResponse) {
+        if (baseResponse.getSystemCode() != SystemCode.SUCCESS) {
+            throw new SystemErrorCodeException(FrontendErrorCode.SYSTEM_ERROR.name(), "系统错误");
+        }
+        if (!baseResponse.getBusinessCode().equals("SUCCESS")) {
+            throw new ErrorCodeException(baseResponse.getBusinessCode(), baseResponse.getMessage());
+        }
+        return baseResponse;
+    }
 }
