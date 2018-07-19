@@ -57,7 +57,7 @@ public class MiningRewardRoundServiceImpl implements MiningRewardRoundService {
 
     private final static String MINING_ACTIVITY_CODE = "10004";
 
-    private static final int PAGE_SIZE = 200;
+    private static final int PAGE_SIZE = 1000;
 
     @Override
     public Optional<MiningRewardRound> getMiningRewardRoundNullable(Date roundTime) {

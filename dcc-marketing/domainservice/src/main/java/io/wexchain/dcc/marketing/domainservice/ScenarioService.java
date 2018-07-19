@@ -1,5 +1,6 @@
 package io.wexchain.dcc.marketing.domainservice;
 
+import io.wexchain.dcc.marketing.api.model.ScenarioIndex;
 import io.wexchain.dcc.marketing.api.model.request.QueryActivityRequest;
 import io.wexchain.dcc.marketing.api.model.request.QueryScenarioRequest;
 import io.wexchain.dcc.marketing.domain.Activity;
@@ -16,4 +17,6 @@ public interface ScenarioService {
     Scenario getScenarioByCode(String scenarioCode);
 
     List<Scenario> queryScenario(QueryScenarioRequest request);
+
+    Scenario getScenarioByIndex(ScenarioIndex scenarioIndex);
 }
