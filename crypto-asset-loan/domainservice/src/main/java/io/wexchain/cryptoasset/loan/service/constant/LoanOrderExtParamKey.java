@@ -35,4 +35,10 @@ public class LoanOrderExtParamKey {
     public static final String MOBILE = "MOBILE";
     public static final String AGREEMENT_ID = "AGREEMENT_ID";
     public static final String BANK_MOBILE = "BANK_MOBILE";
+
+    public static final String CERT_FRONT = "CERT_FRONT";
+    public static final String CERT_BACK = "CERT_BACK";
+    public static final String FACE_FRONT = "FACE_FRONT";
+
+
 }

@@ -2,7 +2,14 @@ package io.wexchain.cryptoasset.loan.service.function.cah.impl;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
+import io.wexchain.cryptoasset.hosting.frontier.batch.BatchTransferFacade;
+import io.wexchain.cryptoasset.hosting.frontier.batch.BatchTransferRequest;
+import io.wexchain.cryptoasset.hosting.frontier.batch.ReceiverItem;
+import io.wexchain.cryptoasset.hosting.frontier.model.BatchTransferOrder;
+import io.wexchain.cryptoasset.loan.domain.RebateItem;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +54,9 @@ public class CahFunctionImpl implements CahFunction {
 	private TransferFacade transferFacade;
 
 	@Autowired
+	private BatchTransferFacade batchTransferFacade;
+
+	@Autowired
 	private BalanceFacade balanceFacade;
 
 	@Value("${wallet.address.collect}")
@@ -63,6 +73,9 @@ public class CahFunctionImpl implements CahFunction {
 
 	@Value("${wallet.address.pay}")
 	private String payerAddress;
+
+	@Value("${wallet.address.rebate}")
+	private String rebatePayerAddress;
 
 	@Override
 	public CryptoWallet createEthWallet() {
@@ -135,11 +148,34 @@ public class CahFunctionImpl implements CahFunction {
 		return transfer(transferRequest);
 	}
 
+	@Override
+	public BatchTransferOrder rebate(String requestNo, List<RebateItem> rebateItems) {
+		BatchTransferRequest batchTransferRequest = new BatchTransferRequest();
+		batchTransferRequest.setRequestIdentity(new RequestIdentity("CAL",requestNo));
+		batchTransferRequest.setAssetCode("DCC_JUZIX");
+		batchTransferRequest.setPayerAddress(rebatePayerAddress);
+
+		List<ReceiverItem> receiverItems = new ArrayList<>();
+		for (RebateItem rebateItem : rebateItems) {
+			receiverItems.add(new ReceiverItem(rebateItem.getAddress(),AmountScaleUtil.cal2Cah(rebateItem.getAmount())));
+		}
+		batchTransferRequest.setReceiverItems(receiverItems);
+
+		return batchTransfer(batchTransferRequest);
+	}
+
 	private TransferOrder transfer(TransferRequest transferRequest) {
 		ResultResponse<TransferOrder> transferResult = transferFacade.transfer(transferRequest);
 		TransferOrder transferOrder = Code2Exception.handleResultResponse(transferResult);
 		// 轮询
 		return loopQueryTransferResult(transferOrder.getRequestIdentity());
+	}
+
+	private BatchTransferOrder batchTransfer(BatchTransferRequest batchTransferRequest) {
+		ResultResponse<BatchTransferOrder> batchTransferResult = batchTransferFacade.submit(batchTransferRequest);
+		BatchTransferOrder batchTransferOrder = Code2Exception.handleResultResponse(batchTransferResult);
+		// 轮询
+		return loopQueryBatchTransferResult(batchTransferOrder.getRequestIdentity());
 	}
 
 	private TransferOrder loopQueryTransferResult(RequestIdentity requestIdentity) {
@@ -149,6 +185,22 @@ public class CahFunctionImpl implements CahFunction {
 				TransferOrder transferOrder = Code2Exception.handleResultResponse(getOrdeResult);
 				if (transferOrder.getStatus() != TransferOrderStatus.CREATED) {
 					return transferOrder;
+				}
+				Thread.sleep(10000L);
+			} catch (Exception e) {
+				logger.warn("Loop query transfer result fail", e);
+			}
+		}
+		throw new ContextedRuntimeException("Can not get the event of update order");
+	}
+
+	private BatchTransferOrder loopQueryBatchTransferResult(RequestIdentity requestIdentity) {
+		for (int i = 0; i < 60; i++) {
+			try {
+				ResultResponse<BatchTransferOrder> getOrderResult = batchTransferFacade.getOrder(requestIdentity);
+				BatchTransferOrder batchTransferOrder = Code2Exception.handleResultResponse(getOrderResult);
+				if (batchTransferOrder.getStatus() != TransferOrderStatus.CREATED) {
+					return batchTransferOrder;
 				}
 				Thread.sleep(10000L);
 			} catch (Exception e) {

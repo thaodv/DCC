@@ -6,7 +6,7 @@ import io.wexchain.cryptoasset.loan.api.constant.LoanOrderStatus;
 import io.wexchain.cryptoasset.loan.service.processor.order.loan.LoanOrderTrigger;
 
 /**
- * CollectOrderStatusDefinition
+ * RebateOrderStatusDefinition
  *
  * @author zhengpeng
  */

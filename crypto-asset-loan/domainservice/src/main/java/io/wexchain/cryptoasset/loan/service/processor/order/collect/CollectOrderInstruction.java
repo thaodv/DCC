@@ -1,7 +1,7 @@
 package io.wexchain.cryptoasset.loan.service.processor.order.collect;
 
 /**
- * CollectOrderInstruction
+ * RebateOrderInstruction
  *
  * @author zhengpeng
  */

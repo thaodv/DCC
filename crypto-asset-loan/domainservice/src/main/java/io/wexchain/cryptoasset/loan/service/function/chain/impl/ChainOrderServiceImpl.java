@@ -6,13 +6,14 @@ import com.wexmarket.topia.commons.pagination.PageParam;
 import com.wexmarket.topia.commons.pagination.Pagination;
 import io.wexchain.cryptoasset.loan.api.constant.CalErrorCode;
 import io.wexchain.cryptoasset.loan.service.function.chain.ChainOrderService;
+import io.wexchain.cryptoasset.loan.service.util.AmountScaleUtil;
 import io.wexchain.dcc.cert.sdk.contract.CertData;
 import io.wexchain.dcc.cert.sdk.service.CertService;
-import io.wexchain.dcc.loan.sdk.contract.Agreement;
-import io.wexchain.dcc.loan.sdk.contract.LoanOrder;
-import io.wexchain.dcc.loan.sdk.contract.OrderStatus;
+import io.wexchain.dcc.loan.sdk.contract.*;
 import io.wexchain.dcc.loan.sdk.service.AgreementService;
+import io.wexchain.dcc.loan.sdk.service.LoanFeeService;
 import io.wexchain.dcc.loan.sdk.service.LoanService;
+import io.wexchain.dcc.loan.sdk.service.MortgageLoanService;
 import io.wexchain.dcc.sdk.client.nonce.NonceCreator;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ import org.web3j.crypto.Credentials;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * ChainOrderServiceImpl
@@ -33,14 +36,22 @@ import java.io.UnsupportedEncodingException;
 @Service
 public class ChainOrderServiceImpl implements ChainOrderService {
 
+    public static final BigDecimal PERCENT = BigDecimal.valueOf(100);
+
     @Autowired
     private LoanService loanService;
+
+    @Autowired
+    private LoanFeeService loanFeeService;
 
     @Autowired
     private AgreementService agreementService;
 
     @Autowired
     private CertService certService;
+
+    @Autowired
+    private MortgageLoanService mortgageLoanService;
 
     @Autowired
     @Qualifier("loanSdkCredentials")
@@ -56,9 +67,44 @@ public class ChainOrderServiceImpl implements ChainOrderService {
     }
 
     @Override
+    public MortgageLoanOrder getMortgageLoanOrder(Long chainOrderId) {
+            return mortgageLoanService.getOrder(chainOrderId);
+    }
+
+    @Override
+    public LoanFeeOrder getFeeOrderById(Long chainOrderId) {
+        return loanFeeService.getFeeOrderById(chainOrderId);
+    }
+
+    @Override
+    public BigDecimal getMinFee() {
+        return AmountScaleUtil.cah2Cal(loanFeeService.getMinFee());
+    }
+
+    @Override
+    public BigDecimal getIncentivePercent() {
+        BigDecimal incentivePercent = BigDecimal.valueOf(loanFeeService.getIncentivePercent().intValue());
+        BigDecimal percentValue = incentivePercent.divide(PERCENT);
+        return percentValue;
+    }
+
+    @Override
+    public BigDecimal getRebateTotalFee(Long chainOrderId) {
+        LoanOrder loanOrder = getLoanOrder(chainOrderId);
+        BigDecimal inputFee = AmountScaleUtil.cah2Cal(loanOrder.getFee());
+        BigDecimal percentValue = getIncentivePercent();
+        return inputFee.subtract(inputFee.multiply(percentValue));
+    }
+
+    @Override
     public Pagination<Agreement> queryAgreementPageByIdHashIndex(byte[] idHash, PageParam pageParam) {
         String idHashBase64 = Base64Utils.encodeToUrlSafeString(idHash);
         return agreementService.queryAgreementPageByIdHashIndex(idHashBase64, pageParam);
+    }
+
+    @Override
+    public Agreement getAgreement(Long id) {
+        return agreementService.getAgreement(id);
     }
 
     @Override
