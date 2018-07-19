@@ -1,4 +1,4 @@
-
+/*
 package io.wexchain.passport.chain.observer.domainservice.function.juzix.impl;
 
 import io.wexchain.passport.chain.observer.domainservice.function.juzix.ContractAbiHelper;
@@ -13,22 +13,25 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-
+*/
 /**
  * ContractAbiHelperImpl
  *
  * @author zhengpeng
- */
+ *//*
 
-
+@Component
 public class ContractAbiHelperImpl implements ContractAbiHelper {
 
     private Map<String, String> abiMap = new HashMap<>();
 
+    @Value("classpath:/META-INF/chain-observer-domainservice/abi*/
+/*.abi")
     private Resource[] abiFiles;
 
     private String certServiceAddress
 
+    @PostConstruct
     public void init() {
         if (CollectionUtils.isNotEmpty(contractAbiPathList)) {
             for (String abiPath : contractAbiPathList) {
@@ -46,7 +49,7 @@ public class ContractAbiHelperImpl implements ContractAbiHelper {
 
     @Override
     public String getAbi(String contractAddress) {
-        return abiMap.get(contractAddress);
+        return null;
     }
 }
-
+*/

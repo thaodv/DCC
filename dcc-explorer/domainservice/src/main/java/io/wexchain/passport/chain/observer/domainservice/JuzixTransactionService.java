@@ -12,11 +12,15 @@ public interface JuzixTransactionService {
 
     JuzixTransaction getJuzixTransactionByHash(String hash);
 
+    JuzixTransaction getJuzixTransactionByTokenAddressAndHash(String tokenAddress, String hash);
+
     JuzixTransaction getJuzixTransactionByHashNullable(String hash);
 
     Page<JuzixTransaction> queryJuzixTransaction(QueryJuzixTransactionRequest request);
 
     List<ChartPoint<Integer, Integer>> getTransactionStatistics(int hours);
+
+    Long getTransactionPerDay();
 
     long getTotalTransactionNumber();
 

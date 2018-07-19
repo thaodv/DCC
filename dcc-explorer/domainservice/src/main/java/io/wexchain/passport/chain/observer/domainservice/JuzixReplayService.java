@@ -14,4 +14,8 @@ public interface JuzixReplayService {
      */
     void replayBlocksAndTransactions(Long startBlockNumber, Long endBlockNumber);
 
+    void startReplayAndObserver();
+
+
+
 }

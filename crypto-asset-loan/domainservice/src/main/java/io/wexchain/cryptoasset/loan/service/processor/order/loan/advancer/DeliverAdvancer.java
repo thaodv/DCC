@@ -1,14 +1,15 @@
 package io.wexchain.cryptoasset.loan.service.processor.order.loan.advancer;
 
+import com.alibaba.fastjson.JSON;
 import com.godmonth.status.advancer.impl.AbstractAdvancer;
 import com.godmonth.status.advancer.intf.AdvancedResult;
 import com.godmonth.status.advancer.intf.NextOperation;
 import com.godmonth.status.transitor.tx.intf.TriggerBehavior;
 import com.weihui.finance.contract.api.response.GeneratPDFFileResponse;
+import com.wexmarket.topia.commons.basic.exception.ErrorCodeException;
 import com.wexyun.open.api.domain.file.DownloadFileInfo;
 import com.wexyun.open.api.domain.regular.loan.RepaymentPlan;
-import com.wexyun.open.api.response.QueryResponse4Batch;
-import com.wexyun.open.api.response.QueryResponse4Single;
+import com.wexyun.open.api.response.BaseResponse;
 import io.wexchain.cryptoasset.hosting.constant.TransferOrderStatus;
 import io.wexchain.cryptoasset.hosting.frontier.model.TransferOrder;
 import io.wexchain.cryptoasset.loan.api.constant.LoanOrderStatus;
@@ -16,6 +17,7 @@ import io.wexchain.cryptoasset.loan.common.constant.GeneralCommandStatus;
 import io.wexchain.cryptoasset.loan.domain.LoanOrder;
 import io.wexchain.cryptoasset.loan.domain.RetryableCommand;
 import io.wexchain.cryptoasset.loan.repository.LoanOrderRepository;
+import io.wexchain.cryptoasset.loan.service.RebateService;
 import io.wexchain.cryptoasset.loan.service.constant.CommandName;
 import io.wexchain.cryptoasset.loan.service.constant.LoanOrderExtParamKey;
 import io.wexchain.cryptoasset.loan.service.function.cah.CahFunction;
@@ -36,7 +38,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.util.List;
 
 public class DeliverAdvancer extends AbstractAdvancer<LoanOrder, LoanOrderInstruction, LoanOrderTrigger> {
 
@@ -46,110 +47,135 @@ public class DeliverAdvancer extends AbstractAdvancer<LoanOrder, LoanOrderInstru
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private RetryableCommandTemplate retryableCommandTemplate;
+	@Autowired
+	private RetryableCommandTemplate retryableCommandTemplate;
 
-    @Autowired
-    private LoanOrderRepository loanOrderRepository;
+	@Autowired
+	private LoanOrderRepository loanOrderRepository;
 
-    @Autowired
-    private CahFunction cahFunction;
+	@Autowired
+	private CahFunction cahFunction;
 
-    @Autowired
-    private WexyunLoanClient wexyunLoanClient;
+	@Autowired
+	private WexyunLoanClient wexyunLoanClient;
 
-    @Autowired
-    private ChainOrderService chainOrderService;
+	@Autowired
+	private ChainOrderService chainOrderService;
 
-    @Override
-    public AdvancedResult<LoanOrder, LoanOrderTrigger> advance(
-            LoanOrder loanOrder, LoanOrderInstruction instruction, Object message) {
+	@Autowired
+	private RebateService rebateService;
 
-        // 1 查询还款账单
-        RepaymentPlan repaymentPlan = wexyunLoanClient.queryFirstRepaymentPlan(loanOrder.getApplyId());
-        String billDigest = calcBillSha256(repaymentPlan);
+	@Override
+	public AdvancedResult<LoanOrder, LoanOrderTrigger> advance(LoanOrder loanOrder, LoanOrderInstruction instruction,
+			Object message) {
+		logger.debug("loanOrder:{}", loanOrder.getId());
 
-        // 2 生成借款合同
-        Credit2Apply applyOrder = wexyunLoanClient.getApplyOrder2(loanOrder.getApplyId());
-        GeneratPDFFileResponse fileResp = wexyunLoanClient.generateAgreement(loanOrder, applyOrder, repaymentPlan);
-        String agreementDigest = calcAgreementSha256(fileResp.getFilePath());
+		// 1 放款
+		RetryableCommand deliverCommand = executeDeliver(loanOrder);
 
-        // 3 放款
-        RetryableCommand deliverCommand = executeDeliver(loanOrder);
+		if (RetryableCommandHelper.isSuccess(deliverCommand)) {
 
-        if (RetryableCommandHelper.isSuccess(deliverCommand)) {
+			// 1 云金融审核协议
+			BaseResponse verifyResult = wexyunLoanClient.verifyAgreement(loanOrder.getApplyId(),
+					loanOrder.getExtParam().get(LoanOrderExtParamKey.LOAN_TYPE));
+			if (!verifyResult.isSuccess()) {
+				logger.warn("Verify agreement fail, order id:{}, apply id:{}, result:{}",
+						loanOrder.getId(), loanOrder.getApplyId(), JSON.toJSONString(verifyResult));
+			}
+			logger.info("Verify agreement end, order id:{}, apply id:{}",
+					loanOrder.getId(), loanOrder.getApplyId());
 
-            // 链上订单还款
-            logger.info("billDigest:{}, agreementDigest:{}", billDigest, agreementDigest);
+			// 2 查询还款账单
+			RepaymentPlan repaymentPlan = wexyunLoanClient.queryFirstRepaymentPlan(loanOrder.getApplyId());
+			String billDigest = calcBillSha256(repaymentPlan);
+			logger.debug("repaymentPlan:{}", repaymentPlan.getBillId());
 
-            chainOrderService.deliver(loanOrder.getChainOrderId(), billDigest, agreementDigest);
+			// 3 生成借款合同
+			Credit2Apply applyOrder = wexyunLoanClient.getApplyOrder2(loanOrder.getApplyId());
+			GeneratPDFFileResponse fileResp = wexyunLoanClient.generateAgreement(loanOrder, applyOrder, repaymentPlan);
+			String agreementDigest = calcAgreementSha256(fileResp.getFilePath());
 
-            String repayAddress = prepareRepayAddress(loanOrder);
+			// 4 链上订单还款
+			logger.info("billDigest:{}, agreementDigest:{}", billDigest, agreementDigest);
+			chainOrderService.deliver(loanOrder.getChainOrderId(), billDigest, agreementDigest);
+			logger.info("after deliver:{}", loanOrder.getId());
 
-            return new AdvancedResult<>(new TriggerBehavior<>(LoanOrderTrigger.DELIVER, o -> {
-                o.setRepayAddress(repayAddress);
-                long start = repaymentPlan.getBillStartDate().getTime();
-                long end = repaymentPlan.getLastRepaymentTime().getTime();
-                o.getExtParam().put(LoanOrderExtParamKey.DELIVER_DATE, String.valueOf(start));
-                o.getExtParam().put(LoanOrderExtParamKey.REPAY_DATE, String.valueOf(end));
-                o.getExtParam().put(LoanOrderExtParamKey.AGREEMENT_PATH, fileResp.getFilePath());
-                o.getExtParam().put(LoanOrderExtParamKey.AGREEMENT_ID, fileResp.getRecordId());
-            }), NextOperation.PAUSE);
-        }
-        return null;
-    }
+			// 5 生成还款地址
+			String repayAddress = prepareRepayAddress(loanOrder);
+			logger.info("after prepareRepayAddress:{}", loanOrder.getId());
 
-    private String calcBillSha256(RepaymentPlan repaymentPlan) {
-        StringBuilder text = new StringBuilder();
-        text.append(repaymentPlan.getLastRepaymentTime().getTime());
-        String repaymentTime = "";
-        if (repaymentPlan.getRepaymentTime() != null) {
-            repaymentTime = repaymentPlan.getRepaymentTime().getTime() + "";
-        }
-        text.append(repaymentTime);
-        text.append(repaymentPlan.getIssueNumber());
-        return DigestUtils.sha256Hex(text.toString());
-    }
+			// 6 分账
+			try {
+				rebateService.deliverSuccess(loanOrder.getId());
+				logger.info("after deliverSuccess:{}", loanOrder.getId());
+			} catch (RuntimeException e) {
+				logger.warn("skip rebateService.deliver:{},error:{}", loanOrder.getId(), e.getMessage());
+				throw e;
+			}
 
-    private String calcAgreementSha256(String filePath) {
-        try {
-            DownloadFileInfo fileInfo = wexyunLoanClient.downloadFile(filePath);
-            return DigestUtils.sha256Hex(fileInfo.getInputStream());
-        } catch (IOException e) {
-            throw new ContextedRuntimeException(e);
-        }
-    }
+			return new AdvancedResult<>(new TriggerBehavior<>(LoanOrderTrigger.DELIVER, o -> {
+				o.setRepayAddress(repayAddress);
+				long start = repaymentPlan.getBillStartDate().getTime();
+				long end = repaymentPlan.getLastRepaymentTime().getTime();
+				o.getExtParam().put(LoanOrderExtParamKey.DELIVER_DATE,
+						String.valueOf(deliverCommand.getCreatedTime().getTime()));
+				o.getExtParam().put(LoanOrderExtParamKey.REPAY_DATE, String.valueOf(end));
+				o.getExtParam().put(LoanOrderExtParamKey.AGREEMENT_PATH, fileResp.getFilePath());
+				o.getExtParam().put(LoanOrderExtParamKey.AGREEMENT_ID, fileResp.getRecordId());
+			}), NextOperation.PAUSE);
+		}
+		return null;
+	}
 
-    private RetryableCommand executeDeliver(LoanOrder loanOrder) {
-        CommandIndex commandIndex = new CommandIndex(LoanOrder.TYPE_REF, loanOrder.getId(),
-                CommandName.CMD_DELIVER);
-        return retryableCommandTemplate.execute(commandIndex,
-                ci -> Validate.notNull(loanOrderRepository.lockById(ci.getParentId())),
-                null,
-                command -> {
-                    if (RetryableCommandHelper.isCreated(command)) {
-                        TransferOrder transferOrder = cahFunction.deliver(String.valueOf(command.getId()),
-                                loanOrder.getAmount(),
-                                loanOrder.getReceiverAddress(),
-                                loanOrder.getAssetCode());
-                        if (transferOrder.getStatus() == TransferOrderStatus.SUCCESS) {
-                            return GeneralCommandStatus.SUCCESS.name();
-                        } else if (transferOrder.getStatus() == TransferOrderStatus.FAILURE) {
-                            return GeneralCommandStatus.FAILURE.name();
-                        }
-                    }
-                    return command.getStatus();
-                });
-    }
+	private String calcBillSha256(RepaymentPlan repaymentPlan) {
+		StringBuilder text = new StringBuilder();
+		text.append(repaymentPlan.getLastRepaymentTime().getTime());
+		String repaymentTime = "";
+		if (repaymentPlan.getRepaymentTime() != null) {
+			repaymentTime = repaymentPlan.getRepaymentTime().getTime() + "";
+		}
+		text.append(repaymentTime);
+		text.append(repaymentPlan.getIssueNumber());
+		return DigestUtils.sha256Hex(text.toString());
+	}
 
-    /**
-     * 生成还款地址
-     */
-    private String prepareRepayAddress(LoanOrder loanOrder) {
-        String repayAddress = loanOrder.getRepayAddress();
-        if (StringUtils.isEmpty(repayAddress)) {
-            repayAddress = cahFunction.createEthWallet().getAddress();
-        }
-        return repayAddress;
-    }
+	private String calcAgreementSha256(String filePath) {
+		try {
+			DownloadFileInfo fileInfo = wexyunLoanClient.downloadFile(filePath);
+			return DigestUtils.sha256Hex(fileInfo.getInputStream());
+		} catch (IOException e) {
+			throw new ContextedRuntimeException(e);
+		}
+	}
+
+	/**
+	 * 放款
+	 */
+	private RetryableCommand executeDeliver(LoanOrder loanOrder) {
+		CommandIndex commandIndex = new CommandIndex(LoanOrder.TYPE_REF, loanOrder.getId(), CommandName.CMD_DELIVER);
+		return retryableCommandTemplate.execute(commandIndex,
+				ci -> Validate.notNull(loanOrderRepository.lockById(ci.getParentId())), null, command -> {
+					if (RetryableCommandHelper.isCreated(command)) {
+						TransferOrder transferOrder = cahFunction.deliver(String.valueOf(command.getId()),
+								loanOrder.getAmount(), loanOrder.getReceiverAddress(), loanOrder.getAssetCode());
+						if (transferOrder.getStatus() == TransferOrderStatus.SUCCESS) {
+							return GeneralCommandStatus.SUCCESS.name();
+						} else if (transferOrder.getStatus() == TransferOrderStatus.FAILURE) {
+							return GeneralCommandStatus.FAILURE.name();
+						}
+					}
+					return command.getStatus();
+				});
+	}
+
+	/**
+	 * 生成还款地址
+	 */
+	private String prepareRepayAddress(LoanOrder loanOrder) {
+		String repayAddress = loanOrder.getRepayAddress();
+		if (StringUtils.isEmpty(repayAddress)) {
+			repayAddress = cahFunction.createEthWallet().getAddress();
+		}
+		return repayAddress;
+	}
 }

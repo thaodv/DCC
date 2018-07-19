@@ -14,23 +14,8 @@ public class WexyunMessageHandler extends AbstractNotifyMessageHandler {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private CryptoAssetLoanService cryptoAssetLoanService;
-
     @Override
     public void handleMessage(Object request) throws Exception {
-
-        System.out.println("Receive the wexyun apply message, object is" + request.getClass().getName());
-
-        UploadChainNotifyResult uploadChainNotifyResult = (UploadChainNotifyResult) request;
-        logger.info("Receive the wexyun apply message, applyId:{}, processStatus:{}",
-                uploadChainNotifyResult.getApplyId(), uploadChainNotifyResult.getProcessStatus());
-
-        cryptoAssetLoanService.advanceByApplyIdAsync(String.valueOf(uploadChainNotifyResult.getApplyId()));
-
-        logger.info("Advance loan order success");
+        logger.info("Receive the wexyun apply message, object is" + request.getClass().getName());
     }
-
-
-
 }

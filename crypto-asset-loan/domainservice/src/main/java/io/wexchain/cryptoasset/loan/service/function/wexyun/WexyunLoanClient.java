@@ -3,17 +3,17 @@ package io.wexchain.cryptoasset.loan.service.function.wexyun;
 import com.weihui.finance.contract.api.response.GeneratPDFFileResponse;
 import com.wexyun.open.api.domain.credit2.Credit2ApplyAddResult;
 import com.wexyun.open.api.domain.file.DownloadFileInfo;
+import com.wexyun.open.api.domain.member.Member;
 import com.wexyun.open.api.domain.regular.loan.RegularPrepaymentBill;
 import com.wexyun.open.api.domain.regular.loan.RepaymentPlan;
 import com.wexyun.open.api.enums.RepaymentType;
-import com.wexyun.open.api.request.loan.RegularRepaymentPlanListRequest;
-import com.wexyun.open.api.response.QueryResponse4Batch;
+import com.wexyun.open.api.response.BaseResponse;
 import com.wexyun.open.api.response.QueryResponse4Single;
-import com.wexyun.open.api.response.TradeOrder4PayResponse;
 import io.wexchain.cryptoasset.loan.domain.LoanOrder;
 import io.wexchain.cryptoasset.loan.service.function.wexyun.model.Credit2Apply;
 import io.wexchain.cryptoasset.loan.service.function.wexyun.model.Credit2ApplyAddRequest;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -36,4 +36,12 @@ public interface WexyunLoanClient {
     GeneratPDFFileResponse generateAgreement(LoanOrder loanOrder, Credit2Apply applyOrder, RepaymentPlan repaymentPlan);
 
     DownloadFileInfo downloadFile(String filePath);
+
+    Member getMemberInfoById(String memberId);
+
+    String getAddressById(String memberId);
+
+    String uploadImageFile(File file);
+
+    BaseResponse verifyAgreement(String applyId, String loanType);
 }

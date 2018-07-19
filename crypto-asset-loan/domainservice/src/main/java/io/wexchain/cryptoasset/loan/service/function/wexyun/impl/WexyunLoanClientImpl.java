@@ -10,20 +10,25 @@ import com.wexmarket.topia.commons.basic.exception.ErrorCodeException;
 import com.wexyun.open.api.client.WexyunApiClient;
 import com.wexyun.open.api.domain.credit2.Credit2ApplyAddResult;
 import com.wexyun.open.api.domain.file.DownloadFileInfo;
+import com.wexyun.open.api.domain.file.UploadFileInfo;
+import com.wexyun.open.api.domain.member.Member;
 import com.wexyun.open.api.domain.regular.agreement.DebtAgreement;
 import com.wexyun.open.api.domain.regular.loan.RegularPrepaymentBill;
 import com.wexyun.open.api.domain.regular.loan.RepaymentPlan;
+import com.wexyun.open.api.enums.AuthVerifyStatus;
 import com.wexyun.open.api.enums.RepaymentType;
+import com.wexyun.open.api.enums.UploadFileType;
 import com.wexyun.open.api.enums.YN;
 import com.wexyun.open.api.enums.credit2.MemberIdType;
 import com.wexyun.open.api.exception.WexyunClientException;
 import com.wexyun.open.api.request.BaseFileDownLoadRequest;
+import com.wexyun.open.api.request.common.CommonFileUploadRequest;
+import com.wexyun.open.api.request.loan.RegularAgreementVerifyRequest;
 import com.wexyun.open.api.request.loan.RegularPrepaymentBillGetRequest;
 import com.wexyun.open.api.request.loan.RegularRepaymentPlanListRequest;
+import com.wexyun.open.api.request.member.MemberInfoGetByIdRequest;
 import com.wexyun.open.api.request.trade.TradeRePaymentAddRequest;
-import com.wexyun.open.api.response.QueryResponse4Batch;
-import com.wexyun.open.api.response.QueryResponse4Single;
-import com.wexyun.open.api.response.TradeOrder4PayResponse;
+import com.wexyun.open.api.response.*;
 import io.wexchain.cryptoasset.loan.common.exception.RpcException;
 import io.wexchain.cryptoasset.loan.domain.LoanOrder;
 import io.wexchain.cryptoasset.loan.service.constant.LoanOrderExtParamKey;
@@ -33,6 +38,7 @@ import io.wexchain.cryptoasset.loan.service.function.wexyun.model.Credit2ApplyAd
 import io.wexchain.cryptoasset.loan.service.function.wexyun.model.Credit2ApplyGetRequest;
 import io.wexchain.cryptoasset.loan.service.function.wexyun.model.DebtAgreementInfo;
 import io.wexchain.cryptoasset.loan.service.util.AmountScaleUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,11 +48,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -87,6 +93,32 @@ public class WexyunLoanClientImpl implements WexyunLoanClient {
         } catch (WexyunClientException e) {
             throw new RpcException(e);
         }
+    }
+
+    @Override
+    public Member getMemberInfoById(String memberId) {
+        MemberInfoGetByIdRequest request = new MemberInfoGetByIdRequest();
+        request.setRequireIdentitys(YN.Y);
+        request.setMemberId(memberId);
+        try {
+            QueryResponse4Single<Member> response =  wexyunApiClient.call(request);
+            if (response.isSuccess()) {
+                return response.getContent();
+            } else {
+                throw new ErrorCodeException(response.getResponseCode(), response.getResponseMessage());
+            }
+        } catch (WexyunClientException e) {
+            throw new RpcException(e);
+        }
+    }
+
+    @Override
+    public String getAddressById(String memberId) {
+        Member member = getMemberInfoById(memberId);
+        if(member != null && CollectionUtils.isNotEmpty(member.getIdentitys())){
+            return member.getIdentitys().get(0).getIdentity();
+        }
+        return null;
     }
 
     @Override
@@ -270,5 +302,49 @@ public class WexyunLoanClientImpl implements WexyunLoanClient {
         } catch (WexyunClientException e) {
             throw new RpcException(e);
         }
+    }
+
+    @Override
+    public String uploadImageFile(File file) {
+        try {
+            CommonFileUploadRequest request = new CommonFileUploadRequest();
+            request.setFileName(file.getName());
+            request.setFileType(UploadFileType.BORROW_APTITUDE);
+            Map<String, UploadFileInfo> files = new HashMap<>();
+            UploadFileInfo f = new UploadFileInfo();
+            f.setFile(file);
+            f.setFileName(file.getName());
+            // 根据文件类型来灵活指定,参考com.wexyun.open.api.enums.MIME.java
+            f.setMime("IMAGE_JPEG_JPEG");
+            files.put("file_content", f);
+            request.setFiles(files);
+
+            QueryResponse4Single<CommonFileUploadResponse> response = wexyunApiClient.call(request);
+            if (!response.isSuccess()) {
+                throw new ErrorCodeException(response.getResponseCode(), response.getResponseMessage());
+            }
+            logger.info("Upload result: {}", JSON.toJSONString(response));
+            return response.getContent().getFilePath();
+        } catch (WexyunClientException e) {
+            throw new RpcException(e);
+        }
+    }
+
+    @Override
+    public BaseResponse verifyAgreement(String applyId, String loanType) {
+        try {
+            RegularAgreementVerifyRequest request = new RegularAgreementVerifyRequest();
+            request.setVerifyStatus(AuthVerifyStatus.PASS);
+            request.setApplyId(applyId);
+            Map<String, String> extension = new HashMap<>(2);
+            extension.put("APPLY_ID", applyId);
+            extension.put("LOAN_TYPE", loanType);
+            request.setExtension(JSON.toJSONString(extension));
+            logger.info("loan type:{}", loanType);
+            return wexyunApiClient.call(request);
+        } catch (WexyunClientException e) {
+            throw new RpcException(e);
+        }
+
     }
 }

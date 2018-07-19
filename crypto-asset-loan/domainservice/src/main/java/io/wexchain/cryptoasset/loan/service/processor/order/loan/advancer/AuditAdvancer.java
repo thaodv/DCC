@@ -5,6 +5,7 @@ import com.godmonth.status.advancer.intf.AdvancedResult;
 import com.godmonth.status.advancer.intf.NextOperation;
 import com.godmonth.status.transitor.tx.intf.TriggerBehavior;
 import com.wexyun.open.api.domain.credit2.Credit2ApplyAddResult;
+import com.wexyun.open.api.domain.credit2.LoanMaterial;
 import com.wexyun.open.api.enums.DurationType;
 import com.wexyun.open.api.response.BaseResponse;
 import com.wexyun.open.api.response.QueryResponse4Single;
@@ -12,6 +13,7 @@ import io.wexchain.cryptoasset.loan.api.constant.LoanOrderStatus;
 import io.wexchain.cryptoasset.loan.common.constant.GeneralCommandStatus;
 import io.wexchain.cryptoasset.loan.domain.LoanOrder;
 import io.wexchain.cryptoasset.loan.domain.UnretryableCommand;
+import io.wexchain.cryptoasset.loan.service.RebateService;
 import io.wexchain.cryptoasset.loan.service.constant.CommandName;
 import io.wexchain.cryptoasset.loan.service.constant.LoanOrderExtParamKey;
 import io.wexchain.cryptoasset.loan.service.function.chain.ChainOrderService;
@@ -23,13 +25,12 @@ import io.wexchain.cryptoasset.loan.service.function.wexyun.model.Credit2ApplyAd
 import io.wexchain.cryptoasset.loan.service.processor.order.loan.LoanOrderInstruction;
 import io.wexchain.cryptoasset.loan.service.processor.order.loan.LoanOrderTrigger;
 import io.wexchain.cryptoasset.loan.service.util.AmountScaleUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AuditAdvancer extends AbstractAdvancer<LoanOrder, LoanOrderInstruction, LoanOrderTrigger> {
 
@@ -52,13 +53,11 @@ public class AuditAdvancer extends AbstractAdvancer<LoanOrder, LoanOrderInstruct
     public AdvancedResult<LoanOrder, LoanOrderTrigger> advance(
             LoanOrder loanOrder, LoanOrderInstruction instruction, Object message) {
 
-        // 审核链上订单
-        chainOrderService.audit(loanOrder.getChainOrderId());
-
         UnretryableCommand command = unretryableCommandFunction.prepareCommand(
                 new CommandIndex(LoanOrder.TYPE_REF, loanOrder.getId(), CommandName.CMD_APPLY), null);
 
         if (command.getStatus().equals(GeneralCommandStatus.CREATED.name())) {
+
             // 查询进件申请
             QueryResponse4Single<Credit2Apply> queryResult = wexyunLoanClient.getApplyOrder(String.valueOf(command.getId()));
             if (queryResult.isSuccess()) {
@@ -115,14 +114,44 @@ public class AuditAdvancer extends AbstractAdvancer<LoanOrder, LoanOrderInstruct
         applyAddRequest.setMobile(extParam.get(LoanOrderExtParamKey.MOBILE));
         applyAddRequest.setBankMobile(extParam.get(LoanOrderExtParamKey.BANK_MOBILE));
 
+        applyAddRequest.setLoanMaterialList(buildLoanMaterialList(loanOrder));
+
         applyAddRequest.setItemDetailMap(itemDetailMap);
         return applyAddRequest;
     }
+
+    private List<LoanMaterial> buildLoanMaterialList(LoanOrder loanOrder) {
+
+        if (StringUtils.isNotEmpty(loanOrder.getExtParam().get(LoanOrderExtParamKey.CERT_FRONT))) {
+            List<LoanMaterial> list = new ArrayList<>(3);
+            LoanMaterial front = new LoanMaterial();
+            front.setFileUrl(loanOrder.getExtParam().get(LoanOrderExtParamKey.CERT_FRONT));
+            front.setItemCode("foodCertFront");
+            list.add(front);
+
+            LoanMaterial back = new LoanMaterial();
+            back.setFileUrl(loanOrder.getExtParam().get(LoanOrderExtParamKey.CERT_BACK));
+            back.setItemCode("foodCertReverse");
+            list.add(back);
+
+            LoanMaterial face = new LoanMaterial();
+            face.setFileUrl(loanOrder.getExtParam().get(LoanOrderExtParamKey.FACE_FRONT));
+            face.setItemCode("foodFaceRecognit");
+            list.add(face);
+
+            return list;
+        }
+        return Collections.emptyList();
+    }
+
 
     private AdvancedResult<LoanOrder, LoanOrderTrigger> submitApply(LoanOrder loanOrder, UnretryableCommand command) {
         QueryResponse4Single<Credit2ApplyAddResult> applyResult =
                 wexyunLoanClient.apply(buildRequest(loanOrder, command.getId()));
         if (applyResult.isSuccess()) {
+
+            chainOrderService.audit(loanOrder.getChainOrderId());
+
             return new AdvancedResult<>(new TriggerBehavior<>(LoanOrderTrigger.AUDIT, innerLoanOrder -> {
                 innerLoanOrder.setApplyId(String.valueOf(applyResult.getContent().getApplyId()));
                 unretryableCommandFunction.updateStatus(command, GeneralCommandStatus.SUCCESS.name());
@@ -134,9 +163,7 @@ public class AuditAdvancer extends AbstractAdvancer<LoanOrder, LoanOrderInstruct
 
     private AdvancedResult<LoanOrder, LoanOrderTrigger> auditFail(
             LoanOrder loanOrder, BaseResponse response, UnretryableCommand command) {
-
-        chainOrderService.reject(loanOrder.getChainOrderId());
-
+        chainOrderService.cancel(loanOrder.getChainOrderId());
         return new AdvancedResult<>(new TriggerBehavior<>(LoanOrderTrigger.FAIL, innerLoanOrder -> {
             innerLoanOrder.setFailCode(response.getResponseCode());
             innerLoanOrder.setFailMessage(response.getResponseMessage());
