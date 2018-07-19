@@ -16,4 +16,8 @@ public interface JuzixTokenTransferService {
 
     BigInteger getDccBalance(String address);
 
+    BigInteger getTotalValue(String tokenAddress, String txHash);
+
+    BigInteger getBalance(String tokenAddress, String address);
+
 }

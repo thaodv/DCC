@@ -12,6 +12,8 @@ public interface JuzixBlockService {
 
     JuzixBlock getJuzixBlockNullable(String search);
 
+    JuzixBlock getJuzixBlockById(Long id);
+
     JuzixBlock getJuzixBlockByNumber(Long number);
 
     JuzixBlock getJuzixBlockByHash(String hash);
@@ -19,6 +21,8 @@ public interface JuzixBlockService {
     Page<JuzixBlock> queryJuzixBlock(PageParam request);
 
     Long getLatestGeneBlockTime();
+
+    int fixBlock();
 
 
 }

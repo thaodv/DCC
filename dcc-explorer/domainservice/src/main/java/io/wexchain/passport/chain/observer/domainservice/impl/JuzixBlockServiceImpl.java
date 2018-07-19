@@ -68,6 +68,11 @@ public class JuzixBlockServiceImpl implements JuzixBlockService {
     }
 
     @Override
+    public JuzixBlock getJuzixBlockById(Long id) {
+        return ErrorCodeValidate.notNull(juzixBlockRepository.findOne(id), ChainErrorCode.BLOCK_NOT_FOUND);
+    }
+
+    @Override
     public JuzixBlock getJuzixBlockByNumber(Long number) {
         return ErrorCodeValidate.notNull(
                 juzixBlockRepository.findByBlockNumber(number), ChainErrorCode.BLOCK_NOT_FOUND);
@@ -98,5 +103,23 @@ public class JuzixBlockServiceImpl implements JuzixBlockService {
         JuzixBlock currentBlock = juzixBlockRepository.findByBlockNumber(maxBlockNumber);
         JuzixBlock preBlock = juzixBlockRepository.findByBlockNumber(maxBlockNumber - 1);
         return currentBlock.getBlockTimestamp().getTime() - preBlock.getBlockTimestamp().getTime();
+    }
+
+    @Override
+    public int fixBlock() {
+        /*long count = juzixBlockRepository.count();
+        int totalPage = (int) (count + 1000 - 1) / 1000;
+
+        long pageLastBlockNumber = 0;
+
+        for (int page = 0; page < totalPage; page++) {
+            Page<JuzixBlock> blockPage = juzixBlockRepository.findAll(new PageRequest(page, 1000,
+                    new Sort(new Sort.Order(Sort.Direction.ASC, "blockNumber"))));
+            for (JuzixBlock juzixBlock : blockPage) {
+
+            }
+
+        }*/
+        return 0;
     }
 }

@@ -21,10 +21,10 @@ import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.*;
+import rx.Subscription;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,8 +60,28 @@ public class JuzixReplayServiceImpl implements JuzixReplayService {
     @Autowired
     private ConsensusTimeHelper consensusTimeHelper;
 
+    private Subscription blockObserverSubscription;
+
     @PostConstruct
     public void init() {
+        startReplayAndObserver();
+    }
+
+    private void startObserveBlock() {
+        try {
+            if (blockObserverSubscription != null) {
+                blockObserverSubscription.unsubscribe();
+                logger.info("Stop observe block");
+            }
+            blockObserverSubscription = observeBlock();
+            logger.info("Start observe block");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void startReplayAndObserver() {
         try {
             Long maxNumber = juzixBlockRepository.findMaxNumber();
             maxNumber = maxNumber == null ? -1 : maxNumber;
@@ -73,16 +93,16 @@ public class JuzixReplayServiceImpl implements JuzixReplayService {
                 replayBlocksAndTransactions(maxNumber + 1, null);
             }
 
-            observeBlock();
+            startObserveBlock();
 
         } catch (IOException e) {
             logger.error("Start replay block error", e);
         }
     }
 
-    private void observeBlock() {
+    private Subscription observeBlock() {
 
-        web3j.blockObservable(true).subscribe(log -> {
+        return web3j.blockObservable(true).subscribe(log -> {
             EthBlock.Block block = log.getBlock();
             if (block != null) {
                 try {
@@ -119,6 +139,7 @@ public class JuzixReplayServiceImpl implements JuzixReplayService {
                 }
             }
         });
+
 
     }
 
@@ -230,7 +251,9 @@ public class JuzixReplayServiceImpl implements JuzixReplayService {
                     } else {
                         transaction.setFromType(AddressType.CONTRACT);
                     }
-                } else if (StringUtils.isNotEmpty(transaction.getToAddress())) {
+                }
+
+                if (StringUtils.isNotEmpty(transaction.getToAddress())) {
                     EthGetCode toCode = web3j.ethGetCode(transaction.getToAddress(), DefaultBlockParameterName.LATEST).send();
                     if (toCode.getError() != null) {
                         Thread.sleep(1000);
@@ -306,5 +329,6 @@ public class JuzixReplayServiceImpl implements JuzixReplayService {
         }
         return tokenTransferList;
     }
+
 
 }

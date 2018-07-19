@@ -12,6 +12,7 @@ import io.wexchain.passport.chain.observer.repository.JuzixTransactionRepository
 import io.wexchain.passport.chain.observer.repository.query.JuzixTransactionQueryBuilder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,6 +53,9 @@ public class JuzixTransactionServiceImpl implements JuzixTransactionService {
     @Value("#{'${juzix.contract.abi.paths}'.split(',')}")
     private List<String> contractAbiPathList;
 
+    @Value("${juzix.contract.address.token.dcc}")
+    private String dccTokenContractAddress;
+
     private Map<String, String> contractAbiMap = new HashMap<>();
 
     @PostConstruct
@@ -78,7 +82,19 @@ public class JuzixTransactionServiceImpl implements JuzixTransactionService {
         }
         JuzixTransaction transaction = ErrorCodeValidate.notNull(juzixTransactionRepository.findByHash(lowerCaseHash), TRANSACTION_NOT_FOUND);
         //transaction.setInputData(getTransactionInputData(transaction.getHash()));
-        transaction.setDccValue(juzixTokenTransferService.getDccTotalValue(transaction.getHash()));
+        transaction.setTokenValue(juzixTokenTransferService.getDccTotalValue(transaction.getHash()));
+        return transaction;
+    }
+
+    @Override
+    public JuzixTransaction getJuzixTransactionByTokenAddressAndHash(String tokenAddress, String hash) {
+        String lowerCaseHash = hash.toLowerCase();
+        if (!lowerCaseHash.startsWith("0x")) {
+            lowerCaseHash = "0x" + lowerCaseHash;
+        }
+        JuzixTransaction transaction = ErrorCodeValidate.notNull(juzixTransactionRepository.findByHash(lowerCaseHash), TRANSACTION_NOT_FOUND);
+        //transaction.setInputData(getTransactionInputData(transaction.getHash()));
+        transaction.setTokenValue(juzixTokenTransferService.getTotalValue(tokenAddress, transaction.getHash()));
         return transaction;
     }
 
@@ -100,8 +116,10 @@ public class JuzixTransactionServiceImpl implements JuzixTransactionService {
     public Page<JuzixTransaction> queryJuzixTransaction(QueryJuzixTransactionRequest request) {
         PageRequest pageRequest = PageUtil.convert(request, new Sort(Sort.Direction.DESC, "blockTimestamp"));
         Page<JuzixTransaction> page = juzixTransactionRepository.findAll(JuzixTransactionQueryBuilder.queryTransaction(request), pageRequest);
+        String tokenAddress = StringUtils.isNoneEmpty(request.getTokenAddress())
+                ? request.getTokenAddress() : dccTokenContractAddress;
         page.getContent().forEach(tx -> {
-            tx.setDccValue(juzixTokenTransferService.getDccTotalValue(tx.getHash()));
+            tx.setTokenValue(juzixTokenTransferService.getTotalValue(tokenAddress, tx.getHash()));
         });
         return page;
     }
@@ -120,6 +138,13 @@ public class JuzixTransactionServiceImpl implements JuzixTransactionService {
             pastTime = pastTime.plusHours(1);
         }
         return pointList;
+    }
+
+    @Override
+    public Long getTransactionPerDay() {
+        DateTime now = new DateTime();
+        DateTime before = now.minusHours(24);
+        return (long) juzixTransactionRepository.countByBlockTimestampBetween(before.toDate(), now.toDate());
     }
 
     @Override

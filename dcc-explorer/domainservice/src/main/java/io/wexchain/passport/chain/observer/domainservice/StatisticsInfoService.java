@@ -1,5 +1,6 @@
 package io.wexchain.passport.chain.observer.domainservice;
 
+import io.wexchain.passport.chain.observer.common.model.DccStatisticsInfo;
 import io.wexchain.passport.chain.observer.common.model.StatisticsInfo;
 
 /**
@@ -10,5 +11,7 @@ import io.wexchain.passport.chain.observer.common.model.StatisticsInfo;
 public interface StatisticsInfoService {
 
     StatisticsInfo getStatisticsInfo();
+
+    DccStatisticsInfo getDccStatisticsInfo();
 
 }

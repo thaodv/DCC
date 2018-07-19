@@ -7,6 +7,8 @@ import io.wexchain.passport.chain.observer.domainservice.JuzixTokenTransferServi
 import io.wexchain.passport.chain.observer.repository.JuzixTokenTransferRepository;
 import io.wexchain.passport.chain.observer.repository.query.JuzixTokenTransferQueryBuilder;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -36,6 +38,8 @@ import java.util.List;
 @Service
 public class JuzixTokenTransferServiceImpl implements JuzixTokenTransferService {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private JuzixTokenTransferRepository juzixTokenTransferRepository;
 
@@ -64,7 +68,17 @@ public class JuzixTokenTransferServiceImpl implements JuzixTokenTransferService 
 
     @Override
     public BigInteger getDccTotalValue(String txHash) {
-        List<String> valueList = juzixTokenTransferRepository.findTotalValue(txHash, dccTokenContractAddress);
+        return getTotalValue(dccTokenContractAddress, txHash);
+    }
+
+    @Override
+    public BigInteger getDccBalance(String address) {
+        return getBalance(dccTokenContractAddress, address);
+    }
+
+    @Override
+    public BigInteger getTotalValue(String tokenAddress, String txHash) {
+        List<String> valueList = juzixTokenTransferRepository.findTotalValue(txHash, tokenAddress);
         BigInteger sum = BigInteger.ZERO;
         if (CollectionUtils.isNotEmpty(valueList)) {
             for (String value : valueList) {
@@ -75,7 +89,7 @@ public class JuzixTokenTransferServiceImpl implements JuzixTokenTransferService 
     }
 
     @Override
-    public BigInteger getDccBalance(String address) {
+    public BigInteger getBalance(String tokenAddress, String address) {
         try {
             Function function = new Function(ERC20_GET_BALANCE_METHOD_NAME,
                     Collections.singletonList(new Address(address)),
@@ -83,7 +97,7 @@ public class JuzixTokenTransferServiceImpl implements JuzixTokenTransferService 
             String encodedFunction = FunctionEncoder.encode(function);
 
             org.web3j.protocol.core.methods.response.EthCall response = web3j.ethCall(
-                    Transaction.createEthCallTransaction(SENDER_ADDRESS, dccTokenContractAddress, encodedFunction),
+                    Transaction.createEthCallTransaction(SENDER_ADDRESS, tokenAddress, encodedFunction),
                     DefaultBlockParameterName.LATEST)
                     .sendAsync().get();
 
@@ -91,8 +105,8 @@ public class JuzixTokenTransferServiceImpl implements JuzixTokenTransferService 
                     response.getValue(), function.getOutputParameters());
             return ((Uint256) someTypes.get(0)).getValue();
         } catch (Exception e) {
-            throw new RuntimeException("Get balance fail, address is" + address, e);
+            e.printStackTrace();
+            throw new RuntimeException("Get balance fail, address is " + address, e);
         }
-
     }
 }
