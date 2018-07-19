@@ -8,7 +8,7 @@ contract Ca is OwnerNamed{
     
     mapping(address => bytes) publickeys;
    
-    // Triggered when _publickey is put.
+    // Triggered when _publickey is put  aa.
     event KeyPut(address indexed _sender, bytes _publickey);
 
     // Triggered when _publickey is deleted.

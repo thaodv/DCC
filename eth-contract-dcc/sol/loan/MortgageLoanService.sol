@@ -68,19 +68,18 @@ contract MortgageLoanService is OperatorPermission, GateControl, FastFailure {
 
     }
 
-    function deliver(uint256 version, bytes32 _idHash, bytes _applicationDigest, bytes _agreementDigest, bytes _repayDigest, string _content, uint256 inputFee) onlyOperator onlyGateOpen external returns
+    function deliver(uint256 version,address _borrow, bytes32 _idHash, bytes _applicationDigest, bytes _agreementDigest, bytes _repayDigest, string _content, uint256 inputFee) onlyOperator onlyGateOpen external returns
     (uint256 newOrderId){
-        //由于调用超级转账接口，所以最终服务合约有义务校验使用者直接调用，防止钓鱼
-        require(msg.sender == tx.origin);
         require(version > 0);
         require(uint256(_idHash) != 0);
+        require(_borrow!=0);
         require(_applicationDigest.length > 0 && _applicationDigest.length <= MAX_SIZE);
         require(_agreementDigest.length > 0 && _agreementDigest.length <= MAX_SIZE);
         require(_repayDigest.length > 0 && _repayDigest.length <= MAX_SIZE);
         require(bytes(_content).length > 0 && bytes(_content).length <= CONTENT_LENGTH);
 
         //输入的费用就是订单的费用，如果费用不合法，事务会回滚
-        newOrderId = insertOrder(version, msg.sender, "", Status.DELIVERIED, inputFee, "", "", "", "");
+        newOrderId = insertOrder(version, _borrow, "", Status.DELIVERIED, inputFee, "", "", "", "");
         orders[newOrderId].idHash = _idHash;
         orders[newOrderId].applicationDigest = _applicationDigest;
         orders[newOrderId].agreementDigest = _agreementDigest;
