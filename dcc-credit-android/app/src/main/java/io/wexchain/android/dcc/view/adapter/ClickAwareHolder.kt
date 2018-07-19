@@ -5,7 +5,7 @@ import android.support.annotation.IdRes
 import android.view.View
 
 class ClickAwareHolder<out B : ViewDataBinding>(binding: B,
-                                                private val positionClick: (Int,Int) -> Unit,
+                                                private val positionClick: (Int, Int) -> Unit,
                                                 @IdRes vararg viewIds: Int = intArrayOf())
     : BindingViewHolder<B>(binding), View.OnClickListener {
 
@@ -19,6 +19,6 @@ class ClickAwareHolder<out B : ViewDataBinding>(binding: B,
     }
 
     override fun onClick(v: View?) {
-        positionClick.invoke(adapterPosition,v?.id?:View.NO_ID)
+        positionClick.invoke(adapterPosition, v?.id ?: View.NO_ID)
     }
 }

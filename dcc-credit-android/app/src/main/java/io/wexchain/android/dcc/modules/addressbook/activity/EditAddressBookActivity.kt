@@ -72,13 +72,13 @@ class EditAddressBookActivity : BindActivity<ActivityEditAddressBookBinding>() {
             } else {
                 //val setDefault = binding.checkDefaultAddress.isChecked
                 val passportRepository = App.get().passportRepository
-                passportRepository.addOrUpdateAddressBook(AddressBook(inputAddr, inputShortName, avatarUrl = realFilePath, create_time = ba.create_time, update_time = System.currentTimeMillis().toString()))
+                passportRepository.addOrUpdateAddressBook(AddressBook(inputAddr, inputShortName, avatarUrl = realFilePath, create_time = ba.create_time, update_time = System.currentTimeMillis()))
 
                 App.get().passportRepository.getTransRecordByAddress(inputAddr).observe(this, Observer {
                     var mTrans: ArrayList<TransRecord> = ArrayList()
-                    if (null != it) {
+                    if (null != it && it.isNotEmpty()) {
                         for (item in it) {
-                            mTrans.add(TransRecord(item.id, inputAddr, inputShortName, avatarUrl = realFilePath, is_add = 1, create_time = item.create_time, update_time = System.currentTimeMillis().toString()))
+                            mTrans.add(TransRecord(item.id, inputAddr, inputShortName, avatarUrl = realFilePath, is_add = 1, create_time = item.create_time, update_time = System.currentTimeMillis()))
                         }
                         App.get().passportRepository.updateTransRecord(mTrans)
                     }

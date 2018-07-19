@@ -58,17 +58,29 @@ class SelectTransStyleActivity : BindActivity<ActivitySelectTransStyleBinding>()
     override fun onItemClick(item: TransRecord?, position: Int, viewId: Int) {
 
         item?.let {
-            if (item.is_add == 0) {
-                startActivity(Intent(this, AddAddressBookActivity::class.java).apply {
-                    putExtra(Extras.EXTRA_TRANSRECORE, item)
-                })
-            } else {
-                startActivity(Intent(this, CreateTransactionActivity::class.java).apply {
-                    putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dc)
-                            .putExtra(Extras.EXTRA_SELECT_TRANSRECORD, item)
-                })
+
+            when (viewId) {
+                R.id.tv_add_to_address -> {
+                    if (item.is_add == 0) {
+                        startActivity(Intent(this, AddAddressBookActivity::class.java).apply {
+                            putExtra(Extras.EXTRA_TRANSRECORE, item)
+                        })
+                    } else {
+                        startActivity(Intent(this, CreateTransactionActivity::class.java).apply {
+                            putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dc)
+                                    .putExtra(Extras.EXTRA_SELECT_TRANSRECORD, item)
+                        })
+                    }
+                }
+                else -> {
+                    startActivity(Intent(this, CreateTransactionActivity::class.java).apply {
+                        putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dc)
+                                .putExtra(Extras.EXTRA_SELECT_TRANSRECORD, item)
+                    })
+                }
             }
         }
+
     }
 
 

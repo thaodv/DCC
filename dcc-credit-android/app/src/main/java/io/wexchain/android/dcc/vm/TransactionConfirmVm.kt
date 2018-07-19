@@ -2,7 +2,6 @@ package io.wexchain.android.dcc.vm
 
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
-import android.os.SystemClock
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
@@ -214,10 +213,10 @@ class TransactionConfirmVm(
                             App.get().passportRepository.getAddressBookByAddress(scratch.to).observeForever {
                                 if (null != it) {
                                     App.get().passportRepository.addTransRecord(
-                                            TransRecord(System.currentTimeMillis().toString(), scratch.to, it.shortName, it.avatarUrl, create_time = it.create_time, update_time = SystemClock.currentThreadTimeMillis().toString(), is_add = 1))
+                                            TransRecord(System.currentTimeMillis(), scratch.to, it.shortName, it.avatarUrl, create_time = it.create_time, update_time = System.currentTimeMillis(), is_add = 1))
                                 } else {
                                     App.get().passportRepository.addTransRecord(
-                                            TransRecord(System.currentTimeMillis().toString(), scratch.to, shortName = "", avatarUrl = "", create_time = SystemClock.currentThreadTimeMillis().toString(), is_add = 0))
+                                            TransRecord(System.currentTimeMillis(), scratch.to, shortName = "", avatarUrl = "", create_time = System.currentTimeMillis(), is_add = 0))
                                 }
                             }
                             ActivityCollector.finishActivity(SelectTransStyleActivity::class.java)

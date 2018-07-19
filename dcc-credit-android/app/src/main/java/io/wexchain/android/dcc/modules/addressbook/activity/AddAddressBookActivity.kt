@@ -68,17 +68,19 @@ class AddAddressBookActivity : BindActivity<ActivityAddAddressBookBinding>() {
             } else if (inputAddr.isEmpty() || !isEthAddress(inputAddr)) {
                 toast("请输入有效的地址")
             } else {
-                App.get().passportRepository.addOrUpdateAddressBook(AddressBook(inputAddr, inputShortName, avatarUrl = realFilePath, create_time = System.currentTimeMillis().toString()))
+                App.get().passportRepository.addOrUpdateAddressBook(AddressBook(inputAddr, inputShortName, avatarUrl = realFilePath, create_time = System.currentTimeMillis()))
 
                 if (null != mTransRecord) {
 
                     App.get().passportRepository.getTransRecordByAddress(inputAddr).observe(this, Observer {
                         var mTrans: ArrayList<TransRecord> = ArrayList()
-                        if (null != it) {
+                        if (null != it && it.isNotEmpty()) {
                             for (item in it) {
-                                mTrans.add(TransRecord(item.id, item.address, shortName = inputShortName, avatarUrl = realFilePath, is_add = 1, create_time = item.create_time, update_time = System.currentTimeMillis().toString()))
+                                mTrans.add(TransRecord(item.id, item.address, shortName = inputShortName, avatarUrl = realFilePath, is_add = 1, create_time = item.create_time, update_time = System.currentTimeMillis()))
                             }
                             App.get().passportRepository.updateTransRecord(mTrans)
+                        } else {
+                            App.get().passportRepository.addTransRecord(TransRecord(System.currentTimeMillis(), inputAddr, shortName = inputShortName, avatarUrl = realFilePath, is_add = 1, create_time = System.currentTimeMillis()))
                         }
                     })
                 }

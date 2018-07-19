@@ -209,7 +209,7 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
 
         binding.llAddAddressBook.setOnClickListener {
             startActivity(Intent(this, AddAddressBookActivity::class.java).apply {
-                putExtra(Extras.EXTRA_TRANSRECORE, TransRecord(System.currentTimeMillis().toString(), tx.to, shortName = ""))
+                putExtra(Extras.EXTRA_TRANSRECORE, TransRecord(System.currentTimeMillis(), tx.to, shortName = ""))
             })
             finish()
         }
