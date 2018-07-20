@@ -4,10 +4,7 @@ import android.support.annotation.MainThread
 import cc.sisel.ewallet.BuildConfig
 import io.reactivex.Single
 import io.wexchain.digitalwallet.Erc20Helper
-import io.wexchain.digitalwallet.EthsTransactionScratch
 import io.wexchain.digitalwallet.api.domain.*
-import io.wexchain.digitalwallet.proxy.EthsRpcAgent
-import org.web3j.crypto.Credentials
 import org.web3j.utils.Numeric
 import retrofit2.http.Body
 import retrofit2.http.Headers
@@ -68,7 +65,7 @@ interface EthJsonRpcApi {
 
         const val PUBLIC_RPC_URL = BuildConfig.PUBLIC_CHAIN_RPC
 
-        fun juzixErc20RpcUrl(gateWayUrl:String,symbol:String): String {
+        fun juzixErc20RpcUrl(gateWayUrl: String, symbol: String): String {
             return "${gateWayUrl}erc20/$symbol/1/web3/"
         }
 

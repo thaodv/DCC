@@ -29,6 +29,12 @@ class AssetsRepository(
         ethereumAgent: EthereumAgent,
         val erc20AgentBuilder: (DigitalCurrency) -> Erc20Agent) {
 
+    private val dcAgentMap = ConcurrentHashMap<DigitalCurrency, EthCurrencyAgent>()
+
+    init {
+        dcAgentMap[Currencies.Ethereum] = ethereumAgent
+    }
+
     private val pinned = MutableLiveData<List<DigitalCurrency>>().apply {
         value = listOf(
                 Currencies.DCC,
@@ -51,12 +57,6 @@ class AssetsRepository(
     val displayCurrencies: LiveData<List<DigitalCurrency>> = zipLiveData(pinned, selectedCurrencies) { a, b -> a + b }
 
     private val quoteCache = mutableMapOf<String, Quote>()
-
-    private val dcAgentMap = ConcurrentHashMap<DigitalCurrency, EthCurrencyAgent>()
-
-    init {
-        dcAgentMap[Currencies.Ethereum] = ethereumAgent
-    }
 
     fun getDigitalCurrencyAgent(dc: DigitalCurrency): EthCurrencyAgent {
         val agent = dcAgentMap[dc]

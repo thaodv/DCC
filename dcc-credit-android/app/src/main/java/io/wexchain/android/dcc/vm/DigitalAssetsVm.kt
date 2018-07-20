@@ -1,19 +1,16 @@
 package io.wexchain.android.dcc.vm
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.Transformations
+import android.arch.lifecycle.*
 import android.databinding.ObservableArrayMap
 import android.databinding.ObservableField
-import io.wexchain.digitalwallet.api.domain.front.Quote
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.map
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.App
 import io.wexchain.digitalwallet.DigitalCurrency
+import io.wexchain.digitalwallet.api.domain.front.Quote
 import io.wexchain.digitalwallet.util.toBigDecimalSafe
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -25,7 +22,9 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
 
     private val assetsRepository = getApplication<App>().assetsRepository
 
-    private var holderAddress:LiveData<String> = getApplication<App>().passportRepository.currPassport.map { it?.address?:"" }
+    private var holderAddress: LiveData<String> = getApplication<App>().passportRepository.currPassport.map {
+        it?.address ?: ""
+    }
 
     val assetsSumValue = ObservableField<String>()
     val assets = Transformations.map(assetsRepository.displayCurrencies, {
@@ -37,7 +36,7 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
     val quote = ObservableArrayMap<String, Quote>()
 
     fun ensureHolderAddress(lifecycleOwner: LifecycleOwner) {
-        this.holderAddress.observe(lifecycleOwner, Observer{})
+        this.holderAddress.observe(lifecycleOwner, Observer {})
     }
 
     private fun updateSumValue() {
@@ -69,21 +68,25 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
             expires == null || expires
         }.map { it.symbol }.toSet()
         assetsRepository.getQuotes(*qSet.toTypedArray())
-                .subscribe({
-                    it.forEach { quote[it.varietyCode] = it }
-                    updateSumValue()
-                }, {
-                    stackTrace(it)
-                })
+                .subscribeBy(
+                        onSuccess = {
+                            it.forEach {
+                                quote[it.varietyCode] = it
+                            }
+                            updateSumValue()
+                        },
+                        onError = {
+                            stackTrace(it)
+                        })
 
         //update holding
         val holder = holderAddress.value
-        if (holder == null || holder.isEmpty()){
+        if (holder == null || holder.isEmpty()) {
             holding.clear()
             updateSumValue()
-        }else {
+        } else {
             list.forEach { dc ->
-                assetsRepository.getBalance(dc,holder)
+                assetsRepository.getBalance(dc, holder)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
                             if (holder == holderAddress.value) {

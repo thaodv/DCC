@@ -14,16 +14,16 @@ data class IdOcrInfo(
      * (address=汉东省骡子县脊背乡石丰村赖家组20号, day=3, month=11, year=1984, nation=汉, sex=男, name=侯亮平, number=430423198411036252,"authority":"建瓯市公安局","timelimit":"20120625-20220625")
      */
     data class IdCardInfo(
-        @JvmField val address: String?,
-        @JvmField val day: String?,
-        @JvmField val month: String?,
-        @JvmField val year: String?,
-        @JvmField val nation: String?,
-        @JvmField val sex: String?,
-        @JvmField val name: String?,
-        @JvmField val number: String?,
-        @JvmField val authority: String?,
-        @JvmField val timelimit: String?
+            @JvmField val address: String?,
+            @JvmField val day: String?,
+            @JvmField val month: String?,
+            @JvmField val year: String?,
+            @JvmField val nation: String?,
+            @JvmField val sex: String?,
+            @JvmField val name: String?,
+            @JvmField val number: String?,
+            @JvmField val authority: String?,
+            @JvmField val timelimit: String?
     ) : Serializable {
         companion object {
             fun from(
@@ -41,16 +41,16 @@ data class IdOcrInfo(
                     else -> null
                 }
                 return IdCardInfo(
-                    address = front?.address,
-                    day = front?.day,
-                    month = front?.month,
-                    year = front?.year,
-                    nation = front?.nation,
-                    sex = front?.sex,
-                    name = front?.name,
-                    number = front?.number,
-                    authority = back?.authority,
-                    timelimit = back?.timelimit
+                        address = front?.address,
+                        day = front?.day,
+                        month = front?.month,
+                        year = front?.year,
+                        nation = front?.nation,
+                        sex = front?.sex,
+                        name = front?.name,
+                        number = front?.number,
+                        authority = back?.authority,
+                        timelimit = back?.timelimit
                 )
             }
         }

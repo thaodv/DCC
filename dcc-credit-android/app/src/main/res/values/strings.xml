@@ -172,5 +172,13 @@
     <string name="incentive_program_3">贡献奖励（挖矿奖励）\nBitExpress中用户的行为都会产生不同的贡献值，贡献值会进行累计，每3小时用户可以在糖果领取的功能中进行糖果领取，获得和BitExpress合作的机构投放的各种Token奖励。</string>
     <string name="incentive_program_4">生态奖励\nBitExpress的底层信用网络构建在Distributed Credit Chain上，因此根据DCC的生态激励规则，BitExpress的用户行为可以获得DCC自动发放的生态奖励。具体的方法规则，请关注DCC网站http://dcc.finance公布的各类策略。</string>
     <string name="accumulative_income">累计获得%1$s</string>
+    
+    
+    <string name="collect_candies">糖果领取</string>
+    <string name="my_credit">我的信用</string>
+    <string name="based_loan">信用借币</string>
+    <string name="loan_reports">借贷报告</string>
+    <string name="more">更多</string>
+
 
 </resources>

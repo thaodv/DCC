@@ -1,20 +1,18 @@
 package io.wexchain.android.dcc.fragment
 
-import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
-import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialog
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wexmarket.android.passport.base.BindFragment
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.android.dcc.vm.InputBankCardInfoVm
@@ -28,11 +26,7 @@ import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.Bank
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.Currencies
-import ru.solodovnikov.rx2locationmanager.LocationTime
-import ru.solodovnikov.rx2locationmanager.ProviderDisabledException
-import ru.solodovnikov.rx2locationmanager.RxLocationManager
 import java.math.BigInteger
-import java.util.concurrent.TimeUnit
 
 class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), ItemViewClickListener<Bank> {
     override val contentLayoutId: Int = R.layout.fragment_input_bank_card
@@ -55,9 +49,8 @@ class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), 
 //        rxLocation = RxLocationManager(ctx)
         rxPermissions = RxPermissions(ctx)
         App.get().marketingApi.getBankList()
-                .compose(Result.checked())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { it ->
+                .check()
+                .subscribeBy {
                     adapter.setList(it)
                 }
     }

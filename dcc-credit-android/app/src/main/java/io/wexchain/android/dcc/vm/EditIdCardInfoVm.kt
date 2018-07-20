@@ -2,17 +2,14 @@ package io.wexchain.android.dcc.vm
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.vm.domain.IdCardCertData
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.dccchainservice.CertApi
-import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.IdOcrInfo
-import io.wexchain.dccchainservice.domain.Result
 
 /**
  * Created by sisel on 2018/2/27.
@@ -74,29 +71,29 @@ class EditIdCardInfoVm : ViewModel() {
         }
         val front = imgFront.get()
         val back = imgBack.get()
-        if (front==null){
+        if (front == null) {
             informationIncompleteEvent.value = "请扫描身份证正面"
             return
         }
-        if (back==null){
+        if (back == null) {
             informationIncompleteEvent.value = "请扫描身份证反面"
             return
         }
         val essentialData = IdCardEssentialData.from(
-            n,
-            id,
-            tl,
-            sex.get(),
-            race.get(),
-            year, month, dayOfMonth,
-            address.get(),
-            authority.get()
+                n,
+                id,
+                tl,
+                sex.get(),
+                race.get(),
+                year, month, dayOfMonth,
+                address.get(),
+                authority.get()
         )
-        if(essentialData == null){
+        if (essentialData == null) {
             informationIncompleteEvent.value = "身份证信息不合法"
             return
         }
-        proceedEvent.value = IdCardCertData(essentialData,null,front,back)
+        proceedEvent.value = IdCardCertData(essentialData, null, front, back)
     }
 
     private fun updateBirthText() {
@@ -131,8 +128,7 @@ class EditIdCardInfoVm : ViewModel() {
                 }
             }
             App.get().certApi.idOcr(CertApi.uploadFilePart(imgBytes, "id.jpg", "image/jpeg"))
-                    .compose(Result.checked())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .check()
                     .doOnSubscribe {
                         ocrProcessing.value = true
                     }

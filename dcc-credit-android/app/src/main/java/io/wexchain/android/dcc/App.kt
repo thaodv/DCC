@@ -83,7 +83,6 @@ class App : MultiDexApplication() {
                 .enableDb(true)
                 .enableNotification(true)
 
-
         DownloadConfig.init(builder)
     }
 
@@ -176,7 +175,7 @@ class App : MultiDexApplication() {
                                     gasPrice = BigInteger.ZERO,
                                     gasUsed = BigInteger.ZERO,
                                     status = EthsTransaction.Status.MINED,
-                                            nonce=it.nonce
+                                    nonce = it.nonce
                             )
                         }
                     }
@@ -188,7 +187,7 @@ class App : MultiDexApplication() {
 
 
         private lateinit var instance: WeakReference<App>
-@JvmStatic
+        @JvmStatic
         fun get(): App = instance.get()!!
     }
 

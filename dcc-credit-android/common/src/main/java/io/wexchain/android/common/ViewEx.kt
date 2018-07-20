@@ -24,7 +24,13 @@ fun <T : View> T.setInterceptScroll() {
     this.setOnTouchListener(l)
 }
 
-fun View.hideIme(){
+fun View.hideIme() {
     val imm = this.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.hideSoftInputFromInputMethod(this.windowToken,0)
+    imm.hideSoftInputFromInputMethod(this.windowToken, 0)
+}
+
+fun View.onClick(click: () -> Unit) {
+    this.setOnClickListener {
+        click.invoke()
+    }
 }

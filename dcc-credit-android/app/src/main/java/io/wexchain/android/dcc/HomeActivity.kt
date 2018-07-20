@@ -16,6 +16,7 @@ import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.tl.TlWebPageActivity
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.dcc.R
@@ -51,12 +52,11 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
 
     private fun checkUpgrade() {
         App.get().marketingApi.checkUpgrade(getVersionCode().toString())
-                .compose(Result.checked())
-                .observeOn(AndroidSchedulers.mainThread())
+                .check()
                 .filter {
                     it.mandatoryUpgrade
                 }
-                .subscribe { it ->
+                .subscribe {
                     showUpgradeDialog(it)
                 }
     }
@@ -73,7 +73,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
 
     private fun downloadApk(versionNumber: String, updateUrl: String) {
         RxPermissions(this)
-                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
                 .subscribe {
                     if (it) {
                         val savepath = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress")
@@ -114,9 +114,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
     }
 
     private fun signin() {
-
-        ScfOperations.loginWithCurrentPassport()
-                .subscribe()
+        ScfOperations.loginWithCurrentPassport().subscribe()
 
         ScfOperations.withScfTokenInCurrentPassport {
             App.get().scfApi.signIn(it)

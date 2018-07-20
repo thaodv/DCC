@@ -11,6 +11,4 @@ data class CertOrder(
         @JvmField val content: CertContent,
         @JvmField val feeDCC: Long?,
         @JvmField val similarity:String? = null
-) {
-
-}
+)
