@@ -13,11 +13,14 @@ import android.support.v4.view.ViewCompat
 import android.view.*
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wexmarket.android.passport.ResultCodes
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
+import io.wexchain.android.dcc.tools.RequestPermission
+import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.tools.marketingApi
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtectType
@@ -27,8 +30,6 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportSettingsBinding
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CheckUpgrade
-import io.wexchain.dccchainservice.domain.Result
-import kotlinx.android.synthetic.main.activity_passport_settings.*
 import zlc.season.rxdownload3.core.Mission
 import java.io.File
 
@@ -71,7 +72,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
             binding.passport = it
         })
 
-        tv_current_vs.text = "当前版本" + getVersionName()
+        binding.tvCurrentVs.text = "当前版本" + getVersionName()
     }
 
     private fun setupClicks() {
@@ -103,20 +104,20 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
         binding.tvAddressBook.setOnClickListener {
             startActivity(Intent(this, AddressBookActivity::class.java))
         }
-        binding.tvCheckUpdate.setOnClickListener {
-            App.get().marketingApi.checkUpgrade(getVersionCode().toString())
-                    .compose(Result.checked())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            {
+        binding.tvCheckUpdate.onClick {
+            marketingApi.checkUpgrade(getVersionCode().toString())
+                    .check()
+                    .subscribeBy(
+                            onSuccess = {
                                 showUpgradeDialog(it)
                             },
-                            {
+                            onError = {
                                 if (it is DccChainServiceException) {
                                     toast("当前已是最新版本")
                                 }
                             })
         }
+
     }
 
     private fun showUpgradeDialog(it: CheckUpgrade) {
@@ -139,30 +140,29 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
                         downloadApk(it.version, it.updateUrl)
                     })
         }
-
     }
 
+
     private fun downloadApk(versionNumber: String, updateUrl: String) {
-        RxPermissions(this)
-                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .subscribe {
-                    if (it) {
-                        val savepath = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress")
-                        if (!savepath.exists()) {
-                            savepath.mkdirs()
-                        }
-                        val filename = "BitExpress$versionNumber.apk"
-                        val file = File(savepath, filename)
-                        if (file.exists()) {
-                            installApk(file)
-                        } else {
-                            val mission = Mission(updateUrl, filename, savepath.absolutePath)
-                            UpgradeDialog(this).crateDownloadDialog(mission)
-                        }
-                    } else {
-                        toast("没有读写文件权限,授权后才能下载")
+        val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        RequestPermission(permission).subscribeBy(
+                onNext = {
+                    val savepath = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress")
+                    if (!savepath.exists()) {
+                        savepath.mkdirs()
                     }
-                }
+                    val filename = "BitExpress$versionNumber.apk"
+                    val file = File(savepath, filename)
+                    if (file.exists()) {
+                        installApk(file)
+                    } else {
+                        val mission = Mission(updateUrl, filename, savepath.absolutePath)
+                        UpgradeDialog(this).crateDownloadDialog(mission)
+                    }
+                },
+                onError = {
+                    toast("没有读写文件权限,授权后才能下载")
+                })
     }
 
 

@@ -1,7 +1,5 @@
 package io.wexchain.android.common
 
-import android.util.Log
-
 /**
  * simple log wrapper
  */
@@ -21,6 +19,7 @@ object Lg {
         }
     }
 }
+
 fun stackTrace(throwable: Throwable) {
     Lg.withLogEnabled {
         throwable.printStackTrace()

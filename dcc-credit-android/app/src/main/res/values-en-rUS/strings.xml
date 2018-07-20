@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="collect_candies">Collect Candies</string>
+    <string name="my_credit">My credit</string>
+    <string name="based_loan">Credit-based Loan</string>
+    <string name="loan_reports">Loan reports</string>
+    <string name="more">More</string>
+
+</resources>

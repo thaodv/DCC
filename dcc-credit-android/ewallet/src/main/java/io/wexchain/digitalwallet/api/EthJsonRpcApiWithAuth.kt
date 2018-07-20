@@ -1,19 +1,13 @@
 package io.wexchain.digitalwallet.api
 
-import android.support.annotation.MainThread
-import cc.sisel.ewallet.BuildConfig
 import io.reactivex.Single
 import io.wexchain.digitalwallet.Erc20Helper
-import io.wexchain.digitalwallet.EthsTransactionScratch
 import io.wexchain.digitalwallet.api.domain.*
-import io.wexchain.digitalwallet.proxy.EthsRpcAgent
-import org.web3j.crypto.Credentials
 import org.web3j.utils.Numeric
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import java.math.BigInteger
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 
 /**
@@ -53,19 +47,19 @@ interface EthJsonRpcApiWithAuth {
     ): Single<EthJsonRpcResponse<EthJsonTxInfo>>
 
     @POST("./")
-    @Headers("Content-Type: application/json", "Accept: application/json","parityrpc:1")
+    @Headers("Content-Type: application/json", "Accept: application/json", "parityrpc:1")
     fun postSendRawTransaction(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
     @POST("./")
-    @Headers("Content-Type: application/json", "Accept: application/json","parityrpc:1")
+    @Headers("Content-Type: application/json", "Accept: application/json", "parityrpc:1")
     fun postEstimateGas(
             @Body body: EthJsonRpcRequestBody<EthJsonTxScratch>
     ): Single<EthJsonRpcResponse<String>>
 
     @POST("./")
-    @Headers("Content-Type: application/json", "Accept: application/json","parityrpc:1")
+    @Headers("Content-Type: application/json", "Accept: application/json", "parityrpc:1")
     fun postCall(
             @Body body: EthJsonRpcRequestBody<Any>
     ): Single<EthJsonRpcResponse<String>>
@@ -74,7 +68,7 @@ interface EthJsonRpcApiWithAuth {
 
         const val RPC_URL = "https://ethrpc.wexfin.com:58545/"
 
-        fun juzixErc20RpcUrl(gateWayUrl:String,symbol:String): String {
+        fun juzixErc20RpcUrl(gateWayUrl: String, symbol: String): String {
             return "${gateWayUrl}erc20/$symbol/1/web3/"
         }
 

@@ -1,13 +1,11 @@
 package io.wexchain.android.dcc
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.content.DialogInterface
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.View
 import io.reactivex.Single
+import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.PassportOperations
@@ -28,7 +26,8 @@ class PassportRemovalActivity : BaseCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_passport_removal)
         initToolbar(true)
-        val protect = ViewModelProviders.of(this).get(Protect::class.java)
+        val protect: Protect = getViewModel()
+
         protect.sync(this)
         VerifyProtectFragment.serve(protect, this)
         binding.btnBackup.setOnClickListener {
@@ -55,16 +54,16 @@ class PassportRemovalActivity : BaseCompatActivity() {
             toBackup()
         }
         CustomDialog(this)
-            .apply {
-                setTitle(R.string.title_remove_passport)
-                viewContent = view
-                withPositiveButton(getString(R.string.title_remove_passport)) {
-                    performPassportDelete()
-                    true
+                .apply {
+                    setTitle(R.string.title_remove_passport)
+                    viewContent = view
+                    withPositiveButton(getString(R.string.title_remove_passport)) {
+                        performPassportDelete()
+                        true
+                    }
+                    withNegativeButton()
                 }
-                withNegativeButton()
-            }
-            .assembleAndShow()
+                .assembleAndShow()
     }
 
     private fun performPassportDelete() {
@@ -80,15 +79,15 @@ class PassportRemovalActivity : BaseCompatActivity() {
             App.get().scfTokenManager.scfToken = null
             SharedPreferenceUtil.save(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING, null)
         }
-            .doOnSubscribe {
-                showLoadingDialog()
-            }
-            .doFinally {
-                hideLoadingDialog()
-            }
-            .subscribe { _ ->
-                finishAllAndRestart()
-            }
+                .doOnSubscribe {
+                    showLoadingDialog()
+                }
+                .doFinally {
+                    hideLoadingDialog()
+                }
+                .subscribe { _ ->
+                    finishAllAndRestart()
+                }
     }
 
     fun finishAllAndRestart() {

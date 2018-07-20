@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:text="更多"
+                android:text="@string/more"
                 android:textSize="15sp"
                 android:textColor="?attr/colorAccent"
                 android:minHeight="0dp"

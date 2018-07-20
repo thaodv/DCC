@@ -11,7 +11,7 @@ import io.wexchain.dccchainservice.DccChainServiceException
 data class Result<out T>(
         @JvmField val systemCode: String,
         @JvmField val businessCode: String?,
-        @SerializedName(value="result", alternate=["resultList"])
+        @SerializedName(value = "result", alternate = ["resultList"])
         @JvmField val result: T?,
         @JvmField val trace: String?,
         @JvmField val message: String?

@@ -40,7 +40,7 @@ object EthsHelper{
     @WorkerThread
     fun createAndroidRSAKeyPair(keySize: Int = AUTH_KEY_SIZE): Pair<KeyPair, String> {
         val keyPairGenerator = KeyPairGenerator.getInstance(AUTH_KEY_ALGORITHM, ANDROID_KEY_STORE)
-        val alias = "${ANDROID_RSA_PREFIX}${System.currentTimeMillis()}"
+        val alias = "$ANDROID_RSA_PREFIX${System.currentTimeMillis()}"
         assert(!getAndroidKeyStoreLoaded().containsAlias(alias))
         val genSpec: AlgorithmParameterSpec = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             KeyGenParameterSpec.Builder(alias, KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY)
