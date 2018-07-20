@@ -11,6 +11,8 @@ import io.reactivex.Single
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.PassportOperations
+import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.tools.SharedPreferenceUtil
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtect
@@ -76,6 +78,7 @@ class PassportRemovalActivity : BaseCompatActivity() {
             CertOperations.clearAllCertData()
             //clear session token
             App.get().scfTokenManager.scfToken = null
+            SharedPreferenceUtil.save(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING, null)
         }
             .doOnSubscribe {
                 showLoadingDialog()
