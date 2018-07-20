@@ -127,9 +127,10 @@ class TransactionVm {
                 .subscribe({
                     var fpp = it
                     if (isEdit) {
-                        fpp = maxOf(
+                        fpp = maxOf(//
                                 tx.gasPrice,
-                                it + BigDecimal("0.5").scaleByPowerOfTen(9).toBigInteger()
+                                //it + BigDecimal("0.5").scaleByPowerOfTen(9).toBigInteger()
+                            it
                         )
                     }
                     gasPrice.set(weiToGwei(fpp).stripTrailingZeros().toPlainString())

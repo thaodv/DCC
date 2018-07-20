@@ -15,11 +15,13 @@ import io.wexchain.android.dcc.repo.db.TransRecord
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.view.dialog.TransactionConfirmDialogFragment
 import io.wexchain.android.dcc.vm.TransactionVm
+import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityCreateTransactionBinding
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.EthsTransactionScratch
+import io.wexchain.digitalwallet.util.weiToGwei
 
 class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>() {
 
@@ -42,10 +44,14 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
             txVm.isEdit = true
             txVm.tx = tx
             dc = tx.digitalCurrency
-            binding.etInputAmount.setText(dc.toDecimalAmount(tx.amount).toString())
+            binding.etInputAmount.setText(tx.digitalCurrency.toDecimalAmount(tx.amount).currencyToDisplayStr())
             txVm.toAddress.set(tx.to)
+            txVm.amount.set(tx.digitalCurrency.toDecimalAmount(tx.amount).currencyToDisplayStr())
             //   binding.etInputAddress.setText(tx.to)
-            //   binding.etInputGasPrice.setText(dc.toDecimalAmount(tx.gasPrice).toString())
+             /*  binding.etInputGasPrice.setText(tx.digitalCurrency.toDecimalAmount(tx.gasPrice).currencyToDisplayStr())
+            txVm.gasPrice.set(tx.digitalCurrency.toDecimalAmount(tx.gasPrice).currencyToDisplayStr())*/
+            binding.etInputGasLimit.setText(""+tx.gas)
+            txVm.gasLimit.set(""+tx.gas)
         }
         title = ("${dc!!.symbol} 转账")
         setupEvents(dc, feeRate)
