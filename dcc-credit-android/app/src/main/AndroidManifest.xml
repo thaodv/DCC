@@ -320,16 +320,16 @@
             android:exported="true"/>
         <activity
             android:name="io.wexchain.android.dcc.MineRewardsActivity"
-            android:label="挖矿奖励"
+            android:label="@string/mining_rewardss"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.DccMineRewardsTermsActivity"
-            android:label="活动规则"
+            android:label="@string/rules"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.MinePtRulesActivity"
-            android:label="加速挖矿"
+            android:label="@string/mine_faster"
             android:screenOrientation="portrait">
         </activity>
         <activity

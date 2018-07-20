@@ -6,5 +6,37 @@
     <string name="based_loan">Credit-based Loan</string>
     <string name="loan_reports">Loan reports</string>
     <string name="more">More</string>
+    <string name="digital_assets">Digital assets</string>
+    <string name="status_enabled">OAuth login status: Available</string>
+    <string name="status_disabled">OAuth login status: Unavailable</string>
+    <string name="oauth_login_history">OAuth login history</string>
+    <string name="no_more_records">No more records</string>
+    <string name="auth_management">OAuth login management</string>
+    <string name="auth_key_change_log">OAuth login change record</string>
+    <string name="disable_passport_login">Disable OAuth login</string>
+    <string name="enable_passport_login">Enable OAuth login</string>
+    <string name="update_key">Update private key</string>
+    <string name="bitexpress_member">Hi,BitEXPRESS member</string>
+    <string name="default_nickname">BitExpress Member</string>
+    <string name="candy_release_notice">&#x3000;&#x3000;Collect your candies here! Candy  free-of-charge will be distributed here irregularly! Check out all the candy tasks here! And  Please enable the system notifications, we will immediately remind you to collect for new eventto stay tuned for latest tasks!.don’t forget to turn on notifications for new tasks and rewards.</string>
+    <string name="mining_rewardss">Mining rewardss</string>
+    <string name="mining_contribution">Mining contribution</string>
+    <string name="mine_faster">Mine faster</string>
+    <string name="details">Details >></string>
+    <string name="rewardss_available">Rewardss available</string>
+    <string name="rewards_collection_record">Rewards collection record</string>
+    <string name="rules">Rules</string>
+    <string name="basic_rewards">Basic rewards</string>
+    <string name="loan_application_rewards">Loan application rewards</string>
+    <string name="repayment_rewards">Repayment rewards</string>
+
+
+
+
+
+
+
+
+
 
 </resources>

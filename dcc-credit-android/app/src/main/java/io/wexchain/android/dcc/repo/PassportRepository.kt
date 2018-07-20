@@ -23,6 +23,8 @@ import io.wexchain.android.dcc.domain.AuthKey
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.repo.db.*
 import io.wexchain.android.dcc.tools.RoomHelper
+import io.wexchain.android.dcc.tools.doMain
+import io.wexchain.android.dcc.tools.doRoom
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.Wallet
 import org.web3j.crypto.WalletFile
@@ -153,12 +155,11 @@ class PassportRepository(
             }
         } else {
             return Single.just(defaultAddr)
-                    .observeOn(RoomHelper.roomScheduler)
+                    .doRoom()
                     .map {
-                        dao.getBeneficiaryAddresseByAddress(defaultAddr)
-                                .first()
+                        dao.getBeneficiaryAddresseByAddress(defaultAddr).first()
                     }
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .doMain()
         }
     }
 

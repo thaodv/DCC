@@ -1,16 +1,13 @@
 package io.wexchain.android.dcc
 
-import android.support.v7.app.AppCompatActivity
+import android.annotation.TargetApi
+import android.os.Build
 import android.os.Bundle
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.dcc.R
-import com.tencent.wxop.stat.event.i
-import android.os.Build.VERSION_CODES
-import android.annotation.TargetApi
-import android.os.Build
 
 
 class DccMineRewardsTermsActivity : BaseCompatActivity() {
@@ -30,16 +27,16 @@ class DccMineRewardsTermsActivity : BaseCompatActivity() {
         }
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(webView: WebView, url: String): Boolean {
-                return shouldOverrideUrlLoadingCompat(webView,url)
+                return shouldOverrideUrlLoadingCompat(webView, url)
             }
 
             @TargetApi(Build.VERSION_CODES.N)
             override fun shouldOverrideUrlLoading(webView: WebView, request: WebResourceRequest): Boolean {
                 val uri = request.url
-                return shouldOverrideUrlLoadingCompat(webView,uri.toString())
+                return shouldOverrideUrlLoadingCompat(webView, uri.toString())
             }
 
-            private fun shouldOverrideUrlLoadingCompat(webView: WebView,url: String): Boolean {
+            private fun shouldOverrideUrlLoadingCompat(webView: WebView, url: String): Boolean {
                 webView.loadUrl(url)
                 return true // Returning True means that application wants to leave the current WebView and handle the url itself, otherwise return false.
             }

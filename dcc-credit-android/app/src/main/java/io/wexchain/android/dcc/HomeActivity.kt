@@ -17,6 +17,7 @@ import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.tl.TlWebPageActivity
 import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.dcc.R
@@ -52,7 +53,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
 
     private fun checkUpgrade() {
         App.get().marketingApi.checkUpgrade(getVersionCode().toString())
-                .check()
+                .checkonMain()
                 .filter {
                     it.mandatoryUpgrade
                 }

@@ -11,6 +11,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
+import io.wexchain.android.dcc.tools.getString
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
@@ -140,14 +141,10 @@ object ViewModelHelper {
 
     @JvmStatic
     fun Context.getIconFor(appid: String): Drawable? {
-        return when (appid) {
-        // 微财富 appId = 1 , appName = com.weicaifu.wcf
-//            "1" -> ContextCompat.getDrawable(context, R.drawable.wcflogo)
-            else -> ContextCompat.getDrawable(
+        return ContextCompat.getDrawable(
                 this,
                 R.drawable.ic_launcher
-            )
-        }
+        )
     }
 
     @JvmStatic
@@ -168,7 +165,7 @@ object ViewModelHelper {
     fun getDccStrPlus(holding: BigInteger?): String {
         return holding?.let {
             val holdingStr = Currencies.DCC.toDecimalAmount(it)
-                .setScale(2, RoundingMode.DOWN).toPlainString()
+                    .setScale(2, RoundingMode.DOWN).toPlainString()
             "+$holdingStr DCC"
         } ?: "--"
     }
@@ -177,7 +174,7 @@ object ViewModelHelper {
     fun getDccStr(holding: BigInteger?): String? {
         return holding?.let {
             val holdingStr = Currencies.DCC.toDecimalAmount(it)
-                .currencyToDisplayStr()
+                    .currencyToDisplayStr()
             "$holdingStr DCC"
         } ?: ""
     }
@@ -232,10 +229,10 @@ object ViewModelHelper {
                 } else {
                     SpannableString(text).apply {
                         setSpan(
-                            ForegroundColorSpan(ContextCompat.getColor(this@requisiteListStr, R.color.text_red)),
-                            0,
-                            length,
-                            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                                ForegroundColorSpan(ContextCompat.getColor(this@requisiteListStr, R.color.text_red)),
+                                0,
+                                length,
+                                Spannable.SPAN_INCLUSIVE_EXCLUSIVE
                         )
                     }
                 }
@@ -392,7 +389,7 @@ object ViewModelHelper {
         return if (loanReport == null || loanReport.isFromOtherAddress()) {
             ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_other)
         } else {
-            if(!loanReport.isMort()){
+            if (!loanReport.isMort()) {
                 when (loanReport?.status) {
                     LoanStatus.REPAID -> ContextCompat.getDrawable(
                             this,
@@ -400,7 +397,7 @@ object ViewModelHelper {
                     )
                     else -> ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_incomplete)
                 }
-            }else{
+            } else {
                 when (loanReport?.mortgageStatus) {
                     MortgageStatus.REPAID -> ContextCompat.getDrawable(
                             this,
@@ -449,9 +446,9 @@ object ViewModelHelper {
     @JvmStatic
     fun ecoBonusRuleGroupTitle(group: String?): CharSequence? {
         return when (group) {
-            BonusRule.GROUP_BASE -> "基础奖励"
-            BonusRule.GROUP_BORROW -> "借币奖励"
-            BonusRule.GROUP_REPAY -> "还币奖励"
+            BonusRule.GROUP_BASE -> getString(R.string.basic_rewards)
+            BonusRule.GROUP_BORROW -> getString(R.string.loan_application_rewards)
+            BonusRule.GROUP_REPAY -> getString(R.string.repayment_rewards)
             else -> null
         }
     }

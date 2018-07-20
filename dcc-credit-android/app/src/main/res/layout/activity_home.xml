@@ -126,7 +126,7 @@
                                 android:minWidth="100dp"
                                 android:layout_gravity="center"
                                 android:gravity="center"
-                                android:text="借贷报告"
+                                android:text="@string/loan_reports"
                                 android:drawableLeft="@drawable/ic_report"
                                 android:drawablePadding="16dp"
                                 android:textColor="@color/text_white"

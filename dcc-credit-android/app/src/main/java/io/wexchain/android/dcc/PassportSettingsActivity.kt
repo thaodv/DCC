@@ -19,7 +19,7 @@ import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.tools.RequestPermission
-import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.tools.marketingApi
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.android.dcc.vm.Protect
@@ -106,7 +106,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
         }
         binding.tvCheckUpdate.onClick {
             marketingApi.checkUpgrade(getVersionCode().toString())
-                    .check()
+                    .checkonMain()
                     .subscribeBy(
                             onSuccess = {
                                 showUpgradeDialog(it)
@@ -193,12 +193,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
                     val bitmap = data?.extras?.get("data") as? Bitmap
                     bitmap?.let {
                         App.get().passportRepository.saveAvatar(it)
-                                .doOnSubscribe {
-                                    showLoadingDialog()
-                                }
-                                .doFinally {
-                                    hideLoadingDialog()
-                                }
+                                .withLoading()
                                 .subscribe({
                                     toast("头像修改成功")
                                 }, {

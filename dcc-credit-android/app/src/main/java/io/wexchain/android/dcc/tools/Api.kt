@@ -6,8 +6,14 @@ import io.wexchain.android.dcc.App
  *Created by liuyang on 2018/7/20.
  */
 
-val  chainFrontEndApi = App.get().chainFrontEndApi
+val AppContext = App.get()
 
-val scfApi = App.get().scfApi
+val chainFrontEndApi = AppContext.chainFrontEndApi
 
-val marketingApi = App.get().marketingApi
+val scfApi = AppContext.scfApi
+
+val marketingApi = AppContext.marketingApi
+
+fun getString(id: Int): String {
+    return AppContext.resources.getString(id)
+}
