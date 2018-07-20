@@ -18,6 +18,7 @@ import io.wexchain.android.dcc.repo.db.TransRecord
 import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.android.dcc.tools.SharedPreferenceUtil
 import io.wexchain.android.dcc.tools.TransHelper
+import io.wexchain.android.dcc.view.dialog.WaitTransDialog
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.UseProtect
 import io.wexchain.digitalwallet.Chain
@@ -169,9 +170,22 @@ class TransactionConfirmVm(
                                                         scratch.remarks
                                                 )
                                             } else {
+                                               /* val waitTransDialog = WaitTransDialog(App.get())
+                                                waitTransDialog.mTvText.text = "请待「待上链」交易变为「已上链」后再提交新的交易。"
+                                                waitTransDialog.show()
                                                 Single.error<Pair<BigInteger, String>>(
                                                         IllegalStateException("")
                                                 )
+*/
+                                                agent.sendTransferTransaction(
+                                                    cre,
+                                                    scratch.to,
+                                                    dc.toIntExact(scratch.amount),
+                                                    price,
+                                                    scratch.gasLimit,
+                                                    scratch.remarks
+                                                )
+
                                             }
                                         }
                                     }
