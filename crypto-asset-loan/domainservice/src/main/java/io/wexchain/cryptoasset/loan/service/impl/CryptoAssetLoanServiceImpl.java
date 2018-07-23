@@ -172,7 +172,7 @@ public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
 
 		// 验证摘要
 		checkIdDigest(applyRequest, chainLoanOrder);
-		checkApplicationDigest(applyRequest, chainLoanOrder);
+		//checkApplicationDigest(applyRequest, chainLoanOrder);
 
 		Map<String, String> imageExtParam = uploadImageFile(applyRequest);
 
@@ -425,6 +425,14 @@ public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
 			}
 		}
 		return loanReports;
+	}
+
+	@Override
+	public Integer queryYesterdayDeliverCount() {
+		Date from = DateTime.now().minusDays(1).withTimeAtStartOfDay().toDate();
+		Date to = DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate();
+		return loanOrderRepository.countYesterdayDeliver(from.getTime(),to.getTime());
+
 	}
 
 	private void setMortgageLoanReportOrderInfo(LoanReport loanReport, long orderId, Boolean isMatching) {
