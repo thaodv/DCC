@@ -6,9 +6,12 @@ import com.godmonth.eth.rlp.web3j.SignMessageParser;
 import com.wexmarket.topia.commons.basic.exception.ErrorCodeValidate;
 import io.wexchain.passport.gateway.ctrlr.ca.CaErrorCode;
 import io.wexchain.passport.gateway.ctrlr.erc20.Erc20ErrorCode;
+import io.wexchain.passport.gateway.service.cah.CahFunction;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.web3j.crypto.Sign.SignatureData;
 import org.web3j.protocol.core.methods.request.RawTransaction;
 
@@ -37,11 +40,12 @@ public class Erc20Validation {
 	static {
 		writeFunctions.add("a9059cbb");// transfer(address,uint256)
 	}
+
 	private Map<String,String> contractAddressMap;
 
-	public void validate(Map<String, Object> body,String business) throws IOException {
-		String contractAddress = getContractAddress(business);
-		JsonNode root = objectMapper.readTree(objectMapper.writeValueAsString(body));
+	private CahFunction cahFunction;
+
+	private void validate(JsonNode root,String contractAddress) throws IOException {
 		String method = root.get("method").asText();
 		if (grantMethods.contains(method)) {
 			return;
@@ -57,6 +61,32 @@ public class Erc20Validation {
 			throw new IllegalArgumentException();
 		}
 
+	}
+
+	public void validateWithBusiness(Map<String, Object> body,String business) throws IOException {
+		String contractAddress = getContractAddress(business);
+		JsonNode root = objectMapper.readTree(objectMapper.writeValueAsString(body));
+		validate(root,contractAddress);
+	}
+
+	public void validateWithContractAddress(Map<String, Object> body) throws IOException {
+		JsonNode root = objectMapper.readTree(objectMapper.writeValueAsString(body));
+		String method = root.get("method").asText();
+		String requestAddress;
+		if (grantMethods.contains(method)) {
+			return;
+		} else if (method.equals("eth_call")) {
+			requestAddress = root.get("params").get(0).get("to").asText();
+		} else if (method.equals("eth_sendRawTransaction")) {
+			Pair<RawTransaction, SignatureData> pair = SignMessageParser.parseFull(root.get("params").get(0).asText());
+			RawTransaction rawTransaction = pair.getLeft();
+			requestAddress = rawTransaction.getTo();
+		} else {
+			throw new IllegalArgumentException();
+		}
+		ErrorCodeValidate.isTrue(cahFunction.matchContractAddress(requestAddress),
+				CaErrorCode.SIGN_MESSAGE_INVALID,"to invalid");
+		validate(root,requestAddress);
 	}
 
 	private void ethCallParam(JsonNode param,String contractAddress) throws IOException {
@@ -78,9 +108,6 @@ public class Erc20Validation {
 				CaErrorCode.SIGN_MESSAGE_INVALID, "methodId invalid");
 	}
 
-	public String getContractAddress(String business){
-		return ErrorCodeValidate.notNull(contractAddressMap.get(business), Erc20ErrorCode.BUSINESS_NOT_FOUND);
-	}
 	private void ethReadFunction(JsonNode param) throws IOException {
 		String data = param.get("data").asText();
 		String functionId = StringUtils.substring(data, 2).substring(0, 8);
@@ -88,7 +115,16 @@ public class Erc20Validation {
 				CaErrorCode.SIGN_MESSAGE_INVALID, "methodId invalid");
 	}
 
+	public String getContractAddress(String business){
+		return ErrorCodeValidate.notNull(contractAddressMap.get(business), Erc20ErrorCode.BUSINESS_NOT_FOUND);
+	}
+
+	@Required
 	public void setContractAddressMap(Map<String, String> contractAddressMap) {
 		this.contractAddressMap = contractAddressMap;
+	}
+	@Required
+	public void setCahFunction(CahFunction cahFunction) {
+		this.cahFunction = cahFunction;
 	}
 }

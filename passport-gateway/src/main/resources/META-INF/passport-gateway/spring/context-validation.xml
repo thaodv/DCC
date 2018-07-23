@@ -7,7 +7,7 @@
 		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 	<bean class="io.wexchain.passport.gateway.service.erc20.Erc20Validation"
-		 p:contractAddressMap-ref="erc20ContractAddressMap"/>
+		 p:contractAddressMap-ref="erc20ContractAddressMap" p:cahFunction-ref="cahFunction"/>
 	<util:map id="erc20ContractAddressMap">
 		<entry key="FTC" value="${erc20.address.ftc}"/>
 		<entry key="DCC" value="${erc20.address.dcc}"/>

@@ -8,10 +8,18 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.servlet.ServletResponse;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import io.wexchain.passport.gateway.execute.Erc20Executor;
+import io.wexchain.passport.gateway.service.contract.SignMessageValidator;
+import io.wexchain.passport.gateway.utils.Rest;
+import org.apache.commons.lang3.time.StopWatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -23,14 +31,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import com.alibaba.fastjson.JSONObject;
@@ -47,16 +48,8 @@ import io.wexchain.passport.gateway.service.erc20.FTCServiceProxy;
 @RequestMapping("/erc20/{path}/1")
 public class Erc20Controller {
 
-	public static RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+	private static final Logger logger = LoggerFactory.getLogger(Erc20Controller.class);
 
-	static {
-		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
-		StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter();
-		stringHttpMessageConverter.setWriteAcceptCharset(false);
-		messageConverters.add(stringHttpMessageConverter);
-		restTemplate.setMessageConverters(messageConverters);
-	}
-	
 	@Value("${juzix.url}")
 	private String nodeUrl;
 
@@ -68,15 +61,12 @@ public class Erc20Controller {
 
 	@RequestMapping(value = "/web3", method = {RequestMethod.POST,RequestMethod.OPTIONS})
 	@ResponseBody
-	public Object web3(@PathVariable("path") String path, @RequestBody Map<String, Object> body) throws IOException, URISyntaxException {
-		erc20Validation.validate(body,path);
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-		headers.add("accept", MediaType.APPLICATION_JSON.toString());
-		headers.add("Content-Type", MediaType.APPLICATION_JSON.toString());
-		RequestEntity<String> requestEntity = new RequestEntity<String>(JSONObject.toJSONString(body), headers, HttpMethod.POST,
-				new URI(nodeUrl));
-		ResponseEntity<String> exchange = restTemplate.exchange(requestEntity, String.class);
-		return JSONObject.parse(exchange.getBody());
+	public void web3(@PathVariable("path") String path, @RequestBody Map<String, Object> body, ServletResponse response) throws IOException, URISyntaxException {
+		response.setContentType("application/json;charset=UTF-8");
+		erc20Validation.validateWithBusiness(body,path);
+		ResponseEntity<String> exchange= Erc20Executor.execute(body, nodeUrl, path);
+		response.getWriter().print(exchange.getBody());
+
 	}
 
 	@RequestMapping(value = "/getContractAddress", method = RequestMethod.GET)
