@@ -7,14 +7,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.content.edit
-import io.wexchain.android.common.Prefs
-import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.trans.activity.Private2PublicActivity
+import io.wexchain.android.dcc.modules.trans.activity.Public2PrivateActivity
 import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityDccExchangeBinding
@@ -22,8 +21,8 @@ import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 
 class DccExchangeActivity : BindActivity<ActivityDccExchangeBinding>() {
-    override val contentLayoutId: Int = R.layout.activity_dcc_exchange
 
+    override val contentLayoutId: Int = R.layout.activity_dcc_exchange
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,14 +43,14 @@ class DccExchangeActivity : BindActivity<ActivityDccExchangeBinding>() {
             }
         }
         binding.ibDccToPublic.setOnClickListener {
-            toast("该功能将在下个版本中开放")
+            navigateTo(Private2PublicActivity::class.java)
         }
         binding.ibPublicToDcc.setOnClickListener {
-            toast("该功能将在下个版本中开放")
+            navigateTo(Public2PrivateActivity::class.java)
         }
         val sp = getSharedPreferences("setting", Context.MODE_PRIVATE)
         if (sp.getBoolean("first_into", true)) {
-            sp.edit().putBoolean("first_into",false).commit()
+            sp.edit().putBoolean("first_into", false).commit()
             tipsDialog.show()
         }
     }
@@ -65,6 +64,10 @@ class DccExchangeActivity : BindActivity<ActivityDccExchangeBinding>() {
         return when (item?.itemId) {
             R.id.action_question -> {
                 tipsDialog.show()
+                true
+            }
+            R.id.action_trans_record -> {
+                toast("交易记录")
                 true
             }
             else -> super.onOptionsItemSelected(item)

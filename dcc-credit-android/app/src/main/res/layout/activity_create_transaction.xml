@@ -153,7 +153,6 @@
             />
 
         <EditText
-
             android:id="@+id/et_input_gas_price"
             style="@style/Widget.AppCompat.EditText.Input"
             visibleOrGone="@{!tx.onPrivateChain}"
