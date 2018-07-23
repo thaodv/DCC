@@ -21,6 +21,10 @@ contract UserPropertyService is OperatorPermission {
     event propertyNameAdded(uint256 indexed key, string propertyName);
     event propertyNameDeleted(uint256 indexed key, string propertyName);
 
+    function UserPropertyService(){
+        register("UserPropertyServiceModule", "0.0.1.0", "UserPropertyService", "0.0.1.0");
+    }
+
     function putProperty(address addr, string propertyName, string propertyValue) public onlyOperator {
         if(!(addr != 0)){
             log("!(addr != 0)");
