@@ -40,9 +40,6 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
 
     override val contentLayoutId: Int = R.layout.activity_digital_currency
 
-    private var isPending: Boolean = false
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar(true)
@@ -157,10 +154,6 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
             adapter.setList(list3)
             txListVm.empty.set(list3.isEmpty())
             bm.hasMore.set(it != null && it.size > 3)
-
-            if (list3 != null && list3.size > 1) {
-                isPending = list3[0].isPending()
-            }
 
         })
     }
