@@ -2,6 +2,7 @@ pragma solidity ^0.4.2;
 
 import "../ownership/OperatorPermission.sol";
 import "../utils/ByteUtils.sol";
+//有关用户信息存储
 contract UserPropertyService is OperatorPermission {
 
     using ByteUtils for bytes;
