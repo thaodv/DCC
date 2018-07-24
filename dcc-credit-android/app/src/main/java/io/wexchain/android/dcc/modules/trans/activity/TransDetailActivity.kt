@@ -3,17 +3,15 @@ package io.wexchain.android.dcc.modules.trans.activity
 import android.os.Bundle
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.dcc.R
-import io.wexchain.dcc.databinding.ActivityPublic2PrivateBinding
+import io.wexchain.dcc.databinding.ActivityTransDetailBinding
 
-class Public2PrivateActivity : BindActivity<ActivityPublic2PrivateBinding>() {
+class TransDetailActivity : BindActivity<ActivityTransDetailBinding>() {
 
-    override val contentLayoutId: Int = R.layout.activity_public2_private
+    override val contentLayoutId: Int = R.layout.activity_trans_detail
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-
-
 
     }
 }

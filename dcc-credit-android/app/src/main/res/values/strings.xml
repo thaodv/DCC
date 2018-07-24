@@ -18,6 +18,7 @@
     <string name="share">分享</string>
     <string name="title_phone_carrier_certification">手机运营商认证</string>
     <string name="submit">提交</string>
+    <string name="sure">确定</string>
     <string name="communication_log_submit_hint">
         温馨提示\n\n1、请使用本人实名制手机号进行认证\n2、服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3、点击“提交”按钮会收到运营商的通知短信，无需回复\n4、如忘记服务密码,请登录运营商官网找回服务密码
     </string>
@@ -196,6 +197,15 @@
     <string name="across_trans_warning_tip">温馨提示:</string>
     <string name="across_trans_warning_tips1">预计<font color="#ED190F">1分钟内</font>到账\n<font color="#ED190F">结果返回前，请不要重复转移DCC</font></string>
     <string name="across_trans_warning_tips2">预计<font color="#ED190F">5分钟内</font>到账\n<font color="#ED190F">结果返回前，请不要重复转移DCC</font></string>
+
+
+
+    <string name="trans_sure">交易确认</string>
+    <string name="trans_orientation">交易方向：</string>
+    <string name="max_pay_money">最高支付金额：</string>
+    <string name="order_money">订单金额：</string>
+    <string name="max_absenteeism">最高矿工费：</string>
+    <string name="holding_count">持有量：</string>
 
 
 </resources>

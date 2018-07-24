@@ -9,9 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.trans.activity.AcrossTransRecordActivity
 import io.wexchain.android.dcc.modules.trans.activity.Private2PublicActivity
 import io.wexchain.android.dcc.modules.trans.activity.Public2PrivateActivity
 import io.wexchain.android.dcc.tools.MultiChainHelper
@@ -67,7 +67,7 @@ class DccExchangeActivity : BindActivity<ActivityDccExchangeBinding>() {
                 true
             }
             R.id.action_trans_record -> {
-                toast("交易记录")
+                navigateTo(AcrossTransRecordActivity::class.java)
                 true
             }
             else -> super.onOptionsItemSelected(item)
