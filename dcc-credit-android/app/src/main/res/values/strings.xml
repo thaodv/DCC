@@ -198,14 +198,16 @@
     <string name="across_trans_warning_tips1">预计<font color="#ED190F">1分钟内</font>到账\n<font color="#ED190F">结果返回前，请不要重复转移DCC</font></string>
     <string name="across_trans_warning_tips2">预计<font color="#ED190F">5分钟内</font>到账\n<font color="#ED190F">结果返回前，请不要重复转移DCC</font></string>
 
-
-
     <string name="trans_sure">交易确认</string>
     <string name="trans_orientation">交易方向：</string>
     <string name="max_pay_money">最高支付金额：</string>
     <string name="order_money">订单金额：</string>
     <string name="max_absenteeism">最高矿工费：</string>
     <string name="holding_count">持有量：</string>
+
+    <string name="this_week">本周</string>
+    <string name="this_month">本月</string>
+    <string name="latest_2_month">近2个月</string>
 
 
 </resources>
