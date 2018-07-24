@@ -34,7 +34,7 @@ fun <T> Single<T>.doBack(): Single<T> {
     return this.observeOn(Schedulers.io())
 }
 
-fun Activity.RequestPermission(vararg permissions: String): Observable<Any> {
+fun Activity.requestPermission(vararg permissions: String): Observable<Any> {
     return RxPermissions(this).request(*permissions).flatMap {
         if (it) {
             Observable.empty<Any>()

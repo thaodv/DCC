@@ -18,9 +18,9 @@ import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
-import io.wexchain.android.dcc.tools.RequestPermission
+import io.wexchain.android.dcc.tools.appContext
 import io.wexchain.android.dcc.tools.checkonMain
-import io.wexchain.android.dcc.tools.marketingApi
+import io.wexchain.android.dcc.tools.requestPermission
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtectType
@@ -105,7 +105,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
             startActivity(Intent(this, AddressBookActivity::class.java))
         }
         binding.tvCheckUpdate.onClick {
-            marketingApi.checkUpgrade(getVersionCode().toString())
+            appContext.marketingApi.checkUpgrade(getVersionCode().toString())
                     .checkonMain()
                     .subscribeBy(
                             onSuccess = {
@@ -145,7 +145,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
 
     private fun downloadApk(versionNumber: String, updateUrl: String) {
         val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-        RequestPermission(permission).subscribeBy(
+        requestPermission(permission).subscribeBy(
                 onNext = {
                     val savepath = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress")
                     if (!savepath.exists()) {

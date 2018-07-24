@@ -19,7 +19,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{ViewModelHelper.ecoBonusRuleGroupTitle(group)}"
-                tools:text="基础奖励"
+                tools:text="@string/basic_rewards"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:gravity="center"
@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{ViewModelHelper.ecoBonusRuleGroupSlogan(group)}"
-                tools:text="认证就有奖"
+                tools:text="@string/verification_based_rewards"
                 android:layout_marginLeft="8dp"
                 />
     </LinearLayout>

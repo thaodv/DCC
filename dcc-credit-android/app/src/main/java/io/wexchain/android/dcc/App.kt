@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc
 
+import android.os.SystemClock
 import android.support.annotation.VisibleForTesting
 import android.support.multidex.MultiDexApplication
 import android.view.ContextThemeWrapper
@@ -13,7 +14,9 @@ import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.PassportRepository
 import io.wexchain.android.dcc.repo.ScfTokenManager
 import io.wexchain.android.dcc.repo.db.PassportDatabase
+import io.wexchain.android.dcc.tools.CrashHandler
 import io.wexchain.android.dcc.tools.JuzixData
+import io.wexchain.android.dcc.tools.log
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.dcc.BuildConfig
@@ -32,7 +35,7 @@ import java.math.BigInteger
 /**
  * Created by sisel on 2018/3/27.
  */
-class App : MultiDexApplication() {
+class App : MultiDexApplication(), Thread.UncaughtExceptionHandler {
 
     //lib
     lateinit var idVerifyHelper: IdVerifyHelper
@@ -74,10 +77,11 @@ class App : MultiDexApplication() {
         initLibraries(this)
         initServices(this)
         initData(this)
-        initRxDownload(this)
+        initRxDownload()
+        CrashHandler().init(this)
     }
 
-    private fun initRxDownload(app: App) {
+    private fun initRxDownload() {
         val builder = DownloadConfig.Builder.create(this)
                 .enableAutoStart(true)
                 .enableDb(true)
@@ -182,10 +186,13 @@ class App : MultiDexApplication() {
         }
     }
 
+    override fun uncaughtException(thread: Thread, ex: Throwable) {
+        Thread(Runnable { log("currentThread:" + Thread.currentThread() + "---thread:" + thread.id + "---ex:" + ex.toString()) }).start()
+        SystemClock.sleep(2000)
+        android.os.Process.killProcess(android.os.Process.myPid())
+    }
 
     companion object {
-
-
         private lateinit var instance: WeakReference<App>
         @JvmStatic
         fun get(): App = instance.get()!!

@@ -105,7 +105,7 @@ class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), 
 
     override fun onResume() {
         super.onResume()
-        activity!!.setTitle(R.string.title_bank_card_certification)
+        activity!!.setTitle(R.string.bank_account_verification)
 
 //        checkPreconditions()
     }

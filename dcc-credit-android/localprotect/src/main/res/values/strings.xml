@@ -37,4 +37,8 @@
     <string name="about_us">关于我们</string>
     <string name="remove_passport">删除钱包(注销)</string>
     <string name="check_update">版本更新</string>
+    <string name="guesture_password">手势密码</string>
+    <string name="digitalnumerical_password">数字密码</string>
+
+
 </resources>

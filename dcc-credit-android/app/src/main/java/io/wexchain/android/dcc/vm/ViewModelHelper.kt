@@ -111,8 +111,8 @@ object ViewModelHelper {
     @JvmStatic
     fun Context.getMarketingScenarioActionText(status: MarketingActivityScenario.Qualification?): String {
         return when (status) {
-            MarketingActivityScenario.Qualification.REDEEMED -> "已领取"
-            MarketingActivityScenario.Qualification.AVAILABLE -> "领取"
+            MarketingActivityScenario.Qualification.REDEEMED -> getString(R.string.collected)
+            MarketingActivityScenario.Qualification.AVAILABLE -> getString(R.string.unclaimedcollect_now)
             null -> "待认证"
         }
     }
@@ -264,13 +264,13 @@ object ViewModelHelper {
             LoanStatus.INVALID -> "已失效"
             LoanStatus.CREATED -> "订单创建中"
             LoanStatus.CANCELLED -> "已取消"
-            LoanStatus.AUDITING -> "审核中"
-            LoanStatus.REJECTED -> "审核失败"
-            LoanStatus.APPROVED -> "审核成功"
+            LoanStatus.AUDITING -> getString(R.string.pending_reviewing)
+            LoanStatus.REJECTED -> getString(R.string.review_failed)
+            LoanStatus.APPROVED -> getString(R.string.verify_success2)
             LoanStatus.FAILURE -> "放币失败"
-            LoanStatus.DELIVERED -> "已放币"
+            LoanStatus.DELIVERED -> getString(R.string.loan_issued)
             LoanStatus.RECEIVIED -> "已收币"
-            LoanStatus.REPAID -> "已还币"
+            LoanStatus.REPAID -> getString(R.string.repaid)
             null -> getString(R.string.empty_slash)
         }
     }

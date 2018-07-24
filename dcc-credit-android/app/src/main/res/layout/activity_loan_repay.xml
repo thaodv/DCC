@@ -1,137 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context="io.wexchain.android.dcc.LoanRepayActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="io.wexchain.android.dcc.LoanRepayActivity">
+
     <data>
+
+        <import type="io.wexchain.android.dcc.tools.CommonUtils"/>
+
         <variable
-                name="bill"
-                type="io.wexchain.dccchainservice.domain.LoanRepaymentBill"/>
+            name="bill"
+            type="io.wexchain.dccchainservice.domain.LoanRepaymentBill" />
     </data>
 
     <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <include layout="@layout/include_toolbar"
-                 android:id="@+id/toolbar"
-                />
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/include_toolbar" />
 
         <TextView
-                android:id="@+id/tv_repay_step1_hint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="4dp"
-                android:text="@{`①请将待还币金额 `+ bill.noPayAmount.toPlainString()+bill.assetCode +` 转入到下面的还币地址中`}"
-                tools:text="①请将待还币金额 %.4f%@ 转入到下面的还币地址中"
-                app:layout_constraintTop_toBottomOf="@id/toolbar"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
-                app:layout_constraintLeft_toLeftOf="parent"
-                />
+            android:id="@+id/tv_repay_step1_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="@{CommonUtils.rePay(bill.noPayAmount.toPlainString(),bill.assetCode)}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            tools:text="①请将待还币金额 %.4f%@ 转入到下面的还币地址中" />
 
         <EditText
-                android:id="@+id/et_repay_address"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                tools:text="@sample/address"
-                android:text="@{bill.repaymentAddress}"
-                android:textSize="12sp"
-                android:background="@drawable/bg_rect_frame"
-                android:inputType="none"
-                android:editable="false"
-                android:singleLine="true"
-                app:layout_constraintTop_toBottomOf="@id/tv_repay_step1_hint"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/btn_copy_address"
-                android:layout_marginRight="4dp"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
-                android:layout_marginTop="8dp"
-                />
+            android:id="@+id/et_repay_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_rect_frame"
+            android:editable="false"
+            android:inputType="none"
+            android:singleLine="true"
+            android:text="@{bill.repaymentAddress}"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/btn_copy_address"
+            app:layout_constraintTop_toBottomOf="@id/tv_repay_step1_hint"
+            tools:text="@sample/address" />
 
         <Button
-                android:id="@+id/btn_copy_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/et_repay_address"
-                app:layout_constraintBottom_toBottomOf="@id/et_repay_address"
-                android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:text="复制"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                />
+            android:id="@+id/btn_copy_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="复制"
+            app:layout_constraintBottom_toBottomOf="@id/et_repay_address"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_repay_address" />
 
         <ImageView
-                android:id="@+id/iv_qr_address"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
-                app:layout_constraintTop_toBottomOf="@id/et_repay_address"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginTop="16dp"
-                qrContent="@{bill.repaymentAddress}"
-                />
+            android:id="@+id/iv_qr_address"
+            qrContent="@{bill.repaymentAddress}"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_repay_address" />
 
         <TextView
-                android:id="@+id/tv_qr_hint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="扫描二维码可获得还币地址"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                app:layout_constraintTop_toBottomOf="@id/iv_qr_address"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                />
+            android:id="@+id/tv_qr_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:text="扫描二维码可获得还币地址"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_qr_address" />
 
         <View
-                android:id="@+id/divider_h2"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/divider_stroke_width"
-                style="@style/DividerHorizontal"
-                app:layout_constraintTop_toBottomOf="@id/tv_qr_hint"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
-                android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:layout_marginTop="16dp"
-                />
+            android:id="@+id/divider_h2"
+            style="@style/DividerHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_stroke_width"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_qr_hint" />
 
         <TextView
-                android:id="@+id/tv_repay_step2_hint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="4dp"
-                android:text="②转币完成后点击下面的按钮完成还币"
-                app:layout_constraintTop_toBottomOf="@id/divider_h2"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
-                app:layout_constraintLeft_toLeftOf="parent"
-                />
+            android:id="@+id/tv_repay_step2_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="②转币完成后点击下面的按钮完成还币"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_h2" />
 
         <Button
-                android:id="@+id/btn_confirm_repay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
-                android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:layout_marginTop="24dp"
-                style="@style/Widget.AppCompat.Button.Dcc.Full"
-                android:text="确认还币"
-                app:layout_constraintTop_toBottomOf="@id/tv_repay_step2_hint"
-                />
+            android:id="@+id/btn_confirm_repay"
+            style="@style/Widget.AppCompat.Button.Dcc.Full"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:layout_marginTop="24dp"
+            android:text="确认还币"
+            app:layout_constraintTop_toBottomOf="@id/tv_repay_step2_hint" />
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_confirm_repay"
-                android:text="因转账确认需要时间，请在3分钟之后确认"
-                />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:text="因转账确认需要时间，请在3分钟之后确认"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_confirm_repay" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

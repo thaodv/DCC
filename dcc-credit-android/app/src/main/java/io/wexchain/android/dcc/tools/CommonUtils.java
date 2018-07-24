@@ -9,6 +9,8 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.sql.Struct;
+
 import io.wexchain.android.dcc.App;
 import io.wexchain.dcc.R;
 
@@ -95,6 +97,10 @@ public class CommonUtils {
         } else {
             return "已添加";
         }
+    }
+
+    public static String rePay(String arg1,String arg2){
+        return App.get().getResources().getString(R.string.xxx,arg1,arg2);
     }
     
 }

@@ -330,7 +330,7 @@
             android:enabled="@{!tx.busyChecking}"
             android:minWidth="160dp"
             android:onClick="@{(v)->tx.checkAndProceed(passport.address)}"
-            android:text="@string/next_step"
+            android:text="@string/next"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

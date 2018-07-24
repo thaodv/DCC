@@ -11,13 +11,14 @@ import android.widget.EditText
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.xxy.maple.tllibrary.activity.TlBrowserActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.tl.TlWebPageActivity
-import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.checkonMain
+import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.dcc.R
@@ -25,7 +26,6 @@ import io.wexchain.dcc.databinding.ActivityHomeBinding
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
-import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.ScfAccountInfo
 import zlc.season.rxdownload3.core.Mission
 import java.io.File
@@ -43,12 +43,12 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         })
         setupClicks()
         checkScfAccount()
+        checkUpgrade()
     }
 
     override fun onResume() {
         super.onResume()
         signin()
-        checkUpgrade()
     }
 
     private fun checkUpgrade() {
@@ -100,15 +100,18 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         val passportRepository = App.get().passportRepository
         if (!passportRepository.scfAccountExists) {
             ScfOperations.getScfAccountInfo()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .doMain()
                     .withLoading()
-                    .subscribe { acc ->
-                        if (acc === ScfAccountInfo.ABSENT) {
-                            atLeastCreated {
-                                showRegisterScfWithInviteCodeDialog()
-                            }
-                        } else {
+                    .filter {
+                        val b = it === ScfAccountInfo.ABSENT
+                        if (!b) {
                             passportRepository.scfAccountExists = true
+                        }
+                        b
+                    }
+                    .subscribeBy {
+                        atLeastCreated {
+                            showRegisterScfWithInviteCodeDialog()
                         }
                     }
         }
@@ -119,12 +122,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
 
         ScfOperations.withScfTokenInCurrentPassport {
             App.get().scfApi.signIn(it)
-        }.subscribe({
-        }, {
-            if (it is DccChainServiceException) {
-                print(it.message)
-            }
-        })
+        }.subscribeBy(onError = {})
     }
 
     private val registerScfDialog by lazy { RegisterScfDialog() }

@@ -41,7 +41,7 @@
                         android:gravity="center_vertical"
                         android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:text="认证方:云金融"
+                        android:text="@string/authenticator"
                         />
 
                 <ImageView
@@ -160,7 +160,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:gravity="center_vertical"
-                            android:text="认证内容"
+                            android:text="@string/for_details"
                             app:layout_constraintTop_toBottomOf="@id/divider_h2"
                             android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -183,7 +183,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.AppCompat.Button.Dcc.Full"
-                android:text="更新"
+                android:text="@string/update"
                 android:onClick="@{(v)->vm.renew()}"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginRight="@dimen/content_padding_horizontal"

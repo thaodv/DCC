@@ -48,7 +48,7 @@ android {
         release {
             signingConfig signingConfigs.wexchain
 
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             //            debuggable true
 
@@ -102,7 +102,6 @@ android {
 
 kapt {
     mapDiagnosticLocations = true
-    generateStubs = true
 }
 
 dependencies {
