@@ -7,13 +7,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.content.edit
-import io.wexchain.android.common.Prefs
-import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.dcc.R
@@ -44,14 +41,14 @@ class DccExchangeActivity : BindActivity<ActivityDccExchangeBinding>() {
             }
         }
         binding.ibDccToPublic.setOnClickListener {
-            toast("该功能将在下个版本中开放")
+            toast(getString(R.string.next_version_soon))
         }
         binding.ibPublicToDcc.setOnClickListener {
-            toast("该功能将在下个版本中开放")
+            toast(getString(R.string.next_version_soon))
         }
         val sp = getSharedPreferences("setting", Context.MODE_PRIVATE)
         if (sp.getBoolean("first_into", true)) {
-            sp.edit().putBoolean("first_into",false).commit()
+            sp.edit().putBoolean("first_into", false).commit()
             tipsDialog.show()
         }
     }

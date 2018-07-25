@@ -77,7 +77,7 @@
                 android:gravity="center_vertical"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:text="逾期滞纳金"
+                android:text="@string/overdue_fine"
                 app:layout_constraintTop_toBottomOf="@id/tv_interest_amount_label"
                 visibleOrGone="@{bill.overdue}"
                 />

@@ -76,7 +76,7 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
             CertOperations.saveIdCertData(certOrder, idData)
             finish()
         } else {
-            toast("认证失败")
+            toast(getString(R.string.verification_failed))
             supportFragmentManager.popBackStack()
         }
     }

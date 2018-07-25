@@ -42,7 +42,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="80dp"
                 android:drawableTop="@drawable/logo_empty_reward_records"
-                android:text="暂无奖励"
+                android:text="@string/reward_unavailable"
                 android:gravity="center"
                 visibleOrGone="@{vm.records == null || vm.records.isEmpty()}"
                 />

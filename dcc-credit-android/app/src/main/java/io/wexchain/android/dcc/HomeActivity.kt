@@ -23,7 +23,6 @@ import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityHomeBinding
-import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
 import io.wexchain.dccchainservice.domain.ScfAccountInfo

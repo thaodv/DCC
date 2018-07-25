@@ -12,6 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.tools.getString
 import io.wexchain.dcc.R
 import io.wexchain.digitalwallet.*
 import io.wexchain.digitalwallet.proxy.JuzixErc20Agent
@@ -185,12 +186,12 @@ class TransactionVm {
         from ?: return
         val to = toAddress.get()
         if (to == null || !isEthAddress(to)) {
-            inputNotSatisfiedEvent.value = "收款地址不能为空"
+            inputNotSatisfiedEvent.value = getString(R.string.please_input_the_address_of_collector)
             return
         }
         val value = amount.get()?.toBigDecimalSafe()
         if (value == null || value == BigDecimal.ZERO) {
-            inputNotSatisfiedEvent.value = "金额不能为空"
+            inputNotSatisfiedEvent.value = getString(R.string.please_input_the_transfer_amount)
             return
         }
         if (isEdit) {
@@ -207,7 +208,7 @@ class TransactionVm {
         } else {
             val inputLimit = gasLimit.get()?.toBigIntegerSafe()
             if (inputLimit == null || inputLimit == BigInteger.ZERO) {
-                inputNotSatisfiedEvent.value = "GasLimit不能为空"
+                inputNotSatisfiedEvent.value = getString(R.string.please_input_gaslimit)
                 return
             }
             inputLimit

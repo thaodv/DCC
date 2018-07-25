@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DccChainService</string>
+    <string name="mortgage_loan">抵押借贷</string>
+
 </resources>

@@ -38,6 +38,7 @@ import org.web3j.abi.datatypes.Address;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
@@ -71,12 +72,19 @@ public abstract class TlWalletPayActivity extends BaseActivity implements View.O
 
     private String type = "";
     private String signType = "";
+    private String country = "cn";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tlwallet_pay);
         String data = getIntent().getStringExtra("data");
+        String country = Locale.getDefault().getCountry();
+        if (TextUtils.equals(country, "CN")) {
+            this.country = "cn";
+        } else if (TextUtils.equals(country, "UK") || TextUtils.equals(country, "US")) {
+            this.country = "en";
+        }
         initView();
         initData(data);
     }
@@ -120,7 +128,7 @@ public abstract class TlWalletPayActivity extends BaseActivity implements View.O
             if (TextUtils.equals(type, AppConstant.GlobalValue.TYPE_CREATE)) {
                 transferCreateData = new Gson().fromJson(data, TransferCreateData.class);
                 params.setType(transferCreateData.getType());
-                params.setLanguage("cn");
+                params.setLanguage(country);
                 params.setOrder_no(transferCreateData.getOrder_no());
                 params.setAddress(transferCreateData.getLoan_address());
 
@@ -134,7 +142,7 @@ public abstract class TlWalletPayActivity extends BaseActivity implements View.O
             } else if (TextUtils.equals(type, AppConstant.GlobalValue.TYPE_MORTGAGE)) {
                 transferMortgageData = new Gson().fromJson(data, TransferMortgageData.class);
                 params.setType(transferMortgageData.getType());
-                params.setLanguage("cn");
+                params.setLanguage(country);
                 params.setOrder_no(transferMortgageData.getOrder_no());
                 params.setAddress(transferMortgageData.getLoan_address());
 
@@ -149,7 +157,7 @@ public abstract class TlWalletPayActivity extends BaseActivity implements View.O
             } else if (TextUtils.equals(type, AppConstant.GlobalValue.TYPE_LEND)) {
                 transferLendData = new Gson().fromJson(data, TransferLendData.class);
                 params.setType(transferLendData.getType());
-                params.setLanguage("cn");
+                params.setLanguage(country);
                 params.setOrder_no(transferLendData.getOrder_no());
                 params.setAddress(transferLendData.getLender_address());
 
@@ -164,7 +172,7 @@ public abstract class TlWalletPayActivity extends BaseActivity implements View.O
             } else if (TextUtils.equals(type, AppConstant.GlobalValue.TYPE_REVERT)) {
                 transferRevertData = new Gson().fromJson(data, TransferRevertData.class);
                 params.setType(transferRevertData.getType());
-                params.setLanguage("cn");
+                params.setLanguage(country);
                 params.setOrder_no(transferRevertData.getOrder_no());
                 params.setAddress(transferRevertData.getLoan_address());
 
@@ -178,7 +186,7 @@ public abstract class TlWalletPayActivity extends BaseActivity implements View.O
             } else if (TextUtils.equals(type, AppConstant.GlobalValue.TYPE_INDEMNITY)) {
                 transferIndemnityData = new Gson().fromJson(data, TransferIndemnityData.class);
                 params.setType(transferIndemnityData.getType());
-                params.setLanguage("cn");
+                params.setLanguage(country);
                 params.setOrder_no(transferIndemnityData.getOrder_no());
                 params.setAddress(transferIndemnityData.getLender_address());
 
@@ -192,7 +200,7 @@ public abstract class TlWalletPayActivity extends BaseActivity implements View.O
             } else if (TextUtils.equals(type, AppConstant.GlobalValue.TYPE_CANCLE)) {
                 transferCancleData = new Gson().fromJson(data, TransferCancleData.class);
                 params.setType(transferCancleData.getType());
-                params.setLanguage("cn");
+                params.setLanguage(country);
                 params.setOrder_no(transferCancleData.getOrder_no());
                 params.setAddress(transferCancleData.getLoan_address());
 

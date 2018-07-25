@@ -47,7 +47,7 @@
                     android:minWidth="100dp"
                     android:gravity="center_horizontal"
                     android:textColor="@color/text_blue_magenta"
-                    android:text="跨链转移"
+                    android:text="@string/cross_chain_transfer"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/ib_dcc_to_public"

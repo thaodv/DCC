@@ -187,6 +187,47 @@
     <string name="scan_or_enterinput">Scan or enterinput the wallet address of the receiver</string>
     <string name="receiver_address">Address of collection wallet</string>
     <string name="please_enterinput">Please enterinput the name of address book</string>
+    <string name="more_candies_are_coming">More candies are coming</string>
+    <string name="digging_mining">DiggingMIning…</string>
+    <string name="reward_unavailable">Reward unavailable</string>
+    <string name="calculating">Calculating</string>
+    <string name="issuing">Issuing</string>
+    <string name="share_the_invitation_code">Share the invitation code</string>
+    <string name="to_be_verified">To be verified</string>
+    <string name="verifying">Verifying</string>
+    <string name="unverify_nowied">Unverified</string>
+    <string name="please_complete_the_id_verification_first">Please complete the ID verification first</string>
+    <string name="verification_failed">Verification failed</string>
+    <string name="wrong_password">Wrong password</string>
+    <string name="no_loan_record_available">No loan record available</string>
+    <string name="unsettled">Unsettled</string>
+    <string name="insufficient_balance_holding">Insufficient balance holding</string>
+    <string name="insufficient_balance">Insufficient balance</string>
+    <string name="loan_issuance_failed">Loan issuance failed</string>
+    <string name="creating_order">Creating order</string>
+    <string name="next_version_soon">Thise function will be available in next version soon</string>
+    <string name="cross_chain_transfer">Cross-chain transfer</string>
+    <string name="ongoing">ongoing</string>
+    <string name="your_loan_application_is_under_review">Your loan application is under review</string>
+    <string name="your_application_has_been_approved">Congratulations! Your application has been approved\n the loan will be issued asap</string>
+    <string name="please_try_again_after_a_while">Sorry, the loan issuance failed\n please try again after a while</string>
+    <string name="overdue_fine">Overdue fine</string>
+    <string name="please_input_the_address_of_collector">Please input the address of collector</string>
+    <string name="please_input_the_transfer_amount">Please input the transfer amount</string>
+    <string name="please_input_gaslimit">Please input GasLimit</string>
+    <string name="user_alias_changed">User alias changed</string>
+    <string name="password_length_invalid">Password length is 8 to 20 digits</string>
+    <string name="please_download_and_update">Current version is not available anymore, please download and update</string>
+    <string name="market_quote">Market price</string>
+    <string name="quote_not_available">Inquiry on the market price for this currency failed</string>
+    <string name="transactions_record">Transaction history</string>
+    <string name="transfer">Transfer</string>
+    <string name="collect">Collect</string>
+    <string name="address_book">address book</string>
+    <string name="search">Search</string>
+    <string name="private_key_statement2">Private key statement</string>
+    <string name="local_security_is_disabled_successfully">Local security is disabled successfully, you can enable other security methods</string>
+    <string name="keystore_information">KEYSTORE information</string>
 
 
 </resources>

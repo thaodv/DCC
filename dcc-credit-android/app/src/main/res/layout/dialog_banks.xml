@@ -11,7 +11,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:text="取消"
+            android:text="@string/cancel"
             android:textColor="@color/text_dark"
             android:minWidth="80dp"
             android:minHeight="40dp"

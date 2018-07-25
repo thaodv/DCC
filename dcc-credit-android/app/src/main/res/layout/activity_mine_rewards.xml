@@ -133,7 +133,7 @@
                     android:id="@+id/tv_rewards_empty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="努力挖矿中…"
+                    android:text="@string/digging_mining"
                     android:drawableTop="@drawable/logo_empty_mine_pts"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"

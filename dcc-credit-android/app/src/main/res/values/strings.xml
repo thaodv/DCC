@@ -20,17 +20,12 @@
     <string name="on_chain_dcc">\@Distributed Credit Chain</string>
     <string name="on_chain_ethereum">\@Ethereum</string>
     <string name="dcc">DCC</string>
-    <string name="market_quote">市场价格</string>
-    <string name="quote_not_available">未能查询到该币种市场价格</string>
     <string name="_24h_high">24H High</string>
     <string name="_24h_low">24H Low</string>
     <string name="_24h_vol">24H Vol</string>
-    <string name="transactions_record">交易记录</string>
     <string name="no_transaction_record_yet">未查询到该币种交易记录</string>
     <string name="holding_amount">持有量</string>
     <string name="approx_capital">市值</string>
-    <string name="transfer">转账</string>
-    <string name="collect">收款</string>
     <string name="load_more">加载更多</string>
     <string name="confirm">确定</string>
     <string name="no_more">没有更多了</string>
@@ -81,7 +76,6 @@
     <string name="please_input_phone_service_password">请输入服务密码</string>
     <string name="export_private_key_description">当前二维码显示的是私钥明文,私钥明文是您对钱包所有权的认证方式.通过导入私钥可以再任何设备使用钱包,并创建钱包对应的KeyStore文件和钱包密码.强烈建议您在使用钱包前做好备份.</string>
     <string name="ca_not_enabled">您当前使用的统一登录秘钥与链上不一致,将影响部分功能的正常使用</string>
-    <string name="password_length_invalid">密码长度应在8至20位之间</string>
     <string name="please_select">请选择</string>
     <string name="creation_succeed">创建成功</string>
     <string name="import_succeed">导入成功</string>
@@ -112,6 +106,18 @@
 
 
 
+
+    <string name="address_book">地址簿</string>
+    <string name="keystore_information">KEYSTORE信息</string>
+    <string name="local_security_is_disabled_successfully">关闭安全保护成功,您可以开启其他安全保护方式</string>
+    <string name="private_key_statement2">私钥明文</string>
+    <string name="search">搜索</string>
+    <string name="transfer">转账</string>
+    <string name="collect">收款</string>
+    <string name="transactions_record">交易记录</string>
+    <string name="market_quote">市场价格</string>
+    <string name="quote_not_available">未能查询到该币种市场价格</string>
+    <string name="password_length_invalid">密码长度应在8至20位之间</string>
     <string name="please_enterinput">请输入地址簿名称</string>
     <string name="receiver_address">收款人钱包地址</string>
     <string name="attentiontip">温馨提示:</string>
@@ -269,6 +275,8 @@
     <string name="repaid">已还币</string>
     <string name="review_failed">审核失败</string>
     <string name="pending_reviewing">审核中</string>
+    <string name="loan_issuance_failed">放币失败</string>
+    <string name="creating_order">订单创建中</string>
     <string name="default_address">默认地址</string>
     <string name="local_wallet">本地钱包</string>
     <string name="notes">备注</string>
@@ -300,6 +308,34 @@
     <string name="copy_the_keystore_text_messageinformation">复制KEYSTORE文本信息</string>
     <string name="wallet_password">钱包密码</string>
     <string name="ok_1">知道了</string>
+    <string name="more_candies_are_coming">更多糖果 敬请期待</string>
+    <string name="digging_mining">努力挖矿中…</string>
+    <string name="reward_unavailable">暂无奖励</string>
+    <string name="calculating">统计中</string>
+    <string name="issuing">发放中</string>
+    <string name="share_the_invitation_code">分享邀请码</string>
+    <string name="to_be_verified">待认证</string>
+    <string name="verifying">认证中</string>
+    <string name="please_complete_the_id_verification_first">请先完成实名认证</string>
+    <string name="verification_failed">认证失败</string>
+    <string name="wrong_password">密码错误</string>
+    <string name="no_loan_record_available">暂无借币记录</string>
+    <string name="unsettled">未结清</string>
+    <string name="insufficient_balance_holding">持有量不足</string>
+    <string name="insufficient_balance">余额不足</string>
+    <string name="next_version_soon">该功能将在下个版本中开放</string>
+    <string name="cross_chain_transfer">跨链转移</string>
+    <string name="ongoing">进行中</string>
+    <string name="unverify_nowied">未认证</string>
+    <string name="your_loan_application_is_under_review">您的借币申请正在审核中</string>
+    <string name="your_application_has_been_approved">恭喜您的申请已经审核通过\n我们将尽快打币</string>
+    <string name="please_try_again_after_a_while">很遗憾放币失败\n建议过段时间再尝试</string>
+    <string name="overdue_fine">逾期滞纳金</string>
+    <string name="please_input_the_address_of_collector">收款地址不能为空</string>
+    <string name="please_input_the_transfer_amount">转账金额不能为空</string>
+    <string name="please_input_gaslimit">GasLimit不能为空</string>
+    <string name="user_alias_changed">昵称修改成功</string>
+    <string name="please_download_and_update">当前版本已无法正常使用，请下载更新</string>
 
 
 

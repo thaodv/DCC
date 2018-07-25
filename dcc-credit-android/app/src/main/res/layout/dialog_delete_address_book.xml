@@ -71,7 +71,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_bg_address_latest_used"
                 android:gravity="center"
-                android:text="取消"
+                android:text="@string/cancel"
                 android:textColor="#FFF"
                 android:textSize="16sp"/>
 

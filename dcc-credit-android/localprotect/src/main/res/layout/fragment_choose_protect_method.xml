@@ -63,7 +63,7 @@
             android:textSize="17sp"
             android:padding="10dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:text="指纹识别"
+            android:text="@string/fingerprint_identification"
             android:visibility="@{fingerPrintAvailable?View.VISIBLE:View.GONE}"
             android:enabled="@{fingerPrintEnrolled}"
             android:textColor="?attr/colorAccent"

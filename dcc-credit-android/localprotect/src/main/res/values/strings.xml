@@ -39,6 +39,8 @@
     <string name="check_update">版本更新</string>
     <string name="guesture_password">手势密码</string>
     <string name="digitalnumerical_password">数字密码</string>
+    <string name="fingerprint_identification">指纹识别</string>
+
 
 
 </resources>

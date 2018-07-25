@@ -62,8 +62,8 @@ object ViewModelHelper {
     @JvmStatic
     fun Context.getCertStatusOpText(userCertStatus: UserCertStatus?): String {
         return when (userCertStatus) {
-            UserCertStatus.NONE -> "未认证"
-            UserCertStatus.INCOMPLETE -> "认证中"
+            UserCertStatus.NONE -> getString(R.string.unverify_nowied)
+            UserCertStatus.INCOMPLETE -> getString(R.string.verifying)
             UserCertStatus.DONE -> "认证完成"
             else -> ""
         }
@@ -84,7 +84,7 @@ object ViewModelHelper {
     fun Context.getMarketingActivityStatusText(status: MarketingActivity.Status?): String {
         return when (status) {
             MarketingActivity.Status.SHELVED -> "未开始"
-            MarketingActivity.Status.STARTED -> "进行中"
+            MarketingActivity.Status.STARTED -> getString(R.string.ongoing)
             MarketingActivity.Status.ENDED -> "已结束"
             null -> ""
         }
@@ -113,7 +113,7 @@ object ViewModelHelper {
         return when (status) {
             MarketingActivityScenario.Qualification.REDEEMED -> getString(R.string.collected)
             MarketingActivityScenario.Qualification.AVAILABLE -> getString(R.string.unclaimedcollect_now)
-            null -> "待认证"
+            null -> getString(R.string.to_be_verified)
         }
     }
 
@@ -262,12 +262,12 @@ object ViewModelHelper {
     fun Context.loanStatusText(status: LoanStatus?): CharSequence? {
         return when (status) {
             LoanStatus.INVALID -> "已失效"
-            LoanStatus.CREATED -> "订单创建中"
+            LoanStatus.CREATED -> getString(R.string.creating_order)
             LoanStatus.CANCELLED -> "已取消"
             LoanStatus.AUDITING -> getString(R.string.pending_reviewing)
             LoanStatus.REJECTED -> getString(R.string.review_failed)
             LoanStatus.APPROVED -> getString(R.string.verify_success2)
-            LoanStatus.FAILURE -> "放币失败"
+            LoanStatus.FAILURE -> getString(R.string.loan_issuance_failed)
             LoanStatus.DELIVERED -> getString(R.string.loan_issued)
             LoanStatus.RECEIVIED -> "已收币"
             LoanStatus.REPAID -> getString(R.string.repaid)
@@ -298,10 +298,10 @@ object ViewModelHelper {
             LoanStatus.INVALID -> null//todo
             LoanStatus.CREATED -> null//todo
             LoanStatus.CANCELLED -> null//todo
-            LoanStatus.AUDITING -> "您的借币申请正在审核中"
+            LoanStatus.AUDITING -> getString(R.string.your_loan_application_is_under_review)
             LoanStatus.REJECTED -> "您的借币申请审核失败\n建议过段时间(1个月)再尝试"
-            LoanStatus.APPROVED -> "更新你的申请已经审核通过\n我们将尽快打币"
-            LoanStatus.FAILURE -> "很遗憾放币失败\n建议过短时间(一周后)再尝试"
+            LoanStatus.APPROVED -> getString(R.string.your_application_has_been_approved)
+            LoanStatus.FAILURE -> getString(R.string.please_try_again_after_a_while)
             LoanStatus.DELIVERED -> "已放币"
             LoanStatus.RECEIVIED -> "已收币"
             LoanStatus.REPAID -> "您的订单已处理完毕"
@@ -381,6 +381,7 @@ object ViewModelHelper {
 
     @JvmStatic
     fun concatWithoutNull(vararg texts: String?): String {
+
         return texts.filterNotNull().joinToString(separator = "") { it }
     }
 
@@ -417,7 +418,7 @@ object ViewModelHelper {
             LoanReport.Bill.BillStatus.PAY_OFF -> "已结清"
             LoanReport.Bill.BillStatus.WAITING_VERIFY,
             LoanReport.Bill.BillStatus.CREATED,
-            LoanReport.Bill.BillStatus.CANCELED -> "未结清"
+            LoanReport.Bill.BillStatus.CANCELED -> getString(R.string.unsettled)
             else -> null
         }
     }

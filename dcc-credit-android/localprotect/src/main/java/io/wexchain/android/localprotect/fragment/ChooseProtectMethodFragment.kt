@@ -57,7 +57,7 @@ class ChooseProtectMethodFragment : Fragment(), View.OnClickListener {
     }
 
     var selectListener: CreateProtectSelectListener? = null
-    var cancelText: String = "取消"
+    var cancelText: String = getString(R.string.cancel)
 
     interface CreateProtectSelectListener {
         fun onSelected(type: LocalProtectType)

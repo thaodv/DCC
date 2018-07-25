@@ -20,7 +20,6 @@ import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.tools.appContext
 import io.wexchain.android.dcc.tools.checkonMain
-import io.wexchain.android.dcc.tools.requestPermission
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtectType
@@ -54,7 +53,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
                 }
 
                 override fun cancelText(): String {
-                    return "取消"
+                    return getString(R.string.cancel)
                 }
 
                 override fun onCreateProtectFinish(type: LocalProtectType) {
@@ -64,7 +63,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
             }).show(supportFragmentManager, null)
         })
         protect.protectDisabledEvent.observe(this, Observer {
-            toast("关闭安全保护成功,您可以开启其他安全保护方式")
+            toast(getString(R.string.local_security_is_disabled_successfully))
         })
         VerifyProtectFragment.serve(protect, this)
         binding.protect = protect
@@ -145,24 +144,25 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
 
     private fun downloadApk(versionNumber: String, updateUrl: String) {
         val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-        requestPermission(permission).subscribeBy(
-                onNext = {
-                    val savepath = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress")
-                    if (!savepath.exists()) {
-                        savepath.mkdirs()
-                    }
-                    val filename = "BitExpress$versionNumber.apk"
-                    val file = File(savepath, filename)
-                    if (file.exists()) {
-                        installApk(file)
-                    } else {
-                        val mission = Mission(updateUrl, filename, savepath.absolutePath)
-                        UpgradeDialog(this).crateDownloadDialog(mission)
-                    }
-                },
-                onError = {
-                    toast("没有读写文件权限,授权后才能下载")
-                })
+        RxPermissions(this).request(permission).filter {
+            if (!it) {
+                toast("没有读写文件权限,授权后才能下载")
+            }
+            it
+        }.subscribeBy {
+            val savepath = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress")
+            if (!savepath.exists()) {
+                savepath.mkdirs()
+            }
+            val filename = "BitExpress$versionNumber.apk"
+            val file = File(savepath, filename)
+            if (file.exists()) {
+                installApk(file)
+            } else {
+                val mission = Mission(updateUrl, filename, savepath.absolutePath)
+                UpgradeDialog(this).crateDownloadDialog(mission)
+            }
+        }
     }
 
 
