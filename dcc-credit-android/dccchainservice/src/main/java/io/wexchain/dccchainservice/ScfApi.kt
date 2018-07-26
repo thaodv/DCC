@@ -2,6 +2,7 @@ package io.wexchain.dccchainservice
 
 import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
+import io.wexchain.dccchainservice.util.DateUtil
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -271,16 +272,35 @@ interface ScfApi {
     ): Single<Result<String>>
 
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
-    @POST("/secure/asset/chainTransfer/getChainExchangeList")
+    @POST("secure/asset/chainTransfer/getChainExchangeList")
+    @FormUrlEncoded
     fun getChainExchangeList(
             @Header(ScfApi.HEADER_TOKEN) token: String?,
-            @Field("startTime") startTime: Long,
-            @Field("endTime") endTime: Long,
+            @Field("startTime") startTime: String,
+            @Field("endTime") endTime: String,
             // start @ 1 default 1
-            @Field("number") number: Int? = 1,
+            @Field("number") number: Long,
             // default 20
-            @Field("size") size: Int? = 10000
-    ): Single<Result<AccrossTransRecordList>>
+            @Field("size") size: Long
+    ): Single<Result<PagedList<AccrossTransRecord>>>
+
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    @POST("secure/asset/chainTransfer/queryExchangeAmount")
+    @FormUrlEncoded
+    fun queryExchangeAmount(@Header(ScfApi.HEADER_TOKEN) token: String?,
+                            @Field("startTime") startTime: String = DateUtil.getCurrentMonday(),
+                            @Field("endTime") endTime: String = DateUtil.getCurrentSunday()
+    ): Single<Result<ExchangeAmount>>
+
+    /**
+     * assetCode=DCC ：公链转私链 assetCode=DCC_JUZIX：私链转公链
+     */
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    @POST("secure/asset/chainTransfer/queryExchangeCondition")
+    @FormUrlEncoded
+    fun queryExchangeCondition(@Header(ScfApi.HEADER_TOKEN) token: String?,
+                               @Field("assetCode") assetCode: String = "DCC_JUZIX"
+    ): Single<Result<ExchangeCondition>>
 
     companion object {
         const val HEADER_TOKEN = "x-auth-token"

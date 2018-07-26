@@ -67,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lines="1"
-                    android:text="To DCC@Distributed Credit "
+                    android:text="To DCC@Ethereum"
                     android:textColor="#FF404040"
                     android:textSize="14sp"/>
 
@@ -81,12 +81,12 @@
                 <TextView
                     android:layout_width="98dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/max_pay_money"
+                    android:text="@string/trans_count"
                     android:textColor="#FF404040"
                     android:textSize="14sp"/>
 
                 <TextView
-                    android:id="@+id/tv_max_pay_money"
+                    android:id="@+id/tv_trans_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lines="1"
@@ -104,12 +104,12 @@
                 <TextView
                     android:layout_width="98dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/order_money"
+                    android:text="@string/across_trans_poundage2"
                     android:textColor="#FF404040"
                     android:textSize="14sp"/>
 
                 <TextView
-                    android:id="@+id/tv_order_money"
+                    android:id="@+id/tv_poundage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lines="1"
@@ -127,12 +127,12 @@
                 <TextView
                     android:layout_width="98dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/max_absenteeism"
+                    android:text="@string/to_account_num"
                     android:textColor="#FF404040"
                     android:textSize="14sp"/>
 
                 <TextView
-                    android:id="@+id/tv_max_absenteeism"
+                    android:id="@+id/tv_to_account_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lines="1"

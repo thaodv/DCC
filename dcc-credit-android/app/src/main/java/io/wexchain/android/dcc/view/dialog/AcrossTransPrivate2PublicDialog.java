@@ -16,22 +16,22 @@ import io.wexchain.dcc.R;
  * @author Created by Wangpeng on 2018/7/16 20:04.
  * usage:
  */
-public class AcrossTransDialog extends Dialog implements View.OnClickListener {
+public class AcrossTransPrivate2PublicDialog extends Dialog implements View.OnClickListener {
     
     public ImageButton mIbtClose;
     public Button mBtSure;
     public TextView mTvTransOrientation;
-    public TextView mTvMaxPayMoney;
-    public TextView mTvOrderMoney;
-    public TextView mTvMaxAbsenteeism;
+    public TextView mTvTransCount;
+    public TextView mTvPoundage;
+    public TextView mTvToAccountNum;
     public TextView mTvHoldingCount;
     
-    public AcrossTransDialog(@NonNull Context context) {
+    public AcrossTransPrivate2PublicDialog(@NonNull Context context) {
         super(context, R.style.deleteAddressBookDialog);
         WindowManager.LayoutParams attributes = getWindow().getAttributes();
         attributes.gravity = Gravity.CENTER;
         getWindow().setAttributes(attributes);
-        setContentView(R.layout.dialog_across_trans);
+        setContentView(R.layout.dialog_across_trans_private2public);
         
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         
@@ -40,9 +40,9 @@ public class AcrossTransDialog extends Dialog implements View.OnClickListener {
         mIbtClose.setOnClickListener(this);
         mBtSure.setOnClickListener(this);
         mTvTransOrientation = findViewById(R.id.tv_trans_orientation);
-        mTvMaxPayMoney = findViewById(R.id.tv_max_pay_money);
-        mTvOrderMoney = findViewById(R.id.tv_order_money);
-        mTvMaxAbsenteeism = findViewById(R.id.tv_max_absenteeism);
+        mTvTransCount = findViewById(R.id.tv_trans_count);
+        mTvPoundage = findViewById(R.id.tv_poundage);
+        mTvToAccountNum = findViewById(R.id.tv_to_account_num);
         mTvHoldingCount = findViewById(R.id.tv_holding_count);
         
     }

@@ -23,7 +23,6 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="44dp"
             android:background="#FFF"
             android:fillViewport="true"
             android:overScrollMode="never"
@@ -116,6 +115,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="5dp"
                     android:gravity="center_vertical">

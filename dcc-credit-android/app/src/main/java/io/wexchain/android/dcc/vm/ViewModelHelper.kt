@@ -491,6 +491,21 @@ object ViewModelHelper {
     fun transTime2Str(time: Long): String {
         return DateUtil.getStringTime(time * 1000, "HH:mm:ss")
     }
+
+    @JvmStatic
+    fun isPublic2Private(fromAssetCode: String, toAssetCode: String): Boolean {
+        return fromAssetCode == "DCC" && toAssetCode == "DCC_JUZIX"
+    }
+
+    @JvmStatic
+    fun accrossStatus(status: AccrossTransRecord.Status?): String {
+        return when (status) {
+            AccrossTransRecord.Status.ACCEPTED -> "转移中"
+            AccrossTransRecord.Status.DELIVERED -> "已完成"
+            else -> ""
+        }
+    }
+
 }
 
 fun BigDecimal.currencyToDisplayStr(): String {

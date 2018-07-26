@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import io.wexchain.dcc.R;
+import io.wexchain.dccchainservice.util.DateUtil;
 
 /**
  * @author Created by Wangpeng on 2018/7/16 20:04.
@@ -48,6 +49,9 @@ public class AccrossTransRecordSelectDialog extends Dialog implements View.OnCli
         mTvStartTime.setOnClickListener(this);
         mTvEndTime.setOnClickListener(this);
         mBtSure.setOnClickListener(this);
+        
+        mTvStartTime.setText(DateUtil.getCurrentMonday("yyyy/MM/dd"));
+        mTvEndTime.setText(DateUtil.getCurrentSunday("yyyy/MM/dd"));
         
     }
     

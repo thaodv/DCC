@@ -7,18 +7,7 @@
     <string name="bank_registered_phone_num">银行预留手机号</string>
     <string name="please_input_phone_num">请输入手机号</string>
     <string name="title_liveness_detection">人脸识别</string>
-    <string name="create_new_digital_wallet">新建数字钱包</string>
-    <string name="digital_assets">数字资产</string>
-    <string name="share">分享</string>
-    <string name="title_phone_carrier_certification">手机运营商认证</string>
-    <string name="submit">提交</string>
     <string name="sure">确定</string>
-    <string name="communication_log_submit_hint">
-        温馨提示\n\n1、请使用本人实名制手机号进行认证\n2、服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3、点击“提交”按钮会收到运营商的通知短信，无需回复\n4、如忘记服务密码,请登录运营商官网找回服务密码
-    </string>
-    <string name="dcc_exchange_explain">
-        DCC业务链上的token只能在DCC业务链钱包地址间互转，和以太坊业务链的钱包是通用的，若需要将DCC业务链上的token转入以太坊链，请使用跨链转移功能。
-    </string>
     <string name="communication_log_submit_hint">温馨提示\n\n1、请使用本人实名制手机号进行认证\n2、服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3、点击“提交”按钮会收到运营商的通知短信，无需回复\n4、如忘记服务密码,请登录运营商官网找回服务密码</string>
     <string name="import_and_enable_passport">导入已有钱包</string>
     <string name="enable_passport_will_disable_other_warning">导入口袋成功后，其他设备统一登录功能将不可用</string>
@@ -36,7 +25,6 @@
     <string name="_7d_rate">7d涨跌幅</string>
     <string name="latest_update">最新更新</string>
     <string name="_24h_trans_count">24h交易量</string>
-    <string name="transactions_record">交易记录</string>
     <string name="no_transaction_record_yet">未查询到该币种交易记录</string>
     <string name="holding_amount">持有量</string>
     <string name="approx_capital">市值</string>
@@ -163,7 +151,6 @@
     <string name="incentive_program_2">传播激励\nBitExpress对推荐朋友使用app进行数字资产借贷的用户进行激励，您推荐的好友如果借贷申请成功，借贷服务费的50%将返还给您。</string>
     <string name="incentive_program_3">贡献奖励（挖矿奖励）\nBitExpress中用户的行为都会产生不同的贡献值，贡献值会进行累计，每3小时用户可以在糖果领取的功能中进行糖果领取，获得和BitExpress合作的机构投放的各种Token奖励。</string>
     <string name="incentive_program_4">生态奖励\nBitExpress的底层信用网络构建在Distributed Credit Chain上，因此根据DCC的生态激励规则，BitExpress的用户行为可以获得DCC自动发放的生态奖励。具体的方法规则，请关注DCC网站http://dcc.finance公布的各类策略。</string>
-    <string name="accumulative_income">累计获得%1$s</string>
 
 
     <string name="collect_candies">糖果领取</string>
@@ -394,6 +381,10 @@
     <string name="order_money">订单金额：</string>
     <string name="max_absenteeism">最高矿工费：</string>
     <string name="holding_count">持有量：</string>
+
+    <string name="trans_count">转移数量:</string>
+    <string name="across_trans_poundage2">手续费:</string>
+    <string name="to_account_num">到账数量:</string>
 
     <string name="this_week">本周</string>
     <string name="this_month">本月</string>

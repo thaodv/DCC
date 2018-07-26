@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <import type="android.view.View"/>
+
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
+        <variable
+            name="order"
+            type="io.wexchain.dccchainservice.domain.AccrossTransRecord"
+            />
+
+    </data>
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -29,7 +40,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="4"
                     android:gravity="center_vertical"
-                    android:visibility="gone">
+                    android:visibility="@{ViewModelHelper.isPublic2Private(order.fromAssetCode,order.toAssetCode)?View.GONE:View.VISIBLE}"
+                    tools:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -59,7 +71,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="4"
                     android:gravity="center_vertical"
-                    android:visibility="visible">
+                    android:visibility="@{ViewModelHelper.isPublic2Private(order.fromAssetCode,order.toAssetCode)?View.VISIBLE:View.GONE}"
+                    tools:visibility="visible">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -87,6 +100,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{order.amount}"
                     android:textColor="#FF4A4A4A"
                     android:textSize="14sp"
                     tools:text="100.00"
@@ -103,6 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:text="@{order.exchangeTime==null?null:@string/time_format_yyyymmdd_hhmmss(order.exchangeTime)}"
                     android:textColor="#FF9B9B9B"
                     android:textSize="12sp"
                     tools:text="2018-02-15 10:20:20"/>
@@ -112,6 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:text="@{ViewModelHelper.accrossStatus(order.status)}"
                     android:textColor="#FF9B9B9B"
                     android:textSize="12sp"
                     tools:text="转移中"/>

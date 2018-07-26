@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
+        <variable
+            name="vm"
+            type="io.wexchain.android.dcc.vm.DccExchangeVm"/>
+    </data>
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,7 +18,7 @@
         android:layout_height="match_parent"
         android:background="#FFF"
         android:orientation="vertical"
-        tools:context="io.wexchain.android.dcc.modules.trans.activity.Private2PublicActivity">
+        tools:context="io.wexchain.android.dcc.modules.trans.activity.Public2PrivateActivity">
 
         <include layout="@layout/include_toolbar"/>
 
@@ -49,6 +58,7 @@
                     android:layout_below="@+id/v_line_tip2"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
+                    android:text="@{ViewModelHelper.getBalanceStr(vm.dcc,vm.publicHolding)}"
                     android:textColor="#FFF"
                     android:textSize="12sp"
                     tools:text="10.00"/>
@@ -90,6 +100,7 @@
                     android:layout_below="@+id/v_line_tip1"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
+                    android:text="@{ViewModelHelper.getBalanceStr(vm.dcc,vm.juzixHolding)}"
                     android:textColor="#FFF"
                     android:textSize="12sp"
                     tools:text="10.00"/>
@@ -169,9 +180,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="1000"
+                android:text="@{ViewModelHelper.getBalanceStr(vm.dcc,vm.publicHolding)}"
                 android:textColor="#404040"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                tools:text="1000"/>
 
             <Button
                 android:id="@+id/bt_all"
@@ -379,7 +391,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="15dp"
-            android:text="@string/next_step"
+            android:text="@string/next"
             android:textColor="#FFF"
             android:textSize="15sp"/>
 
