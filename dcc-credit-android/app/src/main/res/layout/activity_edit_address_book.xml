@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/iv_warning"
-                android:text="温馨提示："
+                android:text="@string/attentiontip"
                 android:textColor="#4A4A4A"
                 android:textSize="14sp"/>
 

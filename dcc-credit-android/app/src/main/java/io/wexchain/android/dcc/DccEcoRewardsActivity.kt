@@ -55,8 +55,8 @@ class DccEcoRewardsActivity : BindActivity<ActivityDccEcoRewardsBinding>() {
             },{
                 val e = it.cause?:it
                 if (e is DccChainServiceException && e.businessCode == BusinessCodes.INVALID_STATUS){
-                    binding.incomePtStr = "统计中"
-                    binding.incomeAmountStr = "发放中"
+                    binding.incomePtStr = getString(R.string.calculating)
+                    binding.incomeAmountStr = getString(R.string.issuing)
                 }else{
                     stackTrace(it)
                 }

@@ -52,7 +52,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="未找到相关内容"
+            android:text="@string/data_unavailable"
             android:textColor="#9B9B9B"
             android:textSize="16sp"
             />

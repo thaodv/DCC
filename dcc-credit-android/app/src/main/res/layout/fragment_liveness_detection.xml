@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.AppCompat.Button.Dcc.Full"
-                android:text="@{portrait==null?@string/next_step:@string/do_certification}"
+                android:text="@{portrait==null?@string/next:@string/do_certification}"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:layout_marginTop="16dp"

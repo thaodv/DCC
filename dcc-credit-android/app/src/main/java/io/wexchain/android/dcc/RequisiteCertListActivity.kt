@@ -157,10 +157,10 @@ class RequisiteCertListActivity : BaseCompatActivity() {
 
     private fun getCertTypeTitle(certificationType: CertificationType): String {
         return when (certificationType) {
-            CertificationType.ID -> "身份证认证"
+            CertificationType.ID -> getString(R.string.id_verification)
             CertificationType.PERSONAL -> "真实信息认证"
-            CertificationType.BANK -> "银行卡认证"
-            CertificationType.MOBILE -> "运营商认证"
+            CertificationType.BANK -> getString(R.string.bank_account_verification)
+            CertificationType.MOBILE -> getString(R.string.carrier_verification)
         }
     }
 }

@@ -40,14 +40,14 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="认证方:云金融"
+                    android:text="@string/authenticator"
                     android:textColor="@color/text_blue_magenta"
                     />
 
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="请拍摄身份证照片,系统自动识别"
+                    android:text="@string/provide_photos_of_both_sides"
                     />
 
             <android.support.constraint.ConstraintLayout
@@ -88,7 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
-                    android:text="姓名"
+                    android:text="@string/name_label"
                     android:layout_marginTop="4dp"
                     />
 
@@ -112,7 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
-                    android:text="性别"
+                    android:text="@string/gender"
                     android:layout_marginTop="4dp"
                     />
 
@@ -137,7 +137,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:layout_marginTop="4dp"
-                    android:text="民族"
+                    android:text="@string/ethnicity"
                     />
 
             <EditText
@@ -161,7 +161,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:layout_marginTop="4dp"
-                    android:text="身份证号"
+                    android:text="@string/id_no_label"
                     />
 
             <EditText
@@ -187,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:layout_marginTop="4dp"
-                    android:text="住址"
+                    android:text="@string/address"
                     />
 
             <EditText
@@ -211,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:layout_marginTop="4dp"
-                    android:text="签发机构"
+                    android:text="@string/issuer"
                     />
 
             <EditText
@@ -236,7 +236,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                     android:layout_marginTop="4dp"
-                    android:text="有效期限"
+                    android:text="@string/expires_on"
                     />
 
             <EditText
@@ -268,7 +268,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="@{(v)->vm.confirmToNext()}"
-                    android:text="下一步"
+                    android:text="@string/next"
                     />
         </LinearLayout>
     </ScrollView>

@@ -5,6 +5,7 @@ import android.databinding.ObservableField
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.vm.domain.IdCardCertData
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.android.idverify.IdVerifyHelper
@@ -128,7 +129,7 @@ class EditIdCardInfoVm : ViewModel() {
                 }
             }
             App.get().certApi.idOcr(CertApi.uploadFilePart(imgBytes, "id.jpg", "image/jpeg"))
-                    .check()
+                    .checkonMain()
                     .doOnSubscribe {
                         ocrProcessing.value = true
                     }

@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:text="更多糖果 敬请期待"
+                android:text="@string/more_candies_are_coming"
                 app:layout_constraintLeft_toRightOf="@id/iv_more_candy"
                 app:layout_constraintRight_toRightOf="parent"
                 />

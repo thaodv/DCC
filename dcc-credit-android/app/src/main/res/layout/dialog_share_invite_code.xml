@@ -10,7 +10,7 @@
             android:id="@+id/tv_share_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="分享给我的好友"
+            android:text="@string/share_onshare_on"
             android:padding="8dp"
             android:gravity="center"
             />
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:text="微信朋友圈"
+                android:text="@string/wechat_moments"
                 android:drawableTop="@drawable/logo_wechat_circle"
                 />
     </FrameLayout>
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:text="微信好友"
+                android:text="@string/wechat"
                 android:drawableTop="@drawable/logo_wechat_friend"
                 />
     </FrameLayout>

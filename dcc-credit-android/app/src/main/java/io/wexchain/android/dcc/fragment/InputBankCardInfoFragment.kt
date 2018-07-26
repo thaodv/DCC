@@ -13,6 +13,7 @@ import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.android.dcc.vm.InputBankCardInfoVm
@@ -49,7 +50,7 @@ class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), 
 //        rxLocation = RxLocationManager(ctx)
         rxPermissions = RxPermissions(ctx)
         App.get().marketingApi.getBankList()
-                .check()
+                .checkonMain()
                 .subscribeBy {
                     adapter.setList(it)
                 }
@@ -104,7 +105,7 @@ class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), 
 
     override fun onResume() {
         super.onResume()
-        activity!!.setTitle(R.string.title_bank_card_certification)
+        activity!!.setTitle(R.string.bank_account_verification)
 
 //        checkPreconditions()
     }

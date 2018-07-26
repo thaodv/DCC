@@ -13,7 +13,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.*
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ItemLoanProductBinding
@@ -97,7 +97,7 @@ class LoanProductListActivity : BaseCompatActivity(), ItemViewClickListener<Loan
 
     private fun loadData() {
         App.get().scfApi.queryLoanProductsByLenderCode()
-                .check()
+                .checkonMain()
                 .subscribeBy {
                     adapter.setList(it)
                     findViewById<RecyclerView>(R.id.rv_list).scrollToPosition(0)

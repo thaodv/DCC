@@ -166,7 +166,7 @@ class SubmitCommunicationLogActivity : BaseCompatActivity(), InputPhoneInfoFragm
     }
 
     private fun onPasswordError() {
-        toast("密码错误")
+        toast(getString(R.string.wrong_password))
     }
 
     private fun verifyViaQueryPwd() {

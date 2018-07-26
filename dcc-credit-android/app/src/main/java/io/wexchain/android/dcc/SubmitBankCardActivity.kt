@@ -149,7 +149,7 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
             CertOperations.saveBankCertData(certOrder,bankCardInfo)
             finish()
         } else {
-            toast("认证失败")
+            toast(getString(R.string.verification_failed))
             supportFragmentManager.popBackStack()
         }
     }

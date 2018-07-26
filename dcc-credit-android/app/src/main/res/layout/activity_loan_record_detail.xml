@@ -30,7 +30,7 @@
                 android:id="@+id/tv_loan_amount_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="借币金额"
+                android:text="@string/amount"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
@@ -54,7 +54,7 @@
                 android:id="@+id/tv_order_id_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="订单号:"
+                android:text="@string/order_number2"
                 app:layout_constraintTop_toBottomOf="@id/tv_loan_amount_value"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
@@ -70,16 +70,16 @@
                 android:text="@{order.orderIdStr}"
                 tools:text="10091"
                 />
+
         <TextView
-                android:id="@+id/tv_loan_time_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/loan_time_colon"
-                app:layout_constraintTop_toBottomOf="@id/tv_order_id_label"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
-                android:layout_marginTop="16dp"
-                />
+            android:id="@+id/tv_loan_time_label"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="@string/loan_time_colon"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_order_id_label" />
 
         <TextView
                 android:layout_width="wrap_content"
@@ -118,7 +118,7 @@
                 android:id="@+id/tv_loan_fee_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="借币手续费:"
+                android:text="@string/handling_fee_of_loan"
                 app:layout_constraintTop_toBottomOf="@id/tv_loan_interest_label"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
@@ -218,7 +218,7 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="借币合同"
+                    android:text="@string/loan_contract"
                     android:layout_gravity="center_vertical|left"
                     />
 
@@ -241,7 +241,7 @@
                 android:layout_marginBottom="24dp"
                 android:text="@{ViewModelHelper.loanStatusAction(context,order)}"
                 visibleOrGone="@{ViewModelHelper.loanStatusAction(context,order)!=null}"
-                tools:text="还币"
+                tools:text="@string/try_again"
                 />
 
     </android.support.constraint.ConstraintLayout>

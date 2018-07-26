@@ -46,7 +46,7 @@
             android:background="@drawable/shape_bg_address_latest_used"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="搜索"
+            android:text="@string/search"
             android:visibility="gone"/>
 
     </LinearLayout>

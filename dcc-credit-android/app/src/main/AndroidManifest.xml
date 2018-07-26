@@ -38,7 +38,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.MyCreditActivity"
-            android:label="@string/title_my_credit"
+            android:label="@string/my_credit"
             android:screenOrientation="portrait"
             android:theme="@style/DccLightTheme.App.Immerse"/>
         <activity
@@ -53,7 +53,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.SubmitBankCardActivity"
-            android:label="@string/title_bank_card_certification"
+            android:label="@string/bank_account_verification"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.CreatePassportActivity"
@@ -110,7 +110,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.PassportSettingsActivity"
-            android:label="设置"
+            android:label="@string/settings"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.PassportRemovalActivity"
@@ -127,7 +127,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.ModifyPassportPasswordActivity"
-            android:label="修改钱包密码"
+            android:label="@string/change_the_wallet_password"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.SearchDigitalCurrencyActivity"
@@ -137,7 +137,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.MarketingListActivity"
-            android:label="糖果领取"
+            android:label="@string/collect_candies"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.MarketingScenariosActivity"
@@ -159,7 +159,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.AboutActivity"
-            android:label="关于我们"
+            android:label="@string/about_us"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.AffiliateActivity"
@@ -167,13 +167,13 @@
             android:theme="@style/DccLightTheme.App.Transparent"/>
         <activity
             android:name="io.wexchain.android.dcc.LoanActivity"
-            android:label="信用借币"
+            android:label="@string/based_loan"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/DccLightTheme.App.Transparent"/>
         <activity
             android:name="io.wexchain.android.dcc.AddBeneficiaryAddressActivity"
-            android:label="添加收款地址"
+            android:label="@string/add_annew_collection_address"
             android:screenOrientation="portrait">
         </activity>
         <activity
@@ -181,7 +181,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddAddressBookActivity"
-            android:label="添加地址"
+            android:label="@string/add_address"
             android:screenOrientation="portrait">
         </activity>
         <activity
@@ -195,7 +195,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.LoanProductListActivity"
-            android:label="我要借币"
+            android:label="@string/apply_for_a_crypto_loan"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.LoanProductDetailActivity"
@@ -208,12 +208,12 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.LoanSubmitResultActivity"
-            android:label="借币申请结果"
+            android:label="@string/result_of_loan_application"
             android:noHistory="true"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.LoanRecordsActivity"
-            android:label="借币记录"
+            android:label="@string/loan_history"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.EditBeneficiaryAddressActivity"
@@ -223,7 +223,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.LoanRecordDetailActivity"
-            android:label="借币详情"
+            android:label="@string/loan_details"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.LoanRepayResultActivity"
@@ -232,7 +232,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.LoanRepayActivity"
-            android:label="还币"
+            android:label="@string/repayment"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.ChooseBeneficiaryAddressActivity"
@@ -240,15 +240,15 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.ChooseAddressBookActivity"
-            android:label="选择地址"
+            android:label="@string/select_address"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.ReviewRepayActivity"
-            android:label="还币信息确认"
+            android:label="@string/confirmation_of_repayment"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.RequisiteCertListActivity"
-            android:label="所需资料"
+            android:label="@string/required_information"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.IncentiveProgramActivity"
@@ -269,32 +269,32 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.LoanReportActivity"
-            android:label="借贷报告"
+            android:label="@string/loan_report"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.LoanReportDetailActivity"
-            android:label="借币详情"
+            android:label="@string/loan_details"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.LoanBillDetailActivity"
-            android:label="还款计划"
+            android:label="@string/repayment_plan"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.DccAffiliateActivity"
-            android:label="邀请好友"
+            android:label="@string/invite_friends"
             android:screenOrientation="portrait"
             android:theme="@style/DccLightTheme.App.Transparent.Aff"/>
         <activity
             android:name="io.wexchain.android.dcc.DccAffiliateTermsActivity"
-            android:label="活动规则"
+            android:label="@string/rules"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.DccAffiliateRecordsActivity"
-            android:label="邀请记录"
+            android:label="@string/invitation_history"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.CreateScfAccountActivity"
@@ -303,43 +303,43 @@
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.DccEcoRewardsActivity"
-            android:label="生态奖励"
+            android:label="@string/eco_rewardsds"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.DccEcoRewardsListActivity"
-            android:label="奖励详情"
+            android:label="@string/reward_details"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.DccEcoRewardsTermsActivity"
-            android:label="活动规则"
+            android:label="@string/rules"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"/>
         <activity
             android:name="io.wexchain.android.dcc.MineRewardsActivity"
-            android:label="挖矿奖励"
+            android:label="@string/mining_rewardss"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.DccMineRewardsTermsActivity"
-            android:label="活动规则"
+            android:label="@string/rules"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.MinePtRulesActivity"
-            android:label="加速挖矿"
+            android:label="@string/mine_faster"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.MinePtListActivity"
-            android:label="贡献值详情"
+            android:label="@string/mining_contribution_details"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.MineRewardRecordsActivity"
-            android:label="领取记录"
+            android:label="@string/rewards_collection_record"
             android:screenOrientation="portrait">
         </activity>
         <activity

@@ -38,6 +38,7 @@ class ChooseProtectMethodFragment : Fragment(), View.OnClickListener {
         val context = context!!
         binding.fingerPrintAvailable = context.fingerPrintAvailable()
         binding.fingerPrintEnrolled = context.fingerPrintEnrolled()
+        cancelText = getString(R.string.cancel)
     }
 
     override fun onClick(v: View?) {
@@ -57,7 +58,7 @@ class ChooseProtectMethodFragment : Fragment(), View.OnClickListener {
     }
 
     var selectListener: CreateProtectSelectListener? = null
-    var cancelText: String = "取消"
+    var cancelText: String = ""
 
     interface CreateProtectSelectListener {
         fun onSelected(type: LocalProtectType)

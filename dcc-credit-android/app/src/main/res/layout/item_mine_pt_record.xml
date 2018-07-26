@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{record.bonusName}"
-                tools:text="实名认证"
+                tools:text="@string/id_verification"
                 android:textColor="@color/text_dark"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toRightOf="@id/iv_pt_type"

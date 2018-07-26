@@ -8,7 +8,9 @@ import android.databinding.ObservableInt
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
+import io.wexchain.android.dcc.tools.getString
 import io.wexchain.android.dcc.vm.domain.LoanScratch
+import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.LoanProduct
 import java.math.BigDecimal
@@ -139,9 +141,9 @@ class StartLoanVm : ViewModel() {
         if(requiredCerts.isNotEmpty()){
             failEvent.value = requiredCerts.map {
                 when (it) {
-                    ChainGateway.BUSINESS_ID -> "身份证信息"
-                    ChainGateway.BUSINESS_BANK_CARD -> "银行卡信息"
-                    ChainGateway.BUSINESS_COMMUNICATION_LOG -> "运营商信息"
+                    ChainGateway.BUSINESS_ID -> getString(R.string.id)
+                    ChainGateway.BUSINESS_BANK_CARD -> getString(R.string.bank_accoun)
+                    ChainGateway.BUSINESS_COMMUNICATION_LOG -> getString(R.string.carrier_information)
                     else -> it
                 } + "认证未完成"
             }.first()

@@ -42,7 +42,7 @@
                         android:gravity="center_vertical"
                         android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:text="认证方:云金融"
+                        android:text="@string/authenticator"
                         />
 
                 <ImageView

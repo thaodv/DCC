@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">DccChainService</string>
+    <string name="mortgage_loan">抵押借贷</string>
+    <string name="day">天</string>
+    <string name="id_verification">身份证认证</string>
+    <string name="bank_account_verification">银行卡认证</string>
+    <string name="carrier_verification">运营商认证</string>
+
 </resources>

@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">TLLibrary</string>
+
+    <string name="text_close">close</string>
+
+
+    <string name="text_title">wallet</string>
+    <string name="text_detail">Detail</string>
+    <string name="text_loadn_address">Borrow Address:</string>
+    <string name="text_contract_address">Contract Address:</string>
+    <string name="text_fee">Fee:</string>
+    <string name="text_mining_fee">Mining Fee:</string>
+    <string name="text_min">slow</string>
+    <string name="text_max">fast</string>
+    <string name="text_submit">Confirm Payment</string>
+
+    <string name="loading">Please wait a moment …</string>
+
+    <string name="text_transaction_amount_create">Cost of Contract:</string>
+    <string name="text_transaction_amount_mortgage">Collateral  Amount:</string>
+    <string name="text_transaction_amount_lend">Lending Amount:</string>
+    <string name="text_transaction_amount_revert">Paid Amount:</string>
+    <string name="text_transaction_amount_indemnity">Compensation Amount:</string>
+    <string name="text_transaction_amount_cancle">Cancel Amount:</string>
+
+</resources>

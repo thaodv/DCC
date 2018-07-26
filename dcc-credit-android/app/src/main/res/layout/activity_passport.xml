@@ -75,7 +75,7 @@
             android:layout_marginLeft="@dimen/margin_content_horizontal"
             android:layout_marginRight="@dimen/margin_content_horizontal"
             android:layout_marginTop="20dp"
-            android:text="统一登录使用记录"
+            android:text="@string/oauth_login_history"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"

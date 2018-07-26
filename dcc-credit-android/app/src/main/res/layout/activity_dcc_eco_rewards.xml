@@ -51,7 +51,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
-                            android:text="昨日获得生态值"
+                            android:text="@string/eco_pointss_earnedfrom_yesterday"
                             />
 
                     <TextView
@@ -82,7 +82,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
-                            android:text="获得奖励"
+                            android:text="@string/rewardss"
                             />
 
                     <TextView

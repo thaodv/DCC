@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import io.reactivex.Single
 import io.wexchain.android.common.getViewModel
-import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
@@ -21,9 +20,9 @@ class MinePtListActivity : BindActivity<ActivityMinePtListBinding>() {
     override val contentLayoutId: Int
         get() = R.layout.activity_mine_pt_list
 
-    private val adapter = SimpleDataBindAdapter<ItemMinePtRecordBinding,MineContributionRecord>(
-        layoutId = R.layout.item_mine_pt_record,
-        variableId = BR.record
+    private val adapter = SimpleDataBindAdapter<ItemMinePtRecordBinding, MineContributionRecord>(
+            layoutId = R.layout.item_mine_pt_record,
+            variableId = BR.record
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +33,7 @@ class MinePtListActivity : BindActivity<ActivityMinePtListBinding>() {
     }
 
     private fun initLoad() {
-        if(adapter.itemCount == 0){
+        if (adapter.itemCount == 0) {
             findViewById<SmartRefreshLayout>(R.id.srl_list).autoRefresh()
         }
     }
@@ -43,19 +42,19 @@ class MinePtListActivity : BindActivity<ActivityMinePtListBinding>() {
         val vm = getViewModel<MinePtListVm>()
         findViewById<RecyclerView>(R.id.rv_list).adapter = adapter
         val srl = findViewById<SmartRefreshLayout>(R.id.srl_list)
-        srl.setOnRefreshListener {sr->
+        srl.setOnRefreshListener { sr ->
             vm.refresh { sr.finishRefresh() }
         }
-        srl.setOnLoadMoreListener { sr->
+        srl.setOnLoadMoreListener { sr ->
             vm.loadNext { sr.finishLoadMore() }
         }
         binding.vm = vm
     }
 
-    class MinePtListVm:PagedVm<MineContributionRecord>(){
+    class MinePtListVm : PagedVm<MineContributionRecord>() {
         override fun loadPage(page: Int): Single<PagedList<MineContributionRecord>> {
             return ScfOperations.withScfTokenInCurrentPassport {
-                App.get().scfApi.queryMineContributionRecord(it,page.toLong())
+                App.get().scfApi.queryMineContributionRecord(it, page.toLong())
             }
         }
 

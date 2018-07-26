@@ -5,9 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewCompat
 import android.view.View
+import android.widget.TextView
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.onClick
 import io.wexchain.android.common.withTransitionEnabled
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.Transitions
@@ -19,6 +21,8 @@ import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.dcc.databinding.ActivityDigitalAssetsBinding
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
+import org.jetbrains.anko.displayMetrics
+import org.jetbrains.anko.find
 
 class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), ItemViewClickListener<DigitalCurrency> {
 

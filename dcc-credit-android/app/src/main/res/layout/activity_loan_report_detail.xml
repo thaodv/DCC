@@ -62,7 +62,7 @@
                     app:layout_constraintLeft_toLeftOf="@id/v_frame_info"
                     android:layout_marginTop="12dp"
                     android:layout_marginLeft="8dp"
-                    android:text="借币金额"
+                    android:text="@string/amount"
                     />
 
             <TextView
@@ -84,7 +84,7 @@
                     app:layout_constraintLeft_toLeftOf="@id/v_frame_info"
                     android:layout_marginTop="12dp"
                     android:layout_marginLeft="8dp"
-                    android:text="放币机构"
+                    android:text="@string/loan_issuerlender"
                     />
 
             <TextView
@@ -106,7 +106,7 @@
                     app:layout_constraintLeft_toLeftOf="@id/v_frame_info"
                     android:layout_marginTop="12dp"
                     android:layout_marginLeft="8dp"
-                    android:text="订单号"
+                    android:text="@string/order_number"
                     />
 
             <TextView
@@ -128,7 +128,7 @@
                     app:layout_constraintLeft_toLeftOf="@id/v_frame_info"
                     android:layout_marginTop="12dp"
                     android:layout_marginLeft="8dp"
-                    android:text="借币期限"
+                    android:text="@string/term"
                     />
 
             <TextView
@@ -150,7 +150,7 @@
                     app:layout_constraintLeft_toLeftOf="@id/v_frame_info"
                     android:layout_marginTop="12dp"
                     android:layout_marginLeft="8dp"
-                    android:text="借币方式"
+                    android:text="@string/type_of_loan"
                     />
 
             <TextView
@@ -172,7 +172,7 @@
                     app:layout_constraintLeft_toLeftOf="@id/v_frame_info"
                     android:layout_marginTop="12dp"
                     android:layout_marginLeft="8dp"
-                    android:text="借币时间"
+                    android:text="@string/loan_applied_atrequest_initiated_on"
                     />
 
             <TextView
@@ -194,7 +194,7 @@
                     app:layout_constraintLeft_toLeftOf="@id/v_frame_info"
                     android:layout_marginTop="12dp"
                     android:layout_marginLeft="8dp"
-                    android:text="放币时间"
+                    android:text="@string/loan_issued_atloan_provided_on"
                     />
 
             <TextView
@@ -216,7 +216,7 @@
                     app:layout_constraintLeft_toLeftOf="@id/v_frame_info"
                     android:layout_marginTop="12dp"
                     android:layout_marginLeft="8dp"
-                    android:text="借币期数"
+                    android:text="@string/number_of_period"
                     />
 
             <TextView
@@ -295,7 +295,7 @@
                 app:layout_constraintLeft_toLeftOf="@id/v_frame_info2"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="8dp"
-                android:text="应还日期"
+                android:text="@string/deadline_of_repayment"
                 />
 
             <TextView
@@ -318,7 +318,7 @@
                 app:layout_constraintLeft_toLeftOf="@id/v_frame_info2"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="8dp"
-                android:text="应还金额"
+                android:text="@string/amount_to"
                 />
 
             <TextView
@@ -343,7 +343,7 @@
                 app:layout_constraintLeft_toLeftOf="@id/v_frame_info2"
                 android:layout_marginTop="12dp"
                 android:layout_marginLeft="8dp"
-                android:text="订单状态"
+                android:text="@string/order_status"
                 />
 
             <TextView

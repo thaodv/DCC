@@ -19,7 +19,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccProviderHeadline"
-                android:text="@string/certificate_org_colon_sina_cloud_finance"
+                android:text="@string/authenticator"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
