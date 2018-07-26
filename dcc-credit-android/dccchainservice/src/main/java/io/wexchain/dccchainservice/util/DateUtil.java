@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.tools;
+package io.wexchain.dccchainservice.util;
 
 import android.annotation.SuppressLint;
 

@@ -49,6 +49,7 @@ class App : MultiDexApplication() {
     lateinit var privateChainApi: PrivateChainApi
     lateinit var marketingApi: MarketingApi
     lateinit var scfApi: ScfApi
+    lateinit var coinMarketCapApi: CoinMarketCapApi
 
     //public services
     lateinit var etherScanApi: EtherScanApi
@@ -94,7 +95,7 @@ class App : MultiDexApplication() {
         passportRepository.load()
         assetsRepository = AssetsRepository(
                 dao,
-                chainFrontEndApi,
+                chainFrontEndApi, coinMarketCapApi,
                 EthereumAgent(publicRpc, EthsTxAgent.by(etherScanApi)),
                 ::buildAgent
         )
@@ -118,6 +119,7 @@ class App : MultiDexApplication() {
         privateChainApi = networking.createApi(PrivateChainApi::class.java, BuildConfig.CHAIN_EXPLORER_URL)
         marketingApi = networking.createApi(MarketingApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
         scfApi = networking.createApi(ScfApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
+        coinMarketCapApi = networking.createApi(CoinMarketCapApi::class.java, BuildConfig.COIN_MARKET)
 
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))
         ethplorerApi = networking.createApi(EthplorerApi::class.java, EthplorerApi.API_URL)

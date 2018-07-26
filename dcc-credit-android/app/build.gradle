@@ -57,6 +57,7 @@ android {
             buildConfigField 'java.lang.String', 'CHAIN_EXPLORER_URL', '"http://wexpass.cn/chain-observer/restful/"'
             buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://gateway.wexpass.cn/chain-service-frontend/"'
             buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://gateway.wexpass.cn/passport-gateway/restful/"'
+            buildConfigField 'java.lang.String', 'COIN_MARKET', '""'
         }
         debug {
             //            signingConfig signingConfigs.wexchain
@@ -72,6 +73,7 @@ android {
             //            buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://10.65.100.61:8383/"'//yy本机
             buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://10.65.178.18:9033/chain-service-frontend/"'
             buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://10.65.178.18:9511/passport-gateway/restful/"'
+            buildConfigField 'java.lang.String', 'COIN_MARKET', '"http://10.65.178.50:9310/coin-market/"'
         }
         staging {
             initWith debug
@@ -80,6 +82,7 @@ android {
             //mock
             buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://10.65.209.20:9033/chain-service-frontend/"'
             buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://222.73.39.37:9511/passport-gateway/restful/"'
+            buildConfigField 'java.lang.String', 'COIN_MARKET', '"http://10.65.209.21:9310/coin-market/"'
 
             matchingFallbacks = ['debug']
         }

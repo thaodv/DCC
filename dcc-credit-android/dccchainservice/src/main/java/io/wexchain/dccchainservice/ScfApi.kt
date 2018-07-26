@@ -270,6 +270,18 @@ interface ScfApi {
             @Header(ScfApi.HEADER_TOKEN) token: String?
     ): Single<Result<String>>
 
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    @POST("/secure/asset/chainTransfer/getChainExchangeList")
+    fun getChainExchangeList(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("startTime") startTime: Long,
+            @Field("endTime") endTime: Long,
+            // start @ 1 default 1
+            @Field("number") number: Int? = 1,
+            // default 20
+            @Field("size") size: Int? = 10000
+    ): Single<Result<AccrossTransRecordList>>
+
     companion object {
         const val HEADER_TOKEN = "x-auth-token"
     }

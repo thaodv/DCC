@@ -41,6 +41,10 @@
     <string name="_24h_high">24H High</string>
     <string name="_24h_low">24H Low</string>
     <string name="_24h_vol">24H Vol</string>
+    <string name="_1h_rate">1h涨跌幅</string>
+    <string name="_7d_rate">7d涨跌幅</string>
+    <string name="latest_update">最新更新</string>
+    <string name="_24h_trans_count">24h交易量</string>
     <string name="transactions_record">交易记录</string>
     <string name="no_transaction_record_yet">未查询到该币种交易记录</string>
     <string name="holding_amount">持有量</string>

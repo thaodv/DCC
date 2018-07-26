@@ -15,6 +15,7 @@ import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.*
+import io.wexchain.dccchainservice.util.DateUtil
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.api.domain.front.Quote
@@ -144,8 +145,8 @@ object ViewModelHelper {
         // 微财富 appId = 1 , appName = com.weicaifu.wcf
 //            "1" -> ContextCompat.getDrawable(context, R.drawable.wcflogo)
             else -> ContextCompat.getDrawable(
-                this,
-                R.drawable.ic_launcher
+                    this,
+                    R.drawable.ic_launcher
             )
         }
     }
@@ -168,7 +169,7 @@ object ViewModelHelper {
     fun getDccStrPlus(holding: BigInteger?): String {
         return holding?.let {
             val holdingStr = Currencies.DCC.toDecimalAmount(it)
-                .setScale(2, RoundingMode.DOWN).toPlainString()
+                    .setScale(2, RoundingMode.DOWN).toPlainString()
             "+$holdingStr DCC"
         } ?: "--"
     }
@@ -177,7 +178,7 @@ object ViewModelHelper {
     fun getDccStr(holding: BigInteger?): String? {
         return holding?.let {
             val holdingStr = Currencies.DCC.toDecimalAmount(it)
-                .currencyToDisplayStr()
+                    .currencyToDisplayStr()
             "$holdingStr DCC"
         } ?: ""
     }
@@ -232,10 +233,10 @@ object ViewModelHelper {
                 } else {
                     SpannableString(text).apply {
                         setSpan(
-                            ForegroundColorSpan(ContextCompat.getColor(this@requisiteListStr, R.color.text_red)),
-                            0,
-                            length,
-                            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                                ForegroundColorSpan(ContextCompat.getColor(this@requisiteListStr, R.color.text_red)),
+                                0,
+                                length,
+                                Spannable.SPAN_INCLUSIVE_EXCLUSIVE
                         )
                     }
                 }
@@ -392,7 +393,7 @@ object ViewModelHelper {
         return if (loanReport == null || loanReport.isFromOtherAddress()) {
             ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_other)
         } else {
-            if(!loanReport.isMort()){
+            if (!loanReport.isMort()) {
                 when (loanReport?.status) {
                     LoanStatus.REPAID -> ContextCompat.getDrawable(
                             this,
@@ -400,7 +401,7 @@ object ViewModelHelper {
                     )
                     else -> ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_incomplete)
                 }
-            }else{
+            } else {
                 when (loanReport?.mortgageStatus) {
                     MortgageStatus.REPAID -> ContextCompat.getDrawable(
                             this,
@@ -487,6 +488,11 @@ object ViewModelHelper {
     fun mineRewardAmountStr(mineCandy: MineCandy?): CharSequence? {
         mineCandy ?: return null
         return "+${Currencies.DCC.toDecimalAmount(mineCandy.amount).currencyToDisplayStr()}${Currencies.DCC.symbol}"
+    }
+
+    @JvmStatic
+    fun transTime2Str(time: Long): String {
+        return DateUtil.getStringTime(time * 1000, "HH:mm:ss")
     }
 }
 
