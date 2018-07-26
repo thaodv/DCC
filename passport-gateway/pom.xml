@@ -170,6 +170,21 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.wexchain.cah</groupId>
+			<artifactId>crypto-asset-hosting-api</artifactId>
+			<version>0.6-SNAPSHOT</version>
+		</dependency>
 
 	</dependencies>
 </project>

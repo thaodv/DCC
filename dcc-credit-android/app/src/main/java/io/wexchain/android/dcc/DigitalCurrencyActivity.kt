@@ -8,12 +8,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity
+import io.wexchain.android.dcc.tools.SharedPreferenceUtil
 import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.TransactionRecordAdapter
@@ -37,9 +39,6 @@ import io.wexchain.digitalwallet.EthsTransaction
 class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), ItemViewClickListener<EthsTransaction> {
 
     override val contentLayoutId: Int = R.layout.activity_digital_currency
-
-    private var isPending: Boolean = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -156,10 +155,6 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
             txListVm.empty.set(list3.isEmpty())
             bm.hasMore.set(it != null && it.size > 3)
 
-            if (list3 != null && list3.size > 1) {
-                isPending = list3[0].isPending()
-            }
-
         })
     }
 
@@ -175,16 +170,33 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
     private fun initBtn() {
         binding.btnToTransfer.setOnClickListener {
 
-            if (isPending) {
-                val waitTransDialog = WaitTransDialog(this)
-                waitTransDialog.mTvText.text = "请待「待上链」交易变为「已上链」后再提交新的交易。"
-                waitTransDialog.show()
+            if (getDc().chain == Chain.publicEthChain) {//公链
+
+                val eth = SharedPreferenceUtil.get(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING) as? EthsTransaction
+
+                if (null == eth) {
+                    toCreateTransaction()
+                } else {
+                    val p = App.get().passportRepository.getCurrentPassport()!!
+
+                    var agent = App.get().assetsRepository.getDigitalCurrencyAgent(getDc())
+
+                    agent.getNonce(p.address).observeOn(AndroidSchedulers.mainThread()).subscribe({
+                        if (it > eth.nonce) {
+                            toCreateTransaction()
+                        } else {
+                            val waitTransDialog = WaitTransDialog(this)
+                            waitTransDialog.mTvText.text = "请待「待上链」交易变为「已上链」后再提交新的交易。"
+                            waitTransDialog.show()
+                        }
+                    }, {})
+                }
             } else {
                 toCreateTransaction()
             }
-        }
-        binding.btnToCollect.setOnClickListener {
-            startActivity(Intent(this, PassportAddressActivity::class.java))
+            binding.btnToCollect.setOnClickListener {
+                startActivity(Intent(this, PassportAddressActivity::class.java))
+            }
         }
     }
 

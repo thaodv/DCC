@@ -54,9 +54,8 @@ public class PassAdvancer extends AbstractAdvancer<LoanOrder, LoanOrderInstructi
             if (applyOrder.getStatus() == CreditApplyStatus.SIGN) {
                 chainOrderService.approve(loanOrder.getChainOrderId());
                 return new AdvancedResult<>(new TriggerBehavior<>(LoanOrderTrigger.APPROVE, lo -> {
-                    //BigDecimal interest = AmountScaleUtil.wexyun2Cal(applyOrder.getDebtAgreement().getExpectInterest());
-                    //lo.getExtParam().put(LoanOrderExtParamKey.EXPECT_LOAN_INTEREST, interest.toString());
-                    lo.getExtParam().put(LoanOrderExtParamKey.EXPECT_LOAN_INTEREST, "0.0000");
+                    BigDecimal interest = AmountScaleUtil.wexyun2Cal(applyOrder.getDebtAgreement().getExpectInterest());
+                    lo.getExtParam().put(LoanOrderExtParamKey.EXPECT_LOAN_INTEREST, interest.toString());
                 }));
             }
             if (applyOrder.getProcessStatus() == CreditProcessStatus.FAIL) {

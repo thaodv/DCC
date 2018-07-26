@@ -7,8 +7,10 @@ import com.wexyun.open.api.domain.member.Member;
 import com.wexyun.open.api.domain.regular.loan.RegularPrepaymentBill;
 import com.wexyun.open.api.domain.regular.loan.RepaymentPlan;
 import com.wexyun.open.api.enums.RepaymentType;
-import com.wexyun.open.api.response.BaseResponse;
+import com.wexyun.open.api.request.loan.RegularRepaymentPlanListRequest;
+import com.wexyun.open.api.response.QueryResponse4Batch;
 import com.wexyun.open.api.response.QueryResponse4Single;
+import com.wexyun.open.api.response.TradeOrder4PayResponse;
 import io.wexchain.cryptoasset.loan.domain.LoanOrder;
 import io.wexchain.cryptoasset.loan.service.function.wexyun.model.Credit2Apply;
 import io.wexchain.cryptoasset.loan.service.function.wexyun.model.Credit2ApplyAddRequest;
@@ -43,5 +45,5 @@ public interface WexyunLoanClient {
 
     String uploadImageFile(File file);
 
-    BaseResponse verifyAgreement(String applyId, String loanType);
+    void verifyAgreement(String applyId, String loanType);
 }

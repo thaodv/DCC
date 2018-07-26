@@ -331,7 +331,7 @@ public class WexyunLoanClientImpl implements WexyunLoanClient {
     }
 
     @Override
-    public BaseResponse verifyAgreement(String applyId, String loanType) {
+    public void verifyAgreement(String applyId, String loanType) {
         try {
             RegularAgreementVerifyRequest request = new RegularAgreementVerifyRequest();
             request.setVerifyStatus(AuthVerifyStatus.PASS);
@@ -341,7 +341,11 @@ public class WexyunLoanClientImpl implements WexyunLoanClient {
             extension.put("LOAN_TYPE", loanType);
             request.setExtension(JSON.toJSONString(extension));
             logger.info("loan type:{}", loanType);
-            return wexyunApiClient.call(request);
+            BaseResponse response = wexyunApiClient.call(request);
+            if (!response.isSuccess()) {
+                throw new ErrorCodeException(response.getResponseCode(), response.getResponseMessage());
+            }
+            logger.info("Verify agreement result: {}", JSON.toJSONString(response));
         } catch (WexyunClientException e) {
             throw new RpcException(e);
         }

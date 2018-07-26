@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context antiResourceLocking="false" privileged="true">
 	<Environment name="configLocation"
-		value="file:E:/work/workspace/env_config/dev/wexchain/passport/gateway/my-config-integration.properties"
-		type="java.lang.String" override="false" />
+				 value="file:E:/work/workspace/env_config/dev/wexchain/passport/gateway/my-config-integration.properties"
+				 type="java.lang.String" override="false" />
 	<Environment name="emptyConfigLocation"
-		value="file:E:/work/workspace/env_config/dev/wexchain/passport/gateway/empty.properties"
-		type="java.lang.String" override="false" />
+				 value="file:E:/work/workspace/env_config/dev/wexchain/passport/gateway/empty.properties"
+				 type="java.lang.String" override="false" />
 	<Environment name="overrideConfigLocation"
-		value="file:E:/work/workspace/env_config/dev/wexchain/passport/gateway/override-config.properties"
-		type="java.lang.String" override="false" />
+				 value="file:E:/work/workspace/env_config/dev/wexchain/passport/gateway/override-config.properties"
+				 type="java.lang.String" override="false" />
 	<Environment name="logbackFileLocation"
-		value="file:E:/work/workspace/env_config/dev/wexchain/passport/gateway/logback-fragment-integration.xml"
-		type="java.lang.String" override="false" />
+				 value="file:E:/work/workspace/env_config/dev/wexchain/passport/gateway/logback-fragment-integration.xml"
+				 type="java.lang.String" override="false" />
 </Context>

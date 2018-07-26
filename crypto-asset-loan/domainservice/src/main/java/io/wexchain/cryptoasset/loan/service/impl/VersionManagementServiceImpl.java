@@ -50,7 +50,7 @@ public class VersionManagementServiceImpl implements VersionManagementService {
 
         VersionVO vo = new VersionVO();
         vo.setUpdateUrl(versionConfig.getUpdateUrl());
-        vo.setVersion(versionConfig.getVersion());
+        vo.setVersion(versionConfig.getVersionShow());
         vo.setReleaseTime(new DateTime(versionConfig.getReleaseTime()));
         vo.setUpdateLog(versionConfig.getUpdateLog());
         vo.setMandatoryUpgrade(needUpdate);

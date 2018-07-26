@@ -179,7 +179,7 @@ class App : MultiDexApplication(), Thread.UncaughtExceptionHandler {
                                     gasPrice = BigInteger.ZERO,
                                     gasUsed = BigInteger.ZERO,
                                     status = EthsTransaction.Status.MINED,
-                                    nonce = it.nonce
+                                    nonce = BigInteger.ZERO
                             )
                         }
                     }

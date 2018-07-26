@@ -43,4 +43,6 @@ public interface CryptoAssetLoanService {
 	RepaymentBill queryRepaymentBill(OrderIndex index);
 
 	List<LoanReport> queryLoanReport(QueryLoanReportRequest queryLoanReportRequest);
+
+    Integer queryYesterdayDeliverCount();
 }

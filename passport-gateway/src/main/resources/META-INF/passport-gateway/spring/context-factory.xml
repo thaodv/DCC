@@ -20,6 +20,9 @@
     <entry key="ID" value-ref="dccIdCertServiceProxy"/>
     <entry key="BANK_CARD" value-ref="dccBankCardServiceProxy"/>
     <entry key="COMMUNICATION_LOG" value-ref="dccCommunicationLogServiceProxy"/>
+    <entry key="MOBILE" value-ref="dccMobileServiceProxy"/>
+    <entry key="EMAIL" value-ref="dccEmailServiceProxy"/>
+    <entry key="HOME_ADDRESS" value-ref="dccHomeAddressServiceProxy"/>
   </util:map>
 
   <bean id="certServiceProxyFactory"
