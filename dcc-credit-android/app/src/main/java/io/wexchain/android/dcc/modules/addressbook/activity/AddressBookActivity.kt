@@ -57,7 +57,7 @@ class AddressBookActivity : BaseCompatActivity(), ItemViewClickListener<AddressB
         title = if (0 == mUsage) {
             getString(R.string.address_book)
         } else {
-            "选择地址"
+            getString(R.string.select_address)
         }
 
         mRecyclerView = findViewById(R.id.rv_list)

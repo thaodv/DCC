@@ -1,18 +1,15 @@
 <resources>
     <string name="dcc_app_name">BitExpress</string>
+    <string name="loading">loading…</string>
     <string name="title_verify_sms_code">验证短信验证码</string>
     <string name="bank_card_no">银行卡号</string>
     <string name="please_input_bank_card_no">请输入银行卡号</string>
     <string name="bank_registered_phone_num">银行预留手机号</string>
     <string name="please_input_phone_num">请输入手机号</string>
     <string name="title_liveness_detection">人脸识别</string>
-    <string name="share">分享</string>
-    <string name="communication_log_submit_hint">
-        温馨提示\n\n1、请使用本人实名制手机号进行认证\n2、服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3、点击“提交”按钮会收到运营商的通知短信，无需回复\n4、如忘记服务密码,请登录运营商官网找回服务密码
-    </string>
+    <string name="communication_log_submit_hint">温馨提示\n\n1、请使用本人实名制手机号进行认证\n2、服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3、点击“提交”按钮会收到运营商的通知短信，无需回复\n4、如忘记服务密码,请登录运营商官网找回服务密码</string>
     <string name="import_and_enable_passport">导入已有钱包</string>
     <string name="enable_passport_will_disable_other_warning">导入口袋成功后，其他设备统一登录功能将不可用</string>
-    <string name="loading">loading…</string>
     <string name="please_paste_keystore">请粘贴KEYSTORE信息</string>
     <string name="please_input_passport_password">验证数字钱包密码</string>
     <string name="please_set_passport_password">设置数字钱包密码</string>
@@ -37,16 +34,8 @@
     <string name="quote_source_colon">来源:%1$s</string>
     <string name="status_pending">待上链</string>
     <string name="transaction_record_detail">交易记录详情</string>
-    <string name="to_address_colon">接收地址:</string>
-    <string name="from_address_colon">付款地址:</string>
-    <string name="transaction_fee_colon">矿\u2002工\u2002费:</string>
-    <string name="extra">备\u3000\u3000注:</string>
-    <string name="transaction_id_colon">交\u2002易\u2002号:</string>
-    <string name="block_number_colon">区块高度:</string>
-    <string name="transaction_time_colon">交易时间:</string>
     <string name="transfer_amount">转账金额</string>
     <string name="remarks">备注</string>
-    <string name="transaction_status_colon">交易状态:</string>
     <string name="custom_gas_price">自定义Gas Price</string>
     <string name="custom_gas_limit">自定义Gas Limit</string>
     <string name="transaction_fee">矿工费用</string>
@@ -103,10 +92,23 @@
     <string name="holding_amount_colon">持有量:</string>
     <string name="business_contact_2">出借代币\n商务咨询</string>
     <string name="receive_address_colon">收币地址:</string>
+    <string name="extra">备\u3000\u3000注:</string>
 
 
 
 
+
+
+    <string name="share">分享</string>
+    <string name="verification">去实名</string>
+    <string name="the_chain_of_dcc">\@DCC业务链\nDCC业务链上的token只能在DCC业务链钱包地址间进行互转，DCC业务链的钱包和以太坊的钱包是通用的，您以太坊的钱包地址同时也是DCC业务链的钱包地址。如您需要将DCC业务链上的token转移到以太坊主链上，请使用跨链转移功能。</string>
+    <string name="transaction_status_colon">交易状态:</string>
+    <string name="to_address_colon">接收地址:</string>
+    <string name="from_address_colon">付款地址:</string>
+    <string name="transaction_fee_colon">矿\u2002工\u2002费:</string>
+    <string name="transaction_id_colon">交\u2002易\u2002号:</string>
+    <string name="block_number_colon">区块高度:</string>
+    <string name="transaction_time_colon">交易时间:</string>
     <string name="address_book">地址簿</string>
     <string name="keystore_information">KEYSTORE信息</string>
     <string name="local_security_is_disabled_successfully">关闭安全保护成功,您可以开启其他安全保护方式</string>
@@ -336,7 +338,17 @@
     <string name="please_input_gaslimit">GasLimit不能为空</string>
     <string name="user_alias_changed">昵称修改成功</string>
     <string name="please_download_and_update">当前版本已无法正常使用，请下载更新</string>
-
-
+    <string name="current_version">当前版本</string>
+    <string name="enable_login">启用统一登录</string>
+    <string name="disable_login">禁用统一登录</string>
+    <string name="update_private_key">更新统一登录密钥</string>
+    <string name="amount1">额度:</string>
+    <string name="term1">周期:</string>
+    <string name="id">身份证信息</string>
+    <string name="bank_accoun">银行卡信息</string>
+    <string name="carrier_information">运营商信息</string>
+    <string name="to_address_book">转到地址簿</string>
+    <string name="to_wallet_address">转到钱包地址</string>
+    <string name="amount2">金额</string>
 
 </resources>

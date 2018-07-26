@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
-                android:text="收款地址"
+                android:text="@string/address_for_collection"
                 android:textColor="@color/text_dark"
                 android:textSize="@dimen/text_size_large"
                 />
@@ -104,7 +104,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
-            android:text="金额"
+            android:text="@string/amount2"
             android:textColor="@color/text_dark"
             android:textSize="@dimen/text_size_large"
             app:layout_constraintBaseline_toBaselineOf="@id/et_input_amount"

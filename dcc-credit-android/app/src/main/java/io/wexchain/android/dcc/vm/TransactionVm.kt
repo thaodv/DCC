@@ -110,8 +110,7 @@ class TransactionVm {
                     }
                     this.transferFeeHintText.set(colored)
                 } else {
-                    val hintText =
-                            "@DCC业务链\n\nDCC业务链上的token只能在DCC业务链钱包地址间进行互转，DCC业务链的钱包和以太坊的钱包是通用的，您以太坊的钱包地址同时也是DCC业务链的钱包地址。如您需要将DCC业务链上的token转移到以太坊主链上，请使用跨链转移功能。"
+                    val hintText = getString(R.string.the_chain_of_dcc)
                     val dccFeeHint = SpannableStringBuilder(hintText).apply {
                         setSpan(ForegroundColorSpan(ContextCompat.getColor(App.get(), R.color.text_red)), 9, hintText.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
                     }

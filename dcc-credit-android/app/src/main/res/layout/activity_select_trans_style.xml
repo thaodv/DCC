@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="72dp"
-                    android:text="转到地址薄"
+                    android:text="@string/to_address_book"
                     android:textColor="#FF4A4A4A"
                     android:textSize="16sp"/>
 
@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="72dp"
-                    android:text="转到钱包地址"
+                    android:text="@string/to_wallet_address"
                     android:textColor="#FF4A4A4A"
                     android:textSize="16sp"/>
 

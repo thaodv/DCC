@@ -85,7 +85,7 @@
                         android:id="@+id/btn_to_cert"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:text="去实名"
+                        android:text="@string/verification"
                         android:textSize="16sp"
                         style="@style/Widget.AppCompat.Button.Dcc.Medium"
                         android:layout_gravity="bottom"

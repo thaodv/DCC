@@ -71,7 +71,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
             binding.passport = it
         })
 
-        binding.tvCurrentVs.text = "当前版本" + getVersionName()
+        binding.tvCurrentVs.text = getString(R.string.current_version) + getVersionName()
     }
 
     private fun setupClicks() {

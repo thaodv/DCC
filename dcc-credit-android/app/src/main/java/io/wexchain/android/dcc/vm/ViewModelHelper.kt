@@ -381,7 +381,6 @@ object ViewModelHelper {
 
     @JvmStatic
     fun concatWithoutNull(vararg texts: String?): String {
-
         return texts.filterNotNull().joinToString(separator = "") { it }
     }
 

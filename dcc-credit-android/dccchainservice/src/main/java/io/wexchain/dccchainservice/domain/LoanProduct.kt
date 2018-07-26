@@ -1,52 +1,53 @@
 package io.wexchain.dccchainservice.domain
 
 import com.google.gson.annotations.SerializedName
+import io.wexchain.dccchainservice.Application
 import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.dccchainservice.R
 import java.io.Serializable
 import java.math.BigDecimal
-import java.math.BigInteger
 import java.math.RoundingMode
 
 
 data class LoanProduct(
-    @SerializedName("id")
-    val id: Long,
-    @SerializedName("currency")
-    val currency: LoanCurrency,
-    @SerializedName("dccFeeScope")
-    val dccFeeScope: List<Int>,
-    @SerializedName("description")
-    val description: String,
-    @SerializedName("volumeOptionList")
-    val volumeOptionList: List<BigDecimal>,//represent as raw uint256 value
-    @SerializedName("loanRate")
-    val loanRate: BigDecimal,
-    @SerializedName("loanPeriodList")
-    val loanPeriodList: List<LoanPeriod>,
-    @SerializedName("lender")
-    val lender: Lender,
-    @SerializedName("requisiteCertList")
-    val requisiteCertList: List<String>,
-    @SerializedName("repayPermit")
-    val repayPermit: Boolean,
-    @SerializedName("repayAheadRate")
-    val repayAheadRate: BigDecimal,
-    @SerializedName("name")
-    val name: String?,
-    @SerializedName("logoUrl")
-    val logoUrl: String?,
-    @SerializedName("agreementTemplateUrl")
-    val agreementTemplateUrl: String?,
-    /**
-     * 期数
-     */
-    @SerializedName("repayCyclesNo")
-    val repayCyclesNo: Long,
-    /**
-     * 借款类型
-     */
-    @SerializedName("loanType")
-    val loanType: String
+        @SerializedName("id")
+        val id: Long,
+        @SerializedName("currency")
+        val currency: LoanCurrency,
+        @SerializedName("dccFeeScope")
+        val dccFeeScope: List<Int>,
+        @SerializedName("description")
+        val description: String,
+        @SerializedName("volumeOptionList")
+        val volumeOptionList: List<BigDecimal>,//represent as raw uint256 value
+        @SerializedName("loanRate")
+        val loanRate: BigDecimal,
+        @SerializedName("loanPeriodList")
+        val loanPeriodList: List<LoanPeriod>,
+        @SerializedName("lender")
+        val lender: Lender,
+        @SerializedName("requisiteCertList")
+        val requisiteCertList: List<String>,
+        @SerializedName("repayPermit")
+        val repayPermit: Boolean,
+        @SerializedName("repayAheadRate")
+        val repayAheadRate: BigDecimal,
+        @SerializedName("name")
+        val name: String?,
+        @SerializedName("logoUrl")
+        val logoUrl: String?,
+        @SerializedName("agreementTemplateUrl")
+        val agreementTemplateUrl: String?,
+        /**
+         * 期数
+         */
+        @SerializedName("repayCyclesNo")
+        val repayCyclesNo: Long,
+        /**
+         * 借款类型
+         */
+        @SerializedName("loanType")
+        val loanType: String
 ) : Serializable {
     fun getPeriodStr(): String {
         require(loanPeriodList.size >= 2)
@@ -76,7 +77,7 @@ data class LoanProduct(
     }
 
     fun getInterestRateStr(): String {
-        val rateStr = loanRate.divide(BigDecimal("3.65"), RoundingMode.DOWN).setScale(2,RoundingMode.DOWN).toPlainString()//interest rate in day
+        val rateStr = loanRate.divide(BigDecimal("3.65"), RoundingMode.DOWN).setScale(2, RoundingMode.DOWN).toPlainString()//interest rate in day
         return "$rateStr%"
     }
 
@@ -87,7 +88,7 @@ data class LoanProduct(
 
     fun getRequisiteStr(): String {
         return requisiteCertList.withIndex()
-            .joinToString(separator = "\n") { "${it.index + 1}.${certTypeStr(it.value)};" }
+                .joinToString(separator = "\n") { "${it.index + 1}.${certTypeStr(it.value)};" }
     }
 
     fun getStandardDccFeeStr(): String {
@@ -104,18 +105,18 @@ data class LoanProduct(
 
     private fun certTypeStr(cert: String): String {
         return when (cert) {
-            ChainGateway.BUSINESS_ID -> "身份证认证"
-            ChainGateway.BUSINESS_BANK_CARD -> "银行卡认证"
-            ChainGateway.BUSINESS_COMMUNICATION_LOG -> "运营商认证"
+            ChainGateway.BUSINESS_ID -> Application.getContext().getString(R.string.id_verification)
+            ChainGateway.BUSINESS_BANK_CARD -> Application.getContext().getString(R.string.bank_account_verification)
+            ChainGateway.BUSINESS_COMMUNICATION_LOG -> Application.getContext().getString(R.string.carrier_verification)
             else -> "--"
         }
     }
 
     data class LoanPeriod(
-        @SerializedName("unit")
-        val unit: LoanPeriodTimeUnit,
-        @SerializedName("value")
-        val value: Int
+            @SerializedName("unit")
+            val unit: LoanPeriodTimeUnit,
+            @SerializedName("value")
+            val value: Int
     ) : Serializable {
         fun str(): String {
             return "$value${unit.str()}"

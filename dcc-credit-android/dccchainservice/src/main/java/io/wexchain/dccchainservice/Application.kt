@@ -11,19 +11,14 @@ object Application {
 
     private var CONTEXT: Context? = null
 
-    fun getContext(): Context? {
+    fun getContext(): Context {
         return if (CONTEXT != null) {
-            CONTEXT
+            CONTEXT!!
         } else {
-            try {
                 val activityThreadClass = Class.forName("android.app.ActivityThread")
                 val method = activityThreadClass.getMethod("currentApplication")
                 CONTEXT = method.invoke(null) as Context
-                CONTEXT
-            } catch (e: Exception) {
-                null
-            }
-
+                CONTEXT!!
         }
     }
 }
