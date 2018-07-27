@@ -29,7 +29,7 @@ contract Ca is OwnerNamed{
         KeyPut(msg.sender,_publickey);
         return true;
     }
-    
+    //
     function deleteKey()  public  returns(bool _result) {
        bytes deleted =publickeys[msg.sender];
        if(deleted.length == 0){
