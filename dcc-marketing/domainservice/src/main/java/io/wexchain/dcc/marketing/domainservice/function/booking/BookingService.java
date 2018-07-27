@@ -18,4 +18,8 @@ public interface BookingService {
 
     AccountTransaction accounting(String code, String requestNo, BigDecimal amount);
 
+    AccountTransaction add(String code, String requestNo, BigDecimal amount);
+
+    AccountTransaction subtract(String code, String requestNo, BigDecimal amount);
+
 }

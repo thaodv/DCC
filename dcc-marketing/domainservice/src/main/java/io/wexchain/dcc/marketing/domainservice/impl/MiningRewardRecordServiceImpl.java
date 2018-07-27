@@ -3,13 +3,19 @@ package io.wexchain.dcc.marketing.domainservice.impl;
 import com.godmonth.status.executor.intf.OrderExecutor;
 import com.wexmarket.topia.commons.basic.exception.ErrorCodeException;
 import com.wexmarket.topia.commons.data.page.PageUtils;
+import io.wexchain.cryptoasset.account.api.constant.ExecutionResult;
+import io.wexchain.cryptoasset.account.api.model.Account;
+import io.wexchain.cryptoasset.account.api.model.AccountTransaction;
 import io.wexchain.dcc.marketing.api.constant.MarketingErrorCode;
+import io.wexchain.dcc.marketing.api.facade.AddMiningScoreRequest;
 import io.wexchain.dcc.marketing.api.model.request.QueryMiningRewardRecordPageRequest;
 import io.wexchain.dcc.marketing.api.model.request.QueryRewardRuleRequest;
+import io.wexchain.dcc.marketing.common.constant.GeneralCommandStatus;
 import io.wexchain.dcc.marketing.common.constant.IdentityType;
 import io.wexchain.dcc.marketing.common.constant.MiningActionRecordStatus;
 import io.wexchain.dcc.marketing.domain.*;
 import io.wexchain.dcc.marketing.domainservice.*;
+import io.wexchain.dcc.marketing.domainservice.function.booking.BookingService;
 import io.wexchain.dcc.marketing.domainservice.function.chain.ChainOrderService;
 import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.MiningRewardRecordInstruction;
 import io.wexchain.dcc.marketing.repository.CoolDownRestrictionRepository;
@@ -26,9 +32,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -68,6 +76,9 @@ public class MiningRewardRecordServiceImpl implements MiningRewardRecordService,
 	@Autowired
 	private TransactionTemplate transactionTemplate;
 
+	@Autowired
+	private BookingService bookingService;
+
 	private static final String SIGN_IN_SCENARIO_CODE = "10004005";
 	private static final String SIGN_IN_CD_CONFIG_CODE = "10001";
 	private static final String SIGN_IN_EVENT_NAME = "MINING_SIGN_IN";
@@ -90,6 +101,13 @@ public class MiningRewardRecordServiceImpl implements MiningRewardRecordService,
 				request.getActivityCode(), request.getParticipatorRole());
 		return list.stream().filter(rule -> StringUtils.isNotEmpty(rule.getGroupCode())).collect(Collectors.toList());
     }
+
+	@Override
+	public BigDecimal getYesterdayMiningScore() {
+		Date from = DateTime.now().minusDays(1).withTimeAtStartOfDay().toDate();
+		Date to = DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate();
+		return miningRewardRecordRepository.sumScore(from,to);
+	}
 
     @Override
     public void signIn(String address) {
@@ -132,6 +150,38 @@ public class MiningRewardRecordServiceImpl implements MiningRewardRecordService,
 		});
 
 		miningRwdRecExecutor.executeAsync(rewardRecord, null, null);
+	}
+
+	@Override
+	public Integer yesterdaySignInCount() {
+		Scenario scenario = scenarioService.getScenarioByCode(SIGN_IN_SCENARIO_CODE);
+		Date from = DateTime.now().minusDays(1).withTimeAtStartOfDay().toDate();
+		Date to = DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate();
+		int count = coolDownRestrictionRepository.countByScenarioIdAndLastActiveTimeBetween(scenario.getId(), from, to);
+		return count;
+	}
+
+	@Override
+	public BigDecimal getMiningScore(String address) {
+		Account account = bookingService.getAccountByCode(address);
+		return account.getBalance();
+	}
+
+	@Override
+	public BigDecimal addMiningScore(AddMiningScoreRequest request) {
+		AccountTransaction accountTransaction;
+		if (request.getScore().compareTo(BigDecimal.ZERO) >= 0) {
+			accountTransaction = bookingService.add(
+					request.getAddress(), UUID.randomUUID().toString().replace("-", ""), request.getScore());
+		} else {
+			accountTransaction = bookingService.subtract(
+					request.getAddress(), UUID.randomUUID().toString().replace("-", ""), request.getScore().abs());
+		}
+		if (accountTransaction.getResult() == ExecutionResult.SUCCESS) {
+			return getMiningScore(request.getAddress());
+		} else {
+			throw new ErrorCodeException("ADD_MINING_SCORE_FAIL", accountTransaction.getErrorCode().name());
+		}
 	}
 
 	private boolean allowActive(CoolDownConfig config, Date activeTime, Date lastActiveTime) {

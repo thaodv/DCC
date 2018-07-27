@@ -5,6 +5,7 @@ import io.wexchain.dcc.marketing.api.model.EcoRewardStatisticsInfo;
 import io.wexchain.dcc.marketing.domain.RewardRound;
 import org.joda.time.DateTime;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,8 @@ public interface RewardRoundService {
     Optional<RewardRound> findRewardRoundByBonusDay(Date bonusDay);
 
     EcoRewardStatisticsInfo getEcoRewardStatisticsInfo(String address);
+
+    BigDecimal getEcoScore();
 
     List<EcoRewardRankVo> queryEcoRewardRankList(DateTime roundTime);
 
