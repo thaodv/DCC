@@ -132,6 +132,7 @@
             android:orientation="horizontal">
 
             <EditText
+                android:id="@+id/et_trans_count"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
@@ -177,6 +178,7 @@
                 android:textSize="16sp"/>
 
             <TextView
+                android:id="@+id/tv_private_count"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -222,6 +224,7 @@
                 android:textColor="@color/text_dark"/>
 
             <EditText
+                android:id="@+id/et_poundge"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
@@ -270,6 +273,7 @@
                 android:textColor="@color/text_dark"/>
 
             <EditText
+                android:id="@+id/et_to_account_num"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
@@ -340,6 +344,7 @@
         </RelativeLayout>
 
         <Button
+            android:id="@+id/bt_next"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="15dp"

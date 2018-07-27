@@ -12,7 +12,7 @@
 
         <variable
                 name="quote"
-                type="io.wexchain.digitalwallet.api.domain.front.Quote"
+                type="io.wexchain.digitalwallet.api.domain.front.CoinDetail"
                 />
 
         <variable

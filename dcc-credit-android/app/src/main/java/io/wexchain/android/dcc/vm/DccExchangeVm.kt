@@ -10,7 +10,7 @@ import io.wexchain.android.dcc.tools.AutoLoadLiveData
 import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
-import io.wexchain.digitalwallet.api.domain.front.Quote
+import io.wexchain.digitalwallet.api.domain.front.CoinDetail
 import java.math.BigInteger
 
 class DccExchangeVm(application: Application) : AndroidViewModel(application) {
@@ -40,13 +40,24 @@ class DccExchangeVm(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    val quote = AutoLoadLiveData<Quote> {
+    /*val quote = AutoLoadLiveData<Quote> {
         val symbol = Currencies.DCC.symbol
         getApplication<App>().assetsRepository.getQuotes(symbol)
                 .map {
                     it.firstOrNull { it.quoteSymbol == symbol }!!
                 }
                 .toFlowable()
+    }*/
+
+    val quote = AutoLoadLiveData<CoinDetail> {
+        val symbol = Currencies.DCC.symbol
+        getApplication<App>().assetsRepository.getCoinDetail(symbol)
+                .map {
+                    it.firstOrNull { it.symbol == symbol }!!
+                }
+                .toFlowable()
     }
+
+
 
 }

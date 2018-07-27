@@ -13,7 +13,6 @@ import io.wexchain.dcc.R
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.api.domain.front.CoinDetail
-import io.wexchain.digitalwallet.api.domain.front.Quote
 import io.wexchain.digitalwallet.util.toBigDecimalSafe
 import java.math.BigInteger
 
@@ -32,7 +31,7 @@ class DigitalCurrencyVm(application: Application) : AndroidViewModel(application
 
     val pinned = ObservableBoolean()
 
-    val quote = ObservableField<Quote>()
+    // val quote = ObservableField<Quote>()
 
     val coinDetail = ObservableField<CoinDetail>()
 
@@ -131,7 +130,7 @@ class DigitalCurrencyVm(application: Application) : AndroidViewModel(application
         if (coinDetail?.price == null) {
             holdingValueStr.set("--")
         } else {
-            holdingValueStr.set("≈${coinDetail.symbol}${(c.toDecimalAmount(amount) * coinDetail.price!!.toBigDecimalSafe()).currencyToDisplayStr()}")
+            holdingValueStr.set("≈¥${(c.toDecimalAmount(amount) * coinDetail.price!!.toBigDecimalSafe()).currencyToDisplayStr()}")
         }
     }
 

@@ -25,5 +25,9 @@ data class CoinDetail(
         @JvmField val symbol: String,
         @JvmField val timeStamp: Long,
         @JvmField val volume_24: String) {
+
+    fun expires(): Boolean {
+        return timeStamp == null || System.currentTimeMillis() - timeStamp > 60 * 60 * 1000L
+    }
 }
 

@@ -13,6 +13,8 @@ class Public2PrivateActivity : BindActivity<ActivityPublic2PrivateBinding>() {
 
     override val contentLayoutId: Int = R.layout.activity_public2_private
 
+    private var address: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
@@ -24,10 +26,17 @@ class Public2PrivateActivity : BindActivity<ActivityPublic2PrivateBinding>() {
                     App.get().scfApi.queryExchangeCondition(it, assetCode = "DCC").observeOn(AndroidSchedulers.mainThread())
 
                 }.subscribe({
+                    binding.etTransCount.setText(it.minAmount)
+                    binding.etTransCount.setSelection(it.minAmount.length)
 
+                    address = it.middleAddress
 
                 }, {})
 
+        binding.btAll.setOnClickListener {
+            binding.etTransCount.setText(binding.tvPublicCount.text)
+            binding.etTransCount.setSelection(binding.tvPublicCount.text.length)
+        }
 
     }
 }

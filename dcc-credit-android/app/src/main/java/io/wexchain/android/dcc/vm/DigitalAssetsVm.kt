@@ -10,7 +10,7 @@ import io.wexchain.android.common.map
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.App
 import io.wexchain.digitalwallet.DigitalCurrency
-import io.wexchain.digitalwallet.api.domain.front.Quote
+import io.wexchain.digitalwallet.api.domain.front.CoinDetail
 import io.wexchain.digitalwallet.util.toBigDecimalSafe
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -27,13 +27,14 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
     }
 
     val assetsSumValue = ObservableField<String>()
-    val assets = Transformations.map(assetsRepository.displayCurrencies, {
+    val assets = Transformations.map(assetsRepository.displayCurrencies) {
         updateHoldingAndQuote(it)
         updateSumValue()
         it
-    })
+    }
     val holding = ObservableArrayMap<DigitalCurrency, BigInteger>()
-    val quote = ObservableArrayMap<String, Quote>()
+    // val quote = ObservableArrayMap<String, Quote>()
+    val quote = ObservableArrayMap<String, CoinDetail>()
 
     fun ensureHolderAddress(lifecycleOwner: LifecycleOwner) {
         this.holderAddress.observe(lifecycleOwner, Observer {})
@@ -48,19 +49,19 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
                     .map {
                         val h = holding[it]
                         val q = quote[it.symbol]
-                        if (h != null && q != null && q.price != null && q.quoteSymbol.equals("CNY", true)) {
+                        if (h != null && q != null && q.price != null /*&& q.symbol.equals("CNY", true)*/) {
                             it.toDecimalAmount(h) * q.price!!.toBigDecimalSafe()
                         } else {
                             BigDecimal.ZERO
                         }
                     }
-                    .fold(BigDecimal.ZERO, { acc, v -> acc + v })
+                    .fold(BigDecimal.ZERO) { acc, v -> acc + v }
             "≈¥${sum.currencyToDisplayStr()}"
         }
         assetsSumValue.set(sumString)
     }
 
-    fun updateHoldingAndQuote(list: List<DigitalCurrency>? = assets.value) {
+    /*fun updateHoldingAndQuote(list: List<DigitalCurrency>? = assets.value) {
         list ?: return
         //update quotes
         val qSet = list.filter {
@@ -72,6 +73,45 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
                         onSuccess = {
                             it.forEach {
                                 quote[it.varietyCode] = it
+                            }
+                            updateSumValue()
+                        },
+                        onError = {
+                            stackTrace(it)
+                        })
+
+        //update holding
+        val holder = holderAddress.value
+        if (holder == null || holder.isEmpty()) {
+            holding.clear()
+            updateSumValue()
+        } else {
+            list.forEach { dc ->
+                assetsRepository.getBalance(dc, holder)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            if (holder == holderAddress.value) {
+                                holding[dc] = it
+                            }
+                            updateSumValue()
+                        }, {
+                            stackTrace(it)
+                        })
+            }
+        }
+    }*/
+    fun updateHoldingAndQuote(list: List<DigitalCurrency>? = assets.value) {
+        list ?: return
+        //update quotes
+        val qSet = list.filter {
+            val expires = quote[it.symbol]?.expires()
+            expires == null || expires
+        }.map { it.symbol }.toSet()
+        assetsRepository.getCoinDetail(*qSet.toTypedArray())
+                .subscribeBy(
+                        onSuccess = {
+                            it.forEach {
+                                quote[it.symbol] = it
                             }
                             updateSumValue()
                         },

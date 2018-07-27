@@ -19,6 +19,7 @@ import io.wexchain.dccchainservice.domain.*
 import io.wexchain.dccchainservice.util.DateUtil
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
+import io.wexchain.digitalwallet.api.domain.front.CoinDetail
 import io.wexchain.digitalwallet.api.domain.front.Quote
 import io.wexchain.digitalwallet.util.toBigDecimalSafe
 import java.math.BigDecimal
@@ -193,6 +194,18 @@ object ViewModelHelper {
             val value = dc.toDecimalAmount(holding) * price
             if (value.signum() != 0) {
                 return "~${quote.currencySymbol}${value.currencyToDisplayStr()}"
+            }
+        }
+        return "--"
+    }
+
+    @JvmStatic
+    fun getApproxValueStr(dc: DigitalCurrency, holding: BigInteger?, quote: CoinDetail?): String {
+        if (holding != null && quote?.price != null) {
+            val price = quote.price!!.toBigDecimalSafe()
+            val value = dc.toDecimalAmount(holding) * price
+            if (value.signum() != 0) {
+                return "~¥${value.currencyToDisplayStr()}"
             }
         }
         return "--"

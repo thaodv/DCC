@@ -9,11 +9,6 @@
 
         <import type="io.wexchain.android.dcc.tools.StringUtils"/>
 
-        <!--<variable
-            name="quote"
-            type="io.wexchain.digitalwallet.api.domain.front.Quote"
-            />-->
-
         <variable
             name="coinDetail"
             type="io.wexchain.digitalwallet.api.domain.front.CoinDetail"

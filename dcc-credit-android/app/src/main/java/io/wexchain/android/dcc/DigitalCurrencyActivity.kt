@@ -194,9 +194,9 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
             } else {
                 toCreateTransaction()
             }
-            binding.btnToCollect.setOnClickListener {
-                startActivity(Intent(this, PassportAddressActivity::class.java))
-            }
+        }
+        binding.btnToCollect.setOnClickListener {
+            startActivity(Intent(this, PassportAddressActivity::class.java))
         }
     }
 
