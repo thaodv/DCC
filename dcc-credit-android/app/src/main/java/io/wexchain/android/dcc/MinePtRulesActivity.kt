@@ -6,7 +6,7 @@ import io.wexchain.android.common.kotlin.Either
 import io.wexchain.android.common.kotlin.Left
 import io.wexchain.android.common.kotlin.Right
 import io.wexchain.android.dcc.base.BaseCompatActivity
-import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.MultiTypeListAdapter
 import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback
 import io.wexchain.android.dcc.view.adapter.multitype.BindingTypeViewBinder
@@ -33,7 +33,7 @@ class MinePtRulesActivity : BaseCompatActivity() {
 
     private fun loadRules() {
         App.get().scfApi.queryMinePtRule()
-                .check()
+                .checkonMain()
                 .subscribe { rules ->
                     val grouped = rules.groupBy { it.groupCode }.entries.fold(mutableListOf<Either<String, BonusRule>>()) { acc, i ->
                         acc.add(Left(i.key))

@@ -379,8 +379,7 @@ object ScfOperations {
         return scfApi.getNonce()
                 .compose(Result.checked())
                 .flatMap {
-                    scfApi
-                            .getScfMemberInfo(
+                    scfApi.getScfMemberInfo(
                                     nonce = it,
                                     address = address,
                                     sign = ParamSignatureUtil.sign(

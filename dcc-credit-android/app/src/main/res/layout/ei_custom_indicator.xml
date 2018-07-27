@@ -12,7 +12,7 @@
             android:id="@+id/tv_dcc_insufficient_notice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="余额不足"
+            android:text="@string/insufficient_balance"
             android:textColor="@color/text_color_exceed"
             />
 

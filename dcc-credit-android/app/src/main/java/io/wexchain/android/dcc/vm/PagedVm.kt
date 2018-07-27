@@ -5,9 +5,6 @@ import android.databinding.ObservableField
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.SingleLiveEvent
-import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.chain.ScfOperations
-import io.wexchain.dccchainservice.domain.LoanRecordSummary
 import io.wexchain.dccchainservice.domain.PagedList
 
 abstract class PagedVm<T> : ViewModel() {
@@ -22,15 +19,15 @@ abstract class PagedVm<T> : ViewModel() {
         if (page == 0 || this.page + 1 == page) {
 
             loadPage(page)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doFinally {
-                    onLoadFinish?.invoke(page)
-                }
-                .subscribe({ list ->
-                    mergeList(list.items, page)
-                }, {
-                    loadFailEvent.value = "load fail"
-                })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doFinally {
+                        onLoadFinish?.invoke(page)
+                    }
+                    .subscribe({ list ->
+                        mergeList(list.items, page)
+                    }, {
+                        loadFailEvent.value = "load fail"
+                    })
         } else {
             onLoadFinish?.invoke(page)
         }

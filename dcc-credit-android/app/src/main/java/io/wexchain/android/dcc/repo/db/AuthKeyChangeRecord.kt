@@ -3,6 +3,8 @@ package io.wexchain.android.dcc.repo.db
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.TypeConverters
+import io.wexchain.android.dcc.tools.getString
+import io.wexchain.dcc.R
 
 @Entity(tableName = AuthKeyChangeRecord.TABLE_NAME,
         primaryKeys = [AuthKeyChangeRecord.COLUMN_PASSPORT_ADDRESS,AuthKeyChangeRecord.COLUMN_TIME])
@@ -29,9 +31,9 @@ data class AuthKeyChangeRecord(
 
         fun description():String{
             return when(this){
-                UpdateType.ENABLE -> "启用统一登录"
-                UpdateType.DISABLE -> "禁用统一登录"
-                UpdateType.UPDATE -> "更新统一登录密钥"
+                UpdateType.ENABLE -> getString(R.string.enable_login)
+                UpdateType.DISABLE -> getString(R.string.disable_login)
+                UpdateType.UPDATE -> getString(R.string.update_private_key)
             }
         }
     }

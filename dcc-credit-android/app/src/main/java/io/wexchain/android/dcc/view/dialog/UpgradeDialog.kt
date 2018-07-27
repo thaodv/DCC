@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.wexchain.android.common.installApk
 import io.wexchain.android.dcc.tools.LogUtils
+import io.wexchain.android.dcc.tools.getString
 import io.wexchain.dcc.R
 import kotlinx.android.synthetic.main.dialog_check_update.*
 import kotlinx.android.synthetic.main.dialog_download.*
+import org.jetbrains.anko.toast
 import zlc.season.rxdownload3.RxDownload
 import zlc.season.rxdownload3.core.Failed
 import zlc.season.rxdownload3.core.Mission
@@ -17,6 +20,7 @@ import zlc.season.rxdownload3.core.Status
 import zlc.season.rxdownload3.core.Succeed
 import zlc.season.rxdownload3.extension.ApkInstallExtension
 import zlc.season.rxdownload3.helper.dispose
+import java.io.File
 
 /**
  * Created by liuyang on 2018/7/13.
@@ -25,6 +29,7 @@ class UpgradeDialog(context: Context) : Dialog(context) {
 
     private var disposable: Disposable? = null
     private var currentStatus = Status()
+    private lateinit var mission: Mission
 
     fun createCheckDialog(newvs: String, body: String, onCancle: (() -> Unit), onConfirm: (() -> Unit)) {
         this.setCancelable(false)
@@ -59,14 +64,14 @@ class UpgradeDialog(context: Context) : Dialog(context) {
         val view = inflater.inflate(R.layout.dialog_check_update, null)
         setContentView(view)
         val dialogWindow = window
-        val lp = dialogWindow!!.attributes
+        val lp = dialogWindow.attributes
         val d = context.resources.displayMetrics
         lp.width = (d.widthPixels * 0.7).toInt()
         dialogWindow.attributes = lp
         window.setBackgroundDrawableResource(R.drawable.background_holding)
 
         home_upgrade_confirm.visibility = View.VISIBLE
-        check_upgrade_title.text = "当前版本已无法正常使用，请立即更新"
+        check_upgrade_title.text = getString(R.string.please_download_and_update)
         check_upgrade_body.text = body
         check_upgrade_vs.text = "新功能 v$newvs"
 
@@ -77,6 +82,7 @@ class UpgradeDialog(context: Context) : Dialog(context) {
     }
 
     fun crateDownloadDialog(mission: Mission) {
+        this.mission = mission
         this.setCancelable(false)
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.dialog_download, null)
@@ -88,23 +94,33 @@ class UpgradeDialog(context: Context) : Dialog(context) {
         dialogWindow.attributes = lp
 
         show()
-        downloadApk(mission)
+        downloadApk()
     }
 
 
-    private fun downloadApk(mission: Mission) {
+    private fun downloadApk() {
         disposable = RxDownload.create(mission, autoStart = true)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     currentStatus = it
                     setProgress(currentStatus)
                     if (currentStatus is Failed) {
-                        LogUtils.e("Failed", (currentStatus as Failed).throwable.message)
+                        error()
                     }
                     if (currentStatus is Succeed) {
-                        RxDownload.extension(mission, ApkInstallExtension::class.java).subscribe()
+                        val file= File(mission.savePath,mission.saveName)
+                        if (file.exists()){
+                            context.installApk(file)
+                        }else{
+                            error()
+                        }
                     }
                 }
+    }
+
+    private fun error() {
+        context.toast("下载出现异常")
+        dismiss()
     }
 
     override fun onDetachedFromWindow() {

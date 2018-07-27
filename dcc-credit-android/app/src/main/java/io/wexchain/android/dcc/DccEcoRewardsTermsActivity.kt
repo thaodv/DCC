@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import io.wexchain.android.common.loadLanguageUrl
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.dcc.R
 
@@ -40,6 +41,6 @@ class DccEcoRewardsTermsActivity : BaseCompatActivity() {
                 return true // Returning True means that application wants to leave the current WebView and handle the url itself, otherwise return false.
             }
         }
-        webView.loadUrl("https://open.dcc.finance/dapp/activity_eco.html")
+        webView.loadLanguageUrl("https://open.dcc.finance/dapp/activity_eco.html")
     }
 }

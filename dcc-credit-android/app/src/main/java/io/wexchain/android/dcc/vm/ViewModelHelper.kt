@@ -11,10 +11,12 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
+import io.wexchain.android.dcc.tools.getString
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.*
+import io.wexchain.dccchainservice.util.DateUtil
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.api.domain.front.Quote
@@ -61,8 +63,8 @@ object ViewModelHelper {
     @JvmStatic
     fun Context.getCertStatusOpText(userCertStatus: UserCertStatus?): String {
         return when (userCertStatus) {
-            UserCertStatus.NONE -> "未认证"
-            UserCertStatus.INCOMPLETE -> "认证中"
+            UserCertStatus.NONE -> getString(R.string.unverify_nowied)
+            UserCertStatus.INCOMPLETE -> getString(R.string.verifying)
             UserCertStatus.DONE -> "认证完成"
             else -> ""
         }
@@ -83,7 +85,7 @@ object ViewModelHelper {
     fun Context.getMarketingActivityStatusText(status: MarketingActivity.Status?): String {
         return when (status) {
             MarketingActivity.Status.SHELVED -> "未开始"
-            MarketingActivity.Status.STARTED -> "进行中"
+            MarketingActivity.Status.STARTED -> getString(R.string.ongoing)
             MarketingActivity.Status.ENDED -> "已结束"
             null -> ""
         }
@@ -110,9 +112,9 @@ object ViewModelHelper {
     @JvmStatic
     fun Context.getMarketingScenarioActionText(status: MarketingActivityScenario.Qualification?): String {
         return when (status) {
-            MarketingActivityScenario.Qualification.REDEEMED -> "已领取"
-            MarketingActivityScenario.Qualification.AVAILABLE -> "领取"
-            null -> "待认证"
+            MarketingActivityScenario.Qualification.REDEEMED -> getString(R.string.collected)
+            MarketingActivityScenario.Qualification.AVAILABLE -> getString(R.string.unclaimedcollect_now)
+            null -> getString(R.string.to_be_verified)
         }
     }
 
@@ -140,14 +142,10 @@ object ViewModelHelper {
 
     @JvmStatic
     fun Context.getIconFor(appid: String): Drawable? {
-        return when (appid) {
-        // 微财富 appId = 1 , appName = com.weicaifu.wcf
-//            "1" -> ContextCompat.getDrawable(context, R.drawable.wcflogo)
-            else -> ContextCompat.getDrawable(
+        return ContextCompat.getDrawable(
                 this,
                 R.drawable.ic_launcher
-            )
-        }
+        )
     }
 
     @JvmStatic
@@ -168,7 +166,7 @@ object ViewModelHelper {
     fun getDccStrPlus(holding: BigInteger?): String {
         return holding?.let {
             val holdingStr = Currencies.DCC.toDecimalAmount(it)
-                .setScale(2, RoundingMode.DOWN).toPlainString()
+                    .setScale(2, RoundingMode.DOWN).toPlainString()
             "+$holdingStr DCC"
         } ?: "--"
     }
@@ -177,7 +175,7 @@ object ViewModelHelper {
     fun getDccStr(holding: BigInteger?): String? {
         return holding?.let {
             val holdingStr = Currencies.DCC.toDecimalAmount(it)
-                .currencyToDisplayStr()
+                    .currencyToDisplayStr()
             "$holdingStr DCC"
         } ?: ""
     }
@@ -232,10 +230,10 @@ object ViewModelHelper {
                 } else {
                     SpannableString(text).apply {
                         setSpan(
-                            ForegroundColorSpan(ContextCompat.getColor(this@requisiteListStr, R.color.text_red)),
-                            0,
-                            length,
-                            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                                ForegroundColorSpan(ContextCompat.getColor(this@requisiteListStr, R.color.text_red)),
+                                0,
+                                length,
+                                Spannable.SPAN_INCLUSIVE_EXCLUSIVE
                         )
                     }
                 }
@@ -265,15 +263,15 @@ object ViewModelHelper {
     fun Context.loanStatusText(status: LoanStatus?): CharSequence? {
         return when (status) {
             LoanStatus.INVALID -> "已失效"
-            LoanStatus.CREATED -> "订单创建中"
+            LoanStatus.CREATED -> getString(R.string.creating_order)
             LoanStatus.CANCELLED -> "已取消"
-            LoanStatus.AUDITING -> "审核中"
-            LoanStatus.REJECTED -> "审核失败"
-            LoanStatus.APPROVED -> "审核成功"
-            LoanStatus.FAILURE -> "放币失败"
-            LoanStatus.DELIVERED -> "已放币"
+            LoanStatus.AUDITING -> getString(R.string.pending_reviewing)
+            LoanStatus.REJECTED -> getString(R.string.review_failed)
+            LoanStatus.APPROVED -> getString(R.string.verify_success2)
+            LoanStatus.FAILURE -> getString(R.string.loan_issuance_failed)
+            LoanStatus.DELIVERED -> getString(R.string.loan_issued)
             LoanStatus.RECEIVIED -> "已收币"
-            LoanStatus.REPAID -> "已还币"
+            LoanStatus.REPAID -> getString(R.string.repaid)
             null -> getString(R.string.empty_slash)
         }
     }
@@ -301,10 +299,10 @@ object ViewModelHelper {
             LoanStatus.INVALID -> null//todo
             LoanStatus.CREATED -> null//todo
             LoanStatus.CANCELLED -> null//todo
-            LoanStatus.AUDITING -> "您的借币申请正在审核中"
+            LoanStatus.AUDITING -> getString(R.string.your_loan_application_is_under_review)
             LoanStatus.REJECTED -> "您的借币申请审核失败\n建议过段时间(1个月)再尝试"
-            LoanStatus.APPROVED -> "更新你的申请已经审核通过\n我们将尽快打币"
-            LoanStatus.FAILURE -> "很遗憾放币失败\n建议过短时间(一周后)再尝试"
+            LoanStatus.APPROVED -> getString(R.string.your_application_has_been_approved)
+            LoanStatus.FAILURE -> getString(R.string.please_try_again_after_a_while)
             LoanStatus.DELIVERED -> "已放币"
             LoanStatus.RECEIVIED -> "已收币"
             LoanStatus.REPAID -> "您的订单已处理完毕"
@@ -392,7 +390,7 @@ object ViewModelHelper {
         return if (loanReport == null || loanReport.isFromOtherAddress()) {
             ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_other)
         } else {
-            if(!loanReport.isMort()){
+            if (!loanReport.isMort()) {
                 when (loanReport?.status) {
                     LoanStatus.REPAID -> ContextCompat.getDrawable(
                             this,
@@ -400,7 +398,7 @@ object ViewModelHelper {
                     )
                     else -> ContextCompat.getDrawable(this, R.drawable.bg_loan_report_status_settlement_incomplete)
                 }
-            }else{
+            } else {
                 when (loanReport?.mortgageStatus) {
                     MortgageStatus.REPAID -> ContextCompat.getDrawable(
                             this,
@@ -420,7 +418,7 @@ object ViewModelHelper {
             LoanReport.Bill.BillStatus.PAY_OFF -> "已结清"
             LoanReport.Bill.BillStatus.WAITING_VERIFY,
             LoanReport.Bill.BillStatus.CREATED,
-            LoanReport.Bill.BillStatus.CANCELED -> "未结清"
+            LoanReport.Bill.BillStatus.CANCELED -> getString(R.string.unsettled)
             else -> null
         }
     }
@@ -449,9 +447,9 @@ object ViewModelHelper {
     @JvmStatic
     fun ecoBonusRuleGroupTitle(group: String?): CharSequence? {
         return when (group) {
-            BonusRule.GROUP_BASE -> "基础奖励"
-            BonusRule.GROUP_BORROW -> "借币奖励"
-            BonusRule.GROUP_REPAY -> "还币奖励"
+            BonusRule.GROUP_BASE -> getString(R.string.basic_rewards)
+            BonusRule.GROUP_BORROW -> getString(R.string.loan_application_rewards)
+            BonusRule.GROUP_REPAY -> getString(R.string.repayment_rewards)
             else -> null
         }
     }
@@ -488,6 +486,26 @@ object ViewModelHelper {
         mineCandy ?: return null
         return "+${Currencies.DCC.toDecimalAmount(mineCandy.amount).currencyToDisplayStr()}${Currencies.DCC.symbol}"
     }
+
+    @JvmStatic
+    fun transTime2Str(time: Long): String {
+        return DateUtil.getStringTime(time * 1000, "HH:mm:ss")
+    }
+
+    @JvmStatic
+    fun isPublic2Private(fromAssetCode: String, toAssetCode: String): Boolean {
+        return fromAssetCode == "DCC" && toAssetCode == "DCC_JUZIX"
+    }
+
+    @JvmStatic
+    fun accrossStatus(status: AccrossTransRecord.Status?): String {
+        return when (status) {
+            AccrossTransRecord.Status.ACCEPTED -> "转移中"
+            AccrossTransRecord.Status.DELIVERED -> "已完成"
+            else -> ""
+        }
+    }
+
 }
 
 fun BigDecimal.currencyToDisplayStr(): String {

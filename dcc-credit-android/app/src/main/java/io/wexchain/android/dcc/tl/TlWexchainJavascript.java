@@ -1,10 +1,7 @@
 package io.wexchain.android.dcc.tl;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.webkit.WebView;
 
 import com.xxy.maple.tllibrary.activity.TlBrowserActivity;
 import com.xxy.maple.tllibrary.app.TlSampleJavascript;

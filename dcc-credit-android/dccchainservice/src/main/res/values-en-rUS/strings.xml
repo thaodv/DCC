@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="mortgage_loan">Mortgage loan</string>
+    <string name="day">Day</string>
+    <string name="id_verification">ID verification</string>
+    <string name="bank_account_verification">Bank account verification</string>
+    <string name="carrier_verification">Carrier verification</string>
+
+</resources>

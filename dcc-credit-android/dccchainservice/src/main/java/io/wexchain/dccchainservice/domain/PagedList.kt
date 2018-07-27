@@ -2,7 +2,7 @@ package io.wexchain.dccchainservice.domain
 
 import com.google.gson.annotations.SerializedName
 
-data class PagedList<T>(
+data class PagedList<out T>(
     @SerializedName("totalElements")
     val totalElements: Int,
     @SerializedName("totalPages")

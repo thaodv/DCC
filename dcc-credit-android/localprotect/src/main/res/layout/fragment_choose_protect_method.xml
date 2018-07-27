@@ -63,7 +63,7 @@
             android:textSize="17sp"
             android:padding="10dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:text="指纹识别"
+            android:text="@string/fingerprint_identification"
             android:visibility="@{fingerPrintAvailable?View.VISIBLE:View.GONE}"
             android:enabled="@{fingerPrintEnrolled}"
             android:textColor="?attr/colorAccent"
@@ -84,7 +84,7 @@
             android:textSize="17sp"
             android:padding="10dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:text="手势密码"
+            android:text="@string/guesture_password"
             android:textColor="?attr/colorAccent"
             />
 
@@ -102,7 +102,7 @@
             android:textSize="17sp"
             android:padding="10dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:text="数字密码"
+            android:text="@string/digitalnumerical_password"
             android:textColor="?attr/colorAccent"
             />
 

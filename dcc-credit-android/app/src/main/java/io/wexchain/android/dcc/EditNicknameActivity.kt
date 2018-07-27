@@ -24,7 +24,7 @@ class EditNicknameActivity : BindActivity<ActivityEditNicknameBinding>() {
     }
 
     private fun onNicknameChanged(newNickname: String) {
-        toast("昵称修改成功")
+        toast(getString(R.string.user_alias_changed))
         finish()
     }
 }

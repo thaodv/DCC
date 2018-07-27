@@ -28,7 +28,7 @@
         android:layout_marginLeft="@dimen/content_padding_horizontal"
         android:layout_marginRight="@dimen/content_padding_horizontal"
         style="@style/Widget.AppCompat.Button.Dcc.Full"
-        android:text="添加收款地址"
+        android:text="@string/add_annew_collection_address"
         android:layout_marginBottom="24dp"
         />
 </LinearLayout>

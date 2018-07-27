@@ -33,7 +33,7 @@
                 android:gravity="center_vertical"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:text="应还本金"
+                android:text="@string/principle_to_be_repaid"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
                 />
 
@@ -55,7 +55,7 @@
                 android:gravity="center_vertical"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:text="应还利息"
+                android:text="@string/Interest_to_be_repaid"
                 app:layout_constraintTop_toBottomOf="@id/tv_principal_amount_label"
                 />
 
@@ -77,7 +77,7 @@
                 android:gravity="center_vertical"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:text="逾期滞纳金"
+                android:text="@string/overdue_fine"
                 app:layout_constraintTop_toBottomOf="@id/tv_interest_amount_label"
                 visibleOrGone="@{bill.overdue}"
                 />
@@ -101,7 +101,7 @@
                 android:gravity="center_vertical"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:text="提前还款手续费"
+                android:text="@string/handling_fee_for_repayment_in_advance"
                 app:layout_constraintTop_toBottomOf="@id/tv_overdue_amount_label"
                 visibleOrGone="@{bill.penalty}"
                 />
@@ -139,7 +139,7 @@
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:textSize="16sp"
-                android:text="还币总额"
+                android:text="@string/repayment_amount"
                 app:layout_constraintTop_toBottomOf="@id/divider_h1"
 
                 />

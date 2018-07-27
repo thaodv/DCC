@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:gravity="center_vertical"
-            android:text="@string/certificate_org_colon_sina_cloud_finance"
+            android:text="@string/authenticator"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -99,7 +99,7 @@
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginRight="@dimen/content_padding_horizontal"
             android:layout_marginTop="8dp"
-            android:text="@string/next_step"
+            android:text="@string/next"
             android:onClick="@{(v)->vm.onSubmit()}"
             app:layout_constraintTop_toBottomOf="@id/tv_cert_fee"
             />

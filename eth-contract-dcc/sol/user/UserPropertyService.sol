@@ -2,7 +2,6 @@ pragma solidity ^0.4.2;
 
 import "../ownership/OperatorPermission.sol";
 import "../utils/ByteUtils.sol";
-//有关用户信息存储
 contract UserPropertyService is OperatorPermission {
 
     using ByteUtils for bytes;
@@ -17,7 +16,7 @@ contract UserPropertyService is OperatorPermission {
     uint256 constant PROPERTYNAME_MAXSIZE = 50;
     uint256 constant PROPERTYVALUE_MAXSIZE = 10 * 1024;
 
-    event propertyPuted(address indexed applicant, string propertyName, string propertyValue);
+    event propertyPut(address indexed applicant, string propertyName, string propertyValue);
     event propertyDeleted(address indexed applicant, string propertyName, string propertyValue);
     event propertyNameAdded(uint256 indexed key, string propertyName);
     event propertyNameDeleted(uint256 indexed key, string propertyName);
@@ -32,7 +31,7 @@ contract UserPropertyService is OperatorPermission {
             require(false);
         }
         properties[addr][key] = propertyValue;
-        propertyPuted(addr, propertyName, propertyValue);
+        propertyPut(addr, propertyName, propertyValue);
     }
 
     function deleteProperty(address addr, string propertyName) public onlyOperator {

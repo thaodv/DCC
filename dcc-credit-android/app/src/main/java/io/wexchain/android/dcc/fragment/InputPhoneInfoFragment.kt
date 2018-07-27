@@ -9,6 +9,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.vm.InputPhoneInfoVm
 import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.dcc.R
@@ -35,7 +36,7 @@ class InputPhoneInfoFragment : BindFragment<FragmentSubmitCommunicationLogBindin
         binding.inputPassword.etInputText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
 
         App.get().chainGateway.getExpectedFee(ChainGateway.BUSINESS_ID)
-                .check()
+                .checkonMain()
                 .subscribeBy {
                     val fee = it.toLong()
                     vm.certFee.set("认证费：${Currencies.DCC.toDecimalAmount(BigInteger.valueOf(fee)).currencyToDisplayStr()} DCC")

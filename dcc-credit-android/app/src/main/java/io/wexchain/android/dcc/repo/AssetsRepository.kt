@@ -15,7 +15,9 @@ import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.api.ChainFrontEndApi
+import io.wexchain.digitalwallet.api.CoinMarketCapApi
 import io.wexchain.digitalwallet.api.domain.front.CResult
+import io.wexchain.digitalwallet.api.domain.front.CoinDetail
 import io.wexchain.digitalwallet.api.domain.front.Quote
 import io.wexchain.digitalwallet.proxy.Erc20Agent
 import io.wexchain.digitalwallet.proxy.EthCurrencyAgent
@@ -26,6 +28,7 @@ import java.util.concurrent.ConcurrentHashMap
 class AssetsRepository(
         val dao: PassportDao,
         val chainFrontEndApi: ChainFrontEndApi,
+        val coinMarketCapApi: CoinMarketCapApi,
         ethereumAgent: EthereumAgent,
         val erc20AgentBuilder: (DigitalCurrency) -> Erc20Agent) {
 
@@ -57,6 +60,8 @@ class AssetsRepository(
     val displayCurrencies: LiveData<List<DigitalCurrency>> = zipLiveData(pinned, selectedCurrencies) { a, b -> a + b }
 
     private val quoteCache = mutableMapOf<String, Quote>()
+
+    private val coinDetailCache = mutableMapOf<String, CoinDetail>()
 
     fun getDigitalCurrencyAgent(dc: DigitalCurrency): EthCurrencyAgent {
         val agent = dcAgentMap[dc]
@@ -105,6 +110,21 @@ class AssetsRepository(
                 }
     }
 
+    fun getCoinDetail(vararg symbols: String): Single<List<CoinDetail>> {
+        return coinMarketCapApi.coinMarketCap(symbols.joinToString(","))
+                .compose(CResult.checkedAllowingNull<List<CoinDetail>>(emptyList(), true))
+                .doOnSuccess {
+                    it.forEach {
+                        coinDetailCache[it.symbol] = it
+                    }
+                }
+                .onErrorReturn {
+                    symbols.mapNotNull {
+                        coinDetailCache[it]
+                    }
+                }
+    }
+
     fun queryTokens(query: String): Single<List<DigitalCurrency>> {
         return chainFrontEndApi.searchToken(query)
                 .compose(CResult.checked())
@@ -145,7 +165,7 @@ class AssetsRepository(
 
     @MainThread
     fun pushPendingTx(ethsTransaction: EthsTransaction) {
-        removePendingTx("",ethsTransaction.nonce)
+        removePendingTx("", ethsTransaction.nonce)
         pendingTxList.value = (pendingTxList.value ?: emptyList()).toMutableList().apply {
             add(0, ethsTransaction)
         }
@@ -155,9 +175,11 @@ class AssetsRepository(
     fun removePendingTx(txId: String) {
         pendingTxList.value = (pendingTxList.value ?: emptyList()).filter { it.txId != txId }
     }
+
     @MainThread
-    fun removePendingTx(txId: String,nonce:BigInteger) {
-        pendingTxList.value = (pendingTxList.value ?: emptyList()).filter { it.txId != txId }.filter { it.nonce != nonce }
+    fun removePendingTx(txId: String, nonce: BigInteger) {
+        pendingTxList.value = (pendingTxList.value
+                ?: emptyList()).filter { it.txId != txId }.filter { it.nonce != nonce }
     }
 
     fun setPinnedList(pinnedList: List<DigitalCurrency>) {

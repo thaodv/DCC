@@ -109,7 +109,7 @@ class VerifyProtectFragment : DialogFragment(), GesturePasswordFragment.Listener
             }
 
             override fun cancelText(): String {
-                return "取消"
+                return getString(R.string.cancel)
             }
 
             override fun onCreateProtectFinish(type: LocalProtectType) {
