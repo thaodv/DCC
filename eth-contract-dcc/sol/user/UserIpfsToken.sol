@@ -14,7 +14,7 @@ contract UserIpfsToken {
 
     uint256 constant IPFS_NONCE_MAXSIZE = 10 * 1024;
 
-    event ipfsTokenPut(address indexed userAddress, address contractAddress, bytes nonce,uint256 version, string token);
+    event ipfsTokenPut(address indexed userAddress, address contractAddress, bytes nonce, uint256 version, string token);
     event ipfsTokenDeleted(address indexed userAddress, address contractAddress);
 
     function putIpfsToken(address contractAddress, bytes nonce, string token) public {
@@ -22,8 +22,8 @@ contract UserIpfsToken {
         require(nonce.length <= IPFS_NONCE_MAXSIZE);
         require(bytes(token).length > 0 && bytes(token).length <= IPFS_TOKEN_MAXSIZE);
 
-        ipfsTokens[msg.sender][contractAddress] = IpfsToken(nonce,++ipfsTokens[msg.sender][contractAddress].version, token);
-        ipfsTokenPut(msg.sender, contractAddress, nonce,ipfsTokens[msg.sender][contractAddress].version, token);
+        ipfsTokens[msg.sender][contractAddress] = IpfsToken(nonce, ipfsTokens[msg.sender][contractAddress].version + 1, token);
+        ipfsTokenPut(msg.sender, contractAddress, nonce, ipfsTokens[msg.sender][contractAddress].version, token);
     }
 
     function deleteIpfsToken(address contractAddress) public {
@@ -33,9 +33,9 @@ contract UserIpfsToken {
         ipfsTokenDeleted(msg.sender, contractAddress);
     }
 
-    function getIpfsToken(address contractAddress) public constant returns (address _userAddress, address _contractAddress, bytes _nonce,uint256 version, string _token){
+    function getIpfsToken(address contractAddress) public constant returns (address _userAddress, address _contractAddress, bytes _nonce, uint256 version, string _token){
         require(contractAddress != 0);
 
-        return (msg.sender, contractAddress, ipfsTokens[msg.sender][contractAddress].nonce,ipfsTokens[msg.sender][contractAddress].version, ipfsTokens[msg.sender][contractAddress].token);
+        return (msg.sender, contractAddress, ipfsTokens[msg.sender][contractAddress].nonce, ipfsTokens[msg.sender][contractAddress].version, ipfsTokens[msg.sender][contractAddress].token);
     }
 }
