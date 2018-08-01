@@ -18,6 +18,7 @@ import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.*
+import io.wexchain.dccchainservice.util.DateUtil
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.api.domain.front.Quote
@@ -492,6 +493,26 @@ object ViewModelHelper {
         mineCandy ?: return null
         return "+${Currencies.DCC.toDecimalAmount(mineCandy.amount).currencyToDisplayStr()}${Currencies.DCC.symbol}"
     }
+
+    @JvmStatic
+    fun transTime2Str(time: Long): String {
+        return DateUtil.getStringTime(time * 1000, "HH:mm:ss")
+    }
+
+    @JvmStatic
+    fun isPublic2Private(fromAssetCode: String, toAssetCode: String): Boolean {
+        return fromAssetCode == "DCC" && toAssetCode == "DCC_JUZIX"
+    }
+
+    @JvmStatic
+    fun accrossStatus(status: AccrossTransRecord.Status?): String {
+        return when (status) {
+            AccrossTransRecord.Status.ACCEPTED -> "转移中"
+            AccrossTransRecord.Status.DELIVERED -> "已完成"
+            else -> ""
+        }
+    }
+
 }
 
 fun BigDecimal.currencyToDisplayStr(): String {

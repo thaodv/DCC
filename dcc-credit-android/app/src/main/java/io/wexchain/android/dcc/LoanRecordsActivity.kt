@@ -3,15 +3,11 @@ package io.wexchain.android.dcc
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
-import android.support.v7.widget.RecyclerView
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.base.BindActivity
-import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter

@@ -2,15 +2,20 @@ package io.wexchain.dcc.marketing.domainservice.impl;
 
 import com.wexmarket.topia.commons.data.page.PageUtils;
 import io.wexchain.dcc.marketing.api.model.RewardLogStatisticsInfo;
+import io.wexchain.dcc.marketing.api.model.RewardStatistics;
 import io.wexchain.dcc.marketing.api.model.request.GetTotalRewardAmountRequest;
 import io.wexchain.dcc.marketing.api.model.request.QueryRewardLogPageRequest;
 import io.wexchain.dcc.marketing.domain.Activity;
 import io.wexchain.dcc.marketing.domain.RewardLog;
 import io.wexchain.dcc.marketing.domainservice.ActivityService;
 import io.wexchain.dcc.marketing.domainservice.RewardLogService;
+import io.wexchain.dcc.marketing.domainservice.RewardRoundService;
 import io.wexchain.dcc.marketing.domainservice.ScenarioService;
+import io.wexchain.dcc.marketing.repository.RewardActionRecordRepository;
 import io.wexchain.dcc.marketing.repository.RewardLogRepository;
 import io.wexchain.dcc.marketing.repository.query.RewardLogQueryBuilder;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * RewardLogServiceImpl
@@ -73,9 +77,37 @@ public class RewardLogServiceImpl implements RewardLogService {
                 rewardLogRepository.findTotalAmount(activity.getId())).orElse(BigDecimal.ZERO));
         info.setYesterdayAmount(Optional.ofNullable(
                 rewardLogRepository.findTotalAmountBetweenDate(
-                activity.getId(), from.toDate(), to.toDate())).orElse(BigDecimal.ZERO));
+                        activity.getId(), from.toDate(), to.toDate())).orElse(BigDecimal.ZERO));
         info.setYesterdayPersonNumber(rewardLogRepository.countByActivityIdAndCreatedTimeBetween(
                 activity.getId(), from.toDate(), to.toDate()));
         return info;
+    }
+
+    @Override
+    public BigDecimal getRewardLogAmount(String activityCode) {
+        DateTime from = DateTime.now().minusDays(1).withTimeAtStartOfDay();
+        DateTime to = DateTime.now().withTimeAtStartOfDay().minusMillis(1);
+        Activity activity = activityService.getActivityByCode(activityCode);
+        return Optional.ofNullable(rewardLogRepository.findTotalAmountBetweenDate(
+                activity.getId(), from.toDate(), to.toDate())).orElse(BigDecimal.ZERO);
+    }
+
+    @Override
+    public List<RewardStatistics> queryTop20RewardLogAmount(String activityCode) {
+        DateTime now = DateTime.now();
+        Date from = now.plusDays(-now.dayOfWeek().get() + 1).withTimeAtStartOfDay().minusWeeks(1).toDate();
+        Date to = now.plusDays(-now.dayOfWeek().get() + 1).withTimeAtStartOfDay().minusMillis(1).toDate();
+        Activity activity = activityService.getActivityByCode(activityCode);
+        List<Map<String, Object>> topNTotalAmountBetweenDate = rewardLogRepository.findTopNTotalAmountBetweenDate(20, activity.getId(), from, to);
+        List<RewardStatistics> rewardStatisticsList = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(topNTotalAmountBetweenDate)){
+            topNTotalAmountBetweenDate.forEach(map -> {
+                RewardStatistics rewardStatistics = new RewardStatistics();
+                rewardStatistics.setAddress(map.get("address").toString());
+                rewardStatistics.setSumAmount(new BigDecimal(map.get("totalAmount").toString()));
+                rewardStatisticsList.add(rewardStatistics);
+            });
+        }
+        return rewardStatisticsList;
     }
 }

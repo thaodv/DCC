@@ -378,6 +378,23 @@
             android:name="io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trans.activity.Private2PublicActivity"
+            android:label="@string/across_trans"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trans.activity.Public2PrivateActivity"
+            android:label="@string/across_trans"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trans.activity.AcrossTransRecordActivity"
+            android:label="@string/across_trans_record"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.trans.activity.TransDetailActivity">
+        </activity>
     </application>
 
 </manifest>

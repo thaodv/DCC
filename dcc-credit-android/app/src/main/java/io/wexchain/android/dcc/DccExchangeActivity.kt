@@ -9,9 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.trans.activity.AcrossTransRecordActivity
+import io.wexchain.android.dcc.modules.trans.activity.Private2PublicActivity
+import io.wexchain.android.dcc.modules.trans.activity.Public2PrivateActivity
 import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityDccExchangeBinding
@@ -19,8 +22,8 @@ import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 
 class DccExchangeActivity : BindActivity<ActivityDccExchangeBinding>() {
-    override val contentLayoutId: Int = R.layout.activity_dcc_exchange
 
+    override val contentLayoutId: Int = R.layout.activity_dcc_exchange
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,10 +44,10 @@ class DccExchangeActivity : BindActivity<ActivityDccExchangeBinding>() {
             }
         }
         binding.ibDccToPublic.setOnClickListener {
-            toast(getString(R.string.next_version_soon))
+            navigateTo(Private2PublicActivity::class.java)
         }
         binding.ibPublicToDcc.setOnClickListener {
-            toast(getString(R.string.next_version_soon))
+            navigateTo(Public2PrivateActivity::class.java)
         }
         val sp = getSharedPreferences("setting", Context.MODE_PRIVATE)
         if (sp.getBoolean("first_into", true)) {
@@ -62,6 +65,10 @@ class DccExchangeActivity : BindActivity<ActivityDccExchangeBinding>() {
         return when (item?.itemId) {
             R.id.action_question -> {
                 tipsDialog.show()
+                true
+            }
+            R.id.action_trans_record -> {
+                navigateTo(AcrossTransRecordActivity::class.java)
                 true
             }
             else -> super.onOptionsItemSelected(item)

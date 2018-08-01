@@ -21,7 +21,7 @@ import io.wexchain.digitalwallet.EthsTransactionScratch
  * Created by sisel on 2018/1/22.
  */
 class TransactionConfirmDialogFragment : DialogFragment() {
-    var isEdit=false
+    var isEdit = false
 
     private lateinit var binding: DialogConfirmTransactionBinding
 
@@ -30,7 +30,7 @@ class TransactionConfirmDialogFragment : DialogFragment() {
         val scratch = getScratch()
         val app = App.get()
         val passport = app.passportRepository.getCurrentPassport()!!
-        val vm = TransactionConfirmVm(scratch, passport, app.assetsRepository,isEdit)
+        val vm = TransactionConfirmVm(scratch, passport, app.assetsRepository, isEdit)
         vm.syncProtect(this)
         vm.txSentEvent.observe(this, Observer {
             it?.let {
@@ -46,7 +46,7 @@ class TransactionConfirmDialogFragment : DialogFragment() {
             it?.let {
                 toast("转账提交失败")
             }
-            if(isEdit) activity?.finish()
+            if (isEdit) activity?.finish()
 
         })
         vm.busySendingEvent.observe(this, Observer {
@@ -96,7 +96,7 @@ class TransactionConfirmDialogFragment : DialogFragment() {
             arguments?.getSerializable(ARG_SCRATCH)!! as EthsTransactionScratch
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        setStyle(STYLE_NORMAL,R.style.Theme_AppCompat_Light_Dialog_Alert_Dcc)
+        setStyle(STYLE_NORMAL, R.style.Theme_AppCompat_Light_Dialog_Alert_Dcc)
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.setCanceledOnTouchOutside(false)
         dialog.window.apply {
@@ -109,12 +109,12 @@ class TransactionConfirmDialogFragment : DialogFragment() {
     companion object {
         const val ARG_SCRATCH = "argument_transaction_scratch"
 
-        fun create(ethsTransactionScratch: EthsTransactionScratch,isEdit:Boolean=false): TransactionConfirmDialogFragment {
+        fun create(ethsTransactionScratch: EthsTransactionScratch, isEdit: Boolean = false): TransactionConfirmDialogFragment {
             return TransactionConfirmDialogFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_SCRATCH, ethsTransactionScratch)
                 }
-                this.isEdit=isEdit
+                this.isEdit = isEdit
             }
         }
     }

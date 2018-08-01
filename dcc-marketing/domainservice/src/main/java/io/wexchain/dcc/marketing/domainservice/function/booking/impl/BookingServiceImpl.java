@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.UUID;
 
 /**
@@ -53,7 +54,39 @@ public class BookingServiceImpl implements BookingService {
         mae.setDelay(true);
 
         MonoAccountingRequest mar = new MonoAccountingRequest();
-        mar.setEntries(Arrays.asList(mae));
+        mar.setEntries(Collections.singletonList(mae));
+        mar.setRequestIdentity(new RequestIdentity(SET_SOURCE_CODE, requestNo));
+        mar.setSetOfBooksCode(SET_OF_BOOKS_CODE);
+        ResultResponse<AccountTransaction> submit = monoAccoutingProxy.submit(mar);
+        return Code2Exception.handleResultResponse(submit);
+    }
+
+    @Override
+    public AccountTransaction add(String code, String requestNo, BigDecimal amount) {
+        MonoAccountingEntry mae = new MonoAccountingEntry();
+        mae.setAccountCode(code);
+        mae.setDirection(MonoAccoutingDirection.ADD);
+        mae.setAmount(amount);
+        mae.setDelay(false);
+
+        MonoAccountingRequest mar = new MonoAccountingRequest();
+        mar.setEntries(Collections.singletonList(mae));
+        mar.setRequestIdentity(new RequestIdentity(SET_SOURCE_CODE, requestNo));
+        mar.setSetOfBooksCode(SET_OF_BOOKS_CODE);
+        ResultResponse<AccountTransaction> submit = monoAccoutingProxy.submit(mar);
+        return Code2Exception.handleResultResponse(submit);
+    }
+
+    @Override
+    public AccountTransaction subtract(String code, String requestNo, BigDecimal amount) {
+        MonoAccountingEntry mae = new MonoAccountingEntry();
+        mae.setAccountCode(code);
+        mae.setDirection(MonoAccoutingDirection.SUBSTRACT);
+        mae.setAmount(amount);
+        mae.setDelay(false);
+
+        MonoAccountingRequest mar = new MonoAccountingRequest();
+        mar.setEntries(Collections.singletonList(mae));
         mar.setRequestIdentity(new RequestIdentity(SET_SOURCE_CODE, requestNo));
         mar.setSetOfBooksCode(SET_OF_BOOKS_CODE);
         ResultResponse<AccountTransaction> submit = monoAccoutingProxy.submit(mar);

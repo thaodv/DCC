@@ -122,7 +122,7 @@ contract MortgageLoanService is OperatorPermission, GateControl, FastFailure {
         agreement2Contract.updateStatus(orderId, enumToString(nextStatus),enumToString(expectedStatus));
     }
 
-    function updateRepayDigest(uint256 orderId, bytes repayDigest) onlyOperator external {
+    function updateRepayDigest(uint256 orderId, bytes repayDigest,bytes content) onlyOperator external {
         require(repayDigest.length > 0 && repayDigest.length <= MAX_SIZE);
 
         Order storage order = innerGetOrder(orderId);

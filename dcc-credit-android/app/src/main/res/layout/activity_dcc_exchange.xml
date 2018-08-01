@@ -2,78 +2,141 @@
 <layout>
 
     <data>
+
         <variable
             name="vm"
             type="io.wexchain.android.dcc.vm.DccExchangeVm"/>
     </data>
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="io.wexchain.android.dcc.DccExchangeActivity"
         android:orientation="vertical"
+        tools:context="io.wexchain.android.dcc.DccExchangeActivity"
         >
 
         <include layout="@layout/include_toolbar"/>
 
-        <include layout="@layout/include_card_dc_orange"
-            android:id="@+id/card_juzix"
-            app:dc="@{vm.dcc}"
-            app:quote="@{vm.quote}"
-            app:holding="@{vm.juzixHolding}"
-            app:chainText="@{@string/on_chain_dcc}"
-            />
-
-        <android.support.constraint.ConstraintLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
-            <ImageButton
-                android:id="@+id/ib_dcc_to_public"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_down_round_disabled"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/tv_trans"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                />
+            android:background="#FFF"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            android:scrollbars="none">
 
-            <TextView
-                    android:id="@+id/tv_trans"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="100dp"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/text_blue_magenta"
-                    android:text="@string/cross_chain_transfer"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/ib_dcc_to_public"
-                    app:layout_constraintRight_toLeftOf="@id/ib_public_to_dcc"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/card_juzix"
+                    layout="@layout/include_card_dc_orange"
+                    app:chainText="@{@string/on_chain_dcc}"
+                    app:dc="@{vm.dcc}"
+                    app:holding="@{vm.juzixHolding}"
+                    app:quote="@{vm.quote}"
                     />
 
-            <ImageButton
-                android:id="@+id/ib_public_to_dcc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_up_round_disabled"
-                app:layout_constraintLeft_toRightOf="@id/tv_trans"
-                app:layout_constraintRight_toRightOf="parent"
-                />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    >
 
+                    <ImageButton
+                        android:id="@+id/ib_dcc_to_public"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/icon_private2public"
+                        />
 
-        </android.support.constraint.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/tv_trans"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:minWidth="100dp"
+                        android:text="@string/cross_chain_transfer"
+                        android:textColor="@color/text_blue_magenta"
+                        />
 
-        <include layout="@layout/include_card_dc"
-            android:id="@+id/card_public"
-            app:dc="@{vm.dcc}"
-            app:quote="@{vm.quote}"
-            app:holding="@{vm.publicHolding}"
-            app:chainText="@{@string/on_chain_ethereum}"
-            />
+                    <ImageButton
+                        android:id="@+id/ib_public_to_dcc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_public2private"
+                        />
 
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/card_public"
+                    layout="@layout/include_card_dc"
+                    app:chainText="@{@string/on_chain_ethereum}"
+                    app:dc="@{vm.dcc}"
+                    app:holding="@{vm.publicHolding}"
+                    app:quote="@{vm.quote}"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="@string/across_trans_tip"
+                    android:textColor="#4A4A4A"
+                    android:textSize="15sp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/icon_private2public"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/across_trans_tip_1"
+                        android:textColor="#4A4A4A"
+                        android:textSize="15sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/icon_public2private"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/across_trans_tip_2"
+                        android:textColor="#4A4A4A"
+                        android:textSize="15sp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </LinearLayout>
 

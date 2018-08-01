@@ -1,70 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context="com.wexmarket.android.passport.DigitalCurrencyActivity"
-        >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.wexmarket.android.passport.DigitalCurrencyActivity"
+    >
 
     <data>
 
         <variable
-                name="vm"
-                type="io.wexchain.android.dcc.vm.DigitalCurrencyVm"
-                />
+            name="vm"
+            type="io.wexchain.android.dcc.vm.DigitalCurrencyVm"
+            />
 
         <variable
-                name="txList"
-                type="io.wexchain.android.dcc.vm.TransactionListVm"
-                />
+            name="txList"
+            type="io.wexchain.android.dcc.vm.TransactionListVm"
+            />
     </data>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/include_toolbar"
+            />
+
+        <include
+            android:id="@+id/section_currency_summary"
+            layout="@layout/include_currency_summary"
+            app:vm="@{vm}"
+            />
+
+        <View
+            android:id="@+id/divider_h1"
+            style="@style/DividerHorizontal"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            />
+
+        <include
+            android:id="@+id/section_quote"
+            layout="@layout/include_currency_quote"
+            app:coinDetail="@{vm.coinDetail}"
+            />
+
+        <View
+            android:id="@+id/divider_h2"
+            style="@style/DividerHorizontal"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            />
+
+        <include
+            android:id="@+id/section_transactions"
+            layout="@layout/include_transaction_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
-
-        <include
-                android:id="@+id/toolbar"
-                layout="@layout/include_toolbar"
-                />
-
-        <include
-                android:id="@+id/section_currency_summary"
-                layout="@layout/include_currency_summary"
-                app:vm="@{vm}"
-                />
-
-        <View
-                android:id="@+id/divider_h1"
-                style="@style/DividerHorizontal"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
-                android:layout_marginRight="@dimen/content_padding_horizontal"
-                />
-
-        <include
-                android:id="@+id/section_quote"
-                layout="@layout/include_currency_quote"
-                app:quote="@{vm.quote}"
-                />
-
-
-        <View
-                android:id="@+id/divider_h2"
-                style="@style/DividerHorizontal"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
-                android:layout_marginRight="@dimen/content_padding_horizontal"
-                />
-
-        <include
-                android:id="@+id/section_transactions"
-                layout="@layout/include_transaction_list"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                app:txList="@{txList}"
-                />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:txList="@{txList}"
+            />
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -85,19 +84,19 @@
                     >
 
                 <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_transfer"
-                        />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_transfer"
+                    />
 
                 <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:layout_marginLeft="4dp"
-                        android:text="@string/transfer"
-                        android:textColor="@color/text_color_button"
-                        />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:text="@string/transfer"
+                    android:textColor="@color/text_color_button"
+                    android:textSize="16sp"
+                    />
 
             </LinearLayout>
 
@@ -114,19 +113,19 @@
                     >
 
                 <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_collect"
-                        />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_collect"
+                    />
 
                 <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:layout_marginLeft="4dp"
-                        android:text="@string/collect"
-                        android:textColor="@color/text_color_button"
-                        />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:text="@string/collect"
+                    android:textColor="@color/text_color_button"
+                    android:textSize="16sp"
+                    />
 
             </LinearLayout>
 

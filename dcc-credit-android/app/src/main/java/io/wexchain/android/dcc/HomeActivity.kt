@@ -18,6 +18,8 @@ import io.wexchain.android.dcc.chain.IPFSHelp
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.tl.TlWebPageActivity
+import io.wexchain.android.dcc.tools.LogUtils
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.tools.log

@@ -3,23 +3,29 @@
 
     <data>
 
-        <import type="android.view.View" />
+        <import type="android.view.View"/>
+
         <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
 
-        <variable
+        <import type="io.wexchain.android.dcc.tools.StringUtils"/>
+
+        <!--<variable
             name="quote"
             type="io.wexchain.digitalwallet.api.domain.front.Quote"
+            />-->
+
+        <variable
+            name="coinDetail"
+            type="io.wexchain.digitalwallet.api.domain.front.CoinDetail"
             />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp"
+        android:orientation="vertical"
         >
 
         <TextView
@@ -29,164 +35,220 @@
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:text="@string/market_quote"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginRight="@dimen/content_padding_horizontal"
             android:layout_marginTop="4dp"
             android:text="@string/quote_not_available"
-            android:visibility="@{quote==null?View.VISIBLE:View.GONE}"
             android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_market_quote_label"
+            android:visibility="@{coinDetail==null?View.VISIBLE:View.GONE}"
             tools:visibility="gone"
             />
 
-        <TextView
-            android:id="@+id/tv_quote_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/content_padding_horizontal"
-            android:layout_marginTop="4dp"
-            android:text="@{ViewModelHelper.formatCurrencyValue(quote.price)}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textSize="20sp"
-            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_market_quote_label"
-            tools:text="3253.34"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/content_padding_horizontal"
+            android:visibility="@{coinDetail!=null?View.VISIBLE:View.GONE}"
+            tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/tv_quote_change"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@{quote.change??@string/empty_slash}"
-            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
-            app:layout_constraintLeft_toLeftOf="@id/tv_quote_price"
-            app:layout_constraintTop_toBottomOf="@id/tv_quote_price"
-            tools:text="-324.43"
-            />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_quote_change_rate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@{quote.changeRate??@string/empty_slash}"
-            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
-            app:layout_constraintLeft_toRightOf="@id/tv_quote_change"
-            app:layout_constraintTop_toBottomOf="@id/tv_quote_price"
-            tools:text="-32.43%"
-            />
+                <TextView
+                    android:id="@+id/tv_quote_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="@{StringUtils.getPrice(coinDetail.price,4)}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textSize="20sp"
+                    android:visibility="@{coinDetail!=null?View.VISIBLE:View.GONE}"
+                    tools:text="3253.34"/>
 
-        <android.support.constraint.Guideline
-            android:id="@+id/gl_cv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5"
-            />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_quote_high_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/_24h_high"
-            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
-            app:layout_constraintBottom_toTopOf="@id/tv_quote_high_value"
-            app:layout_constraintLeft_toRightOf="@id/gl_cv"
-            app:layout_constraintRight_toLeftOf="@id/tv_quote_low_label"
-            app:layout_constraintTop_toTopOf="@id/tv_quote_price"
-            />
+                    <TextView
+                        android:id="@+id/tv_quote_change"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{StringUtils.keep2double(coinDetail.percent_change_24h,' ')}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                        android:textColor="@{StringUtils.showColor(coinDetail.percent_change_24h)?@color/FFED190F:@color/FF7ED321}"
+                        android:textSize="12sp"
+                        android:visibility="@{coinDetail!=null?View.VISIBLE:View.GONE}"
+                        tools:text="-324.43"
+                        tools:textColor="#ED190F"
+                        />
 
-        <TextView
-            android:id="@+id/tv_quote_high_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{ViewModelHelper.formatCurrencyValue(quote.high)}"
-            android:textSize="12sp"
-            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
-            app:layout_constraintBottom_toBottomOf="@id/tv_quote_price"
-            app:layout_constraintLeft_toLeftOf="@id/tv_quote_high_label"
-            app:layout_constraintTop_toBottomOf="@id/tv_quote_high_label"
-            tools:text="43215.34"
-            />
+                    <TextView
+                        android:id="@+id/tv_quote_change_rate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="@{StringUtils.keep2double(coinDetail.price_change_24,'%')}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                        android:textColor="@{StringUtils.showColor(coinDetail.price_change_24)?@color/FFED190F:@color/FF7ED321}"
+                        android:textSize="12sp"
+                        android:visibility="@{coinDetail!=null?View.VISIBLE:View.GONE}"
+                        tools:text="-32.43%"
+                        tools:textColor="#ED190F"/>
 
-        <TextView
-            android:id="@+id/tv_quote_low_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/content_padding_horizontal"
-            android:text="@string/_24h_low"
-            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
-            app:layout_constraintBottom_toTopOf="@id/tv_quote_low_value"
-            app:layout_constraintLeft_toRightOf="@id/tv_quote_high_label"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_quote_price"
-            />
+                </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_quote_low_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{ViewModelHelper.formatCurrencyValue(quote.low)}"
-            android:textSize="12sp"
-            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
-            app:layout_constraintBottom_toBottomOf="@id/tv_quote_price"
-            app:layout_constraintLeft_toLeftOf="@id/tv_quote_low_label"
-            app:layout_constraintTop_toBottomOf="@id/tv_quote_low_label"
-            tools:text="40215.34"
-            />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_quote_vol_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/_24h_vol"
-            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
-            app:layout_constraintLeft_toRightOf="@id/gl_cv"
-            app:layout_constraintTop_toTopOf="@id/tv_quote_change"
-            />
+                    <TextView
+                        android:id="@+id/tv_trans_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_24h_trans_count"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textColor="#9B9B9B"
+                        android:textSize="12sp"/>
 
-        <TextView
-            android:id="@+id/tv_quote_vol_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{ViewModelHelper.formatCurrencyValue(quote.volume)}"
-            android:textSize="12sp"
-            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
-            app:layout_constraintLeft_toLeftOf="@id/tv_quote_vol_label"
-            app:layout_constraintTop_toBottomOf="@id/tv_quote_vol_label"
-            tools:text="3264.4938(ETH)"
-            />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/content_padding_horizontal"
+                        android:text="@{StringUtils.getPrice(coinDetail.volume_24,2)}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textColor="#FF000000"
+                        android:textSize="12sp"
+                        android:visibility="@{coinDetail!=null?View.VISIBLE:View.GONE}"
+                        tools:text="100"/>
 
-        <TextView
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_quote_high_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/content_padding_horizontal"
+                        android:text="@string/_1h_rate"
+                        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                        android:visibility="@{coinDetail!=null?View.VISIBLE:View.GONE}"/>
+
+                    <TextView
+                        android:id="@+id/tv_quote_high_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{StringUtils.keep2double(coinDetail.percent_change_1h,'%')}"
+                        android:textSize="12sp"
+                        android:visibility="@{coinDetail!=null?View.VISIBLE:View.GONE}"
+                        tools:text="43215.34"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_quote_low_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/content_padding_horizontal"
+                        android:text="@string/_7d_rate"
+                        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                        android:visibility="@{coinDetail!=null?View.VISIBLE:View.GONE}"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_quote_low_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{StringUtils.keep2double(coinDetail.percent_change_7d,'%')}"
+                        android:textSize="12sp"
+                        android:visibility="@{coinDetail!=null?View.VISIBLE:View.GONE}"
+                        tools:text="40215.34"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_quote_vol_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/content_padding_horizontal"
+                        android:text="@string/latest_update"
+                        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                        android:visibility="@{coinDetail!=null?View.VISIBLE:View.GONE}"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_quote_vol_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{ViewModelHelper.transTime2Str(coinDetail.timeStamp)}"
+                        android:textSize="12sp"
+                        android:visibility="@{coinDetail!=null?View.VISIBLE:View.GONE}"
+                        tools:text="12:12:12"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--<TextView
             android:id="@+id/tv_quote_source"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/content_padding_horizontal"
             android:layout_marginTop="4dp"
-            android:text="@{@string/quote_source_colon(quote.sourceName)}"
+            android:text="@{@string/quote_source_colon(coinDetail.sourceName)}"
             android:textSize="12sp"
-            android:visibility="@{quote!=null?View.VISIBLE:View.GONE}"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_quote_vol_value"
+            android:visibility="@{coinDetail!=null?View.VISIBLE:View.GONE}"
             tools:text="来源: 火币Pro"
-            />
-    </android.support.constraint.ConstraintLayout>
+            />-->
+    </LinearLayout>
 
 </layout>

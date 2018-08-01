@@ -1,10 +1,6 @@
 package io.wexchain.android.dcc.vm
 
-import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableField
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.dccchainservice.domain.LoanRecordSummary
