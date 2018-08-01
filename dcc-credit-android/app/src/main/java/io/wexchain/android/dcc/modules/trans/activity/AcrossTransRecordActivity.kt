@@ -153,6 +153,10 @@ class AcrossTransRecordActivity : BindActivity<ActivityAcrossTransRecordBinding>
 
                 override fun sure() {
 
+                    if (DateUtil.isRightSelect(accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", ""), accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", ""), "yyyyMMdd")) {
+                        toast("结束时间不能小于起始时间")
+                    }
+
                     if (DateUtil.beyond90day(accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", ""), accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", ""), "yyyyMMdd")) {
                         vm!!.startTime = accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", "")
                         vm!!.endTime = accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", "")

@@ -117,6 +117,19 @@ public class DateUtil {
     }
     
     /**
+     * 判断endTime大于startTime
+     *
+     * @param startTime
+     * @param endTime
+     * @param format
+     * @return
+     */
+    public static boolean isRightSelect(String startTime, String endTime, String format) {
+        long temp = getLongTime(endTime, format) - getLongTime(startTime, format);
+        return temp < 0;
+    }
+    
+    /**
      * 获得本周一与当前日期相差的天数
      *
      * @return
@@ -179,6 +192,7 @@ public class DateUtil {
         String preMonday = dateFormat.format(monday);
         return preMonday;
     }
+    
     /**
      * 获得当前周- 周日  的日期
      *

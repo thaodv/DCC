@@ -51,7 +51,7 @@ class TransPrivate2PublicDetailActivity : BaseCompatActivity() {
 
                 }.subscribe({
                     tv_originAmount.text = ViewModelHelper.getTransCount(it.originAmount)
-                    tv_createdTime.text = DateUtil.getStringTime(it.createdTime, "yyyy-MM-dd HH:mm:ss")
+
                     tv_status.text = ViewModelHelper.accrossStatus(it.status)
                     tv_feeAmount.text = "手续费:" + ViewModelHelper.getTransCount(it.feeAmount) + " DCC"
                     tv_originAmount2.text = "-" + ViewModelHelper.getTransCount(it.originAmount) + " DCC"
@@ -79,6 +79,9 @@ class TransPrivate2PublicDetailActivity : BaseCompatActivity() {
 
                         tv_destBlockNumber.text = it.destBlockNumber.toString()
                         tv_destTradeTime.text = DateUtil.getStringTime(it.destTradeTime, "yyyy-MM-dd HH:mm:ss")
+
+                        tv_createdTime.text = DateUtil.getStringTime(it.createdTime, "yyyy-MM-dd HH:mm:ss")
+
                     } else {
                         ll_in.visibility = View.GONE
                     }

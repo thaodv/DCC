@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lines="1"
-                    android:text="To DCC@Distributed Credit"
+                    android:text="To DCC@Distributed Credit Chain"
                     android:textColor="#FF404040"
                     android:textSize="14sp"/>
 
@@ -131,8 +131,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:gravity="center_vertical">
+                android:layout_height="60dp"
+                android:gravity="top">
 
                 <TextView
                     android:layout_width="98dp"
@@ -145,33 +145,10 @@
                     android:id="@+id/tv_holding_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:lines="1"
                     android:text="@{vm.holding}"
                     android:textColor="#FF404040"
                     android:textSize="14sp"
-                    tools:text="7000 DCC"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="98dp"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FF404040"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/tv_holding_count_ETH"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:lines="1"
-                    android:textColor="#FF404040"
-                    android:textSize="14sp"
-                    tools:text="7000 ETH"/>
+                    tools:text="7000 DCC\nhhh"/>
 
             </LinearLayout>
 

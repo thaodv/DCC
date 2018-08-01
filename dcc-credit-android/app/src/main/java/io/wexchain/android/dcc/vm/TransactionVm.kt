@@ -130,7 +130,7 @@ class TransactionVm {
                         fpp = maxOf(//
                                 tx.gasPrice,
                                 //it + BigDecimal("0.5").scaleByPowerOfTen(9).toBigInteger()
-                            it
+                                it
                         )
                     }
                     gasPrice.set(weiToGwei(fpp).stripTrailingZeros().toPlainString())
@@ -195,7 +195,7 @@ class TransactionVm {
         }
         if (isEdit) {
             val gasprice = gasPrice.get()?.toBigDecimalSafe()
-            if (gasprice == null || gasprice <=weiToGwei(tx.gasPrice)) {
+            if (gasprice == null || gasprice <= weiToGwei(tx.gasPrice)) {
                 inputNotSatisfiedEvent.value = "Gas Price必须高于原交易的Gas price"
                 return
             }

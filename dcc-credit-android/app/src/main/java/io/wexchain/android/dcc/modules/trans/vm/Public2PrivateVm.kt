@@ -106,7 +106,6 @@ class Public2PrivateVm {
             currency = dc
             txTitle.set("${dc.symbol} 转账")
             updateGasPrice()
-
             onPrivateChain.set(dc.chain == Chain.JUZIX_PRIVATE)
             if (dc.chain == Chain.JUZIX_PRIVATE) {
                 if (dc.symbol == Currencies.FTC.symbol) {
@@ -253,7 +252,6 @@ class Public2PrivateVm {
                     remarks.get()
             )
         }
-        this.txProceedEvent.value = scratch
         App.get().assetsRepository.getDigitalCurrencyAgent(dc)
                 .getGasLimit(scratch)
                 .observeOn(AndroidSchedulers.mainThread())
