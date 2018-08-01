@@ -39,7 +39,7 @@ class Public2PrivateActivity : BindActivity<ActivityPublic2PrivateBinding>() {
                     App.get().scfApi.queryExchangeCondition(it, assetCode = "DCC").observeOn(AndroidSchedulers.mainThread())
 
                 }.subscribe({
-                    binding.etTransCount.setText(computeTransCount(it.minAmount.toBigDecimal()).toPlainString())
+                    binding.etTransCount.hint = "最小交易数量" + computeTransCount(it.minAmount.toBigDecimal()).toPlainString()
 
                     txVm.toAddress.set(it.originReceiverAddress)
 

@@ -40,13 +40,13 @@ class Private2PublicActivity : BindActivity<ActivityPrivate2PublicBinding>() {
                     App.get().scfApi.queryExchangeCondition(it, assetCode = "DCC_JUZIX").observeOn(AndroidSchedulers.mainThread())
 
                 }.subscribe({
-                    binding.etTransCount.setText(computeTransCount(it.minAmount.toBigDecimal()).toPlainString())
+                    binding.etTransCount.hint = "最小交易数量" + computeTransCount(it.minAmount.toBigDecimal()).toPlainString()
 
                     binding.etToAccountNum.setText(computeTransCountKeep2Number(it.minAmount.toBigDecimal().subtract(it.fixedFeeAmount.toBigDecimal())).toPlainString())
 
                     txVm.toAddress.set(it.originReceiverAddress)
                     //binding.etPoundge.setText(computeTransCount(it.fixedFeeAmount.toBigDecimal()).toPlainString())
-                    txVm.minTrans.set(computeTransCount(it.fixedFeeAmount.toBigDecimal()).toPlainString())
+                    txVm.minTrans.set(computeTransCount(it.minAmount.toBigDecimal()).toPlainString())
                     txVm.poundge.set(computeTransCount(it.fixedFeeAmount.toBigDecimal()).toPlainString())
                     poundge = computeTransCount(it.fixedFeeAmount.toBigDecimal()).toPlainString()
 

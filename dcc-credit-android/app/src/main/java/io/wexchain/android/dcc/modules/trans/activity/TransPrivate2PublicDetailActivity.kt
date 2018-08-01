@@ -5,6 +5,8 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.method.LinkMovementMethod
 import android.text.style.URLSpan
+import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.dcc.App
@@ -13,6 +15,7 @@ import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
+import io.wexchain.dccchainservice.domain.AccrossTransDetail
 import io.wexchain.dccchainservice.util.DateUtil
 
 class TransPrivate2PublicDetailActivity : BaseCompatActivity() {
@@ -40,6 +43,7 @@ class TransPrivate2PublicDetailActivity : BaseCompatActivity() {
         var tv_destTxHash = findViewById<TextView>(R.id.tv_destTxHash)
         var tv_destBlockNumber = findViewById<TextView>(R.id.tv_destBlockNumber)
         var tv_destTradeTime = findViewById<TextView>(R.id.tv_destTradeTime)
+        var ll_in = findViewById<LinearLayout>(R.id.ll_in)
 
         ScfOperations
                 .withScfTokenInCurrentPassport {
@@ -61,17 +65,24 @@ class TransPrivate2PublicDetailActivity : BaseCompatActivity() {
 
                     tv_originBlockNumber.text = it.originBlockNumber.toString()
                     tv_originTradeTime.text = DateUtil.getStringTime(it.originTradeTime, "yyyy-MM-dd HH:mm:ss")
-                    tv_destAmount.text = "+" + ViewModelHelper.getTransCount(it.destAmount) + " DCC"
-                    tv_beneficiaryAddress2.text = it.beneficiaryAddress
-                    tv_destPayerAddress.text = it.destPayerAddress
 
-                    val ssb1 = SpannableStringBuilder(it.destTxHash)
-                    ssb1.setSpan(URLSpan(BuildConfig.ACCROSS_DETAIL + it.destTxHash), 0, ssb1.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
-                    tv_destTxHash.text = ssb1
-                    tv_destTxHash.movementMethod = LinkMovementMethod.getInstance()
+                    if (it.status.equals(AccrossTransDetail.Status.DELIVERED)) {
+                        ll_in.visibility = View.VISIBLE
+                        tv_destAmount.text = "+" + ViewModelHelper.getTransCount(it.destAmount) + " DCC"
+                        tv_beneficiaryAddress2.text = it.beneficiaryAddress
+                        tv_destPayerAddress.text = it.destPayerAddress
 
-                    tv_destBlockNumber.text = it.destBlockNumber.toString()
-                    tv_destTradeTime.text = DateUtil.getStringTime(it.destTradeTime, "yyyy-MM-dd HH:mm:ss")
+                        val ssb1 = SpannableStringBuilder(it.destTxHash)
+                        ssb1.setSpan(URLSpan(BuildConfig.ACCROSS_DETAIL + it.destTxHash), 0, ssb1.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+                        tv_destTxHash.text = ssb1
+                        tv_destTxHash.movementMethod = LinkMovementMethod.getInstance()
+
+                        tv_destBlockNumber.text = it.destBlockNumber.toString()
+                        tv_destTradeTime.text = DateUtil.getStringTime(it.destTradeTime, "yyyy-MM-dd HH:mm:ss")
+                    } else {
+                        ll_in.visibility = View.GONE
+                    }
+
                 }, {})
 
     }

@@ -2,7 +2,6 @@ package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.DialogInterface
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -16,7 +15,7 @@ import io.wexchain.dcc.databinding.ActivityModifyPassportPasswordBinding
 
 class ModifyPassportPasswordActivity : BaseCompatActivity() {
 
-    private lateinit var binding :ActivityModifyPassportPasswordBinding
+    private lateinit var binding: ActivityModifyPassportPasswordBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +33,17 @@ class ModifyPassportPasswordActivity : BaseCompatActivity() {
         modifyPassword.passwordCheckInvalidEvent.observe(this, Observer {
             toast(R.string.password_length_invalid)
         })
+        modifyPassword.oldpasswordErrorEvent.observe(this, Observer {
+            toast("原密码错误")
+        })
         modifyPassword.modifyPasswordFailEvent.observe(this, Observer {
             toast(it ?: "发生错误")
         })
         modifyPassword.loadingEvent.observe(this, Observer {
-            it?:return@Observer
-            if(it){
+            it ?: return@Observer
+            if (it) {
                 showLoadingDialog()
-            }else{
+            } else {
                 hideLoadingDialog()
             }
         })

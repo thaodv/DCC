@@ -23,6 +23,8 @@ class ModifyPassword(application: Application) : AndroidViewModel(application), 
 
     private val passportRepo = App.get().passportRepository
 
+    private val oldPasswd = passportRepo.getPassword()
+
     val inputCurrentPassword = InputPasswordVm(application).apply {
         this.passwordValidator = { isOldPasswordValid(it) }
         this.passwordHint.set(application.getString(R.string.please_input_current_passport_password))
@@ -35,6 +37,7 @@ class ModifyPassword(application: Application) : AndroidViewModel(application), 
     val modifyPasswordSuccessEvent = SingleLiveEvent<Void>()
     val passwordCheckInvalidEvent = SingleLiveEvent<Void>()
     val modifyPasswordFailEvent = SingleLiveEvent<String>()
+    val oldpasswordErrorEvent = SingleLiveEvent<String>()
 
 
     fun clickModify() {
@@ -43,34 +46,39 @@ class ModifyPassword(application: Application) : AndroidViewModel(application), 
         inputPw ?: return
         inputNewPw ?: return
         if (isOldPasswordValid(inputPw) && isPasswordValid(inputNewPw)) {
-            verifyProtect {
-                val passport = passportRepo.getCurrentPassport()
-                if (passport == null) {
-                    //todo
-                    return@verifyProtect
-                }
 
-                Single.just(inputNewPw)
-                        .observeOn(Schedulers.io())
-                        .map {
-                            passportRepo.changePassword(passport, inputNewPw)
-                        }
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnSubscribe {
-                            loadingEvent.value = true
-                            inputCurrentPassword.password.set("")
-                            inputNewPassword.password.set("")
-                        }
-                        .doFinally {
-                            loadingEvent.value = false
-                        }
-                        .subscribe({
-                            modifyPasswordSuccessEvent.call()
-                        }, {
-                            modifyPasswordFailEvent.call()
-                        })
+            if (passportRepo.getPassword() == inputPw) {
+                verifyProtect {
+                    val passport = passportRepo.getCurrentPassport()
+                    if (passport == null) {
+                        //todo
+                        return@verifyProtect
+                    }
+
+                    Single.just(inputNewPw)
+                            .observeOn(Schedulers.io())
+                            .map {
+                                passportRepo.changePassword(passport, inputNewPw)
+                            }
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doOnSubscribe {
+                                loadingEvent.value = true
+                                inputCurrentPassword.password.set("")
+                                inputNewPassword.password.set("")
+                            }
+                            .doFinally {
+                                loadingEvent.value = false
+                            }
+                            .subscribe({
+                                modifyPasswordSuccessEvent.call()
+                            }, {
+                                modifyPasswordFailEvent.call()
+                            })
+                }
+            } else {
+                oldpasswordErrorEvent.call()
             }
-        }else{
+        } else {
             passwordCheckInvalidEvent.call()
         }
     }
