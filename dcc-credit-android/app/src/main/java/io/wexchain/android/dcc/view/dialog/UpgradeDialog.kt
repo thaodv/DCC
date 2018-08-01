@@ -7,7 +7,6 @@ import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.wexchain.android.common.installApk
-import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.android.dcc.tools.getString
 import io.wexchain.dcc.R
 import kotlinx.android.synthetic.main.dialog_check_update.*
@@ -18,7 +17,6 @@ import zlc.season.rxdownload3.core.Failed
 import zlc.season.rxdownload3.core.Mission
 import zlc.season.rxdownload3.core.Status
 import zlc.season.rxdownload3.core.Succeed
-import zlc.season.rxdownload3.extension.ApkInstallExtension
 import zlc.season.rxdownload3.helper.dispose
 import java.io.File
 
@@ -31,7 +29,7 @@ class UpgradeDialog(context: Context) : Dialog(context) {
     private var currentStatus = Status()
     private lateinit var mission: Mission
 
-    fun createCheckDialog(newvs: String, body: String, onCancle: (() -> Unit), onConfirm: (() -> Unit)) {
+    fun createCheckDialog(newvs: String, body: String): UpgradeDialog {
         this.setCancelable(false)
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.dialog_check_update, null)
@@ -45,20 +43,29 @@ class UpgradeDialog(context: Context) : Dialog(context) {
 
         check_btn_tag.visibility = View.VISIBLE
         check_upgrade_cancle.setOnClickListener {
-            onCancle.invoke()
+            onCancleStub.invoke()
         }
 
         check_upgrade_confirm.setOnClickListener {
-            onConfirm.invoke()
+            onConfirmStub.invoke()
         }
         check_upgrade_title.text = "检测到v$newvs 版本，是否下载更新"
         check_upgrade_body.text = body
         check_upgrade_vs.text = "新功能 v$newvs"
 
         show()
+        return this
     }
 
-    fun createHomeDialog(newvs: String, body: String, onConfirm: (() -> Unit)) {
+    private var onCancleStub: () -> Unit = {}
+    private var onConfirmStub: () -> Unit = {}
+
+    fun onClick(onCancle: () -> Unit = onCancleStub , onConfirm: () -> Unit ) {
+        onCancleStub = onCancle
+        onConfirmStub = onConfirm
+    }
+
+    fun createHomeDialog(newvs: String, body: String): UpgradeDialog {
         this.setCancelable(false)
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.dialog_check_update, null)
@@ -76,9 +83,10 @@ class UpgradeDialog(context: Context) : Dialog(context) {
         check_upgrade_vs.text = "新功能 v$newvs"
 
         home_upgrade_confirm.setOnClickListener {
-            onConfirm.invoke()
+            onConfirmStub.invoke()
         }
         show()
+        return this
     }
 
     fun crateDownloadDialog(mission: Mission) {
@@ -108,10 +116,10 @@ class UpgradeDialog(context: Context) : Dialog(context) {
                         error()
                     }
                     if (currentStatus is Succeed) {
-                        val file= File(mission.savePath,mission.saveName)
-                        if (file.exists()){
+                        val file = File(mission.savePath, mission.saveName)
+                        if (file.exists()) {
                             context.installApk(file)
-                        }else{
+                        } else {
                             error()
                         }
                     }

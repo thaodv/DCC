@@ -1,8 +1,11 @@
 package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
+import android.widget.Button
+import io.wexchain.android.common.onClick
 import io.wexchain.android.common.resultOk
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
@@ -12,6 +15,7 @@ import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.dcc.BR
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ItemChooseBeneficiaryAddressBinding
+import org.jetbrains.anko.find
 
 class ChooseBeneficiaryAddressActivity : BaseCompatActivity(), ItemViewClickListener<BeneficiaryAddress> {
 
@@ -29,12 +33,15 @@ class ChooseBeneficiaryAddressActivity : BaseCompatActivity(), ItemViewClickList
             adapter.setList(it)
         })
         findViewById<RecyclerView>(R.id.rv_list).adapter = adapter
+        find<Button>(R.id.bt_new_address).onClick {
+            startActivity(Intent(this, AddBeneficiaryAddressActivity::class.java))
+        }
     }
 
     override fun onItemClick(item: BeneficiaryAddress?, position: Int, viewId: Int) {
         item?.let {
             resultOk {
-                putExtra(Extras.EXTRA_BENEFICIARY_ADDRESS,it)
+                putExtra(Extras.EXTRA_BENEFICIARY_ADDRESS, it)
             }
         }
     }

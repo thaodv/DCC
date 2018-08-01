@@ -4,11 +4,10 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
-import com.wexmarket.android.passport.base.BindFragment
+import io.wexchain.android.dcc.base.BindFragment
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.vm.InputPhoneInfoVm
 import io.wexchain.android.dcc.vm.currencyToDisplayStr
@@ -39,7 +38,7 @@ class InputPhoneInfoFragment : BindFragment<FragmentSubmitCommunicationLogBindin
                 .checkonMain()
                 .subscribeBy {
                     val fee = it.toLong()
-                    vm.certFee.set("认证费：${Currencies.DCC.toDecimalAmount(BigInteger.valueOf(fee)).currencyToDisplayStr()} DCC")
+                    vm.certFee.set("${getString(R.string.cost_of_verification)}${Currencies.DCC.toDecimalAmount(BigInteger.valueOf(fee)).currencyToDisplayStr()} DCC")
                 }
     }
 

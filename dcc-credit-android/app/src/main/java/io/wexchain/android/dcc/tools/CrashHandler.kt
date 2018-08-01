@@ -25,7 +25,6 @@ class CrashHandler : Thread.UncaughtExceptionHandler {
         Process.killProcess(Process.myPid())
     }
 
-
     fun init(context: Context) {
         Thread.setDefaultUncaughtExceptionHandler(this)
         mContext = context.applicationContext
@@ -61,7 +60,7 @@ class CrashHandler : Thread.UncaughtExceptionHandler {
 
 
     companion object {
-        private val FILE_NAME = "crash"
-        private val FILE_NAME_SUFFIX = ".trace"
+        private const val FILE_NAME = "crash"
+        private const val FILE_NAME_SUFFIX = ".trace"
     }
 }

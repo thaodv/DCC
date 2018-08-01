@@ -14,7 +14,7 @@ buildscript {
         kotlin_version = '1.2.50'
         anko_version = '0.10.0'
         support_lib_version = "$compile_sdk.1.1"
-        arch_lifecycle_version = "1.1.1"
+        arch_lifecycle_version = "1.1.0"
         room_version = "1.0.0"
         constraint_layout_version = '1.1.2'
         android_gradle_plugin_version = '3.1.3'

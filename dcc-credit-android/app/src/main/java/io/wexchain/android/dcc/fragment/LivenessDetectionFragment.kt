@@ -7,12 +7,12 @@ import android.view.View
 import com.google.gson.Gson
 import com.megvii.livenesslib.LivenessActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
-import io.wexchain.android.dcc.constant.RequestCodes
 import com.wexmarket.android.passport.ResultCodes
-import com.wexmarket.android.passport.base.BindFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.base.BindFragment
+import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.android.idverify.domain.LivenessResult
 import io.wexchain.dcc.R
@@ -22,11 +22,11 @@ import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.Currencies
 import java.math.BigInteger
 
-class LivenessDetectionFragment:BindFragment<FragmentLivenessDetectionBinding>() {
+class LivenessDetectionFragment : BindFragment<FragmentLivenessDetectionBinding>() {
 
     override val contentLayoutId: Int = R.layout.fragment_liveness_detection
 
-    private var listener:Listener? = null
+    private var listener: Listener? = null
 
     override fun onResume() {
         super.onResume()
@@ -37,18 +37,18 @@ class LivenessDetectionFragment:BindFragment<FragmentLivenessDetectionBinding>()
         super.onViewCreated(view, savedInstanceState)
         binding.btnProceed.setOnClickListener {
             val portrait = binding.portrait
-            if(portrait == null){
+            if (portrait == null) {
                 requestCapture()
-            }else{
+            } else {
                 listener?.onProceed(portrait)
             }
         }
         App.get().chainGateway.getExpectedFee(ChainGateway.BUSINESS_ID)
                 .compose(Result.checked())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{it->
+                .subscribe { it ->
                     val fee = it.toLong()
-                    binding.certFee = "认证费：${Currencies.DCC.toDecimalAmount(BigInteger.valueOf(fee)).currencyToDisplayStr()} DCC"
+                    binding.certFee = getString(R.string.cost_of_verification) + Currencies.DCC.toDecimalAmount(BigInteger.valueOf(fee)).currencyToDisplayStr() + "DCC"
                 }
     }
 
@@ -80,6 +80,7 @@ class LivenessDetectionFragment:BindFragment<FragmentLivenessDetectionBinding>()
         }
 
     }
+
     private fun requestCapture() {
         val context = activity!!
         App.get().idVerifyHelper.ensureLicence()
@@ -101,7 +102,7 @@ class LivenessDetectionFragment:BindFragment<FragmentLivenessDetectionBinding>()
                 })
     }
 
-    interface Listener{
+    interface Listener {
         fun onProceed(portrait: ByteArray)
     }
 

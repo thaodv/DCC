@@ -247,7 +247,7 @@
                     android:singleLine="true"
                     android:background="@null"
                     android:gravity="center_vertical"
-                    android:hint="请点击上方按钮拍照识别 例:20180101-20380101"
+                    android:hint="@string/press_the_camera"
                     android:textSize="@dimen/text_size_sub_title"
                     />
 
@@ -259,7 +259,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:text="请仔细核对一下信息是否与证件上的一致,若发现识别有误,请手动修改,通过认证后,无法修改信息"
+                    android:text="@string/please_make_sure_that_the_information"
                     android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
                     />
 

@@ -35,7 +35,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_sms_code_label"
                 app:layout_constraintLeft_toRightOf="@id/tv_sms_code_label"
                 app:layout_constraintRight_toRightOf="parent"
-                android:hint="请输入短信验证码"
+                android:hint="@string/sms_code1"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:text="@={code}"

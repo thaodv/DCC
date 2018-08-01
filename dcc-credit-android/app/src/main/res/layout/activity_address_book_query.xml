@@ -31,7 +31,7 @@
             android:layout_weight="1"
             android:background="@drawable/shape_bg_address_book_query"
             android:drawableLeft="@drawable/icon_address_book_query_find"
-            android:hint="搜索"
+            android:hint="@string/search"
             android:maxLines="1"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"

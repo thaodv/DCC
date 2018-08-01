@@ -2,12 +2,11 @@ package io.wexchain.android.dcc.fragment
 
 import android.os.Bundle
 import android.view.View
-import com.wexmarket.android.passport.base.BindFragment
+import io.wexchain.android.dcc.base.BindFragment
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentVerifyCarrierQueryPasswordBinding
-import io.wexchain.dcc.databinding.FragmentVerifyCarrierSmsCodeBinding
 
-class VerifyCarrierQueryPasswordFragment:BindFragment<FragmentVerifyCarrierQueryPasswordBinding>() {
+class VerifyCarrierQueryPasswordFragment: BindFragment<FragmentVerifyCarrierQueryPasswordBinding>() {
     override val contentLayoutId: Int = R.layout.fragment_verify_carrier_query_password
 
     private var listener:Listener? = null

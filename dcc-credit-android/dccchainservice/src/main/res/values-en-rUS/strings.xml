@@ -6,5 +6,6 @@
     <string name="id_verification">ID verification</string>
     <string name="bank_account_verification">Bank account verification</string>
     <string name="carrier_verification">Carrier verification</string>
+    <string name="ordinary_loan">Ordinary loan</string>
 
 </resources>

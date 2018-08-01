@@ -351,6 +351,7 @@ class PassportRepository(
         }
 
     companion object {
+
         const val WALLET_ADDR_SHORT_NAME = "本地钱包"
 
         private const val PASSPORT_SP_NAME = "user_eths_passport"

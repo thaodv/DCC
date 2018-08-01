@@ -24,6 +24,7 @@
 
 
     <Button
+        android:id="@+id/bt_new_address"
         style="@style/Widget.AppCompat.Button.Dcc.Full"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,6 +32,6 @@
         android:layout_marginLeft="@dimen/content_padding_horizontal"
         android:layout_marginRight="@dimen/content_padding_horizontal"
         android:layout_marginTop="4dp"
-        android:text="添加收币地址"
+        android:text="@string/add_new_address"
         />
 </LinearLayout>

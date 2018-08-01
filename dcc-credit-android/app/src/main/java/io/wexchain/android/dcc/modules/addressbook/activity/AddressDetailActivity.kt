@@ -31,7 +31,7 @@ class AddressDetailActivity : BindActivity<ActivityAddressDetailBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-        title = "地址详情"
+        title = getString(R.string.address_info)
 
         if (addressBook == null) {
             postOnMainThread { finish() }

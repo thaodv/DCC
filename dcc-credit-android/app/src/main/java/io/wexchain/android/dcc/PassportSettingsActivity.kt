@@ -71,7 +71,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
             binding.passport = it
         })
 
-        binding.tvCurrentVs.text = getString(R.string.current_version) + getVersionName()
+        binding.tvCurrentVs.text = getString(R.string.current_version) + versionInfo.versionName
     }
 
     private fun setupClicks() {
@@ -104,7 +104,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
             startActivity(Intent(this, AddressBookActivity::class.java))
         }
         binding.tvCheckUpdate.onClick {
-            appContext.marketingApi.checkUpgrade(getVersionCode().toString())
+            appContext.marketingApi.checkUpgrade(versionInfo.versionCode.toString())
                     .checkonMain()
                     .subscribeBy(
                             onSuccess = {
@@ -122,22 +122,21 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
     private fun showUpgradeDialog(it: CheckUpgrade) {
         val dialog = UpgradeDialog(this)
         if (it.mandatoryUpgrade) {
-            dialog.createHomeDialog(
-                    it.version, it.updateLog,
-                    onConfirm = {
+            dialog.createHomeDialog(it.version, it.updateLog)
+                    .onClick {
                         dialog.dismiss()
                         downloadApk(it.version, it.updateUrl)
-                    })
+                    }
         } else {
-            dialog.createCheckDialog(
-                    it.version, it.updateLog,
-                    onCancle = {
-                        dialog.dismiss()
-                    },
-                    onConfirm = {
-                        dialog.dismiss()
-                        downloadApk(it.version, it.updateUrl)
-                    })
+            dialog.createCheckDialog(it.version, it.updateLog)
+                    .onClick(
+                            onCancle = {
+                                dialog.dismiss()
+                            },
+                            onConfirm = {
+                                dialog.dismiss()
+                                downloadApk(it.version, it.updateUrl)
+                            })
         }
     }
 

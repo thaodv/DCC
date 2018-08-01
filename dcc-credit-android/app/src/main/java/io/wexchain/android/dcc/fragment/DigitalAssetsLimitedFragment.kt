@@ -3,7 +3,7 @@ package io.wexchain.android.dcc.fragment
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
-import com.wexmarket.android.passport.base.BindFragment
+import io.wexchain.android.dcc.base.BindFragment
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo

@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:maxWidth="96dp"
                 android:text="@{ba.shortName}"
-                tools:text="本地钱包"
+                tools:text="@string/local_wallet"
                 app:layout_constraintTop_toTopOf="parent"
                 android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                 />

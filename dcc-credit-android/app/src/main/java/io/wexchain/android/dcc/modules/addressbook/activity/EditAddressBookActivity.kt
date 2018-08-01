@@ -47,7 +47,7 @@ class EditAddressBookActivity : BindActivity<ActivityEditAddressBookBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-        title = "编辑地址"
+        title = getString(R.string.edit_address)
 
         binding.etInputAddress.setText(ba.address)
         binding.etAddressShortName.setText(ba.shortName)

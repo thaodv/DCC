@@ -51,7 +51,7 @@
                 style="@style/TextAppearance.AppCompat.DccSubTitle"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintBaseline_toBaselineOf="@id/input_bank"
-                android:text="开户行"
+                android:text="@string/bank"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 />
 

@@ -8,7 +8,6 @@ import java.util.concurrent.Executors
  */
 object RoomHelper {
 
-
     val roomExecutor = Executors.newSingleThreadExecutor()
 
     val roomScheduler = Schedulers.from(roomExecutor)

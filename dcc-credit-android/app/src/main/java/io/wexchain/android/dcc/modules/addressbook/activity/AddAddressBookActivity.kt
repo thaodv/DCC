@@ -66,7 +66,7 @@ class AddAddressBookActivity : BindActivity<ActivityAddAddressBookBinding>() {
             if (inputShortName.isEmpty()) {
                 toast("名称不能为空")
             } else if (inputAddr.isEmpty() || !isEthAddress(inputAddr)) {
-                toast("请输入有效的地址")
+                toast(getString(R.string.correct_wallet_address))
             } else {
                 App.get().passportRepository.addOrUpdateAddressBook(AddressBook(inputAddr, inputShortName, avatarUrl = realFilePath, create_time = System.currentTimeMillis()))
 
@@ -84,7 +84,7 @@ class AddAddressBookActivity : BindActivity<ActivityAddAddressBookBinding>() {
                         }
                     })
                 }
-                toast("添加成功")
+                toast(getString(R.string.success))
                 finish()
             }
         }

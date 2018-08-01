@@ -71,7 +71,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:orientation="horizontal"
-                android:clickable="false"
                 >
 
             <LinearLayout
@@ -83,8 +82,6 @@
                     android:orientation="horizontal"
                     android:gravity="center"
                     android:background="@drawable/background_button"
-                    android:clickable="true"
-                    android:focusable="true"
                     >
 
                 <ImageView
@@ -114,8 +111,6 @@
                     android:orientation="horizontal"
                     android:gravity="center"
                     android:background="@drawable/background_button"
-                    android:clickable="true"
-                    android:focusable="true"
                     >
 
                 <ImageView

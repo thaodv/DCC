@@ -5,7 +5,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.dcc.R
@@ -21,7 +20,7 @@ class LoanProductDetailActivity : BindActivity<ActivityLoanProductDetailBinding>
         get() = R.layout.activity_loan_product_detail
 
     private val loanProductId
-        get() = intent.getLongExtra(Extras.EXTRA_LOAN_PRODUCT_ID,-1L)
+        get() = intent.getLongExtra(Extras.EXTRA_LOAN_PRODUCT_ID, -1L)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +32,8 @@ class LoanProductDetailActivity : BindActivity<ActivityLoanProductDetailBinding>
     private fun initClicks() {
         binding.btnStartLoan.setOnClickListener {
             (binding.product as? Serializable)?.let {
-                navigateTo(StartLoanActivity::class.java){
-                    putExtra(Extras.EXTRA_LOAN_PRODUCT,it)
+                navigateTo(StartLoanActivity::class.java) {
+                    putExtra(Extras.EXTRA_LOAN_PRODUCT, it)
                 }
             }
         }
@@ -42,29 +41,30 @@ class LoanProductDetailActivity : BindActivity<ActivityLoanProductDetailBinding>
 
     private fun loadData() {
         val id = loanProductId
-        if (id == -1L){
+        if (id == -1L) {
             postOnMainThread {
                 toast("借款产品id无效")
                 finish()
             }
-        }else{
+        } else {
             App.get().scfApi.queryLoanProductById(id)
-                .compose(Result.checked())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    updateProductInfo(it)
-                },{
-                    val e = it.cause?:it
-                    if(e is DccChainServiceException && e.businessCode == BusinessCodes.LOAN_PRODUCT_NOT_EXIST){
-                        toast("借款产品id无效/不存在")
-                    }
-                    finish()
-                })
+                    .compose(Result.checked())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        updateProductInfo(it)
+                    }, {
+                        val e = it.cause ?: it
+                        if (e is DccChainServiceException && e.businessCode == BusinessCodes.LOAN_PRODUCT_NOT_EXIST) {
+                            toast("借款产品id无效/不存在")
+                        }
+                        finish()
+                    })
         }
     }
 
     private fun updateProductInfo(product: LoanProduct) {
-        title = product.name
+        val titleen = product.name!!.substring(4, product.name!!.length)
+        title = getString(R.string.apply_for_a_crypto_loan1) + titleen
         binding.product = product
     }
 }

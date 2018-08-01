@@ -9,16 +9,12 @@ import android.content.Context
 @SuppressLint("StaticFieldLeak")
 object Application {
 
-    private var CONTEXT: Context? = null
+    private lateinit var CONTEXT: Context
 
     fun getContext(): Context {
-        return if (CONTEXT != null) {
-            CONTEXT!!
-        } else {
-                val activityThreadClass = Class.forName("android.app.ActivityThread")
-                val method = activityThreadClass.getMethod("currentApplication")
-                CONTEXT = method.invoke(null) as Context
-                CONTEXT!!
-        }
+        val activityThreadClass = Class.forName("android.app.ActivityThread")
+        val method = activityThreadClass.getMethod("currentApplication")
+        CONTEXT = method.invoke(null) as Context
+        return CONTEXT
     }
 }

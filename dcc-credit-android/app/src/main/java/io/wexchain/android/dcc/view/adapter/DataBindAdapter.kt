@@ -19,9 +19,9 @@ abstract class DataBindAdapter<B : ViewDataBinding, T>(
         itemDiffCallback: DiffUtil.ItemCallback<T>,
         private val itemViewClickListener: ItemViewClickListener<T>? = null,
         private vararg val clickAwareViewIds: Int = intArrayOf()
-) : ListAdapter<T, BindingViewHolder<B>>(itemDiffCallback),BindingTypeViewBinder<T,B> {
+) : ListAdapter<T, BindingViewHolder<B>>(itemDiffCallback), BindingTypeViewBinder<T, B> {
 
-    var lifecycleOwner:LifecycleOwner? by weak()
+    var lifecycleOwner: LifecycleOwner? by weak()
 
     fun setList(newList: List<T>?) {
         submitList(newList)
@@ -32,7 +32,7 @@ abstract class DataBindAdapter<B : ViewDataBinding, T>(
     }
 
     override fun onBindViewHolder(holder: BindingViewHolder<B>, position: Int) {
-        bindHolder(holder,getItem(position))
+        bindHolder(holder, getItem(position))
     }
 
     override fun bindingToHolder(binding: B): BindingViewHolder<B> {
@@ -50,7 +50,7 @@ abstract class DataBindAdapter<B : ViewDataBinding, T>(
         itemViewClickListener?.onItemClick(getItem(position), position, viewId)
     }
 
-    fun getItemOnPos(pos:Int): T {
+    fun getItemOnPos(pos: Int): T {
         return getItem(pos)
     }
 }

@@ -1,6 +1,5 @@
 package io.wexchain.android.dcc.tools
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers

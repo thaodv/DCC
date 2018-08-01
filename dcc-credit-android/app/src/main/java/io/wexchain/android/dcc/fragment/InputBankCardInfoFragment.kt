@@ -6,13 +6,12 @@ import android.support.design.widget.BottomSheetDialog
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.wexmarket.android.passport.base.BindFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.base.BindFragment
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
@@ -75,7 +74,7 @@ class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), 
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
                     val fee = it.toLong()
-                    viewModel.certFee.set("认证费：${Currencies.DCC.toDecimalAmount(BigInteger.valueOf(fee)).currencyToDisplayStr()} DCC")
+                    viewModel.certFee.set("${getString(R.string.cost_of_verification)}${Currencies.DCC.toDecimalAmount(BigInteger.valueOf(fee)).currencyToDisplayStr()} DCC")
                 }
     }
 

@@ -1,7 +1,7 @@
 package io.wexchain.dccchainservice.domain
 
 import com.google.gson.annotations.SerializedName
-import io.wexchain.dccchainservice.Application
+import io.wexchain.android.common.BaseApplication
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.R
 import java.io.Serializable
@@ -105,9 +105,9 @@ data class LoanProduct(
 
     private fun certTypeStr(cert: String): String {
         return when (cert) {
-            ChainGateway.BUSINESS_ID -> Application.getContext().getString(R.string.id_verification)
-            ChainGateway.BUSINESS_BANK_CARD -> Application.getContext().getString(R.string.bank_account_verification)
-            ChainGateway.BUSINESS_COMMUNICATION_LOG -> Application.getContext().getString(R.string.carrier_verification)
+            ChainGateway.BUSINESS_ID -> BaseApplication.context.getString(R.string.id_verification)
+            ChainGateway.BUSINESS_BANK_CARD -> BaseApplication.context.getString(R.string.bank_account_verification)
+            ChainGateway.BUSINESS_COMMUNICATION_LOG -> BaseApplication.context.getString(R.string.carrier_verification)
             else -> "--"
         }
     }

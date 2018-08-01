@@ -38,7 +38,7 @@
                 android:id="@+id/tv_face_detect_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="请取下眼镜,确保面部光线充足按提示操作"
+                android:text="@string/please_keep_plenty_of_light"
                 />
 
         <Space
@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{certFee}"
-                tools:text="认证费:"
+                tools:text="@string/cost_of_verification"
                 />
 
         <Button

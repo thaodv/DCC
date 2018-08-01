@@ -3,11 +3,11 @@ package io.wexchain.android.dcc.chain
 import io.ipfs.api.IPFS
 import io.ipfs.api.NamedStreamable
 import io.ipfs.multihash.Multihash
-import io.wexchain.dccchainservice.DccChainServiceException
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import java.io.File
-import java.io.IOException
 
 /**
  *Created by liuyang on 2018/7/18.
@@ -20,71 +20,50 @@ object IPFSHelp {
      * Application init
      */
     fun init(host: String) {
-        doAsync {
-            ipfs = IPFS(host)
-            try {
-                ipfs.refs.local()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
+        Single.just(host)
+                .observeOn(Schedulers.io())
+                .subscribeBy {
+                    ipfs = IPFS(it)
+                    ipfs.refs.local()
+                }
+
 
     }
 
     /**
-     * Add a file or directory to IPFS.
+     * Add a file to IPFS.
      */
-    fun upload(path: String, onError: ((DccChainServiceException) -> Unit) = {}, onSuccess: ((String) -> Unit)) {
-        val file = File(path)
-        if (!file.exists()) {
-            onError.invoke(DccChainServiceException("Files or folders do not exist"))
-            return
-        }
-        doAsync {
-            val filewrapper = NamedStreamable.FileWrapper(file)
-            try {
-                val addResult = ipfs.add(filewrapper)
-                addResult?.forEach {
-                    val base58 = it.hash.toBase58()
-                    uiThread {
-                        onSuccess.invoke(base58)
+    fun upload(path: String): Observable<String> {
+        return Observable.just(path)
+                .flatMap {
+                    val file = File(path)
+                    if (!file.exists()) {
+                        Observable.error(Throwable("Files or folders do not exist"))
+                    } else {
+                        Observable.just(file)
                     }
                 }
-            } catch (e: IOException) {
-                uiThread {
-                    onError.invoke(DccChainServiceException(e.message))
+                .observeOn(Schedulers.io())
+                .flatMap {
+                    val filewrapper = NamedStreamable.FileWrapper(it)
+                    val result = ipfs.add(filewrapper)
+                    Observable.fromIterable(result)
                 }
-            }
-        }
+                .map {
+                    it.hash.toBase58()
+                }
     }
 
     /**
-     * IPFS download directory or file
+     * IPFS download file
      */
-    fun download(base58: String, onError: ((DccChainServiceException) -> Unit) = {}, onData: ((ByteArray) -> Unit), isDirectory:Boolean = false) {
-        doAsync {
-            val filePointer = Multihash.fromBase58(base58)
-            try {
-                if (isDirectory){
-                    val mutableList = ipfs.ls(filePointer)
-                    mutableList.forEach {
-                        val fileContents = ipfs.cat(it.hash)
-                        uiThread {
-                            onData.invoke(fileContents)
-                        }
-                    }
-                }else{
-                    val fileContents = ipfs.cat(filePointer)
-                    uiThread {
-                        onData.invoke(fileContents)
-                    }
+    fun download(base58: String): Single<ByteArray> {
+        return Single.just(base58)
+                .observeOn(Schedulers.io())
+                .flatMap {
+                    val filePointer = Multihash.fromBase58(it)
+                    val data = ipfs.cat(filePointer)
+                    Single.just(data)
                 }
-
-            } catch (e: IOException) {
-                uiThread {
-                    onError.invoke(DccChainServiceException(e.message))
-                }
-            }
-        }
     }
 }

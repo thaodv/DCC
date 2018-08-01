@@ -60,7 +60,7 @@
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginRight="@dimen/content_padding_horizontal"
             android:padding="12dp"
-            android:text="@string/import_and_enable_passport"
+            android:text="@string/title_import_wallet"
             app:layout_constraintBottom_toBottomOf="parent"
             />
 

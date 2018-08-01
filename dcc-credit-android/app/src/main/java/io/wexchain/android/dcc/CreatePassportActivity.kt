@@ -38,7 +38,7 @@ class CreatePassportActivity : BindActivity<ActivityCreatePassportBinding>() {
                 toast("设置钱包密码不符合要求,请重试")
             }
         }
-        binding.tvBackupNotice.text = SpannableString("成功创建数字钱包后,请即时在设置->备份数字钱包 中进行备份,以防数字资产丢失").apply {
+        binding.tvBackupNotice.text = SpannableString(getString(R.string.WeXCreatePassportViewController_description3)).apply {
             val drawable = ContextCompat.getDrawable(this@CreatePassportActivity, R.drawable.ic_settings)!!
             val height = binding.tvBackupNotice.lineHeight
             drawable.setBounds(0,0,height,height)

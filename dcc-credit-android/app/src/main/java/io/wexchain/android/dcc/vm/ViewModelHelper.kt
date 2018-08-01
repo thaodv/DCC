@@ -8,7 +8,9 @@ import android.support.v4.content.ContextCompat
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
+import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
+import io.wexchain.android.common.checkLanguage
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 import io.wexchain.android.dcc.tools.getString
@@ -64,7 +66,7 @@ object ViewModelHelper {
         return when (userCertStatus) {
             UserCertStatus.NONE -> getString(R.string.unverify_nowied)
             UserCertStatus.INCOMPLETE -> getString(R.string.verifying)
-            UserCertStatus.DONE -> "认证完成"
+            UserCertStatus.DONE -> getString(R.string.verified)
             else -> ""
         }
     }
@@ -219,9 +221,9 @@ object ViewModelHelper {
         return if (product != null) {
             product.requisiteCertList.joinTo(SpannableStringBuilder(), separator = "、") {
                 val text = when (it) {
-                    ChainGateway.BUSINESS_ID -> "身份证信息"
-                    ChainGateway.BUSINESS_BANK_CARD -> "银行卡信息"
-                    ChainGateway.BUSINESS_COMMUNICATION_LOG -> "运营商信息"
+                    ChainGateway.BUSINESS_ID -> getString(R.string.id)
+                    ChainGateway.BUSINESS_BANK_CARD -> getString(R.string.bank_accoun)
+                    ChainGateway.BUSINESS_COMMUNICATION_LOG -> getString(R.string.carrier_information)
                     else -> it
                 }
                 if (completed?.contains(it) == true) {
@@ -299,12 +301,12 @@ object ViewModelHelper {
             LoanStatus.CREATED -> null//todo
             LoanStatus.CANCELLED -> null//todo
             LoanStatus.AUDITING -> getString(R.string.your_loan_application_is_under_review)
-            LoanStatus.REJECTED -> "您的借币申请审核失败\n建议过段时间(1个月)再尝试"
+            LoanStatus.REJECTED -> getString(R.string.loan_issuance_failed2)
             LoanStatus.APPROVED -> getString(R.string.your_application_has_been_approved)
             LoanStatus.FAILURE -> getString(R.string.please_try_again_after_a_while)
-            LoanStatus.DELIVERED -> "已放币"
-            LoanStatus.RECEIVIED -> "已收币"
-            LoanStatus.REPAID -> "您的订单已处理完毕"
+            LoanStatus.DELIVERED -> getString(R.string.loan_issued)
+            LoanStatus.RECEIVIED -> getString(R.string.coin_received)
+            LoanStatus.REPAID -> getString(R.string.your_order_has_been_processed)
             null -> null
         }
     }
@@ -337,14 +339,14 @@ object ViewModelHelper {
             LoanStatus.APPROVED -> null
             LoanStatus.REJECTED,
             LoanStatus.FAILURE,
-            LoanStatus.REPAID -> "重新申请"
+            LoanStatus.REPAID -> getString(R.string.try_again)
             LoanStatus.DELIVERED,
             LoanStatus.RECEIVIED -> {
                 if (!record.earlyRepayAvailable) {// not early now
-                    "还币"
+                    getString(R.string.repayment)
                 } else {
                     if (record.allowRepayPermit) {
-                        "提前还币"
+                        getString(R.string.repay_in_advance_prepayment2)
                     } else null
                 }
             }
@@ -414,7 +416,7 @@ object ViewModelHelper {
     fun Context.billStatusStr(bill: LoanReport.Bill?): CharSequence? {
         return when (bill?.status) {
             LoanReport.Bill.BillStatus.VERIFIED,
-            LoanReport.Bill.BillStatus.PAY_OFF -> "已结清"
+            LoanReport.Bill.BillStatus.PAY_OFF -> getString(R.string.settled)
             LoanReport.Bill.BillStatus.WAITING_VERIFY,
             LoanReport.Bill.BillStatus.CREATED,
             LoanReport.Bill.BillStatus.CANCELED -> getString(R.string.unsettled)
@@ -455,12 +457,17 @@ object ViewModelHelper {
 
     @JvmStatic
     fun ecoBonusRuleGroupSlogan(group: String?): CharSequence? {
-        return when (group) {
-            BonusRule.GROUP_BASE -> "认证就有奖"
-            BonusRule.GROUP_BORROW -> "次数无上限，奖励无上限"
-            BonusRule.GROUP_REPAY -> "按时还款，给信用加分"
-            else -> null
+        return if (checkLanguage()) {
+            null
+        } else {
+            when (group) {
+                BonusRule.GROUP_BASE -> "认证就有奖"
+                BonusRule.GROUP_BORROW -> "次数无上限，奖励无上限"
+                BonusRule.GROUP_REPAY -> "按时还款，给信用加分"
+                else -> null
+            }
         }
+
     }
 
     @JvmStatic

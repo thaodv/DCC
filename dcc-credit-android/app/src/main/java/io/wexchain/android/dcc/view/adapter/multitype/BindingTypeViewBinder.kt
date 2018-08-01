@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import io.wexchain.android.dcc.view.adapter.BindingViewHolder
 
-interface BindingTypeViewBinder<T, B : ViewDataBinding> : TypeViewBinder<T, BindingViewHolder<B>> {
+interface BindingTypeViewBinder<in T, B : ViewDataBinding> : TypeViewBinder<T, BindingViewHolder<B>> {
 
     @get:LayoutRes
     val layout:Int

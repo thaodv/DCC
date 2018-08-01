@@ -1,6 +1,5 @@
 package io.wexchain.android.dcc.view.adapters
 
-import android.databinding.ObservableMap
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.diffCallbackById
@@ -8,14 +7,13 @@ import io.wexchain.android.dcc.vm.DigitalAssetsVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ItemDigitalCurrencySummaryBinding
 import io.wexchain.digitalwallet.DigitalCurrency
-import java.math.BigInteger
 
 class DigitalAssetsAdapter(itemViewClickListener: ItemViewClickListener<DigitalCurrency>?) :
-    DataBindAdapter<ItemDigitalCurrencySummaryBinding, DigitalCurrency>(
-        R.layout.item_digital_currency_summary,
-        diffCallbackById { it.id() },
-        itemViewClickListener
-    ) {
+        DataBindAdapter<ItemDigitalCurrencySummaryBinding, DigitalCurrency>(
+                R.layout.item_digital_currency_summary,
+                diffCallbackById { it.id() },
+                itemViewClickListener
+        ) {
     internal lateinit var assetsVm: DigitalAssetsVm
 
     init {
@@ -23,7 +21,7 @@ class DigitalAssetsAdapter(itemViewClickListener: ItemViewClickListener<DigitalC
     }
 
     override fun bindData(binding: ItemDigitalCurrencySummaryBinding, item: DigitalCurrency?) {
-        binding.holdingMap = assetsVm.holding as ObservableMap<DigitalCurrency, BigInteger>
+        binding.holdingMap = assetsVm.holding
         binding.quoteMap = assetsVm.quote
         binding.dc = item
     }

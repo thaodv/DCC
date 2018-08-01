@@ -71,7 +71,7 @@ class BeneficiaryAddressesManagementActivity : BaseCompatActivity(), ItemViewCli
                 setTitle("确认删除以下信息")
                 textContent = "${ba.shortName}\n${ba.address}"
             }
-            .withPositiveButton("删除") {
+            .withPositiveButton(getString(R.string.delete)) {
                 App.get().passportRepository.removeBeneficiaryAddress(ba)
                 true
             }

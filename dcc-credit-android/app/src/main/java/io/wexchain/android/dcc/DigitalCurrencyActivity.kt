@@ -111,9 +111,9 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
         vm.selectedChangedEvent.observe(this, Observer {
             it?.let {
                 if (it) {
-                    toast("添加成功")
+                    toast(getString(R.string.success))
                 } else {
-                    toast("已删除")
+                    toast(getString(R.string.deleted))
                 }
             }
         })
@@ -194,9 +194,9 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
             } else {
                 toCreateTransaction()
             }
-            binding.btnToCollect.setOnClickListener {
-                startActivity(Intent(this, PassportAddressActivity::class.java))
-            }
+        }
+        binding.btnToCollect.setOnClickListener {
+            startActivity(Intent(this, PassportAddressActivity::class.java))
         }
     }
 

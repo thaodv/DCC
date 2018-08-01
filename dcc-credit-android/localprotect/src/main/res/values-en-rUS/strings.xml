@@ -4,12 +4,12 @@
     <string name="user_avatar">Profile photo</string>
     <string name="user_nickname">Username</string>
     <string name="save_changes">Save</string>
-    <string name="please_input_nickname">请输入昵称</string>
+    <string name="please_input_nickname">Please input nickname</string>
     <string name="use_this_picture">使用</string>
     <string name="passport_address">Address of collection wallet</string>
     <string name="local_protect">Local security</string>
     <string name="export_passport">Back up</string>
-    <string name="modify_passport_password">Change the wallet password</string>
+    <string name="modify_passport_password">Change wallet password</string>
     <string name="address_book">Address book</string>
     <string name="about_us">About us</string>
     <string name="remove_passport">Delete the wallet (logout)</string>
@@ -19,10 +19,10 @@
     <string name="choose_protect_type">Choose method</string>
     <string name="cancel">Cancel</string>
     <string name="guesture_password">Guesture password</string>
-    <string name="digitalnumerical_password">DigitalNumerical password</string>
+    <string name="digitalnumerical_password">Numerical password</string>
     <string name="enable_gesture_pattern">Enable guesture password</string>
     <string name="please_draw_pattern">Please draw here again</string>
-    <string name="enable_pin">Enable digitalnumerical password</string>
+    <string name="enable_pin">Enable numerical password</string>
     <string name="fingerprint_identification">Fingerprint identification</string>
     <string name="skip">Skip</string>
     <string name="verify_pin">Numrical code verification</string>
@@ -36,5 +36,9 @@
     <string name="verify_gesture_pattern">Verifying hand sign ciphers</string>
     <string name="gesture_password_error_please_retry">Wrong password!</string>
     <string name="copy_succeed">Success</string>
+    <string name="input_back_cancel"><![CDATA[<Delete]]></string>
+    <string name="repayment_date_colon">Term: </string>
+    <string name="loan_submit_fee_colon">Fee:</string>
+
 
 </resources>
