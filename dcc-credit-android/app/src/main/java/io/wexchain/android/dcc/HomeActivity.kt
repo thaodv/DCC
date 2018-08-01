@@ -18,8 +18,6 @@ import io.wexchain.android.dcc.chain.IPFSHelp
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.tl.TlWebPageActivity
-import io.wexchain.android.dcc.tools.LogUtils
-import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.tools.log
@@ -50,7 +48,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
     }
 
     fun add() {
-        val path=Environment.getExternalStorageDirectory().absolutePath + File.separator + "eyepetizer"+File.separator+"images"+File.separator+"5a5bfc29421aa9115489927b.jpeg"
+        val path = Environment.getExternalStorageDirectory().absolutePath + File.separator + "eyepetizer" + File.separator + "images" + File.separator + "5a5bfc29421aa9115489927b.jpeg"
         IPFSHelp.upload(path)
                 .subscribeBy(
                         onNext = {

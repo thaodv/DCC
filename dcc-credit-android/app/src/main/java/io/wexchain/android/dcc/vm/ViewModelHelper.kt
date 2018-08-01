@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
-import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import io.wexchain.android.common.checkLanguage
 import io.wexchain.android.dcc.domain.CertificationType
@@ -352,6 +351,12 @@ object ViewModelHelper {
                 }
             }
         }
+    }
+
+    @JvmStatic
+    fun Context.rePaymentProcess(record: LoanRecord?): Boolean {
+        record ?: return false
+        return record.status == LoanStatus.RECEIVIED && !record.earlyRepayAvailable && record.allowRepayPermit
     }
 
     @JvmStatic

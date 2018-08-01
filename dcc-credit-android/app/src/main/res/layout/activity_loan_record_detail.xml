@@ -1,248 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context="io.wexchain.android.dcc.LoanRecordDetailActivity"
-        >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="io.wexchain.android.dcc.LoanRecordDetailActivity">
 
     <data>
 
-        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper" />
 
         <variable
-                name="order"
-                type="io.wexchain.dccchainservice.domain.LoanRecord"
-                />
+            name="order"
+            type="io.wexchain.dccchainservice.domain.LoanRecord" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
-        <include
-                layout="@layout/include_toolbar"
+            <include
                 android:id="@+id/toolbar"
-                />
+                layout="@layout/include_toolbar" />
 
-        <TextView
+            <TextView
                 android:id="@+id/tv_loan_amount_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="@string/amount"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/toolbar"
-                android:layout_marginTop="8dp"
-                />
+                app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-        <TextView
+            <TextView
                 android:id="@+id/tv_loan_amount_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="@{ViewModelHelper.loanAmountText(context,order)}"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_loan_amount_label"
-                tools:text="1000.0000 BNB"
-                android:layout_marginTop="16dp"
-                android:textStyle="bold"
-                />
+                tools:text="1000.0000 BNB" />
 
-        <TextView
+            <TextView
                 android:id="@+id/tv_order_id_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/order_number2"
-                app:layout_constraintTop_toBottomOf="@id/tv_loan_amount_value"
-                app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginTop="24dp"
-                />
+                android:text="@string/order_number2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_loan_amount_value" />
 
-        <TextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBaseline_toBaselineOf="@id/tv_order_id_label"
-                app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:text="@{order.orderIdStr}"
-                tools:text="10091"
-                />
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_order_id_label"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="10091" />
 
-        <TextView
-            android:id="@+id/tv_loan_time_label"
-            android:layout_width="wrap_content"
-            android:layout_height="16dp"
-            android:layout_marginLeft="@dimen/content_padding_horizontal"
-            android:layout_marginTop="16dp"
-            android:text="@string/loan_time_colon"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_order_id_label" />
+            <TextView
+                android:id="@+id/tv_loan_time_label"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginTop="16dp"
+                android:text="@string/loan_time_colon"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_order_id_label" />
 
-        <TextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBaseline_toBaselineOf="@id/tv_loan_time_label"
-                app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:text="@{ViewModelHelper.loanPeriodText(context,order)}"
-                tools:text="30天"
-                />
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_loan_time_label"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="30天" />
 
-        <TextView
+            <TextView
                 android:id="@+id/tv_loan_interest_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/repay_interest_colon"
-                app:layout_constraintTop_toBottomOf="@id/tv_loan_time_label"
-                app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginTop="16dp"
-                />
+                android:text="@string/repay_interest_colon"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_loan_time_label" />
 
 
-        <TextView
+            <TextView
                 android:id="@+id/tv_loan_interest_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBaseline_toBaselineOf="@id/tv_loan_interest_label"
-                app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:text="@{ViewModelHelper.concatWithoutNull(order.expectLoanInterest.toPlainString(),order.currency.symbol)}"
-                tools:text="0.345 BNB"
-                />
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_loan_interest_label"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="0.345 BNB" />
 
-        <TextView
+            <TextView
                 android:id="@+id/tv_loan_fee_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/handling_fee_of_loan"
-                app:layout_constraintTop_toBottomOf="@id/tv_loan_interest_label"
-                app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginTop="16dp"
-                />
+                android:text="@string/handling_fee_of_loan"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_loan_interest_label" />
 
-        <TextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBaseline_toBaselineOf="@id/tv_loan_fee_label"
-                app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:text="@{ViewModelHelper.concatWithoutNull(order.fee.toPlainString(),`DCC`)}"
-                tools:text="2.0000 DCC"
-                />
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_loan_fee_label"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="2.0000 DCC" />
 
-        <TextView
+            <TextView
                 android:id="@+id/tv_loan_address_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/beneficiary_address_colon"
-                app:layout_constraintTop_toBottomOf="@id/tv_loan_fee_label"
-                app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginTop="16dp"
-                />
+                android:text="@string/beneficiary_address_colon"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_loan_fee_label" />
 
-        <TextView
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintBaseline_toBaselineOf="@id/tv_loan_address_label"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/tv_loan_address_label"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:text="@{order.receiverAddress}"
-                />
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_loan_address_label"
+                app:layout_constraintLeft_toRightOf="@id/tv_loan_address_label"
+                app:layout_constraintRight_toRightOf="parent" />
 
-        <FrameLayout
+            <FrameLayout
                 android:id="@+id/fl_loan_status"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                app:layout_constraintTop_toBottomOf="@id/tv_loan_address_label"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:layout_marginTop="40dp"
                 android:background="@{ViewModelHelper.loanStatusBackground(context,order.status)}"
-                tools:background="@drawable/bg_loan_status_other"
-                >
+                app:layout_constraintTop_toBottomOf="@id/tv_loan_address_label"
+                tools:background="@drawable/bg_loan_status_other">
 
-            <TextView
+                <TextView
                     android:layout_width="240dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|left"
                     android:text="@{ViewModelHelper.loanStatusNoticeText(context,order.status)}"
                     android:textColor="@color/text_white"
                     android:textSize="16sp"
-                    tools:text="提示提示~~"
-                    />
+                    tools:text="提示提示~~" />
 
-            <ImageView
+                <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:scaleType="centerInside"
                     android:layout_gravity="center_vertical|right"
                     android:layout_marginRight="8dp"
-                    android:src="@{ViewModelHelper.loanStatusNoticeIcon(context,order.status)}"
-                    />
-        </FrameLayout>
+                    android:scaleType="centerInside"
+                    android:src="@{ViewModelHelper.loanStatusNoticeIcon(context,order.status)}" />
+            </FrameLayout>
 
-        <FrameLayout
+            <TextView
+                android:id="@+id/tv_repayment_process"
+                visibleOrInvisible="@{ViewModelHelper.rePaymentProcess(context,order)}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="@string/repayment_process"
+                android:textColor="@color/item_decoration_title_fontcolor"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@id/fl_loan_contract"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fl_loan_status" />
+
+            <FrameLayout
                 android:id="@+id/fl_loan_contract"
+                visibleOrInvisible="@{order.showContract()}"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
-                app:layout_constraintTop_toBottomOf="@id/fl_loan_status"
+                android:layout_marginTop="10dp"
                 app:layout_constraintBottom_toTopOf="@id/btn_action"
-                app:layout_constraintVertical_bias="0.6"
-                visibleOrInvisible="@{order.showContract()}"
-                >
+                app:layout_constraintTop_toBottomOf="@id/tv_repayment_process"
+                app:layout_constraintVertical_bias="0.6">
 
-            <View
+                <View
                     style="@style/DividerHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/divider_stroke_width"
-                    android:layout_gravity="top"
-                    />
+                    android:layout_gravity="top" />
 
-            <View
+                <View
                     style="@style/DividerHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/divider_stroke_width"
-                    android:layout_gravity="bottom"
-                    />
+                    android:layout_gravity="bottom" />
 
-            <TextView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/loan_contract"
                     android:layout_gravity="center_vertical|left"
-                    />
+                    android:text="@string/loan_contract" />
 
-            <ImageView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/arrow_right_bm"
                     android:layout_gravity="center_vertical|right"
-                    />
-        </FrameLayout>
+                    android:src="@drawable/arrow_right_bm" />
+            </FrameLayout>
 
-        <Button
+            <Button
                 android:id="@+id/btn_action"
+                style="@style/Widget.AppCompat.Button.Dcc.Full"
+                visibleOrGone="@{ViewModelHelper.loanStatusAction(context,order)!=null}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
-                style="@style/Widget.AppCompat.Button.Dcc.Full"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="24dp"
                 android:text="@{ViewModelHelper.loanStatusAction(context,order)}"
-                visibleOrGone="@{ViewModelHelper.loanStatusAction(context,order)!=null}"
-                tools:text="@string/try_again"
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="@string/try_again" />
 
-    </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
 </layout>

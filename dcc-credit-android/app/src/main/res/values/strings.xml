@@ -273,7 +273,7 @@
     <string name="repay_ahead_permitted">允许</string>
     <string name="repay_ahead_not_permitted">不允许</string>
     <string name="repay_in_advance_prepayment">提前还币:</string>
-    <string name="repay_in_advance_prepayment2">提前还币:</string>
+    <string name="repay_in_advance_prepayment2">提前还币</string>
     <string name="handling_fee_for_repayment">提前还币手续费:</string>
     <string name="requiredinformation_verification">审核资料:</string>
     <string name="apply_for_loan">申请借币</string>
@@ -413,6 +413,48 @@
     <string name="please_transfer"><![CDATA[①请将待还币金额%1$s %2$s 转入到下面的还币地址中]]></string>
     <string name="result">还币结果</string>
     <string name="success4">还币成功</string>
+
+
+    <string name="across_trans_record">跨链交易记录</string>
+    <string name="across_trans">跨链交易</string>
+    <string name="across_trans_detail">跨链交易详情</string>
+    <string name="across_trans_tip">跨链交易说明：</string>
+    <string name="across_trans_tip_1">表示DCC从私链转移至公链；</string>
+    <string name="across_trans_tip_2">表示DCC从公链转移至私链；</string>
+    <string name="across_trans_count">转移数量</string>
+    <string name="across_trans_private_count">私链数量:</string>
+    <string name="across_trans_public_count">公链数量:</string>
+    <string name="across_trans_poundage">手续费</string>
+    <string name="across_trans_toaccount_num">到账数量</string>
+    <string name="all">全部</string>
+    <string name="Maximum_absenteeism">最高旷工费</string>
+
+    <string name="across_trans_warning_tip">温馨提示:</string>
+    <string name="across_trans_warning_tips1">预计<font color="#ED190F">1分钟内</font>到账\n<font color="#ED190F">结果返回前，请不要重复转移DCC</font></string>
+    <string name="across_trans_warning_tips2">预计<font color="#ED190F">5分钟内</font>到账\n<font color="#ED190F">结果返回前，请不要重复转移DCC</font></string>
+
+    <string name="trans_sure">交易确认</string>
+    <string name="trans_orientation">交易方向：</string>
+    <string name="max_pay_money">最高支付金额：</string>
+    <string name="order_money">订单金额：</string>
+    <string name="max_absenteeism">最高矿工费：</string>
+    <string name="holding_count">持有量：</string>
+
+    <string name="trans_count">转移数量:</string>
+    <string name="across_trans_poundage2">手续费:</string>
+    <string name="to_account_num">到账数量:</string>
+
+    <string name="this_week">本周</string>
+    <string name="this_month">本月</string>
+    <string name="latest_2_month">近2个月</string>
+    <string name="min_trans_count">最小交易数量</string>
+
+    <string name="sure">确定</string>
+    <string name="_24h_trans_count">24h交易量</string>
+    <string name="_1h_rate">1h涨跌幅</string>
+    <string name="_7d_rate">7d涨跌幅</string>
+    <string name="latest_update">最新更新</string>
+    <string name="repayment_process">还款流程</string>
 
 
 

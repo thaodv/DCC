@@ -395,6 +395,9 @@
         </activity>
         <activity android:name="io.wexchain.android.dcc.modules.trans.activity.TransDetailActivity">
         </activity>
+        <activity android:name="io.wexchain.android.dcc.RePaymentProcessActivity"
+            android:label="@string/repayment_process"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
