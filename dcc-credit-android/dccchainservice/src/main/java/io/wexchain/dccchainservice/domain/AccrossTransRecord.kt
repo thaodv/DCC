@@ -6,20 +6,26 @@ import com.google.gson.annotations.SerializedName
  * Created by sisel on 2018/3/17.
  */
 /**
- * @param amount 金额
+ *
+ * @param id 订单id
+ * @param originAssetCode 转出方
+ * @param originAmount 转账金额
+ * @param destAssetCode 转入方
+ * @param destAmount 到账金额
+ * @param feeAmount 手续费
  * @param status ACCEPTED ->"转移中 "DELIVERED ->"已完成"
- * @param exchangeTime 交易时间
- * @param serviceCharge
- * @param fromAssetCode 转出方
- * @param toAssetCode 转入方
+ * @param createdTime 订单创建时间
+ *
  */
 data class AccrossTransRecord(
-        @SerializedName("amount") val amount: String,
+        @SerializedName("id") val id: Long,
+        @SerializedName("originAssetCode") val originAssetCode: String,
+        @SerializedName("originAmount") val originAmount: String,
+        @SerializedName("destAssetCode") val destAssetCode: String,
+        @SerializedName("destAmount") val destAmount: String,
+        @SerializedName("feeAmount") val feeAmount: String,
         @SerializedName("status") val status: Status,
-        @SerializedName("exchangeTime") val exchangeTime: Long?,
-        @SerializedName("serviceCharge") val serviceCharge: String,
-        @SerializedName("fromAssetCode") val fromAssetCode: String,
-        @SerializedName("toAssetCode") val toAssetCode: String
+        @SerializedName("createdTime") val createdTime: Long?
 ) {
 
     enum class Status {
@@ -29,11 +35,11 @@ data class AccrossTransRecord(
     }
 
     fun isPublic2Private(): Boolean {
-        return fromAssetCode == "DCC" && toAssetCode == "DCC_JUZIX"
+        return originAssetCode == "DCC" && destAssetCode == "DCC_JUZIX"
     }
 
     fun isPrivate2Public(): Boolean {
-        return fromAssetCode == "DCC_JUZIX" && toAssetCode == "DCC"
+        return originAssetCode == "DCC_JUZIX" && destAssetCode == "DCC"
     }
 
 }

@@ -1,18 +1,22 @@
 package io.wexchain.android.dcc.modules.trans.activity
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.getViewModel
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.modules.trans.vm.AcrossTransRecordsVm
+import io.wexchain.android.dcc.tools.StringUtils
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.android.dcc.view.dialog.AccrossTransRecordSelectDialog
+import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.dcc.BR
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityAcrossTransRecordBinding
@@ -29,6 +33,10 @@ class AcrossTransRecordActivity : BindActivity<ActivityAcrossTransRecordBinding>
     internal var mDay: Int = 0
 
     var vm: AcrossTransRecordsVm? = null
+
+    var startTime: String = DateUtil.getCurrentMonday()
+
+    var endTime: String = DateUtil.getCurrentSunday()
 
     override val contentLayoutId: Int
         get() = R.layout.activity_across_trans_record
@@ -72,6 +80,10 @@ class AcrossTransRecordActivity : BindActivity<ActivityAcrossTransRecordBinding>
                     vm!!.endTime = DateUtil.getCurrentSunday()
 
                     vm!!.refresh {}
+                    binding.tvTip.text = resources.getString(R.string.this_week)
+                    startTime = DateUtil.getCurrentMonday()
+                    endTime = DateUtil.getCurrentSunday()
+                    queryExchangeAmount()
                 }
 
                 override fun month() {
@@ -79,6 +91,10 @@ class AcrossTransRecordActivity : BindActivity<ActivityAcrossTransRecordBinding>
                     vm!!.endTime = DateUtil.getMaxMonthDate()
 
                     vm!!.refresh {}
+                    binding.tvTip.text = resources.getString(R.string.this_month)
+                    startTime = DateUtil.getMinMonthDate()
+                    endTime = DateUtil.getMaxMonthDate()
+                    queryExchangeAmount()
                 }
 
                 override fun latest2month() {
@@ -86,6 +102,10 @@ class AcrossTransRecordActivity : BindActivity<ActivityAcrossTransRecordBinding>
                     vm!!.endTime = DateUtil.getCurrentDate()
 
                     vm!!.refresh {}
+                    binding.tvTip.text = resources.getString(R.string.latest_2_month)
+                    startTime = DateUtil.getPre2Month()
+                    endTime = DateUtil.getCurrentDate()
+                    queryExchangeAmount()
                 }
 
                 override fun startTime() {
@@ -133,30 +153,57 @@ class AcrossTransRecordActivity : BindActivity<ActivityAcrossTransRecordBinding>
 
                 override fun sure() {
 
-                    vm!!.startTime = accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", "")
-                    vm!!.endTime = accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", "")
+                    if (DateUtil.beyond90day(accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", ""), accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", ""), "yyyyMMdd")) {
+                        vm!!.startTime = accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", "")
+                        vm!!.endTime = accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", "")
 
-                    vm!!.refresh {}
+                        vm!!.refresh {}
+
+                        binding.tvTip.text = accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", "") + "~" + accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", "")
+                        startTime = accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", "")
+                        endTime = accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", "")
+                        queryExchangeAmount()
+                    } else {
+                        toast("日期跨度不能超过3个月")
+                    }
                 }
 
             })
             accrossTransRecordSelectDialog.show()
         }
-
-
     }
 
     private fun queryExchangeAmount() {
         ScfOperations
                 .withScfTokenInCurrentPassport {
-                    App.get().scfApi.queryExchangeAmount(it).observeOn(AndroidSchedulers.mainThread())
+                    App.get().scfApi.queryExchangeAmount(it, startTime = startTime, endTime = endTime).observeOn(AndroidSchedulers.mainThread())
 
-                }.subscribe({ binding.tvContent.text = "转到公链 " + it.toPublicAmount + "DCC  转到私链" + it.toPrivateAmount + "DCC" }, {})
+                }.subscribe({
+                    var public = "0"
+
+                    var private = "0"
+
+                    for (items in it) {
+                        if (items.isPublic2Private()) {
+                            public = ViewModelHelper.getTransCount(items.totalAmount)
+                        } else {
+                            private = ViewModelHelper.getTransCount(items.totalAmount)
+                        }
+                    }
+                    binding.tvContent.text = "转到公链 " + StringUtils.getTransCount(public, 2) + " 转到私链" + StringUtils.getTransCount(private, 2)
+                }, {})
     }
 
     override fun onItemClick(item: AccrossTransRecord?, position: Int, viewId: Int) {
+        item?.let { ba ->
 
+            if (item.isPublic2Private()) {
+                startActivity(Intent(this, TransPublic2PrivateDetailActivity::class.java).putExtra("id", item.id))
+            } else {
+                startActivity(Intent(this, TransPrivate2PublicDetailActivity::class.java).putExtra("id", item.id))
+            }
+        }
     }
-
-
 }
+
+

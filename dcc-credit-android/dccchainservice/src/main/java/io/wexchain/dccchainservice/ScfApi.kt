@@ -272,7 +272,7 @@ interface ScfApi {
     ): Single<Result<String>>
 
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
-    @POST("secure/asset/chainTransfer/getChainExchangeList")
+    @POST("secure/forex/queryForexOrderPage")
     @FormUrlEncoded
     fun getChainExchangeList(
             @Header(ScfApi.HEADER_TOKEN) token: String?,
@@ -281,22 +281,32 @@ interface ScfApi {
             // start @ 1 default 1
             @Field("number") number: Long,
             // default 20
-            @Field("size") size: Long
+            @Field("size") size: Long,
+            @Field("originAssetCodeList") originAssetCodeList: String = "DCC,DCC_JUZIX"
     ): Single<Result<PagedList<AccrossTransRecord>>>
 
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
-    @POST("secure/asset/chainTransfer/queryExchangeAmount")
+    @POST("secure/forex/queryForexStatisticsInfo")
     @FormUrlEncoded
     fun queryExchangeAmount(@Header(ScfApi.HEADER_TOKEN) token: String?,
                             @Field("startTime") startTime: String = DateUtil.getCurrentMonday(),
-                            @Field("endTime") endTime: String = DateUtil.getCurrentSunday()
-    ): Single<Result<ExchangeAmount>>
+                            @Field("endTime") endTime: String = DateUtil.getCurrentSunday(),
+                            @Field("originAssetCodeList") originAssetCodeList: String = "DCC,DCC_JUZIX"
+    ): Single<Result<List<ExchangeAmount>>>
+
+
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    @POST("secure/forex/getForexOrder")
+    @FormUrlEncoded
+    fun getChainExchangeDetail(@Header(ScfApi.HEADER_TOKEN) token: String?,
+                               @Field("orderId") orderId: String
+    ): Single<Result<AccrossTransDetail>>
 
     /**
      * assetCode=DCC ：公链转私链 assetCode=DCC_JUZIX：私链转公链
      */
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
-    @POST("secure/asset/chainTransfer/queryExchangeCondition")
+    @POST("secure/forex/getForexConfig")
     @FormUrlEncoded
     fun queryExchangeCondition(@Header(ScfApi.HEADER_TOKEN) token: String?,
                                @Field("assetCode") assetCode: String = "DCC_JUZIX"

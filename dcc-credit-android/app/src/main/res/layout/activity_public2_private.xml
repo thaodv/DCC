@@ -8,6 +8,17 @@
         <variable
             name="vm"
             type="io.wexchain.android.dcc.vm.DccExchangeVm"/>
+
+        <variable
+            name="tx"
+            type="io.wexchain.android.dcc.modules.trans.vm.Public2PrivateVm"
+            />
+
+        <variable
+            name="passport"
+            type="io.wexchain.android.dcc.domain.Passport"
+            />
+
     </data>
 
     <LinearLayout
@@ -141,6 +152,7 @@
                 android:inputType="numberDecimal"
                 android:paddingLeft="60dp"
                 android:paddingRight="60dp"
+                android:text="@={tx.amount}"
                 tools:text="100"
                 />
 
@@ -230,9 +242,11 @@
                 android:layout_centerVertical="true"
                 android:background="@null"
                 android:gravity="right|center_vertical"
+                android:hint="@string/custom_gas_price"
                 android:inputType="numberDecimal"
                 android:paddingLeft="60dp"
                 android:paddingRight="60dp"
+                android:text="@={tx.gasPrice}"
                 tools:text="50"
                 />
 
@@ -279,22 +293,15 @@
                 android:layout_centerVertical="true"
                 android:background="@null"
                 android:gravity="right|center_vertical"
+                android:hint="@string/custom_gas_limit"
                 android:inputType="numberDecimal"
                 android:paddingLeft="60dp"
                 android:paddingRight="60dp"
+                android:text="@={tx.gasLimit}"
+                android:textColor="@color/text_dark"
                 tools:text="50"
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:gravity="center_vertical"
-                android:text="@string/dcc"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/text_dark"
-                />
 
         </RelativeLayout>
 
@@ -327,10 +334,13 @@
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:background="@null"
+                android:enabled="false"
                 android:gravity="right|center_vertical"
                 android:inputType="numberDecimal"
                 android:paddingLeft="60dp"
                 android:paddingRight="60dp"
+                android:text="@={tx.maxTransactionFeeText}"
+                android:textColor="@color/text_dark"
                 tools:text="50"
                 />
 
@@ -397,6 +407,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="15dp"
+            android:onClick="@{(v)->tx.checkAndProceed(passport.address)}"
             android:text="@string/next"
             android:textColor="#FFF"
             android:textSize="15sp"/>

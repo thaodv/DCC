@@ -37,6 +37,35 @@ public class StringUtils {
         
     }
     
+    /**
+     * 保留两位小数
+     *
+     * @param source
+     * @return
+     */
+    public static String getTransCount(String source, int count) {
+        
+        if (null == source) {
+            return "";
+        } else {
+            double money = Double.parseDouble(source);
+            BigDecimal res;
+            String unit = "";
+            if (money < 10000) {
+                res = new BigDecimal(money).setScale(count, BigDecimal.ROUND_HALF_UP);
+            } else if (money >= 10000 && money < 100000000) {
+                res = new BigDecimal(money).divide(new BigDecimal(10000), count, BigDecimal.ROUND_HALF_UP);
+                unit = "万";
+            } else {
+                res = new BigDecimal(money).divide(new BigDecimal(100000000), count, BigDecimal
+                        .ROUND_HALF_UP);
+                unit = "亿";
+            }
+            return res.toString() + unit;
+        }
+        
+    }
+    
     public static String keep2double(String source, char unit) {
         
         if (null == source) {

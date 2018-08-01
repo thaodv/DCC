@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.vm
+package io.wexchain.android.dcc.modules.trans.vm
 
 import android.databinding.Observable
 import android.databinding.ObservableBoolean
@@ -21,9 +21,11 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 /**
- * Created by sisel on 2018/1/22.
+ * @author Created by Wangpeng on 2018/7/30 17:32.
+ * usage:
  */
-class TransactionVm {
+class Public2PrivateVm {
+
     private lateinit var currency: DigitalCurrency
     var isEdit = false
     lateinit var tx: EthsTransaction
@@ -31,6 +33,11 @@ class TransactionVm {
     val txTitle = ObservableField<String>()
 
     val toAddress = ObservableField<String>()
+
+    /**
+     * 最小转账金额
+     */
+    val poundge = ObservableField<String>()
 
     val amount = ObservableField<String>()
 
@@ -83,7 +90,7 @@ class TransactionVm {
             BigDecimal.ZERO
         }
         maxTransactionFee = fee
-        maxTransactionFeeText.set(if (BigDecimal.ZERO == fee) "" else fee.toPlainString() + "ETH")
+        maxTransactionFeeText.set(if (BigDecimal.ZERO == fee) "" else fee.toPlainString())
     }
 
     fun ensureDigitalCurrency(dc: DigitalCurrency, feeRate: String?) {
@@ -99,6 +106,7 @@ class TransactionVm {
             currency = dc
             txTitle.set("${dc.symbol} 转账")
             updateGasPrice()
+
             onPrivateChain.set(dc.chain == Chain.JUZIX_PRIVATE)
             if (dc.chain == Chain.JUZIX_PRIVATE) {
                 if (dc.symbol == Currencies.FTC.symbol) {
@@ -112,7 +120,7 @@ class TransactionVm {
                 } else {
                     val hintText = getString(R.string.the_chain_of_dcc)
                     val dccFeeHint = SpannableStringBuilder(hintText).apply {
-                        setSpan(ForegroundColorSpan(ContextCompat.getColor(App.get(), R.color.text_red)), 8, hintText.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+                        setSpan(ForegroundColorSpan(ContextCompat.getColor(App.get(), R.color.text_red)), 9, hintText.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
                     }
                     this.transferFeeHintText.set(dccFeeHint)
                 }
@@ -130,7 +138,7 @@ class TransactionVm {
                         fpp = maxOf(//
                                 tx.gasPrice,
                                 //it + BigDecimal("0.5").scaleByPowerOfTen(9).toBigInteger()
-                            it
+                                it
                         )
                     }
                     gasPrice.set(weiToGwei(fpp).stripTrailingZeros().toPlainString())
@@ -177,9 +185,9 @@ class TransactionVm {
                     }, {
                         stackTrace(it)
                     })
+
         }
     }
-
 
     fun checkAndProceed(from: String?) {
         from ?: return
@@ -189,13 +197,19 @@ class TransactionVm {
             return
         }
         val value = amount.get()?.toBigDecimalSafe()
+
+        val temp_poundge = poundge.get()?.toBigDecimalSafe()
+
         if (value == null || value == BigDecimal.ZERO) {
             inputNotSatisfiedEvent.value = getString(R.string.please_input_the_transfer_amount)
+            return
+        } else if (value < temp_poundge) {
+            inputNotSatisfiedEvent.value = getString(R.string.min_trans_count) + temp_poundge
             return
         }
         if (isEdit) {
             val gasprice = gasPrice.get()?.toBigDecimalSafe()
-            if (gasprice == null || gasprice <=weiToGwei(tx.gasPrice)) {
+            if (gasprice == null || gasprice <= weiToGwei(tx.gasPrice)) {
                 inputNotSatisfiedEvent.value = "Gas Price必须高于原交易的Gas price"
                 return
             }
@@ -239,6 +253,7 @@ class TransactionVm {
                     remarks.get()
             )
         }
+        this.txProceedEvent.value = scratch
         App.get().assetsRepository.getDigitalCurrencyAgent(dc)
                 .getGasLimit(scratch)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -258,4 +273,6 @@ class TransactionVm {
                     this.txProceedEvent.value = scratch
                 })
     }
+
+
 }

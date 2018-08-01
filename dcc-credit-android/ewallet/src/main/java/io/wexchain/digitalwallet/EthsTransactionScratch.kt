@@ -45,7 +45,7 @@ data class EthsTransactionScratch(
 
     fun expectedReceiveAmountText(): String {
         return if(transferFeeRate == null){
-            "${amount.stripTrailingZeros().toPlainString()} ${currency.symbol}"
+            "${amount.stripTrailingZeros().toPlainString()}${currency.symbol}"
         }else{
             val ra = ((BigDecimal.ONE - transferFeeRate) * amount).stripTrailingZeros()
             "${ra.toPlainString()} ${currency.symbol}"

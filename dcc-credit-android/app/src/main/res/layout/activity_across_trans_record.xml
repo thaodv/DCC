@@ -34,9 +34,10 @@
                 android:id="@+id/tv_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="本周"
+                android:text="@string/this_week"
                 android:textColor="#FF333333"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                tools:text="@string/this_week"/>
 
             <TextView
                 android:id="@+id/tv_content"

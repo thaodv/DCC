@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
+        <variable
+            name="vm"
+            type="io.wexchain.android.dcc.modules.trans.vm.Private2PublicConfirmVm"
+            />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_delete_address_book"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/trans_sure"
+                android:textColor="#404040"
+                android:textSize="16sp"/>
+
+            <ImageView
+                android:id="@+id/ibt_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/icon_address_book_query_delete"/>
+
+        </RelativeLayout>
+
+        <View
+            style="@style/DividerHorizontal"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="98dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/trans_orientation"
+                    android:textColor="#FF404040"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_trans_orientation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="To DCC@Ethereum"
+                    android:textColor="#FF404040"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="98dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/trans_count"
+                    android:textColor="#FF404040"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_trans_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="@{vm.tx.amount + vm.tx.currency.symbol}"
+                    android:textColor="#FF404040"
+                    android:textSize="14sp"
+                    tools:text="7000 DCC"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="98dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/across_trans_poundage2"
+                    android:textColor="#FF404040"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_poundage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="@{ViewModelHelper.getPoundge(vm.poundge)}"
+                    android:textColor="#FF404040"
+                    android:textSize="14sp"
+                    tools:text="7000 DCC"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="98dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/to_account_num"
+                    android:textColor="#FF404040"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_to_account_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="@{ViewModelHelper.getToAccountNum(vm.tx.amount,vm.poundge)}"
+                    android:textColor="#FF404040"
+                    android:textSize="14sp"
+                    tools:text="21 ETH"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="98dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/holding_count"
+                    android:textColor="#FF404040"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_holding_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:text="@{vm.holding}"
+                    android:textColor="#FF404040"
+                    android:textSize="14sp"
+                    tools:text="7000 DCC"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bt_sure"
+            style="@style/Widget.AppCompat.Button.Dcc.Full"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/content_padding_horizontal"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:onClick="@{(v)->vm.signAndSendTransaction()}"
+            android:text="@string/sure"/>
+
+    </LinearLayout>
+
+</layout>

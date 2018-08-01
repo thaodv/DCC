@@ -40,7 +40,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="4"
                     android:gravity="center_vertical"
-                    android:visibility="@{ViewModelHelper.isPublic2Private(order.fromAssetCode,order.toAssetCode)?View.GONE:View.VISIBLE}"
+                    android:visibility="@{ViewModelHelper.isPublic2Private(order.originAssetCode,order.destAssetCode)?View.GONE:View.VISIBLE}"
                     tools:visibility="gone">
 
                     <TextView
@@ -71,7 +71,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="4"
                     android:gravity="center_vertical"
-                    android:visibility="@{ViewModelHelper.isPublic2Private(order.fromAssetCode,order.toAssetCode)?View.VISIBLE:View.GONE}"
+                    android:visibility="@{ViewModelHelper.isPublic2Private(order.originAssetCode,order.destAssetCode)?View.VISIBLE:View.GONE}"
                     tools:visibility="visible">
 
                     <TextView
@@ -100,7 +100,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{order.amount}"
+                    android:text="@{ViewModelHelper.getTransCount(order.originAmount)}"
                     android:textColor="#FF4A4A4A"
                     android:textSize="14sp"
                     tools:text="100.00"
@@ -117,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="@{order.exchangeTime==null?null:@string/time_format_yyyymmdd_hhmmss(order.exchangeTime)}"
+                    android:text="@{order.createdTime==null?null:@string/time_format_yyyymmdd_hhmmss(order.createdTime)}"
                     android:textColor="#FF9B9B9B"
                     android:textSize="12sp"
                     tools:text="2018-02-15 10:20:20"/>

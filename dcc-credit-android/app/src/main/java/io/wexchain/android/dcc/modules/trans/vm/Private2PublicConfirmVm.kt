@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.vm
+package io.wexchain.android.dcc.modules.trans.vm
 
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
@@ -18,6 +18,7 @@ import io.wexchain.android.dcc.repo.db.TransRecord
 import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.android.dcc.tools.SharedPreferenceUtil
 import io.wexchain.android.dcc.tools.TransHelper
+import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.UseProtect
 import io.wexchain.digitalwallet.Chain
@@ -31,10 +32,11 @@ import java.math.BigInteger
 /**
  * Created by sisel on 2018/1/26.
  */
-class TransactionConfirmVm(
+class Private2PublicConfirmVm(
         val tx: EthsTransactionScratch,
         val passport: Passport,
         val assetsRepository: AssetsRepository,
+        val poundge: String,
         var isedit: Boolean = false
 ) : UseProtect {
     override val type = ObservableField<LocalProtectType>()

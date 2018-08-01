@@ -113,7 +113,7 @@ public class DateUtil {
     public static boolean beyond90day(String startTime, String endTime, String format) {
         long temp = getLongTime(endTime, format) - getLongTime(startTime, format);
         long day = temp / 86400000;
-        return day > 90 ? false : true;
+        return day < 90 ? true : false;
     }
     
     /**

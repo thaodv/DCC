@@ -9,6 +9,12 @@ package io.wexchain.dccchainservice.domain
  * @param toPrivateAmount 转到私链数量
  */
 data class ExchangeAmount(
-        val toPublicAmount: String,
-        val toPrivateAmount: String
-)
+        val originAssetCode: String,
+        val destAssetCode: String,
+        val totalAmount: String
+
+) {
+    fun isPublic2Private(): Boolean {
+        return originAssetCode == "DCC" && destAssetCode == "DCC_JUZIX"
+    }
+}

@@ -393,7 +393,15 @@
             android:label="@string/across_trans_record"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name="io.wexchain.android.dcc.modules.trans.activity.TransDetailActivity">
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trans.activity.TransPublic2PrivateDetailActivity"
+            android:label="@string/across_trans_detail"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trans.activity.TransPrivate2PublicDetailActivity"
+            android:label="@string/across_trans_detail"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

@@ -5,12 +5,12 @@ package io.wexchain.dccchainservice.domain
  * usage:
  */
 /**
- * @param serviceCharge 手续费
+ * @param fixedFeeAmount 手续费
  * @param minAmount 最小转账金额
- * @param middleAddress 中间人地址
+ * @param originReceiverAddress 中间人地址
  */
 data class ExchangeCondition(
-        val serviceCharge: String,
+        val fixedFeeAmount: String,
         val minAmount: String,
-        val middleAddress: String
+        val originReceiverAddress: String
 )

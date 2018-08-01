@@ -21,6 +21,7 @@ import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.api.domain.front.CoinDetail
 import io.wexchain.digitalwallet.api.domain.front.Quote
+import io.wexchain.digitalwallet.util.computeTransCountKeep2Number
 import io.wexchain.digitalwallet.util.toBigDecimalSafe
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -517,6 +518,30 @@ object ViewModelHelper {
             AccrossTransRecord.Status.DELIVERED -> "已完成"
             else -> ""
         }
+    }
+
+    @JvmStatic
+    fun accrossStatus(status: AccrossTransDetail.Status): String {
+        return when (status) {
+            AccrossTransRecord.Status.ACCEPTED -> "转移中"
+            AccrossTransRecord.Status.DELIVERED -> "已完成"
+            else -> ""
+        }
+    }
+
+    @JvmStatic
+    fun getTransCount(str: String): String {
+        return computeTransCountKeep2Number(str.toBigDecimal()).toPlainString()
+    }
+
+    @JvmStatic
+    fun getPoundge(str: String): String {
+        return str + "DCC"
+    }
+
+    @JvmStatic
+    fun getToAccountNum(str: BigDecimal, poundge: String): String {
+        return (str.subtract(poundge.toBigDecimal())).toPlainString() + "DCC"
     }
 
 }

@@ -8,6 +8,17 @@
         <variable
             name="vm"
             type="io.wexchain.android.dcc.vm.DccExchangeVm"/>
+
+        <variable
+            name="tx"
+            type="io.wexchain.android.dcc.modules.trans.vm.Private2PublicVm"
+            />
+
+        <variable
+            name="passport"
+            type="io.wexchain.android.dcc.domain.Passport"
+            />
+
     </data>
 
     <LinearLayout
@@ -141,6 +152,7 @@
                 android:inputType="numberDecimal"
                 android:paddingLeft="60dp"
                 android:paddingRight="60dp"
+                android:text="@={tx.amount}"
                 tools:text="100"
                 />
 
@@ -229,10 +241,13 @@
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:background="@null"
+                android:enabled="false"
+                android:text="@={tx.poundge}"
                 android:gravity="right|center_vertical"
                 android:inputType="numberDecimal"
                 android:paddingLeft="60dp"
                 android:paddingRight="60dp"
+                android:textColor="@color/text_dark"
                 tools:text="50"
                 />
 
@@ -278,10 +293,13 @@
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:background="@null"
+                android:enabled="false"
                 android:gravity="right|center_vertical"
                 android:inputType="numberDecimal"
                 android:paddingLeft="60dp"
+                android:text="@={tx.toAccount}"
                 android:paddingRight="60dp"
+                android:textColor="@color/text_dark"
                 tools:text="50"
                 />
 
@@ -348,6 +366,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="15dp"
+            android:onClick="@{(v)->tx.checkAndProceed(passport.address)}"
             android:text="@string/next"
             android:textColor="#FFF"
             android:textSize="15sp"/>
