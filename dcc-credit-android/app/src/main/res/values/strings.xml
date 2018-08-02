@@ -454,7 +454,7 @@
     <string name="_1h_rate">1h涨跌幅</string>
     <string name="_7d_rate">7d涨跌幅</string>
     <string name="latest_update">最新更新</string>
-    <string name="repayment_process">还款流程</string>
+    <string name="repayment_process">还币流程</string>
     <string name="user_id_front">身份证正面照</string>
     <string name="user_id_back">身份证反面照</string>
     <string name="user_activity_photo">人像照片</string>
