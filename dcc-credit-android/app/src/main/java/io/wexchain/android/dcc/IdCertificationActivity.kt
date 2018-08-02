@@ -19,6 +19,7 @@ class IdCertificationActivity : BindActivity<ActivityCertificationDataBinding>()
         super.onCreate(savedInstanceState)
         initToolbar()
         val data = CertOperations.getCertIdData()!!
+        val certIdPics = CertOperations.getCertIdPics()!!
         val vm = getViewModel<CertificationDataVm>().apply {
             this.title1.set(getString(R.string.name_label))
             this.title2.set(getString(R.string.id_no_label))
@@ -26,6 +27,9 @@ class IdCertificationActivity : BindActivity<ActivityCertificationDataBinding>()
             this.value1.set(data.name)
             this.value2.set(data.id)
             this.value3.set(ViewModelHelper.expiredText(data.expired))
+            this.imgFront.set(certIdPics.first)
+            this.imgBack.set(certIdPics.second)
+            this.imgPhoto.set(certIdPics.third)
         }
         vm.renewEvent.observe(this, Observer {
             PassportOperations.ensureCaValidity(this) {
