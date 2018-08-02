@@ -21,6 +21,7 @@ import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.repo.db.AuthKeyChangeRecord
 import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.android.dcc.view.dialog.CustomDialog
+import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.TicketResponse
@@ -63,11 +64,11 @@ object PassportOperations {
                 }
                 .subscribe({
                     action()
-                },{
+                }, {
                     CustomDialog(activity).apply {
-                        this.setTitle("提示")
+                        this.setTitle(io.wexchain.android.dcc.tools.getString(R.string.tips))
                         textContent = it.message
-                        withPositiveButton("更新") {
+                        withPositiveButton(io.wexchain.android.dcc.tools.getString(R.string.update)) {
                             activity.navigateTo(AuthManageActivity::class.java)
                             true
                         }
@@ -210,7 +211,7 @@ object PassportOperations {
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess {
-                    App.get().passportRepository.updateAuthKey(passport,it)
+                    App.get().passportRepository.updateAuthKey(passport, it)
                     App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(passport.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.UPDATE))
                 }
     }
@@ -237,7 +238,7 @@ object PassportOperations {
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess {
-                    App.get().passportRepository.updateAuthKey(passport,null)
+                    App.get().passportRepository.updateAuthKey(passport, null)
                     App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(passport.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.DISABLE))
                 }
     }

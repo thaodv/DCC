@@ -1,7 +1,5 @@
 package com.xxy.maple.tllibrary.activity;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,7 +15,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
@@ -27,14 +24,16 @@ import android.widget.Toast;
 import com.xxy.maple.tllibrary.R;
 import com.xxy.maple.tllibrary.app.AppConstant;
 import com.xxy.maple.tllibrary.app.TlSampleJavascript;
-import com.xxy.maple.tllibrary.utils.LogUtils;
 import com.xxy.maple.tllibrary.utils.Utils;
 import com.xxy.maple.tllibrary.widget.TlX5WebView;
+
+import java.util.Locale;
 
 public abstract class TlBrowserActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageButton ibtBack;
     private TextView tvClose, tvTitle;
     private TlX5WebView mWebView;
+    private String mUrl;
     public static String address;
 
     public static final String ADDRESS = "address";
@@ -55,7 +54,7 @@ public abstract class TlBrowserActivity extends AppCompatActivity implements Vie
             setSupportActionBar(toolbar);
         }
         ActionBar supportActionBar = getSupportActionBar();
-        if(supportActionBar!=null){
+        if (supportActionBar != null) {
             supportActionBar.setDisplayShowHomeEnabled(false);
             supportActionBar.setDisplayHomeAsUpEnabled(false);
             supportActionBar.setDisplayShowTitleEnabled(false);
@@ -68,20 +67,24 @@ public abstract class TlBrowserActivity extends AppCompatActivity implements Vie
         ibtBack.setOnClickListener(this);
     }
 
-    protected  abstract TlSampleJavascript getSampleJavascript(TlBrowserActivity activity, TlX5WebView webView, String address);
+    protected abstract TlSampleJavascript getSampleJavascript(TlBrowserActivity activity, TlX5WebView webView, String address);
+
     private void initWebView() {
+        String country = Locale.getDefault().getCountry();
+        mUrl = (TextUtils.equals(country, "UK") || TextUtils.equals(country, "US")) ? AppConstant.WebPageUrl.EN : AppConstant.WebPageUrl.CN;
 
         address = getIntent().getStringExtra(ADDRESS);
 
-        if(TextUtils.isEmpty(address)){
-            Toast.makeText(this,"address empty",Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(address)) {
+            Toast.makeText(this, "address empty", Toast.LENGTH_LONG).show();
             this.finish();
         }
 
         mWebView.setWebViewClient(webViewClient);
         mWebView.setWebChromeClient(webChromeClient);
         mWebView.addJavascriptInterface(getSampleJavascript(this, mWebView, address), "obj");
-        mWebView.loadUrl(AppConstant.WebPageUrl.LOAN_INDEX);
+
+        mWebView.loadUrl(mUrl);
     }
 
 
@@ -183,31 +186,31 @@ public abstract class TlBrowserActivity extends AppCompatActivity implements Vie
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode ==CODE_H5_GOBORROWLOADING) {
+        if (resultCode == RESULT_OK && requestCode == CODE_H5_GOBORROWLOADING) {
             String type = data.getExtras().getString("type");
-            if(TextUtils.equals(type,"0")){
+            if (TextUtils.equals(type, "0")) {
                 String order_no = data.getExtras().getString("order_no");
-                 mWebView.loadUrl("javascript:goBorrowLoading('"+order_no+"')");
-            }else if(TextUtils.equals(type,"1")){
-                mWebView.loadUrl("javascript:goIndex('"+type+"')");
-            }else if(TextUtils.equals(type,"2")){
-                mWebView.loadUrl("javascript:goIndex('"+type+"')");
-            }else if(TextUtils.equals(type,"3")){
-                mWebView.loadUrl("javascript:goIndex('"+type+"')");
-            }else if(TextUtils.equals(type,"4")){
-                mWebView.loadUrl("javascript:goIndex('"+type+"')");
-            }else if(TextUtils.equals(type,"5")){
-                mWebView.loadUrl("javascript:goIndex('"+type+"')");
-            }else if(TextUtils.equals(type,"6")){
-                mWebView.loadUrl("javascript:goIndex('"+type+"')");
+                mWebView.loadUrl("javascript:goBorrowLoading('" + order_no + "')");
+            } else if (TextUtils.equals(type, "1")) {
+                mWebView.loadUrl("javascript:goIndex('" + type + "')");
+            } else if (TextUtils.equals(type, "2")) {
+                mWebView.loadUrl("javascript:goIndex('" + type + "')");
+            } else if (TextUtils.equals(type, "3")) {
+                mWebView.loadUrl("javascript:goIndex('" + type + "')");
+            } else if (TextUtils.equals(type, "4")) {
+                mWebView.loadUrl("javascript:goIndex('" + type + "')");
+            } else if (TextUtils.equals(type, "5")) {
+                mWebView.loadUrl("javascript:goIndex('" + type + "')");
+            } else if (TextUtils.equals(type, "6")) {
+                mWebView.loadUrl("javascript:goIndex('" + type + "')");
             }
         }
     }
 
-    public  void launchActivityForResult(@NonNull Intent intent, int REQUESTCODE){
+    public void launchActivityForResult(@NonNull Intent intent, int REQUESTCODE) {
         //防止重复启动
-        if(!Utils.isFastDoubleClick()){
-            startActivityForResult(intent,REQUESTCODE);
+        if (!Utils.isFastDoubleClick()) {
+            startActivityForResult(intent, REQUESTCODE);
         }
     }
 }

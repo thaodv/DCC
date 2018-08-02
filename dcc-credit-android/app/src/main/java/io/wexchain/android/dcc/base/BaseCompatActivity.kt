@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.base
 
+import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.IdRes
@@ -20,6 +21,9 @@ abstract class BaseCompatActivity : AppCompatActivity() {
 
     protected val intendedTitle: String?
         get() = intent.getStringExtra(Extras.EXTRA_TITLE)
+
+    protected val currentActivity: Activity
+        get() = ActivityCollector.currentActivity
 
     fun initToolbar(showHomeAsUp: Boolean = true): Toolbar? {
         toolbar = findViewById(R.id.toolbar)
@@ -42,6 +46,12 @@ abstract class BaseCompatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityCollector.addActivity(this)
+    }
+
+    protected fun finishAllActivity() = ActivityCollector.finishAll()
+
+    protected fun finishActivity(vararg tClass: Class<*>) {
+        ActivityCollector.finishActivitys(*tClass)
     }
 
     override fun onDestroy() {

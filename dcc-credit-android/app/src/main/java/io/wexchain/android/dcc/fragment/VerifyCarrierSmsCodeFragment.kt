@@ -2,11 +2,11 @@ package io.wexchain.android.dcc.fragment
 
 import android.os.Bundle
 import android.view.View
-import com.wexmarket.android.passport.base.BindFragment
+import io.wexchain.android.dcc.base.BindFragment
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentVerifyCarrierSmsCodeBinding
 
-class VerifyCarrierSmsCodeFragment:BindFragment<FragmentVerifyCarrierSmsCodeBinding>() {
+class VerifyCarrierSmsCodeFragment: BindFragment<FragmentVerifyCarrierSmsCodeBinding>() {
     override val contentLayoutId: Int = R.layout.fragment_verify_carrier_sms_code
 
     private var listener:Listener? = null

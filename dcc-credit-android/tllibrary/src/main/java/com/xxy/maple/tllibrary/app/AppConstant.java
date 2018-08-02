@@ -2,7 +2,6 @@ package com.xxy.maple.tllibrary.app;
 
 
 import com.xxy.maple.tllibrary.BuildConfig;
-import com.xxy.maple.tllibrary.retrofit.TlDns;
 
 /**
  * Created by 94369 on 2016/3/17.
@@ -46,7 +45,8 @@ public class AppConstant {
     public static class WebPageUrl {
         //private static final String LOAN_PREFIX = "http://tleos.xiaoxinyong.com";
         private static final String LOAN_PREFIX = BuildConfig.TL_H5_URL;
-        public static final String LOAN_INDEX = LOAN_PREFIX + "/#/Index";
+        public static final String EN = LOAN_PREFIX + "/#/Index?language=en";
+        public static final String CN = LOAN_PREFIX + "/#/Index?language=cn";
 
 
     }

@@ -31,6 +31,6 @@
             android:layout_marginBottom="24dp"
             android:layout_marginTop="4dp"
             style="@style/Widget.AppCompat.Button.Dcc.Full"
-            android:text="添加收币地址"
+            android:text="@string/add_new_address"
             />
 </LinearLayout>

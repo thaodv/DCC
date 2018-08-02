@@ -48,17 +48,17 @@ data class LoanReport(
         return loanType == LoanType.MORTGAGE
     }
     fun titleinfo():String{
-        if(isMort()){
-            return  "订单信息"
+        return if(isMort()){
+            "订单信息"
         }else{
-            return  "借币信息"
+            "借币信息"
         }
     }
     fun titleinfo2():String{
-        if(isMort()){
-            return  "还款账单"
+        return if(isMort()){
+            "还款账单"
         }else{
-            return  "还币信息"
+            "还币信息"
         }
     }
     fun shouldlong( le:Long):Long{

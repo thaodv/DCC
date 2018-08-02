@@ -37,10 +37,10 @@ class AddBeneficiaryAddressActivity : BindActivity<ActivityAddBeneficiaryAddress
                 if (setDefault) {
                     App.get().passportRepository.setDefaultBeneficiaryAddress(inputAddr)
                 }
-                toast("添加成功")
+                toast(getString(R.string.success))
                 finish()
             }else{
-                toast("请输入有效的地址和简称")
+                toast(getString(R.string.correct_wallet_address))
             }
         }
     }

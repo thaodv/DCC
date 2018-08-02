@@ -36,13 +36,13 @@
             app:layout_constraintLeft_toRightOf="@id/gl_v1"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginRight="@dimen/content_padding_horizontal"
-            android:hint="请设置备注"
+            android:hint="@string/notes"
             />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="备注"
+            android:text="@string/notes"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             app:layout_constraintRight_toLeftOf="@id/gl_v1"
@@ -70,7 +70,7 @@
             app:layout_constraintTop_toBottomOf="@id/divider_h1"
             app:layout_constraintLeft_toRightOf="@id/gl_v1"
             app:layout_constraintRight_toLeftOf="@id/ib_scan_address"
-            android:hint="请输入收币地址"
+            android:hint="@string/receive_address"
             />
 
         <ImageButton
@@ -88,7 +88,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="收币地址"
+            android:text="@string/receive_address"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             app:layout_constraintRight_toLeftOf="@id/gl_v1"
@@ -120,7 +120,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="设置为默认地址"
+            android:text="@string/set_as_default"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             app:layout_constraintRight_toLeftOf="@id/gl_v1"
@@ -145,7 +145,7 @@
             style="@style/Widget.AppCompat.Button.Dcc.Full"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginRight="@dimen/content_padding_horizontal"
-            android:text="保存"
+            android:text="@string/save_changes"
             app:layout_constraintTop_toBottomOf="@id/divider_h3"
             android:layout_marginTop="16dp"
             />

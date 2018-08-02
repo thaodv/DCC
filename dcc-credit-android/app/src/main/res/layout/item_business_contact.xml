@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
             android:textColor="@color/text_white"
-            android:text="商务合作 业务资讯"
+            android:text="@string/for_questions_and_business_collaboration"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="16dp"

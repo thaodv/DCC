@@ -1,14 +1,17 @@
 package io.wexchain.android.dcc
 
+import android.content.Context
 import android.os.SystemClock
 import android.support.annotation.VisibleForTesting
-import android.support.multidex.MultiDexApplication
+import android.support.multidex.MultiDex
 import android.view.ContextThemeWrapper
 import com.wexmarket.android.network.Networking
 import io.reactivex.Single
 import io.reactivex.plugins.RxJavaPlugins
+import io.wexchain.android.common.BaseApplication
 import io.wexchain.android.common.Pop
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.chain.IPFSHelp
 import io.wexchain.android.dcc.network.CommonApi
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.PassportRepository
@@ -35,7 +38,7 @@ import java.math.BigInteger
 /**
  * Created by sisel on 2018/3/27.
  */
-class App : MultiDexApplication(), Thread.UncaughtExceptionHandler {
+class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
     //lib
     lateinit var idVerifyHelper: IdVerifyHelper
@@ -64,6 +67,11 @@ class App : MultiDexApplication(), Thread.UncaughtExceptionHandler {
     lateinit var assetsRepository: AssetsRepository
     lateinit var scfTokenManager: ScfTokenManager
 
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
+    }
+
     override fun onCreate() {
         super.onCreate()
         instance = WeakReference(this)
@@ -78,8 +86,6 @@ class App : MultiDexApplication(), Thread.UncaughtExceptionHandler {
         initLibraries(this)
         initServices(this)
         initData(this)
-        initRxDownload()
-        CrashHandler().init(this)
     }
 
     private fun initRxDownload() {
@@ -143,6 +149,10 @@ class App : MultiDexApplication(), Thread.UncaughtExceptionHandler {
     private fun initLibraries(context: App) {
         idVerifyHelper = IdVerifyHelper(context)
         WxApiManager.init()
+        initRxDownload()
+        CrashHandler().init(context)
+//        IPFSHelp.init("/ip4/10.65.212.11/tcp/5001")
+
     }
 
     private fun buildAgent(dc: DigitalCurrency): Erc20Agent {

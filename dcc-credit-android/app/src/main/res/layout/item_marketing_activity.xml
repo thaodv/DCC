@@ -65,7 +65,7 @@
                     app:layout_constraintLeft_toLeftOf="@id/tv_marketing_title"
                     android:layout_marginTop="4dp"
                     android:textColor="@color/text_white"
-                    android:text="状态:"
+                    android:text="@string/status2"
                     />
 
             <TextView
@@ -89,7 +89,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
                     android:text="@{ViewModelHelper.getMarketingActivityStartTimeText(context,ma)}"
                     android:textColor="@color/text_white"
-                    tools:text="开始时间:"
+                    tools:text="@string/started_on"
                     />
 
         </android.support.constraint.ConstraintLayout>

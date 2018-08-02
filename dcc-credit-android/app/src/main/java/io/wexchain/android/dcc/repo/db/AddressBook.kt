@@ -27,12 +27,11 @@ data class AddressBook(
 ) : Abbreviated, Comparable<AddressBook>, Serializable {
 
     @Ignore
-    var mAbbreviation: String
+    var mAbbreviation: String = ContactsUtils.getAbbreviation(shortName)
     @Ignore
     var mInitial: String
 
     init {
-        this.mAbbreviation = ContactsUtils.getAbbreviation(shortName)
         this.mInitial = mAbbreviation.substring(0, 1)
     }
 
@@ -40,14 +39,14 @@ data class AddressBook(
         return mInitial
     }
 
-    override fun compareTo(b: AddressBook): Int {
-        if (mAbbreviation == b.mAbbreviation) {
+    override fun compareTo(other: AddressBook): Int {
+        if (mAbbreviation == other.mAbbreviation) {
             return 0
         }
         val flag: Boolean = mAbbreviation.startsWith("#")
-        return if (flag xor b.mAbbreviation.startsWith("#")) {
+        return if (flag xor other.mAbbreviation.startsWith("#")) {
             if (flag) 1 else -1
-        } else initial.compareTo(b.initial)
+        } else initial.compareTo(other.initial)
     }
 
     companion object {

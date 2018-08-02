@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginTop="@dimen/content_padding_horizontal"
-            android:text="钱包地址"
+            android:text="@string/address_of_collection_wallet"
             android:textColor="#404040"
             android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -137,7 +137,7 @@
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginRight="@dimen/content_padding_horizontal"
             android:layout_marginTop="16dp"
-            android:text="保存"
+            android:text="@string/save_changes"
             app:layout_constraintBottom_toBottomOf="parent"
             />
 

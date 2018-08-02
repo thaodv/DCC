@@ -6,16 +6,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import io.wexchain.android.dcc.constant.RequestCodes
-import com.wexmarket.android.passport.base.BindFragment
+import io.wexchain.android.dcc.base.BindFragment
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.QrScannerActivity
 import io.wexchain.android.dcc.repo.PassportRepository
-import io.wexchain.android.dcc.tools.isEcPrivateKeyValid
 import io.wexchain.android.dcc.tools.isKeyStoreValid
-import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentPasteKeystoreBinding

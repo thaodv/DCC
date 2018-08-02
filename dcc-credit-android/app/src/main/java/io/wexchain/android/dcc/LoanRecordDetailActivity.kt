@@ -3,6 +3,7 @@ package io.wexchain.android.dcc
 import android.os.Bundle
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.onClick
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BindActivity
@@ -33,6 +34,9 @@ class LoanRecordDetailActivity : BindActivity<ActivityLoanRecordDetailBinding>()
                     putExtra(Extras.EXTRA_LOAN_CHAIN_ORDER_ID,it)
                 }
             }
+        }
+        binding.tvRepaymentProcess.onClick {
+            navigateTo(RePaymentProcessActivity::class.java)
         }
     }
 

@@ -100,7 +100,7 @@ public class CommonUtils {
     }
 
     public static String rePay(String arg1,String arg2){
-        return App.get().getResources().getString(R.string.xxx,arg1,arg2);
+        return App.get().getResources().getString(R.string.please_transfer,arg1,arg2);
     }
     
 }

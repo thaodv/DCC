@@ -7,9 +7,16 @@ import java.util.*
 
 fun isOnMainThread(): Boolean = Looper.myLooper() == Looper.getMainLooper()
 
-fun WebView.loadLanguageUrl(url: String) {
+/**
+ * return true is English
+ */
+fun checkLanguage(): Boolean {
     val country = Locale.getDefault().country
-    if (country == "US" || country == "UK") {
+    return (country == "US" || country == "UK")
+}
+
+fun WebView.loadLanguageUrl(url: String) {
+    if (checkLanguage()) {
         var languageurl = ""
         val list = url.split('.').toList()
         for ((i, s) in list.withIndex()) {

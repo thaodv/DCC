@@ -66,25 +66,22 @@
             />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:clickable="false"
-            android:orientation="horizontal"
-            >
-
-            <LinearLayout
-                android:id="@+id/btn_to_transfer"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/background_button"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:orientation="horizontal"
                 >
+
+            <LinearLayout
+                    android:id="@+id/btn_to_transfer"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="@dimen/content_padding_horizontal"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:background="@drawable/background_button"
+                    >
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -104,18 +101,16 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btn_to_collect"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:layout_weight="1"
-                android:background="@drawable/background_button"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:orientation="horizontal"
-                >
+                    android:id="@+id/btn_to_collect"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="@dimen/content_padding_horizontal"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:background="@drawable/background_button"
+                    >
 
                 <ImageView
                     android:layout_width="wrap_content"

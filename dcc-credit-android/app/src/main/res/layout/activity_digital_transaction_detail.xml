@@ -323,7 +323,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:text="编辑"
+                    android:text="@string/edit"
                     android:textColor="@color/text_color_button"
                     android:textSize="16sp"
                     />
@@ -382,7 +382,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
-                    android:text="添加地址"
+                    android:text="@string/add_address"
                     android:textColor="@color/text_color_button"
                     android:textSize="16sp"
                     />

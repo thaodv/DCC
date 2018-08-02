@@ -31,7 +31,7 @@ class PassportCreationSucceedActivity: BindActivity<ActivityPassportCreationSucc
             }
 
             override fun cancelText(): String {
-                return "跳过"
+                return getString(R.string.skip)
             }
 
 

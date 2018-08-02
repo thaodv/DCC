@@ -145,7 +145,7 @@ class StartLoanVm : ViewModel() {
                     ChainGateway.BUSINESS_BANK_CARD -> getString(R.string.bank_accoun)
                     ChainGateway.BUSINESS_COMMUNICATION_LOG -> getString(R.string.carrier_information)
                     else -> it
-                } + "认证未完成"
+                } + getString(R.string.verification_to_be_completed)
             }.first()
             return
         }

@@ -118,7 +118,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.EditNicknameActivity"
-            android:label="修改昵称"
+            android:label="@string/modify_nickname"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateUnspecified"/>
         <activity
@@ -227,7 +227,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.LoanRepayResultActivity"
-            android:label="还币结果"
+            android:label="@string/result"
             android:noHistory="true"
             android:screenOrientation="portrait"/>
         <activity
@@ -236,7 +236,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.ChooseBeneficiaryAddressActivity"
-            android:label="选择收币地址"
+            android:label="@string/selected_address"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.ChooseAddressBookActivity"
@@ -298,7 +298,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.CreateScfAccountActivity"
-            android:label="填写邀请码"
+            android:label="@string/enter_invitation_code"
             android:screenOrientation="portrait">
         </activity>
         <activity
@@ -403,6 +403,9 @@
             android:label="@string/across_trans_detail"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name="io.wexchain.android.dcc.RePaymentProcessActivity"
+            android:label="@string/repayment_process"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

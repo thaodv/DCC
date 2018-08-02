@@ -28,7 +28,7 @@
                 android:id="@+id/tv_wallet_password_notice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="密码用于保护私钥和交易授权,强度非常重要\n应用提供方不存储密码,也无法帮你找回,请务必记牢"
+                android:text="@string/WeXCreatePassportViewController_description1"
                 android:gravity="left"
                 style="@style/NoticeTextLabel"
                 />

@@ -53,7 +53,7 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
             binding.etInputGasLimit.setText(""+tx.gas)
             txVm.gasLimit.set(""+tx.gas)
         }
-        title = ("${dc!!.symbol} 转账")
+        title = ("${dc!!.symbol} "+getString(R.string.transfer))
         setupEvents(dc, feeRate)
         setupButtons()
 

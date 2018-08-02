@@ -6,7 +6,9 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.content.pm.PackageInfo
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -95,26 +97,10 @@ inline fun <T> withTransitionEnabled(block: () -> T): T? {
     }
 }
 
-fun Context.getVersionName(): String {
-    var versionName = "1.0.0"
-    try {
-        versionName = this.packageManager.getPackageInfo(this.packageName, 0).versionName
-    } catch (e: PackageManager.NameNotFoundException) {
-        e.printStackTrace()
+val Context.versionInfo: PackageInfo
+    get() {
+        return this.packageManager.getPackageInfo(this.packageName, 0)
     }
-    return versionName
-}
-
-fun Context.getVersionCode(): Int {
-    var versionCode = 1
-    try {
-        versionCode = this.packageManager.getPackageInfo(this.packageName, 0).versionCode
-    } catch (e: PackageManager.NameNotFoundException) {
-        e.printStackTrace()
-    }
-    return versionCode
-}
-
 
 fun Context.installApk(file: File) {
     val data: Uri
@@ -128,4 +114,8 @@ fun Context.installApk(file: File) {
     }
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     startActivity(intent)
+}
+
+fun ByteArray.toBitmap(): Bitmap {
+    return BitmapFactory.decodeByteArray(this, 0, this.size)
 }

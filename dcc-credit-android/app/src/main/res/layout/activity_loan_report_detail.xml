@@ -355,7 +355,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_orderstatu"
                 app:layout_constraintRight_toRightOf="@id/v_frame_info2"
                 android:layout_marginRight="8dp"
-                android:text="@{report.settlementComplete?`已结清`:`未结清`}"
+                android:text="@{report.settlementComplete?@string/settled:@string/unsettled}"
                 tools:text="100.0000ETH"
                 />
 

@@ -112,7 +112,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:text="@{ViewModelHelper.getCertStatusOpText(context,vm.status)}"
                     android:textColor="@{ViewModelHelper.getCertStatusOpTextColor(context,vm.status)}"
-                    tools:text="认证完成"
+                    tools:text="@string/verified"
                     />
 
             <View

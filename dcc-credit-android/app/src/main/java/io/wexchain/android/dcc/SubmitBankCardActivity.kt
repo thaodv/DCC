@@ -49,7 +49,7 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
         val certId = CertOperations.getCertId()
         if (certId == null) {
             runOnMainThread {
-                Pop.toast("身份认证未完成", this@SubmitBankCardActivity)
+                Pop.toast(getString(R.string.verification_first), this@SubmitBankCardActivity)
                 finish()
             }
             return

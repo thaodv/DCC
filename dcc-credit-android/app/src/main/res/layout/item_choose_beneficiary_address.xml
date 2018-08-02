@@ -30,7 +30,7 @@
             android:text="@{ba.shortName}"
             android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="本地钱包"
+            tools:text="@string/local_wallet"
             />
 
         <TextView

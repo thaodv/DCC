@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="56dp"
                 android:gravity="center_vertical"
-                android:text="账单期数"
+                android:text="@string/number_of_periods"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="56dp"
                 android:gravity="center_vertical"
-                android:text="应还日期"
+                android:text="@string/deadline"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 app:layout_constraintTop_toBottomOf="@id/divider_h1"
@@ -89,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="56dp"
                 android:gravity="center_vertical"
-                android:text="应还金额"
+                android:text="@string/amount3"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 app:layout_constraintTop_toBottomOf="@id/divider_h2"
@@ -115,15 +115,15 @@
                 />
 
         <TextView
-                android:id="@+id/tv_actual_repay_date_label"
-                android:layout_width="wrap_content"
-                android:layout_height="56dp"
-                android:gravity="center_vertical"
-                android:text="实际还款日期"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
-                app:layout_constraintTop_toBottomOf="@id/divider_h3"
-                />
+            android:id="@+id/tv_actual_repay_date_label"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:text="@string/actual_data_of_repayment"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            app:layout_constraintTop_toBottomOf="@id/divider_h3"
+            />
 
         <TextView
                 android:layout_width="wrap_content"
@@ -149,7 +149,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="56dp"
                 android:gravity="center_vertical"
-                android:text="状态"
+                android:text="@string/status"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 app:layout_constraintTop_toBottomOf="@id/divider_h4"

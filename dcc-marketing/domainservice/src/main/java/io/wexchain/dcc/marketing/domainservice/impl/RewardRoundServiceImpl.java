@@ -101,6 +101,17 @@ public class RewardRoundServiceImpl implements RewardRoundService {
     }
 
     @Override
+    public BigDecimal getEcoScore() {
+        Date yesterday = DateTime.now().minusDays(1).withTimeAtStartOfDay().toDate();
+        Optional<RewardRound> rewardRoundByBonusDay = findRewardRoundByBonusDay(yesterday);
+        if(rewardRoundByBonusDay.isPresent()){
+            return Optional.ofNullable(rewardActionRecordRepository.sumScore(rewardRoundByBonusDay.get().getId()))
+                    .orElse(BigDecimal.ZERO);
+        }
+        return BigDecimal.ZERO;
+    }
+
+    @Override
     public List<EcoRewardRankVo> queryEcoRewardRankList(DateTime roundTime) {
         DateTime trimRoundTime = roundTime.withTimeAtStartOfDay();
         RewardRound rewardRound = findRewardRoundByBonusDay(trimRoundTime.toDate())

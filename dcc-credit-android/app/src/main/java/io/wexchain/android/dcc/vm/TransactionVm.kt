@@ -97,7 +97,7 @@ class TransactionVm {
             }
 
             currency = dc
-            txTitle.set("${dc.symbol} 转账")
+            txTitle.set("${dc.symbol} "+getString(R.string.transfer))
             updateGasPrice()
             onPrivateChain.set(dc.chain == Chain.JUZIX_PRIVATE)
             if (dc.chain == Chain.JUZIX_PRIVATE) {

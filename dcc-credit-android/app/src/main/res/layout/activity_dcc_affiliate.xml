@@ -135,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="10sp"
                         android:layout_gravity="center_horizontal"
-                        android:text="长按按钮复制邀请码"
+                        android:text="@string/long_press_to_copy_new_invition_code"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_aff_code_value"

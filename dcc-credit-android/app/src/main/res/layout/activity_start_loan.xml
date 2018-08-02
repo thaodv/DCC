@@ -221,7 +221,7 @@
                     android:id="@+id/tv_fee_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/handling_fee_of_loan"
+                    android:text="@string/handling_fee_of_loan1"
                     app:layout_constraintTop_toBottomOf="@id/divider_h2"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -344,7 +344,7 @@
                     android:paddingRight="4dp"
                     android:gravity="center_vertical"
                     android:text="@{ViewModelHelper.text2LinesBeneficiaryAddress(vm.address)}"
-                    tools:text="本地钱包"
+                    tools:text="@string/local_wallet"
                     />
 
             <View

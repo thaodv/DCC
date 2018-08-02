@@ -12,9 +12,9 @@ fun getString(id: Int): String {
     return appContext.resources.getString(id)
 }
 
-fun <T : Any> T.log(message: CharSequence) {
+fun <T : Any> T.log(message: CharSequence?) {
     val clazz = (this as java.lang.Object).`class` as Class<T>
-    LogUtils.e(clazz.simpleName, message.toString())
+    LogUtils.e(clazz.simpleName, message?.toString())
 }
 
 fun log(tag: String, message: CharSequence) {

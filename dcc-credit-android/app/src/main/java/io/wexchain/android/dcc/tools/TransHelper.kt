@@ -21,7 +21,6 @@ object TransHelper {
     fun savePublicChain(e: EthsTransaction) {
         App.get().assetsRepository.pushPendingTx(e)
         SharedPreferenceUtil.save(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING, e)
-
     }
 
     @JvmStatic
@@ -69,7 +68,7 @@ object TransHelper {
         if (!b) {
             val l = getLocalPenddingData()
             if (null != l) {
-                return txid.equals(l.txId)
+                return txid == l.txId
             }
         }
         return false

@@ -14,13 +14,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.dcc.chain.IPFSHelp
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.tl.TlWebPageActivity
-import io.wexchain.android.dcc.tools.LogUtils
-import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.tools.doMain
+import io.wexchain.android.dcc.tools.log
 import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.dcc.R
@@ -47,13 +47,27 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         checkUpgrade()
     }
 
+    fun add() {
+        val path = Environment.getExternalStorageDirectory().absolutePath + File.separator + "eyepetizer" + File.separator + "images" + File.separator + "5a5bfc29421aa9115489927b.jpeg"
+        IPFSHelp.upload(path)
+                .subscribeBy(
+                        onNext = {
+                            log(it)
+                        }
+                        ,
+                        onError = {
+                            log(it.message)
+                        })
+    }
+
     override fun onResume() {
         super.onResume()
         signin()
+//        add()
     }
 
     private fun checkUpgrade() {
-        App.get().marketingApi.checkUpgrade(getVersionCode().toString())
+        App.get().marketingApi.checkUpgrade(versionInfo.versionCode.toString())
                 .checkonMain()
                 .filter {
                     it.mandatoryUpgrade
@@ -65,12 +79,11 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
 
     private fun showUpgradeDialog(it: CheckUpgrade) {
         val dialog = UpgradeDialog(this)
-        dialog.createHomeDialog(
-                it.version, it.updateLog,
-                onConfirm = {
+        dialog.createHomeDialog(it.version, it.updateLog)
+                .onClick {
                     dialog.dismiss()
                     downloadApk(it.version, it.updateUrl)
-                })
+                }
     }
 
     private fun downloadApk(versionNumber: String, updateUrl: String) {

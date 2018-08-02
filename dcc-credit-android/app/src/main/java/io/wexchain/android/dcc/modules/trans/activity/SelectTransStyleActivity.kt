@@ -28,7 +28,7 @@ class SelectTransStyleActivity : BindActivity<ActivitySelectTransStyleBinding>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-        title = "转账"
+        title = getString(R.string.transfer)
 
         mRecyclerView = findViewById(R.id.rv_list)
 
