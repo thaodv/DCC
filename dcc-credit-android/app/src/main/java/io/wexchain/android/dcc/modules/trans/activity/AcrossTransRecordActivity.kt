@@ -3,6 +3,7 @@ package io.wexchain.android.dcc.modules.trans.activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.DividerItemDecoration
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import io.wexchain.android.common.getViewModel
@@ -54,6 +55,7 @@ class AcrossTransRecordActivity : BindActivity<ActivityAcrossTransRecordBinding>
 
         queryExchangeAmount()
 
+        binding.rvList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         binding.rvList.adapter = adapter
         vm = getViewModel()
 

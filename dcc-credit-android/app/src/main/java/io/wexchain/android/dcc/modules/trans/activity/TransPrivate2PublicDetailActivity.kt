@@ -59,7 +59,7 @@ class TransPrivate2PublicDetailActivity : BaseCompatActivity() {
                     tv_beneficiaryAddress.text = it.beneficiaryAddress
 
                     val ssb = SpannableStringBuilder(it.originTxHash)
-                    ssb.setSpan(URLSpan(BuildConfig.ACCROSS_DETAIL + it.originTxHash), 0, ssb.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+                    ssb.setSpan(URLSpan(BuildConfig.PRVATE_ACCROSS_DETAIL_URL + it.originTxHash), 0, ssb.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
                     tv_originTxHash.text = ssb
                     tv_originTxHash.movementMethod = LinkMovementMethod.getInstance()
 
@@ -73,7 +73,7 @@ class TransPrivate2PublicDetailActivity : BaseCompatActivity() {
                         tv_destPayerAddress.text = it.destPayerAddress
 
                         val ssb1 = SpannableStringBuilder(it.destTxHash)
-                        ssb1.setSpan(URLSpan(BuildConfig.ACCROSS_DETAIL + it.destTxHash), 0, ssb1.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+                        ssb1.setSpan(URLSpan(BuildConfig.PUBLIC_ACCROSS_DETAIL_URL+ it.destTxHash), 0, ssb1.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
                         tv_destTxHash.text = ssb1
                         tv_destTxHash.movementMethod = LinkMovementMethod.getInstance()
 
