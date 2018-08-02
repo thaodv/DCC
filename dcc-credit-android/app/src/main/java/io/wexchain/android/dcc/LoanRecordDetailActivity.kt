@@ -1,11 +1,11 @@
 package io.wexchain.android.dcc
 
 import android.os.Bundle
+import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.postOnMainThread
-import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
@@ -30,8 +30,8 @@ class LoanRecordDetailActivity : BindActivity<ActivityLoanRecordDetailBinding>()
         }
         binding.flLoanContract.setOnClickListener {
             binding.order?.orderId?.let {
-                navigateTo(LoanAgreementActivity::class.java){
-                    putExtra(Extras.EXTRA_LOAN_CHAIN_ORDER_ID,it)
+                navigateTo(LoanAgreementActivity::class.java) {
+                    putExtra(Extras.EXTRA_LOAN_CHAIN_ORDER_ID, it)
                 }
             }
         }
@@ -41,26 +41,32 @@ class LoanRecordDetailActivity : BindActivity<ActivityLoanRecordDetailBinding>()
     }
 
     private fun performAction(order: LoanRecord?) {
-        when(order?.status){
-            LoanStatus.INVALID -> {}//todo
-            LoanStatus.CREATED -> {}//todo
-            LoanStatus.CANCELLED -> {}//todo
-            LoanStatus.AUDITING -> {}
-            LoanStatus.APPROVED -> {}
+        when (order?.status) {
+            LoanStatus.INVALID -> {
+            }//todo
+            LoanStatus.CREATED -> {
+            }//todo
+            LoanStatus.CANCELLED -> {
+            }//todo
+            LoanStatus.AUDITING -> {
+            }
+            LoanStatus.APPROVED -> {
+            }
             LoanStatus.REJECTED -> applyAgain()
             LoanStatus.FAILURE -> applyAgain()
             LoanStatus.REPAID -> applyAgain()
             LoanStatus.DELIVERED -> toRepay()
             LoanStatus.RECEIVIED -> toRepay()
-            null -> {}
+            null -> {
+            }
         }
     }
 
     private fun toRepay() {
         binding.order?.let {
-            if(it.earlyRepayAvailable && !it.allowRepayPermit){
+            if (it.earlyRepayAvailable && !it.allowRepayPermit) {
                 //early repay not allowed
-            }else {
+            } else {
                 navigateTo(ReviewRepayActivity::class.java) {
                     putExtra(Extras.EXTRA_LOAN_CHAIN_ORDER_ID, it.orderId)
                 }
@@ -85,18 +91,24 @@ class LoanRecordDetailActivity : BindActivity<ActivityLoanRecordDetailBinding>()
 
     private fun loadLoanOrderDetail(recordId: Long) {
         ScfOperations
-            .withScfTokenInCurrentPassport {
-                App.get().scfApi.getLoanRecordById(it, recordId)
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe {
-                showLoadingDialog()
-            }
-            .doFinally {
-                hideLoadingDialog()
-            }
-            .subscribe{it->
-                binding.order = it
-            }
+                .withScfTokenInCurrentPassport {
+                    App.get().scfApi.getLoanRecordById(it, recordId)
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    showLoadingDialog()
+                }
+                .doFinally {
+                    hideLoadingDialog()
+                }
+                .subscribe { it ->
+                    val tmp=it
+                    binding.order = tmp
+                    if ((tmp.status == LoanStatus.RECEIVIED||tmp.status == LoanStatus.DELIVERED) && tmp.earlyRepayAvailable && tmp.allowRepayPermit) {
+                        binding.tvRepaymentProcess.visibility = View.VISIBLE
+                    } else {
+                        binding.tvRepaymentProcess.visibility = View.INVISIBLE
+                    }
+                }
     }
 }

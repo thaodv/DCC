@@ -11,7 +11,6 @@ import io.reactivex.plugins.RxJavaPlugins
 import io.wexchain.android.common.BaseApplication
 import io.wexchain.android.common.Pop
 import io.wexchain.android.dcc.chain.CertOperations
-import io.wexchain.android.dcc.chain.IPFSHelp
 import io.wexchain.android.dcc.network.CommonApi
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.PassportRepository

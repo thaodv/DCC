@@ -12,6 +12,7 @@
         android:scrollbars="none">
 
         <ImageView
+            android:scaleType="centerInside"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/repayment_process_step" />

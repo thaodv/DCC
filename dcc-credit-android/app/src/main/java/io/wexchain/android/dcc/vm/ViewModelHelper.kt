@@ -368,12 +368,6 @@ object ViewModelHelper {
     }
 
     @JvmStatic
-    fun Context.rePaymentProcess(record: LoanRecord?): Boolean {
-        record ?: return false
-        return record.status == LoanStatus.RECEIVIED && !record.earlyRepayAvailable && record.allowRepayPermit
-    }
-
-    @JvmStatic
     fun Context.loanPeriodText(record: LoanRecord?): CharSequence? {
         record ?: return null
         return when (record.status) {

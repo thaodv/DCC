@@ -131,89 +131,95 @@
                         app:layout_constraintRight_toRightOf="parent"
                         tools:text="@sample/id.json/data/timelimit" />
 
-                    <View
-                        android:id="@+id/divider_h3"
-                        style="@style/DividerHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/divider_stroke_width"
-                        app:layout_constraintTop_toBottomOf="@id/tv_expired_label" />
-
-                    <TextView
-                        android:id="@+id/tv_idfront"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/user_id_front"
-                        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                        app:layout_constraintTop_toBottomOf="@+id/divider_h3" />
-
-                    <ImageButton
-                        android:id="@+id/ib_id_front"
-                        errorRes="@{@drawable/cn_id_front}"
-                        imageRawBytes="@{vm.imgFront}"
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/include_id_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:scaleType="centerInside"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_idfront"
-                        tools:src="@drawable/id_card_front" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_expired_label">
 
-                    <View
-                        android:id="@+id/divider_h4"
-                        style="@style/DividerHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/divider_stroke_width"
-                        android:layout_marginTop="@dimen/activity_vertical_margin"
-                        app:layout_constraintTop_toBottomOf="@id/ib_id_front" />
+                        <View
+                            android:id="@+id/divider_h3"
+                            style="@style/DividerHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/divider_stroke_width" />
 
-                    <TextView
-                        android:id="@+id/tv_idback"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/user_id_back"
-                        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                        app:layout_constraintTop_toBottomOf="@+id/divider_h4" />
+                        <TextView
+                            android:id="@+id/tv_idfront"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/user_id_front"
+                            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                            app:layout_constraintTop_toBottomOf="@+id/divider_h3" />
 
-                    <ImageButton
-                        android:id="@+id/ib_id_back"
-                        errorRes="@{@drawable/id_card_back}"
-                        imageRawBytes="@{vm.imgBack}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scaleType="centerInside"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_idback"
-                        tools:src="@drawable/id_card_back" />
+                        <ImageButton
+                            android:id="@+id/ib_id_front"
+                            errorRes="@{@drawable/cn_id_front}"
+                            imageRawBytes="@{vm.imgFront}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerInside"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_idfront"
+                            tools:src="@drawable/id_card_front" />
 
-                    <View
-                        android:id="@+id/divider_h5"
-                        style="@style/DividerHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/divider_stroke_width"
-                        android:layout_marginTop="@dimen/activity_vertical_margin"
-                        app:layout_constraintTop_toBottomOf="@id/ib_id_back" />
+                        <View
+                            android:id="@+id/divider_h4"
+                            style="@style/DividerHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/divider_stroke_width"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            app:layout_constraintTop_toBottomOf="@id/ib_id_front" />
 
-                    <TextView
-                        android:id="@+id/tv_photo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/user_activity_photo"
-                        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                        app:layout_constraintTop_toBottomOf="@+id/divider_h5" />
+                        <TextView
+                            android:id="@+id/tv_idback"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/user_id_back"
+                            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                            app:layout_constraintTop_toBottomOf="@+id/divider_h4" />
 
-                    <ImageButton
-                        android:id="@+id/ib_activity_photo"
-                        errorRes="@{@drawable/user_activity_photo}"
-                        imageRawBytes="@{vm.imgPhoto}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scaleType="centerInside"
-                        app:layout_constraintTop_toBottomOf="@id/tv_photo"
-                        tools:src="@drawable/user_activity_photo" />
+                        <ImageButton
+                            android:id="@+id/ib_id_back"
+                            errorRes="@{@drawable/id_card_back}"
+                            imageRawBytes="@{vm.imgBack}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerInside"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_idback"
+                            tools:src="@drawable/id_card_back" />
+
+                        <View
+                            android:id="@+id/divider_h5"
+                            style="@style/DividerHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/divider_stroke_width"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            app:layout_constraintTop_toBottomOf="@id/ib_id_back" />
+
+                        <TextView
+                            android:id="@+id/tv_photo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/user_activity_photo"
+                            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                            app:layout_constraintTop_toBottomOf="@+id/divider_h5" />
+
+                        <ImageButton
+                            android:id="@+id/ib_activity_photo"
+                            errorRes="@{@drawable/user_activity_photo}"
+                            imageRawBytes="@{vm.imgPhoto}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerInside"
+                            app:layout_constraintTop_toBottomOf="@id/tv_photo"
+                            tools:src="@drawable/user_activity_photo" />
+                    </android.support.constraint.ConstraintLayout>
 
                 </android.support.constraint.ConstraintLayout>
 

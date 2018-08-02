@@ -2,6 +2,7 @@ package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
+import android.view.View
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
@@ -18,6 +19,7 @@ class BankCardCertificationActivity : BindActivity<ActivityCertificationDataBind
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
+        binding.includeIdCard.visibility = View.GONE
         val data = CertOperations.getCertBankCardData()!!
         val expired = CertOperations.getBankCardCertExpired()
         val vm = getViewModel<CertificationDataVm>().apply {
