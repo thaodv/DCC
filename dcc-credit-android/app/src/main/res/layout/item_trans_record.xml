@@ -20,121 +20,115 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="#FFF"
+        android:orientation="vertical"
+        android:padding="15dp"
         >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="15dp">
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:gravity="center_vertical"
-                    android:visibility="@{ViewModelHelper.isPublic2Private(order.originAssetCode,order.destAssetCode)?View.GONE:View.VISIBLE}"
-                    tools:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DCC\n@Distributed  Credit Chain"
-                        android:textColor="#FFFC790C"
-                        android:textSize="12sp"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/img_trans_tip"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DCC\n@Ethereum"
-                        android:textColor="#FF5756B3"
-                        android:textSize="12sp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:gravity="center_vertical"
-                    android:visibility="@{ViewModelHelper.isPublic2Private(order.originAssetCode,order.destAssetCode)?View.VISIBLE:View.GONE}"
-                    tools:visibility="visible">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DCC\n@Ethereum"
-                        android:textColor="#FF5756B3"
-                        android:textSize="12sp"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/img_trans_tip"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DCC\n@Distributed  Credit Chain"
-                        android:textColor="#FFFC790C"
-                        android:textSize="12sp"/>
-
-                </LinearLayout>
+                android:visibility="@{ViewModelHelper.isPublic2Private(order.originAssetCode,order.destAssetCode)?View.GONE:View.VISIBLE}"
+                tools:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{ViewModelHelper.getTransCount(order.originAmount)}"
-                    android:textColor="#FF4A4A4A"
-                    android:textSize="14sp"
-                    tools:text="100.00"
-                    />
+                    android:text="DCC\n@Distributed  Credit Chain"
+                    android:textColor="#FFFC790C"
+                    android:textSize="12sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/img_trans_tip"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DCC\n@Ethereum"
+                    android:textColor="#FF5756B3"
+                    android:textSize="12sp"/>
 
             </LinearLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:gravity="center_vertical"
+                android:visibility="@{ViewModelHelper.isPublic2Private(order.originAssetCode,order.destAssetCode)?View.VISIBLE:View.GONE}"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DCC\n@Ethereum"
+                    android:textColor="#FF5756B3"
+                    android:textSize="12sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/img_trans_tip"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DCC\n@Distributed  Credit Chain"
+                    android:textColor="#FFFC790C"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@{order.createdTime==null?null:@string/time_format_yyyymmdd_hhmmss(order.createdTime)}"
-                    android:textColor="#FF9B9B9B"
-                    android:textSize="12sp"
-                    tools:text="2018-02-15 10:20:20"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:text="@{ViewModelHelper.accrossStatus(order.status)}"
-                    android:textColor="#FF9B9B9B"
-                    android:textSize="12sp"
-                    tools:text="转移中"/>
-
-            </RelativeLayout>
+                android:text="@{ViewModelHelper.getTransCount(order.originAmount)}"
+                android:textColor="#FF4A4A4A"
+                android:textSize="14sp"
+                tools:text="100.00"
+                />
 
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@{order.createdTime==null?null:@string/time_format_yyyymmdd_hhmmss(order.createdTime)}"
+                android:textColor="#FF9B9B9B"
+                android:textSize="12sp"
+                tools:text="2018-02-15 10:20:20"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@{ViewModelHelper.accrossStatus(order.status)}"
+                android:textColor="#FF9B9B9B"
+                android:textSize="12sp"
+                tools:text="转移中"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 

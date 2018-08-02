@@ -55,7 +55,7 @@ class TransPublic2PrivateDetailActivity : BaseCompatActivity() {
 
                     tv_status.text = ViewModelHelper.accrossStatus(it.status)
                     tv_feeAmount.text = "手续费:" + ViewModelHelper.getTransCount(it.feeAmount) + " DCC"
-                    tv_originAmount2.text = "+" + ViewModelHelper.getTransCount(it.originAmount) + " DCC"
+                    tv_originAmount2.text = "-" + ViewModelHelper.getTransCount(it.originAmount) + " DCC"
                     tv_originReceiverAddress.text = it.originReceiverAddress
                     tv_beneficiaryAddress.text = it.beneficiaryAddress
 
@@ -69,7 +69,7 @@ class TransPublic2PrivateDetailActivity : BaseCompatActivity() {
 
                     if (it.status.equals(AccrossTransDetail.Status.DELIVERED)) {
                         ll_in.visibility = View.VISIBLE
-                        tv_destAmount.text = "-" + ViewModelHelper.getTransCount(it.destAmount) + " DCC"
+                        tv_destAmount.text = "+" + ViewModelHelper.getTransCount(it.destAmount) + " DCC"
                         tv_beneficiaryAddress2.text = it.beneficiaryAddress
                         tv_destPayerAddress.text = it.destPayerAddress
 

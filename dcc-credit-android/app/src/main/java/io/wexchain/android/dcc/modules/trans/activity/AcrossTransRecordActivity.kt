@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
@@ -13,6 +12,7 @@ import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.modules.trans.vm.AcrossTransRecordsVm
 import io.wexchain.android.dcc.tools.StringUtils
+import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.android.dcc.view.dialog.AccrossTransRecordSelectDialog
@@ -21,6 +21,7 @@ import io.wexchain.dcc.BR
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityAcrossTransRecordBinding
 import io.wexchain.dcc.databinding.ItemTransRecordBinding
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.AccrossTransRecord
 import io.wexchain.dccchainservice.util.DateUtil
 import io.wexchain.dccchainservice.util.DateUtil.getLongTime
@@ -116,9 +117,17 @@ class AcrossTransRecordActivity : BindActivity<ActivityAcrossTransRecordBinding>
                         mDay = dayOfMonth
 
                         if (month >= 9) {
-                            accrossTransRecordSelectDialog.mTvStartTime.text = StringBuffer().append(mYear).append("/").append(mMonth + 1).append("/").append(mDay).toString()
+                            if (mDay >= 10) {
+                                accrossTransRecordSelectDialog.mTvStartTime.text = StringBuffer().append(mYear).append("/").append(mMonth + 1).append("/").append(mDay).toString()
+                            } else {
+                                accrossTransRecordSelectDialog.mTvStartTime.text = StringBuffer().append(mYear).append("/").append(mMonth + 1).append("/0").append(mDay).toString()
+                            }
                         } else {
-                            accrossTransRecordSelectDialog.mTvStartTime.text = StringBuffer().append(mYear).append("/0").append(mMonth + 1).append("/").append(mDay).toString()
+                            if (mDay >= 10) {
+                                accrossTransRecordSelectDialog.mTvStartTime.text = StringBuffer().append(mYear).append("/0").append(mMonth + 1).append("/").append(mDay).toString()
+                            } else {
+                                accrossTransRecordSelectDialog.mTvStartTime.text = StringBuffer().append(mYear).append("/0").append(mMonth + 1).append("/0").append(mDay).toString()
+                            }
                         }
 
 
@@ -138,9 +147,18 @@ class AcrossTransRecordActivity : BindActivity<ActivityAcrossTransRecordBinding>
                         mDay = dayOfMonth
 
                         if (month >= 9) {
-                            accrossTransRecordSelectDialog.mTvEndTime.text = StringBuffer().append(mYear).append("/").append(mMonth + 1).append("/").append(mDay).toString()
+
+                            if (mDay >= 10) {
+                                accrossTransRecordSelectDialog.mTvEndTime.text = StringBuffer().append(mYear).append("/").append(mMonth + 1).append("/").append(mDay).toString()
+                            } else {
+                                accrossTransRecordSelectDialog.mTvEndTime.text = StringBuffer().append(mYear).append("/").append(mMonth + 1).append("/0").append(mDay).toString()
+                            }
                         } else {
-                            accrossTransRecordSelectDialog.mTvEndTime.text = StringBuffer().append(mYear).append("/0").append(mMonth + 1).append("/").append(mDay).toString()
+                            if (mDay >= 10) {
+                                accrossTransRecordSelectDialog.mTvEndTime.text = StringBuffer().append(mYear).append("/0").append(mMonth + 1).append("/").append(mDay).toString()
+                            } else {
+                                accrossTransRecordSelectDialog.mTvEndTime.text = StringBuffer().append(mYear).append("/0").append(mMonth + 1).append("/0").append(mDay).toString()
+                            }
                         }
 
                     }, mYear, mMonth, mDay)
@@ -155,9 +173,11 @@ class AcrossTransRecordActivity : BindActivity<ActivityAcrossTransRecordBinding>
 
                     if (DateUtil.isRightSelect(accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", ""), accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", ""), "yyyyMMdd")) {
                         toast("结束时间不能小于起始时间")
+                        return
                     }
 
                     if (DateUtil.beyond90day(accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", ""), accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", ""), "yyyyMMdd")) {
+
                         vm!!.startTime = accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", "")
                         vm!!.endTime = accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", "")
 
@@ -167,6 +187,7 @@ class AcrossTransRecordActivity : BindActivity<ActivityAcrossTransRecordBinding>
                         startTime = accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", "")
                         endTime = accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", "")
                         queryExchangeAmount()
+
                     } else {
                         toast("日期跨度不能超过3个月")
                     }
@@ -179,23 +200,32 @@ class AcrossTransRecordActivity : BindActivity<ActivityAcrossTransRecordBinding>
 
     private fun queryExchangeAmount() {
         ScfOperations
-                .withScfTokenInCurrentPassport {
-                    App.get().scfApi.queryExchangeAmount(it, startTime = startTime, endTime = endTime).observeOn(AndroidSchedulers.mainThread())
-
-                }.subscribe({
+                .withScfTokenInCurrentPassport(emptyList()) {
+                    App.get().scfApi.queryExchangeAmount(it, startTime = startTime, endTime = endTime)
+                }.doMain()
+                .subscribe({
                     var public = "0"
 
                     var private = "0"
 
-                    for (items in it) {
-                        if (items.isPublic2Private()) {
-                            public = ViewModelHelper.getTransCount(items.totalAmount)
-                        } else {
-                            private = ViewModelHelper.getTransCount(items.totalAmount)
+                    if (null != it) {
+                        for (items in it) {
+                            if (items.isPublic2Private()) {
+                                public = ViewModelHelper.getTransCount(items.totalAmount)
+                            } else {
+                                private = ViewModelHelper.getTransCount(items.totalAmount)
+                            }
                         }
+                        binding.tvContent.text = "转到公链 " + StringUtils.getTransCount(private, 2) + " 转到私链" + StringUtils.getTransCount(public, 2)
                     }
-                    binding.tvContent.text = "转到公链 " + StringUtils.getTransCount(public, 2) + " 转到私链" + StringUtils.getTransCount(private, 2)
-                }, {})
+
+                }, {
+                    if (it is DccChainServiceException) {
+                        binding.tvContent.text = "转到公链 0 转到私链 0"
+                    } else {
+                        binding.tvContent.text = "xcccc"
+                    }
+                })
     }
 
     override fun onItemClick(item: AccrossTransRecord?, position: Int, viewId: Int) {
