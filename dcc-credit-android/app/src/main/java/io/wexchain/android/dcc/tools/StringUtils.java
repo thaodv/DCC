@@ -82,6 +82,22 @@ public class StringUtils {
         }
     }
     
+    public static String keep4double(String source, char unit) {
+        
+        if (null == source) {
+            return "";
+        } else {
+            double money = Double.parseDouble(source);
+            
+            BigDecimal res = new BigDecimal(money).setScale(4, BigDecimal.ROUND_HALF_UP);
+            if (money > 0) {
+                return "+" + res.toString() + unit;
+            } else {
+                return res.toString() + unit;
+            }
+        }
+    }
+    
     public static Boolean showColor(String source) {
         if (null == source) {
             return true;
