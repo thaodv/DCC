@@ -25,11 +25,11 @@ contract BSXContract is HasToken {
     uint256 public repaidCeilAmount;
 
 
-    uint256 rateNumerator;
+    uint256 public rateNumerator;
 
-    uint256 denominator = 100;
+    uint256 public denominator = 100;
 
-    string saleInfo;
+    string public saleInfo;
 
     enum Status {CREATED, OPENED, CLOSED, ENDED, SETTLED}
 
@@ -140,5 +140,8 @@ contract BSXContract is HasToken {
         saleInfo = _saleInf;
     }
 
+    function getInvestorArrayLength()public constant returns(uint256 length){
+        return investorArray.length;
+    }
 
 }
