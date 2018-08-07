@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.2;
 
 import '../juzixtoken/SafeERC20.sol';
 import '../juzixtoken/ERC20.sol';
@@ -10,7 +10,8 @@ contract HasToken is HasWallet {
 
     ERC20 public token;
 
-    function withdrawToken2Wallet(uint256 tokenAmount) public onlyOwner {
+    function withdrawToken2Wallet(uint256 tokenAmount) public  {
+        onlyOwner();
         if(!(tokenAmount > 0)){
             log("!(tokenAmount > 0)");
             throw;

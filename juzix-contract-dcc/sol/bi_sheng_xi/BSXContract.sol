@@ -3,7 +3,6 @@ pragma solidity ^0.4.2;
 import "../permission/HasToken.sol";
 import "../math/SafeMath.sol";
 
-//币生息
 contract BSXContract is HasToken {
 
     using SafeMath for uint256;
@@ -26,11 +25,11 @@ contract BSXContract is HasToken {
     uint256 public repaidCeilAmount;
 
 
-    uint256 rateNumerator;
+    uint256 public rateNumerator;
 
-    uint256 denominator = 100;
+    uint256 public denominator = 100;
 
-    string saleInfo;
+    string public saleInfo;
 
     enum Status {CREATED, OPENED, CLOSED, ENDED, SETTLED}
 
@@ -48,15 +47,18 @@ contract BSXContract is HasToken {
         status = Status.CREATED;
     }
 
-    function open() onlyOwner public {
+    function open()  public {
+        onlyOwner();
         checkAndChangeStatus(status, Status.CREATED, Status.OPENED);
     }
 
-    function close() onlyOwner public {
+    function close()  public {
+        onlyOwner();
         checkAndChangeStatus(status, Status.OPENED, Status.CLOSED);
     }
 
-    function end() onlyOwner public {
+    function end()  public {
+        onlyOwner();
         repaidCeilAmount = investedTotalAmount.add(investedTotalAmount.mul(rateNumerator).div(denominator));
         checkAndChangeStatus(status, Status.CLOSED, Status.ENDED);
     }
@@ -94,8 +96,12 @@ contract BSXContract is HasToken {
     }
 
 
-    function batchRepay(uint256 start, uint256 end) public onlyOwner {
-        require(checkStatus(status, Status.ENDED));
+    function batchRepay(uint256 start, uint256 end) public  {
+        onlyOwner();
+        if(!(checkStatus(status, Status.ENDED))){
+            log("!(checkStatus(status, Status.ENDED))");
+            throw;
+        }
 
         for (uint256 i = start; i < end; i++) {
             address investor = investorArray[i];
@@ -112,7 +118,8 @@ contract BSXContract is HasToken {
         }
     }
 
-    function settle() public onlyOwner {
+    function settle() public {
+        onlyOwner();
         if(!(checkStatus(status, Status.ENDED))){
             log("!(checkStatus(status, Status.ENDED))");
             throw;
@@ -145,19 +152,23 @@ contract BSXContract is HasToken {
         statusUpdated(nextStatus);
     }
 
-    function setRateNumerator(uint256 _rateNumerator) public onlyOwner {
+    function setRateNumerator(uint256 _rateNumerator) public {
+        onlyOwner();
         rateNumerator = _rateNumerator;
     }
 
-    function setInvestCeilAmount(uint256 _investCeilAmount) public onlyOwner {
+    function setInvestCeilAmount(uint256 _investCeilAmount) public {
+        onlyOwner();
         investCeilAmount = _investCeilAmount;
     }
 
-    function setMinAmountPerHand(uint256 _minAmountPerHand) public onlyOwner {
+    function setMinAmountPerHand(uint256 _minAmountPerHand) public {
+        onlyOwner();
         minAmountPerHand = _minAmountPerHand;
     }
 
-    function setERC20(address _ERC20) public onlyOwner {
+    function setERC20(address _ERC20) public {
+        onlyOwner();
         if(!(_ERC20 != 0)){
             log("!(_ERC20 != 0)");
             throw;
@@ -165,9 +176,13 @@ contract BSXContract is HasToken {
         token = ERC20(_ERC20);
     }
 
-    function setSaleInfo(string _saleInf) public onlyOwner {
+    function setSaleInfo(string _saleInf) public {
+        onlyOwner();
         saleInfo = _saleInf;
     }
 
+    function getInvestorArrayLength()public constant returns(uint256 length){
+        return investorArray.length;
+    }
 
 }

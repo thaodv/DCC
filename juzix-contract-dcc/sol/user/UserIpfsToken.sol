@@ -16,7 +16,12 @@ contract UserIpfsToken is OperatorPermission {
     event userIpfsTokenPuted(address indexed addr, address subAddr, uint256 nonce, string token);
     event userIpfsTokenDeleted(address indexed addr, address subAddr, uint256 nonce, string token);
 
-    function putUserIpfsToken(address addr, address subAddr, uint256 nonce, string token) onlyOperator public {
+    function UserIpfsToken(){
+        register("UserIpfsTokenModule", "0.0.1.0", "UserIpfsToken", "0.0.1.0");
+    }
+
+    function putUserIpfsToken(address addr, address subAddr, uint256 nonce, string token) public {
+        onlyOperator();
         if (!(addr != 0)) {
             log("!(addr!=0)");
             throw;
@@ -38,7 +43,8 @@ contract UserIpfsToken is OperatorPermission {
         userIpfsTokenPuted(addr, subAddr, nonce, token);
     }
 
-    function deleteUserIpfsToken(address addr, address subAddr) onlyOperator public {
+    function deleteUserIpfsToken(address addr, address subAddr) public {
+        onlyOperator();
         if (!(addr != 0)) {
             log("!(addr!=0)");
             throw;

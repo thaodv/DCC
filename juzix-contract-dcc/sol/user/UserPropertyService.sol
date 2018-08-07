@@ -1,6 +1,6 @@
 pragma solidity ^0.4.2;
 
-import "../ownership/OperatorPermission.sol";
+import "../permission/OperatorPermission.sol";
 import "../utils/ByteUtils.sol";
 contract UserPropertyService is OperatorPermission {
 
@@ -25,7 +25,8 @@ contract UserPropertyService is OperatorPermission {
         register("UserPropertyServiceModule", "0.0.1.0", "UserPropertyService", "0.0.1.0");
     }
 
-    function putProperty(address addr, string propertyName, string propertyValue) public onlyOperator {
+    function putProperty(address addr, string propertyName, string propertyValue) public {
+        onlyOperator();
         if(!(addr != 0)){
             log("!(addr != 0)");
             throw;
@@ -50,7 +51,8 @@ contract UserPropertyService is OperatorPermission {
         propertyPuted(addr, propertyName, propertyValue);
     }
 
-    function deleteProperty(address addr, string propertyName) public onlyOperator {
+    function deleteProperty(address addr, string propertyName) public {
+        onlyOperator();
         if(!(addr != 0)){
             log("!(addr != 0)");
             throw;
@@ -71,7 +73,7 @@ contract UserPropertyService is OperatorPermission {
         propertyDeleted(addr, propertyName, "");
     }
 
-    function getProperty(address addr, string propertyName) public view returns (address _addr,
+    function getProperty(address addr, string propertyName) public constant returns (address _addr,
         string _propertyName, string _propertyValue){
 
         if(!(addr != 0)){
@@ -93,7 +95,8 @@ contract UserPropertyService is OperatorPermission {
         return (addr, propertyName, properties[addr][key]);
     }
 
-    function addPropertyName(string propertyName) public onlyOwner {
+    function addPropertyName(string propertyName) public {
+        onlyOwner();
         if(!(bytes(propertyName).length > 0 && bytes(propertyName).length <= PROPERTYNAME_MAXSIZE)){
             log("!(bytes(propertyName).length > 0 && bytes(propertyName).length <= PROPERTYNAME_MAXSIZE)");
             throw;
@@ -112,7 +115,8 @@ contract UserPropertyService is OperatorPermission {
         maxPropertyKey++;
     }
 
-    function deletePropertyName(string propertyName) public onlyOwner {
+    function deletePropertyName(string propertyName) public {
+        onlyOwner();
         if(!(bytes(propertyName).length > 0 && bytes(propertyName).length <= PROPERTYNAME_MAXSIZE)){
             log("!(bytes(propertyName).length > 0 && bytes(propertyName).length <= PROPERTYNAME_MAXSIZE)");
             throw;
@@ -134,7 +138,7 @@ contract UserPropertyService is OperatorPermission {
         propertyNameDeleted(key, propertyName);
     }
 
-    function getPropertyKey(string propertyName) public view returns (uint256 key, uint256 keyIndex){
+    function getPropertyKey(string propertyName) public constant returns (uint256 key, uint256 keyIndex){
         for (keyIndex = 0; keyIndex < propertyKeys.length; keyIndex++) {
             key = propertyKeys[keyIndex];
             if (bytes(propertyName).bytesEqual(bytes(propertyNames[key]))) {
@@ -144,7 +148,7 @@ contract UserPropertyService is OperatorPermission {
         return (0, 0);
     }
 
-    function propertyKeysLength() public view returns (uint256){
+    function propertyKeysLength() public constant returns (uint256){
         return propertyKeys.length;
     }
 
