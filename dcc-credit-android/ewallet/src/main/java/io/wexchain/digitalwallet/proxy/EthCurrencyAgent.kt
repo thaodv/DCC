@@ -19,9 +19,7 @@ abstract class EthCurrencyAgent(
     /**
      * new transaction nonce
      */
-    open fun getNonce(address: String): Single<BigInteger>{
-        return rpcAgent.checkNode()
-    }
+    abstract fun getNonce(address: String): Single<BigInteger>
 
     /**
      * encode and sign rawTransaction

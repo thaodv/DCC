@@ -3,15 +3,15 @@ package io.wexchain.android.dcc.fragment
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
-import io.wexchain.android.dcc.base.BindFragment
-import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.transitionBundle
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.DigitalAssetsActivity
 import io.wexchain.android.dcc.HomeActivity
+import io.wexchain.android.dcc.base.BindFragment
 import io.wexchain.android.dcc.constant.Transitions
+import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.DigitalAssetsAdapter
 import io.wexchain.android.dcc.vm.DigitalAssetsVm
 import io.wexchain.dcc.R
@@ -27,11 +27,19 @@ class DigitalAssetsLimitedFragment : BindFragment<FragmentDigitalAssetsLimitedBi
 
     var listLimit = 4
 
+    private val adapter = DigitalAssetsAdapter(this)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvAssets.isNestedScrollingEnabled = false
         binding.rvAssets.adapter = adapter
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
         val assetsVm: DigitalAssetsVm = getViewModel()
         adapter.assetsVm = assetsVm
         binding.assets = assetsVm
@@ -43,10 +51,7 @@ class DigitalAssetsLimitedFragment : BindFragment<FragmentDigitalAssetsLimitedBi
             } else it
             adapter.setList(list)
         })
-    }
 
-    override fun onResume() {
-        super.onResume()
         binding.assets!!.updateHoldingAndQuote()
     }
 
@@ -66,6 +71,6 @@ class DigitalAssetsLimitedFragment : BindFragment<FragmentDigitalAssetsLimitedBi
         }
     }
 
-    private val adapter = DigitalAssetsAdapter(this)
+
 
 }

@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginTop="@dimen/content_padding_horizontal"
-            android:textColor="#4A4A4A"
+            android:textColor="#6766CC"
             android:textSize="12sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_wallet_address_tip"

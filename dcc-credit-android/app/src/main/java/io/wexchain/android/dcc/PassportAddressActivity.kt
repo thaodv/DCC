@@ -2,10 +2,13 @@ package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
 import android.content.ClipData
+import android.graphics.Paint
 import android.os.Bundle
-import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.toast
+import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.dcc.base.StaticHtmlActivity
+import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportAddressBinding
 
@@ -43,9 +46,13 @@ class PassportAddressActivity : BindActivity<ActivityPassportAddressBinding>() {
     private fun initView() {
         binding.btnCopy.setOnClickListener {
             binding.address?.let {
-                getClipboardManager().primaryClip = ClipData.newPlainText("passport address",it)
+                getClipboardManager().primaryClip = ClipData.newPlainText("passport address", it)
                 toast(R.string.copy_succeed)
             }
+        }
+        binding.tvAddress.paint.flags = Paint. UNDERLINE_TEXT_FLAG
+        binding.tvAddress.setOnClickListener {
+            startActivity(StaticHtmlActivity.getResultIntent(this@PassportAddressActivity, "Searchain数据分析", Extras.Searchain + App.get().passportRepository.currPassport.value!!.address))
         }
     }
 

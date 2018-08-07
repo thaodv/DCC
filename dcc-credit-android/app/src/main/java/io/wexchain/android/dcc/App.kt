@@ -11,6 +11,7 @@ import io.reactivex.plugins.RxJavaPlugins
 import io.wexchain.android.common.BaseApplication
 import io.wexchain.android.common.Pop
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.selectnode.NodeBean
 import io.wexchain.android.dcc.network.CommonApi
 import io.wexchain.android.dcc.repo.AssetsRepository
@@ -19,6 +20,7 @@ import io.wexchain.android.dcc.repo.ScfTokenManager
 import io.wexchain.android.dcc.repo.db.PassportDatabase
 import io.wexchain.android.dcc.tools.CrashHandler
 import io.wexchain.android.dcc.tools.JuzixData
+import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.log
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.localprotect.LocalProtect
@@ -88,6 +90,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         initLibraries(this)
 
         initNode()
+        ShareUtils.init(this)
 
         initServices(this)
         initData(this)
@@ -95,10 +98,10 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
 
     fun initNode() {
-        val a = NodeBean(1, "https://ethrpc.wexfin.com:58545/", "以太坊节点-中国上海")
-        val b = NodeBean(2, "https://ethrpc2.wexfin.com:58545/", "以太坊节点-中国北京")
-        val c = NodeBean(3, "https://ethrpc3.wexfin.com:58545/", "以太坊节点-美国加州")
-        val d = NodeBean(4, "https://ethrpc4.wexfin.com:58545/", "以太坊节点-美国马萨诸塞州")
+        val a = NodeBean(1, "https://ethrpc.wexfin.com:58545/", "  以太坊节点-中国上海")
+        val b = NodeBean(2, "https://ethrpc2.wexfin.com:58545/", "  以太坊节点-中国北京")
+        val c = NodeBean(3, "https://ethrpc3.wexfin.com:58545/", "  以太坊节点-美国加州")
+        val d = NodeBean(4, "https://ethrpc4.wexfin.com:58545/", "  以太坊节点-美国马萨诸塞州")
         nodeList = listOf(a, b, c, d)
     }
 
@@ -112,7 +115,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
     }
 
 
-    private fun initData(app: App) {
+    fun initData(app: App) {
         val dao = PassportDatabase.createDatabase(this).dao
 
         passportRepository = PassportRepository(app, dao)
@@ -132,7 +135,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         LocalProtect.init(app)
     }
 
-    private fun initServices(app: App) {
+    fun initServices(app: App) {
         val networking = Networking(app, BuildConfig.DEBUG)
         this.networking = networking
         this.commonApi = networking.createApi(CommonApi::class.java, "https://www.google.com")//url is unused
@@ -155,7 +158,10 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 //        publicRpc = EthsRpcAgent.by(infuraApi)
 //            val customPublicJsonRpc = networking.createApi(EthJsonRpcApi::class.java, EthJsonRpcApi.PUBLIC_RPC_URL).getPrepared()
 //            publicRpc = EthsRpcAgent.by(customPublicJsonRpc)
-            val wfJsonRpc = networking.createApi(EthJsonRpcApiWithAuth::class.java, EthJsonRpcApiWithAuth.RPC_URL)
+
+            val base = ShareUtils.getString(Extras.SP_SELECTED_NODE, nodeList[0].url)
+
+            val wfJsonRpc = networking.createApi(EthJsonRpcApiWithAuth::class.java, base)
             publicRpc = EthsRpcAgent.by(wfJsonRpc)
         }
     }

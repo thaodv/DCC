@@ -11,6 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.dcc.base.StaticHtmlActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.addressbook.activity.AddAddressBookActivity
@@ -196,6 +197,13 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
             deleteDialog.show()
         }
 
+        binding.tvToAddressValue.setOnClickListener {
+            startActivity(StaticHtmlActivity.getResultIntent(this, "Searchain数据分析", Extras.Searchain + binding.tvToAddressValue.text))
+        }
+
+        binding.tvFromAddressValue.setOnClickListener {
+            startActivity(StaticHtmlActivity.getResultIntent(this, "Searchain数据分析", Extras.Searchain + binding.tvFromAddressValue.text))
+        }
 
         if (tx.issuc()) {
             App.get().passportRepository.getAddressBookByAddress(tx.to).observe(this, Observer {

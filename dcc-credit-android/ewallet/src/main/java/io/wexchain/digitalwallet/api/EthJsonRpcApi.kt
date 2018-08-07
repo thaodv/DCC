@@ -95,9 +95,9 @@ internal fun EthJsonRpcApi.nextId(): Long {
 fun EthJsonRpcApi.checkNode(): Single<String> {
     return this.checkNode(
             EthJsonRpcRequestBody(
-                    method = "web3_clientVersion",
+                    method = "net_version",
                     params = kotlin.collections.listOf(),
-                    id = this.nextId()
+                    id = 1
             ))
             .map { it.result!! }
 }

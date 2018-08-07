@@ -1,12 +1,14 @@
 package io.wexchain.android.dcc.modules.addressbook.activity
 
 import android.arch.lifecycle.Observer
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.Gravity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.dcc.base.StaticHtmlActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.repo.db.AddressBook
 import io.wexchain.android.dcc.repo.db.TransRecord
@@ -45,6 +47,12 @@ class AddressDetailActivity : BindActivity<ActivityAddressDetailBinding>() {
     }
 
     private fun initClick() {
+
+        binding.tvWalletAddress.paint.flags = Paint. UNDERLINE_TEXT_FLAG
+        binding.tvWalletAddress.setOnClickListener {
+            startActivity(StaticHtmlActivity.getResultIntent(this@AddressDetailActivity, "Searchain数据分析", Extras.Searchain + addressBook!!.address))
+        }
+
         binding.btEdit.setOnClickListener {
             navigateTo(EditAddressBookActivity::class.java) {
                 putExtra(Extras.EXTRA_BENEFICIARY_ADDRESS, addressBook as Serializable)

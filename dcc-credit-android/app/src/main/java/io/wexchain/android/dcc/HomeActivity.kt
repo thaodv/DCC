@@ -14,9 +14,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.dcc.base.StaticHtmlActivity
 import io.wexchain.android.dcc.chain.ScfOperations
+import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.Transitions
+import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
 import io.wexchain.android.dcc.tl.TlWebPageActivity
+import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.view.dialog.BonusDialog
@@ -43,8 +47,15 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         setupClicks()
         checkScfAccount()
         checkUpgrade()
-    }
 
+        if (App.get().passportRepository.passportExists) {
+            if (ShareUtils.getBoolean("searchain_has_show", true)) {
+                //ShareUtils.setBoolean("searchain_has_show", false)
+                tipsDialog.show()
+            }
+        }
+
+    }
 
     override fun onResume() {
         super.onResume()
@@ -203,6 +214,21 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
                 showIntroWalletDialog()
             }
         }
+        findViewById<View>(R.id.iv_select_node).setOnClickListener {
+            if (App.get().passportRepository.passportExists) {
+                navigateTo(SelectNodeActivity::class.java)
+            } else {
+                showIntroWalletDialog()
+            }
+        }
+        findViewById<View>(R.id.tv_passport_address).setOnClickListener {
+            if (App.get().passportRepository.passportExists) {
+                startActivity(StaticHtmlActivity.getResultIntent(this, "Searchain数据分析", Extras.Searchain + App.get().passportRepository.currPassport.value!!.address))
+            } else {
+                showIntroWalletDialog()
+            }
+        }
+
         binding.cardPassport.root.setOnClickListener {
             if (!App.get().passportRepository.passportExists) {
                 showIntroWalletDialog()
@@ -318,6 +344,25 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
             findViewById<View>(R.id.btn_confirm).setOnClickListener {
                 val code = findViewById<EditText>(R.id.et_input_invite_code).text.toString()
                 registerScfAccount(if (code.isEmpty()) null else code)
+            }
+        }
+    }
+
+    private val tipsDialog by lazy { TipsDialog() }
+
+    private inner class TipsDialog : Dialog(this, R.style.FullWidthDialog) {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.dialog_searchain_show)
+            setCancelable(false)
+            window.attributes.height = ViewGroup.LayoutParams.MATCH_PARENT
+            window.attributes.width = ViewGroup.LayoutParams.MATCH_PARENT
+            setCanceledOnTouchOutside(false)
+            findViewById<View>(R.id.btn_ok).setOnClickListener {
+                dismiss()
+            }
+            findViewById<View>(R.id.btn_detail).setOnClickListener {
+                startActivity(StaticHtmlActivity.getResultIntent(this@HomeActivity, "Searchain数据分析", Extras.Searchain + App.get().passportRepository.currPassport.value!!.address))
             }
         }
     }

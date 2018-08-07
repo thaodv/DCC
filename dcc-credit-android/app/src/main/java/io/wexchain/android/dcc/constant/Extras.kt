@@ -39,6 +39,8 @@ object Extras {
     const val EXTRA_SELECT_ADDRESS = "select_address"
     const val EXTRA_SELECT_TRANSRECORD = "select_trans_record"
 
+    const val Searchain ="http://www.searchain.io/address?from=1000&address="
+
     const val SP_SELECTED_NODE_FILE = "select_node_file"
     const val SP_SELECTED_NODE = "select_node"
 }

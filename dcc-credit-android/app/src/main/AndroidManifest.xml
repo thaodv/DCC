@@ -412,6 +412,10 @@
             android:label="@string/select_node"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.base.StaticHtmlActivity"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

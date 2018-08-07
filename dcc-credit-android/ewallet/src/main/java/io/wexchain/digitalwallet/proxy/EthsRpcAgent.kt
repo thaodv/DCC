@@ -17,7 +17,7 @@ interface EthsRpcAgent {
 
     fun getGasPrice(): Single<BigInteger>
 
-    fun checkNode(): Single<BigInteger>
+    fun checkNode(): Single<String>
 
     fun estimateGas(ethJsonTxScratch: EthJsonTxScratch): Single<BigInteger>
 
@@ -61,8 +61,8 @@ interface EthsRpcAgent {
                     return api.transactionCount(address, block).map { it.hexToBigIntegerOrThrow() }
                 }
 
-                override fun checkNode(): Single<BigInteger> {
-                    return api.checkNode().map { it.hexToBigIntegerOrThrow() }
+                override fun checkNode(): Single<String> {
+                    return api.checkNode().map { it }
                 }
 
                 override fun getGasPrice(): Single<BigInteger> {
@@ -120,8 +120,8 @@ interface EthsRpcAgent {
                     return api.transactionCount(address, block).map { it.hexToBigIntegerOrThrow() }
                 }
 
-                override fun checkNode(): Single<BigInteger> {
-                    return api.checkNode().map { it.hexToBigIntegerOrThrow() }
+                override fun checkNode(): Single<String> {
+                    return api.checkNode().map { it }
                 }
 
                 override fun getGasPrice(): Single<BigInteger> {
@@ -182,8 +182,8 @@ interface EthsRpcAgent {
                     return api.getGasPrice().map { it.result!!.hexToBigIntegerOrThrow() }
                 }
 
-                override fun checkNode(): Single<BigInteger> {
-                    return api.checkNode().map { it.result!!.hexToBigIntegerOrThrow() }
+                override fun checkNode(): Single<String> {
+                    return api.checkNode().map { it.toString() }
                 }
 
                 override fun getBalanceOf(address: String): Single<BigInteger> {

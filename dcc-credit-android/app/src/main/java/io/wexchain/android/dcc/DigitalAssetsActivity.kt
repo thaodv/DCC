@@ -13,6 +13,7 @@ import io.wexchain.android.common.withTransitionEnabled
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.Transitions
+import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.DigitalAssetsAdapter
 import io.wexchain.android.dcc.vm.DigitalAssetsVm
@@ -33,14 +34,7 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         setupTransitions()
 
-        val assetsVm = getViewModel<DigitalAssetsVm>()
-        assetsVm.ensureHolderAddress(this)
-        assetsVm.assets.observe(this, Observer {
-            adapter.setList(it)
-        })
-        binding.assets = assetsVm
-        adapter.assetsVm = assetsVm
-        binding.rvAssets.adapter = adapter
+
         binding.ibAdd.setOnClickListener {
             startActivity(Intent(this, SearchDigitalCurrencyActivity::class.java))
         }
@@ -51,6 +45,16 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
 
     override fun onResume() {
         super.onResume()
+
+        val assetsVm = getViewModel<DigitalAssetsVm>()
+        assetsVm.ensureHolderAddress(this)
+        assetsVm.assets.observe(this, Observer {
+            adapter.setList(it)
+        })
+        binding.assets = assetsVm
+        adapter.assetsVm = assetsVm
+        binding.rvAssets.adapter = adapter
+
         binding.assets!!.updateHoldingAndQuote()
     }
 
@@ -92,7 +96,7 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.iv_select_node -> {
-
+                navigateTo(SelectNodeActivity::class.java)
                 true
             }
             else -> super.onOptionsItemSelected(item)
