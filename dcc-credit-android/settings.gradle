@@ -1,1 +1,1 @@
-include ':app', ':ewallet', ':livenesslib',':idcardlib',':idverify',':network', ':localprotect', ':common', ':dccchainservice',':barcode',':tllibrary'
+include ':app', ':ewallet', ':livenesslib',':idcardlib',':idverify',':network', ':localprotect', ':common', ':dccchainservice',':barcode',':tllibrary', ':ipfslib'

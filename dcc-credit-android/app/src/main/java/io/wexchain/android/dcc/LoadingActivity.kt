@@ -1,7 +1,9 @@
 package io.wexchain.android.dcc
 
+import android.Manifest
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.atLeastCreated
@@ -16,7 +18,15 @@ class LoadingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setWindowExtended()
         setContentView(R.layout.activity_loading)
-        delayedStart()
+        permission()
+    }
+
+    private fun permission() {
+        RxPermissions(this)
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                .subscribe {
+                    delayedStart()
+                }
     }
 
     private fun delayedStart() {

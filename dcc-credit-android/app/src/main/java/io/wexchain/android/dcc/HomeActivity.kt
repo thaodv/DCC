@@ -26,6 +26,9 @@ import io.wexchain.dcc.databinding.ActivityHomeBinding
 import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
 import io.wexchain.dccchainservice.domain.ScfAccountInfo
+import io.wexchain.ipfs.utils.AES256
+import io.wexchain.ipfs.core.IpfsCore
+import io.wexchain.ipfs.utils.writeToFile
 import zlc.season.rxdownload3.core.Mission
 import java.io.File
 
@@ -148,11 +151,28 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
             this.findViewById<View>(R.id.btn_detail).setOnClickListener(clickDigitalAssets)
         }
         findViewById<View>(R.id.btn_settings).setOnClickListener {
-            if (App.get().passportRepository.passportExists) {
-                navigateTo(PassportSettingsActivity::class.java)
-            } else {
-                showIntroWalletDialog()
-            }
+             if (App.get().passportRepository.passportExists) {
+                 navigateTo(PassportSettingsActivity::class.java)
+             } else {
+                 showIntroWalletDialog()
+             }
+//            val t1 = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress" + File.separator + "11.txt")
+//            val t2 = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress" + File.separator + "identifyData.txt")
+//            val d1 = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress" + File.separator + "13.zip")
+//            val d2 = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress")
+//            ZipUtil.zip(arrayOf(t1.absolutePath, t2.absolutePath), d1.absolutePath, "")
+//            ZipUtil.unZip(d1.absolutePath,d2.absolutePath)
+//            ZipControl.zip(d1.absolutePath, t1.absolutePath, t2.absolutePath)
+//            IpfsCore.download("QmSg36ZNn3qkDQamYsQPzju38fgFUvPPLgKcWH1PrsPbmQ")
+//                    .subscribeBy(onSuccess = {
+//                        //                        val encrypt = AES256.encrypt(it, "123456")
+//                        val decrypt = AES256.decrypt(it, "123456")
+//                        decrypt.writeToFile(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress", "11.txt")
+//                    })
+//            val toBitmap = decrypt?.toBitmap()
+//
+//            (it as ImageButton).setImageBitmap(toBitmap)
+
         }
         findViewById<View>(R.id.tv_credit).setOnClickListener {
             if (App.get().passportRepository.passportEnabled) {

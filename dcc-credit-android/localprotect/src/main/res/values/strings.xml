@@ -29,6 +29,9 @@
     <string name="please_input_nickname">请输入昵称</string>
     <string name="use_this_picture">使用</string>
     <string name="passport_address">钱包地址</string>
+    <string name="data_cloud_storage">数据云存储</string>
+    <string name="start_in">立即启用</string>
+    <string name="start_out">已启用，开始同步</string>
     <string name="local_protect">本地安全保护</string>
     <string name="export_passport">备份钱包</string>
     <string name="modify_passport_password">修改钱包密码</string>
@@ -40,8 +43,6 @@
     <string name="digitalnumerical_password">数字密码</string>
     <string name="fingerprint_identification">指纹识别</string>
     <string name="please_draw_pattern_again">请再次绘制解锁图案</string>
-
-
 
 
 </resources>

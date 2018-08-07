@@ -1,4 +1,4 @@
-package io.wexchain.dccchainservice
+package io.wexchain.ipfs
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,12 +9,15 @@ import android.content.Context
 @SuppressLint("StaticFieldLeak")
 object Application {
 
-    private lateinit var CONTEXT: Context
+    private var CONTEXT: Context? = null
 
     fun getContext(): Context {
+        CONTEXT?.let {
+            return it
+        }
         val activityThreadClass = Class.forName("android.app.ActivityThread")
         val method = activityThreadClass.getMethod("currentApplication")
         CONTEXT = method.invoke(null) as Context
-        return CONTEXT
+        return CONTEXT!!
     }
 }

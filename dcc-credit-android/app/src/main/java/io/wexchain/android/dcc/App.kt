@@ -30,6 +30,7 @@ import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.api.*
 import io.wexchain.digitalwallet.proxy.*
+import io.wexchain.ipfs.core.IpfsCore
 import zlc.season.rxdownload3.core.DownloadConfig
 import java.lang.ref.WeakReference
 import java.math.BigInteger
@@ -150,8 +151,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         WxApiManager.init()
         initRxDownload()
         CrashHandler().init(context)
-//        IPFSHelp.init("/ip4/10.65.212.11/tcp/5001")
-
+//        IpfsCore.init("/ip4/10.65.100.49/tcp/5001")
     }
 
     private fun buildAgent(dc: DigitalCurrency): Erc20Agent {
