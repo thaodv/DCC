@@ -129,6 +129,12 @@ object ScfOperations {
                             )
                         }
                     }
+        } else if (certIdData == null) {
+            Single.error<String>(IllegalStateException("身份证信息不完整"))
+        }  else if (certBankCardData == null) {
+            Single.error<String>(IllegalStateException("银行卡信息不完整"))
+        }  else if (cmLogPhoneNo == null) {
+            Single.error<String>(IllegalStateException("运营商信息不完整"))
         } else {
             Single.error<String>(IllegalStateException())
         }
@@ -380,15 +386,15 @@ object ScfOperations {
                 .compose(Result.checked())
                 .flatMap {
                     scfApi.getScfMemberInfo(
-                                    nonce = it,
-                                    address = address,
-                                    sign = ParamSignatureUtil.sign(
-                                            privateKey, mapOf(
-                                            "nonce" to it,
-                                            "address" to address
-                                    )
-                                    )
+                            nonce = it,
+                            address = address,
+                            sign = ParamSignatureUtil.sign(
+                                    privateKey, mapOf(
+                                    "nonce" to it,
+                                    "address" to address
                             )
+                            )
+                    )
                             .compose(Result.checkedAllowingNull(ScfAccountInfo.ABSENT))
                 }
     }

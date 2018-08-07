@@ -13,6 +13,7 @@ import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
+import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.view.dialog.ConfirmLoanSubmitDialog
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.vm.StartLoanVm
@@ -23,6 +24,7 @@ import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.LoanChainOrder
 import io.wexchain.dccchainservice.domain.LoanProduct
 import io.wexchain.dccchainservice.domain.LoanStatus
+import org.jetbrains.anko.toast
 
 class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
     override val contentLayoutId: Int
@@ -146,15 +148,16 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
         ScfOperations
                 .withScfTokenInCurrentPassport(LoanChainOrder.ABSENT_ORDER) {
                     scfApi.getLastOrder(it)
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { it ->
+                }.doMain().subscribe({
                     if (it.isNextOrderRestricted()) {
                         showCancelPrevOrderDialog(it)
                     } else {
                         doSubmitLoan(loanScratch)
                     }
-                }
+                }, {
+                    Pop.toast(it.message.toString(), this)
+                })
+
     }
 
     private fun doSubmitLoan(loanScratch: LoanScratch) {
@@ -172,9 +175,7 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
                     toast("提交贷款申请成功")
                     navigateTo(LoanSubmitResultActivity::class.java)
                 }, {
-                    if (it is DccChainServiceException) {
-                        Pop.toast(it.message ?: "系统错误", this)
-                    }
+                    Pop.toast(it.message ?: "系统错误", this)
                 })
     }
 

@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteDatabase
 import io.wexchain.android.dcc.repo.AssetsRepository
 
 @Database(entities = [CaAuthRecord::class, AuthKeyChangeRecord::class, CurrencyMeta::class, BeneficiaryAddress::class, AddressBook::class, TransRecord::class],
-        version = PassportDatabase.VERSION_4
+        version = PassportDatabase.VERSION_5
 )
 @TypeConverters(Converters::class)
 abstract class PassportDatabase : RoomDatabase() {
@@ -25,6 +25,7 @@ abstract class PassportDatabase : RoomDatabase() {
         const val VERSION_2 = 2
         const val VERSION_3 = 3
         const val VERSION_4 = 4
+        const val VERSION_5 = 5
 
         private val migration_1_2 = object : Migration(VERSION_1, VERSION_2) {
             override fun migrate(database: SupportSQLiteDatabase) {
@@ -49,11 +50,16 @@ abstract class PassportDatabase : RoomDatabase() {
                 database.execSQL("CREATE TABLE IF NOT EXISTS `${TransRecord.TABLE_NAME}` (`id` INTEGER NOT NULL,`address` TEXT NOT NULL, `short_name` TEXT, `avatar_url` TEXT,`is_add` INTEGER,`create_time` INTEGER,`update_time` INTEGER, PRIMARY KEY(`id`))")
             }
         }
+        private val migration_4_5 = object : Migration(VERSION_4, VERSION_5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("update currencies set symbol= 'DTA' where description='DATA'")
+            }
+        }
 
         fun createDatabase(context: Context): PassportDatabase {
 
             return Room.databaseBuilder(context, PassportDatabase::class.java, DATABASE_NAME)
-                    .addMigrations(migration_1_2, migration_2_3, migration_3_4)
+                    .addMigrations(migration_1_2, migration_2_3, migration_3_4,migration_4_5)
                     .addCallback(object : RoomDatabase.Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)

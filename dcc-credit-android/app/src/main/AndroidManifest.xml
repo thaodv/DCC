@@ -403,9 +403,15 @@
             android:label="@string/across_trans_detail"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name="io.wexchain.android.dcc.RePaymentProcessActivity"
+        <activity
+            android:name="io.wexchain.android.dcc.RePaymentProcessActivity"
             android:label="@string/repayment_process"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity"
+            android:label="@string/select_node"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

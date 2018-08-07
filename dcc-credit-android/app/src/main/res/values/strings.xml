@@ -40,7 +40,6 @@
     <string name="business_contact_2">出借代币\n商务咨询</string>
 
 
-
     <string name="please_confirm_in">因转账确认需要时间，请在3分钟之后确认</string>
     <string name="confirm_repayment">确认还币</string>
     <string name="click_the_button_below">②转币完成后点击下面的按钮完成还币</string>
@@ -459,8 +458,7 @@
     <string name="user_id_back">身份证反面照</string>
     <string name="user_activity_photo">人像照片</string>
 
-
-
+    <string name="select_node">选择节点</string>
 
 
 </resources>

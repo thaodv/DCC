@@ -1,8 +1,5 @@
 package io.wexchain.android.dcc.tools
 
-import android.app.Activity
-import com.tbruyelle.rxpermissions2.RxPermissions
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction

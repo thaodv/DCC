@@ -11,6 +11,7 @@ import io.reactivex.plugins.RxJavaPlugins
 import io.wexchain.android.common.BaseApplication
 import io.wexchain.android.common.Pop
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.modules.selectnode.NodeBean
 import io.wexchain.android.dcc.network.CommonApi
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.PassportRepository
@@ -66,6 +67,8 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
     lateinit var assetsRepository: AssetsRepository
     lateinit var scfTokenManager: ScfTokenManager
 
+    lateinit var nodeList: List<NodeBean>
+
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this)
@@ -83,8 +86,20 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
             if (BuildConfig.DEBUG) it.printStackTrace()
         }
         initLibraries(this)
+
+        initNode()
+
         initServices(this)
         initData(this)
+    }
+
+
+    fun initNode() {
+        val a = NodeBean(1, "https://ethrpc.wexfin.com:58545/", "以太坊节点-中国上海")
+        val b = NodeBean(2, "https://ethrpc2.wexfin.com:58545/", "以太坊节点-中国北京")
+        val c = NodeBean(3, "https://ethrpc3.wexfin.com:58545/", "以太坊节点-美国加州")
+        val d = NodeBean(4, "https://ethrpc4.wexfin.com:58545/", "以太坊节点-美国马萨诸塞州")
+        nodeList = listOf(a, b, c, d)
     }
 
     private fun initRxDownload() {

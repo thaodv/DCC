@@ -132,8 +132,8 @@
                                 android:textColor="@color/text_white"
                                 />
                     </FrameLayout>
-                </LinearLayout>
 
+                </LinearLayout>
 
                 <ImageView
                         android:id="@+id/iv_invite"

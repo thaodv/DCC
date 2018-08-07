@@ -33,9 +33,12 @@ object Extras {
     const val SAVEDPENDDING = "savedpendding"
     const val EXTRA_EDIT_TRANSACTION = "edit_transaction"
 
-    const val EXTRA_PICKAVATAR ="pick_avatar"
-    const val EXTRA_PICKAVATAR_BACK ="pick_avatar_back"
+    const val EXTRA_PICKAVATAR = "pick_avatar"
+    const val EXTRA_PICKAVATAR_BACK = "pick_avatar_back"
 
-    const val EXTRA_SELECT_ADDRESS ="select_address"
-    const val EXTRA_SELECT_TRANSRECORD ="select_trans_record"
+    const val EXTRA_SELECT_ADDRESS = "select_address"
+    const val EXTRA_SELECT_TRANSRECORD = "select_trans_record"
+
+    const val SP_SELECTED_NODE_FILE = "select_node_file"
+    const val SP_SELECTED_NODE = "select_node"
 }
