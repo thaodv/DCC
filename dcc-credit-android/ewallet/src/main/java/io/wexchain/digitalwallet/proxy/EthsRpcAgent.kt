@@ -17,6 +17,8 @@ interface EthsRpcAgent {
 
     fun getGasPrice(): Single<BigInteger>
 
+    fun checkNode(): Single<BigInteger>
+
     fun estimateGas(ethJsonTxScratch: EthJsonTxScratch): Single<BigInteger>
 
     fun getBalanceOf(address: String): Single<BigInteger>
@@ -26,7 +28,7 @@ interface EthsRpcAgent {
     /**
      * @return TxId of successfully submitted transaction
      */
-    fun sendTransaction(nonce: Single<BigInteger>, encodeTx: (BigInteger) -> String): Single<Pair<BigInteger,String>>
+    fun sendTransaction(nonce: Single<BigInteger>, encodeTx: (BigInteger) -> String): Single<Pair<BigInteger, String>>
 
     fun transactionByHash(txId: String): Single<EthJsonTxInfo>
     fun transactionReceipt(txId: String): Single<EthJsonTxReceipt>
@@ -35,6 +37,7 @@ interface EthsRpcAgent {
         fun by(ethJsonRpcApi: EthJsonRpcApi): EthsRpcAgent {
             val api = ethJsonRpcApi
             return object : EthsRpcAgent {
+
                 override fun transactionByHash(txId: String): Single<EthJsonTxInfo> {
                     return api.transactionByHash(txId)
                 }
@@ -52,10 +55,14 @@ interface EthsRpcAgent {
                 }
 
                 override fun getTransactionCount(
-                    address: String,
-                    block: String
+                        address: String,
+                        block: String
                 ): Single<BigInteger> {
                     return api.transactionCount(address, block).map { it.hexToBigIntegerOrThrow() }
+                }
+
+                override fun checkNode(): Single<BigInteger> {
+                    return api.checkNode().map { it.hexToBigIntegerOrThrow() }
                 }
 
                 override fun getGasPrice(): Single<BigInteger> {
@@ -69,7 +76,7 @@ interface EthsRpcAgent {
                 override fun sendTransaction(
                         nonce: Single<BigInteger>,
                         encodeTx: (BigInteger) -> String
-                ): Single<Pair<BigInteger,String>> {
+                ): Single<Pair<BigInteger, String>> {
                     return nonce
                             .observeOn(Schedulers.computation())
                             .map {
@@ -79,13 +86,14 @@ interface EthsRpcAgent {
 
                             }
                             .observeOn(Schedulers.io())
-                            .flatMap {(nonce,rtx)->
+                            .flatMap { (nonce, rtx) ->
                                 api.sendRawTransaction(rtx)
                                         .map { nonce to it }
                             }
                 }
             }
         }
+
         fun by(ethJsonRpcApi: EthJsonRpcApiWithAuth): EthsRpcAgent {
             val api = ethJsonRpcApi
             return object : EthsRpcAgent {
@@ -112,6 +120,10 @@ interface EthsRpcAgent {
                     return api.transactionCount(address, block).map { it.hexToBigIntegerOrThrow() }
                 }
 
+                override fun checkNode(): Single<BigInteger> {
+                    return api.checkNode().map { it.hexToBigIntegerOrThrow() }
+                }
+
                 override fun getGasPrice(): Single<BigInteger> {
                     return api.gasPrice().map { it.hexToBigIntegerOrThrow() }
                 }
@@ -123,7 +135,7 @@ interface EthsRpcAgent {
                 override fun sendTransaction(
                         nonce: Single<BigInteger>,
                         encodeTx: (BigInteger) -> String
-                ): Single<Pair<BigInteger,String>> {
+                ): Single<Pair<BigInteger, String>> {
                     return nonce
                             .observeOn(Schedulers.computation())
                             .map {
@@ -131,9 +143,9 @@ interface EthsRpcAgent {
                             }
                             .observeOn(Schedulers.io())
                             .flatMap {
-                                val no=it.second
+                                val no = it.second
                                 api.sendRawTransaction(it.first).map { no to it }
-                                }
+                            }
                 }
             }
         }
@@ -141,6 +153,8 @@ interface EthsRpcAgent {
         fun by(infuraApi: InfuraApi): EthsRpcAgent {
             val api = infuraApi
             return object : EthsRpcAgent {
+
+
                 override fun transactionByHash(txId: String): Single<EthJsonTxInfo> {
                     return api.transactionByHash(txId)
                 }
@@ -158,14 +172,18 @@ interface EthsRpcAgent {
                 }
 
                 override fun getTransactionCount(
-                    address: String,
-                    block: String
+                        address: String,
+                        block: String
                 ): Single<BigInteger> {
                     return api.transactionCount(address, block).map { it.hexToBigIntegerOrThrow() }
                 }
 
                 override fun getGasPrice(): Single<BigInteger> {
                     return api.getGasPrice().map { it.result!!.hexToBigIntegerOrThrow() }
+                }
+
+                override fun checkNode(): Single<BigInteger> {
+                    return api.checkNode().map { it.result!!.hexToBigIntegerOrThrow() }
                 }
 
                 override fun getBalanceOf(address: String): Single<BigInteger> {
@@ -175,14 +193,15 @@ interface EthsRpcAgent {
                 override fun sendTransaction(
                         nonce: Single<BigInteger>,
                         encodeTx: (BigInteger) -> String
-                ): Single<Pair<BigInteger,String>> {
+                ): Single<Pair<BigInteger, String>> {
                     return nonce
                             .observeOn(Schedulers.computation())
                             .map { encodeTx(it) to it }
                             .observeOn(Schedulers.io())
                             .flatMap {
-                                val no=it.second
-                                api.sendRawTransaction(it.first).map { no to it } }
+                                val no = it.second
+                                api.sendRawTransaction(it.first).map { no to it }
+                            }
                 }
             }
         }

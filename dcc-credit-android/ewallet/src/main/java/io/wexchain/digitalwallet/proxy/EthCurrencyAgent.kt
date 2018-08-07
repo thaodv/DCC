@@ -5,7 +5,6 @@ import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.EthsTransactionScratch
 import io.wexchain.digitalwallet.api.domain.EthJsonTxInfo
 import io.wexchain.digitalwallet.api.domain.EthJsonTxReceipt
-import io.wexchain.digitalwallet.api.transactionReceipt
 import org.web3j.crypto.Credentials
 import java.math.BigInteger
 
@@ -20,7 +19,9 @@ abstract class EthCurrencyAgent(
     /**
      * new transaction nonce
      */
-    abstract fun getNonce(address: String): Single<BigInteger>
+    open fun getNonce(address: String): Single<BigInteger>{
+        return rpcAgent.checkNode()
+    }
 
     /**
      * encode and sign rawTransaction

@@ -28,6 +28,12 @@ interface EthJsonRpcApiWithAuth {
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
+    @Headers("Content-Type: application/json", "Accept: application/json", "parityrpc:1")
+    @POST("./")
+    fun checkNode(
+            @Body body: EthJsonRpcRequestBody<String>
+    ): Single<EthJsonRpcResponse<String>>
+
     @Headers("parityrpc:1")
     @POST("./")
     fun getGasPrice(
@@ -78,6 +84,16 @@ interface EthJsonRpcApiWithAuth {
 
 internal fun EthJsonRpcApiWithAuth.nextId(): Long {
     return EthJsonRpcApiWithAuth.idAtomic.incrementAndGet()
+}
+
+fun EthJsonRpcApiWithAuth.checkNode(): Single<String> {
+    return this.checkNode(
+            EthJsonRpcRequestBody(
+                    method = "web3_clientVersion",
+                    params = kotlin.collections.listOf(),
+                    id = this.nextId()
+            ))
+            .map { it.result!! }
 }
 
 fun EthJsonRpcApiWithAuth.gasPrice(): Single<String> {

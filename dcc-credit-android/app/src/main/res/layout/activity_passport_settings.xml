@@ -127,9 +127,23 @@
 
         <View
             style="@style/DividerHorizontal"
-            android:layout_height="10dp"
             android:background="#F8F8FF"
             app:layout_constraintTop_toBottomOf="@id/tv_address_book"
+            />
+
+        <TextView
+            android:id="@+id/tv_select_node"
+            style="@style/TextActionLine"
+            android:layout_marginTop="10dp"
+            android:text="@string/select_node"
+            app:layout_constraintTop_toBottomOf="@id/tv_address_book"
+            />
+
+        <View
+            style="@style/DividerHorizontal"
+            android:layout_height="10dp"
+            android:background="#F8F8FF"
+            app:layout_constraintTop_toBottomOf="@id/tv_select_node"
             />
 
         <TextView
@@ -138,7 +152,7 @@
             android:layout_marginTop="10dp"
             android:onClick="@{(v)->protect.switchProtectEnable()}"
             android:text="@string/local_protect"
-            app:layout_constraintTop_toBottomOf="@id/tv_address_book"
+            app:layout_constraintTop_toBottomOf="@id/tv_select_node"
             />
 
         <View

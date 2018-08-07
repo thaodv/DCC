@@ -12,4 +12,46 @@
         android:id="@+id/toolbar"
         layout="@layout/include_toolbar"/>
 
+    <RadioGroup
+        android:id="@+id/gr_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <RadioButton
+            android:id="@+id/cb1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:button="@drawable/selector_select_node"
+            android:checked="true"
+            android:drawableRight="@drawable/img_node_selected"
+            android:text="以太坊节点-中国上海"/>
+
+        <RadioButton
+            android:id="@+id/cb2"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:button="@drawable/selector_select_node"
+            android:drawableRight="@drawable/img_node_selected"
+            android:text="以太坊节点-中国北京"/>
+
+        <RadioButton
+            android:id="@+id/cb3"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:button="@drawable/selector_select_node"
+            android:drawableRight="@drawable/img_node_selected"
+            android:text="以太坊节点-美国加州"/>
+
+        <RadioButton
+            android:id="@+id/cb4"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:button="@drawable/selector_select_node"
+            android:drawableRight="@drawable/img_node_selected"
+            android:text="以太坊节点-美国马萨诸塞州"/>
+
+    </RadioGroup>
+
 </LinearLayout>

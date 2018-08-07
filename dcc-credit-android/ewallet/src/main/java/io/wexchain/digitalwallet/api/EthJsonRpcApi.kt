@@ -34,6 +34,11 @@ interface EthJsonRpcApi {
     ): Single<EthJsonRpcResponse<String>>
 
     @POST("./")
+    fun checkNode(
+            @Body body: EthJsonRpcRequestBody<String>
+    ): Single<EthJsonRpcResponse<String>>
+
+    @POST("./")
     fun getTransactionReceipt(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<EthJsonTxReceipt>>
@@ -87,6 +92,15 @@ internal fun EthJsonRpcApi.nextId(): Long {
     return EthJsonRpcApi.ids[this]!!.incrementAndGet()
 }
 
+fun EthJsonRpcApi.checkNode(): Single<String> {
+    return this.checkNode(
+            EthJsonRpcRequestBody(
+                    method = "web3_clientVersion",
+                    params = kotlin.collections.listOf(),
+                    id = this.nextId()
+            ))
+            .map { it.result!! }
+}
 fun EthJsonRpcApi.gasPrice(): Single<String> {
     return this.getGasPrice(
             EthJsonRpcRequestBody(

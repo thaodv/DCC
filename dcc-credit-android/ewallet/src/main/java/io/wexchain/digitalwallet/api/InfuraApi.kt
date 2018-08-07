@@ -39,6 +39,12 @@ interface InfuraApi {
             @Query("token") token: String = InfuraApiToken
     ): Single<EthJsonRpcResponse<String>>
 
+    @GET("/")
+    fun checkNode(
+            @Query("params") params: String = encodeJsonParamArray(),
+            @Query("token") token: String = InfuraApiToken
+    ): Single<EthJsonRpcResponse<String>>
+
     @GET("eth_getTransactionReceipt")
     fun getTransactionReceipt(
             @Query("params") params: String,
