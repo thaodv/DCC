@@ -21,10 +21,15 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import io.wexchain.android.dcc.QrScannerActivity;
+import io.wexchain.android.dcc.constant.Extras;
+import io.wexchain.android.dcc.constant.RequestCodes;
 import io.wexchain.android.dcc.tools.LogUtils;
 import io.wexchain.dcc.R;
 
-
+/**
+ * @author Wangpeng
+ */
 public class StaticHtmlActivity extends AppCompatActivity {
     
     private FrameLayout mFrBack;
@@ -74,8 +79,21 @@ public class StaticHtmlActivity extends AppCompatActivity {
             }
         });
         
-        mBtClose.setOnClickListener(v -> finish());
+        mIvShare.setVisibility(View.VISIBLE);
+        mIvShare.setImageDrawable(getResources().getDrawable(R.drawable.ic_scan));
+        mIvShare.setOnClickListener(v -> startActivityForResult(new Intent(this, QrScannerActivity.class).
+                putExtra(Extras.EXPECTED_SCAN_TYPE, QrScannerActivity.SCAN_TYPE_ADDRESS), RequestCodes.SCAN));
         
+        mBtClose.setOnClickListener(v -> finish());
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
+    }
+    
+    public void loadData() {
         WebSettings settings = mContent.getSettings();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mContent.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
@@ -154,5 +172,19 @@ public class StaticHtmlActivity extends AppCompatActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case RequestCodes.SCAN:
+                String temp = data.getStringExtra(QrScannerActivity.EXTRA_SCAN_RESULT);
+                mTitleValue = "Searchain数据分析";
+                mUrlValue = Extras.Searchain + temp;
+                break;
+            default:
+                break;
+        }
     }
 }
