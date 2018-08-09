@@ -162,7 +162,7 @@ object ViewModelHelper {
 
     @JvmStatic
     fun canResendSms(resend: Long?): Boolean {
-        return (resend == null || resend <= 0L)
+        return (resend == null || resend <= 1L)
     }
 
     @JvmStatic

@@ -23,13 +23,13 @@ public class StringUtils {
             BigDecimal res;
             String unit = "";
             if (money < 10000) {
-                res = new BigDecimal(money).setScale(count, BigDecimal.ROUND_HALF_UP);
+                res = new BigDecimal(money).setScale(count, BigDecimal.ROUND_DOWN);
             } else if (money >= 10000 && money < 100000000) {
-                res = new BigDecimal(money).divide(new BigDecimal(10000), count, BigDecimal.ROUND_HALF_UP);
+                res = new BigDecimal(money).divide(new BigDecimal(10000), count, BigDecimal.ROUND_DOWN);
                 unit = "万";
             } else {
                 res = new BigDecimal(money).divide(new BigDecimal(100000000), count, BigDecimal
-                        .ROUND_HALF_UP);
+                        .ROUND_DOWN);
                 unit = "亿";
             }
             return "￥" + res.toString() + unit;
@@ -52,13 +52,13 @@ public class StringUtils {
             BigDecimal res;
             String unit = "";
             if (money < 10000) {
-                res = new BigDecimal(money).setScale(count, BigDecimal.ROUND_HALF_UP);
+                res = new BigDecimal(money).setScale(count, BigDecimal.ROUND_DOWN);
             } else if (money >= 10000 && money < 100000000) {
-                res = new BigDecimal(money).divide(new BigDecimal(10000), count, BigDecimal.ROUND_HALF_UP);
+                res = new BigDecimal(money).divide(new BigDecimal(10000), count, BigDecimal.ROUND_DOWN);
                 unit = "万";
             } else {
                 res = new BigDecimal(money).divide(new BigDecimal(100000000), count, BigDecimal
-                        .ROUND_HALF_UP);
+                        .ROUND_DOWN);
                 unit = "亿";
             }
             return res.toString() + unit;
@@ -73,7 +73,7 @@ public class StringUtils {
         } else {
             double money = Double.parseDouble(source);
             
-            BigDecimal res = new BigDecimal(money).setScale(2, BigDecimal.ROUND_HALF_UP);
+            BigDecimal res = new BigDecimal(money).setScale(2, BigDecimal.ROUND_DOWN);
             if (money > 0) {
                 return "+" + res.toString() + unit;
             } else {
@@ -89,7 +89,7 @@ public class StringUtils {
         } else {
             double money = Double.parseDouble(source);
             
-            BigDecimal res = new BigDecimal(money).setScale(4, BigDecimal.ROUND_HALF_UP);
+            BigDecimal res = new BigDecimal(money).setScale(4, BigDecimal.ROUND_DOWN);
             if (money > 0) {
                 return "+" + res.toString() + unit;
             } else {

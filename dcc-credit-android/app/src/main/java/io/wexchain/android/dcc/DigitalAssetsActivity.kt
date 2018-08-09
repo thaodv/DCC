@@ -27,7 +27,6 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
 
     override val contentLayoutId: Int = R.layout.activity_digital_assets
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()

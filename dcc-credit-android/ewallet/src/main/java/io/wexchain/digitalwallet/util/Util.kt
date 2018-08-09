@@ -39,10 +39,10 @@ fun computeTransCount(limit: BigDecimal): BigDecimal {
 }
 
 /**
- * 四舍五入保留2位小数
+ * 去尾保留2位小数
  */
 fun computeTransCountKeep2Number(limit: BigDecimal): BigDecimal {
-    return limit.scaleByPowerOfTen(-18).setScale(2, BigDecimal.ROUND_HALF_UP)
+    return limit.scaleByPowerOfTen(-18).setScale(2, BigDecimal.ROUND_DOWN)
 }
 
 private val g = BigDecimal("1000000000")
