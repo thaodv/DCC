@@ -7,14 +7,14 @@ import android.os.Bundle
 import android.view.View
 import com.megvii.idcardlib.IDCardScanActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
-import io.wexchain.android.dcc.constant.RequestCodes
 import com.wexmarket.android.passport.ResultCodes
-import io.wexchain.android.dcc.base.BindFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.dcc.base.BindFragment
+import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.vm.EditIdCardInfoVm
 import io.wexchain.android.dcc.vm.domain.IdCardCertData
 import io.wexchain.android.idverify.IdVerifyHelper

@@ -49,6 +49,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.SubmitIdActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation"
             android:label="@string/title_id_certification"
             android:screenOrientation="portrait"/>
         <activity
@@ -212,7 +213,7 @@
             android:noHistory="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="io.wexchain.android.dcc.LoanRecordsActivity"
+            android:name="io.wexchain.android.dcc.modules.repay.LoanRecordsActivity"
             android:label="@string/loan_history"
             android:screenOrientation="portrait"/>
         <activity
@@ -222,16 +223,16 @@
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.EditAddressBookActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="io.wexchain.android.dcc.LoanRecordDetailActivity"
+            android:name="io.wexchain.android.dcc.modules.repay.LoanRecordDetailActivity"
             android:label="@string/loan_details"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="io.wexchain.android.dcc.LoanRepayResultActivity"
+            android:name="io.wexchain.android.dcc.modules.repay.LoanRepayResultActivity"
             android:label="@string/result"
             android:noHistory="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="io.wexchain.android.dcc.LoanRepayActivity"
+            android:name="io.wexchain.android.dcc.modules.repay.LoanRepayActivity"
             android:label="@string/repayment"
             android:screenOrientation="portrait"/>
         <activity
@@ -243,7 +244,7 @@
             android:label="@string/select_address"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="io.wexchain.android.dcc.ReviewRepayActivity"
+            android:name="io.wexchain.android.dcc.modules.repay.ReviewRepayActivity"
             android:label="@string/confirmation_of_repayment"
             android:screenOrientation="portrait"/>
         <activity
@@ -404,7 +405,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name="io.wexchain.android.dcc.RePaymentProcessActivity"
+            android:name="io.wexchain.android.dcc.modules.repay.RePaymentProcessActivity"
             android:label="@string/repayment_process"
             android:screenOrientation="portrait"/>
         <activity
@@ -414,6 +415,21 @@
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.base.StaticHtmlActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.repay.RepayingActivity"
+            android:label="还币"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.repay.DoRepayActivity"
+            android:label="还币"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.repay.RePaymentErrorActivity"
+            android:label="还币"
             android:screenOrientation="portrait">
         </activity>
     </application>

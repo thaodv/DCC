@@ -50,7 +50,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
 
         if (App.get().passportRepository.passportExists) {
             if (ShareUtils.getBoolean("searchain_has_show", true)) {
-                //ShareUtils.setBoolean("searchain_has_show", false)
+                ShareUtils.setBoolean("searchain_has_show", false)
                 tipsDialog.show()
             }
         }

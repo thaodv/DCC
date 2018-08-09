@@ -38,6 +38,8 @@ object Extras {
 
     const val EXTRA_SELECT_ADDRESS = "select_address"
     const val EXTRA_SELECT_TRANSRECORD = "select_trans_record"
+    const val EXTRA_PAY_MONEY = "pay_money"
+
 
     const val Searchain ="http://www.searchain.io/address?from=1000&address="
 

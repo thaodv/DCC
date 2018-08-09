@@ -1,11 +1,13 @@
-package io.wexchain.android.dcc
+package io.wexchain.android.dcc.modules.repay
 
 import android.os.Bundle
-import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.postOnMainThread
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.LoanAgreementActivity
+import io.wexchain.android.dcc.LoanProductListActivity
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
@@ -102,13 +104,13 @@ class LoanRecordDetailActivity : BindActivity<ActivityLoanRecordDetailBinding>()
                     hideLoadingDialog()
                 }
                 .subscribe { it ->
-                    val tmp=it
+                    val tmp = it
                     binding.order = tmp
-                    if ((tmp.status == LoanStatus.RECEIVIED||tmp.status == LoanStatus.DELIVERED) && tmp.earlyRepayAvailable && tmp.allowRepayPermit) {
+                    /*if ((tmp.status == LoanStatus.RECEIVIED || tmp.status == LoanStatus.DELIVERED) && tmp.earlyRepayAvailable && tmp.allowRepayPermit) {
                         binding.tvRepaymentProcess.visibility = View.VISIBLE
                     } else {
                         binding.tvRepaymentProcess.visibility = View.INVISIBLE
-                    }
+                    }*/
                 }
     }
 }

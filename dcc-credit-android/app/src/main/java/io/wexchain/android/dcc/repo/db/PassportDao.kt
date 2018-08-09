@@ -38,6 +38,9 @@ abstract class PassportDao {
     @Query("SELECT * FROM ${CurrencyMeta.TABLE_NAME} WHERE ${CurrencyMeta.COLUMN_SELECTED} = :selected")
     abstract fun listCurrencyMeta(selected: Boolean): LiveData<List<CurrencyMeta>>
 
+    @Query("SELECT * FROM ${CurrencyMeta.TABLE_NAME} WHERE ${CurrencyMeta.COLUMN_SYMBOL} = :symbol")
+    abstract fun getCurrencyMeta(symbol: String): CurrencyMeta
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun addSelected(currencyMeta: CurrencyMeta): Long
 

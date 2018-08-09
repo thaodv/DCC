@@ -370,7 +370,7 @@
     <string name="please_confirm_in">Please confirm in 3 minutes</string>
     <string name="click_the_button_below">②Click the button below to complete repayment</string>
     <string name="copy">Copy</string>
-    <string name="please_transfer"><![CDATA[①Please transfer %1$s %2$s to the address below]]></string>
+    <string name="please_transfer"><![CDATA[Please transfer %1$s %2$s to the address below]]></string>
     <string name="result">Result</string>
     <string name="success4">Success</string>
 

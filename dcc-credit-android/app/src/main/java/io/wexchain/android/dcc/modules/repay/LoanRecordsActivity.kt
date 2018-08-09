@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc
+package io.wexchain.android.dcc.modules.repay
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.dcc.LoanActivity
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener

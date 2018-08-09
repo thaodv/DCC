@@ -2,6 +2,7 @@ package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.Gravity
@@ -196,28 +197,49 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
             })
             deleteDialog.show()
         }
-
+        binding.tvToAddressValue.paint.flags = Paint.UNDERLINE_TEXT_FLAG
         binding.tvToAddressValue.setOnClickListener {
             startActivity(StaticHtmlActivity.getResultIntent(this, "Searchain数据分析", Extras.Searchain + binding.tvToAddressValue.text))
         }
 
+        binding.tvFromAddressValue.paint.flags = Paint.UNDERLINE_TEXT_FLAG
         binding.tvFromAddressValue.setOnClickListener {
             startActivity(StaticHtmlActivity.getResultIntent(this, "Searchain数据分析", Extras.Searchain + binding.tvFromAddressValue.text))
         }
 
+        var to = tx.to
+        var from = tx.from
+
+        var mine = App.get().passportRepository.currPassport.value!!.address
         if (tx.issuc()) {
-            App.get().passportRepository.getAddressBookByAddress(tx.to).observe(this, Observer {
-                if (null == it) {
-                    binding.llAddAddressBook.visibility = View.VISIBLE
-                } else {
-                    binding.llAddAddressBook.visibility = View.GONE
-                }
-            })
+
+            if (to == mine) {
+                App.get().passportRepository.getAddressBookByAddress(from).observe(this, Observer {
+                    if (null == it) {
+                        binding.llAddAddressBook.visibility = View.VISIBLE
+                    } else {
+                        binding.llAddAddressBook.visibility = View.GONE
+                    }
+                })
+            } else {
+                App.get().passportRepository.getAddressBookByAddress(to).observe(this, Observer {
+                    if (null == it) {
+                        binding.llAddAddressBook.visibility = View.VISIBLE
+                    } else {
+                        binding.llAddAddressBook.visibility = View.GONE
+                    }
+                })
+            }
         }
 
         binding.llAddAddressBook.setOnClickListener {
             startActivity(Intent(this, AddAddressBookActivity::class.java).apply {
-                putExtra(Extras.EXTRA_TRANSRECORE, TransRecord(System.currentTimeMillis(), tx.to, shortName = ""))
+
+                if (to == mine) {
+                    putExtra(Extras.EXTRA_TRANSRECORE, TransRecord(System.currentTimeMillis(), from, shortName = ""))
+                } else {
+                    putExtra(Extras.EXTRA_TRANSRECORE, TransRecord(System.currentTimeMillis(), to, shortName = ""))
+                }
             })
             finish()
         }

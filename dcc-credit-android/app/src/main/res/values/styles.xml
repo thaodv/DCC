@@ -153,4 +153,8 @@
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
 
+    <style name="DccLightTheme.App.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="DccLightTheme.App.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
 </resources>

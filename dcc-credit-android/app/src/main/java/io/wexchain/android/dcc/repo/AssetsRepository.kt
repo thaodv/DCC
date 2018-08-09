@@ -53,6 +53,11 @@ class AssetsRepository(
         it?.map { it.toDigitalCurrency() } ?: emptyList()
     }
 
+    fun getCurrencyMeta(symbol: String): CurrencyMeta{
+
+        return dao.getCurrencyMeta(symbol)
+    }
+
     /**
      * digital currencies list to be shown in ui
      * concat [pinned] and [selectedCurrencies]

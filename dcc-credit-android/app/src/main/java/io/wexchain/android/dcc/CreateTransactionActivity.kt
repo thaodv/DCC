@@ -21,7 +21,6 @@ import io.wexchain.dcc.databinding.ActivityCreateTransactionBinding
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.EthsTransactionScratch
-import io.wexchain.digitalwallet.util.weiToGwei
 
 class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>() {
 
@@ -31,6 +30,8 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
 
     private val addr get() = intent.getSerializableExtra(Extras.EXTRA_SELECT_ADDRESS) as? AddressBook
     private val transRecord get() = intent.getSerializableExtra(Extras.EXTRA_SELECT_TRANSRECORD) as? TransRecord
+    private val money get() = intent.getStringExtra(Extras.EXTRA_PAY_MONEY)
+    private val isRepayment get() = intent.getIntExtra("is_repayment", 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,12 +49,12 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
             txVm.toAddress.set(tx.to)
             txVm.amount.set(tx.digitalCurrency.toDecimalAmount(tx.amount).currencyToDisplayStr())
             //   binding.etInputAddress.setText(tx.to)
-             /*  binding.etInputGasPrice.setText(tx.digitalCurrency.toDecimalAmount(tx.gasPrice).currencyToDisplayStr())
-            txVm.gasPrice.set(tx.digitalCurrency.toDecimalAmount(tx.gasPrice).currencyToDisplayStr())*/
-            binding.etInputGasLimit.setText(""+tx.gas)
-            txVm.gasLimit.set(""+tx.gas)
+            /*  binding.etInputGasPrice.setText(tx.digitalCurrency.toDecimalAmount(tx.gasPrice).currencyToDisplayStr())
+           txVm.gasPrice.set(tx.digitalCurrency.toDecimalAmount(tx.gasPrice).currencyToDisplayStr())*/
+            binding.etInputGasLimit.setText("" + tx.gas)
+            txVm.gasLimit.set("" + tx.gas)
         }
-        title = ("${dc!!.symbol} "+getString(R.string.transfer))
+        title = ("${dc!!.symbol} " + getString(R.string.transfer))
         setupEvents(dc, feeRate)
         setupButtons()
 
@@ -62,6 +63,10 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
         }
         if (null != transRecord) {
             txVm.toAddress.set(transRecord!!.address)
+        }
+
+        if (null != money) {
+            txVm.amount.set(money)
         }
 
     }
@@ -131,7 +136,7 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
     }
 
     private fun showConfirmDialog(ethsTransactionScratch: EthsTransactionScratch) {
-        TransactionConfirmDialogFragment.create(ethsTransactionScratch, isEdit)
+        TransactionConfirmDialogFragment.create(ethsTransactionScratch, isEdit, isRepayment = isRepayment)
                 .show(supportFragmentManager, null)
     }
 

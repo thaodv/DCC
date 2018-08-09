@@ -46,6 +46,7 @@ object TransHelper {
             // 公链交易 持久化到本地
             if (scratch.currency.chain == Chain.publicEthChain) {
                 SharedPreferenceUtil.save(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING, e)
+                SharedPreferenceUtil.save(scratch.to + "_" + Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING, e)
             }
         }
     }

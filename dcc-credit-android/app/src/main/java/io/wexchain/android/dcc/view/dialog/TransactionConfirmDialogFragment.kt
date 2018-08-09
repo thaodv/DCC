@@ -10,7 +10,11 @@ import android.view.*
 import com.wexmarket.android.passport.ResultCodes
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.repay.LoanRepayActivity
+import io.wexchain.android.dcc.modules.repay.RepayingActivity
+import io.wexchain.android.dcc.modules.repay.RePaymentErrorActivity
 import io.wexchain.android.dcc.vm.TransactionConfirmVm
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
@@ -22,6 +26,7 @@ import io.wexchain.digitalwallet.EthsTransactionScratch
  */
 class TransactionConfirmDialogFragment : DialogFragment() {
     var isEdit = false
+    var isRepayment = 0
 
     private lateinit var binding: DialogConfirmTransactionBinding
 
@@ -34,19 +39,33 @@ class TransactionConfirmDialogFragment : DialogFragment() {
         vm.syncProtect(this)
         vm.txSentEvent.observe(this, Observer {
             it?.let {
-                toast("转账申请提交成功")
-                activity?.setResult(ResultCodes.RESULT_OK, Intent().apply {
-                    putExtra(Extras.EXTRA_DIGITAL_TRANSACTION_SCRATCH, it.first)
-                    putExtra(Extras.EXTRA_DIGITAL_TRANSACTION_ID, it.second)
-                })
-                activity?.finish()
+                if (isRepayment == 0) {
+                    toast("转账申请提交成功")
+                    activity?.setResult(ResultCodes.RESULT_OK, Intent().apply {
+                        putExtra(Extras.EXTRA_DIGITAL_TRANSACTION_SCRATCH, it.first)
+                        putExtra(Extras.EXTRA_DIGITAL_TRANSACTION_ID, it.second)
+                    })
+                    activity?.finish()
+                } else {
+                    startActivity(Intent(App.get(), RepayingActivity::class.java))
+                    ActivityCollector.finishActivity(LoanRepayActivity::class.java)
+                    activity?.finish()
+                }
+
             }
         })
         vm.txSendFailEvent.observe(this, Observer {
             it?.let {
-                toast("转账提交失败")
+                if (isRepayment == 0) {
+
+                    toast("转账提交失败")
+                    if (isEdit) activity?.finish()
+                }else{
+                    startActivity(Intent(App.get(), RePaymentErrorActivity::class.java))
+                    ActivityCollector.finishActivity(LoanRepayActivity::class.java)
+                }
             }
-            if (isEdit) activity?.finish()
+
 
         })
         vm.busySendingEvent.observe(this, Observer {
@@ -109,12 +128,13 @@ class TransactionConfirmDialogFragment : DialogFragment() {
     companion object {
         const val ARG_SCRATCH = "argument_transaction_scratch"
 
-        fun create(ethsTransactionScratch: EthsTransactionScratch, isEdit: Boolean = false): TransactionConfirmDialogFragment {
+        fun create(ethsTransactionScratch: EthsTransactionScratch, isEdit: Boolean = false, isRepayment: Int = 0): TransactionConfirmDialogFragment {
             return TransactionConfirmDialogFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_SCRATCH, ethsTransactionScratch)
                 }
                 this.isEdit = isEdit
+                this.isRepayment = isRepayment
             }
         }
     }

@@ -141,9 +141,7 @@ class TransactionConfirmVm(
                             val price = gweiTowei(scratch.gasPrice)
 
                             if (dc.chain == Chain.publicEthChain) {//公链
-                                val eth = SharedPreferenceUtil.get(
-                                        Extras.NEEDSAVEPENDDING,
-                                        Extras.SAVEDPENDDING
+                                val eth = SharedPreferenceUtil.get(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING
                                 ) as? EthsTransaction
                                 if (null != eth) {
                                     if (isedit || scratch.CancelType) {//是否是编辑撤销操作 默认不是

@@ -409,7 +409,7 @@
     <string name="bank">开户行</string>
     <string name="copy">复制</string>
     <!--<string name="please_transfer">①请将待还币金额 %.4f%@ 转入到下面的还币地址中</string>-->
-    <string name="please_transfer"><![CDATA[①请将待还币金额%1$s %2$s 转入到下面的还币地址中]]></string>
+    <string name="please_transfer"><![CDATA[请将待还币金额%1$s %2$s 转入到下面的还币地址中]]></string>
     <string name="result">还币结果</string>
     <string name="success4">还币成功</string>
 
@@ -462,7 +462,7 @@
     <string name="select_node_green"><font color='#9B9B9B'>已连接（网络质量好）</font></string>
     <string name="select_node_yellow"><font color='#9B9B9B'>（网络质量一般）</font></string>
     <string name="select_node_red"><font color='#9B9B9B'>（网络质量差）</font></string>
-
+    <string name="title_activity_do_repay">DoRepayActivity</string>
 
 
 </resources>

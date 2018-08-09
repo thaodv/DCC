@@ -21,204 +21,215 @@
             />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/include_toolbar"
-            />
+        <include layout="@layout/include_toolbar"/>
 
-        <View
-            style="@style/DividerHorizontal"
-            android:layout_height="10dp"
-            android:background="#F8F8FF"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar">
 
-        <TextView
-            android:id="@+id/tv_user_avatar"
-            style="@style/TextActionLine"
-            android:layout_marginTop="10dp"
-            android:text="@string/user_avatar"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
 
-        <io.wexchain.android.dcc.view.RoundImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="40dp"
-            android:scaleType="centerCrop"
-            app:errorRes="@{@drawable/default_user_avatar}"
-            app:imageUri="@{passport.avatarUri}"
-            app:layout_constraintBottom_toBottomOf="@id/tv_user_avatar"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_user_avatar"
-            tools:src="@drawable/default_user_avatar"
-            />
+                <View
+                    android:id="@+id/v_line"
+                    style="@style/DividerHorizontal"
+                    android:layout_height="10dp"
+                    android:background="#F8F8FF"
+                    app:layout_constraintTop_toBottomOf="@id/toolbar"
+                    />
 
-        <View
-            style="@style/DividerHorizontal"
-            app:layout_constraintTop_toBottomOf="@id/tv_user_avatar"
-            />
+                <TextView
+                    android:id="@+id/tv_user_avatar"
+                    style="@style/TextActionLine"
+                    android:text="@string/user_avatar"
+                    app:layout_constraintTop_toBottomOf="@id/v_line"
+                    />
 
-        <TextView
-            android:id="@+id/tv_user_nickname"
-            style="@style/TextActionLine"
-            android:text="@string/user_nickname"
-            app:layout_constraintTop_toBottomOf="@id/tv_user_avatar"
-            />
+                <io.wexchain.android.dcc.view.RoundImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="40dp"
+                    android:scaleType="centerCrop"
+                    app:errorRes="@{@drawable/default_user_avatar}"
+                    app:imageUri="@{passport.avatarUri}"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_user_avatar"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_user_avatar"
+                    tools:src="@drawable/default_user_avatar"
+                    />
 
-        <View
-            style="@style/DividerHorizontal"
-            android:layout_height="10dp"
-            android:background="#F8F8FF"
-            app:layout_constraintTop_toBottomOf="@id/tv_user_nickname"
-            />
+                <View
+                    style="@style/DividerHorizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_avatar"
+                    />
 
-        <TextView
-            android:id="@+id/tv_passport_address"
-            style="@style/TextActionLine"
-            android:layout_marginTop="10dp"
-            android:text="@string/passport_address"
-            app:layout_constraintTop_toBottomOf="@id/tv_user_nickname"
-            />
+                <TextView
+                    android:id="@+id/tv_user_nickname"
+                    style="@style/TextActionLine"
+                    android:text="@string/user_nickname"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_avatar"
+                    />
 
-        <View
-            style="@style/DividerHorizontal"
-            app:layout_constraintTop_toBottomOf="@id/tv_passport_address"
-            />
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_height="10dp"
+                    android:background="#F8F8FF"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_nickname"
+                    />
 
-        <TextView
-            android:id="@+id/tv_passport_backup"
-            style="@style/TextActionLine"
-            android:text="@string/export_passport"
-            app:layout_constraintTop_toBottomOf="@id/tv_passport_address"
-            />
+                <TextView
+                    android:id="@+id/tv_passport_address"
+                    style="@style/TextActionLine"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/passport_address"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_nickname"
+                    />
 
-        <View
-            style="@style/DividerHorizontal"
-            app:layout_constraintTop_toBottomOf="@id/tv_passport_backup"
-            />
+                <View
+                    style="@style/DividerHorizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tv_passport_address"
+                    />
 
-        <TextView
-            android:id="@+id/tv_modify_passport_password"
-            style="@style/TextActionLine"
-            android:text="@string/modify_passport_password"
-            app:layout_constraintTop_toBottomOf="@id/tv_passport_backup"
-            />
+                <TextView
+                    android:id="@+id/tv_passport_backup"
+                    style="@style/TextActionLine"
+                    android:text="@string/export_passport"
+                    app:layout_constraintTop_toBottomOf="@id/tv_passport_address"
+                    />
 
-        <View
-            style="@style/DividerHorizontal"
-            android:layout_height="10dp"
-            android:background="#F8F8FF"
-            app:layout_constraintTop_toBottomOf="@id/tv_modify_passport_password"
-            />
+                <View
+                    style="@style/DividerHorizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tv_passport_backup"
+                    />
 
-        <TextView
-            android:id="@+id/tv_address_book"
-            style="@style/TextActionLine"
-            android:layout_marginTop="10dp"
-            android:text="@string/address_book"
-            app:layout_constraintTop_toBottomOf="@id/tv_modify_passport_password"
-            />
+                <TextView
+                    android:id="@+id/tv_modify_passport_password"
+                    style="@style/TextActionLine"
+                    android:text="@string/modify_passport_password"
+                    app:layout_constraintTop_toBottomOf="@id/tv_passport_backup"
+                    />
 
-        <View
-            style="@style/DividerHorizontal"
-            android:background="#F8F8FF"
-            app:layout_constraintTop_toBottomOf="@id/tv_address_book"
-            />
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_height="10dp"
+                    android:background="#F8F8FF"
+                    app:layout_constraintTop_toBottomOf="@id/tv_modify_passport_password"
+                    />
 
-        <TextView
-            android:id="@+id/tv_select_node"
-            style="@style/TextActionLine"
-            android:layout_marginTop="10dp"
-            android:text="@string/select_node"
-            app:layout_constraintTop_toBottomOf="@id/tv_address_book"
-            />
+                <TextView
+                    android:id="@+id/tv_address_book"
+                    style="@style/TextActionLine"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/address_book"
+                    app:layout_constraintTop_toBottomOf="@id/tv_modify_passport_password"
+                    />
 
-        <View
-            style="@style/DividerHorizontal"
-            android:layout_height="10dp"
-            android:background="#F8F8FF"
-            app:layout_constraintTop_toBottomOf="@id/tv_select_node"
-            />
+                <View
+                    style="@style/DividerHorizontal"
+                    android:background="#F8F8FF"
+                    app:layout_constraintTop_toBottomOf="@id/tv_address_book"
+                    />
 
-        <TextView
-            android:id="@+id/tv_passport_protect"
-            style="@style/TextActionLine"
-            android:layout_marginTop="10dp"
-            android:onClick="@{(v)->protect.switchProtectEnable()}"
-            android:text="@string/local_protect"
-            app:layout_constraintTop_toBottomOf="@id/tv_select_node"
-            />
+                <TextView
+                    android:id="@+id/tv_select_node"
+                    style="@style/TextActionLine"
+                    android:text="@string/select_node"
+                    app:layout_constraintTop_toBottomOf="@id/tv_address_book"
+                    />
 
-        <View
-            style="@style/DividerHorizontal"
-            app:layout_constraintTop_toBottomOf="@id/tv_passport_protect"
-            />
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_height="10dp"
+                    android:background="#F8F8FF"
+                    app:layout_constraintTop_toBottomOf="@id/tv_select_node"
+                    />
 
-        <TextView
-            android:id="@+id/tv_passport_protect_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
-            android:onClick="@{(v)->protect.switchProtectEnable()}"
-            android:text="@{protect.type==null?@string/protect_not_enabled:@string/protect_enabled}"
-            android:textSize="19sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_passport_protect"
-            app:layout_constraintRight_toRightOf="parent"
-            tools:text="@string/protect_enabled"
-            />
+                <TextView
+                    android:id="@+id/tv_passport_protect"
+                    style="@style/TextActionLine"
+                    android:layout_marginTop="10dp"
+                    android:onClick="@{(v)->protect.switchProtectEnable()}"
+                    android:text="@string/local_protect"
+                    app:layout_constraintTop_toBottomOf="@id/tv_select_node"
+                    />
 
-        <TextView
-            android:id="@+id/tv_about_us"
-            style="@style/TextActionLine"
-            android:text="@string/about_us"
-            app:layout_constraintTop_toBottomOf="@id/tv_passport_protect"
-            />
+                <View
+                    style="@style/DividerHorizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tv_passport_protect"
+                    />
 
-        <View
-            style="@style/DividerHorizontal"
-            app:layout_constraintTop_toBottomOf="@id/tv_about_us"
-            />
+                <TextView
+                    android:id="@+id/tv_passport_protect_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dp"
+                    android:onClick="@{(v)->protect.switchProtectEnable()}"
+                    android:text="@{protect.type==null?@string/protect_not_enabled:@string/protect_enabled}"
+                    android:textSize="19sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_passport_protect"
+                    app:layout_constraintRight_toRightOf="parent"
+                    tools:text="@string/protect_enabled"
+                    />
 
-        <TextView
-            android:id="@+id/tv_delete_passport"
-            style="@style/TextActionLine"
-            android:text="@string/remove_passport"
-            app:layout_constraintTop_toBottomOf="@id/tv_about_us"
-            />
+                <TextView
+                    android:id="@+id/tv_about_us"
+                    style="@style/TextActionLine"
+                    android:text="@string/about_us"
+                    app:layout_constraintTop_toBottomOf="@id/tv_passport_protect"
+                    />
 
-        <View
-            style="@style/DividerHorizontal"
-            app:layout_constraintTop_toBottomOf="@id/tv_delete_passport"
-            />
+                <View
+                    style="@style/DividerHorizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tv_about_us"
+                    />
 
-        <TextView
-            android:id="@+id/tv_check_update"
-            style="@style/TextActionLine"
-            android:text="@string/check_update"
-            app:layout_constraintTop_toBottomOf="@id/tv_delete_passport"
-            />
+                <TextView
+                    android:id="@+id/tv_delete_passport"
+                    style="@style/TextActionLine"
+                    android:text="@string/remove_passport"
+                    app:layout_constraintTop_toBottomOf="@id/tv_about_us"
+                    />
 
-        <TextView
-            android:id="@+id/tv_current_vs"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_check_update"
-            android:layout_width="wrap_content"
-            android:layout_marginRight="30dp"
-            android:textSize="14sp"
-            app:layout_constraintRight_toRightOf="parent"
-            android:textColor="@color/text_min"
-            android:layout_height="wrap_content" />
+                <View
+                    style="@style/DividerHorizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tv_delete_passport"
+                    />
 
-        <View
-            style="@style/DividerHorizontal"
-            app:layout_constraintTop_toBottomOf="@id/tv_check_update"
-            />
+                <TextView
+                    android:id="@+id/tv_check_update"
+                    style="@style/TextActionLine"
+                    android:text="@string/check_update"
+                    app:layout_constraintTop_toBottomOf="@id/tv_delete_passport"
+                    />
 
-    </android.support.constraint.ConstraintLayout>
+                <TextView
+                    android:id="@+id/tv_current_vs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dp"
+                    android:textColor="@color/text_min"
+                    android:textSize="14sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_check_update"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <View
+                    style="@style/DividerHorizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tv_check_update"
+                    />
+
+            </android.support.constraint.ConstraintLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
 
 </layout>

@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc
+package io.wexchain.android.dcc.modules.repay
 
 import android.os.Bundle
 import android.view.View
