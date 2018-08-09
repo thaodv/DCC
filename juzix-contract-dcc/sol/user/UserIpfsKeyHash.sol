@@ -1,8 +1,6 @@
 pragma solidity ^0.4.2;
-
-import "../permission/OperatorPermission.sol";
-
-contract UserIpfsKeyHash is OperatorPermission {
+import "../sysbase/OwnerNamed.sol";
+contract UserIpfsKeyHash is OwnerNamed{
 
     mapping(address => bytes) public ipfsKeyHashMapping;
 
@@ -16,57 +14,43 @@ contract UserIpfsKeyHash is OperatorPermission {
         register("UserIpfsKeyHashModule", "0.0.1.0", "UserIpfsKeyHash", "0.0.1.0");
     }
 
-    function putIpfsKey(address userAddress, bytes ipfsKeyHash) public {
-        onlyOperator();
-        if(!(userAddress != 0)){
-            log("!(userAddress != 0)");
-            throw;
-        }
+    function putIpfsKey(bytes ipfsKeyHash) public {
+
         if(!(ipfsKeyHash.length > 0 && ipfsKeyHash.length < IPFS_KEYHASH_MAXSIZE)){
             log("!(ipfsKeyHash.length > 0 && ipfsKeyHash.length < IPFS_KEYHASH_MAXSIZE)");
             throw;
         }
-        if(!(ipfsKeyHashMapping[userAddress].length == 0)){
+        if(!(ipfsKeyHashMapping[msg.sender].length == 0)){
             log("!(ipfsKeyHashMapping[userAddress].length == 0)");
             throw;
         }
 
-        ipfsKeyHashMapping[userAddress] = ipfsKeyHash;
-        ipfsKeyPut(userAddress, ipfsKeyHash);
+        ipfsKeyHashMapping[msg.sender] = ipfsKeyHash;
+        ipfsKeyPut(msg.sender, ipfsKeyHash);
     }
 
-    function updateIpfsKey(address userAddress, bytes ipfsKeyHash) public {
-        onlyOperator();
-        if(!(userAddress != 0)){
-            log("!(userAddress != 0)");
-            throw;
-        }
+    function updateIpfsKey(bytes ipfsKeyHash) public {
         if(!(ipfsKeyHash.length > 0 && ipfsKeyHash.length < IPFS_KEYHASH_MAXSIZE)){
             log("!(ipfsKeyHash.length > 0 && ipfsKeyHash.length < IPFS_KEYHASH_MAXSIZE)");
             throw;
         }
-        if(!(ipfsKeyHashMapping[userAddress].length != 0)){
+        if(!(ipfsKeyHashMapping[msg.sender].length != 0)){
             log("!(ipfsKeyHashMapping[userAddress].length != 0)");
             throw;
         }
 
-        ipfsKeyHashMapping[userAddress] = ipfsKeyHash;
-        ipfsKeyUpdated(userAddress, ipfsKeyHash);
+        ipfsKeyHashMapping[msg.sender] = ipfsKeyHash;
+        ipfsKeyUpdated(msg.sender, ipfsKeyHash);
     }
 
-    function deleteIpfsKey(address userAddress) public {
-        onlyOperator();
-        if(!(userAddress != 0)){
-            log("!(userAddress != 0)");
-            throw;
-        }
-        if(!(ipfsKeyHashMapping[userAddress].length != 0)){
+    function deleteIpfsKey() public {
+        if(!(ipfsKeyHashMapping[msg.sender].length != 0)){
             log("!(ipfsKeyHashMapping[userAddress].length != 0)");
             throw;
         }
 
-        delete ipfsKeyHashMapping[userAddress];
-        ipfsKeyDeleted(userAddress);
+        delete ipfsKeyHashMapping[msg.sender];
+        ipfsKeyDeleted(msg.sender);
     }
 
 }

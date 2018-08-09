@@ -1,73 +1,83 @@
 pragma solidity ^0.4.2;
+import "../sysbase/OwnerNamed.sol";
+contract UserIpfsToken is OwnerNamed{
 
-import "../permission/OperatorPermission.sol";
-
-contract UserIpfsToken is OperatorPermission {
-
-    struct ipfs_metadata {
-        uint256 nonce;
+    struct IpfsToken {
+        bytes nonce;
         string token;
+        bytes digest1;
+        bytes digest2;
     }
 
-    mapping(address => mapping(address => ipfs_metadata)) userIpfsTokens;
+    mapping(address => mapping(address => IpfsToken)) ipfsTokens;
 
-    uint256 constant USER_IPFS_TOKEN_MAXSIZE = 10 * 1024;
+    uint256 constant IPFS_TOKEN_MAXSIZE = 10 * 1024;
 
-    event userIpfsTokenPuted(address indexed addr, address subAddr, uint256 nonce, string token);
-    event userIpfsTokenDeleted(address indexed addr, address subAddr, uint256 nonce, string token);
+    uint256 constant IPFS_NONCE_MAXSIZE = 10 * 1024;
+
+    uint256 constant IPFS_DIGEST_MAXSIZE = 100;
+
+    event ipfsTokenPut(address indexed userAddress, address contractAddress, bytes nonce, string token, bytes digest1, bytes digest2);
+    event ipfsTokenDeleted(address indexed userAddress, address contractAddress);
 
     function UserIpfsToken(){
         register("UserIpfsTokenModule", "0.0.1.0", "UserIpfsToken", "0.0.1.0");
     }
 
-    function putUserIpfsToken(address addr, address subAddr, uint256 nonce, string token) public {
-        onlyOperator();
-        if (!(addr != 0)) {
-            log("!(addr!=0)");
+    function putIpfsToken(address contractAddress, bytes nonce, string token, bytes digest1, bytes digest2) public {
+        if(!(contractAddress != 0)){
+            log("!(contractAddress != 0)");
             throw;
         }
-        if (!(subAddr != 0)) {
-            log("!(subAddr!=0)");
+        if(!(nonce.length <= IPFS_NONCE_MAXSIZE)){
+            log("!(nonce.length <= IPFS_NONCE_MAXSIZE)");
             throw;
         }
-        if (!(nonce != 0)) {
-            log("!(nonce!=0)");
+        if(!(bytes(token).length > 0 && bytes(token).length <= IPFS_TOKEN_MAXSIZE)){
+            log("!(bytes(token).length > 0 && bytes(token).length <= IPFS_TOKEN_MAXSIZE)");
             throw;
         }
-        if (!(bytes(token).length > 0 && bytes(token).length <= USER_IPFS_TOKEN_MAXSIZE)) {
-            log("!(bytes(token).length>0 && bytes(token).length<=USER_IPFS_TOKEN_MAXSIZE)");
+        if(!(digest1.length > 0 && digest1.length < IPFS_DIGEST_MAXSIZE)){
+            log("!(digest1.length > 0 && digest1.length < IPFS_DIGEST_MAXSIZE)");
+            throw;
+        }
+        if(!(digest2.length > 0 && digest2.length < IPFS_DIGEST_MAXSIZE)){
+            log("!(digest2.length > 0 && digest2.length < IPFS_DIGEST_MAXSIZE)");
             throw;
         }
 
-        userIpfsTokens[addr][subAddr] = ipfs_metadata(nonce, token);
-        userIpfsTokenPuted(addr, subAddr, nonce, token);
+        ipfsTokens[msg.sender][contractAddress] = IpfsToken(nonce, token, digest1, digest2);
+        ipfsTokenPut(msg.sender, contractAddress, nonce, token, digest1, digest2);
     }
 
-    function deleteUserIpfsToken(address addr, address subAddr) public {
-        onlyOperator();
-        if (!(addr != 0)) {
-            log("!(addr!=0)");
-            throw;
-        }
-        if (!(subAddr != 0)) {
-            log("!(subAddr!=0)");
+    function deleteIpfsToken(address contractAddress) public {
+        if(!(contractAddress != 0)){
+            log("!(contractAddress != 0)");
             throw;
         }
 
-        delete userIpfsTokens[addr][subAddr];
-        userIpfsTokenDeleted(addr, subAddr, 0, "");
+        delete ipfsTokens[msg.sender][contractAddress];
+        ipfsTokenDeleted(msg.sender, contractAddress);
     }
 
-    function getUserIpfsToken(address addr, address subAddr) public constant returns (address _addr, address _subAddr, uint256 _nonce, string _token){
-        if (!(addr != 0)) {
-            log("!(addr!=0)");
+    function getIpfsToken(address contractAddress) public constant returns (
+        address _userAddress,
+        address _contractAddress,
+        bytes _nonce,
+        string _token,
+        bytes _digest1,
+        bytes _digest2){
+        if(!(contractAddress != 0)){
+            log("!(contractAddress != 0)");
             throw;
         }
-        if (!(subAddr != 0)) {
-            log("!(subAddr!=0)");
-            throw;
-        }
-
-        return (addr, subAddr, userIpfsTokens[addr][subAddr].nonce, userIpfsTokens[addr][subAddr].token);
+        return (
+        msg.sender,
+        contractAddress,
+        ipfsTokens[msg.sender][contractAddress].nonce,
+        ipfsTokens[msg.sender][contractAddress].token,
+        ipfsTokens[msg.sender][contractAddress].digest1,
+        ipfsTokens[msg.sender][contractAddress].digest2
+        );
     }
 }
