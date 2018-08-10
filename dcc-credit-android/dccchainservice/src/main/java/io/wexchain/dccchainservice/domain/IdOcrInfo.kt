@@ -57,8 +57,6 @@ data class IdOcrInfo(
     }
 
     enum class Side {
-        front,
-        back
-        ;
+        front, back
     }
 }

@@ -26,7 +26,7 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
     private val inputIdInfoFragment by lazy { InputIdInfoFragment.create(this) }
     private val livenessDetectionFragment by lazy { LivenessDetectionFragment.create(this) }
 
-    private var idCardCertData:IdCardCertData? = null
+    private lateinit var idCardCertData:IdCardCertData
     private var portrait: ByteArray? = null
 
     override fun onProceed(idCardCertData: IdCardCertData) {
@@ -47,7 +47,7 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
 
     private fun doSubmitIdCert() {
         val photo = portrait
-        val idData = idCardCertData?.copy(photo = photo)
+        val idData = idCardCertData.copy(photo = photo)
         val passport = App.get().passportRepository.getCurrentPassport()
         if (passport?.authKey != null && idData != null && photo != null) {
             CertOperations.submitIdCert(passport, idData)

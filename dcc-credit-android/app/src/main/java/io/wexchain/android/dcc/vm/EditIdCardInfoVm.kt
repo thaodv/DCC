@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.vm.domain.IdCardCertData
 import io.wexchain.android.idverify.IdCardEssentialData
@@ -55,19 +54,45 @@ class EditIdCardInfoVm : ViewModel() {
     }
 
     fun confirmToNext() {
-        val n = name.get()
-        val id = idNo.get()
-        val tl = timeLimit.get()
-        if (n == null || n.length !in 2..50) {
+        val n = name.get().toString().trim()
+        val id = idNo.get().toString().trim()
+        val tl = timeLimit.get().toString().trim()
+        val s = sex.get().toString().trim()
+        val raceV = race.get().toString().trim()
+        val addressV = address.get().toString().trim()
+        val authV = authority.get().toString().trim()
+        if (n == "null" || n.length !in 2..50) {
             informationIncompleteEvent.value = "请输入正确的姓名"
             return
         }
-        if (id == null) {
+        if (s == "null" || s.isEmpty()) {
+            informationIncompleteEvent.value = "请输入性别"
+            return
+        }
+        if (raceV == "null" || raceV.isEmpty()) {
+            informationIncompleteEvent.value = "请输入民族"
+            return
+        }
+        if (id == "null" || id.isEmpty()) {
             informationIncompleteEvent.value = "请填写身份证号"
             return
         }
-        if (tl == null) {
+        if (addressV == "null" || addressV.isEmpty()) {
+            informationIncompleteEvent.value = "请输入住址"
+            return
+        }
+        if (authV == "null" || authV.isEmpty()) {
+            informationIncompleteEvent.value = "请输入签发机构"
+            return
+        }
+        if (tl == "null" || tl.isEmpty()) {
             informationIncompleteEvent.value = "请输入正确的有效期"
+            return
+        }
+        if (id.length == 15 || id.length == 18) {
+
+        }else{
+            informationIncompleteEvent.value = "身份证信息不合法"
             return
         }
         val front = imgFront.get()
@@ -84,16 +109,12 @@ class EditIdCardInfoVm : ViewModel() {
                 n,
                 id,
                 tl,
-                sex.get(),
-                race.get(),
+                s,
+                raceV,
                 year, month, dayOfMonth,
-                address.get(),
-                authority.get()
+                addressV,
+                authV
         )
-        if (essentialData == null) {
-            informationIncompleteEvent.value = "身份证信息不合法"
-            return
-        }
         proceedEvent.value = IdCardCertData(essentialData, null, front, back)
     }
 

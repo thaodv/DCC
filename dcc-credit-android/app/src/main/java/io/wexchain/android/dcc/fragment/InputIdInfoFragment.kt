@@ -26,7 +26,7 @@ import io.wexchain.dcc.databinding.FragmentEditIdInfoBinding
 class InputIdInfoFragment : BindFragment<FragmentEditIdInfoBinding>() {
     override val contentLayoutId: Int = R.layout.fragment_edit_id_info
 
-    private var listener: Listener? = null
+    private lateinit var listener: Listener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,7 +39,7 @@ class InputIdInfoFragment : BindFragment<FragmentEditIdInfoBinding>() {
             it?.let { toast(it) }
         })
         vm.proceedEvent.observe(this, Observer {
-            it?.let { listener?.onProceed(it) }
+            it?.let { listener.onProceed(it) }
         })
         vm.ocrEvent.observe(this, Observer {
             binding.executePendingBindings()
@@ -53,9 +53,9 @@ class InputIdInfoFragment : BindFragment<FragmentEditIdInfoBinding>() {
         })
         vm.ocrProcessing.observe(this, Observer {
             it?.let {
-                if (it){
+                if (it) {
                     (activity as? BaseCompatActivity)?.showLoadingDialog()
-                }else{
+                } else {
                     (activity as? BaseCompatActivity)?.hideLoadingDialog()
                 }
             }

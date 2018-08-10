@@ -1,7 +1,6 @@
 package io.wexchain.dcc
 
 import io.reactivex.Single
-import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.dccchainservice.ScfApi
 import io.wexchain.dccchainservice.domain.Result
 import retrofit2.Response
