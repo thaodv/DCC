@@ -8,12 +8,13 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
-import io.wexchain.android.common.SingleLiveEvent
-import io.wexchain.android.common.filter
-import io.wexchain.android.common.observing
-import io.wexchain.android.common.zipLiveData
+import io.wexchain.android.common.*
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.trans.activity.Public2PrivateActivity
 import io.wexchain.android.dcc.tools.AutoLoadLiveData
+import io.wexchain.android.dcc.tools.SharedPreferenceUtil
+import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
 import java.util.concurrent.TimeUnit
@@ -88,8 +89,17 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
         val agent = assetsRepository.getDigitalCurrencyAgent(dc)
         fetchDisposable = Single.just(pending)
                 .flatMap {
-                    val pl = pending.value
+                    var pl =   (pending.value ?: emptyList()).toMutableList()
                     val timer = Single.timer(30, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                    if (!(pl != null && pl.isNotEmpty())) {
+                        if (dc.chain == Chain.publicEthChain) {//公链
+                            val eth = SharedPreferenceUtil.get(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING) as? EthsTransaction
+                            if (null != eth) {
+                               pl.add(0, eth)
+                                App.get().assetsRepository.pushPendingTx(eth)
+                            }
+                    }}
+
                     if (pl != null && pl.isNotEmpty()) {
                         Single
                                 .zip(pl.map {
@@ -107,10 +117,10 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
                                             }
                                 }.map {
                                     if (hol != null && !hol!!.isEmpty()) {
-                                        for (i in hol!!) {
-                                            assetsRepository.removePendingTx(i.txId, i.nonce)
-                                        }
+                                    for (i in hol!!) {
+                                        assetsRepository.removePendingTx(i.txId, i.nonce)
                                     }
+                                }
                                     /*  val addr = address
                                       assetsRepository.getDigitalCurrencyAgent(dc)
                                           .listTransactionsOf(addr, 0, Long.MAX_VALUE)
