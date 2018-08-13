@@ -2,7 +2,7 @@ pragma solidity ^0.4.2;
 import "../sysbase/OwnerNamed.sol";
 contract UserIpfsKeyHash is OwnerNamed{
 
-    mapping(address => bytes) public ipfsKeyHashMapping;
+    mapping(address => bytes) ipfsKeyHashMapping;
 
     uint256 IPFS_KEYHASH_MAXSIZE = 100;
 
@@ -51,6 +51,10 @@ contract UserIpfsKeyHash is OwnerNamed{
 
         delete ipfsKeyHashMapping[msg.sender];
         ipfsKeyDeleted(msg.sender);
+    }
+
+    function getIpfsKey() public returns(bytes ipfsKey){
+        return ipfsKeyHashMapping[msg.sender];
     }
 
 }
