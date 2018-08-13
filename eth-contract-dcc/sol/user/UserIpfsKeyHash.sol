@@ -2,7 +2,7 @@ pragma solidity ^0.4.2;
 
 contract UserIpfsKeyHash {
 
-    mapping(address => bytes) public ipfsKeyHashMapping;
+    mapping(address => bytes) ipfsKeyHashMapping;
 
     uint256 IPFS_KEYHASH_MAXSIZE = 100;
 
@@ -10,7 +10,7 @@ contract UserIpfsKeyHash {
     event ipfsKeyUpdated(address userAddress, bytes ipfsKeyHash);
     event ipfsKeyDeleted(address userAddress);
 
-    function putIpfsKey(bytes ipfsKeyHash) public  {
+    function putIpfsKey(bytes ipfsKeyHash) public {
         require(ipfsKeyHash.length > 0 && ipfsKeyHash.length < IPFS_KEYHASH_MAXSIZE);
         require(ipfsKeyHashMapping[msg.sender].length == 0);
 
@@ -18,7 +18,7 @@ contract UserIpfsKeyHash {
         ipfsKeyPut(msg.sender, ipfsKeyHash);
     }
 
-    function updateIpfsKey(bytes ipfsKeyHash) public  {
+    function updateIpfsKey(bytes ipfsKeyHash) public {
         require(ipfsKeyHash.length > 0 && ipfsKeyHash.length < IPFS_KEYHASH_MAXSIZE);
         require(ipfsKeyHashMapping[msg.sender].length != 0);
 
@@ -31,6 +31,10 @@ contract UserIpfsKeyHash {
 
         delete ipfsKeyHashMapping[msg.sender];
         ipfsKeyDeleted(msg.sender);
+    }
+
+    function getIpfsKey() public returns(bytes ipfsKey){
+        return ipfsKeyHashMapping[msg.sender];
     }
 
 }
