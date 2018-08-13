@@ -116,6 +116,9 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
                                 }
                             })
         }
+        binding.tvDataCloud.onClick {
+            navigateTo(OpenCloudActivity::class.java)
+        }
 
     }
 

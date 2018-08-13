@@ -8,7 +8,7 @@ import java.io.FileOutputStream
  *Created by liuyang on 2018/8/7.
  */
 
-fun ByteArray.writeToFile(filePath: String, fileName: String) {
+fun ByteArray.writeToFile(filePath: String, fileName: String): String? {
     var bos: BufferedOutputStream? = null
     var fos: FileOutputStream? = null
     val file: File?
@@ -21,8 +21,10 @@ fun ByteArray.writeToFile(filePath: String, fileName: String) {
         fos = FileOutputStream(file)
         bos = BufferedOutputStream(fos)
         bos.write(this)
+        return file.absolutePath
     } catch (e: Exception) {
         e.printStackTrace()
+        return null
     } finally {
         bos?.close()
         fos?.close()

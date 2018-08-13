@@ -129,6 +129,9 @@ interface ChainGateway {
         @Query("txHash") txHash: String
     ): Single<Result<List<LoanChainOrder>>>
 
+    @GET("contract/1/web3/ipfs_metadata")
+    fun getIpfsTokenAddress(): Single<Result<String>>
+
     companion object {
         const val BUSINESS_ID = "ID"
         const val BUSINESS_BANK_CARD = "BANK_CARD"

@@ -13,7 +13,6 @@ import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.fragment.InputIdInfoFragment
 import io.wexchain.android.dcc.fragment.LivenessDetectionFragment
 import io.wexchain.android.dcc.vm.domain.IdCardCertData
-import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException

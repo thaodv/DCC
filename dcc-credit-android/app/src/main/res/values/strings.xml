@@ -138,7 +138,7 @@
     <string name="address_book_informration">地址薄信息与钱包地址绑定，删除钱包地址或删除app将导致本地保存的地址薄信息丢失。请知悉！</string>
     <string name="click_here_to_passport">点击这里备份钱包</string>
     <string name="description_remove_passport">如果您还没有对钱包进行过备份，删除钱包可能会导致您的数字资产永远无法找回，请您自行检查钱包备份。</string>
-    <string name="remove_passport_description">删除钱包后,您只能通过导入钱包恢复当前钱包的使用,如果您未备份钱包,则无法继续使用当前钱包.强烈建议您在删除钱包之前备份钱包</string>
+    <string name="remove_passport_description">删除钱包后，您只能通过导入钱包恢复当前钱包的使用。如果您未备份钱包，则无法继续使用当前钱包，如果未开启云存储功能，本地数据不会自动恢复。强烈建议您在删除钱包之前备份钱包，将数据备份到云。</string>
     <string name="title_remove_passport">删除钱包</string>
     <string name="back_up_wallet">备份钱包</string>
     <string name="please_input_current_passport_password">请输入原钱包密码:</string>
@@ -458,6 +458,7 @@
     <string name="user_id_front">身份证正面照</string>
     <string name="user_id_back">身份证反面照</string>
     <string name="user_activity_photo">人像照片</string>
+    <string name="title_open_cloud">开启云存储</string>
 
 
 

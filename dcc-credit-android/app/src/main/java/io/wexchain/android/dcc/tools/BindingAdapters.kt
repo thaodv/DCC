@@ -1,14 +1,12 @@
 package io.wexchain.android.dcc.tools
 
 import android.databinding.BindingAdapter
-import android.graphics.drawable.AnimationDrawable
+import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
-import android.media.Image
 import android.net.Uri
 import android.support.annotation.DrawableRes
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.widget.RecyclerView
-import android.text.TextUtils
 import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.EditText
@@ -33,8 +31,8 @@ var View.visibleOrInvisible
 
 @BindingAdapter("imageRes")
 fun ImageView.setImageRes(
-    @DrawableRes
-    res: Int?
+        @DrawableRes
+        res: Int?
 ) {
     if (res == null || res == 0) {
         this.setImageDrawable(null)
@@ -47,7 +45,7 @@ fun ImageView.setImageRes(
 fun ImageView.setImageRawBytes(imageRawBytes: ByteArray?, errorRes: Drawable?) {
     if (imageRawBytes != null) {
         try {
-            val decoded = android.graphics.BitmapFactory.decodeByteArray(imageRawBytes, 0, imageRawBytes.size)
+            val decoded = BitmapFactory.decodeByteArray(imageRawBytes, 0, imageRawBytes.size)
             this.setImageBitmap(decoded)
         } catch (e: IllegalArgumentException) {
             this.setImageDrawable(errorRes)
@@ -57,15 +55,15 @@ fun ImageView.setImageRawBytes(imageRawBytes: ByteArray?, errorRes: Drawable?) {
     }
 }
 
-@BindingAdapter(value =["imageUrl", "errorRes"],requireAll = false)
+@BindingAdapter(value = ["imageUrl", "errorRes"], requireAll = false)
 fun setImageUrl(imageView: ImageView, url: String?, errorRes: Drawable?) {
     GlideApp.with(imageView).load(url)
-        .error(errorRes)
-        .into(imageView)
+            .error(errorRes)
+            .into(imageView)
 }
 
 @BindingAdapter("dataList")
-fun <T> RecyclerView.setDataList(dataList:List<T>?){
+fun <T> RecyclerView.setDataList(dataList: List<T>?) {
     (this.adapter as? ListAdapter<T, *>)?.submitList(dataList)
 }
 
@@ -74,11 +72,11 @@ fun View.setBackgroundUrl(url: String?) {
     val target = ViewBackgroundTarget(this)
     if (url.isNullOrBlank()) {
         GlideApp.with(this)
-            .clear(target)
+                .clear(target)
     } else {
         GlideApp.with(this)
-            .load(url)
-            .into(target)
+                .load(url)
+                .into(target)
     }
 }
 

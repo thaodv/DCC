@@ -30,7 +30,6 @@ import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.api.*
 import io.wexchain.digitalwallet.proxy.*
-import io.wexchain.ipfs.core.IpfsCore
 import zlc.season.rxdownload3.core.DownloadConfig
 import java.lang.ref.WeakReference
 import java.math.BigInteger
@@ -133,16 +132,16 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))
         ethplorerApi = networking.createApi(EthplorerApi::class.java, EthplorerApi.API_URL)
-        if (BuildConfig.DEBUG) {
+        publicRpc = if (BuildConfig.DEBUG) {
             val infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
-            publicRpc = EthsRpcAgent.by(infuraApi)
+            EthsRpcAgent.by(infuraApi)
         } else {
 //        val infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
 //        publicRpc = EthsRpcAgent.by(infuraApi)
 //            val customPublicJsonRpc = networking.createApi(EthJsonRpcApi::class.java, EthJsonRpcApi.PUBLIC_RPC_URL).getPrepared()
 //            publicRpc = EthsRpcAgent.by(customPublicJsonRpc)
             val wfJsonRpc = networking.createApi(EthJsonRpcApiWithAuth::class.java, EthJsonRpcApiWithAuth.RPC_URL)
-            publicRpc = EthsRpcAgent.by(wfJsonRpc)
+            EthsRpcAgent.by(wfJsonRpc)
         }
     }
 
@@ -151,7 +150,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         WxApiManager.init()
         initRxDownload()
         CrashHandler().init(context)
-//        IpfsCore.init("/ip4/10.65.100.49/tcp/5001")
+//        IpfsCore.init("/ip4/10.65.212.11/tcp/5001")
     }
 
     private fun buildAgent(dc: DigitalCurrency): Erc20Agent {

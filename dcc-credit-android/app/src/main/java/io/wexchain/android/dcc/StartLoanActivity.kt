@@ -168,7 +168,7 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
                 .doFinally {
                     hideLoadingDialog()
                 }
-                .subscribe({ _ ->
+                .subscribe({
                     toast("提交贷款申请成功")
                     navigateTo(LoanSubmitResultActivity::class.java)
                 }, {
