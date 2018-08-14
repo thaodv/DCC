@@ -432,6 +432,24 @@
             android:label="还币"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.MyInterestActivity"
+            android:label="DCC私链币生息1期"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.MyInterestDetailActivity"
+            android:label="币生息详情"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.BuyInterestActivity"
+            android:label="认购额度"
+            android:screenOrientation="portrait">
+        </activity>
+
+
+
     </application>
 
 </manifest>

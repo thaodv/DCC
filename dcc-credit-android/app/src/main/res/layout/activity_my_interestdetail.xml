@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="io.wexchain.android.dcc.MyCreditActivity"
+        >
+
+    <data>
+
+        <variable
+                name="asIdVm"
+                type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
+                />
+
+        <variable
+                name="asPersonalVm"
+                type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
+                />
+
+        <variable
+                name="asBankVm"
+                type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
+                />
+
+        <variable
+                name="asMobileVm"
+                type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
+                />
+    </data>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+        >
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/include_toolbar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_bluell"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="27dp"
+                android:gravity="center"
+                android:text="在投本金（DCC）"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_capital"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="1,000"
+                android:textColor="@color/white"
+                android:textSize="31sp" />
+
+            <TextView
+                android:id="@+id/tv_raisedata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="募集中"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/white"
+                android:layout_marginBottom="15dp"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:background="#6867CD"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_lable_profit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="待收收益（DCC）"
+                    android:textColor="@color/white50"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_profit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:text="+100.00"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="1sp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="7dp"
+                android:layout_marginTop="7dp"
+                android:background="@color/white50">
+
+            </View>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_lable_pendding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="待收本息合计（DCC）"
+                    android:textColor="@color/white50"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_pendding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:text="1100.00"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+            <TextView
+                android:id="@+id/tv_ordername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+
+                android:text="DCC分期2018060728"
+                android:textColor="@color/FF4A4A4A"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/iv_right"
+                android:layout_width="10dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/rightarrow" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#EFEFEF"></View>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                 
+                android:text="预期年化收益"
+                android:textColor="@color/FF4A4A4A"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_exprofit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                 
+                android:layout_marginRight="10dp"
+                android:text="10.50%"
+                android:textColor="@color/upgrade_title_color"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#EFEFEF"></View>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                 
+                android:text="管理期限"
+                android:textColor="@color/FF4A4A4A"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                 
+                android:layout_marginRight="10dp"
+                android:text="28天"
+                android:textColor="@color/upgrade_title_color"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#EFEFEF"></View>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                 
+                android:text="收益方式"
+                android:textColor="@color/FF4A4A4A"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_profitstatu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                 
+                android:layout_marginRight="10dp"
+                android:text="到期还本付息"
+                android:textColor="@color/upgrade_title_color"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#EFEFEF"></View>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                 
+                android:text="起息日期"
+                android:textColor="@color/FF4A4A4A"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_startprotime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                 
+                android:layout_marginRight="10dp"
+                android:text="2018-04-26"
+                android:textColor="@color/upgrade_title_color"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#EFEFEF"></View>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                 
+                android:text="到期日期"
+                android:textColor="@color/FF4A4A4A"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_endtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                 
+                android:layout_marginRight="10dp"
+                android:text="2018-04-26"
+                android:textColor="@color/upgrade_title_color"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#EFEFEF"></View>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:layout_alignParentBottom="true"
+            android:background="#FFF8F8FF"></View>
+
+
+
+
+    </LinearLayout>
+
+</ScrollView>
+</layout>

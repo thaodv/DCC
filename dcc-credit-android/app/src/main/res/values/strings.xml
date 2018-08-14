@@ -62,6 +62,7 @@
     <string name="choose_picture_from_gallery">相册</string>
     <string name="import_and_enable_passport">导入已有钱包</string>
     <string name="communication_log_submit_hint">温馨提示\n\n1、请使用本人实名制手机号进行认证\n2、服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3、点击“提交”按钮会收到运营商的通知短信，无需回复\n4、如忘记服务密码,请登录运营商官网找回服务密码</string>
+    <string name="buyinterest_log_submit_hint">温馨提示\n\n1、请使用本人实名制手机号进行认证\n2、服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3、点击“提交”按钮会收到运营商的通知短信，无需回复\n4、如忘记服务密码,请登录运营商官网找回服务密码</string>
     <string name="please_input_phone_num">请输入手机号</string>
     <string name="bank_registered_phone_num">银行预留手机号</string>
     <string name="please_input_bank_card_no">请输入银行卡号</string>
@@ -432,7 +433,7 @@
     <string name="across_trans_warning_tip">温馨提示:</string>
     <string name="across_trans_warning_tips1">预计<font color="#ED190F">1分钟内</font>到账\n<font color="#ED190F">结果返回前，请不要重复转移DCC</font></string>
     <string name="across_trans_warning_tips2"><font color="#ED190F">结果返回前，请不要重复转移DCC</font>\n公链转私链的交易记录需要6个区块的生成时间进行确认。</string>
-
+    <string name="across_trans_warning_tips3"><font color="#ED190F">• 币生息只能使用私链上的DCC；</font>\n• 通过跨链交易将公链上的DCC转移到私链上，即可购买币生息产品。公链转到私链 ></string>
     <string name="trans_sure">交易确认</string>
     <string name="trans_orientation">交易方向：</string>
     <string name="max_pay_money">最高支付金额：</string>
