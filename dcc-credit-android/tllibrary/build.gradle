@@ -38,9 +38,9 @@ dependencies {
 
     implementation "com.android.support:appcompat-v7:$support_lib_version"
     implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
-   // testImplementation 'junit:junit:4.12'
-    //androidTestImplementation 'com.android.support.test:runner:1.1.0'
-   // androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     //retrofit2 + rxjava2
 
@@ -54,7 +54,7 @@ dependencies {
     api 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.0'
 
     //we3j
-//    implementation 'org.web3j:core-android:2.2.1'
+    //    implementation 'org.web3j:core-android:2.2.1'
     //replace with juzix version
     api('juzix:core-android:2.2.1') {
         exclude group: 'io.reactivex', module: 'rxjava'
