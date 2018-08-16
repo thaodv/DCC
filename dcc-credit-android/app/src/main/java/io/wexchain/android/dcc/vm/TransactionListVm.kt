@@ -16,6 +16,7 @@ import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.trans.activity.Public2PrivateActivity
 import io.wexchain.android.dcc.tools.AutoLoadLiveData
 import io.wexchain.android.dcc.tools.SharedPreferenceUtil
+import io.wexchain.android.dcc.view.dialog.WaitTransDialog
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
@@ -73,6 +74,8 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
             }
             .toFlowable()
     }
+
+
     @MainThread
     fun historyfilter(){
 
@@ -93,21 +96,8 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
         }
         .observing(
             doOnChange = {
-                historyfilter()
-               //Log.e("sssssssssssssss","pendd change")
-               //Log.e("sssssssssssssss","pendd change reload")
+               // historyfilter()
                 history.reload()
-
-               /* if(isload){
-                    if (it != pv) {
-                       //Log.e("sssssssssssssss","pendd change reload")
-                        history.reload()
-                    }
-                }else{
-                    isload=true
-                   //Log.e("sssssssssssssss","pendd change unreload")
-                }*/
-
             },
             doOnActive = {
                 fetchPendingEnabled = true
@@ -145,9 +135,10 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
 
     }
     var isload: Boolean = true
+
     private fun startFetchPendingList() {
         val agent = assetsRepository.getDigitalCurrencyAgent(dc)
-        var pl = (pending.value ?: emptyList()).toMutableList()
+      /*  var pl = (pending.value ?: emptyList()).toMutableList()
         if (!(pl != null && pl.isNotEmpty())) {
             if (dc.chain == Chain.publicEthChain && isFirst) {//公链
                 val eth = SharedPreferenceUtil.get(
@@ -160,14 +151,14 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
                         assetsRepository.pushPendingTx(eth)
                         isFirst=false
                         isload=false
-                       //Log.e("sssssssssssssss","加内存")
+                        //Log.e("sssssssssssssss","加内存")
                     }
-                    /*isFirst = false
+                    isFirst = false
                     pl.add(0, eth)
-                    assetsRepository.pushPendingTx(eth)*/
+                    assetsRepository.pushPendingTx(eth)
                 }
             }
-        }
+        }*/
         fetchDisposable = Single.just(pending)
             .flatMap {
                 val timer = Single.timer(30, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
@@ -179,7 +170,20 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
                     }
                 }
                 var p2 = (pending.value ?: emptyList()).toMutableList()
-
+                if (dc.chain == Chain.publicEthChain && isFirst&&p2 != null && p2.isNotEmpty()) {//公链
+                    p2.map {
+                        val txhash = it.txId
+                        val nn = it.nonce
+                        agent.getNonce(App.get().passportRepository.getCurrentPassport()!!.address).observeOn(AndroidSchedulers.mainThread()).subscribe({
+                            if (it > nn) {
+                                // toCreateTransaction()
+                                assetsRepository.removePendingTx(txhash, nn)
+                                pendingTxDoneEvent.value = txhash
+                                history.reload()
+                            }
+                        }, {})
+                    }
+                     }
                 if (p2 != null && p2.isNotEmpty()) {
                     Single
                         .zip(p2.map {
@@ -187,19 +191,13 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
                             val nn = it.nonce
                             agent.transactionReceipt(txhash)
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .doFinally {
-                                  //  historyfilter()
-                                }
+
                                 .doOnSuccess {
-                                    /*   *//* val type=it.logs.get( )
-                                                if(it.logs.get("type")){}*/
                                     val blockNumber = it.blockNumber
-                                    if (blockNumber != null && !!blockNumber.equals("") && !!blockNumber.contains(
-                                            "None"
-                                        )
-                                    ) {
+                                    if (blockNumber != null && !blockNumber.equals("") && !blockNumber.contains("None")) {
                                         assetsRepository.removePendingTx(txhash, nn)
                                         pendingTxDoneEvent.value = txhash
+                                        history.reload()
                                     }
                                 }
                                 .map { txhash }
@@ -207,18 +205,6 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
                                     ""
                                 }
                         }.map {
-
-                            /*  val addr = address
-                              assetsRepository.getDigitalCurrencyAgent(dc)
-                                  .listTransactionsOf(addr, 0, Long.MAX_VALUE)
-                                  .observeOn(AndroidSchedulers.mainThread())
-                                  .doOnSuccess {
-                                      if (it!=null&&!it.isEmpty()){
-                                          for (i in it){
-                                              assetsRepository.removePendingTx(i.txId,i.nonce)
-                                          }
-                                      }
-                                  }*/
                             it
                         }) {
                             it

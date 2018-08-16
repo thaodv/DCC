@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.tencent.mm.opensdk.utils.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
@@ -87,6 +88,25 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
     }
 
     private fun initVm() {
+        if (getDc().chain == Chain.publicEthChain) {//公链
+            val eth = SharedPreferenceUtil.get(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING) as? EthsTransaction
+
+            if (null == eth) {
+                //toCreateTransaction()
+            } else {
+                val p = App.get().passportRepository.getCurrentPassport()!!
+                var agent = App.get().assetsRepository.getDigitalCurrencyAgent(getDc())
+                agent.getNonce(p.address).observeOn(AndroidSchedulers.mainThread()).subscribe({
+                    if (it > eth.nonce) {
+                       // toCreateTransaction()
+                        App.get().assetsRepository.removePendingTx(eth.txId,eth.nonce)
+                    } else {
+                        App.get().assetsRepository.pushPendingTx(eth)
+                    }
+                }, {})
+            }
+        }
+
         val dc = getDc()
         val address = App.get().passportRepository.currPassport.value!!.address
         val vm = ViewModelProviders.of(this).get(address, DigitalCurrencyVm::class.java).apply {
@@ -150,6 +170,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
         })
         binding.sectionTransactions!!.rvTransactions.adapter = bottomMoreItemsAdapter
         txListVm.list.observe(this, Observer {
+            Log.e("sssssssssssssss","txListVm "+it?.size)
             val list3 = it?.subList(0, minOf(it.size, 3)) ?: emptyList()
             adapter.setList(list3)
             txListVm.empty.set(list3.isEmpty())
