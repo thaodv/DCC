@@ -12,7 +12,6 @@ import io.wexchain.digitalwallet.api.sendRawTransaction
 import io.wexchain.digitalwallet.api.transactionCount
 import io.wexchain.digitalwallet.api.transactionReceipt
 import io.wexchain.digitalwallet.util.gweiTowei
-import io.wexchain.digitalwallet.util.weiToGwei
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

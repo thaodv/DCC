@@ -33,7 +33,7 @@ contract UserIpfsKeyHash {
         ipfsKeyDeleted(msg.sender);
     }
 
-    function getIpfsKey() public returns(bytes ipfsKey){
+    function getIpfsKey() public view returns(bytes ipfsKey){
         return ipfsKeyHashMapping[msg.sender];
     }
 
