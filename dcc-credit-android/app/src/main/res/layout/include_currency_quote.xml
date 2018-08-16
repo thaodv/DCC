@@ -47,7 +47,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="120dp"
             android:orientation="horizontal"
             android:padding="@dimen/content_padding_horizontal"
             android:visibility="@{coinDetail!=null?View.VISIBLE:View.GONE}"
@@ -67,7 +67,7 @@
                     android:layout_weight="1"
                     android:text="@{StringUtils.getPrice(coinDetail.price,4)}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:visibility="@{coinDetail!=null?View.VISIBLE:View.GONE}"
                     tools:text="3253.34"/>
 
@@ -134,7 +134,6 @@
                         tools:text="100"/>
 
                 </LinearLayout>
-
 
             </LinearLayout>
 
