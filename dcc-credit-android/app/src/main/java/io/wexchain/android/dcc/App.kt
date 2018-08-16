@@ -12,6 +12,7 @@ import io.wexchain.android.common.BaseApplication
 import io.wexchain.android.common.Pop
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.network.CommonApi
+import io.wexchain.android.dcc.network.ContractApi
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.PassportRepository
 import io.wexchain.android.dcc.repo.ScfTokenManager
@@ -49,6 +50,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
     //our services
     lateinit var chainGateway: ChainGateway
+    lateinit var contractApi: ContractApi
     lateinit var certApi: CertApi
     lateinit var chainFrontEndApi: ChainFrontEndApi
     lateinit var privateChainApi: PrivateChainApi
@@ -122,13 +124,14 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         this.networking = networking
         this.commonApi = networking.createApi(CommonApi::class.java, "https://www.google.com")//url is unused
 
-        chainGateway = networking.createApi(ChainGateway::class.java, BuildConfig.GATEWAY_BASE_URL)
+        chainGateway = networking.createApi(ChainGateway::class.java, "http://10.65.209.13:9511/passport-gateway/restful/")
         certApi = networking.createApi(CertApi::class.java, BuildConfig.CHAIN_FUNC_URL)
         chainFrontEndApi = networking.createApi(ChainFrontEndApi::class.java, BuildConfig.CHAIN_FRONTEND_URL)
         privateChainApi = networking.createApi(PrivateChainApi::class.java, BuildConfig.CHAIN_EXPLORER_URL)
         marketingApi = networking.createApi(MarketingApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
         scfApi = networking.createApi(ScfApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
         coinMarketCapApi = networking.createApi(CoinMarketCapApi::class.java, BuildConfig.COIN_MARKET)
+        contractApi = networking.createApi(ContractApi::class.java, ContractApi.BASE_URL)
 
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))
         ethplorerApi = networking.createApi(EthplorerApi::class.java, EthplorerApi.API_URL)
