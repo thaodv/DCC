@@ -88,7 +88,14 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
                                                 BigInteger("1"),
                                                 fpp,
                                                 gasLimit
-                                        ).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                                        ).observeOn(AndroidSchedulers.mainThread())
+                                            .doOnSubscribe {
+                                                showLoadingDialog()
+                                            }
+                                            .doFinally {
+                                                hideLoadingDialog()
+                                            }
+                                            .subscribe(
                                                 {
                                                     //  AlertDialog.
                                                     toast("请求成功")
