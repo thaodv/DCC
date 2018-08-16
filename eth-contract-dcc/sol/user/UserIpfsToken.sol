@@ -43,7 +43,7 @@ contract UserIpfsToken {
         ipfsTokenDeleted(msg.sender, contractAddress);
     }
 
-    function getIpfsToken(address contractAddress) public constant returns (
+    function getIpfsToken(address contractAddress) public view returns (
         address _userAddress,
         address _contractAddress,
         uint256 _version,
