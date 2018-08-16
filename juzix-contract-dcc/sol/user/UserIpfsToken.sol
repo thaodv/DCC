@@ -58,8 +58,8 @@ contract UserIpfsToken is OwnerNamed{
             throw;
         }
 
-        ipfsTokens[msg.sender][contractAddress] = IpfsToken(nonce, token, digest1, digest2);
-        ipfsTokenPut(msg.sender, contractAddress, nonce, token, digest1, digest2);
+        ipfsTokens[msg.sender][contractAddress] = IpfsToken(version,cipher,nonce, token, digest1, digest2);
+        ipfsTokenPut(msg.sender, contractAddress, version,cipher,nonce, token, digest1, digest2);
     }
 
     function deleteIpfsToken(address contractAddress) public {

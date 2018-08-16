@@ -53,7 +53,7 @@ contract UserIpfsKeyHash is OwnerNamed{
         ipfsKeyDeleted(msg.sender);
     }
 
-    function getIpfsKey() public returns(bytes ipfsKey){
+    function getIpfsKey() public constant returns(bytes ipfsKey){
         return ipfsKeyHashMapping[msg.sender];
     }
 
