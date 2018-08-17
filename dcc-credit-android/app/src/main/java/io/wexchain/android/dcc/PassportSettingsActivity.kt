@@ -18,6 +18,7 @@ import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
+import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.tools.appContext
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog

@@ -384,12 +384,17 @@
             android:label="@string/repayment_process"
             android:screenOrientation="portrait" />
         <activity
-            android:name="io.wexchain.android.dcc.OpenCloudActivity"
+            android:name="io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity"
             android:label="@string/title_open_cloud"
             android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.ResetPasswordActivity"
             android:label="重置密码"
+            android:screenOrientation="portrait" />
+        <activity android:name="io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity"
+            android:label="我的云存储"
+            android:screenOrientation="portrait"/>
+        <activity android:name="io.wexchain.android.dcc.modules.ipfs.activity.CloudAddressActivity"
             android:screenOrientation="portrait" />
     </application>
 

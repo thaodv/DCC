@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/include_toolbar" />
+
+    <LinearLayout
+        android:id="@+id/ll_tag1"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/item_decoration_title_background"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="可同步数据"
+            android:textColor="@color/FF4A4A4A"
+            android:textSize="14sp" />
+
+        <ImageButton
+            android:id="@+id/cloud_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_question2" />
+    </LinearLayout>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cloud_item1"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:layout_constraintTop_toBottomOf="@id/ll_tag1">
+
+        <ImageButton
+            android:id="@+id/cloud_item1_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:src="@drawable/cloud_item"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cloud_item1_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="实名认证数据"
+            android:textColor="@color/FF4A4A4A"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toRightOf="@id/cloud_item1_tag"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cloud_item1_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="130dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="17M"
+            android:textColor="@color/text_min"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cloud_item1_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="未选中"
+            android:textColor="@color/text_min"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cloud_item1_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="5dp"
+            android:text="可上传"
+            android:textColor="@color/text_min"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toRightOf="@id/cloud_item1_tag"
+            app:layout_constraintTop_toBottomOf="@id/cloud_item1_name" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        style="@style/DividerHorizontal"
+        app:layout_constraintTop_toBottomOf="@id/cloud_item1" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cloud_item2"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:layout_constraintTop_toBottomOf="@id/cloud_item1">
+
+        <ImageButton
+            android:id="@+id/cloud_item2_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:src="@drawable/cloud_item"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cloud_item2_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="银行卡认证数据 "
+            android:textColor="@color/FF4A4A4A"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toRightOf="@id/cloud_item2_tag"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cloud_item2_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="130dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="17M"
+            android:textColor="@color/text_min"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cloud_item2_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="未选中"
+            android:textColor="@color/text_min"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cloud_item2_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="5dp"
+            android:text="可下载"
+            android:textColor="@color/text_min"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toRightOf="@id/cloud_item2_tag"
+            app:layout_constraintTop_toBottomOf="@id/cloud_item2_name" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        style="@style/DividerHorizontal"
+        app:layout_constraintTop_toBottomOf="@id/cloud_item2" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cloud_item3"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:layout_constraintTop_toBottomOf="@id/cloud_item2">
+
+        <ImageButton
+            android:id="@+id/cloud_item3_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:src="@drawable/cloud_item"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cloud_item3_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="运营商通讯记录 "
+            android:textColor="@color/FF4A4A4A"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toRightOf="@id/cloud_item3_tag"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cloud_item3_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="130dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="17M"
+            android:textColor="@color/text_min"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cloud_item3_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="未选中"
+            android:textColor="@color/text_min"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cloud_item3_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="5dp"
+            android:text="无可上传下载数据，建议重新认证"
+            android:textColor="@color/text_min"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toRightOf="@id/cloud_item3_tag"
+            app:layout_constraintTop_toBottomOf="@id/cloud_item3_name" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:id="@+id/cloud_bottom_tag"
+        style="@style/DividerHorizontal"
+        app:layout_constraintTop_toBottomOf="@id/cloud_item3" />
+
+    <Button
+        android:textSize="15sp"
+        android:id="@+id/cloud_sync"
+        style="@style/Widget.AppCompat.Button.Dcc.Full"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="40dp"
+        android:text="开始同步"
+        app:layout_constraintTop_toBottomOf="@id/cloud_bottom_tag" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="14sp"
+        android:text="更换云存储密码"
+        android:textColor="@color/blue_magenta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cloud_sync" />
+
+
+</android.support.constraint.ConstraintLayout>

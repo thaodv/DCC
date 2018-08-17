@@ -56,9 +56,10 @@ object Erc20Helper {
         )
     }
 
-    fun getIpfsKey(): EthJsonTxScratch {
+    fun getIpfsKey(it: String,address: String): EthJsonTxScratch {
         return EthJsonTxScratch(
-                to = "0x50929afe6bfe2911222332bbf96aeaca055443b2",
+                to = it,
+                from = address,
                 data = FunctionEncoder.encode(
                         Function("getIpfsKey",
                                 Arrays.asList<Type<*>>(),

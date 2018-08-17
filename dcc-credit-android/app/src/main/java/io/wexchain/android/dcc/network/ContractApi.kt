@@ -3,7 +3,6 @@ package io.wexchain.android.dcc.network
 import io.reactivex.Single
 import io.wexchain.dcc.BuildConfig
 import io.wexchain.dccchainservice.domain.Result
-import io.wexchain.digitalwallet.api.EthJsonRpcApiWithAuth
 import io.wexchain.digitalwallet.api.domain.EthJsonRpcRequestBody
 import io.wexchain.digitalwallet.api.domain.EthJsonRpcResponse
 import io.wexchain.digitalwallet.api.domain.EthJsonTxReceipt
@@ -23,37 +22,22 @@ interface ContractApi {
             @Body body: EthJsonRpcRequestBody<Any>
     ): Single<EthJsonRpcResponse<String>>
 
-
     @POST("contract/1/web3/{business}")
-    @Headers("Content-Type: application/json", "Accept: application/json")
+    @Headers("Content-Type: application/json", "Accept: application/json","parityrpc:1")
     fun postSendRawTransaction(
             @Path("business") business: String,
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
-    @GET("contract/1/web3/{business}/eth_getTransactionCount")
-    fun getTransactionCount(
-            @Path("business") business: String,
-            @Query("params") params: String,
-            @Query("token") token: String = InfuraApiToken
-    ): Single<EthJsonRpcResponse<String>>
-
-    @Headers("parityrpc:1")
-    @POST("contract/1/web3/{business}/")
+    @Headers("Content-Type: application/json", "Accept: application/json","parityrpc:1")
+    @POST("contract/1/web3/{business}")
     fun getTransactionCount(
             @Path("business") business: String,
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
-    @GET("contract/1/web3/{business}/eth_getTransactionReceipt")
-    fun getTransactionReceipt(
-            @Path("business") business: String,
-            @Query("params") params: String,
-            @Query("token") token: String = InfuraApiToken
-    ): Single<EthJsonRpcResponse<EthJsonTxReceipt>>
-
-    @Headers("parityrpc:1")
-    @POST("contract/1/web3/{business}/")
+    @Headers("Content-Type: application/json", "Accept: application/json","parityrpc:1")
+    @POST("contract/1/web3/{business}")
     fun getTransactionReceipt(
             @Path("business") business: String,
             @Body body: EthJsonRpcRequestBody<String>
@@ -72,35 +56,18 @@ interface ContractApi {
 
         internal val idAtomic = AtomicLong(0L)
 
-        internal fun encodeJsonParamArray(vararg params: String): String {
-            return JSONArray().apply {
-                params.forEach {
-                    this.put(it)
-                }
-            }.toString()
-        }
-
     }
 }
 
-fun ContractApi.sendRawTransaction(business:String,rawTransaction: String): Single<String> {
-    return this.postSendRawTransaction(business,EthJsonRpcRequestBody(method = "eth_sendRawTransaction", params = listOf(rawTransaction), id = ContractApi.idAtomic.incrementAndGet()))
+fun ContractApi.sendRawTransaction(business: String, rawTransaction: String): Single<String> {
+    return this.postSendRawTransaction(business,
+            EthJsonRpcRequestBody(method = "eth_sendRawTransaction",
+                    params = listOf(rawTransaction),
+                    id = ContractApi.idAtomic.incrementAndGet()))
             .map { it.result!! }
 }
 
-/*fun ContractApi.transactionReceipt(business:String,txId: String): Single<EthJsonTxReceipt> {
-    return this.getTransactionReceipt(business,ContractApi.encodeJsonParamArray(txId))
-            .flatMap {
-                if (it.result != null) Single.just(it.result) else Single.error(IllegalStateException("No receipt yet"))
-            }
-}*/
-
-/*fun ContractApi.transactionCount(business:String,address: String, tag: String = "latest"): Single<String> {
-    return this.getTransactionCount(business,ContractApi.encodeJsonParamArray(address, tag))
-            .map { it.result!! }
-}*/
-
-fun ContractApi.transactionCount(business:String,address: String, tag: String = "latest"): Single<String> {
+fun ContractApi.transactionCount(business: String, address: String, tag: String = "latest"): Single<String> {
     return this.getTransactionCount(
             business,
             EthJsonRpcRequestBody(
@@ -111,7 +78,7 @@ fun ContractApi.transactionCount(business:String,address: String, tag: String = 
             .map { it.result!! }
 }
 
-fun ContractApi.transactionReceipt(business:String,txId: String): Single<EthJsonTxReceipt> {
+fun ContractApi.transactionReceipt(business: String, txId: String): Single<EthJsonTxReceipt> {
     return this.getTransactionReceipt(
             business,
             EthJsonRpcRequestBody(
