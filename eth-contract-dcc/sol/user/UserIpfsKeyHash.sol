@@ -28,7 +28,6 @@ contract UserIpfsKeyHash {
 
     function deleteIpfsKey() public {
         require(ipfsKeyHashMapping[msg.sender].length != 0);
-
         delete ipfsKeyHashMapping[msg.sender];
         ipfsKeyDeleted(msg.sender);
     }
