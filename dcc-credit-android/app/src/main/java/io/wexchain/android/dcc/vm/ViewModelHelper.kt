@@ -369,7 +369,7 @@ object ViewModelHelper {
 
     @JvmStatic
     fun Context.loanPeriodText(record: LoanRecord?): CharSequence? {
-        record ?: return null
+        record ?: return ""
         return when (record.status) {
             LoanStatus.INVALID,
             LoanStatus.CREATED,
@@ -383,7 +383,11 @@ object ViewModelHelper {
             LoanStatus.REPAID -> if (record.repayDate != null && record.deliverDate != null) {
                 getString(R.string.period_format_yyyymmdd_dot, record.deliverDate, record.repayDate)
             } else {
-                "${record.borrowDuration}${record.durationUnit.str()}"
+                if (null == record.durationUnit) {
+                    "${record.borrowDuration}天"
+                } else {
+                    "${record.borrowDuration}${record.durationUnit.str()}"
+                }
             }
         }
     }
@@ -391,7 +395,7 @@ object ViewModelHelper {
 
     @JvmStatic
     fun Context.loanAmountText(record: LoanRecord?): CharSequence? {
-        record ?: return null
+        record ?: return ""
         return "${record.amount.toPlainString()}${record.currency.symbol}"
     }
 

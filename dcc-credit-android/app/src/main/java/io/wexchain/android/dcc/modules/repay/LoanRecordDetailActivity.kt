@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.modules.repay
 
 import android.os.Bundle
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.Pop
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.postOnMainThread
@@ -103,7 +104,7 @@ class LoanRecordDetailActivity : BindActivity<ActivityLoanRecordDetailBinding>()
                 .doFinally {
                     hideLoadingDialog()
                 }
-                .subscribe { it ->
+                .subscribe({
                     val tmp = it
                     binding.order = tmp
                     /*if ((tmp.status == LoanStatus.RECEIVIED || tmp.status == LoanStatus.DELIVERED) && tmp.earlyRepayAvailable && tmp.allowRepayPermit) {
@@ -111,6 +112,8 @@ class LoanRecordDetailActivity : BindActivity<ActivityLoanRecordDetailBinding>()
                     } else {
                         binding.tvRepaymentProcess.visibility = View.INVISIBLE
                     }*/
-                }
+                }, {
+                    Pop.toast(it.message ?: "系统错误", this)
+                })
     }
 }
