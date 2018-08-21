@@ -19,16 +19,32 @@ object AES256 {
     /**
      * 将key转换SHA-256
      */
-    private fun tohash256Deal(datastr: ByteArray): ByteArray {
+    fun tohash256Deal(datastr: ByteArray): ByteArray {
         val digester = MessageDigest.getInstance(HASH_ALGORITHM)
         digester.update(datastr)
         return digester.digest()
     }
 
     /**
+     * byte数组转换为16进制字符串
+     */
+    fun bytes2Hex(bts: ByteArray): String {
+        var des = ""
+        var tmp: String?
+        for (i in bts.indices) {
+            tmp = Integer.toHexString(bts[i].toInt() and 0xFF)
+            if (tmp!!.length == 1) {
+                des += "0"
+            }
+            des += tmp
+        }
+        return des
+    }
+
+    /**
      * 生成Key
      */
-   private fun toKey(key: ByteArray): Key {
+    private fun toKey(key: ByteArray): Key {
         return SecretKeySpec(key, KEY_ALGORITHM)
     }
 

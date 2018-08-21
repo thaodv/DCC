@@ -10,9 +10,9 @@
         android:id="@+id/tv_tips"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="@dimen/content_padding_horizontal"
         android:layout_marginRight="@dimen/content_padding_horizontal"
+        android:layout_marginTop="15dp"
         android:text="如忘记密码或想更换密码，您可以重置旧的密码并设置新的密码。\n\n
 
 重置密码后存储在云端的数据会被全部删除，您需要设置新的密码以开启云存储功能，请谨慎操作。"
@@ -21,6 +21,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <Button
+        android:id="@+id/cloud_reset"
         style="@style/Widget.AppCompat.Button.Dcc.Full"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

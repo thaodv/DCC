@@ -23,20 +23,20 @@ interface ContractApi {
     ): Single<EthJsonRpcResponse<String>>
 
     @POST("contract/1/web3/{business}")
-    @Headers("Content-Type: application/json", "Accept: application/json","parityrpc:1")
+    @Headers("Content-Type: application/json", "Accept: application/json")
     fun postSendRawTransaction(
             @Path("business") business: String,
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
-    @Headers("Content-Type: application/json", "Accept: application/json","parityrpc:1")
+    @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("contract/1/web3/{business}")
     fun getTransactionCount(
             @Path("business") business: String,
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
-    @Headers("Content-Type: application/json", "Accept: application/json","parityrpc:1")
+    @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("contract/1/web3/{business}")
     fun getTransactionReceipt(
             @Path("business") business: String,

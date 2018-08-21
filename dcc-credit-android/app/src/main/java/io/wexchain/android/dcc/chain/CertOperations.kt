@@ -657,7 +657,7 @@ object CertOperations {
         val certBankExpired = LongPref("certBankExpired", -1L)
         val certBankCardData = StringPref("certBankCardData")
 
-        //communication log
+        //communication Log
         val certCmLogOrderId = LongPref("certCmLogOrderId_v2", INVALID_CERT_ORDER_ID)
         val certCmLogState = StringPref("certCmLogState")
         val certCmLogPhoneNo = StringPref("certCmLogPhoneNo")

@@ -34,7 +34,7 @@ class CrashHandler : Thread.UncaughtExceptionHandler {
         if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
             return
         }
-        val dir = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress" + File.separator + "log")
+        val dir = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress" + File.separator + "Log")
         if (!dir.exists()) {
             dir.mkdirs()
         }

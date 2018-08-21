@@ -16,6 +16,8 @@ import java.io.File
 object IpfsCore {
 
     private lateinit var ipfs: IPFS
+//    val GSON by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { Gson() }
+
 
     /**
      * Application init

@@ -13,14 +13,12 @@ object ZipUtil {
      * 压缩方法
      * @param src 需要压缩的文件的绝对路径
      * @param archive 输出压缩包的路径名字
-     * @param comment 压缩描述
      */
-    fun zip(archive: String, comment: String,vararg src: String) {
+    fun zip(archive: String, vararg src: String) {
         val f = FileOutputStream(archive)
         val csum = CheckedOutputStream(f, CRC32())
         val zos = ZipOutputStream(csum)
         val out = BufferedOutputStream(zos)
-        zos.setComment(comment)
         zos.setMethod(ZipOutputStream.DEFLATED)
         zos.setLevel(Deflater.BEST_COMPRESSION)
         for (i in src.indices) {

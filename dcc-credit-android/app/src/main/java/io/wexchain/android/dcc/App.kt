@@ -19,7 +19,7 @@ import io.wexchain.android.dcc.repo.ScfTokenManager
 import io.wexchain.android.dcc.repo.db.PassportDatabase
 import io.wexchain.android.dcc.tools.CrashHandler
 import io.wexchain.android.dcc.tools.JuzixData
-import io.wexchain.android.dcc.tools.log
+import io.wexchain.android.dcc.tools.Log
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.dcc.BuildConfig
@@ -200,7 +200,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
     }
 
     override fun uncaughtException(thread: Thread, ex: Throwable) {
-        Thread(Runnable { log("currentThread:" + Thread.currentThread() + "---thread:" + thread.id + "---ex:" + ex.toString()) }).start()
+        Thread(Runnable { Log("currentThread:" + Thread.currentThread() + "---thread:" + thread.id + "---ex:" + ex.toString()) }).start()
         SystemClock.sleep(2000)
         android.os.Process.killProcess(android.os.Process.myPid())
     }

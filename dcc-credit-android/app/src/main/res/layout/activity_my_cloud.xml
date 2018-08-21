@@ -248,7 +248,6 @@
         app:layout_constraintTop_toBottomOf="@id/cloud_item3" />
 
     <Button
-        android:textSize="15sp"
         android:id="@+id/cloud_sync"
         style="@style/Widget.AppCompat.Button.Dcc.Full"
         android:layout_width="match_parent"
@@ -257,15 +256,17 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="40dp"
         android:text="开始同步"
+        android:textSize="15sp"
         app:layout_constraintTop_toBottomOf="@id/cloud_bottom_tag" />
 
     <TextView
+        android:id="@+id/cloud_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:textSize="14sp"
         android:text="更换云存储密码"
         android:textColor="@color/blue_magenta"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cloud_sync" />

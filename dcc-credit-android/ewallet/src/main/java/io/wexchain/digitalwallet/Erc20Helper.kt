@@ -19,6 +19,8 @@ object Erc20Helper {
     private val typeUInt256 = TypeReference.create(Uint256::class.java)
     @JvmStatic
     private val typeBool = TypeReference.create(Bool::class.java)
+    @JvmStatic
+    private val typeBytes = TypeReference.create(Bytes32::class.java)
 
     fun getBalanceCall(contractAddress: String, address: String): EthJsonTxScratch {
         return EthJsonTxScratch(
@@ -63,7 +65,7 @@ object Erc20Helper {
                 data = FunctionEncoder.encode(
                         Function("getIpfsKey",
                                 Arrays.asList<Type<*>>(),
-                                Arrays.asList<TypeReference<*>>(typeUInt256))
+                                Arrays.asList<TypeReference<*>>(typeBytes))
                 )
         )
     }
@@ -72,6 +74,13 @@ object Erc20Helper {
         return  Function(
                 "putIpfsKey",
                 Arrays.asList<Type<*>>(Bytes32(sha256Key)),
+                Arrays.asList<TypeReference<*>>())
+    }
+
+    fun deleteIpfsKey():Function{
+        return Function(
+                "deleteIpfsKey",
+                Arrays.asList<Type<*>>(),
                 Arrays.asList<TypeReference<*>>())
     }
 

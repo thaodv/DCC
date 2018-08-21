@@ -25,6 +25,7 @@ import io.wexchain.android.dcc.repo.db.*
 import io.wexchain.android.dcc.tools.RoomHelper
 import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.tools.doRoom
+import io.wexchain.android.dcc.tools.toHash256
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.Wallet
 import org.web3j.crypto.WalletFile
@@ -292,6 +293,19 @@ class PassportRepository(
         }
     }
 
+    fun createIpfsKey(psw: String): ByteArray {
+        val privateKey = Numeric.toHexStringNoPrefix(getCurrentPassport()!!.credential.ecKeyPair.privateKey)
+        return (privateKey + psw).toByteArray().toHash256()
+    }
+
+    fun getIpfsKeyHash(): String? {
+        return passportPrefs.ipfsKeyHash.get()
+    }
+
+    fun setIpfsKeyHash(key: String) {
+        return passportPrefs.ipfsKeyHash.set(key)
+    }
+
     fun getPassword(): String {
         return passportPrefs.password.get()!!
     }
@@ -363,6 +377,7 @@ class PassportRepository(
         private const val AUTH_KEY_ALIAS = "auth_key_alias"
         private const val AUTH_KEY_PUB = "auth_key_pub"
         private const val SCF_ACCOUNT_EXISTS = "scf_account_exists"
+        private const val IPFS_KEY_HASH = "ipfs_hash_key"
 
         private const val DEFAULT_BENEFICIARY_ADDRESS = "default_beneficiary_address"
 
@@ -384,6 +399,7 @@ class PassportRepository(
         val authKeyPublicKey = StringPref(AUTH_KEY_PUB)
         val defaultBeneficiaryAddress = StringPref(DEFAULT_BENEFICIARY_ADDRESS)
         val scfAccountExists = BoolPref(SCF_ACCOUNT_EXISTS, false)
+        val ipfsKeyHash = StringPref(IPFS_KEY_HASH)
 
         fun loadAuthKey(): AuthKey? {
             val keyAlias = authKeyAlias.get()
