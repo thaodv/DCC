@@ -3,6 +3,7 @@ package io.wexchain.dccchainservice
 import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
 import io.wexchain.dccchainservice.util.DateUtil
+import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -79,26 +80,27 @@ interface ScfApi {
             @Field("chainOrderId") chainOrderId: Long
     ): Single<Result<LoanRecord>>
 
-    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     @POST("secure/loan/apply")
-    @FormUrlEncoded
+    @Multipart
     fun applyLoanCredit(
             @Header(ScfApi.HEADER_TOKEN) token: String?,
-            @Field("orderId") orderId: Long,//否	链上订单id
-            @Field("loanProductId") loanProductId: Long,//否	借款产品id
-            @Field("borrowName") borrowName: String,//否	借款人真实姓名
-            @Field("borrowAmount") borrowAmount: String, //    否	借款金额（11，4）
-            @Field("borrowDuration") borrowDuration: Int,//否	借款期限
-            @Field("durationUnit") durationUnit: String,//否	借款期限单位（YEAR，MONTH，DAY）
-            @Field("certNo") certNo: String,//否	身份证件号
-            @Field("mobile") mobile: String,//否	借款人手机号（手机认证）
-            @Field("bankCard") bankCard: String,//否	银行卡号
-            @Field("bankMobile") bankMobile: String,//否	银行卡预留绑定手机号
-            @Field("applyDate") applyDate: Long,//否	申请时间（时间戳）
-            @Field("personalPhoto") personalPhoto: String,//活体照片 urlEncode(base64(pic))
-            @Field("frontPhoto") frontPhoto: String,//	身份证正面 urlEncode(base64(pic))
-            @Field("backPhoto") backPhoto: String,//	身份证反面 urlEncode(base64(pic))
-            @Field("version") version: String
+            @Part("orderId") orderId: Long,//否	链上订单id
+            @Part("loanProductId") loanProductId: Long,//否	借款产品id
+            @Part("borrowName") borrowName: String,//否	借款人真实姓名
+            @Part("borrowAmount") borrowAmount: String, //    否	借款金额（11，4）
+            @Part("borrowDuration") borrowDuration: Int,//否	借款期限
+            @Part("durationUnit") durationUnit: String,//否	借款期限单位（YEAR，MONTH，DAY）
+            @Part("certNo") certNo: String,//否	身份证件号
+            @Part("mobile") mobile: String,//否	借款人手机号（手机认证）
+            @Part("bankCard") bankCard: String,//否	银行卡号
+            @Part("bankMobile") bankMobile: String,//否	银行卡预留绑定手机号
+            @Part("applyDate") applyDate: Long,//否	申请时间（时间戳）
+            @Part("communicationLog") communicationLog: String,
+            @Part("version") version: String,
+            @Part personalPhoto: MultipartBody.Part,//活体照片
+            @Part frontPhoto: MultipartBody.Part,//	身份证正面
+            @Part backPhoto: MultipartBody.Part//	身份证反面
+
     ): Single<Result<String>>
 
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")

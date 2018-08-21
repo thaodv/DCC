@@ -4,38 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="io.wexchain.android.dcc.HomeActivity">
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:fitsSystemWindows="true"
-            android:descendantFocusability="beforeDescendants"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:fitsSystemWindows="true"
+        android:descendantFocusability="beforeDescendants"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        >
 
         <ImageButton
-                android:id="@+id/btn_settings"
-                android:layout_width="48dp"
-                android:layout_height="32dp"
-                android:layout_gravity="right"
-                android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:src="@drawable/ic_settings"
-                android:text="设置"
-                />
+            android:id="@+id/btn_settings"
+            android:layout_width="48dp"
+            android:layout_height="32dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:src="@drawable/ic_settings"
+            android:text="设置"
+            />
 
         <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
 
                 <include layout="@layout/include_card_passport"
-                        android:id="@+id/card_passport"
-                        />
+                         android:id="@+id/card_passport"
+                    />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -179,45 +179,45 @@
                 </LinearLayout>
 
                 <ImageView
-                        android:id="@+id/iv_invite"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/content_padding_horizontal"
-                        android:layout_marginRight="@dimen/content_padding_horizontal"
-                        android:layout_marginTop="16dp"
-                        android:src="@drawable/banner_invite"
-                        android:adjustViewBounds="true"
-                        />
+                    android:id="@+id/iv_invite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/content_padding_horizontal"
+                    android:layout_marginRight="@dimen/content_padding_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/banner_invite"
+                    android:adjustViewBounds="true"
+                    />
 
                 <ImageView
-                        android:id="@+id/banner_tl"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:src="@drawable/banner_tl"
-                        android:scaleType="fitCenter"
-                        android:adjustViewBounds="true"
-                        android:layout_marginLeft="@dimen/content_padding_horizontal"
-                        android:layout_marginRight="@dimen/content_padding_horizontal"
-                        android:gravity="center"
-                        />
+                    android:id="@+id/banner_tl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/banner_tl"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:layout_marginLeft="@dimen/content_padding_horizontal"
+                    android:layout_marginRight="@dimen/content_padding_horizontal"
+                    android:gravity="center"
+                    />
 
                 <fragment
-                        android:id="@+id/section_assets"
-                        android:name="io.wexchain.android.dcc.fragment.DigitalAssetsLimitedFragment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginTop="16dp"
-                        tools:layout="@layout/fragment_digital_assets_limited"
-                        />
+                    android:id="@+id/section_assets"
+                    android:name="io.wexchain.android.dcc.fragment.DigitalAssetsLimitedFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    tools:layout="@layout/fragment_digital_assets_limited"
+                    />
                 <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:src="@drawable/footer_dcc_colored"
-                        android:layout_gravity="center_horizontal"
-                        />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:src="@drawable/footer_dcc_colored"
+                    android:layout_gravity="center_horizontal"
+                    />
 
             </LinearLayout>
 

@@ -11,6 +11,7 @@ enum class LoanPeriodTimeUnit {
             LoanPeriodTimeUnit.DAY -> "天"
             LoanPeriodTimeUnit.MONTH -> "月"
             LoanPeriodTimeUnit.YEAR -> "年"
+            null -> ""
         }
     }
 }

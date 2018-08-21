@@ -6,6 +6,7 @@ import io.reactivex.Single
 import io.reactivex.SingleTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import io.wexchain.android.common.Pop
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.tools.LogUtils
@@ -14,6 +15,7 @@ import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.android.dcc.tools.pair
 import io.wexchain.android.dcc.vm.domain.LoanScratch
 import io.wexchain.dcc.BuildConfig
+import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.ScfApi
@@ -73,6 +75,19 @@ object ScfOperations {
         val nonce = privateChainNonce(credentials.address)
         val chainGateway = App.get().chainGateway
         val scfApi = App.get().scfApi
+
+        var report: String = ""
+        CertOperations.getCmLogData(CertOperations.getCmCertOrderId())
+                .map {
+                    it.toString(Charsets.UTF_8)
+                }
+                .subscribe({
+                    report = it.toString()
+
+                }, {
+                    Pop.toast("读取认证报告错误", App.get())
+                })
+
         return if (certIdData != null && certBankCardData != null && cmLogPhoneNo != null) {
             Single.just(loanScratch)
                     .observeOn(Schedulers.io())
@@ -105,35 +120,36 @@ object ScfOperations {
                                 }
                     }
                     .flatMap { (order, pics) ->
-                        val idFrontBase64 = Base64.encodeToString(pics.first, Base64.NO_WRAP)
-                        val idBackBase64 = Base64.encodeToString(pics.second, Base64.NO_WRAP)
-                        val photoBase64 = Base64.encodeToString(pics.third, Base64.NO_WRAP)
+
                         ScfOperations.withScfTokenInCurrentPassport(allowNull = "") {
+
                             scfApi.applyLoanCredit(
-                                    it,
-                                    order.id,
-                                    loanScratch.product.id,
-                                    certIdData.name,
-                                    loanScratch.amount.toPlainString(),
-                                    loanScratch.period.value,
-                                    loanScratch.period.unit.name,
-                                    certIdData.id,
-                                    cmLogPhoneNo,
-                                    certBankCardData.bankCardNo,
-                                    certBankCardData.phoneNo,
-                                    loanScratch.createTime,
-                                    photoBase64,
-                                    idFrontBase64,
-                                    idBackBase64,
-                                    BuildConfig.VERSION_NAME
+                                    token = it,
+                                    orderId = order.id,
+                                    loanProductId = loanScratch.product.id,
+                                    borrowName = certIdData.name,
+                                    borrowAmount = loanScratch.amount.toPlainString(),
+                                    borrowDuration = loanScratch.period.value,
+                                    durationUnit = loanScratch.period.unit.name,
+                                    certNo = certIdData.id,
+                                    mobile = cmLogPhoneNo,
+                                    bankCard = certBankCardData.bankCardNo,
+                                    bankMobile = certBankCardData.phoneNo,
+                                    applyDate = loanScratch.createTime,
+                                    communicationLog = report,
+                                    version = BuildConfig.VERSION_NAME,
+                                    personalPhoto = CertApi.uploadFilePart(pics.third, "user.jpg", "image/jpeg", "personalPhoto"),
+                                    frontPhoto = CertApi.uploadFilePart(pics.first, "front.jpg", "image/jpeg", "frontPhoto"),
+                                    backPhoto = CertApi.uploadFilePart(pics.second, "back.jpg", "image/jpeg", "backPhoto")
+
                             )
                         }
                     }
         } else if (certIdData == null) {
             Single.error<String>(IllegalStateException("身份证信息不完整"))
-        }  else if (certBankCardData == null) {
+        } else if (certBankCardData == null) {
             Single.error<String>(IllegalStateException("银行卡信息不完整"))
-        }  else if (cmLogPhoneNo == null) {
+        } else if (cmLogPhoneNo == null) {
             Single.error<String>(IllegalStateException("运营商信息不完整"))
         } else {
             Single.error<String>(IllegalStateException())
@@ -173,6 +189,9 @@ object ScfOperations {
 
     /**
      * //申请数字摘要applicationDigest：sha256(utf8_to_bytes(放款机构名称+tostring(币种代码)+tostring(借款金额)+tostring(day(借款期限+'D'))+tostring(借款期数)+tostring(借款方式(XinYong))+ tostring(mills(申请时间))))
+     *
+     * SHA256(币种代码.getByte("UTF-8") + 借款期限.getByte() + 借款金额.getByte("UTF-8")+ 收款地址.getByte("UTF-8") + 借款时间(时间戳))
+     *
      */
     @JvmStatic
     fun loanApplicationDigest(
@@ -181,15 +200,28 @@ object ScfOperations {
     ): ByteArray {
         val lenderName = loanScratch.product.lender.name
         val currencySymbol = loanScratch.product.currency.symbol
+        val address = loanScratch.beneficiaryAddress.address
         val amountStr = loanScratch.amount.toLoanFormatString()
         val period = "${loanScratch.period.value}${loanScratch.period.unit.name.first()}"
+        val periodNew = "${loanScratch.period.value}"
         val idFrontBase64 = Base64.encodeToString(pics.first, Base64.NO_WRAP)
         val idBackBase64 = Base64.encodeToString(pics.second, Base64.NO_WRAP)
         val photoBase64 = Base64.encodeToString(pics.third, Base64.NO_WRAP)
         val digestStr =
                 "$lenderName$currencySymbol$amountStr$period${loanScratch.product.repayCyclesNo}${loanScratch.product.loanType}${loanScratch.createTime}$idFrontBase64$idBackBase64$photoBase64"
         LogUtils.i("digestStr", digestStr)
-        return MessageDigest.getInstance(DIGEST).digest(digestStr.toByteArray(Charsets.UTF_8))
+
+        val temp = currencySymbol + " " + periodNew + " " + amountStr + " " + address + " " + loanScratch.createTime
+
+        LogUtils.i("applicationDigest-origin", temp)
+
+        val digetst = currencySymbol.toByteArray(Charsets.UTF_8) + periodNew.toByteArray(Charsets.UTF_8) + amountStr.toByteArray(Charsets.UTF_8) + address.toByteArray(Charsets.UTF_8) +
+                loanScratch.createTime.toString().toByteArray(Charsets.UTF_8)
+
+        LogUtils.i("applicationDigest-byte", digetst)
+
+        // return MessageDigest.getInstance(DIGEST).digest(digestStr.toByteArray(Charsets.UTF_8))
+        return MessageDigest.getInstance(DIGEST).digest(digetst)
     }
 
     private fun BigDecimal.toLoanFormatString(): String {
