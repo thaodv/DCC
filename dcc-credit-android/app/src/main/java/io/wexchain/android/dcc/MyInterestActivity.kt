@@ -28,6 +28,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
         var LASTAM=0
         var ONAME="私链DCC币生息1期"
 
+
     }
     var canBuy:Boolean=true
 
@@ -47,6 +48,11 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
         getbiInvestCeilAmount()
         //binding.saleInfo=saleInfo
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initdatas()
     }
 
     private fun initclick() {
@@ -104,7 +110,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
                 binding.totalamountDCC=(""+totalAmount+" DCC")
                 Log.e("totalamountDCC",""+ encodeStringsimple(it.result))
                 getbiInvestedTotalAmount()
-                checkStatu()
+
             },{
                 it.printStackTrace()
             }
@@ -154,6 +160,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
              {
                  var ss=BytesUtils.encodeString(it.result )//.replace(" ","")
                  saleInfo  = JSON.parseObject(ss, SaleInfo::class.java)
+
                  binding.saleInfo=saleInfo
                  //binding.tvProfit.setText(saleInfo.annualRateP())
                  Log.e("getbiSaleInfo", saleInfo.name)
@@ -177,7 +184,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
         }else{
             statu="认购"
         }
-        LASTAM= gapAmount
+        LASTAM= totalAmount-lastAmount
         ONAME=saleInfo.name
         setButton()
     }

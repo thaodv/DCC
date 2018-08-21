@@ -47,7 +47,15 @@ public class BytesUtils {
         return ss;
 
     }
+    public static int  encodeStringstatu(String s) {
+        BigInteger i= Numeric.toBigInt(s);
 
+        // ss = new BigDecimal(i).scaleByPowerOfTen(-18);
+        int ss= new BigDecimal(i) .toBigInteger().intValue();
+        System.out.println(ss)  ;
+        return ss;
+
+    }
     public static String  encodeString(String s) {
         int start=127;
         int bytesSizeLen=3;

@@ -7,7 +7,30 @@
         >
 
     <data>
-
+        <variable
+            name="saleInfo"
+            type="io.wexchain.android.dcc.domain.SaleInfo"
+            />
+        <variable
+            name="totalamountDCC"
+            type="String"
+            />
+        <variable
+            name="expDCC"
+            type="String"
+            />
+        <variable
+            name="expallDCC"
+            type="String"
+            />
+        <variable
+            name="totalamountDCClable"
+            type="String"
+            />
+        <variable
+            name="totalamountstatu"
+            type="String"
+            />
         <variable
                 name="asIdVm"
                 type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
@@ -49,12 +72,13 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_idtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="27dp"
                 android:gravity="center"
-                android:text="在投本金（DCC）"
+                android:text="@{totalamountDCClable}"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -65,7 +89,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="1,000"
+                android:text="@{totalamountDCC}"
                 android:textColor="@color/white"
                 android:textSize="31sp" />
 
@@ -74,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="募集中"
+                android:text="@{totalamountstatu}"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/white"
                 android:layout_marginBottom="15dp"
@@ -111,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="4dp"
-                    android:text="+100.00"
+                    android:text="@{expDCC}"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
 
@@ -149,7 +173,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="4dp"
-                    android:text="1100.00"
+                    android:text="@{expallDCC}"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
 
@@ -171,7 +195,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
 
-                android:text="DCC分期2018060728"
+                android:text="@{saleInfo.name}"
                 android:textColor="@color/FF4A4A4A"
                 android:textSize="16sp" />
 
@@ -216,7 +240,7 @@
                 android:layout_centerVertical="true"
                  
                 android:layout_marginRight="10dp"
-                android:text="10.50%"
+                android:text="@{saleInfo.annualRateP() }"
                 android:textColor="@color/upgrade_title_color"
                 android:textSize="14sp" />
 
@@ -251,7 +275,7 @@
                 android:layout_centerVertical="true"
                  
                 android:layout_marginRight="10dp"
-                android:text="28天"
+                android:text="@{saleInfo.periodDay() }"
                 android:textColor="@color/upgrade_title_color"
                 android:textSize="14sp" />
 
@@ -286,7 +310,7 @@
                 android:layout_centerVertical="true"
                  
                 android:layout_marginRight="10dp"
-                android:text="到期还本付息"
+                android:text="@{saleInfo.profitMethod}"
                 android:textColor="@color/upgrade_title_color"
                 android:textSize="14sp" />
 
@@ -321,7 +345,7 @@
                 android:layout_centerVertical="true"
                  
                 android:layout_marginRight="10dp"
-                android:text="2018-04-26"
+                android:text="@{saleInfo.showStartTime()}"
                 android:textColor="@color/upgrade_title_color"
                 android:textSize="14sp" />
 
@@ -356,7 +380,7 @@
                 android:layout_centerVertical="true"
                  
                 android:layout_marginRight="10dp"
-                android:text="2018-04-26"
+                android:text="@{saleInfo.showEndTime()}"
                 android:textColor="@color/upgrade_title_color"
                 android:textSize="14sp" />
 

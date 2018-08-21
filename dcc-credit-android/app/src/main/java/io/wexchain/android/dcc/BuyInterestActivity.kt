@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.stackTrace
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.JuzixConstants.GAS_LIMIT
 import io.wexchain.android.dcc.chain.JuzixConstants.GAS_PRICE
@@ -52,19 +53,29 @@ class BuyInterestActivity : BindActivity<ActivityBuyInterestBinding>() {
         binding.tvTotal.setOnClickListener {
             binding.buyamount=""+myBalance
         }
-
-
-
-
         binding.btnBuy.setOnClickListener {
           var amount= BigDecimal(binding.etBuyamount.text.toString())
-            BuyConfirmDialogFragment.create(
-
-                EthsTransactionScratch(dccJuzix,p.address,BintApi.contract,amount,GAS_PRICE.toBigDecimal(),
-                    GAS_LIMIT)
-            )
-                .show(supportFragmentManager, null)
+            if(checkBuy()){
+                BuyConfirmDialogFragment.create(
+                    EthsTransactionScratch(dccJuzix,p.address,BintApi.contract,amount,GAS_PRICE.toBigDecimal(),
+                        GAS_LIMIT)
+                )
+                    .show(supportFragmentManager, null)
+            }
            // testInvest()
+        }
+    }
+
+    private fun checkBuy(): Boolean {
+        var a= BigDecimal(binding.etBuyamount.text.toString())
+        if(a<MyInterestActivity.MINBUYAMOUNT.toBigDecimal()){
+            toast("最低买入"+MyInterestActivity.MINBUYAMOUNT+"DCC")
+            return false
+        }else if( a>MyInterestActivity.LASTAM.toBigDecimal()){
+            toast("最多买入"+MyInterestActivity.LASTAM+"DCC")
+            return false
+        }else{
+            return true
         }
     }
 
