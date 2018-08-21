@@ -9,24 +9,22 @@
     <data>
 
         <variable
-                name="asIdVm"
-                type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
+                name="saleInfo"
+                type="io.wexchain.android.dcc.domain.SaleInfo"
                 />
-
         <variable
-                name="asPersonalVm"
-                type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
-                />
-
+            name="minAmountPerHandDCC"
+            type="String"
+            />
         <variable
-                name="asBankVm"
-                type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
-                />
-
+            name="totalamountDCC"
+            type="String"
+            />
         <variable
-                name="asMobileVm"
-                type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
-                />
+            name="lastamountDCC"
+            type="String"
+            />
+
     </data>
 <ScrollView
     android:layout_width="match_parent"
@@ -55,7 +53,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="DCC私链币生息1期"
+                android:text="@{saleInfo.name}"
                 android:textSize="18sp"
                 android:gravity="center"
                 android:textColor="#333333"
@@ -101,7 +99,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="6.50%"
+                android:text="@{saleInfo.annualRateP() }"
                 android:textColor="@color/white"
                 android:textSize="31sp" />
         </LinearLayout>
@@ -134,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="4dp"
-                    android:text="100 DCC"
+                    android:text="@{minAmountPerHandDCC}"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
 
@@ -171,7 +169,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="4dp"
-                    android:text="28 天"
+                    android:text="@{saleInfo.periodDay() }"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
 
@@ -239,7 +237,7 @@
                 android:layout_centerVertical="true"
                  
                 android:layout_marginRight="10dp"
-                android:text="到期还本付息"
+                android:text="@{saleInfo.profitMethod}"
                 android:textColor="@color/upgrade_title_color"
                 android:textSize="14sp" />
 
@@ -274,7 +272,7 @@
                 android:layout_centerVertical="true"
                  
                 android:layout_marginRight="10dp"
-                android:text="1,000,000 DCC"
+                android:text="@{totalamountDCC}"
                 android:textColor="@color/upgrade_title_color"
                 android:textSize="14sp" />
 
@@ -309,7 +307,7 @@
                 android:layout_centerVertical="true"
                  
                 android:layout_marginRight="10dp"
-                android:text="至6月9日23:59:59，或购完即止"
+                android:text="@{saleInfo.showCloseTime()}"
                 android:textColor="@color/upgrade_title_color"
                 android:textSize="14sp" />
 
@@ -344,7 +342,7 @@
                 android:layout_centerVertical="true"
                  
                 android:layout_marginRight="10dp"
-                android:text="1000 DCC(64.3%)"
+                android:text="@{lastamountDCC}"
                 android:textColor="@color/FFED190F"
                 android:textSize="14sp" />
 
@@ -459,7 +457,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="4dp"
-                    android:text="2018-04-26"
+                    android:text="@{saleInfo.showStartTime()}"
                     android:textColor="@color/FF4A4A4A"
                     android:textSize="14sp" />
 
@@ -515,7 +513,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="4dp"
-                    android:text="2018-05-24"
+                    android:text="@{saleInfo.showEndTime()}"
                     android:textColor="@color/FF4A4A4A"
                     android:textSize="14sp" />
 
@@ -567,16 +565,13 @@ android:text="到期日如为节假日，则在节假日后的第一个工作日
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_content"
             android:layout_marginTop="13dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:text="  币生息DCC私链1期是面向DCC用户的一款固定周期、固定DCC收益的数字资产增值理财产品；具有：零风险（不包括数字资产本身价格的涨跌），保本保息、到期还本付息的特点。
-
-      用户在募集期内可以认购币生息DCC私链1期理财产品，理财收益以DCC私链形式返回，平台为DCC用户提供DCC私链资产理财和到期自动赎回服务，于到期日的23:59:59之前，会自动将本金和收益（收益以DCC私链形式计息）返还到用户的钱包地址。
-
-      本理财产品由基于Linux环境搭建的量化交易系统TokenPlus提供支持，作为回馈DCC用户的福利，无任何风险。用户可在【币生息持仓】中查看币生息理财产品的收益。"
+            android:text="@{saleInfo.presentation}"
             android:textSize="14sp"
             android:textColor="#FF4A4A4A"
             android:layout_marginBottom="15dp"

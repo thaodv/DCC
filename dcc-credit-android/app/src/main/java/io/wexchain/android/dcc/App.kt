@@ -58,6 +58,8 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
     lateinit var marketingApi: MarketingApi
     lateinit var scfApi: ScfApi
     lateinit var coinMarketCapApi: CoinMarketCapApi
+    lateinit var bintApi: BintApi
+
 
     //public services
     lateinit var etherScanApi: EtherScanApi
@@ -150,6 +152,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))
         ethplorerApi = networking.createApi(EthplorerApi::class.java, EthplorerApi.API_URL)
+        bintApi= networking.createApi(BintApi::class.java, BintApi.getUrl)
         if (BuildConfig.DEBUG) {
             val infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
             publicRpc = EthsRpcAgent.by(infuraApi)

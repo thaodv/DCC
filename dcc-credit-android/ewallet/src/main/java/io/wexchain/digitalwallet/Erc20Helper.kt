@@ -57,6 +57,78 @@ object Erc20Helper {
         )
     }
 
+    fun getStatus(contractAddress: String,owner:String,splender: String):EthJsonTxScratch{
+        return EthJsonTxScratch(
+            to = contractAddress,
+            data = FunctionEncoder.encode(
+                Function(
+                    "status",
+                    Arrays.asList<Type<*>>( ),
+                    Arrays.asList<TypeReference<*>>()
+                )
+            )
+        )
+    }
+
+    fun getSaleInfo(contractAddress: String,owner:String,splender: String):EthJsonTxScratch{
+        return EthJsonTxScratch(
+            to = contractAddress,
+            data = FunctionEncoder.encode(
+                Function(
+                    "saleInfo",
+                    Arrays.asList<Type<*>>( ),
+                    Arrays.asList<TypeReference<*>>()
+                )
+            )
+        )
+    }
+
+    fun getMinAmountPerHando(contractAddress: String,owner:String,splender: String):EthJsonTxScratch{
+        return EthJsonTxScratch(
+            to = contractAddress,
+            data = FunctionEncoder.encode(
+                Function(
+                    "minAmountPerHand",
+                    Arrays.asList<Type<*>>( ),
+                    Arrays.asList<TypeReference<*>>()
+                )
+            )
+        )
+    }
+
+    fun getInvestCeilAmount(contractAddress: String,owner:String,splender: String):EthJsonTxScratch{
+        return EthJsonTxScratch(
+            to = contractAddress,
+            data = FunctionEncoder.encode(
+                Function(
+                    "investCeilAmount",
+                    Arrays.asList<Type<*>>( ),
+                    Arrays.asList<TypeReference<*>>()
+                )
+            )
+        )
+    }
+
+    fun investedTotalAmount(contractAddress: String,owner:String,splender: String):EthJsonTxScratch{
+        return EthJsonTxScratch(
+            to = contractAddress,
+            data = FunctionEncoder.encode(
+                Function(
+                    "investedTotalAmount",
+                    Arrays.asList<Type<*>>( ),
+                    Arrays.asList<TypeReference<*>>()
+                )
+            )
+        )
+    }
+
+    @JvmStatic
+    fun invest(amount: BigInteger): Function = Function(
+        "invest",
+        Arrays.asList<Type<*>>( Uint256(amount)),
+        Arrays.asList<TypeReference<*>>( )
+    )
+
     @JvmStatic
     fun approve(splender: String, value: BigInteger): Function = Function(
         "approve",

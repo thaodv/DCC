@@ -181,12 +181,16 @@ class AssetsRepository(
         pendingTxList.value = (pendingTxList.value ?: emptyList()).filter { it.txId != txId }
     }
 
-    @MainThread
+   /* @MainThread
     fun removePendingTx(txId: String, nonce: BigInteger) {
         pendingTxList.value = (pendingTxList.value
                 ?: emptyList()).filter { it.txId != txId }.filter { it.nonce != nonce }
-    }
-
+    }*/
+   @MainThread
+   fun removePendingTx(txId: String, nonce: BigInteger) {
+       pendingTxList.value = (pendingTxList.value
+               ?: emptyList()).filter {! it.txId .equals(txId) }.filter { it.nonce != nonce }
+   }
     fun setPinnedList(pinnedList: List<DigitalCurrency>) {
         this.pinned.postValue(pinnedList)
     }
