@@ -4,21 +4,18 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import com.alibaba.fastjson.JSON
-import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.domain.SaleInfo
+import io.wexchain.android.dcc.tools.BintApi
 import io.wexchain.android.dcc.tools.BytesUtils
 import io.wexchain.android.dcc.tools.BytesUtils.encodeStringsimple
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityMyInterestBinding
 import io.wexchain.digitalwallet.Erc20Helper
-import io.wexchain.digitalwallet.api.BintApi
 import io.wexchain.digitalwallet.api.domain.EthJsonRpcRequestBody
 import java.math.BigDecimal
-import java.text.DecimalFormat
-import java.util.*
 
 
 class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
@@ -30,7 +27,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
 
 
     }
-    var canBuy:Boolean=true
+    var canBuy:Boolean=false
 
     override val contentLayoutId: Int = R.layout.activity_my_interest
 
@@ -179,10 +176,11 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
         if( System.currentTimeMillis() >saleInfo.closeTime){
             statu="已结束"
 
-        }else if(minAmountPerHand > gapAmount){
+        }else if(minAmountPerHand > (totalAmount-lastAmount)){
             statu="已售罄"
         }else{
             statu="认购"
+            canBuy=true
         }
         LASTAM= totalAmount-lastAmount
         ONAME=saleInfo.name

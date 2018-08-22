@@ -23,6 +23,9 @@ interface ChainGateway {
     @GET("erc20/{symbol}/1/getContractAddress")
     fun getErc20ContractAddress(@Path("symbol") symbol: String): Single<Result<String>>
 
+    @GET("contract/1/getContractAddress/bsx_01")
+    fun getBiintContractAddress(): Single<Result<String>>
+
     @GET("ca/1/getContractAddress")
     fun getCaContractAddress(): Single<Result<String>>
 

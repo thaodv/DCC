@@ -3,34 +3,26 @@ package io.wexchain.android.dcc
 import android.os.Bundle
 import android.util.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.JuzixConstants.GAS_LIMIT
 import io.wexchain.android.dcc.chain.JuzixConstants.GAS_PRICE
-import io.wexchain.android.dcc.tools.BytesUtils
-import io.wexchain.android.dcc.tools.MultiChainHelper
-import io.wexchain.android.dcc.tools.RetryWithDelay
-import io.wexchain.android.dcc.tools.TransHelper
+import io.wexchain.android.dcc.tools.*
 import io.wexchain.android.dcc.view.dialog.BuyConfirmDialogFragment
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityBuyInterestBinding
-import io.wexchain.dcc.databinding.ActivityMyInterestBinding
-import io.wexchain.dcc.databinding.ActivityMyInterestdetailBinding
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.digitalwallet.EthsTransactionScratch
-import io.wexchain.digitalwallet.api.*
-import io.wexchain.digitalwallet.api.domain.EthJsonRpcRequestBody
-import io.wexchain.digitalwallet.util.gweiTowei
 import org.web3j.abi.FunctionEncoder
 import org.web3j.crypto.TransactionEncoder
 import org.web3j.protocol.core.methods.request.RawTransaction
 import org.web3j.utils.Numeric
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.util.logging.Logger
 
 class BuyInterestActivity : BindActivity<ActivityBuyInterestBinding>() {
 
@@ -64,6 +56,9 @@ class BuyInterestActivity : BindActivity<ActivityBuyInterestBinding>() {
             }
            // testInvest()
         }
+        binding.tvPubtopri.setOnClickListener {
+            navigateTo(DccExchangeActivity::class.java)
+        }
     }
 
     private fun checkBuy(): Boolean {
@@ -86,7 +81,7 @@ class BuyInterestActivity : BindActivity<ActivityBuyInterestBinding>() {
         agent.getBalanceOf(p.address).observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 myBalance=it.toBigDecimal().scaleByPowerOfTen(-18).toBigInteger().toInt()
-binding.tvCanuselable.text="可用额度："+myBalance+" DCC"
+                binding.tvCanuselable.text="可用额度："+myBalance+" DCC"
 
             }, {
                 stackTrace(it)

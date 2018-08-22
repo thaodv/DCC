@@ -27,6 +27,7 @@ object JuzixData {
                 Chain.JUZIX_PRIVATE to juzixPrefs.dccContractAddress.get()!!
         ))
         updateDccJuzixAddress(app).subscribe()
+        updateBsxAddress(app).subscribe()
     }
 
     private fun updateDccJuzixAddress(app: App): Single<String> {
@@ -38,7 +39,14 @@ object JuzixData {
                     update()
                 }
     }
-
+    private fun updateBsxAddress(app: App): Single<String> {
+        return app.chainGateway.getBiintContractAddress( )
+             .compose(Result.checked())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess { address ->
+                BintApi.contract=address
+            }
+    }
     private fun update() {
         MultiChainHelper.putMultiDc(Currencies.DCC, listOf(
                 Chain.publicEthChain to cc.sisel.ewallet.BuildConfig.DCC_PUBLIC_ADDRESS,

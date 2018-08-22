@@ -4,9 +4,11 @@ import android.content.Context
 import android.os.SystemClock
 import android.support.annotation.VisibleForTesting
 import android.support.multidex.MultiDex
+import android.util.Log
 import android.view.ContextThemeWrapper
 import com.wexmarket.android.network.Networking
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.plugins.RxJavaPlugins
 import io.wexchain.android.common.BaseApplication
 import io.wexchain.android.common.Pop
@@ -18,10 +20,7 @@ import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.PassportRepository
 import io.wexchain.android.dcc.repo.ScfTokenManager
 import io.wexchain.android.dcc.repo.db.PassportDatabase
-import io.wexchain.android.dcc.tools.CrashHandler
-import io.wexchain.android.dcc.tools.JuzixData
-import io.wexchain.android.dcc.tools.ShareUtils
-import io.wexchain.android.dcc.tools.log
+import io.wexchain.android.dcc.tools.*
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.dcc.BuildConfig
@@ -30,8 +29,10 @@ import io.wexchain.dccchainservice.*
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.DigitalCurrency
+import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.api.*
+import io.wexchain.digitalwallet.api.domain.EthJsonRpcRequestBody
 import io.wexchain.digitalwallet.proxy.*
 import zlc.season.rxdownload3.core.DownloadConfig
 import java.lang.ref.WeakReference
@@ -98,7 +99,22 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         initData(this)
     }
 
+    fun  getbiminAmountPerHand() {
+        val getAllowance = Erc20Helper.getMinAmountPerHando(BintApi.contract,"","")
+         bintApi.postStatus(
+            EthJsonRpcRequestBody(
+                method = "eth_call",
+                params = listOf(getAllowance, "latest"),
+                id = 1L
+            )
+        ). subscribeOn(AndroidSchedulers.mainThread()).subscribe(
+            {
 
+            },{
+                it.printStackTrace()
+            }
+        )
+    }
     fun initNode() {
         val a = NodeBean(1, "https://ethrpc.wexfin.com:58545/", "  以太坊节点-中国上海")
         val b = NodeBean(2, "https://ethrpc2.wexfin.com:58545/", "  以太坊节点-中国北京")
@@ -136,7 +152,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         JuzixData.init(app)
         LocalProtect.init(app)
     }
-
+var baseurl=BuildConfig.GATEWAY_BASE_URL
     fun initServices(app: App) {
         val networking = Networking(app, BuildConfig.DEBUG)
         this.networking = networking

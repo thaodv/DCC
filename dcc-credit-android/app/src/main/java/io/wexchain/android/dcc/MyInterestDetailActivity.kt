@@ -3,16 +3,14 @@ package io.wexchain.android.dcc
 import android.os.Bundle
 import android.util.Log
 import com.alibaba.fastjson.JSON
-import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.domain.SaleInfo
+import io.wexchain.android.dcc.tools.BintApi
 import io.wexchain.android.dcc.tools.BytesUtils
 import io.wexchain.dcc.R
-import io.wexchain.dcc.databinding.ActivityMyInterestBinding
 import io.wexchain.dcc.databinding.ActivityMyInterestdetailBinding
 import io.wexchain.digitalwallet.Erc20Helper
-import io.wexchain.digitalwallet.api.BintApi
 import io.wexchain.digitalwallet.api.domain.EthJsonRpcRequestBody
 import java.math.BigDecimal
 import java.text.DecimalFormat
@@ -103,7 +101,7 @@ var exPro=BigDecimal(0)
 
                 binding.totalamountDCC=sss
                 Log.e("sss",""+ sss)
-                exPro=(pRate*BigDecimal(saleInfo.period)*BigDecimal(lastAmount)).setScale(2,BigDecimal.ROUND_DOWN)
+                exPro=(pRate*BigDecimal(lastAmount)).setScale(2,BigDecimal.ROUND_DOWN)//*BigDecimal(saleInfo.period)
                 Log.e("exPro",""+ exPro)
                 binding.expDCC="+ "+exPro//df2.format( exPro  )
                 var to=exPro+BigDecimal(lastAmount)
