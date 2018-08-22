@@ -19,7 +19,10 @@ import java.util.Locale;
 public class DateUtil {
     
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-    
+    // public static SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
+
+    public static String dateFormatString="yyyy-MM-dd";
+    public static String dateFormatStringChi="MM月dd日";
     /**
      * 倒计时
      *
@@ -80,6 +83,11 @@ public class DateUtil {
         }
         return time;
     }
+  /*  public static void main(String[] args) throws Exception {
+
+        //parsIntToDate(1534211619,FORMAT_10);
+        System.out.print( getStringTime(1534211619000l,"yyyy-MM-dd"));
+    }*/
     
     /**
      * 返回指定时间的时间戳

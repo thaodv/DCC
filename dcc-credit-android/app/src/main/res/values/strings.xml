@@ -433,7 +433,7 @@
     <string name="across_trans_warning_tip">温馨提示:</string>
     <string name="across_trans_warning_tips1">预计<font color="#ED190F">1分钟内</font>到账\n<font color="#ED190F">结果返回前，请不要重复转移DCC</font></string>
     <string name="across_trans_warning_tips2"><font color="#ED190F">结果返回前，请不要重复转移DCC</font>\n公链转私链的交易记录需要6个区块的生成时间进行确认。</string>
-    <string name="across_trans_warning_tips3"><font color="#ED190F">• 币生息只能使用私链上的DCC；</font>\n• 通过跨链交易将公链上的DCC转移到私链上，即可购买币生息产品。公链转到私链 ></string>
+    <string name="across_trans_warning_tips3">• 币生息只能使用私链上的DCC；\n• 通过跨链交易将公链上的DCC转移到私链上，即可购买币生息产品。<font color="#6766CC">公链转到私链 ></font></string>
     <string name="trans_sure">交易确认</string>
     <string name="trans_orientation">交易方向：</string>
     <string name="max_pay_money">最高支付金额：</string>

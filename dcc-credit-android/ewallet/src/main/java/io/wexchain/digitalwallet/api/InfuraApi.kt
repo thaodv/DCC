@@ -76,7 +76,7 @@ interface InfuraApi {
     ): Single<EthJsonRpcResponse<String>>
 
     companion object {
-        private const val InfuraApiToken = BuildConfig.INFURA_API_KEY
+          const val InfuraApiToken = BuildConfig.INFURA_API_KEY
 
         private const val postUrl = "https://${BuildConfig.ETH_INFURA_NETWORK}.infura.io/$InfuraApiToken"
 

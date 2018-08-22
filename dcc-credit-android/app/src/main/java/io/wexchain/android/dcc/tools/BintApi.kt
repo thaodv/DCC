@@ -1,9 +1,10 @@
-package io.wexchain.digitalwallet.api
+package io.wexchain.android.dcc.tools
 
-import cc.sisel.ewallet.BuildConfig
+import io.wexchain.dcc.BuildConfig
 import io.reactivex.Single
 import io.wexchain.digitalwallet.Erc20Helper
-import io.wexchain.digitalwallet.api.BintApi.Companion.encodeJsonParamArray
+import io.wexchain.android.dcc.tools.BintApi.Companion.encodeJsonParamArray
+import io.wexchain.digitalwallet.api.InfuraApi
 import io.wexchain.digitalwallet.api.domain.*
 import org.json.JSONArray
 import org.web3j.utils.Numeric
@@ -21,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong
  */
 interface BintApi  {
 
-    @POST( postUrl)
+    @POST(postUrl)
     @Headers("Content-Type: application/json", "Accept: application/json")
     fun postStatus(
         @Body body: EthJsonRpcRequestBody<Any>
@@ -89,17 +90,18 @@ interface BintApi  {
     ): Single<EthJsonRpcResponse<String>>
 
     companion object {
-        private const val InfuraApiToken = BuildConfig.INFURA_API_KEY
+         private const val InfuraApiToken = InfuraApi.InfuraApiToken
 
-        val contract = "0x92319baa1648ef13ce86df30a8e31b0768b482b7"
+        var contract = "0x92319baa1648ef13ce86df30a8e31b0768b482b7"
 
        // private const val postUrl = "https://${BuildConfig.ETH_INFURA_NETWORK}.infura.io/$InfuraApiToken"
-        private const val postUrl = "http://10.65.209.13:9511/passport-gateway/restful/contract/1/web3/bsx_01"
+       // private const val postUrl = "http://10.65.209.13:9511/passport-gateway/restful/contract/1/web3/bsx_01"
+        private const val postUrl  = BuildConfig.GATEWAY_BASE_URL+"contract/1/web3/bsx_01"
         /**
          * base url for restful get
          */
-        const val getUrl = "https://api.infura.io/v1/jsonrpc/${BuildConfig.ETH_INFURA_NETWORK}/"
-        //    const val getUrl = "http://10.65.209.13:9511/passport-gateway/restful/contract/1/web3/bsx_01/"
+    //    const val getUrl = "https://api.infura.io/v1/jsonrpc/${BuildConfig.ETH_INFURA_NETWORK}/"
+            const val getUrl =BuildConfig.GATEWAY_BASE_URL+"contract/1/web3/bsx_01/"
 
         internal val idAtomic = AtomicLong(0L)
 

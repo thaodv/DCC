@@ -56,6 +56,8 @@ class TransactionConfirmVm(
     val notEnoughFundsEvent = SingleLiveEvent<Void>()
     val busySendingEvent = SingleLiveEvent<Boolean>()
 
+    var currentBanance=""
+
     fun loadHoldings() {
         val scratch = tx
         val dc = scratch.currency
@@ -89,6 +91,7 @@ class TransactionConfirmVm(
                         } else {
                             checkErc20JuzixFunds(amount)
                         }
+                        currentBanance=amount.currencyToDisplayStr()
                         "${amount.currencyToDisplayStr()}${dc.symbol}"
                     }
         }.observeOn(AndroidSchedulers.mainThread())
