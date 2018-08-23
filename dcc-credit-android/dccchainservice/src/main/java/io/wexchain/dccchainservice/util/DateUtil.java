@@ -22,7 +22,8 @@ public class DateUtil {
     // public static SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
 
     public static String dateFormatString="yyyy-MM-dd";
-    public static String dateFormatStringChi="MM月dd日";
+    public static String dateFormatStringChi="MM月dd日hh:mm:ss";
+    public static String dateFormatStringChi2="";
     /**
      * 倒计时
      *
