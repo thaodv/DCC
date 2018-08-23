@@ -49,7 +49,7 @@ public class SaleInfo implements Serializable {
         return getStringTime(endTime, DateUtil.dateFormatString);
     }
     public String showCloseTime(){
-        return "至"+getStringTime(closeTime, DateUtil.dateFormatStringChi)+"23:59:59，或购完即止";
+        return "至"+getStringTime(closeTime, DateUtil.dateFormatStringChi)+"，或购完即止";
     }
 
 

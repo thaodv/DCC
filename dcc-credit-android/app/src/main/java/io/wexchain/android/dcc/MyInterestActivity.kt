@@ -153,7 +153,9 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
                 params = listOf(getAllowance, "latest"),
                 id = 1L
             )
-        ). subscribeOn(AndroidSchedulers.mainThread()).subscribe(
+        ). subscribeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
+             showLoadingDialog()
+         }.doFinally {  hideLoadingDialog() }.subscribe(
              {
                  var ss=BytesUtils.encodeString(it.result )//.replace(" ","")
                  saleInfo  = JSON.parseObject(ss, SaleInfo::class.java)
@@ -175,9 +177,10 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
         require(null!=saleInfo)
         if( System.currentTimeMillis() >saleInfo.closeTime){
             statu="已结束"
-
+            canBuy=false
         }else if(minAmountPerHand > (totalAmount-lastAmount)){
             statu="已售罄"
+            canBuy=false
         }else{
             statu="认购"
             canBuy=true

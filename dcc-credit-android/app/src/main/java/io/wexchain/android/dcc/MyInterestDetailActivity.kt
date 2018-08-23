@@ -3,6 +3,7 @@ package io.wexchain.android.dcc
 import android.os.Bundle
 import android.util.Log
 import com.alibaba.fastjson.JSON
+import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.domain.SaleInfo
@@ -35,9 +36,11 @@ class MyInterestDetailActivity : BindActivity<ActivityMyInterestdetailBinding>()
        if(mystatu==0){//已关闭
             binding.totalamountDCClable="投资本金（DCC）"
            binding.totalamountstatu="已结束"
+           binding.isClose=true
        }else{
            binding.totalamountDCClable="在投本金（DCC）"
            binding.totalamountstatu="募集中"
+           binding.isClose=false
        }
     }
 
@@ -45,6 +48,7 @@ class MyInterestDetailActivity : BindActivity<ActivityMyInterestdetailBinding>()
 
     }
     private fun initdatas() {
+        getbiInvestedTotalAmount()
         getbiStatues()
         getbiSaleInfo()
 
@@ -82,7 +86,7 @@ class MyInterestDetailActivity : BindActivity<ActivityMyInterestdetailBinding>()
 
 var exPro=BigDecimal(0)
     fun  getbiInvestedTotalAmount() {
-        val getAllowance = Erc20Helper.investedTotalAmount(BintApi.contract,"","")
+        val getAllowance = Erc20Helper.investedAmountMapping(BintApi.contract,App.get().passportRepository.getCurrentPassport()!!.address )
         App.get(). bintApi.postStatus(
             EthJsonRpcRequestBody(
                 method = "eth_call",
@@ -92,6 +96,9 @@ var exPro=BigDecimal(0)
         ). subscribeOn(AndroidSchedulers.mainThread()).subscribe(
             {
                 lastAmount= BytesUtils.encodeStringsimple(it.result)
+                if(lastAmount==0){
+                    binding.isEmpty=true
+                }
 
                 val df = DecimalFormat("###,###")
                 val df2 = DecimalFormat("###,###.00")
@@ -111,6 +118,21 @@ var exPro=BigDecimal(0)
             }
         )
     }
+
+    fun  getBiInvestedTotalAmount() {
+        val getAllowance = Erc20Helper.investedTotalAmount(BintApi.contract,"","")
+        App.get(). bintApi.postStatus(
+            EthJsonRpcRequestBody(
+                method = "eth_call",
+                params = listOf(getAllowance, "latest"),
+                id = 1L
+            )
+        ).blockingGet()
+
+    }
+
+
+
     var minAmountPerHand:Int=0
 
     fun  getbiSaleInfo() {
@@ -137,7 +159,6 @@ var exPro=BigDecimal(0)
 
                 binding.saleInfo=saleInfo
                 //binding.tvProfit.setText(saleInfo.annualRateP())
-                getbiInvestedTotalAmount()
                 Log.e("getbiSaleInfo", saleInfo.name)
 
             },{

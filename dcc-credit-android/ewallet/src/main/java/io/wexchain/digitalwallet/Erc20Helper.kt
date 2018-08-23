@@ -122,6 +122,19 @@ object Erc20Helper {
         )
     }
 
+    fun investedAmountMapping(contractAddress: String,userAddress:String):EthJsonTxScratch{
+        return EthJsonTxScratch(
+            to = contractAddress,
+            data = FunctionEncoder.encode(
+                Function(
+                    "investedAmountMapping",
+                    Arrays.asList<Type<*>>(Address(userAddress) ),
+                    Arrays.asList<TypeReference<*>>()
+                )
+            )
+        )
+    }
+
     @JvmStatic
     fun invest(amount: BigInteger): Function = Function(
         "invest",

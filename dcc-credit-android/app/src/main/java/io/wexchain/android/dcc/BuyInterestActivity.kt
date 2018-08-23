@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,6 +24,12 @@ import org.web3j.protocol.core.methods.request.RawTransaction
 import org.web3j.utils.Numeric
 import java.math.BigDecimal
 import java.math.BigInteger
+import android.text.Spannable
+import android.graphics.Color.parseColor
+import android.text.style.ForegroundColorSpan
+import android.text.SpannableString
+
+
 
 class BuyInterestActivity : BindActivity<ActivityBuyInterestBinding>() {
 
@@ -33,7 +40,12 @@ class BuyInterestActivity : BindActivity<ActivityBuyInterestBinding>() {
         //setWindowExtended()
         initToolbar()
         binding.etBuyamount.hint="最小认购额度"+MyInterestActivity.MINBUYAMOUNT
-        binding.tvOrdername.text=MyInterestActivity.ONAME+"（剩余额度 "+MyInterestActivity.LASTAM+" DCC）"
+
+        var sp=MyInterestActivity.ONAME+"（剩余额度 "+MyInterestActivity.LASTAM+" DCC）"
+        val spannableString = SpannableString(sp)
+        val colorSpan = ForegroundColorSpan(Color.parseColor("#ED190F"))
+        spannableString.setSpan(colorSpan, sp.length-5-MyInterestActivity.LASTAM.toString().length, sp.length-1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
+        binding.tvOrdername.text=spannableString
         checkBalance()
         initclick()
 
@@ -46,8 +58,9 @@ class BuyInterestActivity : BindActivity<ActivityBuyInterestBinding>() {
             binding.buyamount=""+myBalance
         }
         binding.btnBuy.setOnClickListener {
-          var amount= BigDecimal(binding.etBuyamount.text.toString())
             if(checkBuy()){
+                var amount= BigDecimal(binding.etBuyamount.text.toString())
+
                 BuyConfirmDialogFragment.create(
                     EthsTransactionScratch(dccJuzix,p.address,BintApi.contract,amount,GAS_PRICE.toBigDecimal(),
                         GAS_LIMIT)
@@ -62,6 +75,9 @@ class BuyInterestActivity : BindActivity<ActivityBuyInterestBinding>() {
     }
 
     private fun checkBuy(): Boolean {
+        if (null!=binding.etBuyamount.text.toString()&&!binding.etBuyamount.text.toString().equals("")){
+
+
         var a= BigDecimal(binding.etBuyamount.text.toString())
         if(a<MyInterestActivity.MINBUYAMOUNT.toBigDecimal()){
             toast("最低买入"+MyInterestActivity.MINBUYAMOUNT+"DCC")
@@ -71,6 +87,10 @@ class BuyInterestActivity : BindActivity<ActivityBuyInterestBinding>() {
             return false
         }else{
             return true
+        }
+        }else{ toast("请输入购买数量")
+            return false
+
         }
     }
 

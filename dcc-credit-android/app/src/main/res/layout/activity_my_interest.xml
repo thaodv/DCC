@@ -408,13 +408,13 @@
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:background="@drawable/ic_lpurpledot"
+                    android:background="@drawable/ic_purpuledot"
                     android:layout_alignParentRight="true"
                     />
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:background="@drawable/ic_lpurpledot"
+                    android:background="@drawable/ic_purpuledot"
                     android:layout_centerHorizontal="true"
                     />
 
