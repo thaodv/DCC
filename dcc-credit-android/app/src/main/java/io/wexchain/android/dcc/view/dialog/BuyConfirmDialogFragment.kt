@@ -19,9 +19,7 @@ import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.repay.LoanRepayActivity
 import io.wexchain.android.dcc.modules.repay.RePaymentErrorActivity
 import io.wexchain.android.dcc.modules.repay.RepayingActivity
-import io.wexchain.android.dcc.tools.BintApi
-import io.wexchain.android.dcc.tools.MultiChainHelper
-import io.wexchain.android.dcc.tools.sendRawTransaction
+import io.wexchain.android.dcc.tools.*
 import io.wexchain.android.dcc.vm.TransactionConfirmVm
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
@@ -30,6 +28,7 @@ import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.digitalwallet.EthsTransactionScratch
+import io.wexchain.digitalwallet.api.transactionReceipt
 import org.web3j.abi.FunctionEncoder
 import org.web3j.crypto.TransactionEncoder
 import org.web3j.protocol.core.methods.request.RawTransaction
@@ -156,9 +155,10 @@ class BuyConfirmDialogFragment : DialogFragment() {
             }, { stackTrace(it) }
         )
     }*/
-   fun Invest() {
+   var agent = App.get().assetsRepository.getDigitalCurrencyAgent(dccJuzix)
+
+    fun Invest() {
        val approve = Erc20Helper.invest(binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger())
-       var agent = App.get().assetsRepository.getDigitalCurrencyAgent(dccJuzix)
        agent.getNonce(p.address).observeOn(AndroidSchedulers.mainThread()).flatMap {
            val rawTransaction = RawTransaction.createTransaction(
                it,
@@ -176,7 +176,21 @@ class BuyConfirmDialogFragment : DialogFragment() {
            )
            App.get().bintApi.sendRawTransaction(signed)
 
-       }.observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
+       }.flatMap {
+           Log.e("Invest",""+ it )
+
+           agent.transactionReceipt(it)
+               .retryWhen(RetryWithDelay.createGrowth(8, 1000)). observeOn(AndroidSchedulers.mainThread())
+              /* .doOnSuccess {
+                   toast("交易成功")
+                   hideLoadingDialog()
+               }
+               .doOnError {
+                   toast("交易失败")
+                   hideLoadingDialog()
+               }*/
+       }
+           .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
            showLoadingDialog()
        }
          /*  .doFinally {
@@ -184,21 +198,14 @@ class BuyConfirmDialogFragment : DialogFragment() {
                dismiss()
            }*/
            .subscribe({
-               Log.e("txHashtxHash", it)
-               println("sent approve tx")
-
-               println("receipt got: approve tx")
-            //   Log.e("responseresponse", response.toString())
-               toast("交易成功")
-               hideLoadingDialog()
-              // dismiss()
+               Log.e("Invest",""+ it.blockHash)
+                       toast("交易成功")
+                       hideLoadingDialog()
+                          dismiss()
                activity!!.finish()
 
-               /*val response = App.get().bintApi.transactionReceipt(it)
-                   //    .retryWhen(RetryWithDelay.createGrowth(8, 1000))
-                   .blockingGet()*/
-
            }, {
+               Log.e("Invest","失败"+ it.printStackTrace())
                stackTrace(it)
                toast("交易失败")
                hideLoadingDialog()

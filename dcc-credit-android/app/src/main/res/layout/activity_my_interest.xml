@@ -24,6 +24,10 @@
             name="lastamountDCC"
             type="String"
             />
+        <variable
+            name="canbuy"
+            type="boolean"
+            />
 
     </data>
 <ScrollView
@@ -598,8 +602,8 @@ android:layout_gravity="center"
             android:id="@+id/tv_buyit"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:background="#FF6766CC"
-            android:text="认购"
+            android:background="#B2484848"
+            android:text="已结束"
             android:textColor="#FFFFFFFF"
             android:textSize="15sp"
             android:layout_gravity="center"
