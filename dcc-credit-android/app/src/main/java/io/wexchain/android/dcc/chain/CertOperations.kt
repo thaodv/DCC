@@ -413,6 +413,8 @@ object CertOperations {
             }
             if (getCmLogUserStatus() == UserCertStatus.DONE) {
                 add(ChainGateway.BUSINESS_COMMUNICATION_LOG)
+            } else {
+                add("已过期")
             }
         }.toList()
     }
@@ -479,6 +481,14 @@ object CertOperations {
         return certPrefs.certBankExpired.get()
     }
 
+    fun getCmLogCertExpired(): Long {
+        return certPrefs.certCmLogExpired.get()
+    }
+
+    fun saveCmLogCertExpired(expired: Long) {
+        certPrefs.certCmLogExpired.set(expired)
+    }
+
     fun isBankCertPassed(): Boolean {
         if (certPrefs.certBankOrderId.get() == INVALID_CERT_ORDER_ID) {
             return false
@@ -498,7 +508,15 @@ object CertOperations {
             if (state == null) {
                 UserCertStatus.NONE
             } else {
-                UserCertStatus.valueOf(state)
+                if (UserCertStatus.DONE.name == state) {
+                    if (getCmLogCertExpired() < System.currentTimeMillis()) {
+                        UserCertStatus.TIMEOUT
+                    } else {
+                        UserCertStatus.DONE
+                    }
+                } else {
+                    UserCertStatus.valueOf(state)
+                }
             }
         }
     }
@@ -662,5 +680,6 @@ object CertOperations {
         val certCmLogState = StringPref("certCmLogState")
         val certCmLogPhoneNo = StringPref("certCmLogPhoneNo")
         val certCmLogPassword = StringPref("certCmLogPassword")
+        val certCmLogExpired = LongPref("certCmLogExpired", -1L)
     }
 }

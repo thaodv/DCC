@@ -58,7 +58,7 @@ object ViewModelHelper {
     fun Context.getCertStatusOpIcon(userCertStatus: UserCertStatus?): Drawable? {
         return when (userCertStatus) {
             UserCertStatus.INCOMPLETE -> ContextCompat.getDrawable(this, R.drawable.progress_indeterminate_gear)
-            UserCertStatus.NONE, UserCertStatus.DONE -> ContextCompat.getDrawable(this, R.drawable.arrow_right)
+            UserCertStatus.NONE, UserCertStatus.DONE, UserCertStatus.TIMEOUT -> ContextCompat.getDrawable(this, R.drawable.arrow_right)
             else -> null
         }
     }
@@ -67,6 +67,7 @@ object ViewModelHelper {
     fun Context.getCertStatusOpText(userCertStatus: UserCertStatus?): String {
         return when (userCertStatus) {
             UserCertStatus.NONE -> getString(R.string.unverify_nowied)
+            UserCertStatus.TIMEOUT -> "已过期"
             UserCertStatus.INCOMPLETE -> getString(R.string.verifying)
             UserCertStatus.DONE -> getString(R.string.verified)
             else -> ""
@@ -78,6 +79,7 @@ object ViewModelHelper {
     fun Context.getCertStatusOpTextColor(userCertStatus: UserCertStatus?): Int {
         return when (userCertStatus) {
             UserCertStatus.NONE -> ContextCompat.getColor(this, R.color.text_dark)
+            UserCertStatus.TIMEOUT -> ContextCompat.getColor(this, R.color.FFED190F)
             UserCertStatus.INCOMPLETE -> ContextCompat.getColor(this, R.color.text_blue_magenta)
             UserCertStatus.DONE -> ContextCompat.getColor(this, R.color.text_dark)
             else -> ContextCompat.getColor(this, R.color.text_dark)

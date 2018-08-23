@@ -4,6 +4,7 @@ enum class UserCertStatus {
     NONE,
     INCOMPLETE,
     DONE,
+    TIMEOUT,
     ;
 
     fun isProcessing(): Boolean {
