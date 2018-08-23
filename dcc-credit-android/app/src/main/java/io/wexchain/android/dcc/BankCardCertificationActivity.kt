@@ -3,11 +3,13 @@ package io.wexchain.android.dcc
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
-import io.wexchain.android.dcc.base.BindActivity
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.PassportOperations
+import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.vm.CertificationDataVm
 import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.dcc.R
@@ -26,7 +28,7 @@ class BankCardCertificationActivity : BindActivity<ActivityCertificationDataBind
             this.title1.set(getString(R.string.issuer_bank))
             this.title2.set(getString(R.string.card_no))
             this.title3.set(getString(R.string.cert_expired_label))
-            this.value1.set(data.bankCode)
+            // this.value1.set(data.bankCode)
             this.value2.set(data.bankCardNo)
             this.value3.set(ViewModelHelper.expiredText(expired))
         }
@@ -36,5 +38,19 @@ class BankCardCertificationActivity : BindActivity<ActivityCertificationDataBind
             }
         })
         binding.vm = vm
+
+        App.get().marketingApi.getBankList()
+                .checkonMain()
+                .subscribeBy {
+                    for (item in it){
+                        if(data.bankCode == item.bankCode){
+                            vm.value1.set(item.bankName)
+                        }
+                    }
+                }
+
+
+
+
     }
 }

@@ -4,8 +4,8 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
-import android.widget.ScrollView
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.Pop
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.dcc.base.BindActivity
@@ -88,18 +88,20 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                 val passport = App.get().passportRepository.getCurrentPassport()!!
                 CertOperations.getCommunicationLogReport(passport)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({ data ->
-                            if (data.fail) {
+                        .subscribe({
+                            if (it.fail) {
                                 // generate report fail
                                 CertOperations.onCmLogFail()
                                 refreshCertStatus()
                             } else {
-                                val reportData = data.reportData
-                                if (data.hasCompleted() && reportData != null) {
+                                val reportData = it.reportData
+                                if (it.hasCompleted() && reportData != null) {
                                     CertOperations.onCmLogSuccessGot(reportData)
                                     refreshCertStatus()
                                 }
                             }
+                        }, {
+                            Pop.toast(it.message ?: "系统错误", this)
                         })
             }
         }
@@ -147,7 +149,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                 }
             CertificationType.MOBILE -> {
                 when (status) {
-                    UserCertStatus.DONE -> {
+                    UserCertStatus.DONE, UserCertStatus.TIMEOUT -> {
                         navigateTo(CmLogCertificationActivity::class.java)
                     }
                     UserCertStatus.NONE -> {

@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import io.wexchain.android.dcc.App;
 import io.wexchain.android.dcc.QrScannerActivity;
 import io.wexchain.android.dcc.constant.Extras;
 import io.wexchain.android.dcc.constant.RequestCodes;
@@ -179,9 +180,18 @@ public class StaticHtmlActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case RequestCodes.SCAN:
-                String temp = data.getStringExtra(QrScannerActivity.EXTRA_SCAN_RESULT);
-                mTitleValue = "Searchain数据分析";
-                mUrlValue = Extras.Searchain + temp;
+                if(null != data){
+                    String temp = data.getStringExtra(QrScannerActivity.EXTRA_SCAN_RESULT);
+    
+                    if (null == temp) {
+                        mTitleValue = "Searchain数据分析";
+                        mUrlValue = Extras.Searchain + App.get().passportRepository.getCurrentPassport()
+                                .getAddress();
+                    } else {
+                        mTitleValue = "Searchain数据分析";
+                        mUrlValue = Extras.Searchain + temp;
+                    }
+                }
                 break;
             default:
                 break;

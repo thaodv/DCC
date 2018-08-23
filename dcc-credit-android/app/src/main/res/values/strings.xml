@@ -291,7 +291,7 @@
     <string name="review_failed">审核失败</string>
     <string name="pending_reviewing">审核中</string>
     <string name="loan_issuance_failed">放币失败</string>
-    <string name="loan_issuance_failed2">您的借币申请审核失败建议过段时间(1个月)再尝试</string>
+    <string name="loan_issuance_failed2">您的借币申请审核失败，请检查您的认证信息尝试重新申请</string>
     <string name="creating_order">订单创建中</string>
     <string name="default_address">默认地址</string>
     <string name="local_wallet">本地钱包</string>
@@ -464,7 +464,5 @@
     <string name="select_node_green"><font color='#9B9B9B'>已连接（网络质量好）</font></string>
     <string name="select_node_yellow"><font color='#9B9B9B'>（网络质量一般）</font></string>
     <string name="select_node_red"><font color='#9B9B9B'>（网络质量差）</font></string>
-    <string name="title_activity_do_repay">DoRepayActivity</string>
-
 
 </resources>
