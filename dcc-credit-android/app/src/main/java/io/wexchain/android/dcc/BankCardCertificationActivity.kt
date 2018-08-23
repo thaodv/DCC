@@ -21,6 +21,11 @@ class BankCardCertificationActivity : BindActivity<ActivityCertificationDataBind
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         binding.includeIdCard.visibility = View.GONE
         val data = CertOperations.getCertBankCardData()!!
         val expired = CertOperations.getBankCardCertExpired()
@@ -48,9 +53,5 @@ class BankCardCertificationActivity : BindActivity<ActivityCertificationDataBind
                         }
                     }
                 }
-
-
-
-
     }
 }

@@ -19,12 +19,14 @@ import io.wexchain.dccchainservice.ChainGateway
 class CmLogCertificationActivity : BindActivity<ActivityCertificationDataCmBinding>() {
     override val contentLayoutId: Int = R.layout.activity_certification_data_cm
 
+    internal lateinit var vm: CertificationDataVm
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
         val data = CertOperations.getCertIdData()!!
         val phoneNo = CertOperations.getCmLogPhoneNo()!!
-        val vm = getViewModel<CertificationDataVm>().apply {
+        vm = getViewModel<CertificationDataVm>().apply {
             this.title1.set(getString(R.string.phone_num))
             this.title2.set(getString(R.string.phone_owner_name))
             this.title3.set(getString(R.string.cert_expired_label))
@@ -32,20 +34,6 @@ class CmLogCertificationActivity : BindActivity<ActivityCertificationDataCmBindi
             this.value2.set(data.name)
             // this.value3.set(ViewModelHelper.expiredText(data.expired))
         }
-
-        App.get().chainGateway.getCertData(App.get().passportRepository.currPassport.value!!.address, ChainGateway.BUSINESS_COMMUNICATION_LOG)
-                .checkonMain()
-                .subscribe({
-                    it.content.let {
-                        it.let {
-                            if (0L != it!!.expired) {
-                                saveCmLogCertExpired(it!!.expired)
-                            }
-                        }
-                    }
-
-                    vm.value3.set(it.content.let { it.let { ViewModelHelper.expiredText(it!!.expired) } })
-                }, {})
 
         vm.renewEvent.observe(this, Observer {
             PassportOperations.ensureCaValidity(this) {
@@ -59,4 +47,21 @@ class CmLogCertificationActivity : BindActivity<ActivityCertificationDataCmBindi
         })
         binding.vm = vm
     }
+
+    override fun onResume() {
+        super.onResume()
+        App.get().chainGateway.getCertData(App.get().passportRepository.currPassport.value!!.address, ChainGateway.BUSINESS_COMMUNICATION_LOG)
+                .checkonMain()
+                .subscribe({
+                    it.content.let {
+                        it.let {
+                            if (0L != it!!.expired) {
+                                saveCmLogCertExpired(it!!.expired)
+                            }
+                        }
+                    }
+                    vm.value3.set(it.content.let { it.let { ViewModelHelper.expiredText(it!!.expired) } })
+                }, {})
+    }
+
 }

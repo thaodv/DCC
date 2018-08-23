@@ -96,9 +96,9 @@ class StartLoanVm : ViewModel() {
 
     fun loadHolding() {
         ScfOperations.loadHolding()
-            .subscribe { value ->
-                dccBalance.set(value)
-            }
+                .subscribe { value ->
+                    dccBalance.set(value)
+                }
     }
 
     fun checkAndProceed() {
@@ -108,53 +108,53 @@ class StartLoanVm : ViewModel() {
             return
         }
         val fee = this.fee.get()
-        val amount = when(volSelectIndex.get()){
+        val amount = when (volSelectIndex.get()) {
             -1 -> inputCustomVol.get()?.toBigDecimal()
             else -> product.volumeOptionList.getOrNull(volSelectIndex.get())
         }
-        if (fee == null || amount == null){
+        if (fee == null || amount == null) {
             failEvent.value = "amount or fee is empty"
             return
         }
         val c = product.currency
         val minAmount = product.volumeOptionList.first()
         val maxAmount = product.volumeOptionList.last()
-        if(amount < minAmount){
+        if (amount < minAmount) {
             failEvent.value = "输入金额不可小于${minAmount.toPlainString()}"
             return
-        }else if(amount > maxAmount){
+        } else if (amount > maxAmount) {
             failEvent.value = "输入金额不可大于${maxAmount.toPlainString()}"
             return
         }
         val address = this.address.get()
-        if (address == null){
+        if (address == null) {
             failEvent.value = "beneficiary address is empty"
             return
         }
         val loanPeriod = product.loanPeriodList.getOrNull(periodSelectIndex.get())
-        if (loanPeriod == null){
+        if (loanPeriod == null) {
             failEvent.value = "loan period is empty"
             return
         }
-        val completed = completedCert.get()?: emptyList()
+        val completed = completedCert.get() ?: emptyList()
         val requiredCerts = product.requisiteCertList.filter { !completed.contains(it) }
-        if(requiredCerts.isNotEmpty()){
+        if (requiredCerts.isNotEmpty()) {
             failEvent.value = requiredCerts.map {
                 when (it) {
                     ChainGateway.BUSINESS_ID -> getString(R.string.id)
                     ChainGateway.BUSINESS_BANK_CARD -> getString(R.string.bank_accoun)
                     ChainGateway.BUSINESS_COMMUNICATION_LOG -> getString(R.string.carrier_information)
                     else -> it
-                } + getString(R.string.verification_to_be_completed)
+                } + "未认证"
             }.first()
             return
         }
         proceedEvent.value = LoanScratch(
-            product,
-            amount,
-            fee,
-            loanPeriod,
-            address
+                product,
+                amount,
+                fee,
+                loanPeriod,
+                address
         )
     }
 }

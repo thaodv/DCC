@@ -4,10 +4,10 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
-import io.wexchain.android.dcc.base.BindFragment
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.base.BindFragment
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.vm.InputPhoneInfoVm
 import io.wexchain.android.dcc.vm.currencyToDisplayStr
@@ -18,6 +18,7 @@ import io.wexchain.digitalwallet.Currencies
 import java.math.BigInteger
 
 class InputPhoneInfoFragment : BindFragment<FragmentSubmitCommunicationLogBinding>() {
+
     override val contentLayoutId: Int = R.layout.fragment_submit_communication_log
 
     private var listener: Listener? = null
@@ -31,6 +32,7 @@ class InputPhoneInfoFragment : BindFragment<FragmentSubmitCommunicationLogBindin
                 listener?.onSubmitPhoneInfo(it.first, it.second)
             }
         })
+
         binding.vm = vm
         binding.inputPassword.etInputText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
 

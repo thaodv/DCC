@@ -40,6 +40,7 @@
             android:minHeight="40dp"
             android:gravity="center_vertical"
             android:hint="@{hint}"
+            android:singleLine="true"
             tools:hint="请输入"
             android:text="@={text}"
             android:background="@null"
