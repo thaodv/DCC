@@ -41,8 +41,8 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
 
     private fun initdatas() {
         getbiSaleInfo()
-         getbiminAmountPerHand()
-        getbiInvestCeilAmount()
+       //  getbiminAmountPerHand()
+        //getbiInvestCeilAmount()
         //binding.saleInfo=saleInfo
 
     }
@@ -83,7 +83,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
         ). subscribeOn(AndroidSchedulers.mainThread()).subscribe(
             {
                 lastAmount=encodeStringsimple(it.result)
-                var ssss=BigDecimal((totalAmount-lastAmount)*100).divide(BigDecimal(totalAmount)).setScale(1)
+                var ssss=BigDecimal((totalAmount-lastAmount)*100).divide(BigDecimal(totalAmount),1).setScale(1)
                 binding.lastamountDCC=(""+(totalAmount-lastAmount)+" DCC ("+ssss +"%）")
                 Log.e("lastAmount",""+ encodeStringsimple(it.result))
                 Log.e("lastamountDCC",""+ ssss)
@@ -129,7 +129,8 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
               //  saleInfo.minAmountPerHand=minAmountPerHand
                  binding.minAmountPerHandDCC=(""+minAmountPerHand+" DCC")
                 Log.e("encodeStringsimple",""+ encodeStringsimple(it.result))
-                checkStatu()
+               // checkStatu()
+                getbiInvestCeilAmount()
             },{
                 it.printStackTrace()
             }
@@ -163,7 +164,8 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
                  binding.saleInfo=saleInfo
                  //binding.tvProfit.setText(saleInfo.annualRateP())
                  Log.e("getbiSaleInfo", saleInfo.name)
-                 checkStatu()
+                // checkStatu()
+                 getbiminAmountPerHand()
              },{
                  it.printStackTrace()
              }
@@ -173,11 +175,12 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
     }
 
     var statu="已结束"
-    fun checkStatu(){
+    @Synchronized
+       fun  checkStatu(){
         require(null!=saleInfo)
         if( System.currentTimeMillis() >saleInfo.closeTime){
             statu="已结束"
-            canBuy=false
+             canBuy=false
         }else if(minAmountPerHand > (totalAmount-lastAmount)){
             statu="已售罄"
             canBuy=false
@@ -189,10 +192,14 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
         ONAME=saleInfo.name
         setButton()
     }
+
+
+    @Synchronized
     fun setButton(){
         binding.tvBuyit.text=statu
         if(canBuy){
             binding.tvBuyit.setBackgroundColor(Color.parseColor("#FF6766CC"))
+
         }else{
             binding.tvBuyit.setBackgroundColor(Color.parseColor("#B2484848"))
         }
