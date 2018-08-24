@@ -49,12 +49,12 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         checkUpgrade()
 
         if (App.get().passportRepository.passportExists) {
-            if (ShareUtils.getBoolean("searchain_has_show", true)) {
-                ShareUtils.setBoolean("searchain_has_show", false)
+            if (ShareUtils.getBoolean("biint_has_show", true)) {
+                ShareUtils.setBoolean("biint_has_show", false)
                 tipsDialog.show()
             }
         }
-
+        // tipsDialog.show()
     }
 
     override fun onResume() {
@@ -197,13 +197,13 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
                 showIntroWalletDialog()
             }
         }
-        /*findViewById<View>(R.id.tv_interest).setOnClickListener {
+        findViewById<View>(R.id.tv_interest).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
                 navigateTo(MyInterestActivity::class.java)
             } else {
                 showIntroWalletDialog()
             }
-        }*/
+        }
         findViewById<View>(R.id.banner_tl).setOnClickListener {
             if (App.get().passportRepository.passportExists) {
                 val address = App.get().passportRepository.getCurrentPassport()!!.address
@@ -360,7 +360,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
     private inner class TipsDialog : Dialog(this, R.style.FullWidthDialog) {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            setContentView(R.layout.dialog_searchain_show)
+            setContentView(R.layout.dialog_binterest_show )
             setCancelable(false)
             window.attributes.height = ViewGroup.LayoutParams.MATCH_PARENT
             window.attributes.width = ViewGroup.LayoutParams.MATCH_PARENT
@@ -369,7 +369,12 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
                 dismiss()
             }
             findViewById<View>(R.id.btn_detail).setOnClickListener {
-                startActivity(StaticHtmlActivity.getResultIntent(this@HomeActivity, "Searchain数据分析", Extras.Searchain + App.get().passportRepository.currPassport.value!!.address))
+                //startActivity(StaticHtmlActivity.getResultIntent(this@HomeActivity, "Searchain数据分析", Extras.Searchain + App.get().passportRepository.currPassport.value!!.address))
+                if (App.get().passportRepository.passportExists) {
+                    navigateTo(MyInterestActivity::class.java)
+                } else {
+                    showIntroWalletDialog()
+                }
             }
         }
     }

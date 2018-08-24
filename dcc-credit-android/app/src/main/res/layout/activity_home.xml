@@ -43,94 +43,138 @@
                     android:paddingLeft="@dimen/content_padding_horizontal"
                     android:paddingRight="@dimen/content_padding_horizontal"
                     android:layout_marginTop="12dp"
+                    android:weightSum="5"
                     >
-                    <FrameLayout
+                    <LinearLayout
                         android:id="@+id/tv_candy"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_bar_red"
+                        android:orientation="vertical"
                         >
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/homeic_candy"
+                            android:layout_gravity="center"
+                            />
                         <TextView
+                            android:layout_marginTop="5dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:minWidth="100dp"
                             android:layout_gravity="center"
                             android:gravity="center"
+                            android:textSize="12sp"
                             android:text="@string/collect_candies"
-                            android:drawableLeft="@drawable/ic_candy_2"
                             android:drawablePadding="16dp"
-                            android:textColor="@color/text_white"
+                            android:textColor="@color/font_dark"
                             />
-                    </FrameLayout>
-                    <FrameLayout
+                    </LinearLayout>
+                    <LinearLayout
                         android:id="@+id/tv_credit"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_bar_blue"
-                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical"
                         >
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/homeic_mycredit"
+                            android:layout_gravity="center"
+                            />
                         <TextView
+                            android:layout_marginTop="5dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:minWidth="100dp"
                             android:layout_gravity="center"
                             android:gravity="center"
+                            android:textSize="12sp"
                             android:text="@string/my_credit"
-                            android:drawableLeft="@drawable/ic_credit_star"
                             android:drawablePadding="16dp"
-                            android:textColor="@color/text_white"
+                            android:textColor="@color/font_dark"
                             />
-                    </FrameLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/content_padding_horizontal"
-                    android:paddingRight="@dimen/content_padding_horizontal"
-                    android:layout_marginTop="12dp"
-                    >
-                    <FrameLayout
+                    </LinearLayout>
+                    <LinearLayout
                         android:id="@+id/tv_loan"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_bar_purple"
+                        android:orientation="vertical"
                         >
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/homeic_borrow"
+                            android:layout_gravity="center"
+                            />
                         <TextView
+                            android:layout_marginTop="5dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:minWidth="100dp"
                             android:layout_gravity="center"
                             android:gravity="center"
+                            android:textSize="12sp"
                             android:text="@string/based_loan"
-                            android:drawableLeft="@drawable/ic_loan"
                             android:drawablePadding="16dp"
-                            android:textColor="@color/text_white"
+                            android:textColor="@color/font_dark"
                             />
-                    </FrameLayout>
-                    <FrameLayout
+                    </LinearLayout>
+                    <LinearLayout
                         android:id="@+id/tv_loan_report"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_bar_yellow"
-                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical"
                         >
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/homeic_loanreport"
+                            android:layout_gravity="center"
+                            />
                         <TextView
+                            android:layout_marginTop="5dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:minWidth="100dp"
                             android:layout_gravity="center"
                             android:gravity="center"
+                            android:textSize="12sp"
                             android:text="@string/loan_report"
-                            android:drawableLeft="@drawable/ic_report"
                             android:drawablePadding="16dp"
-                            android:textColor="@color/text_white"
+                            android:textColor="@color/font_dark"
                             />
-                    </FrameLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/tv_interest"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        >
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/homeic_interest"
+                            android:layout_gravity="center"
+                            />
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:minWidth="100dp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:textSize="12sp"
+                            android:text="@string/produce_interest"
+                            android:drawablePadding="16dp"
+                            android:textColor="@color/font_dark"
+                            />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -179,6 +223,6 @@
 
         </ScrollView>
 
-    </LinearLayout>
 
+    </LinearLayout>
 </layout>
