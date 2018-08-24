@@ -388,7 +388,7 @@
             android:label="@string/title_open_cloud"
             android:screenOrientation="portrait" />
         <activity
-            android:name="io.wexchain.android.dcc.ResetPasswordActivity"
+            android:name="io.wexchain.android.dcc.modules.ipfs.activity.ResetPasswordActivity"
             android:label="重置密码"
             android:screenOrientation="portrait" />
         <activity android:name="io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity"

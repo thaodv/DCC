@@ -3,6 +3,7 @@ package io.wexchain.digitalwallet
 import io.wexchain.digitalwallet.api.domain.EthJsonTxScratch
 import org.web3j.abi.FunctionEncoder
 import org.web3j.abi.TypeReference
+import org.web3j.abi.Utils
 import org.web3j.abi.datatypes.*
 import org.web3j.abi.datatypes.Function
 import org.web3j.abi.datatypes.generated.Bytes32
@@ -20,7 +21,11 @@ object Erc20Helper {
     @JvmStatic
     private val typeBool = TypeReference.create(Bool::class.java)
     @JvmStatic
-    private val typeBytes = TypeReference.create(Bytes32::class.java)
+    private val typeBytes = TypeReference.create(DynamicBytes::class.java)
+    @JvmStatic
+    private val typeAddress = TypeReference.create(Address::class.java)
+    @JvmStatic
+    private val typeString = TypeReference.create(Utf8String::class.java)
 
     fun getBalanceCall(contractAddress: String, address: String): EthJsonTxScratch {
         return EthJsonTxScratch(
@@ -58,7 +63,7 @@ object Erc20Helper {
         )
     }
 
-    fun getIpfsKey(it: String,address: String): EthJsonTxScratch {
+    fun getIpfsKey(it: String, address: String): EthJsonTxScratch {
         return EthJsonTxScratch(
                 to = it,
                 from = address,
@@ -70,17 +75,47 @@ object Erc20Helper {
         )
     }
 
-    fun putIpfsKey(sha256Key:ByteArray):Function{
-        return  Function(
+    fun getIpfsToken(it: String, address: String, address2: String): EthJsonTxScratch {
+        return EthJsonTxScratch(
+                to = it,
+                from = address,
+                data = FunctionEncoder.encode(
+                        Function("getIpfsToken",
+                                Arrays.asList<Type<*>>(Address(address2)),
+                                Arrays.asList<TypeReference<*>>(typeAddress, typeAddress, typeUInt256, typeString, typeBytes, typeString, typeBytes, typeBytes))
+                )
+        )
+    }
+
+    fun dncodeResponse(): MutableList<TypeReference<Type<*>>> {
+        return Utils.convert(Arrays.asList<TypeReference<*>>(typeAddress, typeAddress, typeUInt256, typeString, typeBytes, typeString, typeBytes, typeBytes))
+    }
+
+    fun putIpfsKey(sha256Key: ByteArray): Function {
+        return Function(
                 "putIpfsKey",
-                Arrays.asList<Type<*>>(Bytes32(sha256Key)),
+                Arrays.asList<Type<*>>(DynamicBytes(sha256Key)),
                 Arrays.asList<TypeReference<*>>())
     }
 
-    fun deleteIpfsKey():Function{
+    fun putIpfsToken(contractAddress: String, version: BigInteger, cipher: String, nonce: ByteArray, token: String, digest1: ByteArray, digest2: ByteArray): Function {
+        return Function(
+                "putIpfsToken",
+                Arrays.asList<Type<*>>(Address(contractAddress), Uint256(version), Utf8String(cipher), DynamicBytes(nonce), Utf8String(token), DynamicBytes(digest1), DynamicBytes(digest2)),
+                Arrays.asList<TypeReference<*>>())
+    }
+
+    fun deleteIpfsKey(): Function {
         return Function(
                 "deleteIpfsKey",
                 Arrays.asList<Type<*>>(),
+                Arrays.asList<TypeReference<*>>())
+    }
+
+    fun deleteIpfsToken(contractAddress: String): Function {
+        return Function(
+                "deleteIpfsToken",
+                Arrays.asList<Type<*>>(Address(contractAddress)),
                 Arrays.asList<TypeReference<*>>())
     }
 

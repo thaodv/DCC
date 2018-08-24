@@ -43,6 +43,12 @@ object ViewModelHelper {
     }
 
     @JvmStatic
+    fun expiredToLong(expired: String): Long {
+        return expiredFormat.parse(expired).time
+    }
+
+
+    @JvmStatic
     fun Context.getCertTypeIcon(certificationType: CertificationType?): Drawable? {
         val drawableId = when (certificationType) {
             null -> 0

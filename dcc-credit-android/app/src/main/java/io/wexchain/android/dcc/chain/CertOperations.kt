@@ -17,8 +17,11 @@ import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.tools.RetryWithDelay
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.pair
+import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.android.dcc.view.dialog.CertFeeConfirmDialog
+import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.android.dcc.vm.domain.BankCardInfo
 import io.wexchain.android.dcc.vm.domain.IdCardCertData
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
@@ -29,6 +32,10 @@ import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.*
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
+import io.wexchain.ipfs.entity.BankInfo
+import io.wexchain.ipfs.entity.IdInfo
+import io.wexchain.ipfs.entity.PhoneInfo
+import io.wexchain.ipfs.utils.base64
 import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -42,6 +49,10 @@ object CertOperations {
     private const val DIGEST = "SHA256"
 
     private lateinit var certPrefs: CertPrefs
+
+    private val passport by lazy {
+        App.get().passportRepository
+    }
 
     fun init(context: Context) {
         certPrefs = CertPrefs(context.getSharedPreferences("dcc_certification_status", Context.MODE_PRIVATE))
@@ -63,6 +74,31 @@ object CertOperations {
                     //todo
                     stackTrace(it)
                 })
+    }
+
+    fun getChainDigest(business: String): Single<Pair<ByteArray, ByteArray>> {
+        return App.get().chainGateway.getCertData(passport.getCurrentPassport()!!.address, business)
+                .check()
+                .map {
+                    val content = it.content
+                    val de1 = Base64.decode(content.digest1, Base64.DEFAULT)
+                    val de2 = Base64.decode(content.digest2, Base64.DEFAULT)
+                    Pair(de1, de2)
+                }
+    }
+
+    fun checkLocalIdAndChainData(business: String): Single<Boolean> {
+        val idDigest =
+                when (business) {
+                    ChainGateway.BUSINESS_ID -> getLocalIdDigest()
+                    ChainGateway.BUSINESS_BANK_CARD -> getLocalBankDigest()
+                    ChainGateway.BUSINESS_COMMUNICATION_LOG -> getLocalCmDigest()
+                    else -> null
+                }
+        return getChainDigest(business)
+                .map {
+                    Arrays.equals(it.first, idDigest!!.first) && Arrays.equals(it.second, idDigest.second)
+                }
     }
 
     fun submitIdCert(passport: Passport, idCardData: IdCardCertData): Single<CertOrder> {
@@ -155,6 +191,36 @@ object CertOperations {
                             )
                             .compose(Result.checked())
                 }
+    }
+
+    fun getLocalBankDigest(): Pair<ByteArray, ByteArray> {
+        val certBankCardData = getCertBankCardData()
+        val data = certBankCardData!!.bankCardNo.toByteArray(Charsets.UTF_8) + certBankCardData.phoneNo.toByteArray(Charsets.UTF_8)
+        val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
+        val digest2 = byteArrayOf()
+        return Pair(digest1, digest2)
+    }
+
+    fun getLocalCmDigest(): Pair<ByteArray, ByteArray> {
+        val cmCertOrderId = getCmCertOrderId()
+        val data = getCmLogData(cmCertOrderId).blockingGet()
+        val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
+        return Pair(digest1, byteArrayOf())
+    }
+
+    fun getLocalIdDigest(): Pair<ByteArray, ByteArray> {
+        val certid = getCertId()!!
+
+        val idPics = getCertIdPics()!!
+
+        val digest1 = digestIdName(certid.first, certid.second)
+        val digest2 = MessageDigest.getInstance(DIGEST).run {
+            update(digest1)
+            update(MessageDigest.getInstance(DIGEST).digest(idPics.first))
+            update(MessageDigest.getInstance(DIGEST).digest(idPics.second))
+            digest(MessageDigest.getInstance(DIGEST).digest(idPics.third))
+        }
+        return Pair(digest1, digest2)
     }
 
     fun submitBankCardCert(
@@ -427,6 +493,30 @@ object CertOperations {
         }
     }
 
+
+    @WorkerThread
+    fun getTmpIdIdPics(): Triple<File, File, File>? {
+        val orderId = certPrefs.certIdOrderId.get()
+        if (orderId == -1L) {
+            return null
+        }
+        val photo = File(App.get().filesDir, certTmpFileName(orderId, "photo"))
+        val idFront = File(App.get().filesDir, certTmpFileName(orderId, "idFront"))
+        val idBack = File(App.get().filesDir, certTmpFileName(orderId, "idBack"))
+        return Triple(idFront, idBack, photo)
+    }
+
+    fun getOrderId(): Long {
+        return certPrefs.certIdOrderId.get()
+    }
+
+    private fun certTmpFileName(orderId: Long, file: String): String {
+        return when (file) {
+            "photo" -> "cert${File.separator}id${File.separator}$orderId.jpg"
+            else -> "cert${File.separator}id${File.separator}${orderId}_$file.jpg"
+        }
+    }
+
     /**
      * @return idFront,idBack,photo
      */
@@ -436,9 +526,9 @@ object CertOperations {
         if (orderId == -1L) {
             return null
         }
-        val photo = File(App.get().filesDir, certIdPhotoFileName(orderId, "photo")).readBytes()
-        val idFront = File(App.get().filesDir, certIdPhotoFileName(orderId, "idFront")).readBytes()
-        val idBack = File(App.get().filesDir, certIdPhotoFileName(orderId, "idBack")).readBytes()
+        val photo = File(App.get().filesDir, certIdPhotoFileName("facePhoto")).readBytes()
+        val idFront = File(App.get().filesDir, certIdPhotoFileName("positivePhoto")).readBytes()
+        val idBack = File(App.get().filesDir, certIdPhotoFileName("backPhoto")).readBytes()
         return Triple(idFront, idBack, photo)
     }
 
@@ -465,6 +555,10 @@ object CertOperations {
         return true
     }
 
+    fun getCertIdStatus(): String {
+        return certPrefs.certIdStatus.get()!!
+    }
+
     fun getCertBankCardData(): BankCardInfo? {
         if (!isBankCertPassed()) {
             return null
@@ -477,6 +571,12 @@ object CertOperations {
 
     fun getBankCardCertExpired(): Long {
         return certPrefs.certBankExpired.get()
+    }
+
+    fun getBankStatus(): Pair<String, Long> {
+        val status = certPrefs.certBankStatus.get()!!
+        val orderid = certPrefs.certBankOrderId.get()
+        return Pair(status, orderid)
     }
 
     fun isBankCertPassed(): Boolean {
@@ -526,6 +626,59 @@ object CertOperations {
         }
     }
 
+
+    fun saveIpfsCmData(phoneInfo: PhoneInfo) {
+        certPrefs.certCmLogOrderId.set(phoneInfo.mobileAuthenOrderid.toLong())
+        certPrefs.certCmLogState.set(phoneInfo.mobileAuthenStatus)
+        certPrefs.certCmLogPhoneNo.set(phoneInfo.mobileAuthenNumber)
+
+        File(App.get().filesDir, certCmLogReportFileName(phoneInfo.mobileAuthenOrderid.toLong()))
+                .apply {
+                    ensureNewFile()
+                    writeBytes(phoneInfo.mobileAuthenCmData.toByteArray())
+                }
+    }
+
+    fun saveIpfsBankData(bankInfo: BankInfo) {
+        val bankCardInfo = BankCardInfo(bankInfo.bankAuthenCode, bankInfo.bankAuthenCodeNumber, bankInfo.bankAuthenMobile)
+
+        certPrefs.certBankOrderId.set(bankInfo.bankAuthenOrderid.toLong())
+        certPrefs.certBankStatus.set(bankInfo.bankAuthenStatus)
+        certPrefs.certBankExpired.set(ViewModelHelper.expiredToLong(bankInfo.bankAuthenExpired))
+        certPrefs.certBankCardData.set(bankCardInfo.toJson())
+    }
+
+    fun saveIpfsIdData(idInfo: IdInfo) {
+        val facePhoto = idInfo.facePhoto.base64()
+        val backPhoto = idInfo.backPhoto.base64()
+        val positivePhoto = idInfo.positivePhoto.base64()
+
+        val essentialData = IdCardEssentialData(idInfo.userName, idInfo.userNumber, ViewModelHelper.expiredToLong(idInfo.userTimeLimit),
+                idInfo.userSex, idInfo.userNation, idInfo.userYear, idInfo.userMonth, idInfo.userDay, idInfo.userAddress, idInfo.userAuthority)
+
+        certPrefs.certIdOrderId.set(idInfo.orderId.toLong())
+        certPrefs.certIdStatus.set(idInfo.idAuthenStatus)
+        certPrefs.certIdSimilarity.set(idInfo.similarity.toString())
+        certPrefs.certRealName.set(idInfo.userName)
+        certPrefs.certRealId.set(idInfo.userNumber)
+        certPrefs.certIdData.set(gson.toJson(essentialData))
+
+        Schedulers.io().scheduleDirect {
+            File(App.get().filesDir, certIdPhotoFileName("facePhoto")).apply {
+                ensureNewFile()
+                writeBytes(facePhoto)
+            }
+            File(App.get().filesDir, certIdPhotoFileName("positivePhoto")).apply {
+                ensureNewFile()
+                writeBytes(positivePhoto)
+            }
+            File(App.get().filesDir, certIdPhotoFileName("backPhoto")).apply {
+                ensureNewFile()
+                writeBytes(backPhoto)
+            }
+        }
+    }
+
     fun saveIdCertData(order: CertOrder, idData: IdCardCertData) {
         certPrefs.certIdOrderId.set(order.orderId)
         certPrefs.certIdStatus.set(order.status.name)
@@ -534,27 +687,23 @@ object CertOperations {
         certPrefs.certRealId.set(idData.essentialData.id)
         certPrefs.certIdData.set(gson.toJson(idData.essentialData))
         Schedulers.io().scheduleDirect {
-            val orderId = order.orderId
-            File(App.get().filesDir, certIdPhotoFileName(orderId, "photo")).apply {
+            File(App.get().filesDir, certIdPhotoFileName("facePhoto")).apply {
                 ensureNewFile()
                 writeBytes(idData.photo!!)
             }
-            File(App.get().filesDir, certIdPhotoFileName(orderId, "idFront")).apply {
+            File(App.get().filesDir, certIdPhotoFileName("positivePhoto")).apply {
                 ensureNewFile()
                 writeBytes(idData.idFront)
             }
-            File(App.get().filesDir, certIdPhotoFileName(orderId, "idBack")).apply {
+            File(App.get().filesDir, certIdPhotoFileName("backPhoto")).apply {
                 ensureNewFile()
                 writeBytes(idData.idBack)
             }
         }
     }
 
-    private fun certIdPhotoFileName(orderId: Long, file: String): String {
-        return when (file) {
-            "photo" -> "cert${File.separator}id${File.separator}$orderId.jpg"
-            else -> "cert${File.separator}id${File.separator}${orderId}_$file.jpg"
-        }
+    private fun certIdPhotoFileName(file: String): String {
+        return "cert${File.separator}id${File.separator}$file.jpg"
     }
 
 
@@ -575,6 +724,10 @@ object CertOperations {
 
     fun getCmCertOrderId(): Long {
         return certPrefs.certCmLogOrderId.get()
+    }
+
+    fun getCertIdSimilarity(): String? {
+        return certPrefs.certIdSimilarity.get()
     }
 
     fun getCmLogData(orderId: Long): Single<ByteArray> {

@@ -6,12 +6,19 @@ import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import android.widget.ScrollView
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.onClick
 import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.chain.IpfsOperations
+import io.wexchain.android.dcc.chain.IpfsOperations.checkToken
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.domain.CertificationType
+import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
+import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
+import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
@@ -21,6 +28,10 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
 
     override val contentLayoutId: Int = R.layout.activity_my_credit
 
+    private val passport by lazy {
+        App.get().passportRepository
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setWindowExtended()
@@ -29,6 +40,32 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
         binding.asBankVm = obtainAuthStatus(CertificationType.BANK)
         binding.asMobileVm = obtainAuthStatus(CertificationType.MOBILE)
         binding.asPersonalVm = obtainAuthStatus(CertificationType.PERSONAL)
+        initIpfsCloud()
+    }
+
+    private fun initIpfsCloud() {
+            val ipfsKeyHash = passport.getIpfsKeyHash()
+            if (ipfsKeyHash.isNullOrEmpty()) {
+                getCloudToken()
+            } else {
+                binding.creditIpfsCloud.onClick {
+                    navigateTo(MyCloudActivity::class.java)
+                }
+            }
+
+
+    }
+    private fun getCloudToken() {
+        IpfsOperations.getIpfsKey()
+                .checkToken()
+                .doMain()
+                .subscribeBy {
+                    binding.creditIpfsCloud.onClick {
+                        navigateTo(OpenCloudActivity::class.java) {
+                            putExtra("activity_type", if (it) PassportSettingsActivity.OPEN_CLOUD else PassportSettingsActivity.NOT_OPEN_CLOUD)
+                        }
+                    }
+                }
     }
 
     private fun initToolbarS(showHomeAsUp: Boolean = true): Toolbar? {

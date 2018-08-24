@@ -12,7 +12,7 @@ import io.wexchain.android.common.BaseApplication
 import io.wexchain.android.common.Pop
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.network.CommonApi
-import io.wexchain.android.dcc.network.ContractApi
+import io.wexchain.android.dcc.network.IpfsApi
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.PassportRepository
 import io.wexchain.android.dcc.repo.ScfTokenManager
@@ -31,6 +31,7 @@ import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.api.*
 import io.wexchain.digitalwallet.proxy.*
+import io.wexchain.ipfs.core.IpfsCore
 import zlc.season.rxdownload3.core.DownloadConfig
 import java.lang.ref.WeakReference
 import java.math.BigInteger
@@ -50,7 +51,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
     //our services
     lateinit var chainGateway: ChainGateway
-    lateinit var contractApi: ContractApi
+    lateinit var contractApi: IpfsApi
     lateinit var certApi: CertApi
     lateinit var chainFrontEndApi: ChainFrontEndApi
     lateinit var privateChainApi: PrivateChainApi
@@ -131,7 +132,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         marketingApi = networking.createApi(MarketingApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
         scfApi = networking.createApi(ScfApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
         coinMarketCapApi = networking.createApi(CoinMarketCapApi::class.java, BuildConfig.COIN_MARKET)
-        contractApi = networking.createApi(ContractApi::class.java, ContractApi.BASE_URL)
+        contractApi = networking.createApi(IpfsApi::class.java, IpfsApi.BASE_URL)
 
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))
         ethplorerApi = networking.createApi(EthplorerApi::class.java, EthplorerApi.API_URL)
@@ -153,7 +154,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         WxApiManager.init()
         initRxDownload()
         CrashHandler().init(context)
-//        IpfsCore.init("/ip4/10.65.212.11/tcp/5001")
+        IpfsCore.init(BuildConfig.IPFS_HOST)
     }
 
     private fun buildAgent(dc: DigitalCurrency): Erc20Agent {

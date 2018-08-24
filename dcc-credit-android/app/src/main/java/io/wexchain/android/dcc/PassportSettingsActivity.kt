@@ -16,12 +16,12 @@ import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.dcc.chain.IpfsOperations
+import io.wexchain.android.dcc.chain.IpfsOperations.checkToken
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
-import io.wexchain.android.dcc.network.ContractApi
-import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
@@ -33,8 +33,6 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportSettingsBinding
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CheckUpgrade
-import io.wexchain.digitalwallet.Erc20Helper
-import io.wexchain.digitalwallet.api.domain.EthJsonRpcRequestBody
 import zlc.season.rxdownload3.core.Mission
 import java.io.File
 
@@ -55,7 +53,6 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
     }
 
     private fun initVm() {
-//        passport.setIpfsKeyHash("4abb778f046fc85e5acf404ddfc9acb2b341070d673088cff02f0ce3ef7c1f42")
         val protect = getViewModel<Protect>()
         protect.sync(this)
         protect.protectEnableEvent.observe(this, Observer {
@@ -105,27 +102,8 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
     }
 
     private fun getCloudToken() {
-        App.get().contractApi.getIpfsContractAddress(ContractApi.IPFS_KEY_HASH)
-                .check()
-                .map {
-                    Erc20Helper.getIpfsKey(it, passport.getCurrentPassport()!!.address)
-                }
-                .flatMap {
-                    App.get().contractApi
-                            .postCall(
-                                    ContractApi.IPFS_KEY_HASH,
-                                    EthJsonRpcRequestBody(
-                                            method = "eth_call",
-                                            params = listOf(it, "latest"),
-                                            id = ContractApi.idAtomic.incrementAndGet()
-                                    )
-                            )
-                }
-                .map {
-                    val result = it.result!!.toString()
-                    val split = result.split("20")
-                    split.size > 2
-                }
+        IpfsOperations.getIpfsKey()
+                .checkToken()
                 .doMain()
                 .subscribeBy {
                     binding.tvCloudStatus.text = if (it) getString(R.string.start_out) else getString(R.string.start_in)

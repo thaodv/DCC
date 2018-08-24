@@ -3,7 +3,6 @@ package io.wexchain.ipfs.utils
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
-import io.wexchain.ipfs.core.IpfsCore
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -13,27 +12,25 @@ import java.io.FileOutputStream
  *Created by liuyang on 2018/8/7.
  */
 
-fun ByteArray.writeToFile(filePath: String, fileName: String): String? {
-    var bos: BufferedOutputStream? = null
-    var fos: FileOutputStream? = null
+fun ByteArray.writeToFile(filePath: String, fileName: String): String {
+    val bos: BufferedOutputStream?
+    val fos: FileOutputStream?
     val file: File?
-    try {
-        val dir = File(filePath)
-        if (!dir.exists() && dir.isDirectory) {
-            dir.mkdirs()
-        }
-        file = File(filePath + File.separator + fileName)
-        fos = FileOutputStream(file)
-        bos = BufferedOutputStream(fos)
-        bos.write(this)
-        return file.absolutePath
-    } catch (e: Exception) {
-        e.printStackTrace()
-        return null
-    } finally {
-        bos?.close()
-        fos?.close()
+    val dir = File(filePath)
+    if (!dir.exists() && dir.isDirectory) {
+        dir.mkdirs()
     }
+    file = File(filePath + File.separator + fileName)
+    if (file.exists()) {
+        file.delete()
+    }
+    fos = FileOutputStream(file)
+    bos = BufferedOutputStream(fos)
+    bos.write(this)
+    bos.close()
+    fos.close()
+    return file.absolutePath
+
 }
 
 fun File.readToString(): String {

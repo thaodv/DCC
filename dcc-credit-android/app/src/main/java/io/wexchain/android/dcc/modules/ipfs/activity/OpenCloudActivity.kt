@@ -1,7 +1,6 @@
 package io.wexchain.android.dcc.modules.ipfs.activity
 
 import android.os.Bundle
-import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
@@ -9,20 +8,15 @@ import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.PassportSettingsActivity
-import io.wexchain.android.dcc.ResetPasswordActivity
 import io.wexchain.android.dcc.base.BindActivity
-import io.wexchain.android.dcc.chain.txSigned
-import io.wexchain.android.dcc.network.ContractApi
-import io.wexchain.android.dcc.network.sendRawTransaction
-import io.wexchain.android.dcc.network.transactionReceipt
-import io.wexchain.android.dcc.tools.*
+import io.wexchain.android.dcc.chain.IpfsOperations
+import io.wexchain.android.dcc.tools.doMain
+import io.wexchain.android.dcc.tools.isPasswordValid
+import io.wexchain.android.dcc.tools.toHex
 import io.wexchain.android.dcc.view.dialog.CloudstorageDialog
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityOpencloudBinding
-import io.wexchain.digitalwallet.Chain
-import io.wexchain.digitalwallet.Currencies
-import io.wexchain.digitalwallet.Erc20Helper
 
 /**
  *Created by liuyang on 2018/8/13.
@@ -83,31 +77,34 @@ class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
             finish()
             return
         }
-
-        val sha265Key = passport.createIpfsKey(psw)
-        val ipfsKey = Erc20Helper.putIpfsKey(sha265Key)
-
-        val dccJuzix = MultiChainHelper.dispatch(Currencies.DCC).first { it.chain == Chain.JUZIX_PRIVATE }
-        val agent = App.get().assetsRepository.getDigitalCurrencyAgent(dccJuzix)
-
-        Singles.zip(
-                agent.getNonce(passport.getCurrentPassport()!!.address),
-                App.get().contractApi.getIpfsContractAddress(ContractApi.IPFS_KEY_HASH).check())
-                .map {
-                    ipfsKey.txSigned(passport.getCurrentPassport()!!.credential, it.second, it.first)
-                }
-                .flatMap {
-                    App.get().contractApi.sendRawTransaction(ContractApi.IPFS_KEY_HASH, it)
-                }
-                .flatMap {
-                    App.get().contractApi.transactionReceipt(ContractApi.IPFS_KEY_HASH, it).retryWhen(RetryWithDelay.createGrowth(8, 1000))
-                }
-                .doMain()
-                .withLoading()
-                .subscribeBy {
-                    passport.setIpfsKeyHash(sha265Key.toHex())
-                    navigateTo(MyCloudActivity::class.java)
-                    finish()
-                }
+        if (TYPE == PassportSettingsActivity.OPEN_CLOUD) {
+            IpfsOperations.checkPsw()
+                    .doMain()
+                    .filter {
+                        val ipfsKey = passport.createIpfsKey(psw).toHex()
+                        if (ipfsKey != it) {
+                            toast("密码输入有误")
+                        } else {
+                            passport.setIpfsKeyHash(it)
+                        }
+                        ipfsKey == it
+                    }
+                    .subscribeBy {
+                        navigateTo(MyCloudActivity::class.java)
+                        finish()
+                    }
+        } else if (TYPE == PassportSettingsActivity.NOT_OPEN_CLOUD) {
+            IpfsOperations.putIpfsKey(psw)
+                    .doMain()
+                    .withLoading()
+                    .subscribeBy {
+                        if (it) {
+                            navigateTo(MyCloudActivity::class.java)
+                            finish()
+                        } else {
+                            toast("密码写入失败")
+                        }
+                    }
+        }
     }
 }

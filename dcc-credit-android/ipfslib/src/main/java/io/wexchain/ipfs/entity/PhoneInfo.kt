@@ -8,5 +8,8 @@ import java.io.Serializable
  */
 data class PhoneInfo(
         val mobileAuthenStatus: String,//手机运营商状态
-        val mobileAuthenNumber: String//预留手机号
+        val mobileAuthenOrderid: Int,//订单ID
+        val mobileAuthenNumber: String,//预留手机号
+        val mobileAuthenCmData: String//报告原文json
+
 ) : Serializable

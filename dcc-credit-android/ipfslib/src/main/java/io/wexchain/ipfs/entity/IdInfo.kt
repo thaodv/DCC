@@ -8,9 +8,9 @@ import java.util.*
  *Created by liuyang on 2018/8/7.
  */
 data class IdInfo(
-        val positivePhoto: ByteArray, //身份证正面照
-        val backPhoto: ByteArray,//身份证反面
-        val facePhoto: ByteArray,//头像
+        val positivePhoto: String, //身份证正面照
+        val backPhoto: String,//身份证反面
+        val facePhoto: String,//头像
         val idAuthenStatus: String,//实名认证状态
         val orderId: Int, //订单id
         val similarity: Int, //相似度
@@ -24,24 +24,4 @@ data class IdInfo(
         val userYear: Int, //出生年
         val userMonth: Int,//出生月
         val userDay: Int//出生日
-) : Serializable {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as IdInfo
-
-        if (!Arrays.equals(positivePhoto, other.positivePhoto)) return false
-        if (!Arrays.equals(backPhoto, other.backPhoto)) return false
-        if (!Arrays.equals(facePhoto, other.facePhoto)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = Arrays.hashCode(positivePhoto)
-        result = 31 * result + Arrays.hashCode(backPhoto)
-        result = 31 * result + Arrays.hashCode(facePhoto)
-        return result
-    }
-}
+) : Serializable

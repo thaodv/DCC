@@ -5,12 +5,20 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.View
 import io.reactivex.Single
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.getViewModel
+import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.chain.IpfsOperations
+import io.wexchain.android.dcc.chain.IpfsOperations.checkToken
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
+import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.tools.SharedPreferenceUtil
+import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtect
@@ -21,12 +29,16 @@ import io.wexchain.dcc.databinding.ActivityPassportRemovalBinding
 class PassportRemovalActivity : BaseCompatActivity() {
 
     private lateinit var binding: ActivityPassportRemovalBinding
+    private val passport by lazy {
+        App.get().passportRepository
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_passport_removal)
         initToolbar(true)
         val protect: Protect = getViewModel()
+        initIpfsCloud()
 
         protect.sync(this)
         VerifyProtectFragment.serve(protect, this)
@@ -42,6 +54,29 @@ class PassportRemovalActivity : BaseCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun initIpfsCloud() {
+        val ipfsKeyHash = passport.getIpfsKeyHash()
+        if (ipfsKeyHash.isNullOrEmpty()) {
+            getCloudToken()
+        } else {
+            binding.btnBackupData.onClick {
+                navigateTo(MyCloudActivity::class.java)
+            }
+        }
+    }
+    private fun getCloudToken() {
+        IpfsOperations.getIpfsKey()
+                .checkToken()
+                .doMain()
+                .subscribeBy {
+                    binding.btnBackupData.onClick {
+                        navigateTo(OpenCloudActivity::class.java) {
+                            putExtra("activity_type", if (it) PassportSettingsActivity.OPEN_CLOUD else PassportSettingsActivity.NOT_OPEN_CLOUD)
+                        }
+                    }
+                }
     }
 
     private fun toBackup() {

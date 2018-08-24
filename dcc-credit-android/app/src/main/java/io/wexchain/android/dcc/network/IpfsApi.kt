@@ -6,14 +6,13 @@ import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.api.domain.EthJsonRpcRequestBody
 import io.wexchain.digitalwallet.api.domain.EthJsonRpcResponse
 import io.wexchain.digitalwallet.api.domain.EthJsonTxReceipt
-import org.json.JSONArray
 import retrofit2.http.*
 import java.util.concurrent.atomic.AtomicLong
 
 /**
  *Created by liuyang on 2018/8/15.
  */
-interface ContractApi {
+interface IpfsApi {
 
     @POST("contract/1/web3/{business}")
     @Headers("Content-Type: application/json", "Accept: application/json")
@@ -59,15 +58,15 @@ interface ContractApi {
     }
 }
 
-fun ContractApi.sendRawTransaction(business: String, rawTransaction: String): Single<String> {
+fun IpfsApi.sendRawTransaction(business: String, rawTransaction: String): Single<String> {
     return this.postSendRawTransaction(business,
             EthJsonRpcRequestBody(method = "eth_sendRawTransaction",
                     params = listOf(rawTransaction),
-                    id = ContractApi.idAtomic.incrementAndGet()))
+                    id = IpfsApi.idAtomic.incrementAndGet()))
             .map { it.result!! }
 }
 
-fun ContractApi.transactionCount(business: String, address: String, tag: String = "latest"): Single<String> {
+fun IpfsApi.transactionCount(business: String, address: String, tag: String = "latest"): Single<String> {
     return this.getTransactionCount(
             business,
             EthJsonRpcRequestBody(
@@ -78,7 +77,7 @@ fun ContractApi.transactionCount(business: String, address: String, tag: String 
             .map { it.result!! }
 }
 
-fun ContractApi.transactionReceipt(business: String, txId: String): Single<EthJsonTxReceipt> {
+fun IpfsApi.transactionReceipt(business: String, txId: String): Single<EthJsonTxReceipt> {
     return this.getTransactionReceipt(
             business,
             EthJsonRpcRequestBody(
@@ -91,6 +90,6 @@ fun ContractApi.transactionReceipt(business: String, txId: String): Single<EthJs
             }
 }
 
-internal fun ContractApi.nextId(): Long {
-    return ContractApi.idAtomic.incrementAndGet()
+internal fun IpfsApi.nextId(): Long {
+    return IpfsApi.idAtomic.incrementAndGet()
 }
