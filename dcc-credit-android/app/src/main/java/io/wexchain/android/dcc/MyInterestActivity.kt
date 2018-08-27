@@ -83,7 +83,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
         ). subscribeOn(AndroidSchedulers.mainThread()).subscribe(
             {
                 lastAmount=encodeStringsimple(it.result)
-                var ssss=BigDecimal((totalAmount-lastAmount)*100).divide(BigDecimal(totalAmount),1).setScale(1)
+                var ssss=BigDecimal((totalAmount-lastAmount)*100).divide(BigDecimal(totalAmount),1,BigDecimal.ROUND_HALF_UP).setScale(1)
                 binding.lastamountDCC=(""+(totalAmount-lastAmount)+" DCC ("+ssss +"%）")
                 Log.e("lastAmount",""+ encodeStringsimple(it.result))
                 Log.e("lastamountDCC",""+ ssss)

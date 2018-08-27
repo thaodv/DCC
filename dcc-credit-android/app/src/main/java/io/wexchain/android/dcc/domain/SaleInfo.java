@@ -25,10 +25,18 @@ public class SaleInfo implements Serializable {
     private int annualRate;
     private String profitMethod;
     private long closeTime;
+    private long incomeTime;
+
 
     private int minAmountPerHand;
 
+    public long getIncomeTime() {
+        return incomeTime;
+    }
 
+    public void setIncomeTime(long incomeTime) {
+        this.incomeTime = incomeTime;
+    }
 
     SaleInfo(){}
 
@@ -44,6 +52,9 @@ public class SaleInfo implements Serializable {
 
     public String showStartTime(){
         return getStringTime(startTime, DateUtil.dateFormatString);
+    }
+    public String showIncomeTime(){
+        return getStringTime(incomeTime, DateUtil.dateFormatString);
     }
     public String showEndTime(){
         return getStringTime(endTime, DateUtil.dateFormatString);

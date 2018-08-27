@@ -418,7 +418,7 @@
                         android:layout_centerVertical="true"
 
                         android:layout_marginRight="10dp"
-                        android:text="@{saleInfo.showStartTime()}"
+                        android:text="@{saleInfo.showIncomeTime()}"
                         android:textColor="@color/upgrade_title_color"
                         android:textSize="14sp" />
 

@@ -461,7 +461,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="4dp"
-                    android:text="@{saleInfo.showStartTime()}"
+                    android:text="@{saleInfo.showIncomeTime()}"
                     android:textColor="@color/FF4A4A4A"
                     android:textSize="14sp" />
 
