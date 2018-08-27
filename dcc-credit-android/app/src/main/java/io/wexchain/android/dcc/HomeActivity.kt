@@ -54,7 +54,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
                 tipsDialog.show()
             }
         }
-       // tipsDialog.show()
+        // tipsDialog.show()
     }
 
     override fun onResume() {
