@@ -10,9 +10,11 @@ import android.util.Log
 import android.view.*
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.MyInterestDetailActivity
 import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.chain.JuzixConstants
 import io.wexchain.android.dcc.constant.Extras
@@ -24,6 +26,8 @@ import io.wexchain.android.dcc.vm.TransactionConfirmVm
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.DialogConfirmBuyinvestmentBinding
+import io.wexchain.dccchainservice.DccChainServiceException
+import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.Erc20Helper
@@ -176,20 +180,31 @@ class BuyConfirmDialogFragment : DialogFragment() {
            )
            App.get().bintApi.sendRawTransaction(signed)
 
-       }.flatMap {
+       }
+          /* .flatMap {
            Log.e("Invest",""+ it )
 
            agent.transactionReceipt(it)
                .retryWhen(RetryWithDelay.createGrowth(8, 1000)). observeOn(AndroidSchedulers.mainThread())
-              /* .doOnSuccess {
-                   toast("交易成功")
-                   hideLoadingDialog()
-               }
-               .doOnError {
-                   toast("交易失败")
-                   hideLoadingDialog()
-               }*/
-       }
+
+       }*/
+           .flatMap {txHash ->
+               App.get().chainGateway.getReceiptResult(txHash)
+                   .compose(Result.checked())
+                   .map {
+                       if (!it.hasReceipt) {
+                           throw DccChainServiceException("no receipt yet")
+                       }
+                       it
+                   }
+                   .retryWhen(RetryWithDelay.createSimple(6, 5000L))
+                   .map {
+                       if (!it.approximatelySuccess) {
+                           throw DccChainServiceException()
+                       }
+                       txHash
+                   }
+           }
            .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
            showLoadingDialog()
        }
@@ -198,10 +213,11 @@ class BuyConfirmDialogFragment : DialogFragment() {
                dismiss()
            }*/
            .subscribe({
-               Log.e("Invest",""+ it.blockHash)
+              // Log.e("Invest",""+ it.blockHash)
                        toast("交易成功")
                        hideLoadingDialog()
                           dismiss()
+               startActivity(Intent(activity,MyInterestDetailActivity::class.java))
                activity!!.finish()
 
            }, {

@@ -83,6 +83,15 @@ interface EthJsonRpcApi {
     }
 }
 
+/*
+fun EthJsonRpcApi.transactionCount(address: String, tag: String = "latest"): Single<String> {
+    return this.getTransactionCount(InfuraApi.encodeJsonParamArray(address, tag))
+        .map { it.result!! }
+}
+*/
+
+
+
 fun EthJsonRpcApi.getPrepared(): EthJsonRpcApi {
     EthJsonRpcApi.prepareId(this)
     return this

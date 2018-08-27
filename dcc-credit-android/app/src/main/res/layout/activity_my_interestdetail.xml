@@ -147,7 +147,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="募集中"
+                            android:text="@{totalamountstatu}"
                             android:textColor="@color/white"
                             android:textSize="14sp"
                             android:background="@drawable/rect_border_white"

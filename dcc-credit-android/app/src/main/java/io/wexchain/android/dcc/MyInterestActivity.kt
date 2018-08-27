@@ -1,9 +1,11 @@
 package io.wexchain.android.dcc
 
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import com.alibaba.fastjson.JSON
+import com.bumptech.glide.load.engine.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.base.BindActivity
@@ -36,6 +38,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
         //setWindowExtended()
         initdatas()
         initclick()
+        binding.canbuy=canBuy
 
     }
 
@@ -59,7 +62,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
         binding.tvHave.setOnClickListener {
             navigateTo(MyInterestDetailActivity::class.java)
         }
-        setButton()
+       // setButton()
         binding.tvBuyit.setOnClickListener {
             if(canBuy){
                 navigateTo(BuyInterestActivity::class.java)
@@ -197,11 +200,18 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
     @Synchronized
     fun setButton(){
         binding.tvBuyit.text=statu
+       // binding.canbuy=canBuy
+        var ss= binding.tvBuyit.background as ColorDrawable
+
         if(canBuy){
-            binding.tvBuyit.setBackgroundColor(Color.parseColor("#FF6766CC"))
+         //   binding.tvBuyit.setBackgroundResource(R.color.FF6766CC)
+            ss.color=Color.parseColor("#FF6766CC")
 
         }else{
-            binding.tvBuyit.setBackgroundColor(Color.parseColor("#B2484848"))
+           // binding.tvBuyit.setBackgroundColor(Color.parseColor("#B2484848"))
+           // binding.tvBuyit.setBackgroundResource(R.color.B2484848)
+            ss.color=Color.parseColor("#B2484848")
         }
+        binding.tvBuyit.background=ss
     }
 }

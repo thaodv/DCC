@@ -33,14 +33,19 @@ class MyInterestDetailActivity : BindActivity<ActivityMyInterestdetailBinding>()
     var pRate=BigDecimal(0.007671)
 
     private fun setUI() {
-       if(mystatu==0){//已关闭
+       if(mystatu==4){//已关闭
             binding.totalamountDCClable="投资本金（DCC）"
            binding.totalamountstatu="已结束"
            binding.isClose=true
        }else{
            binding.totalamountDCClable="在投本金（DCC）"
-           binding.totalamountstatu="募集中"
            binding.isClose=false
+           if(mystatu==0||mystatu==1){
+               binding.totalamountstatu="募集中"
+           }
+           if(mystatu==2||mystatu==3){
+               binding.totalamountstatu="收益中"
+           }
        }
     }
 
@@ -57,7 +62,7 @@ class MyInterestDetailActivity : BindActivity<ActivityMyInterestdetailBinding>()
         //binding.saleInfo=saleInfo
 
     }
-    var mystatu:Int=0
+    var mystatu:Int=4
     fun  getbiStatues() {
         val getAllowance = Erc20Helper.getStatus(BintApi.contract,"","")
          App.get(). bintApi.postStatus(

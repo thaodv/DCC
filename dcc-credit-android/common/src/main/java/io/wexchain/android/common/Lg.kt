@@ -7,7 +7,7 @@ object Lg {
     /**
      * log enable switch
      */
-    private val logPrintEnabled = BuildConfig.DEBUG
+    private val logPrintEnabled = true//BuildConfig.DEBUG
 
     val enabled
         get() = logPrintEnabled

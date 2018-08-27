@@ -35,7 +35,7 @@ dependencies {
 
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    kapt "com.android.databinding:compiler:$android_gradle_plugin_version"
+    //kapt "com.android.databinding:compiler:$android_gradle_plugin_version"
 
     implementation "android.arch.lifecycle:extensions:$arch_lifecycle_version"
 
