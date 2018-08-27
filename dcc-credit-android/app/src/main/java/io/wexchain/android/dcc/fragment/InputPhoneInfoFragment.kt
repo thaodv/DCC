@@ -1,14 +1,16 @@
 package io.wexchain.android.dcc.fragment
 
-import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
+import android.widget.Button
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.base.BindFragment
+import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.tools.checkonMain
+import io.wexchain.android.dcc.tools.isPhoneNumValid
 import io.wexchain.android.dcc.vm.InputPhoneInfoVm
 import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.dcc.R
@@ -23,13 +25,27 @@ class InputPhoneInfoFragment : BindFragment<FragmentSubmitCommunicationLogBindin
 
     private var listener: Listener? = null
 
+    lateinit var mbtSubmit: Button
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mbtSubmit = view.findViewById(R.id.btn_submit)
         val vm = getViewModel<InputPhoneInfoVm>()
         vm.clear()
-        vm.submitEvent.observe(this, Observer {
+
+        /*vm.submitEvent.observe(this, Observer {
             it?.let {
                 listener?.onSubmitPhoneInfo(it.first, it.second)
+            }
+        })*/
+
+        mbtSubmit.setOnClickListener(object : NoDoubleClickListener() {
+            override fun onNoDoubleClick(v: View?) {
+                val phone = binding.inputPhone.text
+                val pw = binding.inputPassword.text
+                if (isPhoneNumValid(phone) && !pw.isNullOrBlank()) {
+                    listener?.onSubmitPhoneInfo(phone!!, pw!!)
+                }
             }
         })
 
