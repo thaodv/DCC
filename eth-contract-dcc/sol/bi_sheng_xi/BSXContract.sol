@@ -25,6 +25,7 @@ contract BSXContract is HasToken {
     uint256 public repaidCeilAmount;
 
 
+    //利率
     uint256 public rateNumerator;
 
     uint256 public denominator = 100;
