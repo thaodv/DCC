@@ -13,6 +13,7 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.base.BindFragment
 import io.wexchain.android.dcc.constant.RequestCodes
+import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.android.idverify.domain.LivenessResult
 import io.wexchain.dcc.R
@@ -35,14 +36,19 @@ class LivenessDetectionFragment : BindFragment<FragmentLivenessDetectionBinding>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnProceed.setOnClickListener {
-            val portrait = binding.portrait
-            if (portrait == null) {
-                requestCapture()
-            } else {
-                listener?.onProceed(portrait)
-            }
-        }
+
+        binding.btnProceed.setOnClickListener(
+                object : NoDoubleClickListener() {
+                    override fun onNoDoubleClick(v: View?) {
+                        val portrait = binding.portrait
+                        if (portrait == null) {
+                            requestCapture()
+                        } else {
+                            listener?.onProceed(portrait)
+                        }
+                    }
+                }
+        )
         App.get().chainGateway.getExpectedFee(ChainGateway.BUSINESS_ID)
                 .compose(Result.checked())
                 .observeOn(AndroidSchedulers.mainThread())

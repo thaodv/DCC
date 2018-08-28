@@ -1,6 +1,5 @@
 package io.wexchain.android.dcc.fragment
 
-import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialog
 import android.support.v7.widget.RecyclerView
@@ -12,6 +11,7 @@ import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.base.BindFragment
+import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
@@ -57,14 +57,27 @@ class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewModel = getViewModel<InputBankCardInfoVm>().apply {
+        val viewModel = getViewModel<InputBankCardInfoVm>()/*.apply {
             submitEvent.observe(this@InputBankCardInfoFragment, Observer {
                 it?.let { listener?.onProceed(it) }
             })
             informationIncompleteEvent.observe(this@InputBankCardInfoFragment, Observer {
                 it?.let { toast("请输入完整信息") }
             })
-        }
+        }*/
+
+        binding.btNext.setOnClickListener(object : NoDoubleClickListener() {
+            override fun onNoDoubleClick(v: View?) {
+                val info = viewModel.checkAndBuildBankCardInfo()
+                if (info == null) {
+                    toast("请输入完整信息")
+                } else {
+                    listener?.onProceed(info)
+                }
+            }
+        })
+
+
         binding.vm = viewModel
         binding.inputBank.setOnClickListener {
             showOrHideBanksSheet()

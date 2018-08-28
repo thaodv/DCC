@@ -31,7 +31,7 @@ class InputBankCardInfoVm(application: Application):AndroidViewModel(application
         }
     }
 
-    private fun checkAndBuildBankCardInfo(): BankCardInfo? {
+    fun checkAndBuildBankCardInfo(): BankCardInfo? {
         val bankCode = bank.get()?.bankCode
         val cardNo = bankCardNo.get()
         val phoneNo = phoneNum.get()

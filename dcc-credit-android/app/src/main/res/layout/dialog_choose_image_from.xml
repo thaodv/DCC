@@ -1,60 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/please_select_the_sourceuse_photo_from"
+        android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
+        android:textSize="15sp"
+        />
+
+    <View
+        style="@style/DividerHorizontal"
+        />
+
+    <TextView
+        android:id="@+id/tv_capture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/camera"
+        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+        android:textColor="?attr/colorAccent"
+        android:textSize="17sp"
+        />
+
+    <View
+        style="@style/DividerHorizontal"
+        />
+
+    <TextView
+        android:id="@+id/tv_pick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/choose_from_the_aalbum"
+        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+        android:textColor="?attr/colorAccent"
+        android:textSize="17sp"
+
+        />
+
+    <View
+        style="@style/DividerHorizontal"
+        />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        >
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/please_select_the_sourceuse_photo_from"
-            android:textSize="15sp"
-            android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
-            android:layout_margin="8dp"
-            />
-
-    <View
-            style="@style/DividerHorizontal"
-            />
-    <TextView
-            android:id="@+id/tv_capture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/camera"
-            android:textSize="17sp"
-            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-            android:layout_margin="8dp"
-            android:textColor="?attr/colorAccent"
-            />
-    <View
-            style="@style/DividerHorizontal"
-            />
-    <TextView
-            android:id="@+id/tv_pick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/choose_from_the_aalbum"
-            android:textSize="17sp"
-            android:textColor="?attr/colorAccent"
-            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-            android:layout_margin="8dp"
-
-            />
-    <View
-            style="@style/DividerHorizontal"
-            />
-    <Button
-            android:id="@+id/btn_cancel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:text="@string/cancel"
-            android:textSize="17sp"
-            android:textColor="?attr/colorAccent"
-            />
+        android:text="@string/cancel"
+        android:textColor="?attr/colorAccent"
+        android:textSize="17sp"
+        />
 
 
 </LinearLayout>

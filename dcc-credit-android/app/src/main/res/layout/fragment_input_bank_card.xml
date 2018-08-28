@@ -79,7 +79,7 @@
             app:hint="@{@string/please_input_phone_num}"
             app:text="@={vm.phoneNum}"
             />
-        
+
         <TextView
                 android:id="@+id/tv_cert_fee"
                 android:layout_width="wrap_content"
@@ -93,6 +93,7 @@
                 />
 
         <Button
+            android:id="@+id/bt_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.Button.Dcc.Full"
@@ -100,7 +101,6 @@
             android:layout_marginRight="@dimen/content_padding_horizontal"
             android:layout_marginTop="8dp"
             android:text="@string/next"
-            android:onClick="@{(v)->vm.onSubmit()}"
             app:layout_constraintTop_toBottomOf="@id/tv_cert_fee"
             />
 
