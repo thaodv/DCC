@@ -7,7 +7,9 @@ import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.bumptech.glide.load.engine.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.Pop
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.runOnMainThread
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.domain.SaleInfo
 import io.wexchain.android.dcc.tools.BintApi
@@ -32,13 +34,15 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
     var canBuy:Boolean=false
 
     override val contentLayoutId: Int = R.layout.activity_my_interest
+    lateinit var sstvBuyit:ColorDrawable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setWindowExtended()
-        initdatas()
+       // initdatas()
         initclick()
         binding.canbuy=canBuy
+          sstvBuyit= binding.tvBuyit.background as ColorDrawable
 
     }
 
@@ -132,7 +136,6 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
               //  saleInfo.minAmountPerHand=minAmountPerHand
                  binding.minAmountPerHandDCC=(""+minAmountPerHand+" DCC")
                 Log.e("encodeStringsimple",""+ encodeStringsimple(it.result))
-               // checkStatu()
                 getbiInvestCeilAmount()
             },{
                 it.printStackTrace()
@@ -167,7 +170,6 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
                  binding.saleInfo=saleInfo
                  //binding.tvProfit.setText(saleInfo.annualRateP())
                  Log.e("getbiSaleInfo", saleInfo.name)
-                // checkStatu()
                  getbiminAmountPerHand()
              },{
                  it.printStackTrace()
@@ -178,40 +180,85 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
     }
 
     var statu="已结束"
-    @Synchronized
+
        fun  checkStatu(){
         require(null!=saleInfo)
-        if( System.currentTimeMillis() >saleInfo.closeTime){
+
+           val getAllowance = Erc20Helper.getStatus(BintApi.contract,"","")
+           App.get(). bintApi.postStatus(
+               EthJsonRpcRequestBody(
+                   method = "eth_call",
+                   params = listOf(getAllowance, "latest"),
+                   id = 1L
+               )
+           ).subscribeOn(AndroidSchedulers.mainThread()).subscribe(
+               {
+              var     mystatu= BytesUtils.encodeStringstatu(it.result)
+
+                   Log.e("getbiStatues",""+ mystatu)
+                  if (mystatu!=1){
+                      statu="已结束"
+                      canBuy=false
+                  }else if(minAmountPerHand > (totalAmount-lastAmount)){
+                      statu="已售罄"
+                      canBuy=false
+                      //   binding.tvBuyit.setBackgroundResource(R.color.B2484848)
+                  }else{
+                      statu="认购"
+                      canBuy=true
+                      // binding.tvBuyit.setBackgroundResource(R.color.FF6766CC)
+                  }
+                   LASTAM= totalAmount-lastAmount
+                   ONAME=saleInfo.name
+                   runOnMainThread {
+                       setButton()
+                   }
+
+               },{
+                   it.printStackTrace()
+               }
+           )
+
+
+
+
+          /* if( System.currentTimeMillis() >saleInfo.closeTime){
             statu="已结束"
              canBuy=false
+          //  binding.tvBuyit.setBackgroundResource(R.color.B2484848)
         }else if(minAmountPerHand > (totalAmount-lastAmount)){
             statu="已售罄"
             canBuy=false
+         //   binding.tvBuyit.setBackgroundResource(R.color.B2484848)
         }else{
             statu="认购"
             canBuy=true
+           // binding.tvBuyit.setBackgroundResource(R.color.FF6766CC)
         }
         LASTAM= totalAmount-lastAmount
         ONAME=saleInfo.name
-        setButton()
+           runOnMainThread {
+               setButton()
+           }*/
+
     }
 
 
-    @Synchronized
+
     fun setButton(){
         binding.tvBuyit.text=statu
        // binding.canbuy=canBuy
-        var ss= binding.tvBuyit.background as ColorDrawable
 
         if(canBuy){
          //   binding.tvBuyit.setBackgroundResource(R.color.FF6766CC)
-            ss.color=Color.parseColor("#FF6766CC")
-
+            sstvBuyit.color=Color.parseColor("#FF6766CC")
+           //  binding.tvBuyit.setBackgroundResource(R.color.FF6766CC)
         }else{
            // binding.tvBuyit.setBackgroundColor(Color.parseColor("#B2484848"))
-           // binding.tvBuyit.setBackgroundResource(R.color.B2484848)
-            ss.color=Color.parseColor("#B2484848")
+            sstvBuyit.color=Color.parseColor("#B2484848")
+          //  binding.tvBuyit.setBackgroundResource(R.color.B2484848)
+
         }
-        binding.tvBuyit.background=ss
+        binding.tvBuyit.background=sstvBuyit
     }
 }

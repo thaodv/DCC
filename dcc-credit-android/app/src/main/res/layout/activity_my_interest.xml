@@ -43,15 +43,16 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp">
-            <TextView
+            <ImageView
                 android:id="@+id/tvback"
-                android:layout_width="9dp"
-                android:layout_height="18dp"
+                android:layout_width="19dp"
+                android:layout_height="28dp"
                 android:textSize="20sp"
-                android:background="@drawable/arrow_left"
-                android:layout_marginLeft="10dp"
+                android:src="@drawable/arrow_left"
+                android:layout_marginLeft="5dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:padding="5dp"
                 />
 
             <TextView
