@@ -2,7 +2,7 @@ pragma solidity ^0.4.2;
 
 import "../ownership/HasToken.sol";
 import "../math/SafeMath.sol";
-//
+
 contract BSXContract is HasToken {
 
     using SafeMath for uint256;
@@ -25,10 +25,9 @@ contract BSXContract is HasToken {
     uint256 public repaidCeilAmount;
 
 
-    //利率
     uint256 public rateNumerator;
 
-    uint256 public denominator = 100;
+    uint256 public denominator;
 
     string public saleInfo;
 
@@ -122,6 +121,10 @@ contract BSXContract is HasToken {
 
     function setRateNumerator(uint256 _rateNumerator) public onlyOwner {
         rateNumerator = _rateNumerator;
+    }
+
+    function setDenominator(uint256 _denominator) public onlyOwner {
+        denominator = _denominator;
     }
 
     function setInvestCeilAmount(uint256 _investCeilAmount) public onlyOwner {

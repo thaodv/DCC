@@ -29,8 +29,8 @@ contract UserIpfsToken {
         require(bytes(cipher).length>0 && bytes(cipher).length<CIPHER_MAXSIZE);
         require(nonce.length <= IPFS_NONCE_MAXSIZE);
         require(bytes(token).length > 0 && bytes(token).length <= IPFS_TOKEN_MAXSIZE);
-        require(digest1.length > 0 && digest1.length < IPFS_DIGEST_MAXSIZE);
-        require(digest2.length > 0 && digest2.length < IPFS_DIGEST_MAXSIZE);
+        require(digest1.length < IPFS_DIGEST_MAXSIZE);
+        require(digest2.length < IPFS_DIGEST_MAXSIZE);
 
         ipfsTokens[msg.sender][contractAddress] = IpfsToken(version,cipher,nonce, token, digest1, digest2);
         ipfsTokenPut(msg.sender, contractAddress,version,cipher, nonce, token, digest1, digest2);
