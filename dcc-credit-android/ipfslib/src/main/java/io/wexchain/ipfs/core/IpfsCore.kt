@@ -5,7 +5,6 @@ import io.ipfs.api.NamedStreamable
 import io.ipfs.multihash.Multihash
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import io.wexchain.ipfs.utils.doBack
 import java.io.File
 
@@ -15,16 +14,23 @@ import java.io.File
 object IpfsCore {
 
     private lateinit var ipfs: IPFS
-//    val GSON by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { Gson() }
-
 
     /**
      * Application init
      * @param host ipfs地址
      */
+    fun init(host: String, port: Int) {
+        Single.just(Pair(host, port))
+                .doBack()
+                .subscribeBy {
+                    ipfs = IPFS(it.first, it.second)
+                    ipfs.refs.local()
+                }
+    }
+
     fun init(host: String) {
         Single.just(host)
-                .observeOn(Schedulers.io())
+                .doBack()
                 .subscribeBy {
                     ipfs = IPFS(it)
                     ipfs.refs.local()
@@ -50,7 +56,6 @@ object IpfsCore {
                     }
 
                 }
-                .doBack()
                 .map {
                     val filewrapper = NamedStreamable.FileWrapper(it)
                     val result = ipfs.add(filewrapper)
@@ -67,7 +72,6 @@ object IpfsCore {
      */
     fun download(base58: String): Single<ByteArray> {
         return Single.just(base58)
-                .doBack()
                 .flatMap {
                     val filePointer = Multihash.fromBase58(it)
                     val data = ipfs.cat(filePointer)

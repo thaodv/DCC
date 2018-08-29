@@ -391,11 +391,23 @@
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.ResetPasswordActivity"
             android:label="重置密码"
             android:screenOrientation="portrait" />
-        <activity android:name="io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity"
+        <activity
+            android:name="io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity"
             android:label="我的云存储"
-            android:screenOrientation="portrait"/>
-        <activity android:name="io.wexchain.android.dcc.modules.ipfs.activity.CloudAddressActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="io.wexchain.android.dcc.modules.ipfs.activity.CloudAddressActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="io.wexchain.android.dcc.modules.ipfs.activity.SelectNodeActivity"
+            android:label="选择节点"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="io.wexchain.android.dcc.modules.ipfs.activity.EditNodeActivity"
+            android:label="编辑节点"
+            android:screenOrientation="portrait" />
+
+        <service android:name="io.wexchain.android.dcc.modules.ipfs.service.IpfsService" />
     </application>
 
 </manifest>

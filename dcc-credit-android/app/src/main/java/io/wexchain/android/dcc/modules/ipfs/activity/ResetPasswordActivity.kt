@@ -1,10 +1,11 @@
 package io.wexchain.android.dcc.modules.ipfs.activity
 
 import android.os.Bundle
+import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.onClick
-import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.IpfsOperations
@@ -12,6 +13,7 @@ import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
+import io.wexchain.dccchainservice.ChainGateway
 import kotlinx.android.synthetic.main.activity_resetpsw.*
 
 /**
@@ -41,11 +43,21 @@ class ResetPasswordActivity : BaseCompatActivity() {
 
     private fun performPassportDelete() {
         IpfsOperations.delectedIpfsKey()
+                .subscribeOn(Schedulers.io())
+                .flatMap {
+                    Singles.zip(
+                            IpfsOperations.deleteIpfsToken(ChainGateway.BUSINESS_ID),
+                            IpfsOperations.deleteIpfsToken(ChainGateway.BUSINESS_BANK_CARD),
+                            IpfsOperations.deleteIpfsToken(ChainGateway.BUSINESS_COMMUNICATION_LOG)
+                    )
+                }
                 .doMain()
                 .withLoading()
                 .subscribeBy {
-                    ActivityCollector.getTaskActivity(1).finish()
                     finish()
+                    ActivityCollector.getTaskActivity(1).finish()
                 }
     }
 }
+
+

@@ -22,10 +22,7 @@ import io.wexchain.android.dcc.chain.EthsHelper
 import io.wexchain.android.dcc.domain.AuthKey
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.repo.db.*
-import io.wexchain.android.dcc.tools.RoomHelper
-import io.wexchain.android.dcc.tools.doMain
-import io.wexchain.android.dcc.tools.doRoom
-import io.wexchain.android.dcc.tools.toHash256
+import io.wexchain.android.dcc.tools.*
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.Wallet
 import org.web3j.crypto.WalletFile
@@ -294,8 +291,9 @@ class PassportRepository(
     }
 
     fun createIpfsKey(psw: String): ByteArray {
-        val privateKey = Numeric.toHexStringNoPrefix(getCurrentPassport()!!.credential.ecKeyPair.privateKey)
-        return (privateKey + psw).toByteArray().toHash256()
+//        val address = currPassport.value!!.address
+        val privateKey = Numeric.toHexStringNoPrefix(getCurrentPassport()!!.credential.ecKeyPair.privateKey).StringfixLengthBins()
+        return (privateKey + psw /*+ address).toByteArray().toSha256()*/).toByteArray().toSha256()
     }
 
     fun getIpfsKeyHash(): String? {
@@ -303,7 +301,26 @@ class PassportRepository(
     }
 
     fun setIpfsKeyHash(key: String) {
-        return passportPrefs.ipfsKeyHash.set(key)
+        passportPrefs.ipfsKeyHash.set(key)
+    }
+
+    fun setIpfsUrlConfig(host: String, port: String) {
+        passportPrefs.ipfsUrlHost.set(host)
+        passportPrefs.ipfsUrlPort.set(port)
+    }
+
+    fun getIpfsUrlConfig(): Pair<String?, String?> {
+        val host = passportPrefs.ipfsUrlHost.get()
+        val port = passportPrefs.ipfsUrlPort.get()
+        return Pair(host, port)
+    }
+
+    fun getIpfsHostStatus(): Boolean {
+        return passportPrefs.ipfsHostStatus.get()
+    }
+
+    fun setIpfsHostStatus(status: Boolean) {
+        passportPrefs.ipfsHostStatus.set(status)
     }
 
     fun getPassword(): String {
@@ -378,6 +395,9 @@ class PassportRepository(
         private const val AUTH_KEY_PUB = "auth_key_pub"
         private const val SCF_ACCOUNT_EXISTS = "scf_account_exists"
         private const val IPFS_KEY_HASH = "ipfs_hash_key"
+        private const val IPFS_URL_HOST = "ipfs_url_host"
+        private const val IPFS_URL_PORT = "ipfs_url_port"
+        private const val IPFS_DEFAULT_HOST_STATUS = "ipfs_default_host_status"
 
         private const val DEFAULT_BENEFICIARY_ADDRESS = "default_beneficiary_address"
 
@@ -400,6 +420,9 @@ class PassportRepository(
         val defaultBeneficiaryAddress = StringPref(DEFAULT_BENEFICIARY_ADDRESS)
         val scfAccountExists = BoolPref(SCF_ACCOUNT_EXISTS, false)
         val ipfsKeyHash = StringPref(IPFS_KEY_HASH)
+        val ipfsUrlHost = StringPref(IPFS_URL_HOST)
+        val ipfsUrlPort = StringPref(IPFS_URL_PORT)
+        val ipfsHostStatus = BoolPref(IPFS_DEFAULT_HOST_STATUS, true)
 
         fun loadAuthKey(): AuthKey? {
             val keyAlias = authKeyAlias.get()

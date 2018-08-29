@@ -49,13 +49,13 @@ object AES256 {
                 sKey[index] = chars[index]
             }
         }
-        return String(sKey)
+        val keys = String(sKey)
+        return keys
     }
-
     /**
      * AES256  加密
      */
-    fun encrypt(sSrc: String, key: String,ivm:String =ivParameter ): String {
+    fun encrypt(sSrc: String, key: String, ivm: String = ivParameter): String {
         val cipher = Cipher.getInstance(CIPHER_ALGORITHM)
 //        val raw = tohash256Deal(key.toByteArray())
         val raw = getKey(key).toByteArray()
@@ -66,7 +66,7 @@ object AES256 {
         return Base64Encoder.encode(encrypted)
     }
 
-    fun encrypt(data: ByteArray, key: String,ivm:String =ivParameter): ByteArray {
+    fun encrypt(data: ByteArray, key: String, ivm: String = ivParameter): ByteArray {
         val cipher = Cipher.getInstance(CIPHER_ALGORITHM)
         val raw = getKey(key).toByteArray()
         val skeySpec = SecretKeySpec(raw, KEY_ALGORITHM)
@@ -78,7 +78,7 @@ object AES256 {
     /**
      * AES256  解密
      */
-    fun decrypt(sSrc: String, key: String,ivm:String =ivParameter): String {
+    fun decrypt(sSrc: String, key: String, ivm: String = ivParameter): String {
         val raw = getKey(key).toByteArray(Charsets.US_ASCII)
         val skeySpec = SecretKeySpec(raw, KEY_ALGORITHM)
         val cipher = Cipher.getInstance(CIPHER_ALGORITHM)
@@ -89,7 +89,7 @@ object AES256 {
         return String(original)
     }
 
-    fun decrypt(data: ByteArray, key: String,ivm:String =ivParameter): ByteArray {
+    fun decrypt(data: ByteArray, key: String,ivm: String = ivParameter): ByteArray {
         val raw = getKey(key).toByteArray(Charsets.US_ASCII)
         val skeySpec = SecretKeySpec(raw, KEY_ALGORITHM)
         val cipher = Cipher.getInstance(CIPHER_ALGORITHM)
@@ -97,4 +97,6 @@ object AES256 {
         cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv)
         return cipher.doFinal(data)
     }
+
+
 }

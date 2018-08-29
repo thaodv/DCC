@@ -90,7 +90,8 @@ class PassportExportActivity : BaseCompatActivity(), TabLayout.OnTabSelectedList
     }
 
     private fun showExportPrivateKey() {
-        val fragment = supportFragmentManager.findOrCreateFragment(TAG_PASTE_PRIVATE_KEY, { ExportPrivateKeyFragment.create(passport.credential.ecKeyPair.privateKey) })
+        val fragment = supportFragmentManager.findOrCreateFragment(TAG_PASTE_PRIVATE_KEY, {
+            ExportPrivateKeyFragment.create(passport.credential.ecKeyPair.privateKey) })
         replaceFragment(fragment, R.id.fl_export_area, TAG_PASTE_PRIVATE_KEY)
     }
 

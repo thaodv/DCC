@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.network
 
 import io.reactivex.Single
 import io.wexchain.dcc.BuildConfig
+import io.wexchain.dccchainservice.domain.IpfsVersion
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.api.domain.EthJsonRpcRequestBody
 import io.wexchain.digitalwallet.api.domain.EthJsonRpcResponse
@@ -44,6 +45,9 @@ interface IpfsApi {
 
     @GET("contract/1/getContractAddress/{business}")
     fun getIpfsContractAddress(@Path("business") business: String): Single<Result<String>>
+
+    @GET()
+    fun getIpfsVersion(@Url url: String): Single<IpfsVersion>
 
 
     companion object {

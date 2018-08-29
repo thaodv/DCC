@@ -459,9 +459,9 @@
     <string name="user_id_back">身份证反面照</string>
     <string name="user_activity_photo">人像照片</string>
     <string name="title_open_cloud">开启云存储</string>
-
-
-
+    <string name="ipfs_select_node_tip">说明：\n
+云端数据默认存储在Bit Express提供的节点，您也可以自己搭建节点，选择把数据存储在自建节点上。
+        搭建节点教程可以访问 <u>https://open.dcc.finance</u></string>
 
 
 </resources>

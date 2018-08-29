@@ -88,6 +88,17 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         initLibraries(this)
         initServices(this)
         initData(this)
+        initIpfs()
+    }
+
+    private fun initIpfs() {
+        val hostStatus = passportRepository.getIpfsHostStatus()
+        if (hostStatus) {
+            IpfsCore.init(BuildConfig.IPFS_HOST)
+        } else {
+            val urlConfig = passportRepository.getIpfsUrlConfig()
+            IpfsCore.init(urlConfig.first!!, urlConfig.second!!.toInt())
+        }
     }
 
     private fun initRxDownload() {
@@ -154,7 +165,6 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         WxApiManager.init()
         initRxDownload()
         CrashHandler().init(context)
-        IpfsCore.init(BuildConfig.IPFS_HOST)
     }
 
     private fun buildAgent(dc: DigitalCurrency): Erc20Agent {

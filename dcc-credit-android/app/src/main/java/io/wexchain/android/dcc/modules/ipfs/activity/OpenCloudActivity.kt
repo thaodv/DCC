@@ -2,17 +2,13 @@ package io.wexchain.android.dcc.modules.ipfs.activity
 
 import android.os.Bundle
 import io.reactivex.rxkotlin.subscribeBy
-import io.wexchain.android.common.getViewModel
-import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.onClick
-import io.wexchain.android.common.toast
+import io.wexchain.android.common.*
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.PassportSettingsActivity
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.tools.isPasswordValid
-import io.wexchain.android.dcc.tools.toHex
 import io.wexchain.android.dcc.view.dialog.CloudstorageDialog
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.dcc.R
@@ -82,7 +78,7 @@ class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
                     .doMain()
                     .filter {
                         val ipfsKey = passport.createIpfsKey(psw).toHex()
-                        if (ipfsKey != it) {
+                            if (ipfsKey != it) {
                             toast("密码输入有误")
                         } else {
                             passport.setIpfsKeyHash(it)

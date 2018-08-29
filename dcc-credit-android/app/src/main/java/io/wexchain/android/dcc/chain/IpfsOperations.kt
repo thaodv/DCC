@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.chain
 
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
+import io.wexchain.android.common.toHex
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.network.IpfsApi
 import io.wexchain.android.dcc.network.sendRawTransaction
@@ -9,8 +10,6 @@ import io.wexchain.android.dcc.network.transactionReceipt
 import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.android.dcc.tools.check
-import io.wexchain.android.dcc.tools.toHex
-import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.Erc20Helper
@@ -36,9 +35,7 @@ object IpfsOperations {
         return getIpfsKey()
                 .map {
                     val result = it.result as String
-                    val split = result.split("20")
-                    val tmp = split[split.size - 1]
-                    tmp
+                    if (result.length > 64) result.substring(result.length - 64, result.length ) else ""
                 }
     }
 
@@ -64,14 +61,26 @@ object IpfsOperations {
                 }
     }
 
-    fun putIpfsToken(business: String,token: String, digest1: ByteArray, digest2: ByteArray): Single<EthJsonTxReceipt> {
-        val address = getIpfsAddress(IpfsApi.IPFS_METADATA).blockingGet()
+    fun putIpfsToken(business: String, token: String, digest1: ByteArray, digest2: ByteArray, nonce: BigInteger): Single<EthJsonTxReceipt> {
         return Singles.zip(
                 getCertAddress(business),
-                getNonce())
+                getIpfsAddress(IpfsApi.IPFS_METADATA))
                 .map {
-                    val putIpfsToken = Erc20Helper.putIpfsToken(it.first, VERSION, CIPHER, it.second.toByteArray(), token, digest1, digest2)
-                    putIpfsToken.txSigned(passport.getCurrentPassport()!!.credential, address, it.second)
+                    val putIpfsToken = Erc20Helper.putIpfsToken(it.first, VERSION, CIPHER, nonce.toByteArray(), token, digest1, digest2)
+                    putIpfsToken.txSigned(passport.getCurrentPassport()!!.credential, it.second, nonce)
+                }
+                .sendRawTransaction(IpfsApi.IPFS_METADATA)
+                .transactionReceipt(IpfsApi.IPFS_METADATA)
+    }
+
+    fun deleteIpfsToken(business: String): Single<EthJsonTxReceipt> {
+        return Singles.zip(
+                getCertAddress(business),
+                getNonce(),
+                getIpfsAddress(IpfsApi.IPFS_METADATA))
+                .map {
+                    val putIpfsToken = Erc20Helper.deleteIpfsToken(it.first)
+                    putIpfsToken.txSigned(passport.getCurrentPassport()!!.credential, it.third, it.second)
                 }
                 .sendRawTransaction(IpfsApi.IPFS_METADATA)
                 .transactionReceipt(IpfsApi.IPFS_METADATA)
@@ -95,9 +104,7 @@ object IpfsOperations {
                     val ipfsKey = Erc20Helper.deleteIpfsKey()
                     ipfsKey.txSigned(passport.getCurrentPassport()!!.credential, it.second, it.first)
                 }
-                .flatMap {
-                    App.get().contractApi.sendRawTransaction(IpfsApi.IPFS_KEY_HASH, it)
-                }
+                .sendRawTransaction(IpfsApi.IPFS_KEY_HASH)
                 .doOnSuccess {
                     passport.setIpfsKeyHash("")
                 }

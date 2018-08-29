@@ -88,7 +88,7 @@ object CertOperations {
     }
 
     fun checkLocalIdAndChainData(business: String): Single<Boolean> {
-        val idDigest =
+        val localDigest =
                 when (business) {
                     ChainGateway.BUSINESS_ID -> getLocalIdDigest()
                     ChainGateway.BUSINESS_BANK_CARD -> getLocalBankDigest()
@@ -97,7 +97,7 @@ object CertOperations {
                 }
         return getChainDigest(business)
                 .map {
-                    Arrays.equals(it.first, idDigest!!.first) && Arrays.equals(it.second, idDigest.second)
+                    Arrays.equals(it.first, localDigest!!.first) && Arrays.equals(it.second, localDigest.second)
                 }
     }
 
@@ -631,11 +631,11 @@ object CertOperations {
         certPrefs.certCmLogOrderId.set(phoneInfo.mobileAuthenOrderid.toLong())
         certPrefs.certCmLogState.set(phoneInfo.mobileAuthenStatus)
         certPrefs.certCmLogPhoneNo.set(phoneInfo.mobileAuthenNumber)
-
+        val replace = phoneInfo.mobileAuthenCmData.replace('\\', ' ')
         File(App.get().filesDir, certCmLogReportFileName(phoneInfo.mobileAuthenOrderid.toLong()))
                 .apply {
                     ensureNewFile()
-                    writeBytes(phoneInfo.mobileAuthenCmData.toByteArray())
+                    writeBytes(replace.toByteArray())
                 }
     }
 

@@ -1,12 +1,18 @@
 package io.wexchain.android.dcc.modules.ipfs.activity
 
 import android.arch.lifecycle.Observer
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
+import android.view.Menu
+import android.view.MenuItem
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import io.wexchain.android.common.ensureNewFile
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
@@ -14,62 +20,95 @@ import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
+import io.wexchain.android.dcc.modules.ipfs.service.IpfsBinder
+import io.wexchain.android.dcc.modules.ipfs.service.IpfsService
 import io.wexchain.android.dcc.modules.ipfs.vm.MyCloudVm
-import io.wexchain.android.dcc.tools.formatSize
-import io.wexchain.android.dcc.tools.toBean
-import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.android.dcc.view.dialog.CloudstorageDialog
-import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityMyCloudBinding
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.digitalwallet.Erc20Helper
-import io.wexchain.ipfs.core.IpfsCore
-import io.wexchain.ipfs.entity.BankInfo
-import io.wexchain.ipfs.entity.IdInfo
-import io.wexchain.ipfs.entity.PhoneInfo
-import io.wexchain.ipfs.utils.*
+import io.wexchain.ipfs.utils.doMain
 import kotlinx.android.synthetic.main.activity_my_cloud.*
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
 import org.web3j.abi.datatypes.Utf8String
 import java.io.File
+import java.math.BigInteger
 import java.util.*
+
 
 /**
  *Created by liuyang on 2018/8/16.
  */
 class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
+
     override val contentLayoutId: Int
         get() = R.layout.activity_my_cloud
-
-    private val passport by lazy {
-        App.get().passportRepository
-    }
-    private val rootpath by lazy {
-        App.get().filesDir.absolutePath + File.separator + "cert" + File.separator + "id"
-    }
 
     private var IDStatus = STATUS_DEFAULT
     private var BankStatus = STATUS_DEFAULT
     private var CmStatus = STATUS_DEFAULT
+
 
     private var ID_Token = ""
     private var Bank_Token = ""
     private var Cm_Token = ""
     private var isEnabled = mutableListOf<String>()
     private lateinit var viewMode: MyCloudVm
+    private lateinit var mBinder: IpfsBinder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
         initClick()
         initData()
+        initService()
         viewMode = getViewModel()
         binding.vm = viewMode
     }
+
+    private fun initService() {
+        val intent = Intent(this, IpfsService::class.java)
+        startService(intent)
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
+    }
+
+    private val mConnection = object : ServiceConnection {
+        override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
+            mBinder = iBinder as IpfsBinder
+        }
+
+        override fun onServiceDisconnected(componentName: ComponentName) {
+
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unbindService(mConnection)
+    }
+
+     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+         super.onCreateOptionsMenu(menu)
+         menuInflater.inflate(R.menu.menu_mycloud, menu)
+         return true
+     }
+
+     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+         return when (item?.itemId) {
+             R.id.mycloud_select_node -> {
+                 navigateTo(SelectNodeActivity::class.java)
+                 true
+             }
+             else -> {
+                 super.onOptionsItemSelected(item)
+             }
+         }
+     }
 
     private fun initData() {
         val idCertPassed = CertOperations.isIdCertPassed()
@@ -157,7 +196,11 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
 
         if (IDStatus == STATUS_UPLOAD) {
             doAsync {
-                createIdData()
+                mBinder.createIdData { size ->
+                    uiThread {
+                        viewMode.idsizetxt.set(size)
+                    }
+                }
             }
         }
     }
@@ -180,7 +223,11 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
 
         if (CmStatus == STATUS_UPLOAD) {
             doAsync {
-                createCmData()
+                mBinder.createCmData { size ->
+                    uiThread {
+                        viewMode.cmsizetxt.set(size)
+                    }
+                }
             }
         }
     }
@@ -203,7 +250,11 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
 
         if (BankStatus == STATUS_UPLOAD) {
             doAsync {
-                createBankData()
+                mBinder.createBankData { size ->
+                    uiThread {
+                        viewMode.banksizetxt.set(size)
+                    }
+                }
             }
         }
     }
@@ -240,201 +291,45 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 }
     }
 
-    private fun createIdData() {
-        val certIdPics = CertOperations.getCertIdPics()
-        val positivePhoto = certIdPics!!.first.base64()
-        val backPhoto = certIdPics.second.base64()
-        val facePhoto = certIdPics.third.base64()
 
-        val certIdData = CertOperations.getCertIdData()!!
-        val orderid = CertOperations.getOrderId()
-        val idCertPassed = CertOperations.getCertIdStatus()
-        val similarity = CertOperations.getCertIdSimilarity()!!
-        val expiredText = ViewModelHelper.expiredText(certIdData.expired)
-
-        val idInfo = IdInfo(
-                positivePhoto = positivePhoto,
-                backPhoto = backPhoto,
-                facePhoto = facePhoto,
-                idAuthenStatus = idCertPassed,
-                orderId = orderid.toInt(),
-                similarity = similarity.toFloat().toInt(),
-                userAddress = certIdData.address!!,
-                userName = certIdData.name,
-                userNumber = certIdData.id,
-                userNation = certIdData.race!!,
-                userSex = certIdData.sex!!,
-                userTimeLimit = expiredText,
-                userAuthority = certIdData.authority!!,
-                userYear = certIdData.year!!,
-                userMonth = certIdData.month!!,
-                userDay = certIdData.dayOfMonth!!)
-
-        val data = idInfo.toJson().toByteArray()
-
-        val size = getDataFromSize(data, ID_ENTIFY_DATA)
-        runOnUiThread {
-            viewMode.idsizetxt.set(size)
+    private fun updateStatus(business: String, status: String) {
+        when (business) {
+            ChainGateway.BUSINESS_ID -> {
+                cloud_id_selected.text = status
+            }
+            ChainGateway.BUSINESS_BANK_CARD -> {
+                cloud_bank_selected.text = status
+            }
+            ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
+                cloud_cm_selected.text = status
+            }
+            else -> {
+            }
         }
     }
 
-    fun createBankData() {
-        val info = CertOperations.getCertBankCardData()!!
-        val expired = CertOperations.getBankCardCertExpired()
-        val bankStatus = CertOperations.getBankStatus()
-        val certIdData = CertOperations.getCertIdData()!!
-
-        val bankInfo = BankInfo(
-                bankAuthenStatus = bankStatus.first,
-                bankAuthenOrderid = bankStatus.second.toInt(),
-                bankAuthenName = certIdData.name,
-                bankAuthenCode = info.bankCode,
-                bankAuthenCodeNumber = info.bankCardNo,
-                bankAuthenMobile = info.phoneNo,
-                bankAuthenExpired = ViewModelHelper.expiredText(expired))
-
-        val data = bankInfo.toJson().toByteArray()
-
-        val size = getDataFromSize(data, BANK_CARD_DATA)
-        runOnUiThread {
-            viewMode.banksizetxt.set(size)
+    private fun successful(business: String) {
+        when (business) {
+            ChainGateway.BUSINESS_ID -> {
+                cloud_id_selected.text = "已完成"
+                IDStatus = STATUS_DEFAULT
+                cloud_item_id.isClickable = false
+                isEnabled.remove(ID_ENTIFY_DATA)
+            }
+            ChainGateway.BUSINESS_BANK_CARD -> {
+                cloud_bank_selected.text = "已完成"
+                cloud_item_bank.isClickable = false
+                BankStatus = STATUS_DEFAULT
+                isEnabled.remove(BANK_CARD_DATA)
+            }
+            ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
+                cloud_cm_selected.text = "已完成"
+                CmStatus = STATUS_DEFAULT
+                cloud_item_cm.isClickable = false
+                isEnabled.remove(PHONE_OPERATOR)
+            }
         }
-    }
-
-    fun createCmData() {
-        val cmCertOrderId = CertOperations.getCmCertOrderId()
-        val cmLogPhoneNo = CertOperations.getCmLogPhoneNo()
-        val status = CertOperations.getCmLogUserStatus().name
-        val json = CertOperations.getCmLogData(cmCertOrderId)
-                .map {
-                    it.toString()
-                }
-                .blockingGet()
-
-        val phoneInfo = PhoneInfo(
-                mobileAuthenStatus = status,
-                mobileAuthenOrderid = cmCertOrderId.toInt(),
-                mobileAuthenNumber = cmLogPhoneNo!!,
-                mobileAuthenCmData = json)
-
-        val data = phoneInfo.toJson().toByteArray()
-        val size = getDataFromSize(data, PHONE_OPERATOR)
-        runOnUiThread {
-            viewMode.cmsizetxt.set(size)
-        }
-    }
-
-    private fun getDataFromSize(data: ByteArray, filename: String): String {
-        val ipfsKeyHash = passport.getIpfsKeyHash()!!
-        AES256.encrypt(data, ipfsKeyHash)
-                .writeToFile(rootpath, "$filename.txt")
-                .apply {
-                    ZipUtil.zip(rootpath + File.separator + "$filename.zip", this)
-                }
-        val file = File(rootpath, "$filename.zip")
-        return file.formatSize()
-    }
-
-
-    private fun downLoadData(business: String, filename: String) {
-        IpfsOperations.getIpfsToken(business)
-                .map {
-                    FunctionReturnDecoder.decode(it.result, Erc20Helper.dncodeResponse())
-                }
-                .map {
-                    (it[5] as Utf8String).value
-                }
-                .flatMap {
-                    IpfsCore.download(it)
-                }
-                .map {
-                    File(rootpath, "$filename.zip").ensureNewFile()
-                    val zipfile = it.writeToFile(rootpath, "$filename.zip")
-                    ZipUtil.unZip(zipfile, rootpath)
-                    val file = File(rootpath, "$filename.txt")
-                    val ipfsKeyHash = passport.getIpfsKeyHash()
-                    AES256.decrypt(file.readBytes(), ipfsKeyHash!!)
-
-                }
-                .doOnSuccess {
-                    when (business) {
-                        ChainGateway.BUSINESS_ID -> {
-                            val idInfo = String(it).toBean(IdInfo::class.java)
-                            CertOperations.saveIpfsIdData(idInfo)
-                        }
-                        ChainGateway.BUSINESS_BANK_CARD -> {
-                            val bankInfo = String(it).toBean(BankInfo::class.java)
-                            CertOperations.saveIpfsBankData(bankInfo)
-                        }
-                        ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
-                            val phoneInfo = String(it).toBean(PhoneInfo::class.java)
-                            CertOperations.saveIpfsCmData(phoneInfo)
-                        }
-                        else -> {
-                        }
-                    }
-                }
-                .doMain()
-                .subscribeBy {
-                    when (business) {
-                        ChainGateway.BUSINESS_ID -> {
-                            cloud_id_selected.text = "已完成"
-                            IDStatus = STATUS_DEFAULT
-                            isEnabled.remove(ID_ENTIFY_DATA)
-                        }
-                        ChainGateway.BUSINESS_BANK_CARD -> {
-                            cloud_bank_selected.text = "已完成"
-                            BankStatus = STATUS_DEFAULT
-                            isEnabled.remove(BANK_CARD_DATA)
-                        }
-                        ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
-                            cloud_cm_selected.text = "已完成"
-                            CmStatus = STATUS_DEFAULT
-                            isEnabled.remove(PHONE_OPERATOR)
-                        }
-                    }
-                    updateSyncStatus()
-                }
-    }
-
-    fun uploadData(business: String, filename: String) {
-        IpfsCore.upload(rootpath + File.separator + "$filename.zip")
-                .flatMap {
-                    val idDigest = when (business) {
-                        ChainGateway.BUSINESS_ID -> {
-                            CertOperations.getLocalIdDigest()
-                        }
-                        ChainGateway.BUSINESS_BANK_CARD -> {
-                            CertOperations.getLocalBankDigest()
-                        }
-                        ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
-                            CertOperations.getLocalCmDigest()
-                        }
-                        else -> null
-                    }
-                    IpfsOperations.putIpfsToken(business, it, idDigest!!.first, idDigest.second)
-                }
-                .doMain()
-                .subscribeBy {
-                    when (business) {
-                        ChainGateway.BUSINESS_ID -> {
-                            cloud_id_selected.text = "已完成"
-                            IDStatus = STATUS_DEFAULT
-                            isEnabled.remove(ID_ENTIFY_DATA)
-                        }
-                        ChainGateway.BUSINESS_BANK_CARD -> {
-                            cloud_bank_selected.text = "已完成"
-                            BankStatus = STATUS_DEFAULT
-                            isEnabled.remove(BANK_CARD_DATA)
-                        }
-                        ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
-                            cloud_cm_selected.text = "已完成"
-                            CmStatus = STATUS_DEFAULT
-                            isEnabled.remove(PHONE_OPERATOR)
-                        }
-                    }
-                    updateSyncStatus()
-                }
+        updateSyncStatus()
     }
 
 
@@ -518,6 +413,24 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         }
     }
 
+    private fun uploadData(business: String, filename: String) {
+        mBinder.upload(business, filename,
+                status = { busines, status ->
+                    updateStatus(busines, status)
+                }) {
+            successful(it)
+        }
+    }
+
+    private fun downLoadData(business: String, filename: String) {
+        mBinder.download(business, filename,
+                status = { busines, status ->
+                    updateStatus(busines, status)
+                }) {
+            successful(it)
+        }
+    }
+
     private fun updateSyncStatus() {
         cloud_sync.isEnabled = isEnabled.size > 0
     }
@@ -529,8 +442,8 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         private const val STATUS_DOWNLOAD = 3
         private const val STATUS_NEWEST = 4
 
-        private const val ID_ENTIFY_DATA = " identifyData"
-        private const val BANK_CARD_DATA = " bankCardData"
-        private const val PHONE_OPERATOR = " phoneOperator"
+        const val ID_ENTIFY_DATA = "identifyData"
+        const val BANK_CARD_DATA = "bankCardData"
+        const val PHONE_OPERATOR = "phoneOperator"
     }
 }
