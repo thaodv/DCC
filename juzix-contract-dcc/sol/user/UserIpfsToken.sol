@@ -49,12 +49,12 @@ contract UserIpfsToken is OwnerNamed{
             log("!(bytes(token).length > 0 && bytes(token).length <= IPFS_TOKEN_MAXSIZE)");
             throw;
         }
-        if(!(digest1.length > 0 && digest1.length < IPFS_DIGEST_MAXSIZE)){
-            log("!(digest1.length > 0 && digest1.length < IPFS_DIGEST_MAXSIZE)");
+        if(!(digest1.length < IPFS_DIGEST_MAXSIZE)){
+            log("!(digest1.length < IPFS_DIGEST_MAXSIZE)");
             throw;
         }
-        if(!(digest2.length > 0 && digest2.length < IPFS_DIGEST_MAXSIZE)){
-            log("!(digest2.length > 0 && digest2.length < IPFS_DIGEST_MAXSIZE)");
+        if(!(digest2.length < IPFS_DIGEST_MAXSIZE)){
+            log("!(digest2.length < IPFS_DIGEST_MAXSIZE)");
             throw;
         }
 
