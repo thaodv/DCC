@@ -1,12 +1,14 @@
 package io.wexchain.android.dcc
 
 import android.os.Bundle
+import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityLoanProductDetailBinding
 import io.wexchain.dccchainservice.DccChainServiceException
@@ -30,13 +32,16 @@ class LoanProductDetailActivity : BindActivity<ActivityLoanProductDetailBinding>
     }
 
     private fun initClicks() {
-        binding.btnStartLoan.setOnClickListener {
-            (binding.product as? Serializable)?.let {
-                navigateTo(StartLoanActivity::class.java) {
-                    putExtra(Extras.EXTRA_LOAN_PRODUCT, it)
+        binding.btnStartLoan.setOnClickListener(object : NoDoubleClickListener() {
+            override fun onNoDoubleClick(v: View?) {
+                (binding.product as? Serializable)?.let {
+                    navigateTo(StartLoanActivity::class.java) {
+                        putExtra(Extras.EXTRA_LOAN_PRODUCT, it)
+                    }
                 }
             }
-        }
+        })
+
     }
 
     private fun loadData() {

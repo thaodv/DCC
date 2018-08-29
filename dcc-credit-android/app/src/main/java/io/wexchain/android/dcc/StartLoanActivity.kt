@@ -3,6 +3,7 @@ package io.wexchain.android.dcc
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.SeekBar
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,6 +14,7 @@ import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
+import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.view.dialog.ConfirmLoanSubmitDialog
 import io.wexchain.android.dcc.view.dialog.CustomDialog
@@ -106,9 +108,11 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
                         }
                     }
                 }
-        binding.btnProceed.setOnClickListener {
-            binding.vm?.checkAndProceed()
-        }
+        binding.btnProceed.setOnClickListener(object :NoDoubleClickListener(){
+            override fun onNoDoubleClick(v: View?) {
+                binding.vm?.checkAndProceed()
+            }
+        })
         binding.isbFee.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 binding.vm?.feeAdditional?.set(progress)

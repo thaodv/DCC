@@ -16,6 +16,7 @@ import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity
+import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.tools.SharedPreferenceUtil
 import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
@@ -98,8 +99,8 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
                 var agent = App.get().assetsRepository.getDigitalCurrencyAgent(getDc())
                 agent.getNonce(p.address).observeOn(AndroidSchedulers.mainThread()).subscribe({
                     if (it > eth.nonce) {
-                       // toCreateTransaction()
-                        App.get().assetsRepository.removePendingTx(eth.txId,eth.nonce)
+                        // toCreateTransaction()
+                        App.get().assetsRepository.removePendingTx(eth.txId, eth.nonce)
                     } else {
                         App.get().assetsRepository.pushPendingTx(eth)
                     }
@@ -170,7 +171,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
         })
         binding.sectionTransactions!!.rvTransactions.adapter = bottomMoreItemsAdapter
         txListVm.list.observe(this, Observer {
-            Log.e("sssssssssssssss","txListVm "+it?.size)
+            Log.e("sssssssssssssss", "txListVm " + it?.size)
             val list3 = it?.subList(0, minOf(it.size, 3)) ?: emptyList()
             adapter.setList(list3)
             txListVm.empty.set(list3.isEmpty())
@@ -189,36 +190,41 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
             intent.getSerializableExtra(Extras.EXTRA_DIGITAL_CURRENCY)!! as DigitalCurrency
 
     private fun initBtn() {
-        binding.btnToTransfer.setOnClickListener {
 
-            if (getDc().chain == Chain.publicEthChain) {//公链
+        binding.btnToTransfer.setOnClickListener(object : NoDoubleClickListener() {
+            override fun onNoDoubleClick(v: View?) {
+                if (getDc().chain == Chain.publicEthChain) {//公链
 
-                val eth = SharedPreferenceUtil.get(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING) as? EthsTransaction
+                    val eth = SharedPreferenceUtil.get(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING) as? EthsTransaction
 
-                if (null == eth) {
-                    toCreateTransaction()
+                    if (null == eth) {
+                        toCreateTransaction()
+                    } else {
+                        val p = App.get().passportRepository.getCurrentPassport()!!
+
+                        var agent = App.get().assetsRepository.getDigitalCurrencyAgent(getDc())
+
+                        agent.getNonce(p.address).observeOn(AndroidSchedulers.mainThread()).subscribe({
+                            if (it > eth.nonce) {
+                                toCreateTransaction()
+                            } else {
+                                val waitTransDialog = WaitTransDialog(this@DigitalCurrencyActivity)
+                                waitTransDialog.mTvText.text = "请待「待上链」交易变为「已上链」后再提交新的交易。"
+                                waitTransDialog.show()
+                            }
+                        }, {})
+                    }
                 } else {
-                    val p = App.get().passportRepository.getCurrentPassport()!!
-
-                    var agent = App.get().assetsRepository.getDigitalCurrencyAgent(getDc())
-
-                    agent.getNonce(p.address).observeOn(AndroidSchedulers.mainThread()).subscribe({
-                        if (it > eth.nonce) {
-                            toCreateTransaction()
-                        } else {
-                            val waitTransDialog = WaitTransDialog(this)
-                            waitTransDialog.mTvText.text = "请待「待上链」交易变为「已上链」后再提交新的交易。"
-                            waitTransDialog.show()
-                        }
-                    }, {})
+                    toCreateTransaction()
                 }
-            } else {
-                toCreateTransaction()
             }
-        }
-        binding.btnToCollect.setOnClickListener {
-            startActivity(Intent(this, PassportAddressActivity::class.java))
-        }
+        })
+
+        binding.btnToCollect.setOnClickListener(object : NoDoubleClickListener() {
+            override fun onNoDoubleClick(v: View?) {
+                startActivity(Intent(this@DigitalCurrencyActivity, PassportAddressActivity::class.java))
+            }
+        })
     }
 
     private fun toCreateTransaction() {

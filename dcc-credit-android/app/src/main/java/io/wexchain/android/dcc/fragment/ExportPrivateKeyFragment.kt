@@ -10,6 +10,7 @@ import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.setInterceptScroll
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BaseCompatFragment
+import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.android.dcc.view.dialog.FullScreenDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentExportPrivateKeyBinding
@@ -23,10 +24,10 @@ class ExportPrivateKeyFragment : BaseCompatFragment() {
 
     private val privateKey by lazy { arguments!!.getString(ARG_PRIVATE_KEY)!! }
 
-    private lateinit var binding : FragmentExportPrivateKeyBinding
+    private lateinit var binding: FragmentExportPrivateKeyBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_export_private_key,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_export_private_key, container, false)
         binding.privateKey = this.privateKey
         binding.btnCopy.setOnClickListener {
             binding.privateKey?.let {
@@ -42,7 +43,7 @@ class ExportPrivateKeyFragment : BaseCompatFragment() {
     }
 
     private fun showQrInFullScreen(content: String?) {
-        content?:return
+        content ?: return
         FullScreenDialog.createQr(context!!, content).show()
     }
 
@@ -50,9 +51,10 @@ class ExportPrivateKeyFragment : BaseCompatFragment() {
         const val ARG_PRIVATE_KEY = "private_key"
 
         fun create(privateKey: BigInteger): ExportPrivateKeyFragment {
+            LogUtils.e("privateKey", privateKey.toString())
             val fragment = ExportPrivateKeyFragment()
             fragment.arguments = Bundle().apply {
-                putString(ARG_PRIVATE_KEY,Numeric.toHexStringNoPrefix(privateKey))
+                putString(ARG_PRIVATE_KEY, Numeric.toHexStringNoPrefix(privateKey))
             }
             return fragment
         }

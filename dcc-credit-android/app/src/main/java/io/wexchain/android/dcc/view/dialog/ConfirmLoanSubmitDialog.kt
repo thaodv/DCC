@@ -6,13 +6,11 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.*
 import io.wexchain.android.common.getViewModel
-import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
+import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.vm.ConfirmLoanVm
 import io.wexchain.android.dcc.vm.domain.LoanScratch
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.DialogConfirmLoanSubmitBinding
-import io.wexchain.dccchainservice.domain.LoanProduct
-import java.math.BigDecimal
 
 class ConfirmLoanSubmitDialog : DialogFragment() {
 
@@ -35,10 +33,12 @@ class ConfirmLoanSubmitDialog : DialogFragment() {
 
         //events
         binding.ibClose.setOnClickListener { dismiss() }
-        binding.btnConfirm.setOnClickListener {
-            onConfirm?.invoke(scratch)
-            dismiss()
-        }
+        binding.btnConfirm.setOnClickListener(object :NoDoubleClickListener(){
+            override fun onNoDoubleClick(v: View?) {
+                onConfirm?.invoke(scratch)
+                dismiss()
+            }
+        })
         return binding.root
     }
 
