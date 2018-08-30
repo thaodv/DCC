@@ -16,11 +16,15 @@ import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.selectnode.NodeBean
 import io.wexchain.android.dcc.network.CommonApi
+import io.wexchain.android.dcc.network.IpfsApi
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.PassportRepository
 import io.wexchain.android.dcc.repo.ScfTokenManager
 import io.wexchain.android.dcc.repo.db.PassportDatabase
 import io.wexchain.android.dcc.tools.*
+import io.wexchain.android.dcc.tools.CrashHandler
+import io.wexchain.android.dcc.tools.JuzixData
+import io.wexchain.android.dcc.tools.Log
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.dcc.BuildConfig
@@ -34,6 +38,7 @@ import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.api.*
 import io.wexchain.digitalwallet.api.domain.EthJsonRpcRequestBody
 import io.wexchain.digitalwallet.proxy.*
+import io.wexchain.ipfs.core.IpfsCore
 import zlc.season.rxdownload3.core.DownloadConfig
 import java.lang.ref.WeakReference
 import java.math.BigInteger
@@ -53,6 +58,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
     //our services
     lateinit var chainGateway: ChainGateway
+    lateinit var contractApi: IpfsApi
     lateinit var certApi: CertApi
     lateinit var chainFrontEndApi: ChainFrontEndApi
     lateinit var privateChainApi: PrivateChainApi
@@ -97,6 +103,17 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
         initServices(this)
         initData(this)
+        initIpfs()
+    }
+
+    private fun initIpfs() {
+        val hostStatus = passportRepository.getIpfsHostStatus()
+        if (hostStatus) {
+            IpfsCore.init(BuildConfig.IPFS_HOST)
+        } else {
+            val urlConfig = passportRepository.getIpfsUrlConfig()
+            IpfsCore.init(urlConfig.first!!, urlConfig.second!!.toInt())
+        }
     }
 
     fun  getbiminAmountPerHand() {
@@ -165,6 +182,7 @@ var baseurl=BuildConfig.GATEWAY_BASE_URL
         marketingApi = networking.createApi(MarketingApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
         scfApi = networking.createApi(ScfApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
         coinMarketCapApi = networking.createApi(CoinMarketCapApi::class.java, BuildConfig.COIN_MARKET)
+        contractApi = networking.createApi(IpfsApi::class.java, IpfsApi.BASE_URL)
 
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))
         ethplorerApi = networking.createApi(EthplorerApi::class.java, EthplorerApi.API_URL)
@@ -190,8 +208,6 @@ var baseurl=BuildConfig.GATEWAY_BASE_URL
         WxApiManager.init()
         initRxDownload()
         CrashHandler().init(context)
-//        IPFSHelp.init("/ip4/10.65.212.11/tcp/5001")
-
     }
 
     private fun buildAgent(dc: DigitalCurrency): Erc20Agent {
@@ -238,7 +254,7 @@ var baseurl=BuildConfig.GATEWAY_BASE_URL
     }
 
     override fun uncaughtException(thread: Thread, ex: Throwable) {
-        Thread(Runnable { log("currentThread:" + Thread.currentThread() + "---thread:" + thread.id + "---ex:" + ex.toString()) }).start()
+        Thread(Runnable { Log("currentThread:" + Thread.currentThread() + "---thread:" + thread.id + "---ex:" + ex.toString()) }).start()
         SystemClock.sleep(2000)
         android.os.Process.killProcess(android.os.Process.myPid())
     }

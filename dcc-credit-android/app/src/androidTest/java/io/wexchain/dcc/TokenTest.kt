@@ -185,8 +185,7 @@ class TokenTest {
 
         val signed = Numeric.toHexString(TransactionEncoder.signMessage(rawTransaction, owner))
 
-        val txHash = infuraApi.sendRawTransaction(signed)
-            .blockingGet()
+        val txHash = infuraApi.sendRawTransaction(signed).blockingGet()
         println("sent approve tx")
         val response = infuraApi.transactionReceipt(txHash)
             .retryWhen(RetryWithDelay.createGrowth(8, 1000))

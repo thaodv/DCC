@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/include_toolbar" />
+
+    <TextView
+        android:id="@+id/tv_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/content_padding_horizontal"
+        android:layout_marginRight="@dimen/content_padding_horizontal"
+        android:layout_marginTop="15dp"
+        android:text="如忘记密码或想更换密码，您可以重置旧的密码并设置新的密码。\n\n
+
+重置密码后存储在云端的数据会被全部删除，您需要设置新的密码以开启云存储功能，请谨慎操作。"
+        android:textColor="@color/FF4A4A4A"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <Button
+        android:id="@+id/cloud_reset"
+        style="@style/Widget.AppCompat.Button.Dcc.Full"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/content_padding_horizontal"
+        android:layout_marginRight="@dimen/content_padding_horizontal"
+        android:layout_marginTop="30dp"
+        android:text="确认重置"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_tips" />
+
+</android.support.constraint.ConstraintLayout>

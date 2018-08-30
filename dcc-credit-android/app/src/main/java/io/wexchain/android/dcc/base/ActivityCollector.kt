@@ -10,7 +10,7 @@ import java.util.*
  */
 object ActivityCollector {
 
-    var activities: MutableList<Activity> = ArrayList()
+    private var activities: MutableList<Activity> = ArrayList()
 
     val currentActivity: Activity
         get() = activities[activities.size - 1]
