@@ -12,17 +12,18 @@ import android.support.annotation.WorkerThread
 import com.google.gson.GsonBuilder
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.Prefs
-import io.wexchain.android.common.distinct
-import io.wexchain.android.common.map
-import io.wexchain.android.common.switchMap
+import io.wexchain.android.common.*
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.ChooseCutImageActivity
 import io.wexchain.android.dcc.chain.EthsHelper
 import io.wexchain.android.dcc.domain.AuthKey
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.repo.db.*
-import io.wexchain.android.dcc.tools.*
+import io.wexchain.android.dcc.tools.RoomHelper
+import io.wexchain.android.dcc.tools.doRoom
+import io.wexchain.android.dcc.tools.getPrivateKey
+import io.wexchain.android.dcc.tools.toSha256
+import io.wexchain.ipfs.utils.doMain
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.Wallet
 import org.web3j.crypto.WalletFile
@@ -291,9 +292,10 @@ class PassportRepository(
     }
 
     fun createIpfsKey(psw: String): ByteArray {
-//        val address = currPassport.value!!.address
-        val privateKey = Numeric.toHexStringNoPrefix(getCurrentPassport()!!.credential.ecKeyPair.privateKey).StringfixLengthBins()
-        return (privateKey + psw /*+ address).toByteArray().toSha256()*/).toByteArray().toSha256()
+        val address = currPassport.value!!.address
+        val privateKey = getCurrentPassport()!!.getPrivateKey()
+        val bytes = (address + psw).toByteArray().toSha256().toHex()
+        return (privateKey + bytes).toByteArray().toSha256()
     }
 
     fun getIpfsKeyHash(): String? {

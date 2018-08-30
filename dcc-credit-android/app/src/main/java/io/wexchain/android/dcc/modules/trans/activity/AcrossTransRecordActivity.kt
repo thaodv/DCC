@@ -12,7 +12,6 @@ import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.modules.trans.vm.AcrossTransRecordsVm
 import io.wexchain.android.dcc.tools.StringUtils
-import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.android.dcc.view.dialog.AccrossTransRecordSelectDialog
@@ -25,6 +24,7 @@ import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.AccrossTransRecord
 import io.wexchain.dccchainservice.util.DateUtil
 import io.wexchain.dccchainservice.util.DateUtil.getLongTime
+import io.wexchain.ipfs.utils.doMain
 
 
 class AcrossTransRecordActivity : BindActivity<ActivityAcrossTransRecordBinding>(), ItemViewClickListener<AccrossTransRecord> {
@@ -202,10 +202,10 @@ class AcrossTransRecordActivity : BindActivity<ActivityAcrossTransRecordBinding>
         ScfOperations
                 .withScfTokenInCurrentPassport(emptyList()) {
                     App.get().scfApi.queryExchangeAmount(it, startTime = startTime, endTime = endTime)
-                }.doMain()
+                }
+                .doMain()
                 .subscribe({
                     var public = "0"
-
                     var private = "0"
 
                     if (null != it) {

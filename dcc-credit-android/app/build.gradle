@@ -59,6 +59,7 @@ android {
             buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://gateway.wexpass.cn/passport-gateway/restful/"'
             buildConfigField 'java.lang.String', 'COIN_MARKET', '"http://gateway.wexpass.cn/chain-service-frontend/"'
             buildConfigField 'java.lang.String', 'ACCROSS_DETAIL', '"http://explorer.dcc.finance/index.html#/block/hash/"'
+            buildConfigField 'java.lang.String', 'IPFS_HOST', '"/ip4/ipfs.dcc.finance/tcp/5001"'
         }
         debug {
             //            signingConfig signingConfigs.wexchain
@@ -77,7 +78,7 @@ android {
             buildConfigField 'java.lang.String', 'COIN_MARKET', '"http://10.65.178.50:9310/coin-market/"'
             buildConfigField 'java.lang.String', 'ACCROSS_DETAIL', '"http://funcexplorer.dcc.finance/index.html#/block/hash/"'
             buildConfigField 'java.lang.String', 'CONTRACT_BASE_URL', '"http://10.65.209.13:9511/passport-gateway/restful/"'
-            buildConfigField 'java.lang.String', 'IPFS_HOST', '"/ip4/222.73.39.46/tcp/5001"'
+            buildConfigField 'java.lang.String', 'IPFS_HOST', '"/ip4/ipfs.dcc.finance/tcp/5001"'
         }
         staging {
             initWith debug

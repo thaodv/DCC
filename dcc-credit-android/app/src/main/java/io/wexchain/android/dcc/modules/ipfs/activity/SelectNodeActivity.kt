@@ -56,10 +56,10 @@ class SelectNodeActivity : BaseCompatActivity() {
             host = urlConfig.first
             port = urlConfig.second
             custom_host.text = "${urlConfig.first} 端口${urlConfig.second}"
-            if (hostStatus){
+            if (hostStatus) {
                 custom_img.visibility = View.INVISIBLE
                 default_img.visibility = View.VISIBLE
-            }else{
+            } else {
                 custom_img.visibility = View.VISIBLE
                 default_img.visibility = View.INVISIBLE
             }

@@ -7,12 +7,12 @@ import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.PassportSettingsActivity
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.IpfsOperations
-import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.dcc.view.dialog.CloudstorageDialog
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityOpencloudBinding
+import io.wexchain.ipfs.utils.doMain
 
 /**
  *Created by liuyang on 2018/8/13.

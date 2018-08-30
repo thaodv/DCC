@@ -16,7 +16,6 @@ import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
-import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
@@ -36,8 +35,6 @@ import org.jetbrains.anko.uiThread
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
 import org.web3j.abi.datatypes.Utf8String
-import java.io.File
-import java.math.BigInteger
 import java.util.*
 
 
@@ -52,7 +49,6 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
     private var IDStatus = STATUS_DEFAULT
     private var BankStatus = STATUS_DEFAULT
     private var CmStatus = STATUS_DEFAULT
-
 
     private var ID_Token = ""
     private var Bank_Token = ""
@@ -92,23 +88,23 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         unbindService(mConnection)
     }
 
-     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-         super.onCreateOptionsMenu(menu)
-         menuInflater.inflate(R.menu.menu_mycloud, menu)
-         return true
-     }
+    /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.menu_mycloud, menu)
+        return true
+    }
 
-     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-         return when (item?.itemId) {
-             R.id.mycloud_select_node -> {
-                 navigateTo(SelectNodeActivity::class.java)
-                 true
-             }
-             else -> {
-                 super.onOptionsItemSelected(item)
-             }
-         }
-     }
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.mycloud_select_node -> {
+                navigateTo(SelectNodeActivity::class.java)
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+    }*/
 
     private fun initData() {
         val idCertPassed = CertOperations.isIdCertPassed()
@@ -126,7 +122,6 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 .subscribeBy {
                     updateUI(it)
                 }
-
     }
 
     private fun updateUI(it: Triple<Int, Int, Int>) {
@@ -331,7 +326,6 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         }
         updateSyncStatus()
     }
-
 
     private fun initClick() {
         cloud_question.onClick {

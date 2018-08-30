@@ -9,11 +9,11 @@ import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.IpfsOperations
-import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.ipfs.utils.doMain
 import kotlinx.android.synthetic.main.activity_resetpsw.*
 
 /**

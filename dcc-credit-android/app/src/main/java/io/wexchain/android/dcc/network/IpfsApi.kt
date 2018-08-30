@@ -31,13 +31,6 @@ interface IpfsApi {
 
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("contract/1/web3/{business}")
-    fun getTransactionCount(
-            @Path("business") business: String,
-            @Body body: EthJsonRpcRequestBody<String>
-    ): Single<EthJsonRpcResponse<String>>
-
-    @Headers("Content-Type: application/json", "Accept: application/json")
-    @POST("contract/1/web3/{business}")
     fun getTransactionReceipt(
             @Path("business") business: String,
             @Body body: EthJsonRpcRequestBody<String>
@@ -51,14 +44,12 @@ interface IpfsApi {
 
 
     companion object {
-        private const val InfuraApiToken = cc.sisel.ewallet.BuildConfig.INFURA_API_KEY
         const val BASE_URL = BuildConfig.CONTRACT_BASE_URL
 
         const val IPFS_KEY_HASH = "ipfs_key_hash"
         const val IPFS_METADATA = "ipfs_metadata"
 
         internal val idAtomic = AtomicLong(0L)
-
     }
 }
 
@@ -70,16 +61,6 @@ fun IpfsApi.sendRawTransaction(business: String, rawTransaction: String): Single
             .map { it.result!! }
 }
 
-fun IpfsApi.transactionCount(business: String, address: String, tag: String = "latest"): Single<String> {
-    return this.getTransactionCount(
-            business,
-            EthJsonRpcRequestBody(
-                    method = "eth_getTransactionCount",
-                    params = listOf(address, tag),
-                    id = this.nextId()
-            ))
-            .map { it.result!! }
-}
 
 fun IpfsApi.transactionReceipt(business: String, txId: String): Single<EthJsonTxReceipt> {
     return this.getTransactionReceipt(

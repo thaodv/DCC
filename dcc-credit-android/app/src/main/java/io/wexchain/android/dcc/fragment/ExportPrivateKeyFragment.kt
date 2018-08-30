@@ -49,10 +49,10 @@ class ExportPrivateKeyFragment : BaseCompatFragment() {
     companion object {
         const val ARG_PRIVATE_KEY = "private_key"
 
-        fun create(privateKey: BigInteger): ExportPrivateKeyFragment {
+        fun create(privateKey: String): ExportPrivateKeyFragment {
             val fragment = ExportPrivateKeyFragment()
             fragment.arguments = Bundle().apply {
-                putString(ARG_PRIVATE_KEY,Numeric.toHexStringNoPrefix(privateKey))
+                putString(ARG_PRIVATE_KEY,privateKey)
             }
             return fragment
         }

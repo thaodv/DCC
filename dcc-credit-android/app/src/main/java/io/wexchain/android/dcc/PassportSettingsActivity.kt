@@ -23,7 +23,6 @@ import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.tools.checkonMain
-import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtectType
@@ -33,6 +32,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportSettingsBinding
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CheckUpgrade
+import io.wexchain.ipfs.utils.doMain
 import zlc.season.rxdownload3.core.Mission
 import java.io.File
 

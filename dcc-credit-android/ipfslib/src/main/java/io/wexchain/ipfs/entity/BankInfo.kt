@@ -13,5 +13,5 @@ data class BankInfo(
         val bankAuthenCode: String,//银行内部代码
         val bankAuthenCodeNumber: String, //卡号
         val bankAuthenMobile: String, //预留手机号
-        val bankAuthenExpired: String //过期时间
+        val bankAuthenExpired: Long //过期时间
 ) : Serializable

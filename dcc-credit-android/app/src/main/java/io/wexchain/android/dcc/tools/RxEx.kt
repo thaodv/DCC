@@ -1,10 +1,9 @@
 package io.wexchain.android.dcc.tools
 
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
-import io.reactivex.schedulers.Schedulers
 import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.ipfs.utils.doMain
 
 
 fun <T1, T2> pair(): BiFunction<T1, T2, Pair<T1, T2>> {
@@ -19,15 +18,9 @@ fun <T> Single<Result<T>>.checkonMain(): Single<T> {
     return this.compose(Result.checked()).doMain()
 }
 
-fun <T> Single<T>.doMain(): Single<T> {
-    return this.observeOn(AndroidSchedulers.mainThread())
-}
-
 fun <T> Single<T>.doRoom(): Single<T> {
     return this.observeOn(RoomHelper.roomScheduler)
 }
 
-fun <T> Single<T>.doBack(): Single<T> {
-    return this.observeOn(Schedulers.io())
-}
+
 

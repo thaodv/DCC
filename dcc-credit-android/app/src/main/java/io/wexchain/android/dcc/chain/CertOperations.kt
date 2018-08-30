@@ -626,25 +626,22 @@ object CertOperations {
         }
     }
 
-
     fun saveIpfsCmData(phoneInfo: PhoneInfo) {
         certPrefs.certCmLogOrderId.set(phoneInfo.mobileAuthenOrderid.toLong())
         certPrefs.certCmLogState.set(phoneInfo.mobileAuthenStatus)
         certPrefs.certCmLogPhoneNo.set(phoneInfo.mobileAuthenNumber)
-        val replace = phoneInfo.mobileAuthenCmData.replace('\\', ' ')
         File(App.get().filesDir, certCmLogReportFileName(phoneInfo.mobileAuthenOrderid.toLong()))
                 .apply {
                     ensureNewFile()
-                    writeBytes(replace.toByteArray())
+                    writeBytes(phoneInfo.mobileAuthenCmData.base64())
                 }
     }
 
     fun saveIpfsBankData(bankInfo: BankInfo) {
         val bankCardInfo = BankCardInfo(bankInfo.bankAuthenCode, bankInfo.bankAuthenCodeNumber, bankInfo.bankAuthenMobile)
-
         certPrefs.certBankOrderId.set(bankInfo.bankAuthenOrderid.toLong())
         certPrefs.certBankStatus.set(bankInfo.bankAuthenStatus)
-        certPrefs.certBankExpired.set(ViewModelHelper.expiredToLong(bankInfo.bankAuthenExpired))
+        certPrefs.certBankExpired.set(bankInfo.bankAuthenExpired)
         certPrefs.certBankCardData.set(bankCardInfo.toJson())
     }
 

@@ -1,8 +1,11 @@
 package io.wexchain.android.dcc.tools
 
+import android.app.ActivityManager
+import android.content.Context
+import android.os.Looper
 import com.google.gson.Gson
 import io.wexchain.android.dcc.App
-import io.wexchain.ipfs.utils.AES256
+import io.wexchain.android.dcc.domain.Passport
 import org.web3j.utils.Numeric
 import java.io.File
 import java.math.BigInteger
@@ -25,14 +28,6 @@ fun <T : Any> T.Log(message: CharSequence?) {
 /*fun Log(tag: String, message: CharSequence) {
     LogUtils.e(tag, message.toString())
 }*/
-
-fun ByteArray.toHex(): String {
-    return AES256.bytes2Hex(this)
-}
-
-fun ByteArray.toHash256(): ByteArray {
-    return AES256.tohash256Deal(this)
-}
 
 fun ByteArray.toSha256(): ByteArray {
     return MessageDigest.getInstance("SHA256").digest(this)
@@ -93,7 +88,7 @@ fun BigInteger.toHexString(withPrefix: Boolean = false): String {
     return toByteArray.toHexString(0, toByteArray.size, withPrefix)
 }
 
-fun String.StringfixLengthBins():String  {
+fun String.StringfixLengthBins(): String {
     val bins = StringBuilder(this)
     val len = bins.length
     for (i in 0 until 64 - len) {
@@ -101,3 +96,17 @@ fun String.StringfixLengthBins():String  {
     }
     return bins.toString()
 }
+
+fun Passport.getPrivateKey(): String {
+    return Numeric.toHexStringNoPrefix(this.credential.ecKeyPair.privateKey).StringfixLengthBins()
+}
+
+fun Context.getProcessName(): String? {
+    val am = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    val runningApps = am.runningAppProcesses ?: return null
+    return runningApps
+            .firstOrNull { it.pid == android.os.Process.myPid() && it.processName != null }
+            ?.processName
+}
+
+fun isMainThread() = Looper.getMainLooper().thread == Thread.currentThread()

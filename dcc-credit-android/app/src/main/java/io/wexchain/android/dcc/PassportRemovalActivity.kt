@@ -18,13 +18,13 @@ import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.tools.SharedPreferenceUtil
-import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportRemovalBinding
+import io.wexchain.ipfs.utils.doMain
 
 class PassportRemovalActivity : BaseCompatActivity() {
 

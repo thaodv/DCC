@@ -19,7 +19,6 @@ import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.tl.TlWebPageActivity
 import io.wexchain.android.dcc.tools.checkonMain
-import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.tools.reName
 import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
@@ -28,6 +27,7 @@ import io.wexchain.dcc.databinding.ActivityHomeBinding
 import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
 import io.wexchain.dccchainservice.domain.ScfAccountInfo
+import io.wexchain.ipfs.utils.doMain
 import org.jetbrains.anko.doAsync
 import zlc.season.rxdownload3.core.Mission
 import java.io.File

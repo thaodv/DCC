@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
-import android.widget.ScrollView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.navigateTo
@@ -18,11 +17,11 @@ import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
-import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityMyCreditBinding
+import io.wexchain.ipfs.utils.doMain
 
 class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
 
@@ -52,8 +51,6 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                     navigateTo(MyCloudActivity::class.java)
                 }
             }
-
-
     }
     private fun getCloudToken() {
         IpfsOperations.getIpfsKey()

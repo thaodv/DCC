@@ -10,6 +10,7 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.fragment.ExportKeystoreFragment
+import io.wexchain.android.dcc.tools.getPrivateKey
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
@@ -91,7 +92,7 @@ class PassportExportActivity : BaseCompatActivity(), TabLayout.OnTabSelectedList
 
     private fun showExportPrivateKey() {
         val fragment = supportFragmentManager.findOrCreateFragment(TAG_PASTE_PRIVATE_KEY, {
-            ExportPrivateKeyFragment.create(passport.credential.ecKeyPair.privateKey) })
+            ExportPrivateKeyFragment.create(passport.getPrivateKey()) })
         replaceFragment(fragment, R.id.fl_export_area, TAG_PASTE_PRIVATE_KEY)
     }
 
