@@ -52,12 +52,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         checkUpgrade()
         initPhototTask()
 
-        if (App.get().passportRepository.passportExists) {
-            if (ShareUtils.getBoolean("biint_has_show", true)) {
-                ShareUtils.setBoolean("biint_has_show", false)
-                tipsDialog.show()
-            }
-        }
+
         // tipsDialog.show()
     }
     private fun initPhototTask() {
@@ -80,6 +75,12 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
     override fun onResume() {
         super.onResume()
         signin()
+        if (App.get().passportRepository.passportExists) {
+            if (ShareUtils.getBoolean("biint_has_show1", true)) {
+                ShareUtils.setBoolean("biint_has_show1", false)
+                tipsDialog.show()
+            }
+        }
     }
 
     private fun checkUpgrade() {
