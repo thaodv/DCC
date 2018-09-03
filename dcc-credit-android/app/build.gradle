@@ -18,8 +18,8 @@ android {
         applicationId "io.wexchain.dcc"
         minSdkVersion min_sdk
         targetSdkVersion target_sdk
-        versionCode 18
-        versionName "1.4.3"
+        versionCode 19
+        versionName "1.4.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -61,7 +61,7 @@ android {
             buildConfigField 'java.lang.String', 'PRVATE_ACCROSS_DETAIL_URL', '"http://explorer.dcc.finance/index.html#/block/hash/"'
             buildConfigField 'java.lang.String', 'PUBLIC_ACCROSS_DETAIL_URL', '"https://etherscan.io/tx/"'
             buildConfigField 'java.lang.String', 'ACCROSS_DETAIL', '"http://explorer.dcc.finance/index.html#/block/hash/"'
-            buildConfigField 'java.lang.String', 'IPFS_HOST', '"/ip4/ipfs.dcc.finance/tcp/5001"'
+            buildConfigField 'java.lang.String', 'IPFS_ADDRESS', '"http://ipfs.dcc.finance:5001/api/v0/"'
         }
         debug {
             //            signingConfig signingConfigs.wexchain
@@ -82,7 +82,7 @@ android {
             buildConfigField 'java.lang.String', 'PUBLIC_ACCROSS_DETAIL_URL', '"https://rinkeby.etherscan.io/tx/"'
             buildConfigField 'java.lang.String', 'ACCROSS_DETAIL', '"http://funcexplorer.dcc.finance/index.html#/block/hash/"'
             buildConfigField 'java.lang.String', 'CONTRACT_BASE_URL', '"http://10.65.209.13:9511/passport-gateway/restful/"'
-            buildConfigField 'java.lang.String', 'IPFS_HOST', '"/ip4/ipfs.dcc.finance/tcp/5001"'
+            buildConfigField 'java.lang.String', 'IPFS_ADDRESS', '"http://ipfs.dcc.finance:5001/api/v0/"'
         }
         staging {
             initWith debug
@@ -97,7 +97,6 @@ android {
             buildConfigField 'java.lang.String', 'PUBLIC_ACCROSS_DETAIL_URL', '"https://rinkeby.etherscan.io/tx/"'
             buildConfigField 'java.lang.String', 'CONTRACT_BASE_URL', '"http://10.65.209.13:9511/passport-gateway/restful/"'
             buildConfigField 'java.lang.String', 'ACCROSS_DETAIL', '"http://funcexplorer.dcc.finance/index.html#/block/hash/"'
-
             matchingFallbacks = ['debug']
         }
     }
@@ -159,10 +158,10 @@ dependencies {
     implementation project(':barcode')
     implementation project(':localprotect')
     implementation project(':tllibrary')
+    implementation project(':ipfslib')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation project(':ipfslib')
-    compile 'com.alibaba:fastjson:1.2.49'
+    implementation 'com.alibaba:fastjson:1.2.49'
 
 }

@@ -1,81 +1,61 @@
 package io.wexchain.ipfs.core
 
-import io.ipfs.api.IPFS
-import io.ipfs.api.NamedStreamable
-import io.ipfs.multihash.Multihash
 import io.reactivex.Single
-import io.reactivex.rxkotlin.subscribeBy
-import io.wexchain.ipfs.utils.doBack
+import io.reactivex.schedulers.Schedulers
+import io.wexchain.ipfs.entity.IpfsVersion
+import io.wexchain.ipfs.net.IpfsApi
+import io.wexchain.ipfs.net.Networking
+import io.wexchain.ipfs.utils.doMain
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.io.File
 
 /**
- *Created by liuyang on 2018/8/3.
+ *Created by liuyang on 2018/9/3.
  */
 object IpfsCore {
 
-    private lateinit var ipfs: IPFS
-
-    /**
-     * Application init
-     * @param host ipfs地址
-     */
-    fun init(host: String, port: Int) {
-        Single.just(Pair(host, port))
-                .doBack()
-                .subscribeBy {
-                    ipfs = IPFS(it.first, it.second)
-                    ipfs.refs.local()
-                }
+    private lateinit var baseUrl: String
+    private val api: IpfsApi by lazy {
+        Networking.createApi(IpfsApi::class.java)
     }
 
-    fun init(host: String) {
-        Single.just(host)
-                .doBack()
-                .subscribeBy {
-                    ipfs = IPFS(it)
-                    ipfs.refs.local()
-                }
+    fun init(baseUrl: String) {
+        this.baseUrl = baseUrl
     }
 
-    /**
-     * Add a file to IPFS.
-     * @param path 需要上传文件的路径
-     */
-    fun upload(path: String): Single<String> {
-        return Single.just(path)
-                .flatMap {
-                    val file = File(path)
-                    if (file.isFile) {
-                        if (!file.exists()) {
-                            Single.error(Throwable("File do not exist"))
-                        } else {
-                            Single.just(file)
-                        }
-                    } else {
-                        Single.error(Throwable("Path Not is File"))
-                    }
+    fun creatUrl(host: String, port: String) = "http://$host:$port/api/v0/"
 
-                }
+    fun download(token: String): Single<ByteArray> {
+        val url = baseUrl + "cat?arg=$token"
+        return api.download(url)
                 .map {
-                    val filewrapper = NamedStreamable.FileWrapper(it)
-                    val result = ipfs.add(filewrapper)
-                    result[0]
+                    it.bytes()
                 }
-                .map {
-                    it.hash.toBase58()
-                }
+                .subscribeOn(Schedulers.io())
     }
 
-    /**
-     * IPFS download file
-     * @param base58 ipfs文件Token
-     */
-    fun download(base58: String): Single<ByteArray> {
-        return Single.just(base58)
-                .flatMap {
-                    val filePointer = Multihash.fromBase58(it)
-                    val data = ipfs.cat(filePointer)
-                    Single.just(data)
+    fun upload(file: File): Single<String> {
+        val body = creatBody(file)
+        val url = baseUrl + "add?"
+        return api.upload(url, body)
+                .map {
+                    it.Hash
                 }
+                .subscribeOn(Schedulers.io())
     }
+
+    fun checkVersion(host: String, port: String): Single<IpfsVersion> {
+        val url = creatUrl(host, port) + "version?number=false&commit=false&repo=false&all=false"
+        return api.getVersion(url)
+                .subscribeOn(Schedulers.io())
+                .doMain()
+    }
+
+    private fun creatBody(file: File): MultipartBody {
+        val requestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
+        requestBody.addFormDataPart("file", file.name, RequestBody.create(null, file))
+        return requestBody.build()
+    }
+
 }

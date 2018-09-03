@@ -50,7 +50,7 @@ class CloudAddressActivity : BaseCompatActivity() {
         cloud_address_hash.text = token
         val hostStatus = passport.getIpfsHostStatus()
         if (hostStatus) {
-            val host = BuildConfig.IPFS_HOST
+            val host = BuildConfig.IPFS_ADDRESS
             val list = host.split('/')
             cloud_address_address.text = "http://${list[2]}:8080/ipfs/$token"
         } else {

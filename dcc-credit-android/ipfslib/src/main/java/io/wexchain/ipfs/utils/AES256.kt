@@ -1,5 +1,6 @@
 package io.wexchain.ipfs.utils
 
+import android.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
@@ -24,7 +25,7 @@ object AES256 {
         val iv = IvParameterSpec(ivm.get16Md5().toByteArray())
         cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv)
         val encrypted = cipher.doFinal(sSrc.toByteArray())
-        return Base64Encoder.encode(encrypted)
+        return Base64.encodeToString(encrypted, Base64.DEFAULT)
     }
 
     fun encrypt(data: ByteArray, key: String, ivm: String = ivParameter): ByteArray {
@@ -45,8 +46,8 @@ object AES256 {
         val cipher = Cipher.getInstance(CIPHER_ALGORITHM)
         val iv = IvParameterSpec(ivm.get16Md5().toByteArray())
         cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv)
-        val encrypted1 = Base64Decoder.decodeToBytes(sSrc)
-        val original = cipher.doFinal(encrypted1)
+        val encrypted = Base64.decode(sSrc, Base64.DEFAULT)
+        val original = cipher.doFinal(encrypted)
         return String(original)
     }
 

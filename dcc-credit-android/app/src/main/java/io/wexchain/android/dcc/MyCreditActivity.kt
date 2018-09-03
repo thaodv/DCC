@@ -4,9 +4,11 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.Pop
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
+import io.wexchain.android.common.Pop
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.setWindowExtended
@@ -18,11 +20,17 @@ import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
+import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityMyCreditBinding
+import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.ipfs.utils.doMain
+import org.web3j.abi.FunctionReturnDecoder
+import org.web3j.abi.datatypes.DynamicBytes
+import java.util.*
 
 class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
 
@@ -40,19 +48,19 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
         binding.asBankVm = obtainAuthStatus(CertificationType.BANK)
         binding.asMobileVm = obtainAuthStatus(CertificationType.MOBILE)
         binding.asPersonalVm = obtainAuthStatus(CertificationType.PERSONAL)
-        initIpfsCloud()
     }
 
     private fun initIpfsCloud() {
-            val ipfsKeyHash = passport.getIpfsKeyHash()
-            if (ipfsKeyHash.isNullOrEmpty()) {
-                getCloudToken()
-            } else {
-                binding.creditIpfsCloud.onClick {
-                    navigateTo(MyCloudActivity::class.java)
-                }
+        val ipfsKeyHash = passport.getIpfsKeyHash()
+        if (ipfsKeyHash.isNullOrEmpty()) {
+            getCloudToken()
+        } else {
+            binding.creditIpfsCloud.onClick {
+                navigateTo(MyCloudActivity::class.java)
             }
+        }
     }
+
     private fun getCloudToken() {
         IpfsOperations.getIpfsKey()
                 .checkToken()
@@ -107,6 +115,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
     override fun onResume() {
         super.onResume()
         refreshCertStatus()
+        initIpfsCloud()
     }
 
     private fun refreshCertStatus() {
@@ -160,6 +169,26 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
         }
     }
 
+    fun checkIpfsAndChainDigest(business: String): Single<Boolean> {
+        return IpfsOperations.getIpfsToken(business)
+                .map {
+                    FunctionReturnDecoder.decode(it.result, Erc20Helper.dncodeResponse())
+                }
+                .map {
+                    val digest1 = (it[6] as DynamicBytes).value
+                    val digest2 = (it[7] as DynamicBytes).value
+                    Pair(digest1, digest2)
+                }
+                .map {
+                    val chainDigest = CertOperations.getChainDigest(business).blockingGet()
+                    if (chainDigest.first.isEmpty() && it.first.isEmpty()) {
+                        false
+                    } else {
+                        (Arrays.equals(chainDigest.first, it.first) && Arrays.equals(chainDigest.second, it.second))
+                    }
+                }
+    }
+
     private fun performOperation(certificationType: CertificationType, status: UserCertStatus) {
         when (certificationType) {
             CertificationType.ID -> {
@@ -167,7 +196,21 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                     navigateTo(IdCertificationActivity::class.java)
                 } else {
                     PassportOperations.ensureCaValidity(this) {
-                        navigateTo(SubmitIdActivity::class.java)
+                        checkIpfsAndChainDigest(ChainGateway.BUSINESS_ID)
+                                .subscribeOn(Schedulers.io())
+                                .doMain()
+                                .withLoading()
+                                .filter {
+                                    if (!it) navigateTo(SubmitIdActivity::class.java)
+                                    it
+                                }
+                                .subscribeBy(
+                                        onSuccess = {
+                                            showIpfsDialog()
+                                        },
+                                        onError = {
+                                            navigateTo(SubmitIdActivity::class.java)
+                                        })
                     }
                 }
             }
@@ -198,6 +241,31 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                 }
             }
         }
+    }
+
+    private fun showIpfsDialog() {
+        val dialog = DeleteAddressBookDialog(this@MyCreditActivity)
+        dialog.setTvText("您已在云端备份过实名认证数据，下载到本地后无需再次认证。")
+        dialog.setBtnText("去下载", "取消")
+        dialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
+            override fun cancel() {
+                dialog.dismiss()
+                navigateTo(SubmitIdActivity::class.java)
+            }
+
+            override fun sure() {
+                dialog.dismiss()
+                val ipfsKeyHash = passport.getIpfsKeyHash()
+                if (ipfsKeyHash.isNullOrEmpty()) {
+                    navigateTo(OpenCloudActivity::class.java) {
+                        putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)
+                    }
+                } else {
+                    navigateTo(MyCloudActivity::class.java)
+                }
+            }
+        })
+        dialog.show()
     }
 
 

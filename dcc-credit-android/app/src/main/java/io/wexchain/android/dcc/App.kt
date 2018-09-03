@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.SystemClock
 import android.support.annotation.VisibleForTesting
 import android.support.multidex.MultiDex
-import android.util.Log
 import android.view.ContextThemeWrapper
 import com.wexmarket.android.network.Networking
 import io.reactivex.Single
@@ -22,9 +21,6 @@ import io.wexchain.android.dcc.repo.PassportRepository
 import io.wexchain.android.dcc.repo.ScfTokenManager
 import io.wexchain.android.dcc.repo.db.PassportDatabase
 import io.wexchain.android.dcc.tools.*
-import io.wexchain.android.dcc.tools.CrashHandler
-import io.wexchain.android.dcc.tools.JuzixData
-import io.wexchain.android.dcc.tools.Log
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.dcc.BuildConfig
@@ -108,30 +104,32 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
     private fun initIpfs() {
         val hostStatus = passportRepository.getIpfsHostStatus()
-        if (hostStatus) {
-            IpfsCore.init(BuildConfig.IPFS_HOST)
+        val baseUrl = if (hostStatus) {
+            BuildConfig.IPFS_ADDRESS
         } else {
             val urlConfig = passportRepository.getIpfsUrlConfig()
-            IpfsCore.init(urlConfig.first!!, urlConfig.second!!.toInt())
+            IpfsCore.creatUrl(urlConfig.first!!, urlConfig.second!!)
         }
+        IpfsCore.init(baseUrl)
     }
 
-    fun  getbiminAmountPerHand() {
-        val getAllowance = Erc20Helper.getMinAmountPerHando(BintApi.contract,"","")
-         bintApi.postStatus(
-            EthJsonRpcRequestBody(
-                method = "eth_call",
-                params = listOf(getAllowance, "latest"),
-                id = 1L
-            )
-        ). subscribeOn(AndroidSchedulers.mainThread()).subscribe(
-            {
+    fun getbiminAmountPerHand() {
+        val getAllowance = Erc20Helper.getMinAmountPerHando(BintApi.contract, "", "")
+        bintApi.postStatus(
+                EthJsonRpcRequestBody(
+                        method = "eth_call",
+                        params = listOf(getAllowance, "latest"),
+                        id = 1L
+                )
+        ).subscribeOn(AndroidSchedulers.mainThread()).subscribe(
+                {
 
-            },{
-                it.printStackTrace()
-            }
+                }, {
+            it.printStackTrace()
+        }
         )
     }
+
     fun initNode() {
         val a = NodeBean(1, "https://ethrpc.wexfin.com:58545/", "  以太坊节点-中国上海")
         val b = NodeBean(2, "https://ethrpc2.wexfin.com:58545/", "  以太坊节点-中国北京")
@@ -186,7 +184,7 @@ var baseurl=BuildConfig.GATEWAY_BASE_URL
 
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))
         ethplorerApi = networking.createApi(EthplorerApi::class.java, EthplorerApi.API_URL)
-        bintApi= networking.createApi(BintApi::class.java, BintApi.getUrl)
+        bintApi = networking.createApi(BintApi::class.java, BintApi.getUrl)
         if (BuildConfig.DEBUG) {
             val infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
             publicRpc = EthsRpcAgent.by(infuraApi)

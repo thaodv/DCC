@@ -4,6 +4,7 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import com.google.gson.Gson
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.tools.BintApi
 import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.digitalwallet.api.*

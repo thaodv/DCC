@@ -88,7 +88,7 @@ fun BigInteger.toHexString(withPrefix: Boolean = false): String {
     return toByteArray.toHexString(0, toByteArray.size, withPrefix)
 }
 
-fun String.StringfixLengthBins(): String {
+fun String.fixLengthBins(): String {
     val bins = StringBuilder(this)
     val len = bins.length
     for (i in 0 until 64 - len) {
@@ -98,7 +98,7 @@ fun String.StringfixLengthBins(): String {
 }
 
 fun Passport.getPrivateKey(): String {
-    return Numeric.toHexStringNoPrefix(this.credential.ecKeyPair.privateKey).StringfixLengthBins()
+    return Numeric.toHexStringNoPrefix(this.credential.ecKeyPair.privateKey).fixLengthBins()
 }
 
 fun Context.getProcessName(): String? {

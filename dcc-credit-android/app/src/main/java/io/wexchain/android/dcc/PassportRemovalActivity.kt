@@ -38,7 +38,6 @@ class PassportRemovalActivity : BaseCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_passport_removal)
         initToolbar(true)
         val protect: Protect = getViewModel()
-        initIpfsCloud()
 
         protect.sync(this)
         VerifyProtectFragment.serve(protect, this)
@@ -54,6 +53,11 @@ class PassportRemovalActivity : BaseCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initIpfsCloud()
     }
 
     private fun initIpfsCloud() {

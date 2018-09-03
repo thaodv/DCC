@@ -3,14 +3,13 @@ package io.wexchain.android.dcc.modules.ipfs.activity
 import android.os.Bundle
 import android.text.TextUtils
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.tools.Log
 import io.wexchain.dcc.R
-import io.wexchain.ipfs.utils.doMain
+import io.wexchain.ipfs.core.IpfsCore
 import kotlinx.android.synthetic.main.activity_edit_node.*
 
 /**
@@ -46,10 +45,7 @@ class EditNodeActivity : BaseCompatActivity() {
     }
 
     fun confirm(host: String, port: String) {
-        val url = "http://$host:$port/api/v0/version?number=false&commit=false&repo=false&all=false"
-        App.get().contractApi.getIpfsVersion(url)
-                .subscribeOn(Schedulers.io())
-                .doMain()
+        IpfsCore.checkVersion(host, port)
                 .subscribeBy(
                         onSuccess = {
                             passport.setIpfsUrlConfig(host, port)
@@ -60,6 +56,5 @@ class EditNodeActivity : BaseCompatActivity() {
                             toast("保存失败，该节点没有响应")
                         }
                 )
-
     }
 }

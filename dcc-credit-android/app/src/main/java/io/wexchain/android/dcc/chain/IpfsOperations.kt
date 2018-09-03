@@ -29,13 +29,13 @@ object IpfsOperations {
     }
 
     private val CIPHER = "AES256"
-    private val VERSION = BigInteger("1")
+    val VERSION = BigInteger("1")
 
     fun checkPsw(): Single<String> {
         return getIpfsKey()
                 .map {
                     val result = it.result as String
-                    if (result.length > 64) result.substring(result.length - 64, result.length ) else ""
+                    if (result.length > 64) result.substring(result.length - 64, result.length) else ""
                 }
     }
 

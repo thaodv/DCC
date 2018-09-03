@@ -9,11 +9,11 @@ import java.security.MessageDigest
  */
 
 fun String.base64(): ByteArray {
-    return Base64.decode(this, Base64.DEFAULT)
+    return Base64.decode(this, Base64.NO_WRAP)
 }
 
 fun ByteArray.base64(): String {
-    return Base64.encodeToString(this, Base64.DEFAULT)
+    return Base64.encodeToString(this, Base64.NO_WRAP)
 }
 
 fun String.get16Md5(): String {
@@ -30,3 +30,4 @@ fun String.get32MD5(): String {
 fun fillMD5(md5: String): String {
     return if (md5.length == 32) md5 else fillMD5("0$md5")
 }
+

@@ -7,12 +7,12 @@ import android.os.Binder
  */
 class IpfsBinder(private val service: IpfsService): Binder() {
 
-    fun upload(business: String, filename: String, status: (String, String) -> Unit, successful: (String) -> Unit) {
-        service.upload(business,filename, status, successful)
+    fun upload(business: String, filename: String, status: (String, String) -> Unit, successful: (String) -> Unit, onError: (String,Throwable) -> Unit) {
+        service.upload(business,filename, status, successful,onError)
     }
 
-    fun download(business: String, filename: String, status: (String, String) -> Unit, successful: (String) -> Unit) {
-        service.download(business,filename, status, successful)
+    fun download(business: String, filename: String, status: (String, String) -> Unit, onSuccess: (String) -> Unit, onError: (Throwable) -> Unit) {
+        service.download(business,filename, status, onSuccess,onError)
     }
 
     fun createIdData(onSize:(String)->Unit){

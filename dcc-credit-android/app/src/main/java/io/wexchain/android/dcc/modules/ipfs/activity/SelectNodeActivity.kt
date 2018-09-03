@@ -13,7 +13,7 @@ import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
 import io.wexchain.ipfs.core.IpfsCore
-import kotlinx.android.synthetic.main.activity_select_node.*
+import kotlinx.android.synthetic.main.activity_ipfs_select_node.*
 
 /**
  *Created by liuyang on 2018/8/27.
@@ -33,7 +33,7 @@ class SelectNodeActivity : BaseCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_select_node)
+        setContentView(R.layout.activity_ipfs_select_node)
         initToolbar()
         initClick()
     }
@@ -75,14 +75,14 @@ class SelectNodeActivity : BaseCompatActivity() {
             passport.setIpfsHostStatus(true)
             custom_img.visibility = View.INVISIBLE
             default_img.visibility = View.VISIBLE
-            IpfsCore.init(BuildConfig.IPFS_HOST)
+            IpfsCore.init(BuildConfig.IPFS_ADDRESS)
         }
 
         custom_tag.onClick {
             passport.setIpfsHostStatus(false)
             custom_img.visibility = View.VISIBLE
             default_img.visibility = View.INVISIBLE
-            IpfsCore.init(host!!, port!!.toInt())
+            IpfsCore.creatUrl(host!!, port!!)
         }
 
         ipfs_node_tip.onClick {

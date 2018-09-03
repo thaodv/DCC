@@ -41,6 +41,11 @@ public class DeleteAddressBookDialog extends Dialog implements View.OnClickListe
         mBtCancel.setOnClickListener(this);
         mBtSure.setOnClickListener(this);
     }
+
+    public void setBtnText(String sure,String cancel){
+        mBtCancel.setText(cancel);
+        mBtSure.setText(sure);
+    }
     
     @Override
     public void onClick(View v) {

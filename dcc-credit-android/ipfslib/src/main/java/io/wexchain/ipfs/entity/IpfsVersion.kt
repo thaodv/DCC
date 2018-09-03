@@ -1,4 +1,4 @@
-package io.wexchain.dccchainservice.domain
+package io.wexchain.ipfs.entity
 
 /**
  *Created by liuyang on 2018/8/27.

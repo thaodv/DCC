@@ -17,6 +17,7 @@ import io.wexchain.android.dcc.tools.toBean
 import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.ipfs.core.IpfsCore
 import io.wexchain.ipfs.entity.BankInfo
@@ -29,6 +30,7 @@ import io.wexchain.ipfs.utils.doMain
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
 import org.web3j.abi.datatypes.Utf8String
+import org.web3j.abi.datatypes.generated.Uint256
 import org.web3j.utils.Numeric
 import java.io.File
 import java.math.BigInteger
@@ -145,8 +147,9 @@ class IpfsService : Service() {
         return filezip.formatSize()
     }
 
-    fun upload(business: String, filename: String, status: (String, String) -> Unit, successful: (String) -> Unit) {
-        IpfsCore.upload(rootpath + File.separator + "$filename.zip")
+    fun upload(business: String, filename: String, status: (String, String) -> Unit, successful: (String) -> Unit, onError: (String, Throwable) -> Unit) {
+        val file = File(rootpath, "$filename.zip")
+        IpfsCore.upload(file)
                 .flatMap {
                     when (business) {
                         ChainGateway.BUSINESS_ID -> {
@@ -166,24 +169,31 @@ class IpfsService : Service() {
                         }
                     }
                 }
-                .subscribeOn(Schedulers.io())
                 .doMain()
                 .doOnSubscribe(business, status, "正在上传")
-                .subscribeBy {
-                    successful(business)
-                }
+                .subscribeBy(
+                        onSuccess = {
+                            successful(business)
+                        },
+                        onError = {
+                            onError.invoke(business, it)
+                        })
     }
 
-    fun download(business: String, filename: String, status: (String, String) -> Unit, successful: (String) -> Unit) {
+    fun download(business: String, filename: String, status: (String, String) -> Unit, successful: (String) -> Unit, onError: (Throwable) -> Unit) {
         var nonce = BigInteger("0")
         IpfsOperations.getIpfsToken(business)
                 .map {
                     FunctionReturnDecoder.decode(it.result, Erc20Helper.dncodeResponse())
                 }
-                .map {
+                .flatMap {
                     //获取nonce 和 token
-                    nonce = BigInteger((it[4] as DynamicBytes).value)
-                    (it[5] as Utf8String).value
+                    if (IpfsOperations.VERSION.toInt() < (it[2] as Uint256).value.toInt()) {
+                        Single.error(DccChainServiceException("云存储数据加密算法已升级，为确保该功能可以继续使用，请更新APP到最新版本。"))
+                    } else {
+                        nonce = BigInteger((it[4] as DynamicBytes).value)
+                        Single.just((it[5] as Utf8String).value)
+                    }
                 }
                 .flatMap {
                     //ipfs下载
@@ -226,14 +236,17 @@ class IpfsService : Service() {
                         else -> {
                         }
                     }
-//                    delectedFile(filename)
+                    delectedFile(filename)
                 }
-                .subscribeOn(Schedulers.io())
                 .doMain()
                 .doOnSubscribe(business, status, "正在下载")
-                .subscribeBy {
-                    successful(business)
-                }
+                .subscribeBy(
+                        onSuccess = {
+                            successful.invoke(business)
+                        },
+                        onError = {
+                            onError.invoke(it)
+                        })
     }
 
     private fun delectedFile(filename: String) {

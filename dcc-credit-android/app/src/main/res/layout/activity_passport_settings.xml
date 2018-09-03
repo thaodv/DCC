@@ -1,58 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="io.wexchain.android.dcc.PassportSettingsActivity"
-    >
+    tools:context="io.wexchain.android.dcc.PassportSettingsActivity">
 
     <data>
 
-        <import type="android.text.TextUtils"/>
+        <import type="android.text.TextUtils" />
 
         <variable
             name="passport"
-            type="io.wexchain.android.dcc.domain.Passport"
-            />
+            type="io.wexchain.android.dcc.domain.Passport" />
 
         <variable
             name="protect"
-            type="io.wexchain.android.dcc.vm.Protect"
-            />
+            type="io.wexchain.android.dcc.vm.Protect" />
     </data>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
-        <include layout="@layout/include_toolbar"/>
+        <include layout="@layout/include_toolbar" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/toolbar">
+            android:layout_below="@id/toolbar">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
+                android:layout_height="wrap_content">
 
                 <View
                     android:id="@+id/v_line"
                     style="@style/DividerHorizontal"
                     android:layout_height="10dp"
                     android:background="#F8F8FF"
-                    app:layout_constraintTop_toBottomOf="@id/toolbar"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
                 <TextView
                     android:id="@+id/tv_user_avatar"
                     style="@style/TextActionLine"
                     android:text="@string/user_avatar"
-                    app:layout_constraintTop_toBottomOf="@id/v_line"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/v_line" />
 
                 <io.wexchain.android.dcc.view.RoundImageView
                     android:layout_width="40dp"
@@ -64,27 +56,23 @@
                     app:layout_constraintBottom_toBottomOf="@id/tv_user_avatar"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_user_avatar"
-                    tools:src="@drawable/default_user_avatar"
-                    />
+                    tools:src="@drawable/default_user_avatar" />
 
                 <View
                     style="@style/DividerHorizontal"
-                    app:layout_constraintTop_toBottomOf="@id/tv_user_avatar"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_avatar" />
 
                 <TextView
                     android:id="@+id/tv_user_nickname"
                     style="@style/TextActionLine"
                     android:text="@string/user_nickname"
-                    app:layout_constraintTop_toBottomOf="@id/tv_user_avatar"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_avatar" />
 
                 <View
                     style="@style/DividerHorizontal"
                     android:layout_height="10dp"
                     android:background="#F8F8FF"
-                    app:layout_constraintTop_toBottomOf="@id/tv_user_nickname"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_nickname" />
 
                 <TextView
                     android:id="@+id/tv_passport_address"
@@ -123,55 +111,47 @@
                     android:id="@+id/tv_passport_backup"
                     style="@style/TextActionLine"
                     android:text="@string/export_passport"
-                    app:layout_constraintTop_toBottomOf="@id/tv_passport_address"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_data_cloud" />
 
                 <View
                     style="@style/DividerHorizontal"
-                    app:layout_constraintTop_toBottomOf="@id/tv_passport_backup"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_passport_backup" />
 
                 <TextView
                     android:id="@+id/tv_modify_passport_password"
                     style="@style/TextActionLine"
                     android:text="@string/modify_passport_password"
-                    app:layout_constraintTop_toBottomOf="@id/tv_passport_backup"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_passport_backup" />
 
                 <View
                     style="@style/DividerHorizontal"
                     android:layout_height="10dp"
                     android:background="#F8F8FF"
-                    app:layout_constraintTop_toBottomOf="@id/tv_modify_passport_password"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_modify_passport_password" />
 
                 <TextView
                     android:id="@+id/tv_address_book"
                     style="@style/TextActionLine"
                     android:layout_marginTop="10dp"
                     android:text="@string/address_book"
-                    app:layout_constraintTop_toBottomOf="@id/tv_modify_passport_password"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_modify_passport_password" />
 
                 <View
                     style="@style/DividerHorizontal"
                     android:background="#F8F8FF"
-                    app:layout_constraintTop_toBottomOf="@id/tv_address_book"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_address_book" />
 
                 <TextView
                     android:id="@+id/tv_select_node"
                     style="@style/TextActionLine"
                     android:text="@string/select_node"
-                    app:layout_constraintTop_toBottomOf="@id/tv_address_book"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_address_book" />
 
                 <View
                     style="@style/DividerHorizontal"
                     android:layout_height="10dp"
                     android:background="#F8F8FF"
-                    app:layout_constraintTop_toBottomOf="@id/tv_select_node"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_select_node" />
 
                 <TextView
                     android:id="@+id/tv_passport_protect"
@@ -179,13 +159,11 @@
                     android:layout_marginTop="10dp"
                     android:onClick="@{(v)->protect.switchProtectEnable()}"
                     android:text="@string/local_protect"
-                    app:layout_constraintTop_toBottomOf="@id/tv_select_node"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_select_node" />
 
                 <View
                     style="@style/DividerHorizontal"
-                    app:layout_constraintTop_toBottomOf="@id/tv_passport_protect"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_passport_protect" />
 
                 <TextView
                     android:id="@+id/tv_passport_protect_status"
@@ -197,39 +175,33 @@
                     android:textSize="19sp"
                     app:layout_constraintBaseline_toBaselineOf="@id/tv_passport_protect"
                     app:layout_constraintRight_toRightOf="parent"
-                    tools:text="@string/protect_enabled"
-                    />
+                    tools:text="@string/protect_enabled" />
 
                 <TextView
                     android:id="@+id/tv_about_us"
                     style="@style/TextActionLine"
                     android:text="@string/about_us"
-                    app:layout_constraintTop_toBottomOf="@id/tv_passport_protect"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_passport_protect" />
 
                 <View
                     style="@style/DividerHorizontal"
-                    app:layout_constraintTop_toBottomOf="@id/tv_about_us"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_about_us" />
 
                 <TextView
                     android:id="@+id/tv_delete_passport"
                     style="@style/TextActionLine"
                     android:text="@string/remove_passport"
-                    app:layout_constraintTop_toBottomOf="@id/tv_about_us"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_about_us" />
 
                 <View
                     style="@style/DividerHorizontal"
-                    app:layout_constraintTop_toBottomOf="@id/tv_delete_passport"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_delete_passport" />
 
                 <TextView
                     android:id="@+id/tv_check_update"
                     style="@style/TextActionLine"
                     android:text="@string/check_update"
-                    app:layout_constraintTop_toBottomOf="@id/tv_delete_passport"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_delete_passport" />
 
                 <TextView
                     android:id="@+id/tv_current_vs"
@@ -239,12 +211,11 @@
                     android:textColor="@color/text_min"
                     android:textSize="14sp"
                     app:layout_constraintBaseline_toBaselineOf="@id/tv_check_update"
-                    app:layout_constraintRight_toRightOf="parent"/>
+                    app:layout_constraintRight_toRightOf="parent" />
 
                 <View
                     style="@style/DividerHorizontal"
-                    app:layout_constraintTop_toBottomOf="@id/tv_check_update"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/tv_check_update" />
 
             </android.support.constraint.ConstraintLayout>
 

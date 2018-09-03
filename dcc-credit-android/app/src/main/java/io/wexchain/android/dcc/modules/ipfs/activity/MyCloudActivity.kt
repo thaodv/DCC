@@ -7,8 +7,6 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.view.Menu
-import android.view.MenuItem
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
@@ -16,6 +14,7 @@ import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
@@ -27,6 +26,7 @@ import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityMyCloudBinding
 import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.ipfs.utils.doMain
 import kotlinx.android.synthetic.main.activity_my_cloud.*
@@ -335,6 +335,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
             navigateTo(ResetPasswordActivity::class.java)
         }
         cloud_sync.onClick {
+            cloud_sync.isEnabled = false
             if (cloud_item_id.isSelected) {
                 if (IDStatus == STATUS_UPLOAD) {
                     uploadData(ChainGateway.BUSINESS_ID, ID_ENTIFY_DATA)
@@ -409,20 +410,42 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
 
     private fun uploadData(business: String, filename: String) {
         mBinder.upload(business, filename,
-                status = { busines, status ->
-                    updateStatus(busines, status)
-                }) {
-            successful(it)
-        }
+                status = { b, s ->
+                    updateStatus(b, s)
+                },
+                successful = {
+                    successful(it)
+                },
+                onError = { b, t ->
+                    when (b) {
+                        ChainGateway.BUSINESS_ID -> {
+                            toast("实名认证信息上传失败")
+                        }
+                        ChainGateway.BUSINESS_BANK_CARD -> {
+                            toast("银行卡认证信息上传失败")
+                        }
+                        ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
+                            toast("运营商认证信息上传失败")
+                        }
+                    }
+                })
     }
 
     private fun downLoadData(business: String, filename: String) {
         mBinder.download(business, filename,
                 status = { busines, status ->
                     updateStatus(busines, status)
-                }) {
-            successful(it)
-        }
+                },
+                onSuccess = {
+                    successful(it)
+                },
+                onError = {
+                    if (it is DccChainServiceException) {
+                        toast(it.message!!)
+                    } else {
+                        toast("同步失败")
+                    }
+                })
     }
 
     private fun updateSyncStatus() {
