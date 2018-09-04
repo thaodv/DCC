@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.IBinder
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.ensureNewFile
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.CertOperations
@@ -23,10 +22,7 @@ import io.wexchain.ipfs.core.IpfsCore
 import io.wexchain.ipfs.entity.BankInfo
 import io.wexchain.ipfs.entity.IdInfo
 import io.wexchain.ipfs.entity.PhoneInfo
-import io.wexchain.ipfs.utils.AES256
-import io.wexchain.ipfs.utils.ZipUtil
-import io.wexchain.ipfs.utils.base64
-import io.wexchain.ipfs.utils.doMain
+import io.wexchain.ipfs.utils.*
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
 import org.web3j.abi.datatypes.Utf8String
@@ -102,12 +98,14 @@ class IpfsService : Service() {
         val cmLogPhoneNo = CertOperations.getCmLogPhoneNo()
         val status = CertOperations.getCmLogUserStatus().name
         val json = CertOperations.getCmLogData(cmCertOrderId).blockingGet()
+        val cmLogCertExpired = CertOperations.getCmLogCertExpired()
 
         val phoneInfo = PhoneInfo(
                 mobileAuthenStatus = status,
                 mobileAuthenOrderid = cmCertOrderId.toInt(),
                 mobileAuthenNumber = cmLogPhoneNo!!,
-                mobileAuthenCmData = json.base64())
+                mobileAuthenCmData = json.base64(),
+                mobileAuthenExpired = cmLogCertExpired)
 
         val data = phoneInfo.toJson()
         val size = getDataFromSize(data.toByteArray(), MyCloudActivity.PHONE_OPERATOR, CM_NONCE)
@@ -136,20 +134,21 @@ class IpfsService : Service() {
     }
 
     private fun getDataFromSize(data: ByteArray, filename: String, nonce: BigInteger): String {
-        val ipfsKeyHash = passport.getIpfsKeyHash()!!
+        val aesKey = passport.getIpfsAESKey()!!
         val hexString = Numeric.toHexString(nonce.toByteArray())
         val filetxt = File(rootpath, "$filename.txt")
         filetxt.ensureNewFile()
-        val encrypt = AES256.encrypt(data, ipfsKeyHash, hexString)
+        val encrypt = AES256.encrypt(data, aesKey, hexString)
         filetxt.writeBytes(encrypt)
         val filezip = File(rootpath, "$filename.zip")
         ZipUtil.zip(filezip.absolutePath, filetxt.absolutePath)
         return filezip.formatSize()
     }
 
-    fun upload(business: String, filename: String, status: (String, String) -> Unit, successful: (String) -> Unit, onError: (String, Throwable) -> Unit) {
+    fun upload(business: String, filename: String, status: (String, String) -> Unit, successful: (String) -> Unit, onError: (String, Throwable) -> Unit, onProgress: (String, Int) -> Unit) {
         val file = File(rootpath, "$filename.zip")
         IpfsCore.upload(file)
+                .doProgress(business, 60, onProgress)
                 .flatMap {
                     when (business) {
                         ChainGateway.BUSINESS_ID -> {
@@ -170,22 +169,24 @@ class IpfsService : Service() {
                     }
                 }
                 .doMain()
-                .doOnSubscribe(business, status, "正在上传")
+                .doOnSubscribe(business, status, "正在上传", onProgress)
                 .subscribeBy(
                         onSuccess = {
-                            successful(business)
+                            successful.invoke(business)
+                            onProgress.invoke(business, 100)
                         },
                         onError = {
                             onError.invoke(business, it)
                         })
     }
 
-    fun download(business: String, filename: String, status: (String, String) -> Unit, successful: (String) -> Unit, onError: (Throwable) -> Unit) {
+    fun download(business: String, filename: String, status: (String, String) -> Unit, successful: (String) -> Unit, onError: (Throwable) -> Unit, onProgress: (String, Int) -> Unit) {
         var nonce = BigInteger("0")
         IpfsOperations.getIpfsToken(business)
                 .map {
                     FunctionReturnDecoder.decode(it.result, Erc20Helper.dncodeResponse())
                 }
+                .doProgress(business, 20, onProgress)
                 .flatMap {
                     //获取nonce 和 token
                     if (IpfsOperations.VERSION.toInt() < (it[2] as Uint256).value.toInt()) {
@@ -199,6 +200,7 @@ class IpfsService : Service() {
                     //ipfs下载
                     IpfsCore.download(it)
                 }
+                .doProgress(business, 60, onProgress)
                 .map {
                     //写入zip
                     val file = File(rootpath, "$filename.zip")
@@ -210,12 +212,13 @@ class IpfsService : Service() {
                     //解压zip
                     ZipUtil.unZip(it.absolutePath, rootpath)
                 }
+                .doProgress(business, 80, onProgress)
                 .map {
                     //解密文件
-                    val ipfsKeyHash = passport.getIpfsKeyHash()!!
+                    val aesKey = passport.getIpfsAESKey()!!
                     val hexString = Numeric.toHexString(nonce.toByteArray())
                     val filetxt = File(rootpath, "$filename.txt")
-                    val decrypt = AES256.decrypt(filetxt.readBytes(), ipfsKeyHash, hexString)
+                    val decrypt = AES256.decrypt(filetxt.readBytes(), aesKey, hexString)
                     String(decrypt)
                 }
                 .doOnSuccess {
@@ -239,10 +242,11 @@ class IpfsService : Service() {
                     delectedFile(filename)
                 }
                 .doMain()
-                .doOnSubscribe(business, status, "正在下载")
+                .doOnSubscribe(business, status, "正在下载", onProgress)
                 .subscribeBy(
                         onSuccess = {
                             successful.invoke(business)
+                            onProgress.invoke(business, 100)
                         },
                         onError = {
                             onError.invoke(it)
@@ -254,10 +258,20 @@ class IpfsService : Service() {
         FileUtils.deleteFile(rootpath + File.separator + "$filename.zip")
     }
 
-    fun <T> Single<T>.doOnSubscribe(business: String, status: (String, String) -> Unit, text: String): Single<T> {
+    fun <T> Single<T>.doOnSubscribe(business: String, status: (String, String) -> Unit, text: String, onProgress: (String, Int) -> Unit): Single<T> {
         return this.doOnSubscribe {
             status.invoke(business, text)
+            onProgress.invoke(business, 0)
         }
+    }
+
+    fun <T> Single<T>.doProgress(business: String, progress: Int, onProgress: (String, Int) -> Unit): Single<T> {
+        return this.doMain()
+                .map {
+                    onProgress.invoke(business, progress)
+                    it
+                }
+                .doBack()
     }
 
 }

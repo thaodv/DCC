@@ -41,6 +41,7 @@ object IpfsOperations {
 
     fun putIpfsKey(psw: String): Single<Boolean> {
         val sha265Key = passport.createIpfsKey(psw)
+        val aesKey = passport.createIpfsAESKey(psw).toHex()
         val address = getIpfsAddress(IpfsApi.IPFS_KEY_HASH).blockingGet()
         return getNonce()
                 .map {
@@ -57,6 +58,7 @@ object IpfsOperations {
                 .doOnSuccess {
                     if (it) {
                         passport.setIpfsKeyHash(sha265Key.toHex())
+                        passport.setIpfsAESKey(aesKey)
                     }
                 }
     }
@@ -107,6 +109,7 @@ object IpfsOperations {
                 .sendRawTransaction(IpfsApi.IPFS_KEY_HASH)
                 .doOnSuccess {
                     passport.setIpfsKeyHash("")
+                    passport.setIpfsAESKey("")
                 }
     }
 

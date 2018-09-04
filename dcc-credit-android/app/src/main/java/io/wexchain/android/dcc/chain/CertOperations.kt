@@ -645,6 +645,7 @@ object CertOperations {
     }
 
     fun saveIpfsCmData(phoneInfo: PhoneInfo) {
+        saveCmLogCertExpired(phoneInfo.mobileAuthenExpired)
         certPrefs.certCmLogOrderId.set(phoneInfo.mobileAuthenOrderid.toLong())
         certPrefs.certCmLogState.set(phoneInfo.mobileAuthenStatus)
         certPrefs.certCmLogPhoneNo.set(phoneInfo.mobileAuthenNumber)

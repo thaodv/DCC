@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.view.View
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
@@ -410,35 +411,31 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
 
     private fun uploadData(business: String, filename: String) {
         mBinder.upload(business, filename,
-                status = { b, s ->
-                    updateStatus(b, s)
-                },
-                successful = {
-                    successful(it)
-                },
-                onError = { b, t ->
-                    when (b) {
-                        ChainGateway.BUSINESS_ID -> {
-                            toast("实名认证信息上传失败")
-                        }
-                        ChainGateway.BUSINESS_BANK_CARD -> {
-                            toast("银行卡认证信息上传失败")
-                        }
-                        ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
-                            toast("运营商认证信息上传失败")
-                        }
-                    }
-                })
+                status = this::updateStatus,
+                successful = this::successful,
+                onProgress = this::setProgress,
+                onError = this::errorStatus)
+    }
+
+    private fun errorStatus(b: String, t: Throwable) {
+        when (b) {
+            ChainGateway.BUSINESS_ID -> {
+                toast("实名认证信息上传失败")
+            }
+            ChainGateway.BUSINESS_BANK_CARD -> {
+                toast("银行卡认证信息上传失败")
+            }
+            ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
+                toast("运营商认证信息上传失败")
+            }
+        }
     }
 
     private fun downLoadData(business: String, filename: String) {
         mBinder.download(business, filename,
-                status = { busines, status ->
-                    updateStatus(busines, status)
-                },
-                onSuccess = {
-                    successful(it)
-                },
+                status = this::updateStatus,
+                onSuccess = this::successful,
+                onProgress = this::setProgress,
                 onError = {
                     if (it is DccChainServiceException) {
                         toast(it.message!!)
@@ -446,6 +443,23 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                         toast("同步失败")
                     }
                 })
+    }
+
+    private fun setProgress(business: String, progress: Int) {
+        when (business) {
+            ChainGateway.BUSINESS_ID -> {
+                cloud_id_progress.visibility = View.VISIBLE
+                cloud_id_progress.progress = progress
+            }
+            ChainGateway.BUSINESS_BANK_CARD -> {
+                cloud_bank_progress.visibility = View.VISIBLE
+                cloud_bank_progress.progress = progress
+            }
+            ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
+                cloud_cm_progress.visibility = View.VISIBLE
+                cloud_cm_progress.progress = progress
+            }
+        }
     }
 
     private fun updateSyncStatus() {

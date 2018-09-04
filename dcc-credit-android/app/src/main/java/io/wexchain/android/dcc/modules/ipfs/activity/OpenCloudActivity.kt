@@ -81,7 +81,9 @@ class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
                         if (ipfsKey != it) {
                             toast("密码输入有误")
                         } else {
+                            val aesKey = passport.createIpfsAESKey(psw).toHex()
                             passport.setIpfsKeyHash(it)
+                            passport.setIpfsAESKey(aesKey)
                         }
                         ipfsKey == it
                     }

@@ -66,7 +66,7 @@ fun IpfsApi.transactionReceipt(business: String, txId: String): Single<EthJsonTx
                     id = this.nextId()
             ))
             .flatMap {
-                if (it.result != null) Single.just(it.result) else Single.error(IllegalStateException("No receipt yet"))
+                if (it.result != null && it.result!!.logs.isNotEmpty()) Single.just(it.result) else Single.error(IllegalStateException("No receipt yet"))
             }
 }
 

@@ -293,17 +293,28 @@ class PassportRepository(
 
     fun createIpfsKey(psw: String): ByteArray {
         val address = currPassport.value!!.address
+        return (address + psw).toByteArray().toSha256()
+    }
+
+    fun createIpfsAESKey(psw: String): ByteArray {
         val privateKey = getCurrentPassport()!!.getPrivateKey()
-        val bytes = (address + psw).toByteArray().toSha256().toHex()
-        return (privateKey + bytes).toByteArray().toSha256()
+        return (privateKey + psw).toByteArray().toSha256()
     }
 
     fun getIpfsKeyHash(): String? {
         return passportPrefs.ipfsKeyHash.get()
     }
 
+    fun getIpfsAESKey(): String? {
+        return passportPrefs.ipfsAesKey.get()
+    }
+
     fun setIpfsKeyHash(key: String) {
         passportPrefs.ipfsKeyHash.set(key)
+    }
+
+    fun setIpfsAESKey(key: String) {
+        passportPrefs.ipfsAesKey.set(key)
     }
 
     fun setIpfsUrlConfig(host: String, port: String) {
@@ -397,6 +408,7 @@ class PassportRepository(
         private const val AUTH_KEY_PUB = "auth_key_pub"
         private const val SCF_ACCOUNT_EXISTS = "scf_account_exists"
         private const val IPFS_KEY_HASH = "ipfs_hash_key"
+        private const val IPFS_AES_KEY = "ipfs_aes_key"
         private const val IPFS_URL_HOST = "ipfs_url_host"
         private const val IPFS_URL_PORT = "ipfs_url_port"
         private const val IPFS_DEFAULT_HOST_STATUS = "ipfs_default_host_status"
@@ -422,6 +434,7 @@ class PassportRepository(
         val defaultBeneficiaryAddress = StringPref(DEFAULT_BENEFICIARY_ADDRESS)
         val scfAccountExists = BoolPref(SCF_ACCOUNT_EXISTS, false)
         val ipfsKeyHash = StringPref(IPFS_KEY_HASH)
+        val ipfsAesKey = StringPref(IPFS_AES_KEY)
         val ipfsUrlHost = StringPref(IPFS_URL_HOST)
         val ipfsUrlPort = StringPref(IPFS_URL_PORT)
         val ipfsHostStatus = BoolPref(IPFS_DEFAULT_HOST_STATUS, true)

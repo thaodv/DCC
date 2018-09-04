@@ -10,6 +10,6 @@ data class PhoneInfo(
         val mobileAuthenStatus: String,//手机运营商状态
         val mobileAuthenOrderid: Int,//订单ID
         val mobileAuthenNumber: String,//预留手机号
-        val mobileAuthenCmData: String//报告原文json
-
+        val mobileAuthenCmData: String,//报告原文json
+        val mobileAuthenExpired: Long//过期时间
 ) : Serializable
