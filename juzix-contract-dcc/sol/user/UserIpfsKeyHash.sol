@@ -2,59 +2,51 @@ pragma solidity ^0.4.2;
 import "../sysbase/OwnerNamed.sol";
 contract UserIpfsKeyHash is OwnerNamed{
 
-    mapping(address => bytes) ipfsKeyHashMapping;
+    struct KeyHash{
+        uint256 version;
+        bytes32 value;
+    }
 
-    uint256 IPFS_KEYHASH_MAXSIZE = 100;
+    mapping(address => KeyHash) ipfsKeyHashMapping;
 
-    event ipfsKeyPut(address userAddress, bytes ipfsKeyHash);
-    event ipfsKeyUpdated(address userAddress, bytes ipfsKeyHash);
-    event ipfsKeyDeleted(address userAddress);
+    event ipfsKeyHashAdded(address userAddress,uint256 version,bytes32 value);
+    event ipfsKeyHashDeleted(address userAddress);
 
-    function UserIpfsKeyHash(){
+    function UserIpfsKeyHash() public{
         register("UserIpfsKeyHashModule", "0.0.1.0", "UserIpfsKeyHash", "0.0.1.0");
     }
 
-    function putIpfsKey(bytes ipfsKeyHash) public {
-
-        if(!(ipfsKeyHash.length > 0 && ipfsKeyHash.length < IPFS_KEYHASH_MAXSIZE)){
-            log("!(ipfsKeyHash.length > 0 && ipfsKeyHash.length < IPFS_KEYHASH_MAXSIZE)");
+    function addIpfsKeyHash(bytes32 value) public {
+        if(!(value>0)){
+            log("!(value>0)");
             throw;
         }
-        if(!(ipfsKeyHashMapping[msg.sender].length == 0)){
-            log("!(ipfsKeyHashMapping[userAddress].length == 0)");
+        if(!(ipfsKeyHashMapping[msg.sender].value == 0)){
+            log("!(ipfsKeyHashMapping[msg.sender].value == 0)");
             throw;
         }
 
-        ipfsKeyHashMapping[msg.sender] = ipfsKeyHash;
-        ipfsKeyPut(msg.sender, ipfsKeyHash);
+        ipfsKeyHashMapping[msg.sender].value = value;
+        ipfsKeyHashMapping[msg.sender].version++;
+
+        ipfsKeyHashAdded(msg.sender,ipfsKeyHashMapping[msg.sender].version,ipfsKeyHashMapping[msg.sender].value);
     }
 
-    function updateIpfsKey(bytes ipfsKeyHash) public {
-        if(!(ipfsKeyHash.length > 0 && ipfsKeyHash.length < IPFS_KEYHASH_MAXSIZE)){
-            log("!(ipfsKeyHash.length > 0 && ipfsKeyHash.length < IPFS_KEYHASH_MAXSIZE)");
+    function deleteIpfsKeyHash() public {
+        if(!(ipfsKeyHashMapping[msg.sender].value!= 0)){
+            log("!(ipfsKeyHashMapping[msg.sender].value!= 0)");
             throw;
         }
-        if(!(ipfsKeyHashMapping[msg.sender].length != 0)){
-            log("!(ipfsKeyHashMapping[userAddress].length != 0)");
-            throw;
-        }
-
-        ipfsKeyHashMapping[msg.sender] = ipfsKeyHash;
-        ipfsKeyUpdated(msg.sender, ipfsKeyHash);
+        ipfsKeyHashMapping[msg.sender].version++;
+        delete ipfsKeyHashMapping[msg.sender].value;
+        ipfsKeyHashDeleted(msg.sender);
     }
 
-    function deleteIpfsKey() public {
-        if(!(ipfsKeyHashMapping[msg.sender].length != 0)){
-            log("!(ipfsKeyHashMapping[userAddress].length != 0)");
-            throw;
-        }
-
-        delete ipfsKeyHashMapping[msg.sender];
-        ipfsKeyDeleted(msg.sender);
+    function getIpfsKeyHash() public constant returns(uint256 version, bytes32 value){
+        return getIpfsKeyHash(msg.sender);
     }
 
-    function getIpfsKey() public constant returns(bytes ipfsKey){
-        return ipfsKeyHashMapping[msg.sender];
+    function getIpfsKeyHash(address addr) public constant returns(uint256 version, bytes32 value){
+        return (ipfsKeyHashMapping[addr].version,ipfsKeyHashMapping[addr].value);
     }
-
 }
