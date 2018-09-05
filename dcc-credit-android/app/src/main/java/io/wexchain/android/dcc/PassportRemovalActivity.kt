@@ -6,13 +6,14 @@ import android.os.Bundle
 import android.view.View
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
-import io.wexchain.android.dcc.chain.IpfsOperations.checkToken
+import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
@@ -57,27 +58,36 @@ class PassportRemovalActivity : BaseCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        initIpfsCloud()
+        getCloudToken()
     }
 
-    private fun initIpfsCloud() {
-        val ipfsKeyHash = passport.getIpfsKeyHash()
-        if (ipfsKeyHash.isNullOrEmpty()) {
-            getCloudToken()
-        } else {
-            binding.btnBackupData.onClick {
-                navigateTo(MyCloudActivity::class.java)
-            }
-        }
-    }
     private fun getCloudToken() {
         IpfsOperations.getIpfsKey()
-                .checkToken()
+                .checkKey()
+                .subscribeOn(Schedulers.io())
                 .doMain()
                 .subscribeBy {
+                    val ipfsKeyHash = passport.getIpfsKeyHash()
                     binding.btnBackupData.onClick {
-                        navigateTo(OpenCloudActivity::class.java) {
-                            putExtra("activity_type", if (it) PassportSettingsActivity.OPEN_CLOUD else PassportSettingsActivity.NOT_OPEN_CLOUD)
+                        if (it.isEmpty()) {
+                            navigateTo(OpenCloudActivity::class.java) {
+                                putExtra("activity_type", PassportSettingsActivity.NOT_OPEN_CLOUD)
+                            }
+                        } else {
+                            if (ipfsKeyHash.isNullOrEmpty()) {
+                                navigateTo(OpenCloudActivity::class.java) {
+                                    putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)
+                                }
+                            } else {
+                                if (ipfsKeyHash == it) {
+                                    navigateTo(MyCloudActivity::class.java)
+                                } else {
+                                    passport.setIpfsKeyHash("")
+                                    navigateTo(OpenCloudActivity::class.java) {
+                                        putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)
+                                    }
+                                }
+                            }
                         }
                     }
                 }

@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.Pop
@@ -15,11 +15,12 @@ import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
-import io.wexchain.android.dcc.chain.IpfsOperations.checkToken
+import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
@@ -42,7 +43,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setWindowExtended()
+//        setWindowExtended()
         initToolbarS()
         binding.asIdVm = obtainAuthStatus(CertificationType.ID)
         binding.asBankVm = obtainAuthStatus(CertificationType.BANK)
@@ -50,25 +51,33 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
         binding.asPersonalVm = obtainAuthStatus(CertificationType.PERSONAL)
     }
 
-    private fun initIpfsCloud() {
-        val ipfsKeyHash = passport.getIpfsKeyHash()
-        if (ipfsKeyHash.isNullOrEmpty()) {
-            getCloudToken()
-        } else {
-            binding.creditIpfsCloud.onClick {
-                navigateTo(MyCloudActivity::class.java)
-            }
-        }
-    }
-
     private fun getCloudToken() {
         IpfsOperations.getIpfsKey()
-                .checkToken()
+                .checkKey()
+                .subscribeOn(Schedulers.io())
                 .doMain()
                 .subscribeBy {
+                    val ipfsKeyHash = passport.getIpfsKeyHash()
                     binding.creditIpfsCloud.onClick {
-                        navigateTo(OpenCloudActivity::class.java) {
-                            putExtra("activity_type", if (it) PassportSettingsActivity.OPEN_CLOUD else PassportSettingsActivity.NOT_OPEN_CLOUD)
+                        if (it.isEmpty()) {
+                            navigateTo(OpenCloudActivity::class.java) {
+                                putExtra("activity_type", PassportSettingsActivity.NOT_OPEN_CLOUD)
+                            }
+                        } else {
+                            if (ipfsKeyHash.isNullOrEmpty()) {
+                                navigateTo(OpenCloudActivity::class.java) {
+                                    putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)
+                                }
+                            } else {
+                                if (ipfsKeyHash == it) {
+                                    navigateTo(MyCloudActivity::class.java)
+                                } else {
+                                    passport.setIpfsKeyHash("")
+                                    navigateTo(OpenCloudActivity::class.java) {
+                                        putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -115,7 +124,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
     override fun onResume() {
         super.onResume()
         refreshCertStatus()
-        initIpfsCloud()
+        getCloudToken()
     }
 
     private fun refreshCertStatus() {
@@ -130,23 +139,36 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
             if (it.status.get() == UserCertStatus.INCOMPLETE) {
                 //get report
                 val passport = App.get().passportRepository.getCurrentPassport()!!
-                CertOperations.getCommunicationLogReport(passport)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({
-                            if (it.fail) {
-                                // generate report fail
-                                CertOperations.onCmLogFail()
-                                refreshCertStatus()
-                            } else {
-                                val reportData = it.reportData
-                                if (it.hasCompleted() && reportData != null) {
-                                    CertOperations.onCmLogSuccessGot(reportData)
-                                    refreshCertStatus()
-                                }
-                            }
-                        }, {
-                            Pop.toast(it.message ?: "系统错误", this)
-                        })
+                Singles.zip(
+                        CertOperations.getCommunicationLogReport(passport),
+                        App.get().chainGateway.getCertData(passport.address, ChainGateway.BUSINESS_COMMUNICATION_LOG).check())
+                        .subscribeOn(Schedulers.io())
+                        .doMain()
+                        .doFinally {
+                            refreshCertStatus()
+                        }
+                        .subscribeBy(
+                                onSuccess = {
+                                    val content = it.second.content
+                                    if (0L != content.expired) {
+                                        CertOperations.saveCmLogCertExpired(content.expired)
+                                    }
+
+                                    val data = it.first
+                                    if (data.fail) {
+                                        // generate report fail
+                                        CertOperations.onCmLogFail()
+                                        refreshCertStatus()
+                                    } else {
+                                        val reportData = data.reportData
+                                        if (data.hasCompleted() && reportData != null) {
+                                            CertOperations.onCmLogSuccessGot(reportData)
+                                        }
+                                    }
+                                },
+                                onError = {
+                                    Pop.toast(it.message ?: "系统错误", this)
+                                })
             }
         }
     }

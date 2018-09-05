@@ -657,7 +657,7 @@ object CertOperations {
     }
 
     fun saveIpfsBankData(bankInfo: BankInfo) {
-        val bankCardInfo = BankCardInfo(bankInfo.bankAuthenCode, bankInfo.bankAuthenCodeNumber, bankInfo.bankAuthenMobile)
+        val bankCardInfo = BankCardInfo(bankInfo.bankAuthenCode, bankInfo.bankAuthenCodeNumber, bankInfo.bankAuthenMobile,bankInfo.bankAuthenName)
         certPrefs.certBankOrderId.set(bankInfo.bankAuthenOrderid.toLong())
         certPrefs.certBankStatus.set(bankInfo.bankAuthenStatus)
         certPrefs.certBankExpired.set(bankInfo.bankAuthenExpired)

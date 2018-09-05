@@ -11,6 +11,7 @@ import android.provider.MediaStore
 import android.support.v4.app.DialogFragment
 import android.support.v4.view.ViewCompat
 import android.view.*
+import android.view.animation.AnimationUtils
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.rxkotlin.subscribeBy
@@ -18,7 +19,7 @@ import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.IpfsOperations
-import io.wexchain.android.dcc.chain.IpfsOperations.checkToken
+import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
@@ -88,31 +89,48 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
 
     override fun onResume() {
         super.onResume()
-        checkIpfsStatus()
-    }
-
-    private fun checkIpfsStatus() {
-        val ipfsKeyHash = passport.getIpfsKeyHash()
-        if (ipfsKeyHash.isNullOrEmpty()) {
-            getCloudToken()
-        } else {
-            binding.tvCloudStatus.text = getString(R.string.start_out)
-            binding.tvDataCloud.onClick {
-                navigateTo(MyCloudActivity::class.java)
-            }
-        }
+        getCloudToken()
     }
 
     private fun getCloudToken() {
+        val anim = AnimationUtils.loadAnimation(this, R.anim.rotate)
         IpfsOperations.getIpfsKey()
-                .checkToken()
+                .checkKey()
                 .subscribeOn(Schedulers.io())
                 .doMain()
+                .doOnSubscribe {
+                    binding.ivCloudLoding.startAnimation(anim)
+                    binding.ivCloudLoding.visibility = View.VISIBLE
+                    binding.tvCloudStatus.visibility = View.INVISIBLE
+                }
+                .doFinally {
+                    binding.ivCloudLoding.clearAnimation()
+                    binding.ivCloudLoding.visibility = View.INVISIBLE
+                    binding.tvCloudStatus.visibility = View.VISIBLE
+                }
                 .subscribeBy {
-                    binding.tvCloudStatus.text = if (it) getString(R.string.start_out) else getString(R.string.start_in)
+                    val ipfsKeyHash = passport.getIpfsKeyHash()
+                    binding.tvCloudStatus.text = if (it.isEmpty()) getString(R.string.start_in) else getString(R.string.start_out)
                     binding.tvDataCloud.onClick {
-                        navigateTo(OpenCloudActivity::class.java) {
-                            putExtra("activity_type", if (it) OPEN_CLOUD else NOT_OPEN_CLOUD)
+                        if (it.isEmpty()) {
+                            navigateTo(OpenCloudActivity::class.java) {
+                                putExtra("activity_type", PassportSettingsActivity.NOT_OPEN_CLOUD)
+                            }
+                        } else {
+                            if (ipfsKeyHash.isNullOrEmpty()) {
+                                navigateTo(OpenCloudActivity::class.java) {
+                                    putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)
+                                }
+                            } else {
+                                if (ipfsKeyHash == it) {
+                                    navigateTo(MyCloudActivity::class.java)
+                                } else {
+                                    passport.setIpfsKeyHash("")
+                                    navigateTo(OpenCloudActivity::class.java) {
+                                        putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)
+                                    }
+                                }
+                            }
                         }
                     }
                 }

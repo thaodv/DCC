@@ -117,12 +117,11 @@ class IpfsService : Service() {
         val info = CertOperations.getCertBankCardData()!!
         val expired = CertOperations.getBankCardCertExpired()
         val bankStatus = CertOperations.getBankStatus()
-        val certIdData = CertOperations.getCertIdData()!!
 
         val bankInfo = BankInfo(
                 bankAuthenStatus = bankStatus.first,
                 bankAuthenOrderid = bankStatus.second.toInt(),
-                bankAuthenName = certIdData.name,
+                bankAuthenName = info.bankName,
                 bankAuthenCode = info.bankCode,
                 bankAuthenCodeNumber = info.bankCardNo,
                 bankAuthenMobile = info.phoneNo,

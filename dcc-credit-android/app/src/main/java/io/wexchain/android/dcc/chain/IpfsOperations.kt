@@ -82,7 +82,7 @@ object IpfsOperations {
                 .postData(IpfsApi.IPFS_METADATA)
     }
 
-    fun delectedIpfsKey(): Single<String> {
+    fun delectedIpfsKey(): Single<EthJsonTxReceipt> {
         return Singles.zip(
                 getNonce(),
                 getIpfsAddress(IpfsApi.IPFS_KEY_HASH))
@@ -91,6 +91,7 @@ object IpfsOperations {
                     ipfsKey.txSigned(passport.getCurrentPassport()!!.credential, it.second, it.first)
                 }
                 .sendRawTransaction(IpfsApi.IPFS_KEY_HASH)
+                .transactionReceipt(IpfsApi.IPFS_KEY_HASH)
                 .doOnSuccess {
                     passport.setIpfsKeyHash("")
                     passport.setIpfsAESKey("")
@@ -102,15 +103,20 @@ object IpfsOperations {
                 .getIpfsKeyApi()
     }
 
-    fun Single<EthJsonRpcResponse<String>>.checkToken(): Single<Boolean> {
+    fun Single<EthJsonRpcResponse<String>>.checkKey(): Single<String> {
         return this.map {
             val result = it.result.toString()
             if (result == "0x") {
-                result != "0x"
+                ""
             } else {
                 val decode = FunctionReturnDecoder.decode(it.result, Erc20Helper.decodeKeyResponse())
-                val hex = (decode[1] as Bytes32).value.toHex().hexToTen()
-                hex != BigInteger.ZERO
+                val keyHash = (decode[1] as Bytes32).value.toHex()
+                val hex = keyHash.hexToTen()
+                if (hex != BigInteger.ZERO) {
+                    keyHash
+                } else {
+                    ""
+                }
             }
         }
     }

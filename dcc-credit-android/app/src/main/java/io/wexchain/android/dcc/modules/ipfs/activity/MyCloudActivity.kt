@@ -22,6 +22,7 @@ import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.modules.ipfs.service.IpfsBinder
 import io.wexchain.android.dcc.modules.ipfs.service.IpfsService
 import io.wexchain.android.dcc.modules.ipfs.vm.MyCloudVm
+import io.wexchain.android.dcc.tools.Log
 import io.wexchain.android.dcc.view.dialog.CloudstorageDialog
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
@@ -115,8 +116,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         Singles.zip(
                 Single.just(!idCertPassed).checkStatus(ChainGateway.BUSINESS_ID),
                 Single.just(!bankCertPassed).checkStatus(ChainGateway.BUSINESS_BANK_CARD),
-                Single.just(status != UserCertStatus.DONE).checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG)
-        )
+                Single.just(status != UserCertStatus.DONE).checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG))
                 .subscribeOn(Schedulers.io())
                 .doMain()
                 .withLoading()
@@ -175,6 +175,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
     }
 
     private fun updateIdItem() {
+        cloud_id_progress.visibility = View.INVISIBLE
         with(viewMode) {
             idsize.set(IDStatus == STATUS_UPLOAD)
             idselected.set(IDStatus == STATUS_UPLOAD || IDStatus == STATUS_DOWNLOAD)
@@ -202,6 +203,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
     }
 
     private fun updateCmItem() {
+        cloud_cm_progress.visibility = View.INVISIBLE
         with(viewMode) {
             cmsize.set(CmStatus == STATUS_UPLOAD)
             cmselected.set(CmStatus == STATUS_UPLOAD || CmStatus == STATUS_DOWNLOAD)
@@ -229,6 +231,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
     }
 
     private fun updateBankItem() {
+        cloud_bank_progress.visibility = View.INVISIBLE
         with(viewMode) {
             banksize.set(BankStatus == STATUS_UPLOAD)
             bankselected.set(BankStatus == STATUS_UPLOAD || BankStatus == STATUS_DOWNLOAD)
@@ -321,18 +324,46 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 IDStatus = STATUS_DEFAULT
                 cloud_item_id.isClickable = false
                 isEnabled.remove(ID_ENTIFY_DATA)
+
+                val idCertPassed = CertOperations.isIdCertPassed()
+                Single.just(!idCertPassed)
+                        .checkStatus(ChainGateway.BUSINESS_ID)
+                        .subscribeOn(Schedulers.io())
+                        .doMain()
+                        .subscribeBy {
+                            IDStatus = it
+                            updateIdItem()
+                        }
             }
             ChainGateway.BUSINESS_BANK_CARD -> {
                 cloud_bank_selected.text = "已完成"
                 cloud_item_bank.isClickable = false
                 BankStatus = STATUS_DEFAULT
                 isEnabled.remove(BANK_CARD_DATA)
+                val bankCertPassed = CertOperations.isBankCertPassed()
+                Single.just(!bankCertPassed)
+                        .checkStatus(ChainGateway.BUSINESS_BANK_CARD)
+                        .subscribeOn(Schedulers.io())
+                        .doMain()
+                        .subscribeBy {
+                            BankStatus = it
+                            updateBankItem()
+                        }
             }
             ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
                 cloud_cm_selected.text = "已完成"
                 CmStatus = STATUS_DEFAULT
                 cloud_item_cm.isClickable = false
                 isEnabled.remove(PHONE_OPERATOR)
+                val status = CertOperations.getCmLogUserStatus()
+                Single.just(status != UserCertStatus.DONE)
+                        .checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG)
+                        .subscribeOn(Schedulers.io())
+                        .doMain()
+                        .subscribeBy {
+                            CmStatus = it
+                            updateCmItem()
+                        }
             }
         }
         updateSyncStatus()
@@ -348,6 +379,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         cloud_sync.onClick {
             cloud_sync.isEnabled = false
             if (cloud_item_id.isSelected) {
+                cloud_item_id.isEnabled = false
                 if (IDStatus == STATUS_UPLOAD) {
                     uploadData(ChainGateway.BUSINESS_ID, ID_ENTIFY_DATA)
                 } else if (IDStatus == STATUS_DOWNLOAD) {
@@ -356,6 +388,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
             }
 
             if (cloud_item_bank.isSelected) {
+                cloud_item_bank.isEnabled = false
                 if (BankStatus == STATUS_UPLOAD) {
                     uploadData(ChainGateway.BUSINESS_BANK_CARD, BANK_CARD_DATA)
                 } else if (BankStatus == STATUS_DOWNLOAD) {
@@ -364,13 +397,13 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
             }
 
             if (cloud_item_cm.isSelected) {
+                cloud_item_cm.isEnabled = false
                 if (CmStatus == STATUS_UPLOAD) {
                     uploadData(ChainGateway.BUSINESS_COMMUNICATION_LOG, PHONE_OPERATOR)
                 } else if (CmStatus == STATUS_DOWNLOAD) {
                     downLoadData(ChainGateway.BUSINESS_COMMUNICATION_LOG, PHONE_OPERATOR)
                 }
             }
-
         }
 
         cloud_item_id.onClick {
@@ -447,6 +480,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 onSuccess = this::successful,
                 onProgress = this::setProgress,
                 onError = {
+                    Log(it.message)
                     if (it is DccChainServiceException) {
                         toast(it.message!!)
                     } else {

@@ -7,7 +7,7 @@ import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.vm.domain.BankCardInfo
 import io.wexchain.dccchainservice.domain.Bank
 
-class InputBankCardInfoVm(application: Application):AndroidViewModel(application){
+class InputBankCardInfoVm(application: Application) : AndroidViewModel(application) {
 
     val bank = ObservableField<Bank>()
 
@@ -21,12 +21,12 @@ class InputBankCardInfoVm(application: Application):AndroidViewModel(application
 
     val informationIncompleteEvent = SingleLiveEvent<CharSequence>()
 
-    fun onSubmit(){
+    fun onSubmit() {
         val info = checkAndBuildBankCardInfo()
-        if (info == null){
+        if (info == null) {
             //todo
             informationIncompleteEvent.value = ""
-        }else{
+        } else {
             submitEvent.value = info
         }
     }
@@ -36,13 +36,14 @@ class InputBankCardInfoVm(application: Application):AndroidViewModel(application
         val cardNo = bankCardNo.get()
         val phoneNo = phoneNum.get()
         //todo check
-        return if (bankCode!=null && cardNo!=null && phoneNo!=null) {
+        return if (bankCode != null && cardNo != null && phoneNo != null) {
             BankCardInfo(
                     bankCode = bankCode,
                     bankCardNo = cardNo,
-                    phoneNo = phoneNo
+                    phoneNo = phoneNo,
+                    bankName = bank.get()?.bankName
             )
-        }else{
+        } else {
             null
         }
     }
