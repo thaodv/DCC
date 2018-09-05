@@ -18,7 +18,7 @@ contract BSXContractModule is BaseModule {
         string memory moduleName = "BSXContractModule";
 
         //定义模块合约名称
-        string memory moduleDesc = "cert模块";
+        string memory moduleDesc = "BSXContractModule";
 
         //定义模块合约版本号
         string memory moduleVersion = "0.0.1.0";

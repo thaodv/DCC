@@ -2,38 +2,38 @@ pragma solidity ^0.4.2;
 
 contract UserIpfsKeyHash {
 
-    mapping(address => bytes) ipfsKeyHashMapping;
-
-    uint256 IPFS_KEYHASH_MAXSIZE = 100;
-
-    event ipfsKeyPut(address userAddress, bytes ipfsKeyHash);
-    event ipfsKeyUpdated(address userAddress, bytes ipfsKeyHash);
-    event ipfsKeyDeleted(address userAddress);
-
-    function putIpfsKey(bytes ipfsKeyHash) public {
-        require(ipfsKeyHash.length > 0 && ipfsKeyHash.length < IPFS_KEYHASH_MAXSIZE);
-        require(ipfsKeyHashMapping[msg.sender].length == 0);
-
-        ipfsKeyHashMapping[msg.sender] = ipfsKeyHash;
-        ipfsKeyPut(msg.sender, ipfsKeyHash);
+    struct KeyHash {
+        uint256 version;
+        bytes32 value;
     }
 
-    function updateIpfsKey(bytes ipfsKeyHash) public {
-        require(ipfsKeyHash.length > 0 && ipfsKeyHash.length < IPFS_KEYHASH_MAXSIZE);
-        require(ipfsKeyHashMapping[msg.sender].length != 0);
+    mapping(address => KeyHash) ipfsKeyHashMapping;
 
-        ipfsKeyHashMapping[msg.sender] = ipfsKeyHash;
-        ipfsKeyUpdated(msg.sender, ipfsKeyHash);
+    event ipfsKeyHashAdded(address indexed userAddress, uint256 version, bytes32 value);
+    event ipfsKeyHashDeleted(address indexed userAddress);
+
+    function addIpfsKeyHash(bytes32 value) public {
+        require(value > 0);
+        require(ipfsKeyHashMapping[msg.sender].value == 0);
+
+        ipfsKeyHashMapping[msg.sender].value = value;
+        ipfsKeyHashMapping[msg.sender].version++;
+
+        ipfsKeyHashAdded(msg.sender, ipfsKeyHashMapping[msg.sender].version, ipfsKeyHashMapping[msg.sender].value);
     }
 
-    function deleteIpfsKey() public {
-        require(ipfsKeyHashMapping[msg.sender].length != 0);
-        delete ipfsKeyHashMapping[msg.sender];
-        ipfsKeyDeleted(msg.sender);
+    function deleteIpfsKeyHash() public {
+        require(ipfsKeyHashMapping[msg.sender].value != 0);
+        ipfsKeyHashMapping[msg.sender].version++;
+        delete ipfsKeyHashMapping[msg.sender].value;
+        ipfsKeyHashDeleted(msg.sender);
     }
 
-    function getIpfsKey() public view returns(bytes ipfsKey){
-        return ipfsKeyHashMapping[msg.sender];
+    function getIpfsKeyHash() public view returns (uint256 version, bytes32 value){
+        return getIpfsKeyHash(msg.sender);
     }
 
+    function getIpfsKeyHash(address addr) public view returns (uint256 version, bytes32 value){
+        return (ipfsKeyHashMapping[addr].version, ipfsKeyHashMapping[addr].value);
+    }
 }
