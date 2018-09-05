@@ -15,7 +15,7 @@ import retrofit2.http.Url
  */
 interface IpfsApi {
 
-    @GET
+    @GET()
     fun download(@Url url:String): Single<ResponseBody>
 
     @POST()

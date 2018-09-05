@@ -110,3 +110,7 @@ fun Context.getProcessName(): String? {
 }
 
 fun isMainThread() = Looper.getMainLooper().thread == Thread.currentThread()
+
+fun String.hexToTen(): BigInteger {
+    return BigInteger(this.substring(2), 16)
+}

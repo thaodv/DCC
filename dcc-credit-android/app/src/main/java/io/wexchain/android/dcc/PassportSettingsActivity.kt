@@ -14,6 +14,7 @@ import android.view.*
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.IpfsOperations
@@ -105,6 +106,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
     private fun getCloudToken() {
         IpfsOperations.getIpfsKey()
                 .checkToken()
+                .subscribeOn(Schedulers.io())
                 .doMain()
                 .subscribeBy {
                     binding.tvCloudStatus.text = if (it) getString(R.string.start_out) else getString(R.string.start_in)

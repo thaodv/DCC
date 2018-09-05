@@ -95,14 +95,14 @@ class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
             IpfsOperations.putIpfsKey(psw)
                     .doMain()
                     .withLoading()
-                    .subscribeBy {
-                        if (it) {
-                            navigateTo(MyCloudActivity::class.java)
-                            finish()
-                        } else {
-                            toast("密码写入失败")
-                        }
-                    }
+                    .subscribeBy(
+                            onSuccess = {
+                                navigateTo(MyCloudActivity::class.java)
+                                finish()
+                            },
+                            onError = {
+                                toast("密码写入失败")
+                            })
         }
-    }
+}
 }

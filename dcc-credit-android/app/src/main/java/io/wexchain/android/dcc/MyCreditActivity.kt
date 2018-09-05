@@ -172,11 +172,22 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
     fun checkIpfsAndChainDigest(business: String): Single<Boolean> {
         return IpfsOperations.getIpfsToken(business)
                 .map {
-                    FunctionReturnDecoder.decode(it.result, Erc20Helper.dncodeResponse())
+                    if (it.result.toString() == "0x") {
+                        arrayListOf()
+                    } else {
+                        FunctionReturnDecoder.decode(it.result, Erc20Helper.decodeTokenResponse())
+                    }
                 }
                 .map {
-                    val digest1 = (it[6] as DynamicBytes).value
-                    val digest2 = (it[7] as DynamicBytes).value
+                    val digest1: ByteArray
+                    val digest2: ByteArray
+                    if (it.size == 0) {
+                        digest1 = byteArrayOf()
+                        digest2 = byteArrayOf()
+                    } else {
+                        digest1 = (it[6] as DynamicBytes).value
+                        digest2 = (it[7] as DynamicBytes).value
+                    }
                     Pair(digest1, digest2)
                 }
                 .map {

@@ -44,13 +44,6 @@ class ResetPasswordActivity : BaseCompatActivity() {
     private fun performPassportDelete() {
         IpfsOperations.delectedIpfsKey()
                 .subscribeOn(Schedulers.io())
-                .flatMap {
-                    Singles.zip(
-                            IpfsOperations.deleteIpfsToken(ChainGateway.BUSINESS_ID),
-                            IpfsOperations.deleteIpfsToken(ChainGateway.BUSINESS_BANK_CARD),
-                            IpfsOperations.deleteIpfsToken(ChainGateway.BUSINESS_COMMUNICATION_LOG)
-                    )
-                }
                 .doMain()
                 .withLoading()
                 .subscribeBy {

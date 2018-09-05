@@ -150,18 +150,19 @@ class IpfsService : Service() {
         IpfsCore.upload(file)
                 .doProgress(business, 60, onProgress)
                 .flatMap {
+                    val ipfsKeyHash = passport.getIpfsKeyHash()!!
                     when (business) {
                         ChainGateway.BUSINESS_ID -> {
                             val idDigest = CertOperations.getLocalIdDigest()
-                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, ID_NONCE)
+                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, ID_NONCE,ipfsKeyHash)
                         }
                         ChainGateway.BUSINESS_BANK_CARD -> {
                             val idDigest = CertOperations.getLocalBankDigest()
-                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, BANK_NONCE)
+                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, BANK_NONCE,ipfsKeyHash)
                         }
                         ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
                             val idDigest = CertOperations.getLocalCmDigest()
-                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, CM_NONCE)
+                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, CM_NONCE,ipfsKeyHash)
                         }
                         else -> {
                             Single.error(Throwable())
@@ -184,7 +185,7 @@ class IpfsService : Service() {
         var nonce = BigInteger("0")
         IpfsOperations.getIpfsToken(business)
                 .map {
-                    FunctionReturnDecoder.decode(it.result, Erc20Helper.dncodeResponse())
+                    FunctionReturnDecoder.decode(it.result, Erc20Helper.decodeTokenResponse())
                 }
                 .doProgress(business, 20, onProgress)
                 .flatMap {
@@ -192,8 +193,8 @@ class IpfsService : Service() {
                     if (IpfsOperations.VERSION.toInt() < (it[2] as Uint256).value.toInt()) {
                         Single.error(DccChainServiceException("云存储数据加密算法已升级，为确保该功能可以继续使用，请更新APP到最新版本。"))
                     } else {
-                        nonce = BigInteger((it[4] as DynamicBytes).value)
-                        Single.just((it[5] as Utf8String).value)
+                        nonce = BigInteger((it[5] as DynamicBytes).value)
+                        Single.just((it[4] as Utf8String).value)
                     }
                 }
                 .flatMap {

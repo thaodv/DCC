@@ -258,23 +258,33 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
     fun checkIpfsAndChainDigest(business: String): Single<Boolean> {
         return IpfsOperations.getIpfsToken(business)
                 .map {
-                    FunctionReturnDecoder.decode(it.result, Erc20Helper.dncodeResponse())
+                    if (it.result.toString() == "0x") {
+                        arrayListOf()
+                    } else {
+                        FunctionReturnDecoder.decode(it.result, Erc20Helper.decodeTokenResponse())
+                    }
                 }
                 .map {
-                    when (business) {
-                        ChainGateway.BUSINESS_ID -> {
-                            ID_Token = (it[5] as Utf8String).value
+                    val digest1: ByteArray
+                    val digest2: ByteArray
+                    if (it.size == 0) {
+                        digest1 = byteArrayOf()
+                        digest2 = byteArrayOf()
+                    } else {
+                        when (business) {
+                            ChainGateway.BUSINESS_ID -> {
+                                ID_Token = (it[4] as Utf8String).value
+                            }
+                            ChainGateway.BUSINESS_BANK_CARD -> {
+                                Bank_Token = (it[4] as Utf8String).value
+                            }
+                            ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
+                                Cm_Token = (it[4] as Utf8String).value
+                            }
                         }
-                        ChainGateway.BUSINESS_BANK_CARD -> {
-                            Bank_Token = (it[5] as Utf8String).value
-                        }
-                        ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
-                            Cm_Token = (it[5] as Utf8String).value
-                        }
+                        digest1 = (it[6] as DynamicBytes).value
+                        digest2 = (it[7] as DynamicBytes).value
                     }
-
-                    val digest1 = (it[6] as DynamicBytes).value
-                    val digest2 = (it[7] as DynamicBytes).value
                     Pair(digest1, digest2)
                 }
                 .map {
