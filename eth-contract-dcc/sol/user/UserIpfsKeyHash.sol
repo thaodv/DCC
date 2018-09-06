@@ -29,6 +29,7 @@ contract UserIpfsKeyHash {
         ipfsKeyHashDeleted(msg.sender);
     }
 
+
     function getIpfsKeyHash() public view returns (uint256 version, bytes32 value){
         return getIpfsKeyHash(msg.sender);
     }

@@ -2,6 +2,7 @@ pragma solidity ^0.4.2;
 
 import "../permission/OperatorPermission.sol";
 import "../utils/ByteUtils.sol";
+//暂时未使用
 contract UserPropertyService is OperatorPermission {
 
     using ByteUtils for bytes;
