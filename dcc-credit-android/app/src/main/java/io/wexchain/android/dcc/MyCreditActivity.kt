@@ -5,13 +5,11 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import io.reactivex.Single
-import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.Pop
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
-import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
@@ -139,9 +137,22 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
             if (it.status.get() == UserCertStatus.INCOMPLETE) {
                 //get report
                 val passport = App.get().passportRepository.getCurrentPassport()!!
-                Singles.zip(
-                        CertOperations.getCommunicationLogReport(passport),
-                        App.get().chainGateway.getCertData(passport.address, ChainGateway.BUSINESS_COMMUNICATION_LOG).check())
+
+                CertOperations.getCommunicationLogReport(passport)
+                        .flatMap {
+                            val data = it
+                            if (data.fail) {
+                                // generate report fail
+                                CertOperations.onCmLogFail()
+//                                refreshCertStatus()
+                            } else {
+                                val reportData = data.reportData
+                                if (data.hasCompleted() && reportData != null) {
+                                    CertOperations.onCmLogSuccessGot(reportData)
+                                }
+                            }
+                            App.get().chainGateway.getCertData(passport.address, ChainGateway.BUSINESS_COMMUNICATION_LOG).check()
+                        }
                         .subscribeOn(Schedulers.io())
                         .doMain()
                         .doFinally {
@@ -149,21 +160,9 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                         }
                         .subscribeBy(
                                 onSuccess = {
-                                    val content = it.second.content
+                                    val content = it.content
                                     if (0L != content.expired) {
                                         CertOperations.saveCmLogCertExpired(content.expired)
-                                    }
-
-                                    val data = it.first
-                                    if (data.fail) {
-                                        // generate report fail
-                                        CertOperations.onCmLogFail()
-                                        refreshCertStatus()
-                                    } else {
-                                        val reportData = data.reportData
-                                        if (data.hasCompleted() && reportData != null) {
-                                            CertOperations.onCmLogSuccessGot(reportData)
-                                        }
                                     }
                                 },
                                 onError = {

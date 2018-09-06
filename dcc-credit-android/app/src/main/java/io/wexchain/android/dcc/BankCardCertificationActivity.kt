@@ -43,15 +43,18 @@ class BankCardCertificationActivity : BindActivity<ActivityCertificationDataBind
             }
         })
         binding.vm = vm
-
-        App.get().marketingApi.getBankList()
-                .checkonMain()
-                .subscribeBy {
-                    for (item in it){
-                        if(data.bankCode == item.bankCode){
-                            vm.value1.set(item.bankName)
+        if (data.bankName.isNullOrEmpty()){
+            App.get().marketingApi.getBankList()
+                    .checkonMain()
+                    .subscribeBy {
+                        for (item in it){
+                            if(data.bankCode == item.bankCode){
+                                vm.value1.set(item.bankName)
+                            }
                         }
                     }
-                }
+        }else{
+            vm.value1.set(data.bankName)
+        }
     }
 }

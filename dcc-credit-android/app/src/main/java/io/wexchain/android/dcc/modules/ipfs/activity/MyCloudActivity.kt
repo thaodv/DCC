@@ -366,7 +366,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                         }
             }
         }
-        updateSyncStatus()
+//        updateSyncStatus()
     }
 
     private fun initClick() {
