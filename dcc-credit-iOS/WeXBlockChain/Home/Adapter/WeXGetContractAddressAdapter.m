@@ -12,7 +12,12 @@
 
 - (NSString*)getRequestUrl
 {
-    return @"getContractAddress";
+    return @"ca/1/getContractAddress";
+}
+
+- (WexBaseUrlType)getBasetUrlType
+{
+    return WexBaseUrlTypeAuthen;
 }
 
 -(WexNetAdapterRequestType)getNetAdapterRequestType

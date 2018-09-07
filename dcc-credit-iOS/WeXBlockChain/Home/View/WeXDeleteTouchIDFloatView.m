@@ -90,7 +90,7 @@
         make.centerX.equalTo(contentView);
         make.bottom.equalTo(contentView);
         make.height.equalTo(@50);
-        make.width.equalTo(@LINE_VIEW_Width);
+        make.width.equalTo(@HEIGHT_LINE);
     }];
     
     UIView *line = [[UIView alloc] init];
@@ -101,7 +101,7 @@
         make.leading.equalTo(self);
         make.trailing.equalTo(self);
         make.bottom.equalTo(line2.mas_top);
-        make.height.equalTo(@LINE_VIEW_Width);
+        make.height.equalTo(@HEIGHT_LINE);
     }];
   
     UIButton *openBtn = [UIButton buttonWithType:UIButtonTypeCustom];

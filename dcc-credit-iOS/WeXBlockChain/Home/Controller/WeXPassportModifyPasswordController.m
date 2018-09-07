@@ -31,7 +31,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"口袋密码修改";
+    self.navigationItem.title = WeXLocalizedString(@"钱包密码修改");
     [self setNavigationNomalBackButtonType];
     [self commonInit];
     [self setupSubViews];
@@ -63,13 +63,13 @@
     _oldPsdTextField.borderStyle = UITextBorderStyleNone;
     _oldPsdTextField.secureTextEntry = YES;
     UILabel *leftLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,170,45)];
-    leftLabel1.text = @"请输入原口袋密码:";
+    leftLabel1.text = WeXLocalizedString(@"请输入原钱包密码:");
     leftLabel1.font = [UIFont systemFontOfSize:17];
-    leftLabel1.textColor = ColorWithLabelDescritionBlack;
+    leftLabel1.textColor = COLOR_LABEL_DESCRIPTION;
     _oldPsdTextField.backgroundColor = [UIColor clearColor];
     _oldPsdTextField.leftViewMode = UITextFieldViewModeAlways;
     _oldPsdTextField.leftView = leftLabel1;
-    _oldPsdTextField.textColor = ColorWithLabelDescritionBlack;
+    _oldPsdTextField.textColor = COLOR_LABEL_DESCRIPTION;
     _oldPsdTextField.font = [UIFont systemFontOfSize:17];
     [self.view addSubview:_oldPsdTextField];
     [_oldPsdTextField mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -80,13 +80,13 @@
     }];
     
     UIView *line1 = [[UIView alloc] init];
-    line1.backgroundColor = ColorWithLine;
+    line1.backgroundColor = COLOR_ALPHA_LINE;
     [self.view addSubview:line1];
     [line1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(_oldPsdTextField.mas_leading);
         make.trailing.equalTo(showBtn1);
         make.top.equalTo(_oldPsdTextField.mas_bottom);
-        make.height.equalTo(@LINE_VIEW_Width);
+        make.height.equalTo(@HEIGHT_LINE);
     }];
     
     
@@ -109,13 +109,13 @@
     _newestPsdTextField.borderStyle = UITextBorderStyleNone;
     _newestPsdTextField.secureTextEntry = YES;
     UILabel *leftLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(0,0,170,45)];
-    leftLabel2.text = @"请输入新口袋密码:";
+    leftLabel2.text = WeXLocalizedString(@"请输入新钱包密码:");
     leftLabel2.font = [UIFont systemFontOfSize:17];
-    leftLabel2.textColor = ColorWithLabelDescritionBlack;
+    leftLabel2.textColor = COLOR_LABEL_DESCRIPTION;
     leftLabel2.backgroundColor = [UIColor clearColor];
     _newestPsdTextField.leftViewMode = UITextFieldViewModeAlways;
     _newestPsdTextField.leftView = leftLabel2;;
-    _newestPsdTextField.textColor = ColorWithLabelDescritionBlack;
+    _newestPsdTextField.textColor = COLOR_LABEL_DESCRIPTION;
     _newestPsdTextField.font = [UIFont systemFontOfSize:17];
     [self.view addSubview:_newestPsdTextField];
     [_newestPsdTextField mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -126,23 +126,19 @@
     }];
     
     UIView *line2 = [[UIView alloc] init];
-    line2.backgroundColor = ColorWithLine;
+    line2.backgroundColor = COLOR_ALPHA_LINE;
 //    line2.alpha = LINE_VIEW_ALPHA;
     [self.view addSubview:line2];
     [line2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.view).offset(20);
         make.trailing.equalTo(self.view).offset(-20);
         make.top.equalTo(_newestPsdTextField.mas_bottom);
-        make.height.equalTo(@LINE_VIEW_Width);
+        make.height.equalTo(@HEIGHT_LINE);
     }];
     
-    //修改口袋密码按钮
-    UIButton *modifyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [modifyBtn setTitle:@"修改口袋密码" forState:UIControlStateNormal];
-    [modifyBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    modifyBtn.backgroundColor = ColorWithButtonRed;
-    modifyBtn.layer.cornerRadius = 3;
-    modifyBtn.layer.masksToBounds = YES;
+    //修改钱包密码按钮
+    UIButton *modifyBtn = [WeXCustomButton button];
+    [modifyBtn setTitle:WeXLocalizedString(@"修改钱包密码") forState:UIControlStateNormal];
     [modifyBtn addTarget:self action:@selector(modifyBtnClick) forControlEvents:UIControlEventTouchUpInside];
     modifyBtn.titleLabel.font = [UIFont systemFontOfSize:18];
     [self.view addSubview:modifyBtn];
@@ -167,19 +163,19 @@
 - (void)modifyBtnClick{
     
      //密码长度错误
-    if (self.oldPsdTextField.text.length<2|| self.oldPsdTextField.text.length>20) {
-        [WeXPorgressHUD showText:@"密码长度为2-20位!" onView:self.view];
+    if (self.oldPsdTextField.text.length<8|| self.oldPsdTextField.text.length>20) {
+        [WeXPorgressHUD showText:WeXLocalizedString(@"密码长度为8-20位!") onView:self.view];
         return;
     }
      //密码长度错误
-    if (self.newestPsdTextField.text.length<2|| self.newestPsdTextField.text.length>20) {
-        [WeXPorgressHUD showText:@"密码长度为2-20位!" onView:self.view];
+    if (self.newestPsdTextField.text.length<8|| self.newestPsdTextField.text.length>20) {
+        [WeXPorgressHUD showText:WeXLocalizedString(@"密码长度为8-20位!") onView:self.view];
         return;
     }
     //密码验证错误
     _model = [WexCommonFunc getPassport];
     if (![self.oldPsdTextField.text isEqualToString:_model.passportPassword]) {
-        [WeXPorgressHUD showText:@"您的密码有误!" onView:self.view];
+        [WeXPorgressHUD showText:WeXLocalizedString(@"您的密码有误!") onView:self.view];
         return;
     }
     
@@ -201,7 +197,7 @@
     {
         comment = [NSString stringWithFormat:@"%@%@",textField.text, string];
         if (comment.length > 20) {
-            [WeXPorgressHUD showText:@"密码长度最多为20位" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"密码长度最多为20位") onView:self.view];
             return NO;
         }
     }
@@ -227,7 +223,7 @@
         if(response!=nil)
         {
             NSError* error=response;
-            NSLog(@"容器加载失败:%@",error);
+            NSLog(WeXLocalizedString(@"容器加载失败:%@"),error);
             return;
         }
         /** 连接以太坊(开发，测试，生产环境地址值不同，建议用宏区分不同开发环境) */

@@ -9,6 +9,7 @@
 #import "WeXPassportIDInfoController.h"
 #import "WeXPassportIDInfoCell.h"
 #import "WeXPassportIDFaceController.h"
+#import "WeXPassportIDCacheInfoModal.h"
 
 static NSString *cellID = @"cellID";
 

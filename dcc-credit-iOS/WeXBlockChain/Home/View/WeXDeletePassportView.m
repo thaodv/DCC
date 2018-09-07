@@ -51,13 +51,13 @@
         make.leading.equalTo(self);
         make.trailing.equalTo(self);
         make.centerY.equalTo(self);
-        make.height.equalTo(@180);
+        make.height.equalTo(@200);
     }];
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"删除口袋";
+    titleLabel.text = WeXLocalizedString(@"删除钱包");
     titleLabel.font = [UIFont systemFontOfSize:18];
-    titleLabel.textColor = [UIColor blackColor];
+    titleLabel.textColor = COLOR_LABEL_DESCRIPTION;
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.numberOfLines = 0;
     [contentView addSubview:titleLabel];
@@ -69,9 +69,10 @@
     }];
     
     UILabel * descriptionLabel = [[UILabel alloc] init];
-    descriptionLabel.text = @"如果您还没有对口袋进行过备份，删除口袋可能会导致您的数字资产永远无法找回，请您自行检查口袋备份情况。";
+    //DeletePassportViewTipsMessage
+    descriptionLabel.text = WeXLocalizedString(@"DeletePassportViewTipsMessage");
     descriptionLabel.font = [UIFont systemFontOfSize:15];
-    descriptionLabel.textColor = [UIColor lightGrayColor];
+    descriptionLabel.textColor = COLOR_LABEL_DESCRIPTION;
     descriptionLabel.textAlignment = NSTextAlignmentLeft;
     descriptionLabel.numberOfLines = 0;
     [contentView addSubview:descriptionLabel];
@@ -82,70 +83,47 @@
     }];
     
     
-    UIView *line2 = [[UIView alloc] init];
-    line2.backgroundColor = [UIColor lightGrayColor];
-    line2.alpha = LINE_VIEW_ALPHA;
-    [self addSubview: line2];
-    [line2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(contentView);
-        make.bottom.equalTo(contentView);
-        make.height.equalTo(@45);
-        make.width.equalTo(@LINE_VIEW_Width);
-    }];
-    
-    UIView *line = [[UIView alloc] init];
-    line.backgroundColor = [UIColor lightGrayColor];
-    line.alpha = LINE_VIEW_ALPHA;
-    [self addSubview: line];
-    [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self);
-        make.trailing.equalTo(self);
-        make.bottom.equalTo(line2.mas_top);
-        make.height.equalTo(@LINE_VIEW_Width);
-    }];
-    
-    
     UIButton *backUpBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backUpBtn setTitle:@"点击这里备份口袋" forState:UIControlStateNormal];
-    [backUpBtn setTitleColor:ColorWithRGB(252, 31, 120) forState:UIControlStateNormal];
+    [backUpBtn setTitle:WeXLocalizedString(@"点击这里备份钱包") forState:UIControlStateNormal];
+    [backUpBtn setTitleColor:COLOR_THEME_ALL forState:UIControlStateNormal];
     [backUpBtn addTarget:self action:@selector(backUpBtnClick) forControlEvents:UIControlEventTouchUpInside];
     backUpBtn.titleLabel.font = [UIFont systemFontOfSize:15];
     [contentView addSubview:backUpBtn];
     [backUpBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.trailing.equalTo(contentView).offset(-15);
-        make.bottom.equalTo(line.mas_top).offset(-10);
+        make.top.equalTo(descriptionLabel.mas_bottom).offset(10);
         make.width.equalTo(@140);
         make.height.equalTo(@20);
     }];
     
     
-    UIButton *deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [deleteBtn setTitle:@"删除口袋" forState:UIControlStateNormal];
-    [deleteBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [deleteBtn addTarget:self action:@selector(deleteBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    deleteBtn.titleLabel.font = [UIFont systemFontOfSize:18];
-    [contentView addSubview:deleteBtn];
-    [deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(line2);
-        make.trailing.equalTo(contentView);
-        make.bottom.equalTo(contentView);
-        make.top.equalTo(line);
-    }];
-    
-    
-    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
-    [cancelBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    UIButton *cancelBtn = [WeXCustomButton button];
+    [cancelBtn setTitle:WeXLocalizedString(@"取消") forState:UIControlStateNormal];
     [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
     cancelBtn.titleLabel.font = [UIFont systemFontOfSize:18];
     [contentView addSubview:cancelBtn];
     [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(contentView);
-        make.trailing.equalTo(line2);
-        make.bottom.equalTo(contentView);
-        make.top.equalTo(line);
+        make.leading.equalTo(contentView).offset(15);
+        make.bottom.equalTo(contentView).offset(-15);
+        make.height.equalTo(@40);
     }];
     
+    
+    
+    UIButton *deleteBtn = [WeXCustomButton button];
+    [deleteBtn setTitle:WeXLocalizedString(@"删除钱包") forState:UIControlStateNormal];
+    [deleteBtn addTarget:self action:@selector(deleteBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    deleteBtn.titleLabel.font = [UIFont systemFontOfSize:18];
+    [contentView addSubview:deleteBtn];
+    [deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(cancelBtn.mas_trailing).offset(15);
+        make.trailing.equalTo(contentView).offset(-15);
+        make.width.equalTo(cancelBtn);
+        make.height.equalTo(cancelBtn);
+        make.bottom.equalTo(cancelBtn);
+    }];
+    
+   
   
     
   

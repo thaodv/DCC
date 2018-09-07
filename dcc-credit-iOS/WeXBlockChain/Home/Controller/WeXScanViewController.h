@@ -19,7 +19,9 @@ typedef NS_ENUM(NSInteger, ScannerType) {
 typedef NS_ENUM(NSInteger, WeXScannerHandleType) {
     WeXScannerHandleTypeImport,  //返回导入页面扫描的内容
     WeXScannerHandleTypeLogin,//第三方授权登录
-     WeXScannerHandleTypeToAddress//扫描地址页面
+     WeXScannerHandleTypeToAddress,//扫描地址页面
+    WeXScannerHandleTypeManagerReceiveAddress,//管理收款地址页面
+     WeXScannerHandleTypeManagerInviteFriend//邀请好友页面
 };
 
 typedef void(^ScannerResponseBlock)(NSString *content);

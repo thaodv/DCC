@@ -12,8 +12,15 @@
 
 - (NSString*)getRequestUrl
 {
-    return @"uploadPubKey";
+    return @"ca/1/uploadPubKey";
 }
+
+
+- (WexBaseUrlType)getBasetUrlType
+{
+    return WexBaseUrlTypeAuthen;
+}
+
 
 - (Class)getResponseClass
 {

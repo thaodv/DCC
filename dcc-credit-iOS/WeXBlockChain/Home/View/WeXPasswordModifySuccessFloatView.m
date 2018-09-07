@@ -68,7 +68,7 @@
     }];
     
     UILabel * descriptionLabel = [[UILabel alloc] init];
-    descriptionLabel.text = @"口袋密码修改成功，KEYSTORE信息变更，建议您立即重新备份口袋。";
+    descriptionLabel.text = @"钱包密码修改成功，KEYSTORE信息变更，建议您立即重新备份钱包。";
     descriptionLabel.font = [UIFont systemFontOfSize:15];
     descriptionLabel.textColor = [UIColor lightGrayColor];
     descriptionLabel.textAlignment = NSTextAlignmentLeft;
@@ -89,7 +89,7 @@
         make.centerX.equalTo(contentView);
         make.bottom.equalTo(contentView);
         make.height.equalTo(@45);
-        make.width.equalTo(@LINE_VIEW_Width);
+        make.width.equalTo(@HEIGHT_LINE);
     }];
     
     UIView *line = [[UIView alloc] init];
@@ -100,12 +100,12 @@
         make.leading.equalTo(self);
         make.trailing.equalTo(self);
         make.bottom.equalTo(line2.mas_top);
-        make.height.equalTo(@LINE_VIEW_Width);
+        make.height.equalTo(@HEIGHT_LINE);
     }];
     
     
     UIButton *backupBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backupBtn setTitle:@"备份口袋" forState:UIControlStateNormal];
+    [backupBtn setTitle:@"备份钱包" forState:UIControlStateNormal];
     [backupBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [backupBtn addTarget:self action:@selector(backupBtnClick) forControlEvents:UIControlEventTouchUpInside];
     backupBtn.titleLabel.font = [UIFont systemFontOfSize:18];

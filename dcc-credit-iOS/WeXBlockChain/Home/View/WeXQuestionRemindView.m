@@ -80,7 +80,7 @@
         make.leading.equalTo(contentView);
         make.trailing.equalTo(contentView);
         make.bottom.equalTo(confirmBtn.mas_top);
-        make.height.equalTo(@LINE_VIEW_Width);
+        make.height.equalTo(@HEIGHT_LINE);
     }];
     
     UILabel *contentLabel = [[UILabel alloc] init];

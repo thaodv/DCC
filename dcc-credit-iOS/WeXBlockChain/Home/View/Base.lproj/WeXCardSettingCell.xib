@@ -63,9 +63,10 @@
                 <outlet property="desLabel" destination="kip-we-rjW" id="Ydh-TD-rjr"/>
                 <outlet property="titleLabel" destination="6Qa-cu-gru" id="hrB-5W-7q2"/>
             </connections>
+            <point key="canvasLocation" x="-132" y="14"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="arrow" width="7" height="12"/>
+        <image name="arrow" width="8" height="15"/>
     </resources>
 </document>

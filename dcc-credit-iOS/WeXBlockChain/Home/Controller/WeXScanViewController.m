@@ -14,6 +14,8 @@
 #import "WeXAuthorizeLoginViewController.h"
 #import "WeXImportViewController.h"
 #import "WeXWalletTransferViewController.h"
+#import "WeXAddReceiveAddressViewController.h"
+#import "WeXInviteCodeViewController.h"
 
 @interface WeXScanViewController ()<AVCaptureMetadataOutputObjectsDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
@@ -26,6 +28,7 @@
 
 @end
 
+
 @implementation WeXScanViewController
 
 - (void)viewDidLoad {
@@ -33,7 +36,7 @@
     [super viewDidLoad];
     [self setNavigationNomalBackButtonType];
     [self setupNavgationType];
-    self.navigationItem.title = @"扫一扫";
+    self.navigationItem.title = WeXLocalizedString(@"扫一扫");
     [self.view setBackgroundColor:[UIColor blackColor]];
     
     [self.view addSubview:self.introudctionLabel];
@@ -48,7 +51,7 @@
 
 - (void)setupNavgationType{
     
-   UIBarButtonItem *rihgtItem = [[UIBarButtonItem alloc] initWithTitle:@"相册" style:UIBarButtonItemStylePlain target:self action:@selector(rightItemClick)];
+   UIBarButtonItem *rihgtItem = [[UIBarButtonItem alloc] initWithTitle:WeXLocalizedString(@"相册") style:UIBarButtonItemStylePlain target:self action:@selector(rightItemClick)];
     self.navigationItem.rightBarButtonItem = rihgtItem;
     
 }
@@ -74,7 +77,7 @@
     [self scannerQRCodeFromImage:image ans:^(NSString *response) {
         if (response == nil)
         {
-            [WeXPorgressHUD showText:@"扫码失败" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"扫码失败") onView:self.view];
             [self startCodeReading];
         }
         else
@@ -195,18 +198,18 @@
     CGFloat width = 0;
     CGFloat height = 0;
     if (scannerType == ScannerTypeQR) {
-        [self.introudctionLabel setText:@"将二维码/条码放入框内，即可自动扫描"];
+        [self.introudctionLabel setText:WeXLocalizedString(@"将二维码/条码放入框内，即可自动扫描")];
         width = height = kScreenWidth * 0.7;
     }else if(scannerType == ScannerTypeCover){
-        [self.introudctionLabel setText:@"将书、CD、电影海报放入框内，即可自动扫描"];
+        [self.introudctionLabel setText:WeXLocalizedString(@"将书、CD、电影海报放入框内，即可自动扫描")];
         width = height = kScreenWidth * 0.85;
     }else if(scannerType == ScannerTypeStreet){
-        [self.introudctionLabel setText:@"扫一下周围环境，寻找附近街景"];
+        [self.introudctionLabel setText:WeXLocalizedString(@"扫一下周围环境，寻找附近街景")];
         width = height = kScreenWidth * 0.85;
     }else if(scannerType == ScannerTypeTranslate){
         width = kScreenWidth * 0.7;
         height = 55;
-        [self.introudctionLabel setText:@"将英文单词放入框内"];
+        [self.introudctionLabel setText:WeXLocalizedString(@"将英文单词放入框内")];
     }
     
     [self.scannerView setHiddenScannerIndicator:scannerType == ScannerTypeTranslate];
@@ -306,44 +309,44 @@
         NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
         NSLog(@"responseDict=%@",responseDict);
         if (responseDict == nil) {
-            [WeXPorgressHUD showText:@"不支持该类型二维码" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"不支持该类型二维码") onView:self.view];
             [self startCodeReading];
             return;
         }
         NSString *protocol = [responseDict objectForKey:@"protocol"];
         if (![protocol isEqualToString:@"wtx.wexchain.io"]) {
-            [WeXPorgressHUD showText:@"不支持该类型二维码" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"不支持该类型二维码") onView:self.view];
             [self startCodeReading];
             return;
         }
         NSNumber *version = [responseDict objectForKey:@"version"];
         if ([version integerValue] > [[WexCommonFunc getVersion] integerValue]) {
-            [WeXPorgressHUD showText:@"不支持该类型二维码" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"不支持该类型二维码") onView:self.view];
             [self startCodeReading];
             return;
         }
         NSString *appId = [responseDict objectForKey:@"appId"];
         if (appId == nil||appId.length == 0) {
-            [WeXPorgressHUD showText:@"不支持该类型二维码" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"不支持该类型二维码") onView:self.view];
             [self startCodeReading];
             return;
         }
         NSString *appName = [responseDict objectForKey:@"appName"];
         if (appName == nil||appName.length == 0) {
-            [WeXPorgressHUD showText:@"不支持该类型二维码" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"不支持该类型二维码") onView:self.view];
             [self startCodeReading];
             return;
         }
         NSString *nonce = [responseDict objectForKey:@"nonce"];
         if (nonce == nil||nonce.length == 0) {
-            [WeXPorgressHUD showText:@"不支持该类型二维码" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"不支持该类型二维码") onView:self.view];
             [self startCodeReading];
             return;
         }
         
         NSString *callbackUrl = [responseDict objectForKey:@"callbackUrl"];
         if (callbackUrl == nil||callbackUrl.length == 0) {
-            [WeXPorgressHUD showText:@"不支持该类型二维码" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"不支持该类型二维码") onView:self.view];
             [self startCodeReading];
             return;
         }
@@ -371,6 +374,33 @@
                 [self.navigationController popToViewController:ctrl animated:YES];
             }
         }
+    }
+    else if (self.handleType == WeXScannerHandleTypeManagerReceiveAddress)
+    {
+        if (self.responseBlock) {
+            if ([ansStr hasPrefix:@"ethereum:"]) {
+                ansStr = [ansStr substringFromIndex:9];
+            }
+            
+            self.responseBlock(ansStr);
+        }
+        for (UIViewController *ctrl in self.navigationController.viewControllers) {
+            if ([ctrl isKindOfClass:[WeXAddReceiveAddressViewController class]]) {
+                [self.navigationController popToViewController:ctrl animated:YES];
+            }
+        }
+    }
+    else if (self.handleType == WeXScannerHandleTypeManagerInviteFriend)
+    {
+        if (self.responseBlock) {
+            self.responseBlock(ansStr);
+        }
+        for (UIViewController *ctrl in self.navigationController.viewControllers) {
+            if ([ctrl isKindOfClass:[WeXInviteCodeViewController class]]) {
+                [self.navigationController popToViewController:ctrl animated:YES];
+            }
+        }
+        
     }
     else
     {

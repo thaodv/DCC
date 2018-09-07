@@ -34,7 +34,7 @@
     NSString *_rsaPrivateKey;
     NSString *_walletAddress;//钱包地址
     NSString *_walletPrivateKey;//钱包私钥
-    NSDictionary *_keyStroe;//口袋
+    NSDictionary *_keyStroe;//钱包
     
     NSString *_rawTransaction;
     
@@ -87,7 +87,7 @@
 - (void)configAnimation1
 {
     UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth*0.5-80, 50*scrRatioH, 80, 20)];
-    label1.text = @"创造身份";
+    label1.text = WeXLocalizedString(@"创造身份");
     label1.textColor = [UIColor whiteColor];
     label1.textAlignment = NSTextAlignmentRight;
     label1.font = [UIFont systemFontOfSize:14];
@@ -155,7 +155,7 @@
     
     
     UILabel *label2= [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth*0.5-40, 180*scrRatioH, 80, 20)];
-    label2.text = @"创造秘钥";
+    label2.text = WeXLocalizedString(@"创造秘钥");
     label2.textColor = [UIColor whiteColor];
     label2.textAlignment = NSTextAlignmentRight;
     label2.font = [UIFont systemFontOfSize:14];
@@ -193,7 +193,7 @@
     
     
     UILabel *label3= [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth*0.5-35-90, 335*scrRatioH, 80, 20)];
-    label3.text = @"创造成功";
+    label3.text = WeXLocalizedString(@"创造成功");
     label3.textColor = [UIColor whiteColor];
     label3.textAlignment = NSTextAlignmentRight;
     label3.font = [UIFont systemFontOfSize:14];
@@ -220,7 +220,7 @@
 - (void)configAnimation2
 {
     UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth*0.5+45+10, 30*scrRatioH+50-10, 80, 20)];
-    label1.text = @"功能注入";
+    label1.text = WeXLocalizedString(@"功能注入");
     label1.textColor = [UIColor whiteColor];
     label1.textAlignment = NSTextAlignmentLeft;
     label1.font = [UIFont systemFontOfSize:14];
@@ -302,7 +302,7 @@
     
     
     UILabel *label2= [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth*0.5-40, 180*scrRatioH, 80, 20)];
-    label2.text = @"上链";
+    label2.text = WeXLocalizedString(@"上链");
     label2.textColor = [UIColor whiteColor];
     label2.textAlignment = NSTextAlignmentLeft;
     label2.font = [UIFont systemFontOfSize:14];
@@ -340,7 +340,7 @@
     
     
     UILabel *label3= [[UILabel alloc] initWithFrame:CGRectMake(kScreenWidth*0.5+30+10, 300*scrRatioH+40, 80, 20)];
-    label3.text = @"信息加密";
+    label3.text = WeXLocalizedString(@"信息加密");
     label3.textColor = [UIColor whiteColor];
     label3.textAlignment = NSTextAlignmentRight;
     label3.font = [UIFont systemFontOfSize:14];
@@ -636,7 +636,7 @@
         if(response!=nil)
         {
             NSError* error=response;
-            NSLog(@"容器加载失败:%@",error);
+            NSLog(WeXLocalizedString(@"容器加载失败:%@"),error);
             return;
         }
         /** 连接以太坊(开发，测试，生产环境地址值不同，建议用宏区分不同开发环境) */
@@ -731,7 +731,7 @@
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
        
     }
@@ -745,7 +745,7 @@
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _uoloadPubKeyAdapter){
@@ -758,19 +758,19 @@
         {
             [WeXPorgressHUD hideLoading];
 
-            [WeXPorgressHUD showText:@"验证码校验失败!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"验证码校验失败!") onView:self.view];
         }
         else if([headModel.businessCode isEqualToString:@"TICKET_INVALID"])
         {
             [WeXPorgressHUD hideLoading];
             
-            [WeXPorgressHUD showText:@"验证码超时!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"验证码超时!") onView:self.view];
         }
         else
         {
             [WeXPorgressHUD hideLoading];
             
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试") onView:self.view];
         }
     }
     else if (adapter == _getReceiptAdapter){
@@ -791,7 +791,7 @@
             {
                 if (_requestCount > 4) {
                     [WeXPorgressHUD hideLoading];
-                    [WeXPorgressHUD showText:@"创建口袋失败" onView:self.view];
+                    [WeXPorgressHUD showText:WeXLocalizedString(@"创建钱包失败") onView:self.view];
                     return;
                 }
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -803,7 +803,7 @@
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
        
         
@@ -814,7 +814,7 @@
             WeXGetPubKeyResponseModal *model = (WeXGetPubKeyResponseModal *)response;
             NSData *publicKeyData =  [[NSData alloc] initWithBase64EncodedString:model.result options:0];
             NSString *resultPublickKey  = [WexCommonFunc hexStringWithData:publicKeyData];
-            //相等表示口袋创建成功
+            //相等表示钱包创建成功
             if ([resultPublickKey isEqualToString:_rsaPublicKey]) {
                 [self savePassport];
                 [UIView animateWithDuration:0.2 animations:^{
@@ -824,7 +824,7 @@
                     [_registerView dismiss];
                 } completion:^(BOOL finished) {
                     //保存统一操作记录
-                     [WexCommonFunc saveManagerRecordWithTypeString:@"启用统一登录"];
+                     [WexCommonFunc saveManagerRecordWithTypeString:WeXLocalizedString(@"启用统一登录")];
                     
                     WeXRegisterSuccessViewController *ctrl = [[WeXRegisterSuccessViewController alloc] init];
                     ctrl.type = WeXRegisterSuccessTypeCreate;
@@ -835,14 +835,14 @@
             }
             else
             {
-                [WeXPorgressHUD showText:@"创建口袋失败" onView:self.view];
+                [WeXPorgressHUD showText:WeXLocalizedString(@"创建钱包失败") onView:self.view];
             }
             
         }
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
 
     }
@@ -850,7 +850,7 @@
 
 
 
-#pragma mark -保存口袋信息
+#pragma mark -保存钱包信息
 - (void)savePassport
 {
     WeXPasswordCacheModal *model = [WeXPasswordCacheModal sharedInstance];
@@ -882,11 +882,11 @@
     
     //创建按钮
     UIButton *createBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [createBtn setTitle:@"创建" forState:UIControlStateNormal];
-    [createBtn setTitleColor:ColorWithButtonRed forState:UIControlStateNormal];
+    [createBtn setTitle:WeXLocalizedString(@"创建") forState:UIControlStateNormal];
+    [createBtn setTitleColor:COLOR_THEME_ALL forState:UIControlStateNormal];
     createBtn.backgroundColor = [UIColor clearColor];
     createBtn.layer.borderWidth = 2;
-    createBtn.layer.borderColor = [ColorWithButtonRed CGColor];
+    createBtn.layer.borderColor = [COLOR_THEME_ALL CGColor];
     createBtn.layer.cornerRadius = 40;
     createBtn.layer.masksToBounds = YES;
     [createBtn addTarget:self action:@selector(createBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -900,8 +900,8 @@
     
     //导入按钮
     UIButton *importBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [importBtn setTitle:@"导入" forState:UIControlStateNormal];
-    [importBtn setTitleColor:ColorWithButtonRed forState:UIControlStateNormal];
+    [importBtn setTitle:WeXLocalizedString(@"导入") forState:UIControlStateNormal];
+    [importBtn setTitleColor:COLOR_THEME_ALL forState:UIControlStateNormal];
     importBtn.backgroundColor = [UIColor clearColor];
     [importBtn addTarget:self action:@selector(importBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:importBtn];
@@ -952,7 +952,6 @@
     registerView.graphBtnBlock = ^{
         [self createGetTicketRequest];
     };
-  
     
 }
 

@@ -14,6 +14,8 @@
 #import "WeXUploadPubKeyAdapter.h"
 #import "WeXGetReceiptResultAdapter.h"
 #import "WeXGetPubKeyAdapter.h"
+#import "WeXInviteCodeViewController.h"
+
 
 @interface WeXCreatePassportViewController ()<UITextFieldDelegate,YYKeyboardObserver,CAAnimationDelegate>
 {
@@ -25,7 +27,7 @@
     NSString *_rsaPrivateKey;
     NSString *_walletAddress;//钱包地址
     NSString *_walletPrivateKey;//钱包私钥
-    NSDictionary *_keyStroe;//口袋
+    NSDictionary *_keyStroe;//钱包
     
     NSString *_rawTransaction;
     
@@ -49,13 +51,15 @@
 @property (nonatomic,strong)WeXGetTicketResponseModal *getTicketModel;
 @property (nonatomic,strong)WeXGetPubKeyAdapter *getPubKeyAdapter;
 
+
+
 @end
 
 @implementation WeXCreatePassportViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = NSLocalizedString(@"WeXCreatePassportViewController_navTitle", @"");
+    self.navigationItem.title = WeXLocalizedString(@"WeXCreatePassportViewController_navTitle");
     [self setNavigationNomalBackButtonType];
     [self setupSubViews];
 }
@@ -74,18 +78,19 @@
 //    }];
     
     UILabel *desTitleLabel = [[UILabel alloc] init];
-    desTitleLabel.text = NSLocalizedString(@"WeXCreatePassportViewController_description1", @"");
+    desTitleLabel.text = WeXLocalizedString(@"WeXCreatePassportViewController_description1");
     desTitleLabel.font = [UIFont systemFontOfSize:15];
     desTitleLabel.textColor = COLOR_LABEL_DESCRIPTION;
     desTitleLabel.backgroundColor = COLOR_LABEL_DES_BACKGROUND;
-    desTitleLabel.textAlignment = NSTextAlignmentCenter;
-    desTitleLabel.numberOfLines = 0;
+    desTitleLabel.textAlignment = NSTextAlignmentLeft;
+    desTitleLabel.numberOfLines = 2;
+    desTitleLabel.adjustsFontSizeToFitWidth = YES;
     [self.view addSubview:desTitleLabel];
     [desTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.view).offset(15);
         make.trailing.equalTo(self.view).offset(-15);
         make.top.equalTo(self.view).offset(kNavgationBarHeight);
-        make.height.equalTo(@70);
+        make.height.equalTo(@60);
     }];
     
     
@@ -97,7 +102,7 @@
     _passwordTextField.borderStyle = UITextBorderStyleNone;
     _passwordTextField.keyboardType = UIKeyboardTypeASCIICapable;
     _passwordTextField.secureTextEntry = YES;
-    _passwordTextField.placeholder = NSLocalizedString(@"WeXCreatePassportViewController_passwordTextFieldPlacehoder", @"");
+    _passwordTextField.placeholder = WeXLocalizedString(@"WeXCreatePassportViewController_passwordTextFieldPlacehoder");
     _passwordTextField.font = [UIFont systemFontOfSize:17];
     [self.view addSubview:_passwordTextField];
     [_passwordTextField mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -132,10 +137,11 @@
     }];
 //
     UILabel *desCentreLabel = [[UILabel alloc] init];
-    desCentreLabel.text = NSLocalizedString(@"WeXCreatePassportViewController_description2", @"");
+    desCentreLabel.text = WeXLocalizedString(@"WeXCreatePassportViewController_description2");
     desCentreLabel.font = [UIFont systemFontOfSize:15];
     desCentreLabel.textColor = COLOR_LABEL_DESCRIPTION;
     desCentreLabel.textAlignment = NSTextAlignmentCenter;
+    desCentreLabel.adjustsFontSizeToFitWidth = YES;
     [self.view addSubview:desCentreLabel];
     [desCentreLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.view).offset(15);
@@ -146,46 +152,45 @@
 
 
 //    //图形码输入框
-    _invitationTextField = [[UITextField alloc] init];
-    _invitationTextField.delegate = self;
-    _invitationTextField.textColor = [UIColor lightGrayColor];
-    _invitationTextField.backgroundColor = [UIColor whiteColor];
-    _invitationTextField.borderStyle = UITextBorderStyleNone;
-    _invitationTextField.keyboardType = UIKeyboardTypeASCIICapable;
-    _invitationTextField.placeholder = NSLocalizedString(@"WeXCreatePassportViewController_invitationTextFieldPlacehoder", @"");
-    [self.view addSubview:_invitationTextField];
-    [_invitationTextField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(desCentreLabel.mas_bottom).offset(10);
-        make.leading.equalTo(self.view).offset(15);
-        make.trailing.equalTo(self.view).offset(-15);
-        make.height.equalTo(@50);
-    }];
-
-
-    UIView *line2 = [[UIView alloc] init];
-    line2.backgroundColor = COLOR_ALPHA_LINE;
-    [self.view addSubview:line2];
-    [line2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.view).offset(15);
-        make.trailing.equalTo(self.view).offset(-15);
-        make.top.equalTo(_invitationTextField.mas_bottom);
-        make.height.equalTo(@HEIGHT_LINE);
-    }];
+//    _invitationTextField = [[UITextField alloc] init];
+//    _invitationTextField.delegate = self;
+//    _invitationTextField.textColor = [UIColor lightGrayColor];
+//    _invitationTextField.backgroundColor = [UIColor whiteColor];
+//    _invitationTextField.borderStyle = UITextBorderStyleNone;
+//    _invitationTextField.keyboardType = UIKeyboardTypeASCIICapable;
+//    _invitationTextField.placeholder = WeXLocalizedString(@"WeXCreatePassportViewController_invitationTextFieldPlacehoder");
+//    [self.view addSubview:_invitationTextField];
+//    [_invitationTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(desCentreLabel.mas_bottom).offset(10);
+//        make.leading.equalTo(self.view).offset(15);
+//        make.trailing.equalTo(self.view).offset(-15);
+//        make.height.equalTo(@50);
+//    }];
+//
+//
+//    UIView *line2 = [[UIView alloc] init];
+//    line2.backgroundColor = COLOR_ALPHA_LINE;
+//    [self.view addSubview:line2];
+//    [line2 mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.leading.equalTo(self.view).offset(15);
+//        make.trailing.equalTo(self.view).offset(-15);
+//        make.top.equalTo(_invitationTextField.mas_bottom);
+//        make.height.equalTo(@HEIGHT_LINE);
+//    }];
 
     UIButton *createBtn = [WeXCustomButton button];
-    [createBtn setTitle:NSLocalizedString(@"WeXCreatePassportViewController_createButtonTitle", @"") forState:UIControlStateNormal];
+    [createBtn setTitle:WeXLocalizedString(@"WeXCreatePassportViewController_createButtonTitle") forState:UIControlStateNormal];
     [createBtn addTarget:self action:@selector(createBtnClick) forControlEvents:UIControlEventTouchUpInside];
     createBtn.titleLabel.font = [UIFont systemFontOfSize:18];
     [self.view addSubview:createBtn];
     [createBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.view).offset(15);
         make.trailing.equalTo(self.view).offset(-15);
-        make.top.equalTo(line2.mas_bottom).offset(10);
+        make.top.equalTo(desCentreLabel.mas_bottom).offset(40);
         make.height.equalTo(@40);
     }];
     
     UILabel *desBottomLabel = [[UILabel alloc] init];
-    desBottomLabel.text = NSLocalizedString(@"WeXCreatePassportViewController_description3", @"");
     desBottomLabel.font = [UIFont systemFontOfSize:15];
     desBottomLabel.textColor = COLOR_LABEL_DESCRIPTION;
     desBottomLabel.textAlignment = NSTextAlignmentLeft;
@@ -197,6 +202,17 @@
         make.top.equalTo(createBtn.mas_bottom).offset(5);
     }];
     
+    NSTextAttachment *attach = [[NSTextAttachment alloc] init];
+    attach.image = [UIImage imageNamed:@"passport_set"];
+    attach.bounds = CGRectMake(0, -3, 15, 15);
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:WeXLocalizedString(@"成功创建数字钱包后，请即时在>数字备份钱包中备份，以防数字资产丢失")];
+    NSAttributedString *imageAttrStr = [NSAttributedString attributedStringWithAttachment:attach];
+    [attrStr insertAttributedString:imageAttrStr atIndex:14];
+    if ([[WeXLocalizedManager shareManager] isChinese]) {
+        desBottomLabel.attributedText = attrStr;
+    } else {
+        desBottomLabel.text = WeXLocalizedString(@"WeXCreatePassportViewController_description3");
+    }
 }
 
 
@@ -209,16 +225,15 @@
 
 - (void)createBtnClick{
     
-    
     if (_passwordTextField.text.length < 8) {
-        [WeXPorgressHUD showText:@"密码长度应大于8位!" onView:self.view];
+        [WeXPorgressHUD showText:WeXLocalizedString(WeXLocalizedString(@"请核对后重新输入!")) onView:self.view];
         return;
     }
     
-    if (![WexCommonFunc checkoutString:_passwordTextField.text withRegularExpression:@"^[^\\u4e00-\\u9fa5]+$"]) {
-        [WeXPorgressHUD showText:@"密码里面不能包含汉字!" onView:self.view];
-        return;
-    }
+//    if (![WexCommonFunc checkoutString:_passwordTextField.text withRegularExpression:@"^[^\\u4e00-\\u9fa5]+$"]) {
+//        [WeXPorgressHUD showText:WeXLocalizedString(@"密码里面不能包含汉字!") onView:self.view];
+//        return;
+//    }
     
     
     [self.view endEditing:YES];
@@ -229,7 +244,6 @@
     
     
 }
-
 
 - (void)createRSA{
     if ([DDRSAWrapper generateRSAKeyPairWithKeySize:2048 publicKey:&_publicKey privateKey:&_privateKey]) {
@@ -246,7 +260,6 @@
     }
 }
 
-
 - (void)initPassHelper{
     
     [self createRSA];
@@ -256,7 +269,7 @@
         if(response!=nil)
         {
             NSError* error=response;
-            NSLog(@"容器加载失败:%@",error);
+            NSLog(WeXLocalizedString(@"容器加载失败:%@"),error);
             return;
         }
         /** 连接以太坊(开发，测试，生产环境地址值不同，建议用宏区分不同开发环境) */
@@ -341,19 +354,34 @@
     [_getReceiptAdapter run:paramModal];
 }
 
+
+
 #pragma mark - 请求回调
 - (void)wexBaseNetAdapterDelegate:(WexBaseNetAdapter *)adapter head:(WexBaseNetAdapterResponseHeadModal *)headModel response:(WeXBaseNetModal *)response{
-    if (adapter == _getContractAddressAdapter){
+    if (adapter == _getTicketAdapter) {
         if ([headModel.systemCode isEqualToString:@"SUCCESS"]&&[headModel.businessCode isEqualToString:@"SUCCESS"]) {
-            WeXGetContractAddressResponseModal *model = (WeXGetContractAddressResponseModal *)response;
-            _contractAddress = model.result;
-            //合约地址请求成功 然后开始初始化passhelper
+            _getTicketModel = (WeXGetTicketResponseModal *)response;
             [self initPassHelper];
         }
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
+        }
+        
+    }
+   else if (adapter == _getContractAddressAdapter){
+        if ([headModel.systemCode isEqualToString:@"SUCCESS"]&&[headModel.businessCode isEqualToString:@"SUCCESS"]) {
+            WeXGetContractAddressResponseModal *model = (WeXGetContractAddressResponseModal *)response;
+            _contractAddress = model.result;
+            //合约地址请求成功 然后开始初始化passhelper
+            [self createGetTicketRequest];
+            
+        }
+        else
+        {
+            [WeXPorgressHUD hideLoading];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _uoloadPubKeyAdapter){
@@ -366,19 +394,13 @@
         {
             [WeXPorgressHUD hideLoading];
             
-            [WeXPorgressHUD showText:@"验证码校验失败!" onView:self.view];
-        }
-        else if([headModel.businessCode isEqualToString:@"TICKET_INVALID"])
-        {
-            [WeXPorgressHUD hideLoading];
-            
-            [WeXPorgressHUD showText:@"验证码超时!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"验证码校验失败!") onView:self.view];
         }
         else
         {
             [WeXPorgressHUD hideLoading];
             
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试") onView:self.view];
         }
     }
     else if (adapter == _getReceiptAdapter){
@@ -399,7 +421,7 @@
             {
                 if (_requestCount > 4) {
                     [WeXPorgressHUD hideLoading];
-                    [WeXPorgressHUD showText:@"创建口袋失败" onView:self.view];
+                    [WeXPorgressHUD showText:WeXLocalizedString(@"创建钱包失败") onView:self.view];
                     return;
                 }
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -411,7 +433,7 @@
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
         
         
@@ -422,37 +444,41 @@
             WeXGetPubKeyResponseModal *model = (WeXGetPubKeyResponseModal *)response;
             NSData *publicKeyData =  [[NSData alloc] initWithBase64EncodedString:model.result options:0];
             NSString *resultPublickKey  = [WexCommonFunc hexStringWithData:publicKeyData];
-            //相等表示口袋创建成功
+            //相等表示钱包创建成功
             if ([resultPublickKey isEqualToString:_rsaPublicKey]) {
                 [self savePassport];
                 
                 //保存统一操作记录
-                [WexCommonFunc saveManagerRecordWithTypeString:@"启用统一登录"];
+                [WexCommonFunc saveManagerRecordWithTypeString:WeXLocalizedString(@"启用统一登录")];
                 
-                WeXRegisterSuccessViewController *ctrl = [[WeXRegisterSuccessViewController alloc] init];
+                
+                WeXInviteCodeViewController *ctrl = [[WeXInviteCodeViewController alloc] init];
                 ctrl.type = WeXRegisterSuccessTypeCreate;
-                ctrl.isFromAuthorize = self.isFromAuthorize;
-                ctrl.url = self.url;
                 [self.navigationController pushViewController:ctrl animated:YES];
+
+                
+//                WeXRegisterSuccessViewController *ctrl = [[WeXRegisterSuccessViewController alloc] init];
+//                ctrl.type = WeXRegisterSuccessTypeCreate;
+//                ctrl.isFromAuthorize = self.isFromAuthorize;
+//                ctrl.url = self.url;
+//                [self.navigationController pushViewController:ctrl animated:YES];
             }
             else
             {
-                [WeXPorgressHUD showText:@"创建口袋失败" onView:self.view];
+                [WeXPorgressHUD showText:WeXLocalizedString(@"创建钱包失败") onView:self.view];
             }
             
         }
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
         
     }
 }
 
-
-
-#pragma mark -保存口袋信息
+#pragma mark -保存钱包信息
 - (void)savePassport
 {
     WeXPasswordCacheModal *model = [WeXPasswordCacheModal sharedInstance];
@@ -464,10 +490,6 @@
     model.isAllow = YES;
     [WexCommonFunc savePassport:model];
 }
-
-
-
-
 
 #pragma mark - TextField代理方法
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -486,13 +508,13 @@
         
         if (textField == _passwordTextField) {
             if (comment.length > 20) {
-                [WeXPorgressHUD showText:@"密码长度最多为20位" onView:self.view];
+                [WeXPorgressHUD showText:WeXLocalizedString(@"密码长度最多为20位") onView:self.view];
                 return NO;
             }
         }
         else if (textField == _invitationTextField){
             if (comment.length > 4) {
-                [WeXPorgressHUD showText:@"长度最多为4位" onView:self.view];
+                [WeXPorgressHUD showText:WeXLocalizedString(@"长度最多为4位") onView:self.view];
                 return NO;
             }
         }

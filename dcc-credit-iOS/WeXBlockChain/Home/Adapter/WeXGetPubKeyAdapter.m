@@ -10,9 +10,15 @@
 
 @implementation WeXGetPubKeyAdapter
 
+
 - (NSString*)getRequestUrl
 {
-    return @"getPubKey";
+    return @"ca/1/getPubKey";
+}
+
+- (WexBaseUrlType)getBasetUrlType
+{
+    return WexBaseUrlTypeAuthen;
 }
 
 -(WexNetAdapterRequestType)getNetAdapterRequestType

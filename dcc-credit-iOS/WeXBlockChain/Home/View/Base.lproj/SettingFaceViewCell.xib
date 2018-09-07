@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -28,14 +27,14 @@
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZVz-CA-MNx" userLabel="line">
                         <rect key="frame" x="20" y="90" width="290" height="0.0"/>
-                        <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.88235294117647056" green="0.88235294117647056" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="hx4-FB-QcM"/>
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="头像" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hdV-ri-TGm">
-                        <rect key="frame" x="19" y="33" width="39" height="23"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                        <rect key="frame" x="19" y="34" width="37" height="21.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
                         <color key="textColor" red="0.26666666666666666" green="0.26666666666666666" blue="0.26666666666666666" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -59,17 +58,16 @@
                 </constraints>
             </tableViewCellContentView>
             <constraints>
-                <constraint firstItem="fTt-Fx-Hcl" firstAttribute="centerY" secondItem="aW0-zy-SZf" secondAttribute="centerY" id="5BZ-US-i0n"/>
+                <constraint firstItem="fTt-Fx-Hcl" firstAttribute="centerY" secondItem="KGk-i7-Jjw" secondAttribute="centerY" id="5BZ-US-i0n"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
                 <outlet property="viewFace" destination="d1M-px-B3n" id="Jh9-d2-SbH"/>
                 <outlet property="viewLine" destination="ZVz-CA-MNx" id="sLw-5G-OXe"/>
             </connections>
-            <point key="canvasLocation" x="10" y="94"/>
+            <point key="canvasLocation" x="-2284" y="-124"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="arrow" width="7" height="12"/>
+        <image name="arrow" width="8" height="15"/>
     </resources>
 </document>

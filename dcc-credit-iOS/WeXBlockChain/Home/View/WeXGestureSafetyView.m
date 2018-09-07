@@ -54,7 +54,7 @@
     // 正常图片效果
     self.normalImage = [UIImage imageNamed:@"get_normal"];
     // 选中的图片效果
-    self.selectedImage = [UIImage imageNamed:@"ges_select"];
+    self.selectedImage = [UIImage imageNamed:@"get_select"];
     // 选中后异常的图片效果
     self.errorImage = [UIImage imageNamed:@"ges_error"];
     
@@ -68,10 +68,10 @@
 {
     _type = type;
     if (self.type == WeXGesturePswTypeCreate) {
-        _titleLabel.text = @"启用手势密码";
+        _titleLabel.text = WeXLocalizedString(@"启用手势密码");
     }
     else if (self.type == WeXGesturePswTypeVerify){
-        _titleLabel.text = @"验证手势密码";
+        _titleLabel.text = WeXLocalizedString(@"验证手势密码");
     }
 }
 
@@ -79,7 +79,7 @@
     
     _titleLabel = [[UILabel alloc] init];
     _titleLabel.font = [UIFont systemFontOfSize:20];
-    _titleLabel.textColor = ColorWithRGB(249, 31, 117);
+    _titleLabel.textColor = COLOR_LABEL_DESCRIPTION;
     _titleLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:_titleLabel];
     [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -96,11 +96,11 @@
     [line1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.trailing.equalTo(self);
         make.top.equalTo(_titleLabel.mas_bottom);
-        make.height.equalTo(@LINE_VIEW_Width);
+        make.height.equalTo(@HEIGHT_LINE);
     }];
     
     _descriptionLabel = [[UILabel alloc] init];
-    _descriptionLabel.text = @"请绘制解图";
+    _descriptionLabel.text = WeXLocalizedString(@"请绘制解图");
     _descriptionLabel.font = [UIFont systemFontOfSize:15];
     _descriptionLabel.textColor = [UIColor lightGrayColor];
     _descriptionLabel.textAlignment = NSTextAlignmentCenter;
@@ -137,7 +137,7 @@
     }
     
     UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelBtn setTitle:WeXLocalizedString(@"取消") forState:UIControlStateNormal];
     [cancelBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
     cancelBtn.titleLabel.font = [UIFont systemFontOfSize:17];
@@ -155,7 +155,7 @@
     [line2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(cancelBtn.mas_top);
         make.leading.trailing.equalTo(self);
-        make.height.mas_equalTo(LINE_VIEW_Width);
+        make.height.mas_equalTo(HEIGHT_LINE);
     }];
 }
 
@@ -255,7 +255,7 @@
                 
                 [self resetGesturePswDrawZoom];
                 // 验证通过，将密码保存至本地
-                NSLog(@"保存成功,密码=%@",self.savedPswString);
+                NSLog(WeXLocalizedString(@"保存成功,密码=%@"),self.savedPswString);
                 WeXPasswordCacheModal *model = [WexCommonFunc getPassport];
                 if (model) {
                     model.gesturePassword = self.savedPswString;
@@ -303,7 +303,7 @@
         if ([password isEqualToString:self.savedPswString])
         {
             // 解锁成功
-            NSLog(@"解锁成功");
+            NSLog(@"%@",WeXLocalizedString(@"解锁成功"));
             if ([_delegate respondsToSelector:@selector(gestureSafetyViewVerifySuccess)]) {
                 [self.delegate gestureSafetyViewVerifySuccess];
             }
@@ -314,7 +314,7 @@
             if (self.savedPswString.length > 0)
             {
             
-                [self tintLabelWithExceptString:@"密码错误!"];
+                [self tintLabelWithExceptString:WeXLocalizedString(@"密码错误!")];
                 
                 [self shaketimes:Shake_Times direction:1 currentTimes:0];
                 
@@ -408,7 +408,7 @@
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(ctx, 2);
     CGContextSetLineJoin(ctx, kCGLineJoinBevel);
-    CGContextSetStrokeColorWithColor(ctx, ColorWithRGB(254, 216, 232).CGColor) ;
+    CGContextSetStrokeColorWithColor(ctx, COLOR_THEME_ALL.CGColor) ;
     for (int i = 0;i < self.selectedButtons.count;i++) {
         UIButton *btn = self.selectedButtons[i];
         if (i == 0) {

@@ -7,6 +7,7 @@
 //
 
 #import "WeXAboutUsViewController.h"
+#import "WeXOfficialWebViewController.h"
 
 #define contentLabelFont 15
 
@@ -30,7 +31,7 @@
     
     UILabel *label1 = [[UILabel alloc] init];
     label1.font = [UIFont systemFontOfSize:17];
-    label1.textColor = ColorWithLabelDescritionBlack;
+    label1.textColor = COLOR_LABEL_DESCRIPTION;
     label1.textAlignment = NSTextAlignmentLeft;
     label1.numberOfLines = 0;
     [self.view addSubview:label1];
@@ -40,7 +41,7 @@
         make.trailing.equalTo(self.view).offset(-20);
     }];
     
-    NSString *content1 = @"全向口袋是由Allxsports基于区块链技术发布的一款帮助用户解决去中心化的场景中身份认证问题的平台。全向口袋的口袋就是您在数字社会的数字身份证，它可以有效的在区块链中认定用户的唯一身份，黑客无法通过反向计算等方式仿冒用户的唯一身份。为确保用户的隐私，用户可根据自身意愿来决定传递至第三方的信息内容。而第三方可根据获得的个人信息来决定用户应获得的服务内容。";
+    NSString *content1 = @"BitExpress是基于Distributed Credit Chain发布的一款帮助用户解决去中心化场景中数字资产借贷问题的Dapp。需要借贷的用户在Dapp中将个人信息通过认证方认证后,用户可以将认证后的信息通过Dapp发送给数字资产出借方，出借方审核后，决定是否放款给需要借贷的用户。在BitExpress平台中借款方可以获得应急所需的数字资产，出借方可以获得出借本金及出借时间和金额所对应的利息。";
     //设置间距
     NSMutableAttributedString *attrStr1 = [[NSMutableAttributedString alloc] initWithString:content1];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -58,7 +59,7 @@
     
     UILabel *label2 = [[UILabel alloc] init];
     label2.font = [UIFont systemFontOfSize:17];
-    label2.textColor = ColorWithLabelDescritionBlack;
+    label2.textColor = COLOR_LABEL_DESCRIPTION;
     label2.textAlignment = NSTextAlignmentLeft;
     label2.numberOfLines = 0;
     [self.view addSubview:label2];
@@ -83,9 +84,9 @@
     label2.attributedText = attrStr2;
     
     UILabel *label3 = [[UILabel alloc] init];
-    label3.text = @"邮箱：allxwallet@126.com";
+    label3.text = @"邮箱 yimtoken1@163.com";
     label3.font = [UIFont systemFontOfSize:17];
-    label3.textColor = ColorWithLabelDescritionBlack;
+    label3.textColor = COLOR_LABEL_DESCRIPTION;
     label3.textAlignment = NSTextAlignmentLeft;
     label3.numberOfLines = 0;
     [self.view addSubview:label3];
@@ -94,6 +95,42 @@
         make.leading.equalTo(self.view).offset(20);
         make.trailing.equalTo(self.view).offset(-20);
     }];
+    
+    UILabel *label4 = [[UILabel alloc] init];
+    label4.text = @"官网";
+    label4.font = [UIFont systemFontOfSize:17];
+    label4.textColor = COLOR_LABEL_DESCRIPTION;
+    label4.textAlignment = NSTextAlignmentLeft;
+    [self.view addSubview:label4];
+    [label4 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(label3.mas_bottom).offset(10);
+        make.leading.equalTo(self.view).offset(20);
+        make.height.equalTo(@20);
+    }];
+    
+    UILabel *label5 = [[UILabel alloc] init];
+    label5.text = @"http://dcc.finance/";
+    label5.font = [UIFont systemFontOfSize:17];
+    label5.textColor = [UIColor blueColor];
+    label5.textAlignment = NSTextAlignmentLeft;
+    [self.view addSubview:label5];
+    [label5 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(label3.mas_bottom).offset(10);
+        make.leading.equalTo(label4.mas_trailing).offset(5);
+        make.height.equalTo(@20);
+    }];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick)];
+    label5.userInteractionEnabled = YES;
+    [label5 addGestureRecognizer:tap];
+    WEXNSLOG(@"%@",tap);
+}
+
+- (void)tapClick
+{
+    WEXNSLOG(@"%s",__func__);
+    WeXOfficialWebViewController *ctrl = [[WeXOfficialWebViewController alloc] init];
+    [self.navigationController pushViewController:ctrl animated:YES];
 }
 
 @end

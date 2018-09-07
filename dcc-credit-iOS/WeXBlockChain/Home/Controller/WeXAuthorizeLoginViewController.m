@@ -78,7 +78,7 @@
 //    self.navigationItem.hidesBackButton = YES;
     
 //    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-//    [backBtn setTitle:@"取消" forState: UIControlStateNormal];
+//    [backBtn setTitle:WeXLocalizedString(@"取消") forState: UIControlStateNormal];
 //    [backBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 //    backBtn.titleLabel.font = [UIFont systemFontOfSize:16];
 //    [backBtn addTarget:self action:@selector(backBtnClick) forControlEvents:UIControlEventTouchUpInside];
@@ -104,7 +104,7 @@
         NSURL *backURL = [NSURL URLWithString:urlSchemes];
         //跳转回MyApp
         [[UIApplication sharedApplication] openURL:backURL options:@{} completionHandler:^(BOOL success) {
-            NSLog(@"跳转结果%d",success);
+            NSLog(WeXLocalizedString(@"跳转结果%d"),success);
           
             
             [self jumpToRootViewController];
@@ -163,9 +163,9 @@
     }];
     
     _logoNamelabel = [[UILabel alloc] init];
-    _logoNamelabel.text = @"口袋地址:";
+    _logoNamelabel.text = WeXLocalizedString(@"钱包地址:");
     _logoNamelabel.font = [UIFont systemFontOfSize:18];
-    _logoNamelabel.textColor = ColorWithLabelDescritionBlack;
+    _logoNamelabel.textColor = COLOR_LABEL_DESCRIPTION;
     _logoNamelabel.numberOfLines = 0;
     _logoNamelabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_logoNamelabel];
@@ -190,9 +190,9 @@
     
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"使用口袋登录";
+    titleLabel.text = WeXLocalizedString(@"使用钱包登录");
     titleLabel.font = [UIFont systemFontOfSize:18];
-    titleLabel.textColor = ColorWithLabelDescritionBlack;
+    titleLabel.textColor = COLOR_LABEL_DESCRIPTION;
     titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -228,9 +228,9 @@
     }];
     
     UILabel *label1 = [[UILabel alloc] init];
-    label1.text = @"口袋地址:";
+    label1.text = WeXLocalizedString(@"钱包地址:");
     label1.font = [UIFont systemFontOfSize:12];
-    label1.textColor = ColorWithLabelDescritionBlack;
+    label1.textColor = COLOR_LABEL_DESCRIPTION;
     label1.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:label1];
     [label1 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -242,7 +242,7 @@
     UILabel *label2 = [[UILabel alloc] init];
     label2.text = [NSString stringWithFormat:@"***%@",[address substringWithRange:NSMakeRange(address.length-6, 6)]];
     label2.font = [UIFont systemFontOfSize:12];
-    label2.textColor = ColorWithLabelDescritionBlack;
+    label2.textColor = COLOR_LABEL_DESCRIPTION;
     label2.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:label2];
     [label2 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -263,9 +263,9 @@
     }];
     
     UILabel *label3= [[UILabel alloc] init];
-    label3.text = @"全向口袋";
+    label3.text = WeXLocalizedString(@"BitExpress钱包");
     label3.font = [UIFont systemFontOfSize:12];
-    label3.textColor = ColorWithLabelDescritionBlack;
+    label3.textColor = COLOR_LABEL_DESCRIPTION;
     label3.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:label3];
     [label3 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -276,18 +276,18 @@
     
     UILabel *stateLabel = [[UILabel alloc] init];
     if (_model.isAllow) {
-        stateLabel.text = @"统一登录状态：可用";
+        stateLabel.text = WeXLocalizedString(@"统一登录状态：可用");
         stateLabel.backgroundColor = ColorWithRGB(178, 225, 135);
 
     }
     else
     {
-        stateLabel.text = @"统一登录状态：不可用";
+        stateLabel.text = WeXLocalizedString(@"统一登录状态：不可用");
         stateLabel.backgroundColor = ColorWithRGB(191, 192,193);
     }
    
     stateLabel.font = [UIFont boldSystemFontOfSize:14];
-    stateLabel.textColor = ColorWithLabelDescritionBlack;
+    stateLabel.textColor = COLOR_LABEL_DESCRIPTION;
     stateLabel.textAlignment = NSTextAlignmentCenter;
     stateLabel.layer.cornerRadius = 20;
     stateLabel.layer.masksToBounds = YES;
@@ -303,11 +303,11 @@
     WeXCustomButton *loginBtn = [WeXCustomButton button];
     if (_model.isAllow) {
    
-        [loginBtn setTitle:@"确认登录" forState:UIControlStateNormal];
+        [loginBtn setTitle:WeXLocalizedString(@"确认登录") forState:UIControlStateNormal];
     }
     else
     {
-        [loginBtn setTitle:@"启动统一登录并确认登录" forState:UIControlStateNormal];
+        [loginBtn setTitle:WeXLocalizedString(@"启动统一登录并确认登录") forState:UIControlStateNormal];
 
     }
     [loginBtn addTarget:self action:@selector(loginBtnClick) forControlEvents:UIControlEventTouchUpInside];
@@ -333,21 +333,21 @@
         NSLog(@"dict=====\n%@",params);
         
         if (params == nil) {
-            [WeXPorgressHUD showText:@"格式不正确!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"格式不正确!") onView:self.view];
             _loginBtn.enabled = NO;
             return;
         }
         
         NSString *protocol = [params objectForKey:@"protocol"];
         if (![protocol isEqualToString:@"wtx.wexchain.io"]) {
-            [WeXPorgressHUD showText:@"格式不正确!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"格式不正确!") onView:self.view];
             _loginBtn.enabled = NO;
             return;
         }
         
         NSNumber *version = [params objectForKey:@"version"];
         if ([version integerValue] > [[WexCommonFunc getVersion] integerValue]) {
-            [WeXPorgressHUD showText:@"格式不正确!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"格式不正确!") onView:self.view];
             _loginBtn.enabled = NO;
             return;
         }
@@ -414,7 +414,7 @@
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _getContractAddressAdapter){
@@ -427,7 +427,7 @@
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _uoloadPubKeyAdapter){
@@ -440,19 +440,19 @@
         {
             [WeXPorgressHUD hideLoading];
             
-            [WeXPorgressHUD showText:@"验证码不正确!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"验证码不正确!") onView:self.view];
         }
         else if([headModel.businessCode isEqualToString:@"TICKET_INVALID"])
         {
             [WeXPorgressHUD hideLoading];
             
-            [WeXPorgressHUD showText:@"验证码超时!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"验证码超时!") onView:self.view];
         }
         else
         {
             [WeXPorgressHUD hideLoading];
             
-            [WeXPorgressHUD showText:@"系统繁忙!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统繁忙!") onView:self.view];
         }
     }
     else if (adapter == _getReceiptAdapter){
@@ -467,7 +467,7 @@
             {
                 if (_requestCount > 4) {
                     [WeXPorgressHUD hideLoading];
-                    [WeXPorgressHUD showText:@"系统繁忙,请稍后再试!" onView:self.view];
+                    [WeXPorgressHUD showText:WeXLocalizedString(@"系统繁忙,请稍后再试!") onView:self.view];
                     return;
                 }
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -479,7 +479,7 @@
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
         
     }
@@ -488,31 +488,31 @@
             WeXGetPubKeyResponseModal *model = (WeXGetPubKeyResponseModal *)response;
             NSData *publicKeyData =  [[NSData alloc] initWithBase64EncodedString:model.result options:0];
             NSString *resultPublickKey  = [WexCommonFunc hexStringWithData:publicKeyData];
-            //相等表示口袋创建成功
+            //相等表示钱包创建成功
             if ([resultPublickKey isEqualToString:_rsaPublicKey]) {
                 //更新秘钥
                 _model.rsaPublicKey = _rsaPublicKey;
                 _model.rasPrivateKey = _rsaPrivateKey;
                 _model.isAllow = YES;
                 [WexCommonFunc savePassport:_model];
-                NSLog(@"启用成功");
+                NSLog(WeXLocalizedString(@"启用成功"));
                 
                 //保存统一操作记录
-                [WexCommonFunc saveManagerRecordWithTypeString:@"启用统一登录"];
+                [WexCommonFunc saveManagerRecordWithTypeString:WeXLocalizedString(@"启用统一登录")];
                 
                 [self configReturnProcess];
             }
             else
             {
                 [WeXPorgressHUD hideLoading];
-                [WeXPorgressHUD showText:@"系统繁忙,请稍后再试!" onView:self.view];
+                [WeXPorgressHUD showText:WeXLocalizedString(@"系统繁忙,请稍后再试!") onView:self.view];
             }
             
         }
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
         
        
@@ -548,7 +548,7 @@
         //跳转回MyApp
 //        [[UIApplication sharedApplication] openURL:backURL];
         [[UIApplication sharedApplication] openURL:backURL options:@{} completionHandler:^(BOOL success) {
-            NSLog(@"跳转结果%d",success);
+            NSLog(WeXLocalizedString(@"跳转结果%d"),success);
             NSString *appId = params[@"appId"];
             NSString *appName = params[@"appName"];
             [self saveLoginRecordWithAppId:appId appName:appName];
@@ -585,7 +585,7 @@
             NSString *businessCode = [responseObject objectForKey:@"businessCode"];
             NSString *message = [responseObject objectForKey:@"message"];
             if ([systemCode isEqualToString:@"SUCCESS"]&&[businessCode isEqualToString:@"SUCCESS"]) {
-                [WeXPorgressHUD showText:@"登录成功!" onView:self.view];
+                [WeXPorgressHUD showText:WeXLocalizedString(@"登录成功!") onView:self.view];
                 
                 NSString *appId = self.paramsDict[@"appId"];
                 NSString *appName = self.paramsDict[@"appName"];
@@ -610,7 +610,7 @@
         } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
             [WeXPorgressHUD hideLoading];
             NSLog(@"error=%@",error);
-             [WeXPorgressHUD showText:@"登录失败!" onView:self.view];
+             [WeXPorgressHUD showText:WeXLocalizedString(@"登录失败!") onView:self.view];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self.navigationController popViewControllerAnimated:YES];
             });
@@ -652,7 +652,7 @@
         if(response!=nil)
         {
             NSError* error=response;
-            NSLog(@"容器加载失败:%@",error);
+            NSLog(WeXLocalizedString(@"容器加载失败:%@"),error);
             return;
         }
         /** 连接以太坊(开发，测试，生产环境地址值不同，建议用宏区分不同开发环境) */
@@ -705,10 +705,10 @@
     //延迟5秒再弹出alertView
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         //创建alertViewController
-        UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"分享后的操作" message:@"是否返回原应用？" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *controller = [UIAlertController alertControllerWithTitle:WeXLocalizedString(@"分享后的操作") message:WeXLocalizedString(@"是否返回原应用？") preferredStyle:UIAlertControllerStyleAlert];
         
         //返回按钮
-        UIAlertAction *backAction = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *backAction = [UIAlertAction actionWithTitle:WeXLocalizedString(@"返回") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             //从字典中取出URL Schemes
             NSString *backURLString = [NSString stringWithFormat:@"%@://",params[@"returnScheme"]];
             NSURL *backURL = [NSURL URLWithString:backURLString];
@@ -718,8 +718,8 @@
         [controller addAction:backAction];
         
         //留在微信按钮
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"留在口袋" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSLog(@"留在口袋");
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:WeXLocalizedString(@"留在钱包") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NSLog(WeXLocalizedString(@"留在钱包"));
         }];
         [controller addAction:cancelAction];
         

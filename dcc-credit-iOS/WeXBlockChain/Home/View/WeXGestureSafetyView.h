@@ -8,15 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-#define DrawPsw_Draw_Unlock_Pattern @"绘制解锁图案"
-#define DrawPsw_Draw_Unlock_Pattern_Again @"请再次绘制解锁图案"
-#define DrawPsw_Less_4points_Warning @"最少连接4个点，请重新绘制"
-#define DrawPsw_Inconsistent_Lasttime @"与上次绘制不一致，请重新绘制"
+#define DrawPsw_Draw_Unlock_Pattern WeXLocalizedString(@"绘制解锁图案")
+#define DrawPsw_Draw_Unlock_Pattern_Again WeXLocalizedString(@"请再次绘制解锁图案")
+#define DrawPsw_Less_4points_Warning WeXLocalizedString(@"最少连接4个点，请重新绘制")
+#define DrawPsw_Inconsistent_Lasttime WeXLocalizedString(@"与上次绘制不一致，请重新绘制")
 #define DrawPsw_PswError_Count_Warning(x) ([NSString stringWithFormat:@"密码错误，还可以再输入%d次", x])
-#define DrawPsw_PswError_5Times_Warning @"你已连续5次输错手势，手势解锁已关闭，请重新登录"
-#define DrawPsw_ForgetPsw_Warning @"忘记手势密码，需重新登录"
+#define DrawPsw_PswError_5Times_Warning WeXLocalizedString(@"你已连续5次输错手势，手势解锁已关闭，请重新登录")
+#define DrawPsw_ForgetPsw_Warning WeXLocalizedString(@"忘记手势密码，需重新登录")
 
 #define Shake_Times 10
+
+
 
 
 /** 手势密码的创建方式 */

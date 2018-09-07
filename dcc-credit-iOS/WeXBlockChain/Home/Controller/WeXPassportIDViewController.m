@@ -95,7 +95,7 @@
     }];
     
     
-    NSString *content1 = @"当用户需要证明自己的身份时，他们通常必须向正在检查该信息的网站平台提供实际身份证信息。一些用户处于身份隐私的考虑可能不愿意分享自己的身份证信息。例：平台要接受用户共享自己拥有身份证这一标志，而不需要了解用户的具体身份证号码即可办理相关业务。口袋只允许用户共享身份证标志信息，并将其他个人隐私信息隐藏起来并保存在认证方即可。";
+    NSString *content1 = @"当用户需要证明自己的身份时，他们通常必须向正在检查该信息的网站平台提供实际身份证信息。一些用户处于身份隐私的考虑可能不愿意分享自己的身份证信息。例：平台要接受用户共享自己拥有身份证这一标志，而不需要了解用户的具体身份证号码即可办理相关业务。钱包只允许用户共享身份证标志信息，并将其他个人隐私信息隐藏起来并保存在认证方即可。";
     //设置间距
     NSMutableAttributedString *attrStr1 = [[NSMutableAttributedString alloc] initWithString:content1];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -128,7 +128,7 @@
 
 - (void)idBtnClick{
     
-    if ([WexCommonFunc getPassport].authenTxHash) {
+    if ([WexCommonFunc getPassport].idAuthenTxHash) {
         WeXPassportIDStatusController *ctrl = [[WeXPassportIDStatusController alloc] init];
         [self.navigationController pushViewController:ctrl animated:YES];
     }

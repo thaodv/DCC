@@ -7,6 +7,27 @@
 //
 
 #import "WeXBaseNetModal.h"
+//身份认证状态
+typedef NS_ENUM(NSInteger,WeXCreditIDAuthenStatusType) {
+    WeXCreditIDAuthenStatusTypeNone,//未认证
+    WeXCreditIDAuthenStatusTypeAuthening,//进行中
+    WeXCreditIDAuthenStatusTypeSuccess//已完成
+};
+
+//银行卡认证状态
+typedef NS_ENUM(NSInteger,WeXCreditBankAuthenStatusType) {
+    WeXCreditBankAuthenStatusTypeNone,//未认证
+    WeXCreditBankAuthenStatusTypeAuthening,//进行中
+    WeXCreditBankAuthenStatusTypeSuccess//已完成
+};
+
+//手机运营商证状态
+typedef NS_ENUM(NSInteger,WeXCreditMobileOperatorAuthenStatusType) {
+    WeXCreditMobileOperatorAuthenStatusTypeNone,//未认证
+    WeXCreditMobileOperatorAuthenStatusTypeAuthening,//进行中
+    WeXCreditMobileOperatorAuthenStatusTypeSuccess,//已完成
+    WeXCreditMobileOperatorAuthenStatusTypeInvalid //已过期
+};
 
 typedef NS_ENUM(NSInteger,WeXPasswordType) {
     WeXPasswordTypeNone,
@@ -21,7 +42,7 @@ typedef NS_ENUM(NSInteger,WeXPasswordType) {
 @property (nonatomic,copy)NSString *rsaPublicKey;
 //RSA私钥
 @property (nonatomic,copy)NSString *rasPrivateKey;
-//口袋密码
+//钱包密码
 @property (nonatomic,copy)NSString *passportPassword;
 //钱包私钥
 @property (nonatomic,copy)NSString *walletPrivateKey;
@@ -35,10 +56,23 @@ typedef NS_ENUM(NSInteger,WeXPasswordType) {
 @property (nonatomic,assign)WeXPasswordType passwordType;
 //统一登录状态
 @property (nonatomic,assign)BOOL isAllow;
+//是否注册
+@property (nonatomic,assign)BOOL hasMemberId;
+
+
+#pragma mark - 用户认证相关 --身份证认证
+//身份认证状态
+@property (nonatomic,assign)WeXCreditIDAuthenStatusType idAuthenStatus;
+//身份认证Nonce
+@property (nonatomic,copy)NSString *idAuthenNonce;
+//身份认证OrderId
+@property (nonatomic,copy)NSString *idAuthenOrderId;
+//身份认证txhash
+@property (nonatomic,copy)NSString *idAuthenTxHash;
+
+@property (nonatomic,copy)NSString *similarity;
 
 //用户相关信息
-//身份认证txhash
-@property (nonatomic,copy)NSString *authenTxHash;
 //地址
 @property (nonatomic,copy)NSString *userAddress;
 //姓名
@@ -54,12 +88,47 @@ typedef NS_ENUM(NSInteger,WeXPasswordType) {
 //签名机构
 @property (nonatomic,copy)NSString *userAuthority;
 
-
 @property (nonatomic,copy)NSString *userYear;
 
 @property (nonatomic,copy)NSString *userMonth;
 
 @property (nonatomic,copy)NSString *userDay;
+
+#pragma mark - 用户认证相关 --银行卡认证
+
+//银行卡认证状态
+@property (nonatomic,assign)WeXCreditBankAuthenStatusType bankAuthenStatus;
+//银行卡认证Nonce
+@property (nonatomic,copy)NSString *bankAuthenNonce;
+//银行卡认证OrderId
+@property (nonatomic,copy)NSString *bankAuthenOrderId;
+//银行卡认证txhash
+@property (nonatomic,copy)NSString *bankAuthenTxHash;
+
+@property (nonatomic,copy)NSString *bankAuthenTicket;
+
+@property (nonatomic,copy)NSString *bankAuthenCode;
+
+@property (nonatomic,copy)NSString *bankAuthenCardName;
+
+@property (nonatomic,copy)NSString *bankAuthenCardNumber;
+
+@property (nonatomic,copy)NSString *bankAuthenMobile;
+
+#pragma mark - 用户认证相关 --手机运营商认证
+
+//手机运营商认证状态
+@property (nonatomic,assign)WeXCreditMobileOperatorAuthenStatusType mobileAuthenStatus;
+//手机运营商认证Nonce
+@property (nonatomic,copy)NSString *mobileAuthenNonce;
+//手机运营商认证OrderId
+@property (nonatomic,copy)NSString *mobileAuthenOrderId;
+//手机运营商认证txhash
+@property (nonatomic,copy)NSString *mobileAuthenTxHash;
+
+//手机号码
+@property (nonatomic,copy)NSString *mobileAuthenNumber;
+
 
 + (instancetype)sharedInstance;
 

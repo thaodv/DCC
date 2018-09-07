@@ -1,0 +1,27 @@
+//2018.7.23 对于Xib中文件的国际化
+/* Class = "UILabel"; text = "更多"; ObjectID = "ENX-3q-Z5I"; */
+"ENX-3q-Z5I.text" = "More";
+
+/* Class = "UILabel"; text = "信用借币"; ObjectID = "FmH-bk-fOy"; */
+"FmH-bk-fOy.text" = "Loan";
+
+/* Class = "UILabel"; text = "信用借币"; ObjectID = "HCv-6x-03M"; */
+"HCv-6x-03M.text" = "Loan";
+
+/* Class = "UILabel"; text = "借贷报告"; ObjectID = "RKG-nC-4JI"; */
+"RKG-nC-4JI.text" = "Report";
+
+/* Class = "UILabel"; text = "我的信用"; ObjectID = "Vzv-9C-J7U"; */
+"Vzv-9C-J7U.text" = "Credit";
+
+/* Class = "UILabel"; text = "我的信用"; ObjectID = "YGE-Dk-D3g"; */
+"YGE-Dk-D3g.text" = "Credit";
+
+/* Class = "UILabel"; text = "数字资产"; ObjectID = "a9a-JS-fss"; */
+"a9a-JS-fss.text" = "Assets";
+
+/* Class = "UILabel"; text = "糖果领取"; ObjectID = "diG-oz-B8k"; */
+"diG-oz-B8k.text" = "Candies";
+
+/* Class = "UILabel"; text = "糖果领取"; ObjectID = "fmH-LN-YQ6"; */
+"fmH-LN-YQ6.text" = "Candies";

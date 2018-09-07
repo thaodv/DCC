@@ -23,7 +23,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"口袋介绍";
+    self.navigationItem.title = @"钱包介绍";
     [self setNavigationNomalBackButtonType];
     [self addDatas];
     [self setupSubViews];
@@ -32,11 +32,11 @@
 - (void)addDatas{
     self.datasArray = [NSMutableArray array];
     WeXPassportDescriptionModal *model1 = [[WeXPassportDescriptionModal alloc] init];
-    model1.content = @"数字社会的数字身份证\n随着信息技术的发展，数字社会正在形成，数字身份将深刻影响未来社会的方方面面。全向口袋的口袋就是您在数字社会的数字身份证，它可以有效的在区块链中认定持有人的唯一身份，黑客无法通过反向计算等方式仿冒口袋持有人的唯一身份";
+    model1.content = @"数字社会的数字身份证\n随着信息技术的发展，数字社会正在形成，数字身份将深刻影响未来社会的方方面面。BitExpress钱包的钱包就是您在数字社会的数字身份证，它可以有效的在区块链中认定持有人的唯一身份，黑客无法通过反向计算等方式仿冒钱包持有人的唯一身份";
     model1.isSpread = NO;
     
     WeXPassportDescriptionModal *model2 = [[WeXPassportDescriptionModal alloc] init];
-    model2.content = @"自主身份信息\n全向口袋的口袋在外部认证方能够对个人身份的有效性、真实性和唯一性等进行合理验证，并且将身份控制权从其他信息服务机构重新收回到个人手中，为用户塑造完整、可信的身份认证。将哪些信息提供给其他信息消费方，所有信息均保存在本地设备中，用户拥有着最终决定权。";
+    model2.content = @"自主身份信息\nBitExpress钱包的钱包在外部认证方能够对个人身份的有效性、真实性和唯一性等进行合理验证，并且将身份控制权从其他信息服务机构重新收回到个人手中，为用户塑造完整、可信的身份认证。将哪些信息提供给其他信息消费方，所有信息均保存在本地设备中，用户拥有着最终决定权。";
     model2.isSpread = NO;
     
     WeXPassportDescriptionModal *model3 = [[WeXPassportDescriptionModal alloc] init];

@@ -32,6 +32,7 @@
 
 @implementation WeXNumberSafetyView
 
+//2018.7.24 数字密码
 -(instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -59,10 +60,10 @@
 {
     _type = type;
     if (self.type == WeXNumberPasswordTypeCreate) {
-        _titleLabel.text = @"启用数字密码";
+        _titleLabel.text = WeXLocalizedString(@"启用数字密码");
     }
     else if (self.type == WeXNumbePasswordTypeVerify){
-        _titleLabel.text = @"验证数字密码";
+        _titleLabel.text = WeXLocalizedString(@"验证数字密码");
     }
 }
 
@@ -70,9 +71,9 @@
 - (void)setupSubViews{
     
     _titleLabel = [[UILabel alloc] init];
-    _titleLabel.text = @"启用数字密码";
+    _titleLabel.text = WeXLocalizedString(@"启用数字密码");
     _titleLabel.font = [UIFont systemFontOfSize:20];
-    _titleLabel.textColor = ColorWithRGB(249, 31, 117);
+    _titleLabel.textColor = COLOR_LABEL_TITLE;
     _titleLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:_titleLabel];
     [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -99,7 +100,7 @@
     {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeSystem];
         [btn setTitle:titleArray[i] forState:UIControlStateNormal];
-        [btn setTitleColor:ColorWithRGB(249, 31, 117) forState:UIControlStateNormal];
+        [btn setTitleColor:COLOR_THEME_ALL forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(numberButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         btn.titleLabel.font = [UIFont systemFontOfSize:22];
         [self addSubview:btn];
@@ -115,14 +116,14 @@
     }
     
     _deleteBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [_deleteBtn setTitle:@"<删除" forState:UIControlStateNormal];
-    [_deleteBtn setTitleColor:ColorWithRGB(249, 31, 117) forState:UIControlStateNormal];
+    [_deleteBtn setTitle:WeXLocalizedString(@"<删除") forState:UIControlStateNormal];
+    [_deleteBtn setTitleColor:COLOR_THEME_ALL forState:UIControlStateNormal];
     [_deleteBtn addTarget:self action:@selector(deleteBtnClick) forControlEvents:UIControlEventTouchUpInside];
     _deleteBtn.titleLabel.font = [UIFont systemFontOfSize:17];
     [self addSubview:_deleteBtn];
     
     UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelBtn setTitle:WeXLocalizedString(@"取消") forState:UIControlStateNormal];
     [cancelBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
     cancelBtn.titleLabel.font = [UIFont systemFontOfSize:17];
@@ -140,7 +141,7 @@
     [line2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(cancelBtn.mas_top);
         make.leading.trailing.equalTo(self);
-        make.height.mas_equalTo(LINE_VIEW_Width);
+        make.height.mas_equalTo(HEIGHT_LINE);
     }];
 }
 
@@ -190,7 +191,7 @@
                 if ([self.numberPasswordStr isEqualToString:self.lastNumberPasswordStr])
                 {
                     // 验证通过，将密码保存至本地
-                    NSLog(@"保存成功,密码=%@",self.numberPasswordStr);
+                    NSLog(WeXLocalizedString(@"保存成功,密码=%@"),self.numberPasswordStr);
                     WeXPasswordCacheModal *model = [WexCommonFunc getPassport];
                     if (model) {
                         model.numberPassword = self.numberPasswordStr;
@@ -204,12 +205,12 @@
                 }
                 else
                 {
-                    _descriptionLabel.text = @"数字密码错误，请重试";
+                    _descriptionLabel.text = WeXLocalizedString(@"数字密码错误，请重试");
                 }
             }
             else
             {
-                _titleLabel.text = @"再次输入数字密码";
+                _titleLabel.text = WeXLocalizedString(@"再次输入数字密码");
                 // 将初始密码保存
                 self.lastNumberPasswordStr = self.numberPasswordStr;
             }
@@ -222,14 +223,14 @@
             if ([password isEqualToString:self.numberPasswordStr])
             {
                 // 解锁成功
-                NSLog(@"解锁成功");
+                NSLog(WeXLocalizedString(@"解锁成功"));
                 if ([_delegate respondsToSelector:@selector(numberSafetyViewVerifySuccess)]) {
                     [self.delegate numberSafetyViewVerifySuccess];
                 }
             }
             else
             {
-                _descriptionLabel.text = @"数字密码错误，请重试";
+                _descriptionLabel.text = WeXLocalizedString(@"数字密码错误，请重试");
             }
             
             
