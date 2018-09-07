@@ -35,12 +35,12 @@ class CloudAddressActivity : BaseCompatActivity() {
 
     private fun initClick() {
         copy_hash.onClick {
-            cm.text = cloud_address_hash.text
+            cm.text = cloud_address_hash.text.toString()
             toast("复制Hash成功")
         }
 
         copy_address.onClick {
-            cm.text = cloud_address_address.text
+            cm.text = cloud_address_address.text.toString()
             toast("复制地址成功")
         }
     }
@@ -53,10 +53,10 @@ class CloudAddressActivity : BaseCompatActivity() {
             val url = BuildConfig.IPFS_ADDRESS
             val list = url.split(':')
            val host=list[1].substring(2,list[1].length)
-            cloud_address_address.text = "http://$host:8080/ipfs/$token"
+            cloud_address_address.text = "http://$host:8000/ipfs/$token"
         } else {
             val urlConfig = passport.getIpfsUrlConfig()
-            cloud_address_address.text = "http://${urlConfig.first}:8080/ipfs/$token"
+            cloud_address_address.text = "http://${urlConfig.first}:8000/ipfs/$token"
         }
 
 

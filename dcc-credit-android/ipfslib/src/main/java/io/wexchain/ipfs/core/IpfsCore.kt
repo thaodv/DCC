@@ -16,12 +16,17 @@ import java.io.File
 object IpfsCore {
 
     private lateinit var baseUrl: String
+
     private val api: IpfsApi by lazy {
         Networking.createApi(IpfsApi::class.java)
     }
 
     fun init(baseUrl: String) {
         this.baseUrl = baseUrl
+    }
+
+    fun init(host: String, port: String) {
+        this.baseUrl = creatUrl(host, port)
     }
 
     fun creatUrl(host: String, port: String) = "http://$host:$port/api/v0/"

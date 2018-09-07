@@ -137,7 +137,7 @@ object IpfsOperations {
 
     fun Single<String>.transactionReceipt(business: String): Single<EthJsonTxReceipt> {
         return this.flatMap {
-            App.get().contractApi.transactionReceipt(business, it).retryWhen(RetryWithDelay.createGrowth(5, 1000))
+            App.get().contractApi.transactionReceipt(business, it).retryWhen(RetryWithDelay.createGrowth(10, 2000))
         }
     }
 

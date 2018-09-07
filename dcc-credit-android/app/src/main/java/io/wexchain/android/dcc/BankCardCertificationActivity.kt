@@ -3,6 +3,7 @@ package io.wexchain.android.dcc
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
+import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
@@ -12,16 +13,17 @@ import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.vm.CertificationDataVm
 import io.wexchain.android.dcc.vm.ViewModelHelper
+import io.wexchain.android.dcc.vm.domain.BankCardInfo
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityCertificationDataBinding
 
 class BankCardCertificationActivity : BindActivity<ActivityCertificationDataBinding>() {
+
     override val contentLayoutId: Int = R.layout.activity_certification_data
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-
     }
 
     override fun onResume() {
@@ -43,17 +45,22 @@ class BankCardCertificationActivity : BindActivity<ActivityCertificationDataBind
             }
         })
         binding.vm = vm
-        if (data.bankName.isNullOrEmpty()){
+        if (data.bankName.isNullOrEmpty()) {
             App.get().marketingApi.getBankList()
                     .checkonMain()
-                    .subscribeBy {
-                        for (item in it){
-                            if(data.bankCode == item.bankCode){
-                                vm.value1.set(item.bankName)
-                            }
-                        }
+                    .toObservable()
+                    .flatMap {
+                        Observable.fromIterable(it)
                     }
-        }else{
+                    .filter {
+                        data.bankCode == it.bankCode
+                    }
+                    .subscribeBy {
+                        vm.value1.set(it.bankName)
+                        val info = CertOperations.getCertBankCardData()!!
+                        CertOperations.setCertBankCardData(BankCardInfo(info.bankCode, info.bankCardNo, info.phoneNo, it.bankName))
+                    }
+        } else {
             vm.value1.set(data.bankName)
         }
     }

@@ -32,7 +32,7 @@
         android:layout_marginLeft="@dimen/content_padding_horizontal"
         android:layout_marginRight="@dimen/content_padding_horizontal"
         android:layout_marginTop="20dp"
-        android:text="1. 开始云存储功能有什么好处\n\t开启后，可将您手机本地的认证信息和借贷报告加密后上传到云空间，删除钱包重新导入或更换设备时，可以同步到手机，无需再次认证。\n\n
+        android:text="1. 开始云存储功能有什么好处\n\t开启后，可将您手机本地的已认证数据加密后上传到云空间，删除钱包重新导入或更换设备时，可以同步到手机，无需再次认证。\n\n
 
 2. 数据会存储在哪里\n\t
 IPFS,  一个分布式存储和共享文件的网络传输协议系统。数据将以中心化方式存储，比起传统方式更加稳定高效。\n\n

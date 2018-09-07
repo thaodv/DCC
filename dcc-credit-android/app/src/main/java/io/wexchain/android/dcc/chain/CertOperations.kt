@@ -571,6 +571,10 @@ object CertOperations {
         }
     }
 
+    fun setCertBankCardData(info: BankCardInfo) {
+        certPrefs.certBankCardData.set(info.toJson())
+    }
+
     fun getBankCardCertExpired(): Long {
         return certPrefs.certBankExpired.get()
     }
@@ -657,7 +661,7 @@ object CertOperations {
     }
 
     fun saveIpfsBankData(bankInfo: BankInfo) {
-        val bankCardInfo = BankCardInfo(bankInfo.bankAuthenCode, bankInfo.bankAuthenCodeNumber, bankInfo.bankAuthenMobile,bankInfo.bankAuthenName)
+        val bankCardInfo = BankCardInfo(bankInfo.bankAuthenCode, bankInfo.bankAuthenCodeNumber, bankInfo.bankAuthenMobile, bankInfo.bankAuthenName)
         certPrefs.certBankOrderId.set(bankInfo.bankAuthenOrderid.toLong())
         certPrefs.certBankStatus.set(bankInfo.bankAuthenStatus)
         certPrefs.certBankExpired.set(bankInfo.bankAuthenExpired)
