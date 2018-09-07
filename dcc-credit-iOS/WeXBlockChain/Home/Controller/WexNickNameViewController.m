@@ -9,6 +9,7 @@
 #import "WexNickNameViewController.h"
 #import "YYKeyboardManager.h"
 
+
 @interface WexNickNameViewController ()<UITextFieldDelegate,WexBaseViewControllerProtocol,YYKeyboardObserver>
 {
     WeXCustomButton *_commitBtn;
@@ -30,11 +31,11 @@
     self.delegate=self;
     
     if(!self.nickName)
-        self.txtNickName.text=@"口袋";
+        self.txtNickName.text=WeXLocalizedString(@"钱包");
     else
         self.txtNickName.text=[[WexDefaultConfig instance] nickName];
     
-    self.txtNickName.textColor = ColorWithLabelDescritionBlack;
+    self.txtNickName.textColor = COLOR_LABEL_DESCRIPTION;
     
     self.txtNickName.delegate=self;
     
@@ -46,7 +47,7 @@
 
 - (void)setupSubViews{
     WeXCustomButton *commitBtn = [WeXCustomButton button];
-    [commitBtn setTitle:@"提交" forState:UIControlStateNormal];
+    [commitBtn setTitle:WeXLocalizedString(@"保存") forState:UIControlStateNormal];
     [commitBtn addTarget:self action:@selector(commitBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:commitBtn];
     [commitBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -105,8 +106,8 @@
     
     if(self.txtNickName.text.length==0)
     {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"没有输入昵称，请重新填写"
-                                                      delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles: nil];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:WeXLocalizedString(@"没有输入昵称，请重新填写")
+                                                      delegate:nil cancelButtonTitle:WeXLocalizedString(@"我知道了") otherButtonTitles: nil];
         [alert show];
         return;
     }
@@ -115,7 +116,7 @@
         [[WexDefaultConfig instance] setNickName:self.txtNickName.text];
         [[WexDefaultConfig instance] commit];
 
-        [WeXPorgressHUD showText:@"昵称修改成功" onView:self.view];
+        [WeXPorgressHUD showText:WeXLocalizedString(@"昵称修改成功") onView:self.view];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:WEX_CHANGE_NICK_NAME_NOTIFY object:nil userInfo:nil];
         
@@ -158,8 +159,8 @@
     
     if(self.txtNickName.text.length==0)
     {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"没有输入昵称，请重新填写"
-                                                      delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles: nil];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:WeXLocalizedString(@"没有输入昵称，请重新填写")
+                                                      delegate:nil cancelButtonTitle:WeXLocalizedString(@"我知道了") otherButtonTitles: nil];
         [alert show];
         return;
     }
@@ -171,7 +172,7 @@
         //        NSString* nick2=[[WexDefaultConfig instance] nickName];
         //        [WexDefaultConfig clearAll]; // 清空default
 //        [[IYNotifyManager shareInstance] postNotifyKey:IY_NOTIFY_NICKNAME_CHANGED]; // 通知昵称变化
-        [WeXPorgressHUD showText:@"昵称修改成功" onView:self.view];
+        [WeXPorgressHUD showText:WeXLocalizedString(@"昵称修改成功") onView:self.view];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.navigationController popViewControllerAnimated:YES];
         });

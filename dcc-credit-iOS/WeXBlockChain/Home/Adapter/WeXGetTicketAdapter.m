@@ -12,12 +12,19 @@
 
 - (NSString*)getRequestUrl
 {
-    return @"getTicket";
+    return @"ticket/1/getTicket";
 }
+
+- (WexBaseUrlType)getBasetUrlType
+{
+    return WexBaseUrlTypeAuthen;
+}
+
 
 - (Class)getResponseClass
 {
     return [WeXGetTicketResponseModal class];
 }
+
 
 @end

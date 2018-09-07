@@ -7,6 +7,8 @@
 //
 
 #import "WeXBaseViewController.h"
+#import "IQKeyboardManager.h"
+
 
 @interface WeXBaseViewController ()
 
@@ -18,6 +20,7 @@
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
+    [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
 //    if (self.backgroundType == WeXBaseViewBackgroundTypeNormal) {
 //       [self setupNormalBackgroundStyle];
 //    }

@@ -11,6 +11,7 @@
 #import <MGIDCard/MGIDCard.h>
 
 #import "WeXGetOcrInfoAdapter.h"
+#import "WeXPassportIDCacheInfoModal.h"
 
 @interface WeXPassportIDScanController ()
 {

@@ -10,9 +10,21 @@
 
 @implementation WeXGetReceiptResultAdapter
 
+
 - (NSString*)getRequestUrl
 {
-    return @"hasReceipt";
+    return @"receipt/1/hasReceipt";
+}
+
+
+- (WexBaseUrlType)getBasetUrlType
+{
+    return WexBaseUrlTypeAuthen;
+}
+
+-(WexNetAdapterRequestType)getNetAdapterRequestType
+{
+    return WexNetAdapterRequestTypeGET;
 }
 
 - (Class)getResponseClass

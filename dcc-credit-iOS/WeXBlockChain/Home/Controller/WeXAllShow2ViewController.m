@@ -74,9 +74,9 @@
     }];
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"全向体育";
+    titleLabel.text = @"BitExpress体育";
     titleLabel.font = [UIFont systemFontOfSize:18];
-    titleLabel.textColor = ColorWithLabelDescritionBlack;
+    titleLabel.textColor = COLOR_LABEL_DESCRIPTION;
     titleLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -88,7 +88,7 @@
     
     UILabel *contentLabel = [[UILabel alloc] init];
     contentLabel.font = [UIFont systemFontOfSize:15];
-    contentLabel.textColor = ColorWithLabelDescritionBlack;
+    contentLabel.textColor = COLOR_LABEL_DESCRIPTION;
     contentLabel.textAlignment = NSTextAlignmentLeft;
     contentLabel.numberOfLines = 0;
     [self.view addSubview:contentLabel];
@@ -112,7 +112,7 @@
     //输入文本框
 //    UITextView *contentTextView = [[UITextView alloc] init];
 //    contentTextView.backgroundColor = [UIColor clearColor];
-//    contentTextView.textColor = ColorWithLabelDescritionBlack;
+//    contentTextView.textColor = COLOR_LABEL_DESCRIPTION;
 //    contentTextView.font = [UIFont systemFontOfSize:20];
 //    contentTextView.editable = NO;
 //    [self.view addSubview:contentTextView];
@@ -124,7 +124,7 @@
 //    }];
 //    contentTextView.text =
     
-    NSString *content1 = @"全向是专注于体育行业的科技公司，全向体育APP是奔跑中国马拉松赛事官方指定报名APP，为广大运动爱好者提供一键报名、状态查询等便捷赛事管理功能。独立的运动体系算法，实时定位，支持户外运动轨迹追踪、卡路里消耗查询。";
+    NSString *content1 = @"BitExpress是专注于体育行业的科技公司，BitExpress体育APP是奔跑中国马拉松赛事官方指定报名APP，为广大运动爱好者提供一键报名、状态查询等便捷赛事管理功能。独立的运动体系算法，实时定位，支持户外运动轨迹追踪、卡路里消耗查询。";
 //    contentTextView.text = content1;
     //设置间距
     NSMutableAttributedString *attrStr1 = [[NSMutableAttributedString alloc] initWithString:content1];

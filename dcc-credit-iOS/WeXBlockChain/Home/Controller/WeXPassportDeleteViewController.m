@@ -13,6 +13,13 @@
 #import "WeXBaseNavigationController.h"
 #import "WeXDeletePassportView.h"
 
+#import "WeXPassportViewController.h"
+#import "WeXDefaultTokenManager.h"
+
+#import "WeXCreditDccMobileCacheModal.h"
+#import "WeXCreditDccBankCacheModal.h"
+#import "WeXCreditDccIDCacheModal.h"
+
 
 
 @interface WeXPassportDeleteViewController ()<WeXDeletePassportViewDelegate,WeXPasswordManagerDelegate>
@@ -26,9 +33,10 @@
 
 @implementation WeXPassportDeleteViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"删除口袋";
+    self.navigationItem.title = WeXLocalizedString(@"删除钱包");
     [self setNavigationNomalBackButtonType];
     [self setupSubViews];
 }
@@ -37,9 +45,10 @@
 -(void)setupSubViews{
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"删除口袋后，您只能通过导入口袋恢复当前口袋的使用，如果您未备份口袋，则无法继续使用当前口袋。强烈建议您在删除口袋之前备份口袋。";
+    //PassportDeleteViewControllerTipsMessage
+    titleLabel.text = WeXLocalizedString(@"PassportDeleteViewControllerTipsMessage");
     titleLabel.font = [UIFont systemFontOfSize:17];
-    titleLabel.textColor = ColorWithLabelDescritionBlack;
+    titleLabel.textColor = COLOR_LABEL_DESCRIPTION;
     titleLabel.textAlignment = NSTextAlignmentLeft;
     titleLabel.numberOfLines = 0;
     [self.view addSubview:titleLabel];
@@ -49,12 +58,8 @@
         make.trailing.equalTo(self.view).offset(-20);
     }];
     
-    UIButton *backupBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [backupBtn setTitle:@"备份口袋" forState:UIControlStateNormal];
-    [backupBtn setTitleColor:ColorWithButtonRed forState:UIControlStateNormal];
-    backupBtn.layer.borderWidth = 1;
-    backupBtn.layer.borderColor = ColorWithButtonRed.CGColor;
-    backupBtn.layer.cornerRadius = 5;
+    UIButton *backupBtn = [WeXCustomButton button];
+    [backupBtn setTitle:WeXLocalizedString(@"备份钱包") forState:UIControlStateNormal];
     [backupBtn addTarget:self action:@selector(backupBtnClick) forControlEvents:UIControlEventTouchUpInside];
     backupBtn.titleLabel.font = [UIFont systemFontOfSize:17];
     [self.view addSubview:backupBtn];
@@ -65,12 +70,8 @@
         make.height.equalTo(@30);
     }];
     
-    UIButton *deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [deleteBtn setTitle:@"删除口袋" forState:UIControlStateNormal];
-    [deleteBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    deleteBtn.backgroundColor = ColorWithButtonRed;
-    deleteBtn.layer.cornerRadius = 3;
-    deleteBtn.layer.masksToBounds = YES;
+    UIButton *deleteBtn = [WeXCustomButton button];
+    [deleteBtn setTitle:WeXLocalizedString(@"删除钱包") forState:UIControlStateNormal];
     [deleteBtn addTarget:self action:@selector(deleteBtnClick) forControlEvents:UIControlEventTouchUpInside];
     deleteBtn.titleLabel.font = [UIFont systemFontOfSize:18];
     [self.view addSubview:deleteBtn];
@@ -95,14 +96,11 @@
     
     [self createDeleteView];
     
-  
-    
-    
     
 }
 
 
-//点击删除口袋
+//点击删除钱包
 - (void)deletePassportViewDidDeletePassport{
     
     WeXPasswordCacheModal *model = [WexCommonFunc getPassport];
@@ -136,10 +134,28 @@
     [WexCommonFunc deleteImageWithName:WEX_ID_IMAGE_BACK_KEY];
     [WexCommonFunc deleteImageWithName:WEX_ID_IMAGE_HEAD_KEY];
     
-    [WeXPorgressHUD showText:@"删除成功" onView:self.view];
+    WeXCreditDccIDCacheModal *idCacheModel = [WeXCreditDccIDCacheModal sharedInstance];
+    [idCacheModel clearCacheData];
+    
+    WeXCreditDccBankCacheModal *bankCacheModel = [WeXCreditDccBankCacheModal sharedInstance];
+    [bankCacheModel clearCacheData];
+    
+    WeXCreditDccMobileCacheModal *mobileCacheModel = [WeXCreditDccMobileCacheModal sharedInstance];
+    [mobileCacheModel clearCacheData];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults removeObjectForKey:WEX_NET_TOKEN_KEY];
+    [userDefaults removeObjectForKey:WEX_LOAN_REPORT_TIME_KEY];
+    [userDefaults removeObjectForKey:WEX_LOAN_REPORT_CONTENT_KEY];
+    [userDefaults synchronize];
+ 
+    [WeXPorgressHUD showText:WeXLocalizedString(@"删除成功") onView:self.view];
+    
+    WeXDefaultTokenManager *tokenManager = [WeXDefaultTokenManager shareManager];
+    [tokenManager initDefaultToken];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        WeXHomeViewController *ctrl = [[WeXHomeViewController alloc] init];
+        WeXPassportViewController *ctrl = [[WeXPassportViewController alloc] init];
         WeXBaseNavigationController *navCtrl = [[WeXBaseNavigationController alloc] initWithRootViewController:ctrl];
         AppDelegate* appDelagete = (AppDelegate*)[UIApplication sharedApplication].delegate;
         appDelagete.window.rootViewController = navCtrl;

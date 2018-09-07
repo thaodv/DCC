@@ -16,6 +16,10 @@
 #import "WeXGetReceiptResultAdapter.h"
 #import "WeXGetPubKeyAdapter.h"
 
+#import "WeXGetMemberIdAdapter.h"
+#import "WeXBorrowGetNonceAdapter.h"
+#import "WeXInviteCodeViewController.h"
+
 #define kTitleButtonHeight 50
 typedef NS_ENUM(NSInteger,WeXImportPassportType) {
     WeXImportPassportTypeKeyStore,
@@ -33,7 +37,7 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
     NSString *_rsaPrivateKey;
     NSString *_walletAddress;//钱包地址
     NSString *_walletPrivateKey;//钱包私钥
-    NSDictionary *_keyStroe;//口袋
+    NSDictionary *_keyStroe;//钱包
     
     NSString *_rawTransaction;
     
@@ -44,6 +48,12 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
     NSInteger _requestCount;//查询上链结果请求的次数
     
     UILabel *_centreDescriptionLabel;
+    UILabel *_titleDescriptionLabel;
+    
+    UIButton *_showBtn;
+    UIImageView *_backImageView;
+    
+    NSString *_nonce;
 }
 
 @property (nonatomic,assign)WeXImportPassportType importType;
@@ -64,6 +74,12 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
 @property (nonatomic,strong)WeXGetReceiptResultAdapter *getReceiptAdapter;
 @property (nonatomic,strong)WeXGetPubKeyAdapter *getPubKeyAdapter;
 @property (nonatomic,strong)WeXGetTicketResponseModal *getTicketModel;
+
+@property (nonatomic,strong)WeXBorrowGetNonceAdapter *getNonceAdapter;
+
+@property (nonatomic,strong)WeXGetMemberIdAdapter *getMemberAdapter;
+
+
 //图形码按钮
 @property (nonatomic,strong)UIButton *graphBtn;
 
@@ -77,12 +93,11 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"导入已有钱包";
+    self.navigationItem.title = WeXLocalizedString(@"导入已有钱包");
     [[YYKeyboardManager defaultManager] addObserver:self];
     self.importType = WeXImportPassportTypeKeyStore;
     [self setNavigationNomalBackButtonType];
     [self setupSubViews];
-    [self createGetTicketRequest];
 }
 
 - (void)initPassHelper{
@@ -92,7 +107,7 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
         if(response!=nil)
         {
             NSError* error=response;
-            NSLog(@"容器加载失败:%@",error);
+            NSLog(WeXLocalizedString(@"容器加载失败:%@"),error);
             return;
         }
         [[WXPassHelper instance] initProvider:YTF_DEVELOP_SERVER responseBlock:^(id response) {
@@ -134,7 +149,7 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
             if([response isKindOfClass:[NSDictionary class]])
             {
                 [WeXPorgressHUD hideLoading];
-                [WeXPorgressHUD showText:@"KeyStore信息或口袋密码错误" onView:self.view];
+                [WeXPorgressHUD showText:WeXLocalizedString(@"KeyStore信息或钱包密码错误") onView:self.view];
                 return;
             };
             //导入成功
@@ -156,7 +171,7 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
             if(hasError.length > 0)
             {
                 [WeXPorgressHUD hideLoading];
-                [WeXPorgressHUD showText:@"私钥明文格式不对!" onView:self.view];
+                [WeXPorgressHUD showText:WeXLocalizedString(@"私钥明文格式不对!") onView:self.view];
                 return;
             };
         }];
@@ -217,17 +232,37 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
     [_getReceiptAdapter run:paramModal];
 }
 
+#pragma -mark 发送请求
+- (void)createGetNonceRequest{
+    _getNonceAdapter = [[WeXBorrowGetNonceAdapter alloc] init];
+    _getNonceAdapter.delegate = self;
+    WeXBorrowGetNonceParamModal* paramModal = [[WeXBorrowGetNonceParamModal alloc] init];
+    [_getNonceAdapter run:paramModal];
+}
+
+#pragma -mark 获取数据发送请求
+- (void)createGetMemberRequest{
+    _getMemberAdapter = [[WeXGetMemberIdAdapter alloc] init];
+    _getMemberAdapter.delegate = self;
+    WeXGetMemberIdParamModal *modal = [[WeXGetMemberIdParamModal alloc] init];
+    modal.nonce = _nonce;
+    modal.address = [WexCommonFunc getFromAddress];
+    [_getMemberAdapter run:modal];
+    
+}
+
 #pragma mark - 请求回调
 - (void)wexBaseNetAdapterDelegate:(WexBaseNetAdapter *)adapter head:(WexBaseNetAdapterResponseHeadModal *)headModel response:(WeXBaseNetModal *)response{
     if (adapter == _getTicketAdapter) {
         if ([headModel.systemCode isEqualToString:@"SUCCESS"]&&[headModel.businessCode isEqualToString:@"SUCCESS"]) {
             _getTicketModel = (WeXGetTicketResponseModal *)response;
-            [_graphBtn setImage:[WexCommonFunc imageWihtBase64String:_getTicketModel.image] forState:UIControlStateNormal];
+            [self initPassHelper];
+
         }
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _getContractAddressAdapter){
@@ -235,12 +270,13 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
             WeXGetContractAddressResponseModal *model = (WeXGetContractAddressResponseModal *)response;
             _contractAddress = model.result;
             //合约地址请求成功 然后开始初始化passhelper
-            [self initPassHelper];
+            [self createGetTicketRequest];
+
         }
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _uoloadPubKeyAdapter){
@@ -252,17 +288,12 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
         else if([headModel.businessCode isEqualToString:@"CHALLENGE_FAILURE"])
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"验证码不正确!" onView:self.view];
-        }
-        else if([headModel.businessCode isEqualToString:@"TICKET_INVALID"])
-        {
-            [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"验证码超时!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"验证码不正确!") onView:self.view];
         }
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _getReceiptAdapter){
@@ -291,62 +322,104 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
             }
             else
             {
-                //超过四次查询没有成功，调到口袋页面。设置状态为不可用
+                //超过四次查询没有成功，调到钱包页面。设置状态为不可用
                 if (_requestCount > 4) {
                     [WeXPorgressHUD hideLoading];
                     [self savePassport:NO];
-                    WeXRegisterSuccessViewController *ctrl = [[WeXRegisterSuccessViewController alloc] init];
-                    ctrl.type = WeXRegisterSuccessTypeImport;
-                    ctrl.isFromAuthorize = self.isFromAuthorize;
-                    ctrl.url = self.url;
-                    [self.navigationController pushViewController:ctrl animated:YES];
+                    [WeXPorgressHUD showText:WeXLocalizedString(@"导入失败!") onView:self.view];
                 }
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self createReceiptResultRequest];
-                    _requestCount++;
-                });
+                else{
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [self createReceiptResultRequest];
+                        _requestCount++;
+                    });
+                }
+                
             }
         }
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
         
         
     }
     else if (adapter == _getPubKeyAdapter){
         if ([headModel.systemCode isEqualToString:@"SUCCESS"]&&[headModel.businessCode isEqualToString:@"SUCCESS"]) {
-            [WeXPorgressHUD hideLoading];
             WeXGetPubKeyResponseModal *model = (WeXGetPubKeyResponseModal *)response;
             NSData *publicKeyData =  [[NSData alloc] initWithBase64EncodedString:model.result options:0];
             NSString *resultPublickKey  = [WexCommonFunc hexStringWithData:publicKeyData];
-            //相等表示口袋创建成功
+            //相等表示钱包创建成功
             if ([resultPublickKey isEqualToString:_rsaPublicKey]) {
                 [self savePassport:YES];
                 //保存统一操作记录
-                [WexCommonFunc saveManagerRecordWithTypeString:@"启用统一登录"];
+                [WexCommonFunc saveManagerRecordWithTypeString:WeXLocalizedString(@"启用统一登录")];
             }
             else
             {
                 [self savePassport:NO];
             }
             
-            WeXRegisterSuccessViewController *ctrl = [[WeXRegisterSuccessViewController alloc] init];
-            ctrl.type = WeXRegisterSuccessTypeImport;
-            ctrl.isFromAuthorize = self.isFromAuthorize;
-            ctrl.url = self.url;
-            [self.navigationController pushViewController:ctrl animated:YES];
+            [self createGetNonceRequest];
+          
         }
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
+        }
+    }
+   else if (adapter == _getNonceAdapter){
+        if ([headModel.systemCode isEqualToString:@"SUCCESS"]&&[headModel.businessCode isEqualToString:@"SUCCESS"]) {
+            WeXBorrowGetNonceResponseModal *model = (WeXBorrowGetNonceResponseModal *)response;
+            NSLog(@"model=%@",model);
+            _nonce = model.result;
+            if (_nonce) {
+                [self createGetMemberRequest];
+            }
+        }
+        else
+        {
+            [WeXPorgressHUD hideLoading];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:[UIApplication sharedApplication].keyWindow];
+        }
+    }
+    else if (adapter == _getMemberAdapter){
+        if ([headModel.systemCode isEqualToString:@"SUCCESS"]&&[headModel.businessCode isEqualToString:@"SUCCESS"]) {
+            [WeXPorgressHUD hideLoading];
+            WeXGetMemberIdResponseModal *model = (WeXGetMemberIdResponseModal *)response;
+            WEXNSLOG(@"%@",model);
+            if (model.memberId&&model.memberId.length > 0) {
+                WeXRegisterSuccessViewController *ctrl = [[WeXRegisterSuccessViewController alloc] init];
+                ctrl.type = WeXRegisterSuccessTypeImport;
+                [self.navigationController pushViewController:ctrl animated:YES];
+                
+                WeXPasswordCacheModal *model = [WexCommonFunc getPassport];
+                model.hasMemberId = YES;
+                [WexCommonFunc savePassport:model];
+            }
+            else
+            {
+                WeXInviteCodeViewController *ctrl = [[WeXInviteCodeViewController alloc] init];
+                ctrl.type = WeXRegisterSuccessTypeImport;
+                [self.navigationController pushViewController:ctrl animated:YES];
+            }
+        }
+        else if ([headModel.systemCode isEqualToString:@"SUCCESS"])
+        {
+            [WeXPorgressHUD hideLoading];
+            [WeXPorgressHUD showText:headModel.message onView:self.view];
+        }
+        else
+        {
+            [WeXPorgressHUD hideLoading];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
 }
 
-#pragma mark -保存口袋信息
+#pragma mark -保存钱包信息
 - (void)savePassport:(BOOL)isAllow
 {
     WeXPasswordCacheModal *model = [WeXPasswordCacheModal sharedInstance];
@@ -375,7 +448,7 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
     _privateKeyBtn =[UIButton buttonWithType:UIButtonTypeCustom];
     _privateKeyBtn.frame = CGRectMake(kScreenWidth/2, kNavgationBarHeight, kScreenWidth/2, kTitleButtonHeight);
     _privateKeyBtn.titleLabel.font = [UIFont systemFontOfSize:19];
-    [_privateKeyBtn setTitle:@"私钥明文" forState:UIControlStateNormal];
+    [_privateKeyBtn setTitle:WeXLocalizedString(@"私钥明文") forState:UIControlStateNormal];
     [_privateKeyBtn setTitleColor:COLOR_THEME_ALL forState:UIControlStateSelected];
     [_privateKeyBtn setTitleColor:COLOR_LABEL_DESCRIPTION forState:UIControlStateNormal];
     _privateKeyBtn.backgroundColor = [UIColor clearColor];
@@ -391,7 +464,11 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
     self.moveLine = line;
     //粘贴背景框
     UIImageView *backImageView = [[UIImageView alloc] init];
-    backImageView.image = [UIImage imageNamed:@"copyFrame"];
+//    backImageView.image = [UIImage imageNamed:@"copyFrame"];
+    backImageView.layer.cornerRadius = 12;
+    backImageView.layer.masksToBounds = YES;
+    backImageView.layer.borderWidth = 1;
+    backImageView.layer.borderColor =ColorWithHex(0xdcdcdc).CGColor;
     [self.view addSubview:backImageView];
     [backImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_keyStroeBtn.mas_bottom).offset(0);
@@ -399,12 +476,15 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
         make.trailing.equalTo(self.view).offset(-20);
         make.height.equalTo(@140);
     }];
+    _backImageView = backImageView;
+    
+    
     //输入文本框
     UITextView *contentTextView = [[UITextView alloc] init];
     contentTextView.delegate = self;
     contentTextView.font = [UIFont systemFontOfSize:15];
     contentTextView.backgroundColor = [UIColor clearColor];
-    contentTextView.textColor = ColorWithLabelDescritionBlack;
+    contentTextView.textColor = COLOR_LABEL_DESCRIPTION;
     [self.view addSubview:contentTextView];
     [contentTextView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(backImageView).offset(10);
@@ -417,9 +497,9 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
     
     //粘贴框提示文字
     _descriptionLabel = [[UILabel alloc] init];
-    _descriptionLabel.text = @"请粘贴KeyStore信息";
+    _descriptionLabel.text = WeXLocalizedString(@"请粘贴KeyStore信息");
     _descriptionLabel.font = [UIFont systemFontOfSize:19];
-    _descriptionLabel.textColor = ColorWithLabelDescritionBlack;
+    _descriptionLabel.textColor = COLOR_LABEL_DESCRIPTION;
     _descriptionLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_descriptionLabel];
     [_descriptionLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -440,6 +520,25 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
         make.height.equalTo(@30);
     }];
     
+    
+    UILabel *desTitleLabel = [[UILabel alloc] init];
+    desTitleLabel.hidden = YES;
+    desTitleLabel.text = WeXLocalizedString(@"WeXCreatePassportViewController_description1");
+    desTitleLabel.font = [UIFont systemFontOfSize:15];
+    desTitleLabel.textColor = COLOR_LABEL_DESCRIPTION;
+    desTitleLabel.backgroundColor = COLOR_LABEL_DES_BACKGROUND;
+    desTitleLabel.textAlignment = NSTextAlignmentLeft;
+    desTitleLabel.numberOfLines = 2;
+    desTitleLabel.adjustsFontSizeToFitWidth = YES;
+    [self.view addSubview:desTitleLabel];
+    [desTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.view).offset(15);
+        make.trailing.equalTo(self.view).offset(-15);
+        make.top.equalTo(backImageView.mas_bottom).offset(5);
+        make.height.equalTo(@70);
+    }];
+    _titleDescriptionLabel = desTitleLabel;
+    
     //显示密码按钮
     UIButton *showBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [showBtn setImage:[UIImage imageNamed:@"eye2"] forState:UIControlStateNormal];
@@ -454,6 +553,10 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
         make.width.equalTo(@30);
         make.height.equalTo(@45);
     }];
+    _showBtn = showBtn;
+    
+    
+  
     
     //密码输入框
     _passwordTextField = [[UITextField alloc] init];
@@ -461,8 +564,8 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
     _passwordTextField.borderStyle = UITextBorderStyleNone;
     _passwordTextField.textColor = [UIColor lightGrayColor];
     _passwordTextField.secureTextEntry = YES;
-    _passwordLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,130,45)];
-    _passwordLeftLabel.text = @"验证口袋密码:";
+    _passwordLeftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,150,45)];
+    _passwordLeftLabel.text = WeXLocalizedString(@"验证数字钱包密码:");
     _passwordLeftLabel.font = [UIFont systemFontOfSize:17];
     _passwordLeftLabel.textColor = [UIColor lightGrayColor];
     _passwordLeftLabel.backgroundColor = [UIColor clearColor];
@@ -490,7 +593,7 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
     
     UILabel *descriptionLabel = [[UILabel alloc] init];
     descriptionLabel.hidden = YES;
-    descriptionLabel.text = @"不少于8位字符，建议混合大小写字母、数字、特殊字符";
+    descriptionLabel.text = WeXLocalizedString(@"不少于8位字符，建议混合大小写字母、数字、特殊字符");
     descriptionLabel.adjustsFontSizeToFitWidth = YES;
     descriptionLabel.font = [UIFont systemFontOfSize:15];
     descriptionLabel.textColor = COLOR_LABEL_DESCRIPTION;
@@ -498,45 +601,44 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
     [self.view addSubview:descriptionLabel];
     [descriptionLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(line1.mas_bottom).offset(10);
-        make.leading.equalTo(self.view).offset(20);
-        make.trailing.equalTo(self.view).offset(-20);
-        make.height.equalTo(@20);
+        make.leading.equalTo(self.view).offset(15);
+        make.trailing.equalTo(self.view).offset(-15);
     }];
     _centreDescriptionLabel = descriptionLabel;
     
 
-    _invitationTextField = [[UITextField alloc] init];
-    _invitationTextField.borderStyle = UITextBorderStyleNone;
-    _invitationTextField.delegate = self;
-    _invitationTextField.textColor = COLOR_LABEL_DESCRIPTION;
-    UILabel *leftLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(0,0,125,45)];
-    leftLabel2.text = @"邀请码(可为空)";
-    leftLabel2.font = [UIFont systemFontOfSize:17];
-    leftLabel2.textColor = [UIColor lightGrayColor];
-    leftLabel2.backgroundColor = [UIColor clearColor];
-    _invitationTextField.leftViewMode = UITextFieldViewModeAlways;
-    _invitationTextField.font = [UIFont systemFontOfSize:17];
-    _invitationTextField.leftView = leftLabel2;;
-    [self.view addSubview:_invitationTextField];
-    [_invitationTextField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_passwordTextField.mas_bottom).offset(10);
-        make.leading.equalTo(self.view).offset(15);
-        make.trailing.equalTo(self.view).offset(-15);
-        make.height.equalTo(@45);
-    }];
-
-    UIView *line2 = [[UIView alloc] init];
-    line2.backgroundColor = COLOR_ALPHA_LINE;
-    [self.view addSubview:line2];
-    [line2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(self.view).offset(15);
-        make.trailing.equalTo(self.view).offset(-15);
-        make.top.equalTo(_invitationTextField.mas_bottom);
-        make.height.equalTo(@HEIGHT_LINE);
-    }];
+//    _invitationTextField = [[UITextField alloc] init];
+//    _invitationTextField.borderStyle = UITextBorderStyleNone;
+//    _invitationTextField.delegate = self;
+//    _invitationTextField.textColor = COLOR_LABEL_DESCRIPTION;
+//    UILabel *leftLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(0,0,125,45)];
+//    leftLabel2.text = WeXLocalizedString(@"邀请码(可为空)");
+//    leftLabel2.font = [UIFont systemFontOfSize:17];
+//    leftLabel2.textColor = [UIColor lightGrayColor];
+//    leftLabel2.backgroundColor = [UIColor clearColor];
+//    _invitationTextField.leftViewMode = UITextFieldViewModeAlways;
+//    _invitationTextField.font = [UIFont systemFontOfSize:17];
+//    _invitationTextField.leftView = leftLabel2;;
+//    [self.view addSubview:_invitationTextField];
+//    [_invitationTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(_passwordTextField.mas_bottom).offset(10);
+//        make.leading.equalTo(self.view).offset(15);
+//        make.trailing.equalTo(self.view).offset(-15);
+//        make.height.equalTo(@45);
+//    }];
+//
+//    UIView *line2 = [[UIView alloc] init];
+//    line2.backgroundColor = COLOR_ALPHA_LINE;
+//    [self.view addSubview:line2];
+//    [line2 mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.leading.equalTo(self.view).offset(15);
+//        make.trailing.equalTo(self.view).offset(-15);
+//        make.top.equalTo(_invitationTextField.mas_bottom);
+//        make.height.equalTo(@HEIGHT_LINE);
+//    }];
 
     UIButton *loginBtn = [WeXCustomButton button];
-    [loginBtn setTitle:@"导入已有钱包" forState:UIControlStateNormal];
+    [loginBtn setTitle:WeXLocalizedString(@"导入已有钱包") forState:UIControlStateNormal];
     [loginBtn addTarget:self action:@selector(loginBtnClick) forControlEvents:UIControlEventTouchUpInside];
     loginBtn.titleLabel.font = [UIFont systemFontOfSize:18];
     [self.view addSubview:loginBtn];
@@ -558,15 +660,17 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
     }];
     
     self.importType = WeXImportPassportTypeKeyStore;
-    _descriptionLabel.text = @"请粘贴KEYSTORE信息";
-    _passwordLeftLabel.text = @"验证口袋密码:";
+    _descriptionLabel.text = WeXLocalizedString(@"请粘贴KEYSTORE信息");
+    _passwordLeftLabel.text = WeXLocalizedString(@"验证数字钱包密码:");
     _centreDescriptionLabel.hidden = YES;
-    [_invitationTextField mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_passwordTextField.mas_bottom).offset(10);
-        make.leading.equalTo(self.view).offset(15);
-        make.trailing.equalTo(self.view).offset(-15);
+    _titleDescriptionLabel.hidden = YES;
+    [_showBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_backImageView.mas_bottom).offset(15);
+        make.trailing.equalTo(self.view).offset(-20);
+        make.width.equalTo(@30);
         make.height.equalTo(@45);
     }];
+    [self.view layoutIfNeeded];
 }
 
 - (void)privateKeyBtnClick:(UIButton *)btn{
@@ -577,21 +681,23 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
     }];
     
     self.importType = WeXImportPassportTypePrivateKey;
-    _descriptionLabel.text = @"请粘贴私钥明文";
-    _passwordLeftLabel.text = @"设置口袋密码:";
+    _descriptionLabel.text = WeXLocalizedString(@"请粘贴私钥明文");
+    _passwordLeftLabel.text = WeXLocalizedString(@"设置数字钱包密码:");
     _centreDescriptionLabel.hidden = NO;
-    [_invitationTextField mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_passwordTextField.mas_bottom).offset(30);
-        make.leading.equalTo(self.view).offset(15);
-        make.trailing.equalTo(self.view).offset(-15);
+    _titleDescriptionLabel.hidden = NO;
+    [_showBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_backImageView.mas_bottom).offset(80);
+        make.trailing.equalTo(self.view).offset(-20);
+        make.width.equalTo(@30);
         make.height.equalTo(@45);
     }];
+    [self.view layoutIfNeeded];
 }
 #pragma mark -点击登陆按钮
 - (void)loginBtnClick{
     
     if([_contentTextView.text isEqualToString: @""]||_contentTextView.text == nil){
-        [WeXPorgressHUD showText:@"导入内容不能为空!" onView:self.view];
+        [WeXPorgressHUD showText:WeXLocalizedString(@"请核对后重新输入!") onView:self.view];
         return;
     }
     
@@ -600,16 +706,17 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
         NSData *data = [keyStore dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *keyStoreDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
         if (!keyStoreDict) {
-            [WeXPorgressHUD showText:@"KeyStore格式不对!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"KeyStore格式不对!") onView:self.view];
             return;
         }
     }
-
-    if (_passwordTextField.text.length < 8) {
-        [WeXPorgressHUD showText:@"密码长度应大于8位!" onView:self.view];
-        return;
-    }
     
+    if (self.importType == WeXImportPassportTypePrivateKey) {
+        if (_passwordTextField.text.length < 8) {
+            [WeXPorgressHUD showText:WeXLocalizedString(@"请核对后重新输入!") onView:self.view];
+            return;
+        }
+    }
     
     [self.view endEditing:YES];
     
@@ -687,14 +794,14 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
         
         if (textField == _passwordTextField) {
             if (comment.length > 20) {
-                [WeXPorgressHUD showText:@"密码长度最多为20位" onView:self.view
+                [WeXPorgressHUD showText:WeXLocalizedString(@"密码长度最多为20位") onView:self.view
                  ];
                 return NO;
             }
         }
         else if (textField == _invitationTextField){
             if (comment.length > 4) {
-                [WeXPorgressHUD showText:@"长度最多为4位" onView:self.view];
+                [WeXPorgressHUD showText:WeXLocalizedString(@"长度最多为4位") onView:self.view];
                 return NO;
             }
         }
@@ -710,13 +817,13 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
 
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
-    NSLog(@"开始编辑");
+    NSLog(WeXLocalizedString(@"开始编辑"));
     _descriptionLabel.hidden = YES;
 }
 
 -(void)textViewDidEndEditing:(UITextView *)textView
 {
-    NSLog(@"停止编辑");
+    NSLog(WeXLocalizedString(@"停止编辑"));
     if ([textView.text isEqualToString: @""]||textView.text == nil) {
         _descriptionLabel.hidden = NO;
     }

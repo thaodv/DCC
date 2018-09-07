@@ -90,7 +90,7 @@
     NSURL *backURL = [NSURL URLWithString:urlSchemes];
     //跳转回MyApp
     [[UIApplication sharedApplication] openURL:backURL options:@{} completionHandler:^(BOOL success) {
-        NSLog(@"跳转结果%d",success);
+        NSLog(WeXLocalizedString(@"跳转结果%d"),success);
         [self jumpToRootViewController];
     }];
     
@@ -135,7 +135,7 @@
     }];
     
     _logoNamelabel = [[UILabel alloc] init];
-    _logoNamelabel.text = @"口袋地址:";
+    _logoNamelabel.text = WeXLocalizedString(@"钱包地址:");
     _logoNamelabel.font = [UIFont systemFontOfSize:18];
     _logoNamelabel.textColor = [UIColor whiteColor];
     _logoNamelabel.numberOfLines = 0;
@@ -154,7 +154,7 @@
     _logoNamelabel.text = appName;
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"使用两步验证";
+    titleLabel.text = WeXLocalizedString(@"使用两步验证");
     titleLabel.font = [UIFont systemFontOfSize:18];
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -192,7 +192,7 @@
     }];
     
     UILabel *label1 = [[UILabel alloc] init];
-    label1.text = @"口袋地址:";
+    label1.text = WeXLocalizedString(@"钱包地址:");
     label1.font = [UIFont systemFontOfSize:12];
     label1.textColor = [UIColor whiteColor];
     label1.textAlignment = NSTextAlignmentLeft;
@@ -240,13 +240,13 @@
     
     UILabel *stateLabel = [[UILabel alloc] init];
     if (_model.isAllow) {
-        stateLabel.text = @"两步验证状态：可用";
+        stateLabel.text = WeXLocalizedString(@"两步验证状态：可用");
         stateLabel.backgroundColor = ColorWithRGB(178, 225, 135);
         
     }
     else
     {
-        stateLabel.text = @"两步验证状态：不可用";
+        stateLabel.text = WeXLocalizedString(@"两步验证状态：不可用");
         stateLabel.backgroundColor = ColorWithRGB(191, 192,193);
     }
     
@@ -267,11 +267,11 @@
     UIButton *loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     if (_model.isAllow) {
         
-        [loginBtn setTitle:@"确认" forState:UIControlStateNormal];
+        [loginBtn setTitle:WeXLocalizedString(@"确认") forState:UIControlStateNormal];
     }
     else
     {
-        [loginBtn setTitle:@"启动并使用两步验证" forState:UIControlStateNormal];
+        [loginBtn setTitle:WeXLocalizedString(@"启动并使用两步验证") forState:UIControlStateNormal];
         
     }
     [loginBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -298,21 +298,21 @@
         NSLog(@"dict=====\n%@",params);
         
         if (params == nil) {
-            [WeXPorgressHUD showText:@"格式不正确!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"格式不正确!") onView:self.view];
             _loginBtn.enabled = NO;
             return;
         }
         
         NSString *protocol = [params objectForKey:@"protocol"];
         if (![protocol isEqualToString:@"wtx.wexchain.io"]) {
-            [WeXPorgressHUD showText:@"格式不正确!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"格式不正确!") onView:self.view];
             _loginBtn.enabled = NO;
             return;
         }
         
         NSNumber *version = [params objectForKey:@"version"];
         if ([version integerValue] > [[WexCommonFunc getVersion] integerValue]) {
-            [WeXPorgressHUD showText:@"格式不正确!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"格式不正确!") onView:self.view];
             _loginBtn.enabled = NO;
             return;
         }
@@ -375,7 +375,7 @@
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _getContractAddressAdapter){
@@ -388,7 +388,7 @@
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _uoloadPubKeyAdapter){
@@ -401,19 +401,19 @@
         {
             [WeXPorgressHUD hideLoading];
             
-            [WeXPorgressHUD showText:@"验证码不正确!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"验证码不正确!") onView:self.view];
         }
         else if([headModel.businessCode isEqualToString:@"TICKET_INVALID"])
         {
             [WeXPorgressHUD hideLoading];
             
-            [WeXPorgressHUD showText:@"验证码超时!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"验证码超时!") onView:self.view];
         }
         else
         {
             [WeXPorgressHUD hideLoading];
             
-            [WeXPorgressHUD showText:@"系统繁忙!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统繁忙!") onView:self.view];
         }
     }
     else if (adapter == _getReceiptAdapter){
@@ -428,7 +428,7 @@
             {
                 if (_requestCount > 4) {
                     [WeXPorgressHUD hideLoading];
-                    [WeXPorgressHUD showText:@"系统繁忙,请稍后再试!" onView:self.view];
+                    [WeXPorgressHUD showText:WeXLocalizedString(@"系统繁忙,请稍后再试!") onView:self.view];
                     return;
                 }
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -440,7 +440,7 @@
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
         
     }
@@ -449,31 +449,31 @@
             WeXGetPubKeyResponseModal *model = (WeXGetPubKeyResponseModal *)response;
             NSData *publicKeyData =  [[NSData alloc] initWithBase64EncodedString:model.result options:0];
             NSString *resultPublickKey  = [WexCommonFunc hexStringWithData:publicKeyData];
-            //相等表示口袋创建成功
+            //相等表示钱包创建成功
             if ([resultPublickKey isEqualToString:_rsaPublicKey]) {
                 //更新秘钥
                 _model.rsaPublicKey = _rsaPublicKey;
                 _model.rasPrivateKey = _rsaPrivateKey;
                 _model.isAllow = YES;
                 [WexCommonFunc savePassport:_model];
-                NSLog(@"启用成功");
+                NSLog(WeXLocalizedString(@"启用成功"));
                 
                 //保存统一操作记录
-                [WexCommonFunc saveManagerRecordWithTypeString:@"启用统一登录"];
+                [WexCommonFunc saveManagerRecordWithTypeString:WeXLocalizedString(@"启用统一登录")];
                 
                 [self configReturnProcess];
             }
             else
             {
                 [WeXPorgressHUD hideLoading];
-                [WeXPorgressHUD showText:@"系统繁忙,请稍后再试!" onView:self.view];
+                [WeXPorgressHUD showText:WeXLocalizedString(@"系统繁忙,请稍后再试!") onView:self.view];
             }
             
         }
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
         
         
@@ -508,7 +508,7 @@
         //跳转回MyApp
         //        [[UIApplication sharedApplication] openURL:backURL];
         [[UIApplication sharedApplication] openURL:backURL options:@{} completionHandler:^(BOOL success) {
-            NSLog(@"跳转结果%d",success);
+            NSLog(WeXLocalizedString(@"跳转结果%d"),success);
             NSString *appId = params[@"appId"];
             NSString *appName = params[@"appName"];
             [self saveLoginRecordWithAppId:appId appName:appName];
@@ -551,7 +551,7 @@
         if(response!=nil)
         {
             NSError* error=response;
-            NSLog(@"容器加载失败:%@",error);
+            NSLog(WeXLocalizedString(@"容器加载失败:%@"),error);
             return;
         }
         /** 连接以太坊(开发，测试，生产环境地址值不同，建议用宏区分不同开发环境) */

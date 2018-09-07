@@ -30,7 +30,7 @@
 //#import "WeXRegisterSuccessViewController.h"//删
 #import "WeXDigitalAssetRLMModel.h"
 
-
+static const CGFloat kCardHeightWidthRatio = 179.0/350.0;
 
 @interface WeXCardViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -64,7 +64,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.navigationItem.title = @"全向口袋";
+//    self.navigationItem.title = WeXLocalizedString(@"BitExpress钱包");
     _isFirstLoad = YES;
     [self setupNavgationType];
     [self commonInit];
@@ -75,6 +75,14 @@
 //    self.interactiveTransition = [XWInteractiveTransition interactiveTransitionWithTransitionType:XWInteractiveTransitionTypePop GestureDirection:XWInteractiveTransitionGestureDirectionRight];
 //    //给当前控制器的视图添加手势
 //    [_interactiveTransition addPanGestureForViewController:self];
+    
+    
+//    [[WXPassHelper instance] initProvider:WEX_DCC_NODE_SERVER responseBlock:^(id response)
+//     {
+//         [[WXPassHelper instance] queryTransactionReceipt:@"0x5e08914e9f69fa162340c75cd4171d0506051666e46521e5633adc4335856dba" responseBlock:^(id response) {
+//             NSLog(@"response--%@",response);
+//         }];
+//     }];
 
 }
 
@@ -92,21 +100,22 @@
     [self getAllLoginRecordType];
     
     self.navigationController.delegate = nil;
-   
+       
 }
 
 - (void)commonInit{
     
+    
     _model = [WexCommonFunc getPassport];
     
     if (_model.isAllow) {
-        _loginStatusLabel.text = @"统一登录状态:可用";
+        _loginStatusLabel.text = WeXLocalizedString(@"统一登录状态:可用");
         _statusImageView.image = [UIImage imageNamed:@"passportStatusYes"];
         
     }
     else
     {
-        _loginStatusLabel.text = @"统一登录状态:不可用";
+        _loginStatusLabel.text = WeXLocalizedString(@"统一登录状态:不可用");
         _statusImageView.image = [UIImage imageNamed:@"passportStatusNo"];
         
     }
@@ -147,13 +156,13 @@
 -(void)setupSubViews{
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"全向口袋";
+    titleLabel.text = @"BitExpress";
     titleLabel.font = [UIFont systemFontOfSize:20];
-    titleLabel.textColor = ColorWithLabelTitleBlack;
+    titleLabel.textColor = COLOR_LABEL_TITLE;
     titleLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(30);
+        make.top.equalTo(self.view).offset(kNavgationBarHeight-22-10);
         make.leading.equalTo(self.view).offset(20);
         make.height.equalTo(@20);
     }];
@@ -163,11 +172,10 @@
     [self.view addSubview:cardBackView];
     [cardBackView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(kNavgationBarHeight);
-        make.leading.equalTo(self.view).offset(10);
-        make.trailing.equalTo(self.view).offset(-10);
-        make.height.equalTo(@180);
+        make.leading.equalTo(self.view).offset(15);
+        make.trailing.equalTo(self.view).offset(-15);
+        make.height.equalTo(cardBackView.mas_width).multipliedBy(kCardHeightWidthRatio);
     }];
-//    [cardBackView layoutIfNeeded];
     _cardView = cardBackView;
     
     UIImageView *cardImageView = [[UIImageView alloc] init];
@@ -206,13 +214,13 @@
         NSString *subAddress2 = [address substringWithRange:NSMakeRange(address.length-4, 4)];
         addressLabel.text = [NSString stringWithFormat:@"0x  %@  %@",subAddress1,subAddress2];
     }
-    addressLabel.font = [UIFont systemFontOfSize:16];
+    addressLabel.font = [UIFont systemFontOfSize:15];
     addressLabel.textColor = [UIColor whiteColor];
     addressLabel.textAlignment = NSTextAlignmentLeft;
     [cardBackView addSubview:addressLabel];
     [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(cardBackView.mas_bottom).offset(-10);
-        make.leading.equalTo(cardBackView).offset(30);
+        make.leading.equalTo(cardBackView).offset(25);
         make.height.equalTo(@20);
     }];
     
@@ -223,7 +231,7 @@
     
     UILabel *nickLabel = [[UILabel alloc] init];
     nickLabel.text = [WexDefaultConfig instance].nickName;
-    nickLabel.font = [UIFont systemFontOfSize:16];
+    nickLabel.font = [UIFont systemFontOfSize:15];
     nickLabel.textColor = [UIColor whiteColor];
     nickLabel.textAlignment = NSTextAlignmentLeft;
     [cardBackView addSubview:nickLabel];
@@ -248,9 +256,9 @@
 //
     
     UILabel *loginStatusLabel = [[UILabel alloc] init];
-    loginStatusLabel.text = @"统一登录状态:可用";
+    loginStatusLabel.text = WeXLocalizedString(@"统一登录状态:可用");
     loginStatusLabel.font = [UIFont systemFontOfSize:16];
-    loginStatusLabel.textColor = ColorWithLabelDescritionBlack;
+    loginStatusLabel.textColor = COLOR_LABEL_DESCRIPTION;
     loginStatusLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:loginStatusLabel];
     [loginStatusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -262,13 +270,14 @@
     
     UIImageView *statusImageView = [[UIImageView alloc] init];
     if (_model.isAllow) {
-        loginStatusLabel.text = @"统一登录状态:可用";
+        loginStatusLabel.text = WeXLocalizedString(@"统一登录状态:可用");
         statusImageView.image = [UIImage imageNamed:@"passportStatusYes"];
 
     }
+    
     else
     {
-        loginStatusLabel.text = @"统一登录状态:不可用";
+        loginStatusLabel.text = WeXLocalizedString(@"统一登录状态:不可用");
         statusImageView.image = [UIImage imageNamed:@"passportStatusNo"];
 
     }
@@ -286,12 +295,12 @@
     
 //    UIButton *loginStateBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 //    if (_model.isAllow) {
-//        [loginStateBtn setTitle:@"统一登录状态:可用" forState:UIControlStateNormal];
+//        [loginStateBtn setTitle:WeXLocalizedString(@"统一登录状态:可用") forState:UIControlStateNormal];
 //        loginStateBtn.backgroundColor = ColorWithRGB(179, 225, 134);
 //    }
 //    else
 //    {
-//         [loginStateBtn setTitle:@"统一登录状态:不可用" forState:UIControlStateNormal];
+//         [loginStateBtn setTitle:WeXLocalizedString(@"统一登录状态:不可用") forState:UIControlStateNormal];
 //        loginStateBtn.backgroundColor = ColorWithRGB(191, 192,193);
 //
 //    }
@@ -309,30 +318,31 @@
 //    _loginStateBtn = loginStateBtn;
     
     UILabel *recordLabel= [[UILabel alloc] init];
-    recordLabel.text = @"统一登录使用记录";
+    recordLabel.text = WeXLocalizedString(@"统一登录使用记录");
     recordLabel.font = [UIFont systemFontOfSize:16];
-    recordLabel.textColor = ColorWithLabelDescritionBlack;
+    recordLabel.textColor = COLOR_LABEL_DESCRIPTION;
     recordLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:recordLabel];
     [recordLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(loginStatusLabel.mas_bottom).offset(30);
         make.leading.equalTo(self.view).offset(10);
-        make.width.equalTo(@150);
+        make.width.equalTo(@200);
         make.height.equalTo(@15);
     }];
     
     UIView *line2 = [[UIView alloc] init];
-    line2.backgroundColor = ColorWithLine;
+    line2.backgroundColor = COLOR_ALPHA_LINE;
     [self.view addSubview:line2];
     [line2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.view).offset(10);
         make.trailing.equalTo(self.view).offset(-10);
         make.top.equalTo(recordLabel.mas_bottom).offset(10);
-        make.height.equalTo(@LINE_VIEW_Width);
+        make.height.equalTo(@HEIGHT_LINE);
     }];
     
     WeXCustomButton *loginManagerBtn = [WeXCustomButton button];
-    [loginManagerBtn setTitle:@"统一登录管理" forState:UIControlStateNormal];
+    //CardViewControllerLoginManage 统一登录管理 CardViewControllerLoginManage
+    [loginManagerBtn setTitle:WeXLocalizedString(@"CardViewControllerLoginManage") forState:UIControlStateNormal];
     [loginManagerBtn addTarget:self action:@selector(loginManagerBtnClick) forControlEvents:UIControlEventTouchUpInside];
     loginManagerBtn.titleLabel.font = [UIFont systemFontOfSize:15];
     [self.view addSubview:loginManagerBtn];
@@ -354,7 +364,7 @@
     
     UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 30)];
     UILabel *footerLabel = [[UILabel alloc] initWithFrame:footView.bounds];
-    footerLabel.text = @"没有更多记录了";
+    footerLabel.text = WeXLocalizedString(@"没有更多记录了");
     footerLabel.font = [UIFont systemFontOfSize:13];
     footerLabel.textColor = [UIColor lightGrayColor];
     footerLabel.textAlignment = NSTextAlignmentCenter;
@@ -370,7 +380,6 @@
     [footView addSubview:moreBtn];
     _moreBtn = moreBtn;
 
-    
     _tableView.tableFooterView = footView;
     [self.view addSubview:_tableView];
     [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -379,14 +388,11 @@
         make.bottom.equalTo(loginManagerBtn.mas_top).offset(-10);
     }];
     
-    
-    
-    
 }
 
 - (void)setupNavgationType{
     self.navigationItem.hidesBackButton = YES;
-    UIBarButtonItem *rihgtItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"digital_cha1"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(rightItemClick)];
+    UIBarButtonItem *rihgtItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"dcc_cha"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(rightItemClick)];
     self.navigationItem.rightBarButtonItem = rihgtItem;
 
 }
@@ -417,7 +423,6 @@
 }
 
 - (void)loginManagerBtnClick{
-    
     WeXLoginManagerViewController *ctrl = [[WeXLoginManagerViewController alloc] init];
     [self.navigationController pushViewController:ctrl animated:YES];
 }
@@ -489,16 +494,6 @@
         WeXAuthorizeLoginRecordController *ctrl = [[WeXAuthorizeLoginRecordController alloc] init];
         [self.navigationController pushViewController:ctrl animated:YES];
     }
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC{
-    //分pop和push两种情况分别返回动画过渡代理相应不同的动画操作
-    return [WeXPassportCardTrasiton transitionWithType:operation == UINavigationControllerOperationPush ? WeXPassportCardTrasitonPush : WeXPassportCardTrasitonPop];
-}
-
-- (id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController{
-    //手势开始的时候才需要传入手势过渡代理，如果直接点击pop，应该传入空，否者无法通过点击正常pop
-    return _interactiveTransition.interation ? _interactiveTransition : nil;
 }
 
 

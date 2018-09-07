@@ -20,6 +20,7 @@
 #import "WeXPassportManagerRLMModel.h"
 
 #import "WeXPassportManagerRecordCell.h"
+#import "WeXNewPassportManagerRecordCell.h"
 
 
 #define kAutoLayoutHeight1 65+kNavgationBarHeight
@@ -55,7 +56,7 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
     NSString *_rsaPrivateKey;
     NSString *_walletAddress;//钱包地址
     NSString *_walletPrivateKey;//钱包私钥
-    NSDictionary *_keyStroe;//口袋
+    NSDictionary *_keyStroe;//钱包
     
     NSString *_rawTransaction;
     
@@ -84,22 +85,20 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
 
 @end
 
+static NSString *const kCellID = @"WeXPassportManagerRecordCellID";
+
 @implementation WeXLoginManagerViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.navigationItem.title = @"统一登录管理";
+    self.navigationItem.title = WeXLocalizedString(@"统一登录管理");
+    [self setupSubViews];
     [self commonInit];
     [self setNavigationNomalBackButtonType];
-    [self setupSubViews];
     [self getAllManagerRecordType];
-    
-    
-
 }
 
 - (void)commonInit{
-    
     _model = [WexCommonFunc getPassport];
 }
 
@@ -110,7 +109,7 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
         if(response!=nil)
         {
             NSError* error=response;
-            NSLog(@"容器加载失败:%@",error);
+            NSLog(WeXLocalizedString(@"容器加载失败:%@"),error);
             return;
         }
         /** 连接以太坊(开发，测试，生产环境地址值不同，建议用宏区分不同开发环境) */
@@ -139,7 +138,7 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
         if(response!=nil)
         {
             NSError* error=response;
-            NSLog(@"容器加载失败:%@",error);
+            NSLog(WeXLocalizedString(@"容器加载失败:%@"),error);
             return;
         }
         /** 连接以太坊(开发，测试，生产环境地址值不同，建议用宏区分不同开发环境) */
@@ -227,12 +226,12 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
     if (adapter == _getTicketAdapter) {
         if ([headModel.systemCode isEqualToString:@"SUCCESS"]&&[headModel.businessCode isEqualToString:@"SUCCESS"]) {
             _getTicketModel = (WeXGetTicketResponseModal *)response;
-            [_graphView.graphBtn setImage:[WexCommonFunc imageWihtBase64String:_getTicketModel.image] forState:UIControlStateNormal];
+            [self createGetContractAddressRequest];
         }
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _getContractAddressAdapter){
@@ -253,7 +252,7 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _uoloadPubKeyAdapter){
@@ -262,23 +261,11 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
             _txHash = model.result;
             [self createReceiptResultRequest];
         }
-        else if([headModel.businessCode isEqualToString:@"CHALLENGE_FAILURE"])
-        {
-            [WeXPorgressHUD hideLoading];
-            
-            [WeXPorgressHUD showText:@"验证码不正确!" onView:self.view];
-        }
-        else if([headModel.businessCode isEqualToString:@"TICKET_INVALID"])
-        {
-            [WeXPorgressHUD hideLoading];
-            
-            [WeXPorgressHUD showText:@"验证码超时!" onView:self.view];
-        }
         else
         {
             [WeXPorgressHUD hideLoading];
             
-            [WeXPorgressHUD showText:@"系统繁忙!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统繁忙!") onView:self.view];
         }
     }
     else if (adapter == _deletePubKeyAdapter){
@@ -290,7 +277,7 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _getReceiptAdapter){
@@ -308,9 +295,9 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
                     _model.isAllow = NO;
                     [WexCommonFunc savePassport:_model];
                     [self updateSubviews:NO];
-                    NSLog(@"禁用成功");
+                    NSLog(@"%@", WeXLocalizedString(@"禁用成功"));
                     
-                    [self saveManagerRecordWithTypeString:@"禁用统一登录"];
+                    [self saveManagerRecordWithTypeString:WeXLocalizedString(@"禁用统一登录")];
                 }
                 else
                 {
@@ -322,7 +309,7 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
             {
                 if (_requestCount > 4) {
                     [WeXPorgressHUD hideLoading];
-                    [WeXPorgressHUD showText:@"系统繁忙,请稍后再试!" onView:self.view];
+                    [WeXPorgressHUD showText:WeXLocalizedString(@"系统繁忙,请稍后再试!") onView:self.view];
                     return;
                 }
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -334,7 +321,7 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _getPubKeyAdapter)
@@ -344,13 +331,13 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
             WeXGetPubKeyResponseModal *model = (WeXGetPubKeyResponseModal *)response;
             NSData *publicKeyData =  [[NSData alloc] initWithBase64EncodedString:model.result options:0];
             NSString *resultPublickKey  = [WexCommonFunc hexStringWithData:publicKeyData];
-            //相等表示口袋创建成功
+            //相等表示钱包创建成功
             if ([resultPublickKey isEqualToString:_rsaPublicKey]) {
                 
                 if (self.managerType == WeXPassportManagerTypeUpdatePubKey) {
-                    NSLog(@"更新秘钥成功");
+                    NSLog(@"%@", WeXLocalizedString(@"更新秘钥成功"));
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        [WeXPorgressHUD showText:@"更新秘钥成功" onView:self.view];
+                        [WeXPorgressHUD showText:WeXLocalizedString(@"更新秘钥成功") onView:self.view];
                     });
                     // 更新秘钥
                     _model.rsaPublicKey = _rsaPublicKey;
@@ -359,9 +346,9 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
                     
                     NSString *md5 = [WexCommonFunc md5:_rsaPublicKey];
                     if (md5.length >= 6) {
-                        _priviteKeyLabel.text = [NSString stringWithFormat:@"统一登录秘钥:***%@",[md5 substringWithRange:NSMakeRange(md5.length-6, 6)]];
+                        _priviteKeyLabel.text = [NSString stringWithFormat:WeXLocalizedString(@"统一登录秘钥:***%@"),[md5 substringWithRange:NSMakeRange(md5.length-6, 6)]];
                     }
-                    [self saveManagerRecordWithTypeString:@"更新统一登录秘钥"];
+                    [self saveManagerRecordWithTypeString:WeXLocalizedString(@"更新统一登录秘钥")];
                 }
                 //当前流程为禁用时候点击，返回状态为启用
                 else if (self.managerType == WeXPassportManagerTypeForbidden)
@@ -372,19 +359,19 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
                     _model.isAllow = YES;
                     [WexCommonFunc savePassport:_model];
                     [self updateSubviews:YES];
-                    NSLog(@"启用成功");
-                    [self saveManagerRecordWithTypeString:@"启用统一登录"];
+                    NSLog(@"%@", WeXLocalizedString(@"启用成功"));
+                    [self saveManagerRecordWithTypeString:WeXLocalizedString(@"启用统一登录")];
                 }
             }
             else
             {
-                [WeXPorgressHUD showText:@"系统繁忙,请稍后再试!" onView:self.view];
+                [WeXPorgressHUD showText:WeXLocalizedString(@"系统繁忙,请稍后再试!") onView:self.view];
             }
         }
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
        
     }
@@ -407,7 +394,6 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
     for (WeXPassportManagerRLMModel *model in results) {
         [self.datasArray addObject:model];
     }
-    
     self.datasArray = (NSMutableArray *)[[self.datasArray reverseObjectEnumerator] allObjects];
     
     [_tableView reloadData];
@@ -462,11 +448,11 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
     
     WeXCustomButton *forbiddenBtn = [WeXCustomButton button];
     if (_model.isAllow) {
-        [forbiddenBtn setTitle:@"禁用统一登录" forState:UIControlStateNormal];
+        [forbiddenBtn setTitle:WeXLocalizedString(@"禁用统一登录") forState:UIControlStateNormal];
     }
     else
     {
-        [forbiddenBtn setTitle:@"启用统一登录" forState:UIControlStateNormal];
+        [forbiddenBtn setTitle:WeXLocalizedString(@"启用统一登录") forState:UIControlStateNormal];
     }
     [forbiddenBtn addTarget:self action:@selector(forbiddenBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     forbiddenBtn.titleLabel.font = [UIFont systemFontOfSize:17];
@@ -480,7 +466,7 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
     
     
     WeXCustomButton *updateBtn = [WeXCustomButton button];
-    [updateBtn setTitle:@"更新秘钥" forState:UIControlStateNormal];
+    [updateBtn setTitle:WeXLocalizedString(@"更新秘钥") forState:UIControlStateNormal];
     [updateBtn addTarget:self action:@selector(updateBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     updateBtn.titleLabel.font = [UIFont systemFontOfSize:17];
     [self.view addSubview:updateBtn];
@@ -504,37 +490,36 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
 //    _backView = backView;
     
     UILabel *recordLabel= [[UILabel alloc] init];
-    recordLabel.text = @"统一登录变更记录";
+    recordLabel.text = WeXLocalizedString(@"统一登录变更记录");
     recordLabel.font = [UIFont systemFontOfSize:18];
-    recordLabel.textColor = ColorWithLabelDescritionBlack;
+    recordLabel.textColor = COLOR_LABEL_DESCRIPTION;
     recordLabel.textAlignment = NSTextAlignmentLeft;
     [backView addSubview:recordLabel];
     [recordLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(backView).offset(0);
         make.leading.equalTo(self.view).offset(10);
-        make.width.equalTo(@150);
+        make.width.equalTo(@200);
         make.height.equalTo(@40);
     }];
     
     UIView *line = [[UIView alloc] init];
-    line.backgroundColor = ColorWithLine;
+    line.backgroundColor = COLOR_ALPHA_LINE;
     [backView addSubview:line];
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(backView).offset(10);
         make.trailing.equalTo(backView).offset(-10);
         make.top.equalTo(recordLabel.mas_bottom);
-        make.height.equalTo(@LINE_VIEW_Width);
+        make.height.equalTo(@HEIGHT_LINE);
     }];
     
     _tableView = [[UITableView alloc] init];
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    _tableView.scrollEnabled = NO;
     _tableView.rowHeight = 50;
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenHeight, 30)];
-    footerLabel.text = @"没有更多记录了";
+    footerLabel.text = WeXLocalizedString(@"没有更多记录了");
     footerLabel.font = [UIFont systemFontOfSize:14];
     footerLabel.textColor = [UIColor lightGrayColor];
     footerLabel.textAlignment = NSTextAlignmentCenter;
@@ -545,6 +530,10 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
         make.leading.trailing.equalTo(backView);
         make.bottom.equalTo(forbiddenBtn.mas_top);
     }];
+    [_tableView registerClass:[WeXNewPassportManagerRecordCell class] forCellReuseIdentifier:kCellID];
+    [_tableView layoutIfNeeded];
+    NSLog(@"%@",NSStringFromCGRect(_tableView.frame));
+   
 }
 
 - (void)questionBtnClick{
@@ -598,8 +587,8 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
 - (void)updateSubviews:(BOOL)isAllow{
     //启用
     if (isAllow) {
-        [_forbiddenBtn setTitle:@"禁用统一登录" forState:UIControlStateNormal];
-        _loginStateLabel.text = @"统一登录状态:已启用";
+        [_forbiddenBtn setTitle:WeXLocalizedString(@"禁用统一登录") forState:UIControlStateNormal];
+        _loginStateLabel.text = WeXLocalizedString(@"统一登录状态:已启用");
 
         _updateBtn.enabled = YES;
         _updateBtn.layer.borderWidth = 1;
@@ -608,7 +597,7 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
         _model = [WexCommonFunc getPassport];
         NSString *md5 = [WexCommonFunc md5:_model.rsaPublicKey];
         if (md5.length >= 6) {
-            _priviteKeyLabel.text = [NSString stringWithFormat:@"统一登录秘钥:***%@",[md5 substringWithRange:NSMakeRange(md5.length-6, 6)]];
+            _priviteKeyLabel.text = [NSString stringWithFormat:WeXLocalizedString(@"统一登录秘钥:***%@"),[md5 substringWithRange:NSMakeRange(md5.length-6, 6)]];
         }
         
         [_backView mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -617,8 +606,8 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
     }
     else
     {
-        [_forbiddenBtn setTitle:@"启用统一登录" forState:UIControlStateNormal];
-        _loginStateLabel.text = @"统一登录状态:已禁用";
+        [_forbiddenBtn setTitle:WeXLocalizedString(@"启用统一登录") forState:UIControlStateNormal];
+        _loginStateLabel.text = WeXLocalizedString(@"统一登录状态:已禁用");
 
         _updateBtn.enabled = NO;
 //        _updateBtn.backgroundColor = [UIColor grayColor];
@@ -629,29 +618,36 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
             make.top.equalTo(self.view).offset(kAutoLayoutHeight1);
         }];
     }
-        
-    
-  
+
 }
 
 
 #pragma mark - tableViewDelegate
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.datasArray.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 50;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellID = @"cellID";
-    WeXPassportManagerRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    if (cell == nil) {
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXPassportManagerRecordCell" owner:self options:nil] lastObject];
-        cell.backgroundColor = [UIColor clearColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
+   WeXNewPassportManagerRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID forIndexPath:indexPath];
+//    static NSString *cellID = @"cellID";
+//    WeXPassportManagerRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+//    if (cell == nil) {
+//        cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXPassportManagerRecordCell" owner:self options:nil] lastObject];
+//        cell.backgroundColor = [UIColor clearColor];
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//    }
+//    WeXPassportManagerRLMModel *model = [self.datasArray objectAtIndex:indexPath.row];
+//    cell.model = model;
+
     WeXPassportManagerRLMModel *model = [self.datasArray objectAtIndex:indexPath.row];
-    cell.model = model;
+    [cell setManagerModel:model];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
     return cell;
 }
 
@@ -660,7 +656,8 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
 - (void)configLocalSafetyView{
     _model = [WexCommonFunc getPassport];
     if (_model.passwordType == WeXPasswordTypeNone) {
-        [self createGraphFloatView];
+        [WeXPorgressHUD showLoadingAddedTo:self.view];
+        [self createGetTicketRequest];
     }
     else
     {
@@ -674,7 +671,8 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
 #pragma mark - WeXPasswordManagerDelegate
 - (void)passwordManagerVerifySuccess{
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self createGraphFloatView];
+        [WeXPorgressHUD showLoadingAddedTo:self.view];
+        [self createGetTicketRequest];
     });
    
 }

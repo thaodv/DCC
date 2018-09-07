@@ -11,13 +11,14 @@
 
 @protocol WeXDeletePassportViewDelegate<NSObject>
 @optional
-//点击删除口袋
+//点击删除钱包
 - (void)deletePassportViewDidDeletePassport;
 //点击备份
 - (void)deletePassportViewDidBackup;
 
 
 @end
+
 
 @interface WeXDeletePassportView : UIView
 

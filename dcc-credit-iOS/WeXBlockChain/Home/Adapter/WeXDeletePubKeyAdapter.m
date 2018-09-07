@@ -10,9 +10,16 @@
 
 @implementation WeXDeletePubKeyAdapter
 
+
 - (NSString*)getRequestUrl
 {
-    return @"deletePubKey";
+    return @"ca/1/deletePubKey";
+}
+
+
+- (WexBaseUrlType)getBasetUrlType
+{
+    return WexBaseUrlTypeAuthen;
 }
 
 - (Class)getResponseClass

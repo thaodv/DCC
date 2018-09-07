@@ -48,32 +48,33 @@
         {
             if (_context.biometryType == LABiometryTypeFaceID)
             {
-                _dataArray = @[@"手势密码",@"数字密码",@"人像识别"];
+                _dataArray = @[WeXLocalizedString(@"手势密码"),WeXLocalizedString(@"数字密码"),WeXLocalizedString(@"人像识别")];
             }
             else
             {
-                _dataArray = @[@"手势密码",@"数字密码",@"指纹识别"];
+                _dataArray = @[WeXLocalizedString(@"手势密码"),WeXLocalizedString(@"数字密码"),WeXLocalizedString(@"指纹识别")];
             }
         }
         else
         {
-           _dataArray = @[@"手势密码",@"数字密码",@"指纹识别"];
+           _dataArray = @[WeXLocalizedString(@"手势密码"),WeXLocalizedString(@"数字密码"),WeXLocalizedString(@"指纹识别")];
         }
     }
     else
     {
-        _dataArray = @[@"手势密码",@"数字密码"];
+        _dataArray = @[WeXLocalizedString(@"手势密码"),WeXLocalizedString(@"数字密码")];
     }
 }
+
 
 
 - (void)setupSubViews{
     
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"选择验证方式";
+    titleLabel.text = WeXLocalizedString(@"选择验证方式");
     titleLabel.font = [UIFont systemFontOfSize:20];
-    titleLabel.textColor = ColorWithRGB(249, 31, 117);
+    titleLabel.textColor = COLOR_LABEL_DESCRIPTION;
     titleLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -84,8 +85,8 @@
     }];
     
     UIButton *skipBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [skipBtn setTitle:@"跳过" forState:UIControlStateNormal];
-    [skipBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [skipBtn setTitle:WeXLocalizedString(@"跳过") forState:UIControlStateNormal];
+    [skipBtn setTitleColor:COLOR_THEME_ALL forState:UIControlStateNormal];
     [skipBtn addTarget:self action:@selector(skipBtnClick) forControlEvents:UIControlEventTouchUpInside];
     skipBtn.titleLabel.font = [UIFont systemFontOfSize:16];
     [self addSubview:skipBtn];
@@ -103,7 +104,7 @@
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.trailing.equalTo(self);
         make.top.equalTo(titleLabel.mas_bottom);
-        make.height.equalTo(@LINE_VIEW_Width);
+        make.height.equalTo(@HEIGHT_LINE);
     }];
     
     _tableView = [[UITableView alloc] init];
@@ -138,14 +139,16 @@
     WeXHomeSafetyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXHomeSafetyCell" owner:self options:nil] lastObject];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     cell.textLabel.text = [_dataArray objectAtIndex:indexPath.row];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     cell.textLabel.font = [UIFont systemFontOfSize:18];
-    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(cell.frame), CGRectGetHeight(cell.frame))];
-    backView.backgroundColor = ColorWithRGB(250, 31, 118);
-    cell.selectedBackgroundView = backView;
-    cell.textLabel.highlightedTextColor = [UIColor whiteColor];
+    cell.textLabel.textColor = COLOR_THEME_ALL;
+//    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(cell.frame), CGRectGetHeight(cell.frame))];
+//    backView.backgroundColor = ColorWithRGB(250, 31, 118);
+//    cell.selectedBackgroundView = backView;
+    cell.textLabel.highlightedTextColor = COLOR_THEME_ALL;
     return cell;
     
 }
@@ -180,19 +183,19 @@
         //这个属性是设置指纹输入失败之后的弹出框的选项
         _context.localizedFallbackTitle = @"";
         NSError *error = nil;
-        NSString *localizedReason = @"指纹解锁";
+        NSString *localizedReason = WeXLocalizedString(@"指纹解锁");
         if (@available(iOS 11.0, *))
         {
             if (_context.biometryType == LABiometryTypeFaceID)
             {
-                localizedReason = @"FaceID登录";
+                localizedReason = WeXLocalizedString(@"FaceID登录");
             }
         }
         if ([_context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
-            NSLog(@"支持指纹识别");
+            NSLog(@"%@",WeXLocalizedString(@"支持指纹识别"));
             [_context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:localizedReason reply:^(BOOL success, NSError * _Nullable error) {
                 if (success) {
-                    NSLog(@"验证成功 刷新主界面");
+                    NSLog(@"%@",WeXLocalizedString(@"验证成功 刷新主界面"));
                     dispatch_async(dispatch_get_main_queue(), ^{
                         //保存手势进passport
                         WeXPasswordCacheModal *model = [WexCommonFunc getPassport];
@@ -210,45 +213,45 @@
                     switch (error.code) {
                         case LAErrorSystemCancel:
                         {
-                            NSLog(@"系统取消授权，如其他APP切入");
+                            NSLog(@"%@",WeXLocalizedString(@"系统取消授权，如其他APP切入"));
                             break;
                         }
                         case LAErrorUserCancel:
                         {
-                            NSLog(@"用户取消验证Touch ID");
+                            NSLog(@"%@",WeXLocalizedString(@"用户取消验证Touch ID"));
                             break;
                         }
                         case LAErrorAuthenticationFailed:
                         {
-                            NSLog(@"授权失败");
+                            NSLog(@"%@",WeXLocalizedString(@"授权失败"));
                             break;
                         }
                         case LAErrorPasscodeNotSet:
                         {
-                            NSLog(@"系统未设置密码");
+                            NSLog(@"%@",WeXLocalizedString(@"系统未设置密码"));
                             break;
                         }
                         case LAErrorTouchIDNotAvailable:
                         {
-                            NSLog(@"设备Touch ID不可用，例如未打开");
+                            NSLog(@"%@",WeXLocalizedString(@"设备Touch ID不可用，例如未打开"));
                             break;
                         }
                         case LAErrorTouchIDNotEnrolled:
                         {
-                            NSLog(@"设备Touch ID不可用，用户未录入");
+                            NSLog(@"%@",WeXLocalizedString(@"设备Touch ID不可用，用户未录入"));
                             break;
                         }
                         case LAErrorUserFallback:
                         {
                             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                                NSLog(@"用户选择输入密码，切换主线程处理");
+                                NSLog(@"%@",WeXLocalizedString(@"用户选择输入密码，切换主线程处理"));
                             }];
                             break;
                         }
                         default:
                         {
                             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                                NSLog(@"其他情况，切换主线程处理");
+                                NSLog(@"%@",WeXLocalizedString(@"其他情况，切换主线程处理"));
                             }];
                             break;
                         }
@@ -256,7 +259,7 @@
                 }
             }];
         }else{
-            NSLog(@"不支持指纹识别");
+            NSLog(@"%@",WeXLocalizedString(@"不支持指纹识别"));
             switch (error.code) {
                 case LAErrorTouchIDNotEnrolled:
                 {

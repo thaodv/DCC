@@ -75,7 +75,7 @@
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.text = @"手环介绍";
     titleLabel.font = [UIFont systemFontOfSize:18];
-    titleLabel.textColor = ColorWithLabelDescritionBlack;
+    titleLabel.textColor = COLOR_LABEL_DESCRIPTION;
     titleLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -87,7 +87,7 @@
     
     UILabel *contentLabel = [[UILabel alloc] init];
     contentLabel.font = [UIFont systemFontOfSize:15];
-    contentLabel.textColor = ColorWithLabelDescritionBlack;
+    contentLabel.textColor = COLOR_LABEL_DESCRIPTION;
     contentLabel.textAlignment = NSTextAlignmentLeft;
     contentLabel.numberOfLines = 0;
     [self.view addSubview:contentLabel];
@@ -98,7 +98,7 @@
     }];
     
     
-    NSString *content1 = @"全向手环是一款智能运动手环，内置专业算法及科学跑步指导，超长续航能力，7*24小时心率监测、运动步数、配速等数据，抬腕即看；基于共识算法，搭建运动激励计划体系，让每位运动爱好者在跑步的同时获得运动激励。";
+    NSString *content1 = @"BitExpress手环是一款智能运动手环，内置专业算法及科学跑步指导，超长续航能力，7*24小时心率监测、运动步数、配速等数据，抬腕即看；基于共识算法，搭建运动激励计划体系，让每位运动爱好者在跑步的同时获得运动激励。";
     //设置间距
     NSMutableAttributedString *attrStr1 = [[NSMutableAttributedString alloc] initWithString:content1];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -113,7 +113,7 @@
     contentLabel.attributedText = attrStr1;
     
     WeXCustomButton *downBtn = [WeXCustomButton button];
-    [downBtn setTitle:@"购买全向手环" forState:UIControlStateNormal];
+    [downBtn setTitle:@"购买BitExpress手环" forState:UIControlStateNormal];
     [downBtn addTarget:self action:@selector(downBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:downBtn];
     [downBtn mas_makeConstraints:^(MASConstraintMaker *make) {

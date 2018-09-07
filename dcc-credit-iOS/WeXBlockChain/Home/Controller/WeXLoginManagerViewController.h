@@ -9,8 +9,6 @@
 #import "WeXBaseViewController.h"
 
 
-
-
 @interface WeXLoginManagerViewController : WeXBaseViewController
 
 @end

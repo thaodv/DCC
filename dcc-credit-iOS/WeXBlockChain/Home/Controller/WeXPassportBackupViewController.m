@@ -16,7 +16,7 @@
 
 typedef NS_ENUM(NSInteger,WeXBackupHandleType) {
     WeXBackupHandleTypeNone,
-    WeXBackupHandleTypeShowPassword,//查看口袋密码流程
+    WeXBackupHandleTypeShowPassword,//查看钱包密码流程
     WeXBackupHandleTypePrivateKey//点击私钥明文流程
 };
 
@@ -60,7 +60,7 @@ typedef void(^SafeVertifyResponse)(void);
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"口袋备份";
+    self.navigationItem.title = WeXLocalizedString(@"钱包备份");
     [self setNavigationNomalBackButtonType];
     [self commonInit];
     [self setupSubViews];
@@ -83,10 +83,10 @@ typedef void(^SafeVertifyResponse)(void);
     _keyStroeBtn =[UIButton buttonWithType:UIButtonTypeCustom];
     _keyStroeBtn.frame = CGRectMake(0, kNavgationBarHeight, kScreenWidth/2, kTitleButtonHeight);
     _keyStroeBtn.titleLabel.font = [UIFont systemFontOfSize:19];
-    [_keyStroeBtn setTitle:@"KEYSTORE信息" forState:UIControlStateNormal];
-    [_keyStroeBtn setTitleColor:ColorWithLabelDescritionBlack forState:UIControlStateSelected];
+    [_keyStroeBtn setTitle:WeXLocalizedString(@"KEYSTORE信息") forState:UIControlStateNormal];
+    [_keyStroeBtn setTitleColor:COLOR_LABEL_DESCRIPTION forState:UIControlStateSelected];
     _keyStroeBtn.selected = YES;
-    [_keyStroeBtn setTitleColor:ColorWithLabelDescritionBlack forState:UIControlStateNormal];
+    [_keyStroeBtn setTitleColor:COLOR_LABEL_DESCRIPTION forState:UIControlStateNormal];
     _keyStroeBtn.backgroundColor = [UIColor clearColor];
     [_keyStroeBtn addTarget:self action:@selector(keyStroeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_keyStroeBtn];
@@ -94,9 +94,9 @@ typedef void(^SafeVertifyResponse)(void);
     _privateKeyBtn =[UIButton buttonWithType:UIButtonTypeCustom];
     _privateKeyBtn.frame = CGRectMake(kScreenWidth/2, kNavgationBarHeight, kScreenWidth/2, kTitleButtonHeight);
     _privateKeyBtn.titleLabel.font = [UIFont systemFontOfSize:19];
-    [_privateKeyBtn setTitle:@"私钥明文" forState:UIControlStateNormal];
-    [_privateKeyBtn setTitleColor:ColorWithLabelDescritionBlack forState:UIControlStateSelected];
-    [_privateKeyBtn setTitleColor:ColorWithLabelDescritionBlack forState:UIControlStateNormal];
+    [_privateKeyBtn setTitle:WeXLocalizedString(@"私钥明文") forState:UIControlStateNormal];
+    [_privateKeyBtn setTitleColor:COLOR_LABEL_DESCRIPTION forState:UIControlStateSelected];
+    [_privateKeyBtn setTitleColor:COLOR_LABEL_DESCRIPTION forState:UIControlStateNormal];
     _privateKeyBtn.backgroundColor = [UIColor clearColor];
     [_privateKeyBtn addTarget:self action:@selector(privateKeyBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_privateKeyBtn];
@@ -104,7 +104,7 @@ typedef void(^SafeVertifyResponse)(void);
     
     //创建移动下划线
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,CGRectGetMaxY(_keyStroeBtn.frame)-1, kScreenWidth/2*0.6, 1)];
-    line.backgroundColor = ColorWithLabelDescritionBlack;
+    line.backgroundColor = COLOR_THEME_ALL;
     line.WeX_centerX = _keyStroeBtn.WeX_centerX;
     [self.view addSubview:line];
     self.moveLine = line;
@@ -122,9 +122,10 @@ typedef void(^SafeVertifyResponse)(void);
     
     
     _descriptionLabel = [[UILabel alloc] init];
-    _descriptionLabel.text = @"二维码显示的是KEYSTORE信息，KEYSTORE是私钥的签名保护文件，通过口袋密码对KEYSTORE文件签名。单独拥有KEYSTORE文件或者口袋密码都无法使用口袋。而同时拥有KEYSTORE文件和口袋密码则可以在任何设备使用口袋。强烈建议您在使用口袋前做好备份。";
+    //PassportBackupViewControllerExplainKeyStoreInfo
+    _descriptionLabel.text = WeXLocalizedString(@"PassportBackupViewControllerExplainKeyStoreInfo");
     _descriptionLabel.font = [UIFont systemFontOfSize:14];
-    _descriptionLabel.textColor = ColorWithLabelDescritionBlack;
+    _descriptionLabel.textColor = COLOR_LABEL_DESCRIPTION;
     _descriptionLabel.textAlignment = NSTextAlignmentLeft;
     _descriptionLabel.numberOfLines = 0;
     [_tableView addSubview:_descriptionLabel];
@@ -134,12 +135,9 @@ typedef void(^SafeVertifyResponse)(void);
         make.trailing.equalTo(self.view).offset(-20);
     }];
     
-    _showBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [_showBtn setTitle:@"点击查看口袋密码" forState:UIControlStateNormal];
-    [_showBtn setTitleColor:ColorWithButtonRed forState:UIControlStateNormal];
-    _showBtn.layer.borderWidth = 1;
-    _showBtn.layer.borderColor = ColorWithButtonRed.CGColor;
-    _showBtn.layer.cornerRadius = 5;
+    
+    _showBtn = [WeXCustomButton button];
+    [_showBtn setTitle:WeXLocalizedString(@"点击查看钱包密码") forState:UIControlStateNormal];
     [_showBtn addTarget:self action:@selector(showBtnClick) forControlEvents:UIControlEventTouchUpInside];
     _showBtn.titleLabel.font = [UIFont systemFontOfSize:12];
     [_tableView addSubview:_showBtn];
@@ -151,9 +149,9 @@ typedef void(^SafeVertifyResponse)(void);
     }];
     
     UILabel *title1= [[UILabel alloc] init];
-    title1.text = @"导出方式一：KEYSTORE文本信息二维码";
+    title1.text = WeXLocalizedString(@"导出方式一：KEYSTORE文本信息二维码");
     title1.font = [UIFont systemFontOfSize:17];
-    title1.textColor = ColorWithLabelDescritionBlack;
+    title1.textColor = COLOR_LABEL_DESCRIPTION;
     title1.textAlignment = NSTextAlignmentCenter;
     [_tableView addSubview:title1];
     [title1 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -185,9 +183,9 @@ typedef void(^SafeVertifyResponse)(void);
     _QRImageView = QRImageView;
     
     UILabel *label1 = [[UILabel alloc] init];
-    label1.text = @"点击图片后截图保存二维码";
+    label1.text = WeXLocalizedString(@"点击图片后截图保存二维码");
     label1.font = [UIFont systemFontOfSize:12];
-    label1.textColor = ColorWithLabelDescritionBlack;
+    label1.textColor = COLOR_LABEL_DESCRIPTION;
     label1.textAlignment = NSTextAlignmentCenter;
     [_tableView addSubview:label1];
     [label1 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -197,9 +195,9 @@ typedef void(^SafeVertifyResponse)(void);
     }];
     
     UILabel *title2= [[UILabel alloc] init];
-    title2.text = @"导出方式二：KEYSTORE文本信息二维码";
+    title2.text = WeXLocalizedString(@"导出方式二：KEYSTORE文本信息");
     title2.font = [UIFont systemFontOfSize:17];
-    title2.textColor = ColorWithLabelDescritionBlack;
+    title2.textColor = COLOR_LABEL_DESCRIPTION;
     title2.textAlignment = NSTextAlignmentCenter;
     [_tableView addSubview:title2];
     [title2 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -212,7 +210,11 @@ typedef void(^SafeVertifyResponse)(void);
     
     //粘贴背景框
     UIImageView *backImageView = [[UIImageView alloc] init];
-    backImageView.image = [UIImage imageNamed:@"copyFrame"];
+//    backImageView.image = [UIImage imageNamed:@"copyFrame"];
+    backImageView.layer.cornerRadius = 12;
+    backImageView.layer.masksToBounds = YES;
+    backImageView.layer.borderWidth = 1;
+    backImageView.layer.borderColor =ColorWithHex(0xdcdcdc).CGColor;
     [_tableView addSubview:backImageView];
     [backImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(title2.mas_bottom).offset(20);
@@ -223,9 +225,9 @@ typedef void(^SafeVertifyResponse)(void);
     
     //粘贴框提示文字
     UILabel *label2 = [[UILabel alloc] init];
-    label2.text = @"KEYSTORE文本信息如下";
+    label2.text = WeXLocalizedString(@"KEYSTORE文本信息如下");
     label2.font = [UIFont systemFontOfSize:15];
-    label2.textColor = ColorWithLabelDescritionBlack;
+    label2.textColor = COLOR_LABEL_DESCRIPTION;
     label2.textAlignment = NSTextAlignmentLeft;
     [_tableView addSubview:label2];
     [label2 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -238,7 +240,7 @@ typedef void(^SafeVertifyResponse)(void);
     //输入文本框
     _contentTextView = [[UITextView alloc] init];
     _contentTextView.backgroundColor = [UIColor clearColor];
-    _contentTextView.textColor = ColorWithLabelWeakBlack;
+    _contentTextView.textColor = COLOR_LABEL_WEAK;
     _contentTextView.text = address;
     _contentTextView.font = [UIFont systemFontOfSize:15];
     _contentTextView.editable = NO;
@@ -251,12 +253,8 @@ typedef void(^SafeVertifyResponse)(void);
     }];
     
     
-    UIButton *copyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [copyBtn setTitle:@"复制KEYSTORE文本信息" forState:UIControlStateNormal];
-    [copyBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    copyBtn.backgroundColor = ColorWithButtonRed;
-    copyBtn.layer.cornerRadius = 3;
-    copyBtn.layer.masksToBounds = YES;
+    UIButton *copyBtn = [WeXCustomButton button];
+    [copyBtn setTitle:WeXLocalizedString(@"复制KEYSTORE文本信息") forState:UIControlStateNormal];
     [copyBtn addTarget:self action:@selector(copyBtnClick) forControlEvents:UIControlEventTouchUpInside];
     copyBtn.titleLabel.font = [UIFont systemFontOfSize:18];
     [_tableView addSubview:copyBtn];
@@ -306,18 +304,18 @@ typedef void(^SafeVertifyResponse)(void);
         self.moveLine.WeX_centerX = _keyStroeBtn.WeX_centerX;
     }];
     
-    _descriptionLabel2.text = @"KEYSTORE文本信息如下";
+    _descriptionLabel2.text = WeXLocalizedString(@"KEYSTORE文本信息如下");
     NSDictionary *keystoreDict = _model.keyStore;
     NSData *data = [NSJSONSerialization dataWithJSONObject:keystoreDict options:0 error:nil];
     NSString *address = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     _QRImageView.image = [SGQRCodeGenerateManager generateWithDefaultQRCodeData:address imageViewWidth:160];
     _contentTextView.text = address;
-    _descriptionLabel.text = @"二维码显示的是KeyStore信息，KEYSTORE是私钥的签名保护文件，通过口袋密码对KEYSTORE文件签名。单独拥有KEYSTORE文件或者口袋密码都无法使用口袋。而同时拥有KEYSTORE文件和口袋密码则可以在任何设备使用口袋。强烈建议您在使用口袋前做好备份。";
+    _descriptionLabel.text = WeXLocalizedString(@"PassportBackupViewControllerExplainKeyStoreInfo");
     _showBtn.hidden = NO;
-    [_copyBtn setTitle:@"复制KEYSTORE文本信息" forState:UIControlStateNormal];
+    [_copyBtn setTitle:WeXLocalizedString(@"复制KEYSTORE文本信息") forState:UIControlStateNormal];
     
-    _exportTitle1.text = @"导出方式一：KEYSTORE文本信息二维码";
-    _exportTitle2.text = @"导出方式二：KEYSTORE文本信息";
+    _exportTitle1.text = WeXLocalizedString(@"导出方式一：KEYSTORE文本信息二维码");
+    _exportTitle2.text = WeXLocalizedString(@"导出方式二：KEYSTORE文本信息");
 
 }
 
@@ -333,15 +331,16 @@ typedef void(^SafeVertifyResponse)(void);
         [UIView animateWithDuration:0.3 animations:^{
             self.moveLine.WeX_centerX = _privateKeyBtn.WeX_centerX;
         }];
-        _descriptionLabel2.text = @"私钥明文如下";
+        _descriptionLabel2.text = WeXLocalizedString(@"私钥明文如下");
         _QRImageView.image = [SGQRCodeGenerateManager generateWithDefaultQRCodeData:_model.walletPrivateKey imageViewWidth:160];
         _contentTextView.text = _model.walletPrivateKey;
-        _descriptionLabel.text = @"当前二维码显示的是私钥明文，私钥明文是您对口袋所有权的认证方式。通过导入私钥可以在任何设备使用口袋。并创建对通行应的KeyStore文件和口袋密码。强烈建议您在使用口袋前做好备份。";
+        //PassportBackupViewControllerExplainPrivateInfo
+        _descriptionLabel.text = WeXLocalizedString(@"PassportBackupViewControllerExplainPrivateInfo");
         _showBtn.hidden = YES;
-        [_copyBtn setTitle:@"复制私钥明文" forState:UIControlStateNormal];
+        [_copyBtn setTitle:WeXLocalizedString(@"复制私钥明文") forState:UIControlStateNormal];
         
-        _exportTitle1.text = @"导出方式一：私钥明文二维码";
-        _exportTitle2.text = @"导出方式二：私钥明文";
+        _exportTitle1.text = WeXLocalizedString(@"导出方式一：私钥明文二维码");
+        _exportTitle2.text = WeXLocalizedString(@"导出方式二：私钥明文");
         
     }
     
@@ -357,7 +356,7 @@ typedef void(^SafeVertifyResponse)(void);
 - (void)copyBtnClick{
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = _contentTextView.text;
-    [WeXPorgressHUD showText:@"复制成功!" onView:self.view];
+    [WeXPorgressHUD showText:WeXLocalizedString(@"复制成功!") onView:self.view];
 }
 
 - (void)createPassportPasswordShowView

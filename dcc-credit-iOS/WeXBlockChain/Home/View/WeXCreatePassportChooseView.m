@@ -53,26 +53,39 @@
         make.height.equalTo(@180);
     }];
     
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.text = @"BitEXPRESS";
+    titleLabel.font = [UIFont systemFontOfSize:20];
+    titleLabel.textColor = COLOR_LABEL_TITLE;
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    [contentView addSubview:titleLabel];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(contentView).offset(15);
+        make.leading.equalTo(contentView).offset(10);
+        make.trailing.equalTo(contentView).offset(-10);
+        make.height.equalTo(@20);
+    }];
+    
     
     UIButton *createBtn = [WeXCustomButton button];
-    [createBtn setTitle:NSLocalizedString(@"WeXCreatePassportChooseView_createButtonTitle", @"") forState:UIControlStateNormal];
+    [createBtn setTitle:WeXLocalizedString(@"WeXCreatePassportChooseView_createButtonTitle") forState:UIControlStateNormal];
     [createBtn addTarget:self action:@selector(createBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [contentView addSubview:createBtn];
     [createBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(contentView);
-        make.centerY.equalTo(contentView).offset(-30);
+        make.top.equalTo(titleLabel.mas_bottom).offset(15);
         make.width.equalTo(@140);
         make.height.equalTo(@40);
     }];
     
-    
+
     UIButton *importBtn = [WeXCustomButton button];
-    [importBtn setTitle:NSLocalizedString(@"WeXCreatePassportChooseView_importButtonTitle", @"") forState:UIControlStateNormal];
+    [importBtn setTitle:WeXLocalizedString(@"WeXCreatePassportChooseView_importButtonTitle") forState:UIControlStateNormal];
     [importBtn addTarget:self action:@selector(importBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [contentView addSubview:importBtn];
     [importBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(contentView);
-        make.centerY.equalTo(contentView).offset(30);
+        make.top.equalTo(createBtn.mas_bottom).offset(15);
         make.width.equalTo(@140);
         make.height.equalTo(@40);
     }];
@@ -80,7 +93,7 @@
     
     UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     cancelBtn.userInteractionEnabled = YES;
-    [cancelBtn setImage:[UIImage imageNamed:@"dcc_choose_cancel"] forState:UIControlStateNormal];
+    [cancelBtn setImage:[UIImage imageNamed:@"dcc_big_cha"] forState:UIControlStateNormal];
     [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancelBtn];
     [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {

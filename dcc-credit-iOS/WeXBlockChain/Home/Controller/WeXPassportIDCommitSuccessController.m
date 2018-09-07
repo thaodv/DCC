@@ -48,7 +48,7 @@
     }];
     
     WeXCustomButton *backBtn = [WeXCustomButton button];
-    [backBtn setTitle:@"返回全向口袋" forState:UIControlStateNormal];
+    [backBtn setTitle:@"返回BitExpress钱包" forState:UIControlStateNormal];
     backBtn.layer.cornerRadius = 5;
     backBtn.layer.masksToBounds = YES;
     [backBtn setTitleColor:ColorWithRGB(248, 31, 117) forState:UIControlStateNormal];

@@ -60,7 +60,7 @@
     [line1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.trailing.equalTo(self);
         make.top.equalTo(cancelBtn.mas_bottom);
-        make.height.equalTo(@LINE_VIEW_Width);
+        make.height.equalTo(@HEIGHT_LINE);
     }];
     
     UIButton *showBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -86,7 +86,7 @@
     _passwordTextField.keyboardType = UIKeyboardTypeASCIICapable;
     _passwordTextField.secureTextEntry = YES;
     UILabel *leftLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,130,50)];
-    leftLabel1.text = @"请输入口袋密码:";
+    leftLabel1.text = @"请输入钱包密码:";
     leftLabel1.font = [UIFont systemFontOfSize:17];
     leftLabel1.textColor = [UIColor lightGrayColor];
     leftLabel1.backgroundColor = [UIColor clearColor];
@@ -109,7 +109,7 @@
         make.leading.equalTo(_passwordTextField.mas_leading);
         make.trailing.equalTo(showBtn);
         make.top.equalTo(_passwordTextField.mas_bottom);
-        make.height.equalTo(@LINE_VIEW_Width);
+        make.height.equalTo(@HEIGHT_LINE);
     }];
     //图形码按钮
     _graphBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -157,11 +157,11 @@
         make.leading.equalTo(self);
         make.trailing.equalTo(self);
         make.top.equalTo(_graphTextField.mas_bottom);
-        make.height.equalTo(@LINE_VIEW_Width);
+        make.height.equalTo(@HEIGHT_LINE);
     }];
     
     UIButton *createBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [createBtn setTitle:@"生成口袋" forState:UIControlStateNormal];
+    [createBtn setTitle:@"生成钱包" forState:UIControlStateNormal];
     [createBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [createBtn addTarget:self action:@selector(createBtnClick) forControlEvents:UIControlEventTouchUpInside];
     createBtn.titleLabel.font = [UIFont systemFontOfSize:18];

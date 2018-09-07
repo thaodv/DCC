@@ -19,6 +19,8 @@
 
 #import "WeXGraphView.h"
 
+#import "WeXPassportIDCacheInfoModal.h"
+
 
 @interface WeXPassportIDFaceController ()
 {
@@ -130,10 +132,11 @@
             _getTicketModel = getTicketModel;
             [self createGetContractAddressRequest];
         }
+        
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
         
     }
@@ -150,7 +153,7 @@
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _uploadAuthenticationAdapter){
@@ -164,7 +167,7 @@
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _getOrderIdAdapter){
@@ -180,7 +183,7 @@
             {
                 if (_requestCount > 8) {
                     [WeXPorgressHUD hideLoading];
-                    [WeXPorgressHUD showText:@"上传失败" onView:self.view];
+                    [WeXPorgressHUD showText:WeXLocalizedString(@"上传失败") onView:self.view];
                     return;
                 }
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -193,7 +196,7 @@
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     else if (adapter == _getVerifyAdapter){
@@ -208,7 +211,7 @@
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
     }
     
@@ -236,7 +239,7 @@
     passportModel.userMonth = infoModel.userMonth;
     passportModel.userDay = infoModel.userDay;
   
-    passportModel.authenTxHash = _txHash;
+    passportModel.idAuthenTxHash = _txHash;
     [WexCommonFunc savePassport:passportModel];
 }
 
@@ -259,7 +262,7 @@
 -(void)setupSubViews{
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"数字身份证";
+    titleLabel.text = WeXLocalizedString(@"数字身份证");
     titleLabel.font = [UIFont systemFontOfSize:25];
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -271,7 +274,7 @@
     }];
     
     UILabel *label1 = [[UILabel alloc] init];
-    label1.text = @"①拍摄身份证-②信息确认-③采集头像-④完成";
+    label1.text = WeXLocalizedString(@"①拍摄身份证-②信息确认-③采集头像-④完成");
     label1.font = [UIFont systemFontOfSize:14];
     label1.textColor = [UIColor lightGrayColor];
     label1.textAlignment = NSTextAlignmentLeft;
@@ -284,7 +287,7 @@
     }];
     
     UILabel *label2 = [[UILabel alloc] init];
-    label2.text = @"拍摄您本人人脸，请确保正对手机，光线充足";
+    label2.text = WeXLocalizedString(@"拍摄您本人人脸，请确保正对手机，光线充足");
     label2.font = [UIFont systemFontOfSize:15];
     label2.textColor = [UIColor whiteColor];
     label2.textAlignment = NSTextAlignmentCenter;
@@ -309,7 +312,7 @@
     _faceImageView = faceImageView;
     
     WeXCustomButton *faceBtn = [WeXCustomButton button];
-    [faceBtn setTitle:@"采集本人人脸" forState:UIControlStateNormal];
+    [faceBtn setTitle:WeXLocalizedString(@"采集本人人脸") forState:UIControlStateNormal];
     faceBtn.layer.cornerRadius = 5;
     faceBtn.layer.masksToBounds = YES;
     [faceBtn setTitleColor:ColorWithRGB(248, 31, 117) forState:UIControlStateNormal];
@@ -326,7 +329,7 @@
 }
 
 - (void)faceBtnClick{
-    if ([_faceBtn.titleLabel.text isEqualToString:@"采集本人人脸"]) {
+    if ([_faceBtn.titleLabel.text isEqualToString:WeXLocalizedString(@"采集本人人脸")]) {
         MGLiveManager *liveManager = [[MGLiveManager alloc] init];
         liveManager.actionCount = 3;
         liveManager.actionTimeOut = 10;
@@ -346,7 +349,7 @@
                                                   if (resultImage) {
                                                       _faceImageView.image = resultImage;
                                                       _remindLabel.hidden = YES;
-                                                      [_faceBtn setTitle:@"提交验证" forState:UIControlStateNormal];
+                                                      [_faceBtn setTitle:WeXLocalizedString(@"提交验证") forState:UIControlStateNormal];
                                                       WeXPassportIDCacheInfoModal *infoModel = [WeXPassportIDCacheInfoModal sharedInstance];
                                                       infoModel.userHeadData = UIImageJPEGRepresentation(resultImage, 0.8);
                                                       NSLog(@"length=%lu",(unsigned long)infoModel.userHeadData.length);
@@ -402,7 +405,7 @@
         if(response!=nil)
         {
             NSError* error=response;
-            NSLog(@"容器加载失败:%@",error);
+            NSLog(WeXLocalizedString(@"容器加载失败:%@"),error);
             return;
         }
         /** 连接以太坊(开发，测试，生产环境地址值不同，建议用宏区分不同开发环境) */

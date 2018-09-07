@@ -29,6 +29,9 @@ typedef NS_ENUM(NSInteger,WeXBaseViewBackgroundType) {
 //留给子类调用设置导航栏返回默认样式方法
 - (void)setNavigationNomalBackButtonType;
 
+//点击左上角返回按钮
+- (void)backItemClick;
+
 
 //留给子类调用设置导航栏右边按钮样式方法
 - (void)configNavigitonBarWithImage:(NSString *)image;

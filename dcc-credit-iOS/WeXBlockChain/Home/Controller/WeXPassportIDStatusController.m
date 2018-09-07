@@ -55,7 +55,7 @@
     _getOrderIdAdapter = [[WeXAuthenGetOrderIdAdapter alloc] init];
     _getOrderIdAdapter.delegate = self;
     WeXAuthenGetOrderIdParamModal* paramModal = [[WeXAuthenGetOrderIdParamModal alloc] init];
-    paramModal.txHash = [WexCommonFunc getPassport].authenTxHash;
+    paramModal.txHash = [WexCommonFunc getPassport].idAuthenTxHash;
     paramModal.business = @"ID";
     [_getOrderIdAdapter run:paramModal];
 }
@@ -74,7 +74,7 @@
         else
         {
             [WeXPorgressHUD hideLoading];
-            [WeXPorgressHUD showText:@"系统错误，请稍后再试!" onView:self.view];
+            [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
      }
 }
@@ -83,7 +83,7 @@
 -(void)setupSubViews{
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"实名信息";
+    titleLabel.text = WeXLocalizedString(@"实名信息");
     titleLabel.font = [UIFont systemFontOfSize:25];
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -105,7 +105,7 @@
     }];
 
     UILabel *nameTitleLabel = [[UILabel alloc] init];
-    nameTitleLabel.text = @"姓名";
+    nameTitleLabel.text = WeXLocalizedString(@"姓名");
     nameTitleLabel.font = [UIFont systemFontOfSize:14];
     nameTitleLabel.textColor = [UIColor blueColor];
     nameTitleLabel.textAlignment = NSTextAlignmentLeft;
@@ -127,7 +127,7 @@
     }];
     
     UILabel *sexTitleLabel = [[UILabel alloc] init];
-    sexTitleLabel.text = @"性别";
+    sexTitleLabel.text = WeXLocalizedString(@"性别");
     sexTitleLabel.font = [UIFont systemFontOfSize:14];
     sexTitleLabel.textColor = [UIColor blueColor];
     sexTitleLabel.textAlignment = NSTextAlignmentLeft;
@@ -150,7 +150,7 @@
     
     
     UILabel *nationTitleLabel = [[UILabel alloc] init];
-    nationTitleLabel.text = @"民族";
+    nationTitleLabel.text = WeXLocalizedString(@"民族");
     nationTitleLabel.font = [UIFont systemFontOfSize:14];
     nationTitleLabel.textColor = [UIColor blueColor];
     nationTitleLabel.textAlignment = NSTextAlignmentLeft;
@@ -172,7 +172,7 @@
     }];
     
     UILabel *birthTitleLabel = [[UILabel alloc] init];
-    birthTitleLabel.text = @"出生";
+    birthTitleLabel.text = WeXLocalizedString(@"出生");
     birthTitleLabel.font = [UIFont systemFontOfSize:14];
     birthTitleLabel.textColor = [UIColor blueColor];
     birthTitleLabel.textAlignment = NSTextAlignmentLeft;
@@ -194,7 +194,7 @@
     }];
     
     UILabel *yearTitleLabel = [[UILabel alloc] init];
-    yearTitleLabel.text = @"年";
+    yearTitleLabel.text = WeXLocalizedString(@"年");
     yearTitleLabel.font = [UIFont systemFontOfSize:14];
     yearTitleLabel.textColor = [UIColor blueColor];
     yearTitleLabel.textAlignment = NSTextAlignmentLeft;
@@ -216,7 +216,7 @@
     }];
     
     UILabel *monthTitleLabel = [[UILabel alloc] init];
-    monthTitleLabel.text = @"月";
+    monthTitleLabel.text = WeXLocalizedString(@"月");
     monthTitleLabel.font = [UIFont systemFontOfSize:14];
     monthTitleLabel.textColor = [UIColor blueColor];
     monthTitleLabel.textAlignment = NSTextAlignmentLeft;
@@ -238,7 +238,7 @@
     }];
     
     UILabel *dayTitleLabel = [[UILabel alloc] init];
-    dayTitleLabel.text = @"日";
+    dayTitleLabel.text = WeXLocalizedString(@"日");
     dayTitleLabel.font = [UIFont systemFontOfSize:14];
     dayTitleLabel.textColor = [UIColor blueColor];
     dayTitleLabel.textAlignment = NSTextAlignmentLeft;
@@ -263,7 +263,7 @@
     }];
     
     UILabel *addressTitleLabel = [[UILabel alloc] init];
-    addressTitleLabel.text = @"住址";
+    addressTitleLabel.text = WeXLocalizedString(@"住址");
     addressTitleLabel.font = [UIFont systemFontOfSize:14];
     addressTitleLabel.textColor = [UIColor blueColor];
     addressTitleLabel.textAlignment = NSTextAlignmentLeft;
@@ -287,7 +287,7 @@
     }];
     
     UILabel *numberTitleLabel = [[UILabel alloc] init];
-    numberTitleLabel.text = @"身份证号码";
+    numberTitleLabel.text = WeXLocalizedString(@"身份证号码");
     numberTitleLabel.font = [UIFont systemFontOfSize:14];
     numberTitleLabel.textColor = [UIColor blueColor];
     numberTitleLabel.textAlignment = NSTextAlignmentLeft;
@@ -312,7 +312,7 @@
     //成功
     if ([_status isEqualToString:STATUS_PASSED]) {
         UILabel *authTitleLabel = [[UILabel alloc] init];
-        authTitleLabel.text = @"为认证内容";
+        authTitleLabel.text = WeXLocalizedString(@"为认证内容");
         authTitleLabel.font = [UIFont systemFontOfSize:14];
         authTitleLabel.textColor = [UIColor redColor];
         authTitleLabel.textAlignment = NSTextAlignmentLeft;
@@ -368,7 +368,7 @@
         
         UIImageView *QRImageView = [[UIImageView alloc] init];
         QRImageView.layer.magnificationFilter = kCAFilterNearest;
-        QRImageView.image = [SGQRCodeGenerateManager generateWithDefaultQRCodeData:@"二维码内容" imageViewWidth:160];
+        QRImageView.image = [SGQRCodeGenerateManager generateWithDefaultQRCodeData:WeXLocalizedString(@"二维码内容") imageViewWidth:160];
         QRImageView.layer.cornerRadius = 5;
         QRImageView.layer.masksToBounds = YES;
         QRImageView.userInteractionEnabled = YES;
@@ -426,7 +426,7 @@
         }];
        
         WeXCustomButton *applyBtn = [WeXCustomButton button];
-        [applyBtn setTitle:@"重新申请认证" forState:UIControlStateNormal];
+        [applyBtn setTitle:WeXLocalizedString(@"重新申请认证") forState:UIControlStateNormal];
         [applyBtn addTarget:self action:@selector(applyBtnClick) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:applyBtn];
         [applyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -448,7 +448,7 @@
 
 - (void)tapClick{
     
-    UIImage *image = [SGQRCodeGenerateManager generateWithDefaultQRCodeData:@"二维码内容" imageViewWidth:kScreenWidth];
+    UIImage *image = [SGQRCodeGenerateManager generateWithDefaultQRCodeData:WeXLocalizedString(@"二维码内容") imageViewWidth:kScreenWidth];
     WeXBackupBigQRView *bigView = [[WeXBackupBigQRView alloc] initWithFrame:self.view.bounds];
     bigView.QRImageView.image = image;
     [self.view.window addSubview:bigView];

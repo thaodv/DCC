@@ -12,7 +12,7 @@
 
 - (NSString*)getRequestUrl
 {
-    return @"cert/id/ocr";
+    return @"dcc/endorsement/id/ocr";
 }
 
 - (WexBaseUrlType)getBasetUrlType

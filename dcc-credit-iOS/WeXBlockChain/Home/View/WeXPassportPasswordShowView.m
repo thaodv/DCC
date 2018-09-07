@@ -55,7 +55,7 @@
     }];
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"口袋密码";
+    titleLabel.text = WeXLocalizedString(@"钱包密码");
     titleLabel.font = [UIFont systemFontOfSize:18];
     titleLabel.textColor = [UIColor blackColor];
     titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -82,7 +82,7 @@
     _passwordLabel = passwordLabel;
     
     UIButton *confirmBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [confirmBtn setTitle:@"知道了" forState:UIControlStateNormal];
+    [confirmBtn setTitle:WeXLocalizedString(@"知道了") forState:UIControlStateNormal];
     [confirmBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [confirmBtn addTarget:self action:@selector(confirmBtnClick) forControlEvents:UIControlEventTouchUpInside];
     confirmBtn.titleLabel.font = [UIFont systemFontOfSize:18];
