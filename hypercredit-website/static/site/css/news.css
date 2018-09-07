@@ -1,0 +1,129 @@
+#pageBody {
+  background-color: #f0f0f0
+}
+
+#TrendBanner {
+  background-color: #fff;
+  border: none
+}
+
+#TrendBanner .navbar-inverse {
+  background-color: #fff;
+  border-bottom: 1px solid transparent;
+  border-color: transparent
+}
+
+.navbar-brand, .navbar-brand img{
+  height:40px;
+  width:auto;
+}
+
+#TrendBanner .dropdown-menu>li>a {
+  padding: 3px 5px
+}
+
+#TrendBanner .dropdown-menu {
+  min-width: 60px;
+  background-color: rgba(0, 0, 0, .3)
+}
+
+#TrendContainer {
+  margin-top: 40px;
+  background-color: #fff;
+  border-radius: 4px;
+  min-height: calc(100vh - 180px);
+  padding: 25px 45px;
+  margin-bottom: 20px
+}
+#TrendContainer .row{
+  margin-right:0;
+  margin-left:0;
+}
+#TrendContainer .TrendTitle {
+  font-size: 24px;
+  /* background-image: url(../images/gradient-left-border.png); */
+  background-size: 5px 45px;
+  background-repeat: no-repeat;
+  /* text-indent: 25px; */
+  line-height: 45px;
+  margin-bottom: 10px;
+}
+#TrendContainer .TrendList{
+  padding:0;
+  border:1px solid #dfdfdf;
+  margin-top:30px;
+  border-bottom:0;
+}
+
+#TrendContainer .TrendList li {
+  list-style-type: none;
+  line-height: 60px;
+  border-bottom: 1px solid #dfdfdf;
+  padding:0 10px;
+}
+
+#TrendContainer .TrendList li a,
+#TrendContainer .TrendList li span {
+  color: #000
+}
+#TrendContainer .TrendList li a:nth-of-type(1){
+ background:-webkit-linear-gradient(left, #35c4fa, #6b61e1);
+ display:inline-block;
+ width:120px;
+ height:30px;
+ margin:10px 0;
+ line-height:30px;
+ text-align:center;
+ border-radius:5px;
+ vertical-align: middle;
+ color:#fff;
+ /* margin-right:20px; */
+}
+#TrendContainer .TrendList li a:nth-of-type(2){
+  display:inline-block;
+  width:calc(100% - 250px);
+  margin-left:13px;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#TrendContainer .TrendList li span {
+  float: right;
+}
+
+@media (max-width:1000px){
+}
+@media (max-width:768px) {
+  #TrendContainer{
+    padding:20px;
+  }
+  #TrendContainer .TrendTitle{
+    line-height:normal;
+  }
+  #TrendContainer .TrendList li a:nth-of-type(1){
+    display:block;
+    /* width:100%; */
+  }
+  #TrendContainer .TrendList li a:nth-of-type(2){
+    display: inline-block;
+    line-height: 28px;
+    width: 100%;
+    margin-left:0;
+    vertical-align: top;
+    /* word-break: break-all; */
+    white-space: normal;
+    overflow: normal;
+    text-overflow: ellipsis
+  }
+  #TrendContainer .TrendList li span{
+    display:block;
+    float:none;
+    text-align:right;
+    line-height:30px;
+  }
+  #TrendContainer {
+    margin-top: 25px
+  }
+}
