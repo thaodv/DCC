@@ -678,7 +678,7 @@ object CertOperations {
 
         certPrefs.certIdOrderId.set(idInfo.orderId.toLong())
         certPrefs.certIdStatus.set(idInfo.idAuthenStatus)
-        certPrefs.certIdSimilarity.set(idInfo.similarity.toString())
+        certPrefs.certIdSimilarity.set(idInfo.similarity)
         certPrefs.certRealName.set(idInfo.userName)
         certPrefs.certRealId.set(idInfo.userNumber)
         certPrefs.certIdData.set(gson.toJson(essentialData))

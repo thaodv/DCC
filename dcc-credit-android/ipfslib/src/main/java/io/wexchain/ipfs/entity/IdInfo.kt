@@ -13,7 +13,7 @@ data class IdInfo(
         val facePhoto: String,//头像
         val idAuthenStatus: String,//实名认证状态
         val orderId: Int, //订单id
-        val similarity: Int, //相似度
+        val similarity: String, //相似度
         val userAddress: String,//地址
         val userName: String,//姓名
         val userNumber: String,//身份证号码

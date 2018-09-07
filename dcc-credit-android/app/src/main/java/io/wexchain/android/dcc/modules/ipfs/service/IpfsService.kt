@@ -73,7 +73,7 @@ class IpfsService : Service() {
                 facePhoto = facePhoto,
                 idAuthenStatus = idCertPassed,
                 orderId = orderid.toInt(),
-                similarity = similarity.toFloat().toInt(),
+                similarity = similarity,
                 userAddress = certIdData.address!!,
                 userName = certIdData.name,
                 userNumber = certIdData.id,
