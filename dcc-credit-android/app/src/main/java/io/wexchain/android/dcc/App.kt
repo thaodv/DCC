@@ -167,7 +167,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         JuzixData.init(app)
         LocalProtect.init(app)
     }
-var baseurl=BuildConfig.GATEWAY_BASE_URL
+
     fun initServices(app: App) {
         val networking = Networking(app, BuildConfig.DEBUG)
         this.networking = networking

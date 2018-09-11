@@ -153,15 +153,15 @@ class IpfsService : Service() {
                     when (business) {
                         ChainGateway.BUSINESS_ID -> {
                             val idDigest = CertOperations.getLocalIdDigest()
-                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, ID_NONCE,ipfsKeyHash)
+                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, ID_NONCE, ipfsKeyHash)
                         }
                         ChainGateway.BUSINESS_BANK_CARD -> {
                             val idDigest = CertOperations.getLocalBankDigest()
-                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, BANK_NONCE,ipfsKeyHash)
+                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, BANK_NONCE, ipfsKeyHash)
                         }
                         ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
                             val idDigest = CertOperations.getLocalCmDigest()
-                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, CM_NONCE,ipfsKeyHash)
+                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, CM_NONCE, ipfsKeyHash)
                         }
                         else -> {
                             Single.error(Throwable())
