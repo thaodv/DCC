@@ -10,10 +10,10 @@ import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.android.dcc.tools.ShareUtils
-import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.dcc.R
 import io.wexchain.digitalwallet.api.EthJsonRpcApiWithAuth
 import io.wexchain.digitalwallet.proxy.EthsRpcAgent
+import io.wexchain.ipfs.utils.doMain
 
 class SelectNodeActivity : BaseCompatActivity() {
 

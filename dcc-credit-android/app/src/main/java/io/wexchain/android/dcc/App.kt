@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.SystemClock
 import android.support.annotation.VisibleForTesting
 import android.support.multidex.MultiDex
-import android.util.Log
 import android.view.ContextThemeWrapper
 import com.wexmarket.android.network.Networking
 import io.reactivex.Single
@@ -16,6 +15,7 @@ import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.selectnode.NodeBean
 import io.wexchain.android.dcc.network.CommonApi
+import io.wexchain.android.dcc.network.IpfsApi
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.PassportRepository
 import io.wexchain.android.dcc.repo.ScfTokenManager
@@ -34,6 +34,7 @@ import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.api.*
 import io.wexchain.digitalwallet.api.domain.EthJsonRpcRequestBody
 import io.wexchain.digitalwallet.proxy.*
+import io.wexchain.ipfs.core.IpfsCore
 import zlc.season.rxdownload3.core.DownloadConfig
 import java.lang.ref.WeakReference
 import java.math.BigInteger
@@ -53,6 +54,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
     //our services
     lateinit var chainGateway: ChainGateway
+    lateinit var contractApi: IpfsApi
     lateinit var certApi: CertApi
     lateinit var chainFrontEndApi: ChainFrontEndApi
     lateinit var privateChainApi: PrivateChainApi
@@ -97,24 +99,37 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
         initServices(this)
         initData(this)
+        initIpfs()
     }
 
-    fun  getbiminAmountPerHand() {
-        val getAllowance = Erc20Helper.getMinAmountPerHando(BintApi.contract,"","")
-         bintApi.postStatus(
-            EthJsonRpcRequestBody(
-                method = "eth_call",
-                params = listOf(getAllowance, "latest"),
-                id = 1L
-            )
-        ). subscribeOn(AndroidSchedulers.mainThread()).subscribe(
-            {
+    private fun initIpfs() {
+        val hostStatus = passportRepository.getIpfsHostStatus()
+        val baseUrl = if (hostStatus) {
+            BuildConfig.IPFS_ADDRESS
+        } else {
+            val urlConfig = passportRepository.getIpfsUrlConfig()
+            IpfsCore.creatUrl(urlConfig.first!!, urlConfig.second!!)
+        }
+        IpfsCore.init(baseUrl)
+    }
 
-            },{
-                it.printStackTrace()
-            }
+    fun getbiminAmountPerHand() {
+        val getAllowance = Erc20Helper.getMinAmountPerHando(BintApi.contract, "", "")
+        bintApi.postStatus(
+                EthJsonRpcRequestBody(
+                        method = "eth_call",
+                        params = listOf(getAllowance, "latest"),
+                        id = 1L
+                )
+        ).subscribeOn(AndroidSchedulers.mainThread()).subscribe(
+                {
+
+                }, {
+            it.printStackTrace()
+        }
         )
     }
+
     fun initNode() {
         val a = NodeBean(1, "https://ethrpc.wexfin.com:58545/", "  以太坊节点-中国上海")
         val b = NodeBean(2, "https://ethrpc2.wexfin.com:58545/", "  以太坊节点-中国北京")
@@ -152,7 +167,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         JuzixData.init(app)
         LocalProtect.init(app)
     }
-var baseurl=BuildConfig.GATEWAY_BASE_URL
+
     fun initServices(app: App) {
         val networking = Networking(app, BuildConfig.DEBUG)
         this.networking = networking
@@ -165,10 +180,11 @@ var baseurl=BuildConfig.GATEWAY_BASE_URL
         marketingApi = networking.createApi(MarketingApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
         scfApi = networking.createApi(ScfApi::class.java, BuildConfig.DCC_MARKETING_API_URL)
         coinMarketCapApi = networking.createApi(CoinMarketCapApi::class.java, BuildConfig.COIN_MARKET)
+        contractApi = networking.createApi(IpfsApi::class.java, IpfsApi.BASE_URL)
 
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))
         ethplorerApi = networking.createApi(EthplorerApi::class.java, EthplorerApi.API_URL)
-        bintApi= networking.createApi(BintApi::class.java, BintApi.getUrl)
+        bintApi = networking.createApi(BintApi::class.java, BintApi.getUrl)
         if (BuildConfig.DEBUG) {
             val infuraApi = networking.createApi(InfuraApi::class.java, InfuraApi.getUrl)
             publicRpc = EthsRpcAgent.by(infuraApi)
@@ -190,8 +206,6 @@ var baseurl=BuildConfig.GATEWAY_BASE_URL
         WxApiManager.init()
         initRxDownload()
         CrashHandler().init(context)
-//        IPFSHelp.init("/ip4/10.65.212.11/tcp/5001")
-
     }
 
     private fun buildAgent(dc: DigitalCurrency): Erc20Agent {
@@ -238,7 +252,7 @@ var baseurl=BuildConfig.GATEWAY_BASE_URL
     }
 
     override fun uncaughtException(thread: Thread, ex: Throwable) {
-        Thread(Runnable { log("currentThread:" + Thread.currentThread() + "---thread:" + thread.id + "---ex:" + ex.toString()) }).start()
+        Thread(Runnable { Log("currentThread:" + Thread.currentThread() + "---thread:" + thread.id + "---ex:" + ex.toString()) }).start()
         SystemClock.sleep(2000)
         android.os.Process.killProcess(android.os.Process.myPid())
     }

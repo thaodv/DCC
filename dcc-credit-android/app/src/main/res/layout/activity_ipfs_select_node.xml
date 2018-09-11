@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/include_toolbar" />
+    <View
+        android:id="@+id/toolbar_line"
+        style="@style/DividerHorizontal"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <LinearLayout
+        android:id="@+id/default_tag"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:clickable="false"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_line">
+
+        <ImageView
+            android:id="@+id/default_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:src="@drawable/cloud_item_selected" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="默认节点"
+            android:textColor="@color/FF4A4A4A"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/default_line"
+        style="@style/DividerHorizontal"
+        app:layout_constraintTop_toBottomOf="@id/default_tag" />
+
+    <RelativeLayout
+        android:id="@+id/custom_tag"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#fff"
+        android:clickable="false"
+        app:layout_constraintTop_toBottomOf="@id/default_line">
+
+        <ImageView
+            android:id="@+id/custom_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:src="@drawable/cloud_item_selected"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/custom_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/custom_img"
+            android:text="自定义节点"
+            android:textColor="@color/FF4A4A4A"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/custom_host"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/custom_name"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_toRightOf="@id/custom_img"
+            android:text="尚未配置"
+            android:textColor="@color/text_min"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/edit_node"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_question3" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/custom_line"
+        style="@style/DividerHorizontal"
+        app:layout_constraintTop_toBottomOf="@id/custom_tag" />
+
+
+    <TextView
+        android:id="@+id/ipfs_node_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:text="@string/ipfs_select_node_tip"
+        android:textColor="@color/text_min"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

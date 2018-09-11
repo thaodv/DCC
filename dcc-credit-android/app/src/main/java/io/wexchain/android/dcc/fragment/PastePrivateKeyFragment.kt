@@ -48,7 +48,7 @@ class PastePrivateKeyFragment : BindFragment<FragmentPastePrivateKeyBinding>() {
             RequestCodes.SCAN->{
                 if(resultCode == Activity.RESULT_OK && data!=null){
                     val result = data.getStringExtra(QrScannerActivity.EXTRA_SCAN_RESULT)
-                    binding.key = result
+                    binding.key = result.toLowerCase()
                 }
             }
             else -> super.onActivityResult(requestCode, resultCode, data)

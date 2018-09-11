@@ -1,5 +1,6 @@
 package com.megvii.idcardlib.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
@@ -82,12 +83,14 @@ public class Util {
         return uuid;
     }
 
+    @SuppressLint("MissingPermission")
     public static String getPhoneNumber(Context mContext) {
         TelephonyManager phoneMgr = (TelephonyManager) mContext
                 .getSystemService(Context.TELEPHONY_SERVICE);
         return phoneMgr.getLine1Number();
     }
 
+    @SuppressLint("MissingPermission")
     public static String getDeviceID(Context mContext) {
         TelephonyManager tm = (TelephonyManager) mContext
                 .getSystemService(Context.TELEPHONY_SERVICE);

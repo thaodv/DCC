@@ -36,16 +36,7 @@ class AuthManageActivity : BindActivity<ActivityAuthManageBinding>(), ItemViewCl
         super.onCreate(savedInstanceState)
         initToolbar(true)
         initData()
-        initClicks()
         checkFrom()
-    }
-
-    private fun initClicks() {
-//        binding.ivAuthIntro.setOnClickListener {
-//            CustomDialog(this).apply {
-//                textContent = getString(R.string.auth_key_intro)
-//            }.assembleAndShow()
-//        }
     }
 
     private fun checkFrom() {

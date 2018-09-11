@@ -1,5 +1,6 @@
 package com.megvii.livenesslib.util;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -141,11 +142,13 @@ public class ConUtil {
         return uuid;
     }
 
+    @SuppressLint("MissingPermission")
     public static String getPhoneNumber(Context mContext) {
         TelephonyManager phoneMgr = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
         return phoneMgr.getLine1Number();
     }
 
+    @SuppressLint("MissingPermission")
     public static String getDeviceID(Context mContext) {
         TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
         return tm.getDeviceId();
@@ -153,7 +156,7 @@ public class ConUtil {
 
     public static String getMacAddress(Context mContext) {
         WifiManager wifi = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
-        WifiInfo info = wifi.getConnectionInfo();
+        @SuppressLint("MissingPermission") WifiInfo info = wifi.getConnectionInfo();
         String address = info.getMacAddress();
         if (address != null && address.length() > 0) {
             address = address.replace(":", "");

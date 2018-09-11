@@ -5,9 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import com.alibaba.fastjson.JSON
-import com.bumptech.glide.load.engine.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.Pop
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.runOnMainThread
 import io.wexchain.android.dcc.base.BindActivity
@@ -25,30 +23,29 @@ import java.math.BigDecimal
 class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
 
     companion object {
-          var MINBUYAMOUNT=0
-        var LASTAM=0
-        var ONAME="私链DCC币生息1期"
-
-
+        var MINBUYAMOUNT = 0
+        var LASTAM = 0
+        var ONAME = "私链DCC币生息1期"
     }
-    var canBuy:Boolean=false
+
+    var canBuy: Boolean = false
 
     override val contentLayoutId: Int = R.layout.activity_my_interest
-    lateinit var sstvBuyit:ColorDrawable
+    lateinit var sstvBuyit: ColorDrawable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setWindowExtended()
-       // initdatas()
+        // initdatas()
         initclick()
-        binding.canbuy=canBuy
-          sstvBuyit= binding.tvBuyit.background as ColorDrawable
+        binding.canbuy = canBuy
+        sstvBuyit = binding.tvBuyit.background as ColorDrawable
 
     }
 
     private fun initdatas() {
         getbiSaleInfo()
-       //  getbiminAmountPerHand()
+        //  getbiminAmountPerHand()
         //getbiInvestCeilAmount()
         //binding.saleInfo=saleInfo
 
@@ -60,91 +57,94 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
     }
 
     private fun initclick() {
-         binding.tvback.setOnClickListener {
-             finish()
-         }
+        binding.tvback.setOnClickListener {
+            finish()
+        }
         binding.tvHave.setOnClickListener {
             navigateTo(MyInterestDetailActivity::class.java)
         }
-       // setButton()
+        // setButton()
         binding.tvBuyit.setOnClickListener {
-            if(canBuy){
+            if (canBuy) {
                 navigateTo(BuyInterestActivity::class.java)
-            }else{
+            } else {
 
             }
         }
     }
 
-    var totalAmount:Int=0
-    var lastAmount:Int=0
-    var gapAmount:Int=totalAmount-lastAmount
-    fun  getbiInvestedTotalAmount() {
-        val getAllowance = Erc20Helper.investedTotalAmount(BintApi.contract,"","")
-        App.get(). bintApi.postStatus(
-            EthJsonRpcRequestBody(
-                method = "eth_call",
-                params = listOf(getAllowance, "latest"),
-                id = 1L
-            )
-        ). subscribeOn(AndroidSchedulers.mainThread()).subscribe(
-            {
-                lastAmount=encodeStringsimple(it.result)
-                var ssss=BigDecimal((totalAmount-lastAmount)*100).divide(BigDecimal(totalAmount),1,BigDecimal.ROUND_HALF_UP).setScale(1)
-                binding.lastamountDCC=(""+(totalAmount-lastAmount)+" DCC ("+ssss +"%）")
-                Log.e("lastAmount",""+ encodeStringsimple(it.result))
-                Log.e("lastamountDCC",""+ ssss)
-                checkStatu()
-            },{
-                it.printStackTrace()
-            }
-        )
-    }
-    fun  getbiInvestCeilAmount() {
-        val getAllowance = Erc20Helper.getInvestCeilAmount(BintApi.contract,"","")
-        App.get(). bintApi.postStatus(
-            EthJsonRpcRequestBody(
-                method = "eth_call",
-                params = listOf(getAllowance, "latest"),
-                id = 1L
-            )
-        ). subscribeOn(AndroidSchedulers.mainThread()).subscribe(
-            {
-                totalAmount=encodeStringsimple(it.result)
-                binding.totalamountDCC=(""+totalAmount+" DCC")
-                Log.e("totalamountDCC",""+ encodeStringsimple(it.result))
-                getbiInvestedTotalAmount()
-
-            },{
-                it.printStackTrace()
-            }
-        )
-    }
-    var minAmountPerHand:Int=0
-    fun  getbiminAmountPerHand() {
-        val getAllowance = Erc20Helper.getMinAmountPerHando(BintApi.contract,"","")
+    var totalAmount: Int = 0
+    var lastAmount: Int = 0
+    var gapAmount: Int = totalAmount - lastAmount
+    fun getbiInvestedTotalAmount() {
+        val getAllowance = Erc20Helper.investedTotalAmount(BintApi.contract, "", "")
         App.get().bintApi.postStatus(
-            EthJsonRpcRequestBody(
-                method = "eth_call",
-                params = listOf(getAllowance, "latest"),
-                id = 1L
-            )
-        ). subscribeOn(AndroidSchedulers.mainThread()).subscribe(
-            {
-                 minAmountPerHand= encodeStringsimple(it.result)
-                MINBUYAMOUNT=minAmountPerHand
-              //  saleInfo.minAmountPerHand=minAmountPerHand
-                 binding.minAmountPerHandDCC=(""+minAmountPerHand+" DCC")
-                Log.e("encodeStringsimple",""+ encodeStringsimple(it.result))
-                getbiInvestCeilAmount()
-            },{
-                it.printStackTrace()
-            }
+                EthJsonRpcRequestBody(
+                        method = "eth_call",
+                        params = listOf(getAllowance, "latest"),
+                        id = 1L
+                )
+        ).subscribeOn(AndroidSchedulers.mainThread()).subscribe(
+                {
+                    lastAmount = encodeStringsimple(it.result)
+                    var ssss = BigDecimal((totalAmount - lastAmount) * 100).divide(BigDecimal(totalAmount), 1, BigDecimal.ROUND_HALF_UP).setScale(1)
+                    binding.lastamountDCC = ("" + (totalAmount - lastAmount) + " DCC (" + ssss + "%）")
+                    Log.e("lastAmount", "" + encodeStringsimple(it.result))
+                    Log.e("lastamountDCC", "" + ssss)
+                    checkStatu()
+                }, {
+            it.printStackTrace()
+        }
         )
     }
-    lateinit var saleInfo:SaleInfo
-    fun  getbiSaleInfo() {
-        val getAllowance = Erc20Helper.getSaleInfo(BintApi.contract,"","")
+
+    fun getbiInvestCeilAmount() {
+        val getAllowance = Erc20Helper.getInvestCeilAmount(BintApi.contract, "", "")
+        App.get().bintApi.postStatus(
+                EthJsonRpcRequestBody(
+                        method = "eth_call",
+                        params = listOf(getAllowance, "latest"),
+                        id = 1L
+                )
+        ).subscribeOn(AndroidSchedulers.mainThread()).subscribe(
+                {
+                    totalAmount = encodeStringsimple(it.result)
+                    binding.totalamountDCC = ("" + totalAmount + " DCC")
+                    Log.e("totalamountDCC", "" + encodeStringsimple(it.result))
+                    getbiInvestedTotalAmount()
+
+                }, {
+            it.printStackTrace()
+        }
+        )
+    }
+
+    var minAmountPerHand: Int = 0
+    fun getbiminAmountPerHand() {
+        val getAllowance = Erc20Helper.getMinAmountPerHando(BintApi.contract, "", "")
+        App.get().bintApi.postStatus(
+                EthJsonRpcRequestBody(
+                        method = "eth_call",
+                        params = listOf(getAllowance, "latest"),
+                        id = 1L
+                )
+        ).subscribeOn(AndroidSchedulers.mainThread()).subscribe(
+                {
+                    minAmountPerHand = encodeStringsimple(it.result)
+                    MINBUYAMOUNT = minAmountPerHand
+                    //  saleInfo.minAmountPerHand=minAmountPerHand
+                    binding.minAmountPerHandDCC = ("" + minAmountPerHand + " DCC")
+                    Log.e("encodeStringsimple", "" + encodeStringsimple(it.result))
+                    getbiInvestCeilAmount()
+                }, {
+            it.printStackTrace()
+        }
+        )
+    }
+
+    lateinit var saleInfo: SaleInfo
+    fun getbiSaleInfo() {
+        val getAllowance = Erc20Helper.getSaleInfo(BintApi.contract, "", "")
         /*     val response =App.get(). bintApi.postStatus(
             EthJsonRpcRequestBody(
                 method = "eth_call",
@@ -154,111 +154,108 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
         ).blockingGet()
         var ss=response.result
          Log.e("getbiSaleInfo", BytesUtils.encodeString(ss ))*/
-         App.get(). bintApi.postStatus(
-            EthJsonRpcRequestBody(
-                method = "eth_call",
-                params = listOf(getAllowance, "latest"),
-                id = 1L
-            )
-        ). subscribeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
-             showLoadingDialog()
-         }.doFinally {  hideLoadingDialog() }.subscribe(
-             {
-                 var ss=BytesUtils.encodeString(it.result )//.replace(" ","")
-                 saleInfo  = JSON.parseObject(ss, SaleInfo::class.java)
+        App.get().bintApi.postStatus(
+                EthJsonRpcRequestBody(
+                        method = "eth_call",
+                        params = listOf(getAllowance, "latest"),
+                        id = 1L
+                )
+        ).subscribeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
+            showLoadingDialog()
+        }.doFinally { hideLoadingDialog() }.subscribe(
+                {
+                    var ss = BytesUtils.encodeString(it.result)//.replace(" ","")
+                    saleInfo = JSON.parseObject(ss, SaleInfo::class.java)
 
-                 binding.saleInfo=saleInfo
-                 //binding.tvProfit.setText(saleInfo.annualRateP())
-                 Log.e("getbiSaleInfo", saleInfo.name)
-                 getbiminAmountPerHand()
-             },{
-                 it.printStackTrace()
-             }
-         )
+                    binding.saleInfo = saleInfo
+                    //binding.tvProfit.setText(saleInfo.annualRateP())
+                    Log.e("getbiSaleInfo", saleInfo.name)
+                    getbiminAmountPerHand()
+                }, {
+            it.printStackTrace()
+        }
+        )
         Log.e("getbiSaleInfo", "getbiSaleInfo")
 
     }
 
-    var statu="已结束"
+    var statu = "已结束"
 
-       fun  checkStatu(){
-        require(null!=saleInfo)
+    fun checkStatu() {
+        require(null != saleInfo)
 
-           val getAllowance = Erc20Helper.getStatus(BintApi.contract,"","")
-           App.get(). bintApi.postStatus(
-               EthJsonRpcRequestBody(
-                   method = "eth_call",
-                   params = listOf(getAllowance, "latest"),
-                   id = 1L
-               )
-           ).subscribeOn(AndroidSchedulers.mainThread()).subscribe(
-               {
-              var     mystatu= BytesUtils.encodeStringstatu(it.result)
+        val getAllowance = Erc20Helper.getStatus(BintApi.contract, "", "")
+        App.get().bintApi.postStatus(
+                EthJsonRpcRequestBody(
+                        method = "eth_call",
+                        params = listOf(getAllowance, "latest"),
+                        id = 1L
+                )
+        ).subscribeOn(AndroidSchedulers.mainThread()).subscribe(
+                {
+                    var mystatu = BytesUtils.encodeStringstatu(it.result)
 
-                   Log.e("getbiStatues",""+ mystatu)
-                  if (mystatu!=1){
-                      statu="已结束"
-                      canBuy=false
-                  }else if(minAmountPerHand > (totalAmount-lastAmount)){
-                      statu="已售罄"
-                      canBuy=false
-                      //   binding.tvBuyit.setBackgroundResource(R.color.B2484848)
-                  }else{
-                      statu="认购"
-                      canBuy=true
-                      // binding.tvBuyit.setBackgroundResource(R.color.FF6766CC)
-                  }
-                   LASTAM= totalAmount-lastAmount
-                   ONAME=saleInfo.name
-                   runOnMainThread {
-                       setButton()
-                   }
+                    Log.e("getbiStatues", "" + mystatu)
+                    if (mystatu != 1) {
+                        statu = "已结束"
+                        canBuy = false
+                    } else if (minAmountPerHand > (totalAmount - lastAmount)) {
+                        statu = "已售罄"
+                        canBuy = false
+                        //   binding.tvBuyit.setBackgroundResource(R.color.B2484848)
+                    } else {
+                        statu = "认购"
+                        canBuy = true
+                        // binding.tvBuyit.setBackgroundResource(R.color.FF6766CC)
+                    }
+                    LASTAM = totalAmount - lastAmount
+                    ONAME = saleInfo.name
+                    runOnMainThread {
+                        setButton()
+                    }
 
-               },{
-                   it.printStackTrace()
-               }
-           )
-
-
-
-
-          /* if( System.currentTimeMillis() >saleInfo.closeTime){
-            statu="已结束"
-             canBuy=false
-          //  binding.tvBuyit.setBackgroundResource(R.color.B2484848)
-        }else if(minAmountPerHand > (totalAmount-lastAmount)){
-            statu="已售罄"
-            canBuy=false
-         //   binding.tvBuyit.setBackgroundResource(R.color.B2484848)
-        }else{
-            statu="认购"
-            canBuy=true
-           // binding.tvBuyit.setBackgroundResource(R.color.FF6766CC)
+                }, {
+            it.printStackTrace()
         }
-        LASTAM= totalAmount-lastAmount
-        ONAME=saleInfo.name
-           runOnMainThread {
-               setButton()
-           }*/
+        )
+
+
+        /* if( System.currentTimeMillis() >saleInfo.closeTime){
+          statu="已结束"
+           canBuy=false
+        //  binding.tvBuyit.setBackgroundResource(R.color.B2484848)
+      }else if(minAmountPerHand > (totalAmount-lastAmount)){
+          statu="已售罄"
+          canBuy=false
+       //   binding.tvBuyit.setBackgroundResource(R.color.B2484848)
+      }else{
+          statu="认购"
+          canBuy=true
+         // binding.tvBuyit.setBackgroundResource(R.color.FF6766CC)
+      }
+      LASTAM= totalAmount-lastAmount
+      ONAME=saleInfo.name
+         runOnMainThread {
+             setButton()
+         }*/
 
     }
 
 
+    fun setButton() {
+        binding.tvBuyit.text = statu
+        // binding.canbuy=canBuy
 
-    fun setButton(){
-        binding.tvBuyit.text=statu
-       // binding.canbuy=canBuy
-
-        if(canBuy){
-         //   binding.tvBuyit.setBackgroundResource(R.color.FF6766CC)
-            sstvBuyit.color=Color.parseColor("#FF6766CC")
-           //  binding.tvBuyit.setBackgroundResource(R.color.FF6766CC)
-        }else{
-           // binding.tvBuyit.setBackgroundColor(Color.parseColor("#B2484848"))
-            sstvBuyit.color=Color.parseColor("#B2484848")
-          //  binding.tvBuyit.setBackgroundResource(R.color.B2484848)
+        if (canBuy) {
+            //   binding.tvBuyit.setBackgroundResource(R.color.FF6766CC)
+            sstvBuyit.color = Color.parseColor("#FF6766CC")
+            //  binding.tvBuyit.setBackgroundResource(R.color.FF6766CC)
+        } else {
+            // binding.tvBuyit.setBackgroundColor(Color.parseColor("#B2484848"))
+            sstvBuyit.color = Color.parseColor("#B2484848")
+            //  binding.tvBuyit.setBackgroundResource(R.color.B2484848)
 
         }
-        binding.tvBuyit.background=sstvBuyit
+        binding.tvBuyit.background = sstvBuyit
     }
 }

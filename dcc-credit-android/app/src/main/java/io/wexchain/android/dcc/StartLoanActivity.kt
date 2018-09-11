@@ -15,7 +15,6 @@ import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 import io.wexchain.android.dcc.tools.NoDoubleClickListener
-import io.wexchain.android.dcc.tools.doMain
 import io.wexchain.android.dcc.view.dialog.ConfirmLoanSubmitDialog
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.vm.StartLoanVm
@@ -26,6 +25,7 @@ import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.LoanChainOrder
 import io.wexchain.dccchainservice.domain.LoanProduct
 import io.wexchain.dccchainservice.domain.LoanStatus
+import io.wexchain.ipfs.utils.doMain
 import org.jetbrains.anko.toast
 
 class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
@@ -152,7 +152,9 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
         ScfOperations
                 .withScfTokenInCurrentPassport(LoanChainOrder.ABSENT_ORDER) {
                     scfApi.getLastOrder(it)
-                }.doMain().subscribe({
+                }
+                .doMain()
+                .subscribe({
                     if (it.isNextOrderRestricted()) {
                         showCancelPrevOrderDialog(it)
                     } else {
@@ -175,7 +177,7 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
                 .doFinally {
                     hideLoadingDialog()
                 }
-                .subscribe({ _ ->
+                .subscribe({
                     toast("提交贷款申请成功")
                     navigateTo(LoanSubmitResultActivity::class.java)
                 }, {

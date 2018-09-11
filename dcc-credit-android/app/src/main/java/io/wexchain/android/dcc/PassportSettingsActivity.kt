@@ -11,15 +11,20 @@ import android.provider.MediaStore
 import android.support.v4.app.DialogFragment
 import android.support.v4.view.ViewCompat
 import android.view.*
+import android.view.animation.AnimationUtils
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.dcc.chain.IpfsOperations
+import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
-import io.wexchain.android.dcc.tools.appContext
+import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
+import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.android.dcc.vm.Protect
@@ -30,11 +35,17 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportSettingsBinding
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CheckUpgrade
+import io.wexchain.ipfs.utils.doMain
 import zlc.season.rxdownload3.core.Mission
 import java.io.File
 
 
 class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>() {
+
+    private val passport by lazy {
+        App.get().passportRepository
+    }
+
     override val contentLayoutId: Int = R.layout.activity_passport_settings
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +84,56 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
         })
 
         binding.tvCurrentVs.text = getString(R.string.current_version) + versionInfo.versionName
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getCloudToken()
+    }
+
+    private fun getCloudToken() {
+        val anim = AnimationUtils.loadAnimation(this, R.anim.rotate)
+        IpfsOperations.getIpfsKey()
+                .checkKey()
+                .subscribeOn(Schedulers.io())
+                .doMain()
+                .doOnSubscribe {
+                    binding.ivCloudLoding.startAnimation(anim)
+                    binding.ivCloudLoding.visibility = View.VISIBLE
+                    binding.tvCloudStatus.visibility = View.INVISIBLE
+                }
+                .doFinally {
+                    binding.ivCloudLoding.clearAnimation()
+                    binding.ivCloudLoding.visibility = View.INVISIBLE
+                    binding.tvCloudStatus.visibility = View.VISIBLE
+                }
+                .subscribeBy {
+                    val ipfsKeyHash = passport.getIpfsKeyHash()
+                    binding.tvCloudStatus.text = if (it.isEmpty()) getString(R.string.start_in) else getString(R.string.start_out)
+                    binding.tvDataCloud.onClick {
+                        if (it.isEmpty()) {
+                            navigateTo(OpenCloudActivity::class.java) {
+                                putExtra("activity_type", PassportSettingsActivity.NOT_OPEN_CLOUD)
+                            }
+                        } else {
+                            if (ipfsKeyHash.isNullOrEmpty()) {
+                                navigateTo(OpenCloudActivity::class.java) {
+                                    putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)
+                                }
+                            } else {
+                                if (ipfsKeyHash == it) {
+                                    navigateTo(MyCloudActivity::class.java)
+                                } else {
+                                    passport.setIpfsKeyHash("")
+                                    navigateTo(OpenCloudActivity::class.java) {
+                                        putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
     }
 
     private fun setupClicks() {
@@ -108,7 +169,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
             startActivity(Intent(this, SelectNodeActivity::class.java))
         }
         binding.tvCheckUpdate.onClick {
-            appContext.marketingApi.checkUpgrade(versionInfo.versionCode.toString())
+            App.get().marketingApi.checkUpgrade(versionInfo.versionCode.toString())
                     .checkonMain()
                     .subscribeBy(
                             onSuccess = {
@@ -207,6 +268,11 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    companion object {
+        const val OPEN_CLOUD = 1
+        const val NOT_OPEN_CLOUD = 2
     }
 
     class ChooseImageFromDialog : DialogFragment() {

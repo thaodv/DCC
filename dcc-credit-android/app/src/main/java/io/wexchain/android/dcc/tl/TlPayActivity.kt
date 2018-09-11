@@ -10,25 +10,25 @@ import org.web3j.utils.Numeric
 import java.math.BigInteger
 
 
-class TlPayActivity:TlWalletPayActivity(){
+class TlPayActivity : TlWalletPayActivity() {
 
-    private val credentials:Credentials?
+    private val credentials: Credentials?
         get() = App.get().passportRepository.getCurrentPassport()?.credential
 
     override fun transmitSign(params: SignParams): String? {
         val c = credentials
-        c ?:return null
+        c ?: return null
         return signContractTrascation(c, params.nonce, params.gasPrice, params.to.toString(), params.gasLimit, params.value, params.dataHex)
     }
 
     fun signContractTrascation(
-        credentials: Credentials,
-        nonce: BigInteger,
-        gasPrice: BigInteger,
-        to: String,
-        gasLimit: BigInteger,
-        value: BigInteger,
-        data: String
+            credentials: Credentials,
+            nonce: BigInteger,
+            gasPrice: BigInteger,
+            to: String,
+            gasLimit: BigInteger,
+            value: BigInteger,
+            data: String
     ): String {
         val rawTransaction = RawTransaction.createTransaction(nonce, gasPrice, gasLimit, to, value, data)
         val signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials)

@@ -43,6 +43,27 @@ object ViewModelHelper {
     }
 
     @JvmStatic
+    fun expiredToLong(expired: String): Long {
+        val list = expired.split('-')
+        return if (list.size == 2) {
+            val charArray = list[list.size - 1].toCharArray()
+            var tmp = ""
+            for ((i, char) in charArray.withIndex()) {
+                tmp += if (i == 3|| i==5) {
+                    "$char-"
+                }else {
+                    char
+                }
+            }
+            expiredFormat.parse(tmp).time
+        } else {
+            expiredFormat.parse(expired).time
+        }
+
+    }
+
+
+    @JvmStatic
     fun Context.getCertTypeIcon(certificationType: CertificationType?): Drawable? {
         val drawableId = when (certificationType) {
             null -> 0

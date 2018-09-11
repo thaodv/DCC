@@ -15,6 +15,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.base.StaticHtmlActivity
+import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.Transitions
@@ -22,7 +23,7 @@ import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
 import io.wexchain.android.dcc.tl.TlWebPageActivity
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.checkonMain
-import io.wexchain.android.dcc.tools.doMain
+import io.wexchain.android.dcc.tools.reName
 import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.dcc.R
@@ -30,6 +31,8 @@ import io.wexchain.dcc.databinding.ActivityHomeBinding
 import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
 import io.wexchain.dccchainservice.domain.ScfAccountInfo
+import io.wexchain.ipfs.utils.doMain
+import org.jetbrains.anko.doAsync
 import zlc.season.rxdownload3.core.Mission
 import java.io.File
 
@@ -47,9 +50,26 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         setupClicks()
         checkScfAccount()
         checkUpgrade()
+        initPhototTask()
 
 
         // tipsDialog.show()
+    }
+    private fun initPhototTask() {
+        doAsync {
+            val certIdPics = CertOperations.getTmpIdIdPics()
+            certIdPics.let {
+                if (it!!.first.exists()) {
+                    it.first.reName("positivePhoto.jpg")
+                }
+                if (it.second.exists()) {
+                    it.second.reName("backPhoto.jpg")
+                }
+                if (it.third.exists()) {
+                    it.third.reName("facePhoto.jpg")
+                }
+            }
+        }
     }
 
     override fun onResume() {

@@ -2,13 +2,13 @@ package io.wexchain.android.dcc.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.support.v7.widget.AppCompatSeekBar
 import android.util.AttributeSet
 import android.view.View
-import android.widget.SeekBar
 import io.wexchain.android.dcc.view.state.ExceedAware
 import io.wexchain.dcc.R
 
-class EISeekBar : SeekBar, ExceedAware {
+class EISeekBar : AppCompatSeekBar, ExceedAware {
     override var isExceeded: Boolean
         set(value) {
             val changed = field != value

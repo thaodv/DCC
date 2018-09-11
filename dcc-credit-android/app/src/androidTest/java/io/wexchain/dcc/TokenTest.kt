@@ -4,6 +4,7 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import com.google.gson.Gson
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.tools.BintApi
 import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.digitalwallet.api.*
@@ -185,8 +186,7 @@ class TokenTest {
 
         val signed = Numeric.toHexString(TransactionEncoder.signMessage(rawTransaction, owner))
 
-        val txHash = infuraApi.sendRawTransaction(signed)
-            .blockingGet()
+        val txHash = infuraApi.sendRawTransaction(signed).blockingGet()
         println("sent approve tx")
         val response = infuraApi.transactionReceipt(txHash)
             .retryWhen(RetryWithDelay.createGrowth(8, 1000))

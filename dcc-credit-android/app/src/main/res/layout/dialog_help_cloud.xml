@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/help_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="数据云存储"
+        android:textStyle="bold"
+        android:textColor="@color/FF4A4A4A"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/help_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/icon_address_book_query_delete"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/content_padding_horizontal"
+        android:layout_marginRight="@dimen/content_padding_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="1. 开始云存储功能有什么好处\n\t开启后，可将您手机本地的已认证数据加密后上传到云空间，删除钱包重新导入或更换设备时，可以同步到手机，无需再次认证。\n\n
+
+2. 数据会存储在哪里\n\t
+IPFS,  一个分布式存储和共享文件的网络传输协议系统。数据将以中心化方式存储，比起传统方式更加稳定高效。\n\n
+
+3. 使用云存储数据安全吗\n\t
+非常安全，数据会以AES-一种对称加密算法加密后存在IPFS，仅有您自己通过密码可以解密。\n\n
+
+4. 云存储密码有什么用\n\t
+云存储密码用于解开加密后的个人数据，该密码系统并不存储，一旦丢失无法找回，请妥善保管。\n\n"
+        android:textColor="@color/FF4A4A4A"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/help_title" />
+
+
+</android.support.constraint.ConstraintLayout>

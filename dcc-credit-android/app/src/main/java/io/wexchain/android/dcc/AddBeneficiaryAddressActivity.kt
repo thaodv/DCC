@@ -31,15 +31,20 @@ class AddBeneficiaryAddressActivity : BindActivity<ActivityAddBeneficiaryAddress
         binding.btnAdd.setOnClickListener {
             val inputAddr = binding.etInputAddress.text.toString()
             val inputShortName = binding.etInputAddressShortName.text.toString()
-            if(isEthAddress(inputAddr) && isAddressShortNameValid(inputShortName)){
-                val setDefault = binding.checkDefaultAddress.isChecked
-                App.get().passportRepository.addBeneficiaryAddress(BeneficiaryAddress(inputAddr,inputShortName))
-                if (setDefault) {
-                    App.get().passportRepository.setDefaultBeneficiaryAddress(inputAddr)
+
+            if (isEthAddress(inputAddr) && isAddressShortNameValid(inputShortName)) {
+                if (inputAddr == App.get().passportRepository.currPassport.value!!.address) {
+                    toast("请不要添加本钱包地址")
+                } else {
+                    val setDefault = binding.checkDefaultAddress.isChecked
+                    App.get().passportRepository.addBeneficiaryAddress(BeneficiaryAddress(inputAddr, inputShortName))
+                    if (setDefault) {
+                        App.get().passportRepository.setDefaultBeneficiaryAddress(inputAddr)
+                    }
+                    toast(getString(R.string.success))
+                    finish()
                 }
-                toast(getString(R.string.success))
-                finish()
-            }else{
+            } else {
                 toast(getString(R.string.correct_wallet_address))
             }
         }
@@ -49,7 +54,7 @@ class AddBeneficiaryAddressActivity : BindActivity<ActivityAddBeneficiaryAddress
         when (requestCode) {
             RequestCodes.SCAN -> {
                 val address = data?.getStringExtra(QrScannerActivity.EXTRA_SCAN_RESULT)
-                if (address != null ) {
+                if (address != null) {
                     findViewById<EditText>(R.id.et_input_address).setText(address)
                 }
             }

@@ -10,12 +10,9 @@ import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.setInterceptScroll
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.base.BaseCompatFragment
-import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.android.dcc.view.dialog.FullScreenDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentExportPrivateKeyBinding
-import org.web3j.utils.Numeric
-import java.math.BigInteger
 
 /**
  * Created by lulingzhi on 2017/11/17.
@@ -50,11 +47,10 @@ class ExportPrivateKeyFragment : BaseCompatFragment() {
     companion object {
         const val ARG_PRIVATE_KEY = "private_key"
 
-        fun create(privateKey: BigInteger): ExportPrivateKeyFragment {
-            LogUtils.e("privateKey", privateKey.toString())
+        fun create(privateKey: String): ExportPrivateKeyFragment {
             val fragment = ExportPrivateKeyFragment()
             fragment.arguments = Bundle().apply {
-                putString(ARG_PRIVATE_KEY, Numeric.toHexStringNoPrefix(privateKey))
+                putString(ARG_PRIVATE_KEY,privateKey)
             }
             return fragment
         }

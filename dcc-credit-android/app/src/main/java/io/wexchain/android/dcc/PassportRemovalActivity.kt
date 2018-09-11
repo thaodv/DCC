@@ -5,11 +5,19 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.View
 import io.reactivex.Single
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.getViewModel
+import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.chain.IpfsOperations
+import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
+import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.tools.SharedPreferenceUtil
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.vm.Protect
@@ -17,10 +25,14 @@ import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportRemovalBinding
+import io.wexchain.ipfs.utils.doMain
 
 class PassportRemovalActivity : BaseCompatActivity() {
 
     private lateinit var binding: ActivityPassportRemovalBinding
+    private val passport by lazy {
+        App.get().passportRepository
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +54,43 @@ class PassportRemovalActivity : BaseCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getCloudToken()
+    }
+
+    private fun getCloudToken() {
+        IpfsOperations.getIpfsKey()
+                .checkKey()
+                .subscribeOn(Schedulers.io())
+                .doMain()
+                .subscribeBy {
+                    val ipfsKeyHash = passport.getIpfsKeyHash()
+                    binding.btnBackupData.onClick {
+                        if (it.isEmpty()) {
+                            navigateTo(OpenCloudActivity::class.java) {
+                                putExtra("activity_type", PassportSettingsActivity.NOT_OPEN_CLOUD)
+                            }
+                        } else {
+                            if (ipfsKeyHash.isNullOrEmpty()) {
+                                navigateTo(OpenCloudActivity::class.java) {
+                                    putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)
+                                }
+                            } else {
+                                if (ipfsKeyHash == it) {
+                                    navigateTo(MyCloudActivity::class.java)
+                                } else {
+                                    passport.setIpfsKeyHash("")
+                                    navigateTo(OpenCloudActivity::class.java) {
+                                        putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
     }
 
     private fun toBackup() {

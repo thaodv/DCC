@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import com.megvii.livenesslib.R;
 
 
-public class AutoRatioImageview extends ImageView {
+public class AutoRatioImageview extends android.support.v7.widget.AppCompatImageView {
     private float mRatio = -1;
     private int mPrefer = 0;
 
