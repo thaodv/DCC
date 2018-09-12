@@ -1,6 +1,5 @@
 package io.wexchain.android.common
 
-import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.ClipboardManager
 import android.content.Context

@@ -2,15 +2,13 @@ package io.wexchain.android.dcc.tools
 
 import android.app.ActivityManager
 import android.content.Context
-import android.os.Looper
-import com.google.gson.Gson
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.domain.Passport
+import io.wexchain.ipfs.net.Networking
 import org.web3j.utils.Numeric
 import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
-import kotlin.experimental.and
 
 /**
  *Created by liuyang on 2018/7/20.
@@ -39,11 +37,11 @@ fun File.reName(newName: String) {
 }
 
 fun Any.toJson(): String {
-    return Gson().toJson(this)
+    return Networking.Gson.toJson(this)
 }
 
 fun <T> String.toBean(classOf: Class<T>): T {
-    return Gson().fromJson<T>(this, classOf)
+    return Networking.Gson.fromJson<T>(this, classOf)
 }
 
 fun File.formatSize(): String {
@@ -60,32 +58,6 @@ fun File.formatSize(): String {
         }
     }
     return size
-}
-
-/**
- * 转16进制数
- * @param withPrefix true 带0x 默认不带
- */
-fun ByteArray.toHexString(offset: Int, length: Int, withPrefix: Boolean): String {
-    val stringBuilder = StringBuilder()
-    if (withPrefix) {
-        stringBuilder.append("0x")
-    }
-
-    for (i in offset until offset + length) {
-        stringBuilder.append(String.format("%01x", this[i] and 255.toByte()))
-    }
-
-    return stringBuilder.toString()
-}
-
-fun ByteArray.toHexString(withPrefix: Boolean = false): String {
-    return this.toHexString(0, this.size, withPrefix)
-}
-
-fun BigInteger.toHexString(withPrefix: Boolean = false): String {
-    val toByteArray = this.toByteArray()
-    return toByteArray.toHexString(0, toByteArray.size, withPrefix)
 }
 
 fun String.fixLengthBins(): String {
@@ -108,8 +80,6 @@ fun Context.getProcessName(): String? {
             .firstOrNull { it.pid == android.os.Process.myPid() && it.processName != null }
             ?.processName
 }
-
-fun isMainThread() = Looper.getMainLooper().thread == Thread.currentThread()
 
 fun String.hexToTen(): BigInteger {
     return BigInteger(this.substring(2), 16)

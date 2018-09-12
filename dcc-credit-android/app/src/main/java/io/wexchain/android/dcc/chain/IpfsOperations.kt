@@ -122,8 +122,7 @@ object IpfsOperations {
     }
 
     fun Single<String>.getIpfsKeyApi(): Single<EthJsonRpcResponse<String>> {
-        return this
-                .map {
+        return this.map {
                     Erc20Helper.getIpfsKey(it, passport.getCurrentPassport()!!.address)
                 }
                 .postData(IpfsApi.IPFS_KEY_HASH)
@@ -142,7 +141,7 @@ object IpfsOperations {
     }
 
     fun Single<EthJsonTxScratch>.postData(business: String): Single<EthJsonRpcResponse<String>> {
-        return flatMap {
+        return this.flatMap {
             App.get().contractApi
                     .postCall(
                             business,

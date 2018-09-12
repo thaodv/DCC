@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <include layout="@layout/include_toolbar" />
+
     <View
         android:id="@+id/toolbar_line"
         style="@style/DividerHorizontal"
@@ -56,6 +57,15 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:src="@drawable/cloud_item_selected"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/custom_loding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ipfs_cloud_loding"
             android:visibility="invisible" />
 
         <TextView
