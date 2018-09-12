@@ -3,6 +3,7 @@ pragma solidity ^0.4.2;
 import "./UserIpfsKeyHash.sol";
 import "../ownership/Ownable.sol";
 
+//废弃
 contract UserIpfsToken is Ownable {
 
     struct IpfsToken {
