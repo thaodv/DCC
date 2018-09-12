@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 object Networking {
 
     private const val READ_TIMEOUT: Long = 60
-    private const val CONNECT_TIMEOUT: Long = 30
+    private const val CONNECT_TIMEOUT: Long = 5
     private const val BASE_URL = "https://www.wexmarket.com"
 
     val okHttpClient: OkHttpClient by lazy {

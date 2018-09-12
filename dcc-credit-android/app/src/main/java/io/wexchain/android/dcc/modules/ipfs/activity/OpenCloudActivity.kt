@@ -104,5 +104,5 @@ class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
                                 toast("密码写入失败")
                             })
         }
-}
+    }
 }

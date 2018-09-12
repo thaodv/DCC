@@ -1,15 +1,18 @@
 package io.wexchain.android.dcc.modules.ipfs.activity
 
-import android.content.ClipboardManager
-import android.content.Context
+import android.content.ClipData
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.view.animation.AnimationUtils
+import io.reactivex.rxkotlin.subscribeBy
+import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.dcc.view.dialog.CloudstorageDialog
 import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
 import io.wexchain.ipfs.core.IpfsCore
@@ -22,10 +25,6 @@ class SelectNodeActivity : BaseCompatActivity() {
 
     private val passport by lazy {
         App.get().passportRepository
-    }
-
-    private val cm by lazy {
-        getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     }
 
     private var host: String? = null
@@ -79,14 +78,29 @@ class SelectNodeActivity : BaseCompatActivity() {
         }
 
         custom_tag.onClick {
-            passport.setIpfsHostStatus(false)
-            custom_img.visibility = View.VISIBLE
-            default_img.visibility = View.INVISIBLE
-            IpfsCore.creatUrl(host!!, port!!)
+            val anim = AnimationUtils.loadAnimation(this, R.anim.rotate)
+            IpfsCore.checkVersion(host!!, port!!)
+                    .doOnSubscribe {
+                        custom_loding.startAnimation(anim)
+                        custom_loding.visibility = View.VISIBLE
+                    }
+                    .doOnError {
+                        CloudstorageDialog(this).createTipsDialog("提示", "自定义节点无法访问，将为您切换到默认节点", "确认")
+                    }
+                    .doFinally {
+                        custom_loding.clearAnimation()
+                        custom_loding.visibility = View.INVISIBLE
+                    }
+                    .subscribeBy {
+                        passport.setIpfsHostStatus(false)
+                        custom_img.visibility = View.VISIBLE
+                        default_img.visibility = View.INVISIBLE
+                        IpfsCore.init(host!!, port!!)
+                    }
         }
 
         ipfs_node_tip.onClick {
-            cm.text = "https://open.dcc.finance"
+            getClipboardManager().primaryClip = ClipData.newPlainText("网址", "https://open.dcc.finance")
             toast("网址复制成功")
         }
     }

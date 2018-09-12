@@ -195,7 +195,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                 
+
                 android:text="认购币种"
                 android:textColor="@color/FF4A4A4A"
                 android:textSize="16sp" />
@@ -206,7 +206,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                 
+
                 android:layout_marginRight="10dp"
                 android:text="DCC"
                 android:textColor="@color/upgrade_title_color"
@@ -230,7 +230,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                 
+
                 android:text="收益方式"
                 android:textColor="@color/FF4A4A4A"
                 android:textSize="16sp" />
@@ -240,7 +240,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                 
+
                 android:layout_marginRight="10dp"
                 android:text="@{saleInfo.profitMethod}"
                 android:textColor="@color/upgrade_title_color"
@@ -264,7 +264,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                 
+
                 android:text="产品额度"
                 android:textColor="@color/FF4A4A4A"
                 android:textSize="16sp" />
@@ -275,7 +275,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                 
+
                 android:layout_marginRight="10dp"
                 android:text="@{totalamountDCC}"
                 android:textColor="@color/upgrade_title_color"
@@ -299,7 +299,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                 
+
                 android:text="时间限制"
                 android:textColor="@color/FF4A4A4A"
                 android:textSize="16sp" />
@@ -310,7 +310,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                 
+
                 android:layout_marginRight="10dp"
                 android:text="@{saleInfo.showCloseTime()}"
                 android:textColor="@color/upgrade_title_color"
@@ -334,7 +334,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                 
+
                 android:text="剩余额度"
                 android:textColor="@color/FF4A4A4A"
                 android:textSize="16sp" />
@@ -345,7 +345,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                 
+
                 android:layout_marginRight="10dp"
                 android:text="@{lastamountDCC}"
                 android:textColor="@color/FFED190F"
@@ -375,7 +375,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                 
+
                 android:text="认购流程"
                 android:textColor="@color/FF4A4A4A"
                 android:textSize="16sp" />
@@ -557,7 +557,7 @@ android:text="到期日如为节假日，则在节假日后的第一个工作日
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                 
+
                 android:text="产品简介"
                 android:textColor="@color/FF4A4A4A"
                 android:textSize="16sp" />

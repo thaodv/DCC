@@ -1,11 +1,10 @@
 package io.wexchain.android.dcc.modules.ipfs.activity
 
-import android.content.ClipboardManager
-import android.content.Context
+import android.content.ClipData
 import android.os.Bundle
+import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
@@ -17,14 +16,6 @@ import kotlinx.android.synthetic.main.activity_cloud_address.*
  */
 class CloudAddressActivity : BaseCompatActivity() {
 
-    private val cm by lazy {
-        getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    }
-
-    private val passport by lazy {
-        App.get().passportRepository
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cloud_address)
@@ -35,12 +26,12 @@ class CloudAddressActivity : BaseCompatActivity() {
 
     private fun initClick() {
         copy_hash.onClick {
-            cm.text = cloud_address_hash.text.toString()
+            getClipboardManager().primaryClip = ClipData.newPlainText("Hash", cloud_address_hash.text)
             toast("复制Hash成功")
         }
 
         copy_address.onClick {
-            cm.text = cloud_address_address.text.toString()
+            getClipboardManager().primaryClip = ClipData.newPlainText("地址", cloud_address_address.text)
             toast("复制地址成功")
         }
     }
@@ -48,17 +39,9 @@ class CloudAddressActivity : BaseCompatActivity() {
     private fun initData() {
         val token = intent.getStringExtra("address")
         cloud_address_hash.text = token
-        val hostStatus = passport.getIpfsHostStatus()
-        if (hostStatus) {
-            val url = BuildConfig.IPFS_ADDRESS
-            val list = url.split(':')
-           val host=list[1].substring(2,list[1].length)
-            cloud_address_address.text = "http://$host:8000/ipfs/$token"
-        } else {
-            val urlConfig = passport.getIpfsUrlConfig()
-            cloud_address_address.text = "http://${urlConfig.first}:8000/ipfs/$token"
-        }
-
-
+        val url = BuildConfig.IPFS_ADDRESS
+        val list = url.split(':')
+        val host = list[1].substring(2, list[1].length)
+        cloud_address_address.text = "http://$host:8000/ipfs/$token"
     }
 }

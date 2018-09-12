@@ -7,7 +7,6 @@ import android.support.multidex.MultiDex
 import android.view.ContextThemeWrapper
 import com.wexmarket.android.network.Networking
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.plugins.RxJavaPlugins
 import io.wexchain.android.common.BaseApplication
 import io.wexchain.android.common.Pop
@@ -29,10 +28,8 @@ import io.wexchain.dccchainservice.*
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.DigitalCurrency
-import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.api.*
-import io.wexchain.digitalwallet.api.domain.EthJsonRpcRequestBody
 import io.wexchain.digitalwallet.proxy.*
 import io.wexchain.ipfs.core.IpfsCore
 import zlc.season.rxdownload3.core.DownloadConfig
@@ -63,12 +60,10 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
     lateinit var coinMarketCapApi: CoinMarketCapApi
     lateinit var bintApi: BintApi
 
-
     //public services
     lateinit var etherScanApi: EtherScanApi
     lateinit var ethplorerApi: EthplorerApi
     lateinit var publicRpc: EthsRpcAgent
-
 
     lateinit var passportRepository: PassportRepository
     lateinit var assetsRepository: AssetsRepository
@@ -113,23 +108,6 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         IpfsCore.init(baseUrl)
     }
 
-    fun getbiminAmountPerHand() {
-        val getAllowance = Erc20Helper.getMinAmountPerHando(BintApi.contract, "", "")
-        bintApi.postStatus(
-                EthJsonRpcRequestBody(
-                        method = "eth_call",
-                        params = listOf(getAllowance, "latest"),
-                        id = 1L
-                )
-        ).subscribeOn(AndroidSchedulers.mainThread()).subscribe(
-                {
-
-                }, {
-            it.printStackTrace()
-        }
-        )
-    }
-
     fun initNode() {
         val a = NodeBean(1, "https://ethrpc.wexfin.com:58545/", "  以太坊节点-中国上海")
         val b = NodeBean(2, "https://ethrpc2.wexfin.com:58545/", "  以太坊节点-中国北京")
@@ -159,8 +137,6 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
                 EthereumAgent(publicRpc, EthsTxAgent.by(etherScanApi)),
                 ::buildAgent
         )
-
-        //App.get().assetsRepository.putPresetCurrencies()
 
         scfTokenManager = ScfTokenManager(app)
         CertOperations.init(app)

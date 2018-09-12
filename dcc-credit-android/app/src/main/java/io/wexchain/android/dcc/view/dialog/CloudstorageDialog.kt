@@ -30,11 +30,21 @@ class CloudstorageDialog(context: Context):Dialog(context) {
         show()
     }
 
-    fun createTipsDialog(){
+
+    fun createTipsDialog(title:String? = null,about:String? = null,btn:String? = null){
         this.setCancelable(false)
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.dialog_tips_cloud, null)
         setContentView(view)
+        title?.let {
+            tips_title.text = it
+        }
+        about?.let {
+            tv_about.text = it
+        }
+        btn?.let {
+            btn_ok.text = it
+        }
         val dialogWindow = window
         val lp = dialogWindow!!.attributes
         val d = context.resources.displayMetrics

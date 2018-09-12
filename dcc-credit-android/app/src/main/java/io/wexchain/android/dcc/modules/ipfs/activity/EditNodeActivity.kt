@@ -46,8 +46,10 @@ class EditNodeActivity : BaseCompatActivity() {
 
     fun confirm(host: String, port: String) {
         IpfsCore.checkVersion(host, port)
+                .withLoading()
                 .subscribeBy(
                         onSuccess = {
+                            toast("保存成功")
                             passport.setIpfsUrlConfig(host, port)
                             finish()
                         },
