@@ -55,6 +55,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
 
         // tipsDialog.show()
     }
+
     private fun initPhototTask() {
         doAsync {
             val certIdPics = CertOperations.getTmpIdIdPics()
@@ -90,17 +91,23 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
                     it.mandatoryUpgrade
                 }
                 .subscribe {
-                    showUpgradeDialog(it)
+                    val oldVersionCode = ShareUtils.getInteger(Extras.SP_VERSION_CODE, 0)
+
+                    if (versionInfo.versionCode > oldVersionCode) {
+                        showUpgradeDialog(it)
+                    }
                 }
     }
 
     private fun showUpgradeDialog(it: CheckUpgrade) {
         val dialog = UpgradeDialog(this)
         dialog.createHomeDialog(it.version, it.updateLog)
-                .onClick {
+                .onClick({
                     dialog.dismiss()
+                    ShareUtils.setInteger(Extras.SP_VERSION_CODE, versionInfo.versionCode)
+                }, {
                     downloadApk(it.version, it.updateUrl)
-                }
+                })
     }
 
     private fun downloadApk(versionNumber: String, updateUrl: String) {
@@ -381,7 +388,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
     private inner class TipsDialog : Dialog(this, R.style.FullWidthDialog) {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            setContentView(R.layout.dialog_binterest_show )
+            setContentView(R.layout.dialog_binterest_show)
             setCancelable(false)
             window.attributes.height = ViewGroup.LayoutParams.MATCH_PARENT
             window.attributes.width = ViewGroup.LayoutParams.MATCH_PARENT
