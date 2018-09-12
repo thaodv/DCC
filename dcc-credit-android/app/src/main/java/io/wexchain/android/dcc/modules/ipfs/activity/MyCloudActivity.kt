@@ -7,7 +7,11 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.support.constraint.ConstraintLayout
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
@@ -90,7 +94,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         unbindService(mConnection)
     }
 
-    /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.menu_mycloud, menu)
         return true
@@ -106,7 +110,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 super.onOptionsItemSelected(item)
             }
         }
-    }*/
+    }
 
     private fun initData() {
         val idCertPassed = CertOperations.isIdCertPassed()
@@ -366,7 +370,6 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                         }
             }
         }
-//        updateSyncStatus()
     }
 
     private fun initClick() {
@@ -406,49 +409,31 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
             }
         }
 
-        cloud_item_id.onClick {
-            if (cloud_item_id.isSelected) {
-                cloud_id_selected.text = "未选中"
-                isEnabled.remove(ID_ENTIFY_DATA)
-            } else if (!cloud_item_id.isSelected && IDStatus == STATUS_UPLOAD) {
-                cloud_id_selected.text = "等待上传"
-                isEnabled.add(ID_ENTIFY_DATA)
-            } else if (!cloud_item_id.isSelected && IDStatus == STATUS_DOWNLOAD) {
-                cloud_id_selected.text = "等待下载"
-                isEnabled.add(ID_ENTIFY_DATA)
+        fun clickEvent(layout: ConstraintLayout, txt: TextView, data: String, status: Int) {
+            if (layout.isSelected) {
+                txt.text = "未选中"
+                isEnabled.remove(data)
+            } else if (!layout.isSelected && status == STATUS_UPLOAD) {
+                txt.text = "等待上传"
+                isEnabled.add(data)
+            } else if (!layout.isSelected && status == STATUS_DOWNLOAD) {
+                txt.text = "等待下载"
+                isEnabled.add(data)
             }
-            cloud_item_id.isSelected = !cloud_item_id.isSelected
+            layout.isSelected = !layout.isSelected
             updateSyncStatus()
+        }
+
+        cloud_item_id.onClick {
+            clickEvent(cloud_item_id, cloud_id_selected, ID_ENTIFY_DATA, IDStatus)
         }
 
         cloud_item_bank.onClick {
-            if (cloud_item_bank.isSelected) {
-                cloud_bank_selected.text = "未选中"
-                isEnabled.remove(BANK_CARD_DATA)
-            } else if (!cloud_item_bank.isSelected && BankStatus == STATUS_UPLOAD) {
-                cloud_bank_selected.text = "等待上传"
-                isEnabled.add(BANK_CARD_DATA)
-            } else if (!cloud_item_bank.isSelected && BankStatus == STATUS_DOWNLOAD) {
-                cloud_bank_selected.text = "等待下载"
-                isEnabled.add(BANK_CARD_DATA)
-            }
-            cloud_item_bank.isSelected = !cloud_item_bank.isSelected
-            updateSyncStatus()
+            clickEvent(cloud_item_bank, cloud_bank_selected, BANK_CARD_DATA, BankStatus)
         }
 
         cloud_item_cm.onClick {
-            if (cloud_item_cm.isSelected) {
-                cloud_cm_selected.text = "未选中"
-                isEnabled.remove(PHONE_OPERATOR)
-            } else if (!cloud_item_cm.isSelected && CmStatus == STATUS_UPLOAD) {
-                cloud_cm_selected.text = "等待上传"
-                isEnabled.add(PHONE_OPERATOR)
-            } else if (!cloud_item_cm.isSelected && CmStatus == STATUS_DOWNLOAD) {
-                cloud_cm_selected.text = "等待下载"
-                isEnabled.add(PHONE_OPERATOR)
-            }
-            cloud_item_cm.isSelected = !cloud_item_cm.isSelected
-            updateSyncStatus()
+            clickEvent(cloud_item_cm, cloud_cm_selected, PHONE_OPERATOR, CmStatus)
         }
     }
 

@@ -3,6 +3,7 @@ pragma solidity ^0.4.2;
 import "./UserIpfsKeyHash.sol";
 import "../ownership/Ownable.sol";
 
+//废弃
 contract UserIpfsToken is Ownable {
 
     struct IpfsToken {
@@ -61,12 +62,26 @@ contract UserIpfsToken is Ownable {
         bytes _digest1,
         bytes _digest2,
         uint256 _keyHashVersion){
+        return getIpfsToken(msg.sender,contractAddress);
+    }
+
+    function getIpfsToken(address userAddress,address contractAddress) public view returns (
+        address _userAddress,
+        address _contractAddress,
+        uint256 _version,
+        string _cipher,
+        string _token,
+        bytes _iv,
+        bytes _digest1,
+        bytes _digest2,
+        uint256 _keyHashVersion){
+        require(userAddress!=0);
         require(contractAddress != 0);
-        IpfsToken memory ipfsToken = ipfsCertData[msg.sender][contractAddress];
-        var (v1,) = userIpfsKeyHash.getIpfsKeyHash(msg.sender);
+        IpfsToken memory ipfsToken = ipfsCertData[userAddress][contractAddress];
+        var (v1,) = userIpfsKeyHash.getIpfsKeyHash(userAddress);
         require(v1 == ipfsToken.keyHashVersion);
         return (
-        msg.sender,
+        userAddress,
         contractAddress,
         ipfsToken.version,
         ipfsToken.cipher,

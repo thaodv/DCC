@@ -39,10 +39,11 @@
     <Button
         android:id="@+id/btn_ok"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:padding="10dp"
         android:text="我知道了"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

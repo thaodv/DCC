@@ -1,5 +1,6 @@
 pragma solidity ^0.4.2;
 
+//废弃
 contract UserIpfsKeyHash {
 
     struct KeyHash {
