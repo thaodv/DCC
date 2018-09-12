@@ -13,6 +13,7 @@
 #import "WeXWalletDigitalAssetDetailController.h"
 #import "WeXNewTokenViewController.h"
 #import "YYKeyboardManager.h"
+#import <IQKeyboardManager.h>
 
 @interface WeXWalletDigitalAssetAddController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,YYKeyboardObserver>
 {
@@ -37,9 +38,9 @@
     [self setNavigationNomalBackButtonType];
 //    [self setupNavgationType];
     [self setupSubViews];
-    
+    [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
     [[YYKeyboardManager defaultManager] addObserver:self];
-
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -85,7 +86,7 @@
         
         if (model.items.count == 0) {
            
-            [_footer setTitle:@"没有更多数据了" forState:MJRefreshStateNoMoreData];
+            [_footer setTitle:WeXLocalizedString(@"没有更多数据了") forState:MJRefreshStateNoMoreData];
             
             [_footer endRefreshingWithNoMoreData];
         }
@@ -110,7 +111,7 @@
     
     UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     cancelBtn.frame = CGRectMake(0, 0, 50, 20);
-    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelBtn setTitle:WeXLocalizedString(@"取消") forState:UIControlStateNormal];
     [cancelBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [cancelBtn addTarget:self action:@selector(cancelBtnClick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
@@ -122,9 +123,9 @@
 -(void)setupSubViews{
     
     UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"添加数字资产";
+    titleLabel.text = WeXLocalizedString(@"添加数字资产");
     titleLabel.font = [UIFont systemFontOfSize:24];
-    titleLabel.textColor = ColorWithLabelDescritionBlack;
+    titleLabel.textColor = COLOR_LABEL_DESCRIPTION;
     titleLabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -156,14 +157,14 @@
     searchTextField.rightView = rightView;
     searchTextField.rightViewMode = UITextFieldViewModeWhileEditing;
     searchTextField.leftViewMode = UITextFieldViewModeAlways;
-    searchTextField.textColor = ColorWithLabelDescritionBlack;
+    searchTextField.textColor = COLOR_LABEL_DESCRIPTION;
     searchTextField.font = [UIFont systemFontOfSize:17];
     searchTextField.borderStyle = UITextBorderStyleNone;
     searchTextField.layer.borderWidth = 1;
-    searchTextField.layer.borderColor = ColorWithButtonRed.CGColor;
+    searchTextField.layer.borderColor = COLOR_THEME_ALL.CGColor;
     searchTextField.layer.cornerRadius = 4;
     searchTextField.layer.masksToBounds = YES;
-    searchTextField.placeholder = @"搜索Token名称、简写或合约地址";
+    searchTextField.placeholder = WeXLocalizedString(@"搜索Token名称、简写或合约地址");
     searchTextField.backgroundColor = [UIColor clearColor];
     searchTextField.returnKeyType = UIReturnKeySearch;
     
@@ -177,7 +178,7 @@
     _searchTextField = searchTextField;
     
     WeXCustomButton *commitBtn = [WeXCustomButton button];
-    [commitBtn setTitle:@"提交新token" forState:UIControlStateNormal];
+    [commitBtn setTitle:WeXLocalizedString(@"提交新token") forState:UIControlStateNormal];
     [commitBtn addTarget:self action:@selector(commitBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:commitBtn];
     [commitBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -295,16 +296,12 @@
         CGFloat y = kbFrame.origin.y;
         [_commitBtn mas_updateConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self.view).offset(-(kScreenHeight-y)-30);
-            
         }];
         [self.view layoutIfNeeded];
         
     } completion:^(BOOL finished) {
         
     }];
-    
-  
-    
 }
 
 

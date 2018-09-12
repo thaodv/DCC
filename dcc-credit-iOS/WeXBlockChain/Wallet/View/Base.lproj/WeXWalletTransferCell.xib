@@ -58,54 +58,67 @@
             </connections>
             <point key="canvasLocation" x="-12.5" y="-39"/>
         </tableViewCell>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="eOU-mS-omG" customClass="WeXWalletTransferWithButtonCell">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="96" id="eOU-mS-omG" customClass="WeXWalletTransferWithButtonCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="98"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eOU-mS-omG" id="8tm-10-Le7">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="97.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zoj-4h-6TO">
-                        <rect key="frame" x="325" y="2" width="40" height="40"/>
+                        <rect key="frame" x="336" y="24.5" width="24" height="15"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="40" id="6Z7-TL-WiA"/>
-                            <constraint firstAttribute="height" constant="40" id="BzQ-2B-lc5"/>
+                            <constraint firstAttribute="height" constant="15" id="A7Q-4a-9Ze"/>
+                            <constraint firstAttribute="width" constant="24" id="HeY-qS-8cf"/>
                         </constraints>
-                        <state key="normal" image="scan"/>
+                        <state key="normal" image="user-id"/>
                     </button>
                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qgH-mO-5IU">
-                        <rect key="frame" x="10" y="0.0" width="305" height="43.5"/>
+                        <rect key="frame" x="15" y="48" width="345" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="1Ub-30-AEK"/>
+                        </constraints>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits"/>
                     </textField>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="收款地址" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yym-it-Cwg">
+                        <rect key="frame" x="15" y="24" width="180" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="gcW-D3-rAh"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="180" id="rvg-z5-AFd"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LJq-82-Bcc">
-                        <rect key="frame" x="10" y="43" width="355" height="0.5"/>
+                        <rect key="frame" x="15" y="92" width="345" height="0.5"/>
                         <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="0.5" id="RbB-w7-wT7"/>
+                            <constraint firstAttribute="height" constant="1" id="HjP-XX-6TG"/>
                         </constraints>
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="qgH-mO-5IU" firstAttribute="leading" secondItem="8tm-10-Le7" secondAttribute="leading" constant="10" id="43k-FM-bl0"/>
-                    <constraint firstItem="zoj-4h-6TO" firstAttribute="leading" secondItem="qgH-mO-5IU" secondAttribute="trailing" constant="10" id="FsQ-Ok-5yZ"/>
-                    <constraint firstAttribute="trailing" secondItem="LJq-82-Bcc" secondAttribute="trailing" constant="10" id="KyR-kC-RM8"/>
-                    <constraint firstAttribute="trailing" secondItem="zoj-4h-6TO" secondAttribute="trailing" constant="10" id="P7V-Nd-tea"/>
-                    <constraint firstItem="qgH-mO-5IU" firstAttribute="top" secondItem="8tm-10-Le7" secondAttribute="top" id="SQN-Ps-yzd"/>
-                    <constraint firstItem="LJq-82-Bcc" firstAttribute="leading" secondItem="8tm-10-Le7" secondAttribute="leading" constant="10" id="YuX-sK-AI4"/>
-                    <constraint firstAttribute="bottom" secondItem="qgH-mO-5IU" secondAttribute="bottom" id="phT-BJ-ySE"/>
-                    <constraint firstAttribute="bottom" secondItem="LJq-82-Bcc" secondAttribute="bottom" id="pii-o0-Izs"/>
+                    <constraint firstAttribute="trailing" secondItem="zoj-4h-6TO" secondAttribute="trailing" constant="15" id="1Rh-0j-uvC"/>
+                    <constraint firstItem="qgH-mO-5IU" firstAttribute="leading" secondItem="8tm-10-Le7" secondAttribute="leading" constant="15" id="8nP-rg-IgV"/>
+                    <constraint firstItem="LJq-82-Bcc" firstAttribute="leading" secondItem="8tm-10-Le7" secondAttribute="leading" constant="15" id="9tf-vv-6fy"/>
+                    <constraint firstItem="Yym-it-Cwg" firstAttribute="top" secondItem="8tm-10-Le7" secondAttribute="top" constant="24" id="CbR-gE-y8k"/>
+                    <constraint firstItem="Yym-it-Cwg" firstAttribute="leading" secondItem="8tm-10-Le7" secondAttribute="leading" constant="15" id="Q3w-I2-MCq"/>
+                    <constraint firstAttribute="trailing" secondItem="qgH-mO-5IU" secondAttribute="trailing" constant="15" id="Wq1-sx-Sm0"/>
+                    <constraint firstAttribute="trailing" secondItem="LJq-82-Bcc" secondAttribute="trailing" constant="15" id="YiU-km-jzD"/>
+                    <constraint firstItem="zoj-4h-6TO" firstAttribute="centerY" secondItem="Yym-it-Cwg" secondAttribute="centerY" id="cLb-Iz-JwE"/>
+                    <constraint firstItem="qgH-mO-5IU" firstAttribute="top" secondItem="Yym-it-Cwg" secondAttribute="bottom" constant="8" id="oFe-Wx-vzd"/>
+                    <constraint firstItem="LJq-82-Bcc" firstAttribute="top" secondItem="qgH-mO-5IU" secondAttribute="bottom" id="uRc-YY-CgF"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Yym-it-Cwg" secondAttribute="trailing" constant="20" symbolic="YES" id="ujF-Ba-Rkz"/>
                 </constraints>
             </tableViewCellContentView>
-            <constraints>
-                <constraint firstItem="zoj-4h-6TO" firstAttribute="centerY" secondItem="eOU-mS-omG" secondAttribute="centerY" id="PiX-do-VnK"/>
-            </constraints>
             <connections>
                 <outlet property="contentTextField" destination="qgH-mO-5IU" id="M1F-eI-Uye"/>
                 <outlet property="scanButton" destination="zoj-4h-6TO" id="bCh-3u-U0u"/>
             </connections>
-            <point key="canvasLocation" x="-13" y="121"/>
+            <point key="canvasLocation" x="-12.5" y="141"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="rad-T2-Od0" customClass="WeXWalletTransferWithLabelCell">
             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -203,11 +216,12 @@
             </constraints>
             <connections>
                 <outlet property="costLabel" destination="Dw1-AS-96v" id="Zv9-qe-gRd"/>
+                <outlet property="titleLabel" destination="nQ4-dg-rtm" id="Jst-27-thx"/>
             </connections>
             <point key="canvasLocation" x="-12" y="453"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="scan" width="23" height="23"/>
+        <image name="user-id" width="24" height="15"/>
     </resources>
 </document>

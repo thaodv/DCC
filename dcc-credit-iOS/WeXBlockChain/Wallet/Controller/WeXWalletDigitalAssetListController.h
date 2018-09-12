@@ -16,5 +16,6 @@
 
 @property (nonatomic,strong)UIView *tempView;
 
+@property (nonatomic,strong)NSString *allPraceStr;
 
 @end

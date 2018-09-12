@@ -8,8 +8,15 @@
 
 #import "WeXBaseViewController.h"
 
+typedef NS_ENUM(NSInteger,WeXWalletRecordHashType){
+    WeXWalletRecordHashTypePublic,
+    WeXWalletRecordHashTypePrivate
+};
+
 @interface WeXWalletRecordHashWebController : WeXBaseViewController
 
 @property (nonatomic,copy)NSString *txHash;
+
+@property (nonatomic,assign)WeXWalletRecordHashType type;
 
 @end

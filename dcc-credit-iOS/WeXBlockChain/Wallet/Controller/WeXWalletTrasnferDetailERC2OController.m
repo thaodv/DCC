@@ -71,7 +71,7 @@
         make.leading.equalTo(self).offset(10);
         make.trailing.equalTo(self).offset(-10);
         make.top.equalTo(orderLabel.mas_bottom).offset(10);
-        make.height.equalTo(@LINE_VIEW_Width);
+        make.height.equalTo(@HEIGHT_LINE);
     }];
     
     UILabel *fromTitleLabel = [[UILabel alloc] init];

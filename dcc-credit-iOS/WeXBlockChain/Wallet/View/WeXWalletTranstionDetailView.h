@@ -20,6 +20,8 @@ typedef void(^ConfirmBtnBlock)(void);
 @property (nonatomic,strong)UILabel *balanceLabel;
 @property (nonatomic,strong)UILabel *balanceEthLabel;
 
+@property (nonatomic,strong)WeXCustomButton *confirmBtn;
+
 
 @property (nonatomic,copy)CancelBtnBlock cancelBtnBlock;
 @property (nonatomic,copy)ConfirmBtnBlock confirmBtnBlock;

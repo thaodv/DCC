@@ -15,10 +15,10 @@
 - (void)configWithRecodModel:(WeXWalletEtherscanGetRecordResponseModal_item *)recordmodel tokenModel:(WeXWalletDigitalGetTokenResponseModal_item *)tokenModel{
     _model = recordmodel;
     self.addressLabel.text = [WexCommonFunc formatterStringWithContractAddress:recordmodel.hashStr];
-    if ([recordmodel.timeStamp isEqualToString:@"待上链"]) {
-        self.timeLabel.text = recordmodel.timeStamp;
-         NSString *valueStr = [NSString stringWithFormat:@"-%@%@",recordmodel.value,tokenModel.symbol];
-        self.valueLabel.text = valueStr;
+    if (recordmodel.isPending) {
+        self.timeLabel.text = @"待上链";
+         NSString *valueStr = [WexCommonFunc formatterStringWithContractBalance:recordmodel.value decimals:[tokenModel.decimals integerValue]];
+        self.valueLabel.text = [NSString stringWithFormat:@"-%@%@",valueStr,tokenModel.symbol];;
         self.refreshImageView.hidden = NO;
         [self benginRefresh];
     }
@@ -37,13 +37,11 @@
        self.timeLabel.text = [WexCommonFunc formatterTimeStringWithTimeStamp:recordmodel.timeStamp];
         self.refreshImageView.hidden = YES;
     }
-
-//    self.typeLabel.text = @"转账";
     
-    self.addressLabel.textColor = ColorWithLabelWeakBlack;
-    self.timeLabel.textColor = ColorWithLabelWeakBlack;
-    self.valueLabel.textColor = ColorWithLabelDescritionBlack;
-    self.typeLabel.textColor = ColorWithLabelWeakBlack;
+    self.addressLabel.textColor = COLOR_LABEL_DESCRIPTION;
+    self.timeLabel.textColor = COLOR_LABEL_DESCRIPTION;
+    self.valueLabel.textColor = COLOR_LABEL_DESCRIPTION;
+    self.typeLabel.textColor = COLOR_LABEL_DESCRIPTION;
 }
 
 - (void)benginRefresh{

@@ -12,4 +12,8 @@
 @interface WeXWalletDigitalRecordController : WeXBaseViewController
 
 @property (nonatomic,strong)WeXWalletDigitalGetTokenResponseModal_item *tokenModel;
+
+//是否是私链
+@property (nonatomic,assign)BOOL isPrivateChain;
+
 @end

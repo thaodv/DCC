@@ -8,21 +8,36 @@
 
 #import <Foundation/Foundation.h>
 
-@interface  WeXWalletTransferResultModel:NSObject
+@interface  WeXWalletTransferPendingModel: WeXBaseNetModal
 
 @property (nonatomic,copy)NSString *value;
 
 @property (nonatomic,copy)NSString *txhash;
+
+@property (nonatomic,copy)NSString *from;
+
+@property (nonatomic,copy)NSString *to;
+
+@property (nonatomic,copy)NSString *timeStamp;
+
+@property (nonatomic,copy)NSString *nonce;
+
+@property (nonatomic,copy)NSString *gasPrice;
+
+@property (nonatomic,copy)NSString *gasLimit;
 
 @end
 
 
 @interface WeXWalletTransferResultManager : NSObject
 
-@property (nonatomic,strong)NSMutableDictionary *dataDict;
 
-+ (instancetype)manager;
-
-- (void)createGetPendingRequest;
+- (instancetype)initWithTokenSymbol:(NSString *)symbol isPrivateChain:(BOOL)isPrivate response:(void(^)(void))responseBlock;
+- (WeXWalletTransferPendingModel *)getPendingModelWithSymbol:(NSString *)symbol;
+- (WeXWalletTransferPendingModel *)getAllCoinPendingModel;
+- (void)savePendingModel:(WeXWalletTransferPendingModel *)model symbol:(NSString *)symbol;
+- (void)deletePendingModelWithSymbol:(NSString *)symbol;
+- (void)beginRefresh;
+- (void)endRefresh;
 
 @end

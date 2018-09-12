@@ -23,8 +23,16 @@
 
 - (void)setupSubViews{
     UIWebView *webView = [[UIWebView alloc] init];
+    NSString *url;
     
-    NSString *url = [NSString stringWithFormat:@"https://etherscan.io/tx/%@",self.txHash];
+    if (self.type == WeXWalletRecordHashTypePublic) {
+        url = [NSString stringWithFormat:@"%@%@",WEX_WALLET_HASH_PUBLIC_URL,self.txHash];
+    }
+    else
+    {
+        url = [NSString stringWithFormat:@"%@%@",WEX_WALLET_HASH_PRIVATE_URL,self.txHash];
+    }
+    
     [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
     
     [self.view addSubview:webView];

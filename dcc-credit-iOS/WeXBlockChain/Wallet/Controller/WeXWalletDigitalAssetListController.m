@@ -21,6 +21,13 @@
 #import "WeXShareQRImageView.h"
 #import "WeXShareManager.h"
 
+#import "WeXTokenDccListViewController.h"
+#import "WeXAgentMarketAdapter.h"
+//#import "WeXNetworkCheckManager.h"
+#import "WeXSelectedNodeViewController.h"
+#import "WeXWalletNewCell.h"
+
+
 @interface WeXWalletDigitalAssetListController ()<UITableViewDelegate,UITableViewDataSource>
 {
     UITableView *_tableView;
@@ -28,51 +35,92 @@
     UILabel *_assetlabel;//总的数字资产
     
     BOOL isFirstLoad;
+    
+    NSString *_dccPrivateBalance;
+    NSString *_dccPublicBalance;
 }
 
 @property (nonatomic,strong)WeXWalletInfuraGetBalanceAdapter *getBalanceAdapter;
-@property (nonatomic,strong)WeXWalletDigitalGetQuoteAdapter *getQuoteAdapter;
-
-
-
+//@property (nonatomic,strong)WeXWalletDigitalGetQuoteAdapter *getQuoteAdapter;
+@property (nonatomic,strong)WeXAgentMarketAdapter *getAgentAdapter;
 @property (nonatomic, strong) XWInteractiveTransition *interactiveTransition;
+@property (nonatomic, strong) UIButton *networkDelayButton;
+@property (nonatomic, strong) WeXNetworkCheckModel *checkModel;
 
 @end
+
+static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
+
 
 @implementation WeXWalletDigitalAssetListController
 
 - (void)viewDidLoad {
-//    self.backgroundType = WeXBaseViewBackgroundTypeNone;
     [super viewDidLoad];
-    
-//    UIImageView *backImageView = [[UIImageView alloc] init];
-//    backImageView.image = [UIImage imageNamed:@"background3"];
-//    backImageView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
-//    [self.view addSubview:backImageView];
-//    [backImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.leading.top.bottom.trailing.equalTo(self.view).offset(0);
-//    }];
-    
-    [self setupNavgationType];
+    self.navigationItem.title= WeXLocalizedString(@"数字资产");
+    [self setNavigationNomalBackButtonType];
+    NSLog(@"_datasArray = %@",_datasArray);
     [self setupSubViews];
-    
-    
-//    //初始化手势过渡的代理
-//    self.interactiveTransition = [XWInteractiveTransition interactiveTransitionWithTransitionType:XWInteractiveTransitionTypePop GestureDirection:XWInteractiveTransitionGestureDirectionRight];
-//    //给当前控制器的视图添加手势
-//    [_interactiveTransition addPanGestureForViewController:self];
-   
+    [self setupNodeNavgationType];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)setupNodeNavgationType{
+    _networkDelayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _networkDelayButton.bounds = CGRectMake(0, 0, 30, 21);
+    [_networkDelayButton setImage:[UIImage imageNamed:@"Oval"] forState:UIControlStateNormal];
+    [_networkDelayButton setImage:[UIImage imageNamed:@"Oval"] forState:UIControlStateSelected];
+    [_networkDelayButton setImage:[UIImage imageNamed:@"Oval"] forState:UIControlStateHighlighted];
+    [_networkDelayButton addTarget:self action:@selector(selectNodeEvent:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_networkDelayButton];
+}
+
+- (void)setNodeNetworkDelayModel:(WeXNetworkCheckModel *)model {
+    UIImage *image = [UIImage imageNamed:@"Oval-Good"];
+    switch (model.nodeCheckState) {
+        case WexNetworkCheckStateGood: {
+            image = [UIImage imageNamed:@"Oval-Good"];
+        }
+            
+            break;
+        case WexNetworkCheckStateCommon: {
+            image = [UIImage imageNamed:@"Oval-Common"];
+        }
+            break;
+            
+        default: {
+            image = [UIImage imageNamed:@"Oval-Bad"];
+        }
+            break;
+    }
+    [_networkDelayButton setImage:image forState:UIControlStateNormal];
+    [_networkDelayButton setImage:image forState:UIControlStateSelected];
+    [_networkDelayButton setImage:image forState:UIControlStateHighlighted];
+}
+// MARK: - 选择节点
+- (void)selectNodeEvent:(UIButton *)sender {
+    WeXSelectedNodeViewController *selectNodeVC = [WeXSelectedNodeViewController new];
+    selectNodeVC.DidSelectedNode = ^(WeXNetworkCheckModel *result) {
+        
+    };
+    [self.navigationController pushViewController:selectNodeVC animated:YES];
+}
+
+
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
     self.navigationController.delegate = nil;
-    
     [self getDatas];
-    [self createGetQuoteRequest];
+//  [self createGetQuoteRequest];
+    [self createGetAgentMarketRequest];
     [self createGetBalaceRequest];
+    [self getNodeNetWorkDelay];
+}
+
+// MARK: - 获取节点网络延迟
+- (void)getNodeNetWorkDelay {
+    [[WeXNetworkCheckManager shareManager] startDefaultNodeNetworkDelay:^(WeXNetworkCheckModel *result) {
+        self.checkModel = result;
+        [self setNodeNetworkDelayModel:result];
+    }];
 }
 
 - (void)getDatas{
@@ -89,16 +137,6 @@
         model.contractAddress = rlmModel.contractAddress;
         [self.datasArray addObject:model];
     }
-    
-    WeXWalletDigitalGetTokenResponseModal_item *model = [[WeXWalletDigitalGetTokenResponseModal_item alloc] init];
-    model.symbol = @"ETH";
-    model.name = @"Ethereum Foundation";
-    model.iconUrl = @"http://www.wexpass.cn/images/Contractz_icon/ethereum@2x.png";
-    model.decimals = @"18";
-    model.contractAddress = @"";
-    if (self.datasArray.count >= 1) {
-       [self.datasArray insertObject:model atIndex:1];
-    }
     [_tableView reloadData];
 }
 
@@ -113,87 +151,152 @@
 
 - (void)createGetBalaceRequest{
 
-    // 初始化以太坊容器
     [[WXPassHelper instance] initPassHelperBlock:^(id response) {
         if(response!=nil)
         {
             NSError* error=response;
-            NSLog(@"容器加载失败:%@",error);
+            NSLog(WeXLocalizedString(@"容器加载失败:%@"),error);
             return;
         }
         
-        [[WXPassHelper instance] initProvider:YTF_DEVELOP_SERVER responseBlock:^(id response)
-         {
-             WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[0];
-             //abi方法
-             NSString *abiJson = WEX_ERC20_ABI_BALANCE;
-             //参数为需要查询的地址
-             NSString *pararms = [NSString stringWithFormat:@"[\'%@\']",[WexCommonFunc getFromAddress]];
-             [[WXPassHelper instance] encodeFunCallAbiInterface:abiJson params:pararms responseBlock:^(id response) {
-                 [[WXPassHelper instance] call2ContractAddress:[WexCommonFunc getFTCContractAddress] data:response type:YTF_DEVELOP_SERVER responseBlock:^(id response) {
-                     NSLog(@"balance=%@",response);
-                     NSDictionary *responseDict = response;
-                     NSString * originBalance =[responseDict objectForKey:@"result"];
-                     NSString * ethException =[responseDict objectForKey:@"ethException"];
-                     if ([ethException isEqualToString:@"ethException"]) {
-                         model.balance = @"--";
-                     }
-                     else
-                     {
-                         model.balance = [WexCommonFunc formatterStringWithContractBalance:originBalance decimals:[model.decimals integerValue]];
-                         [self configTotalDigitalAsset];
-                     }
-                     [_tableView reloadData];
-                 }];
-                 
-             }];
-             
-         }];
-        
+        [self createDccBalanceRequest];
         [self createETHAndERC20Banlance];
         
     }];
+
+}
+
+
+- (void)createDccBalanceRequest
+{
+    if (self.datasArray.count < 2) {
+        return;
+    }
+    WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[0];
+    //abi方法
+    NSString *abiJson = WEX_ERC20_ABI_BALANCE;
+    //参数为需要查询的地址
+    NSString *pararms = [NSString stringWithFormat:@"[\'%@\']",[WexCommonFunc getFromAddress]];
+    [[WXPassHelper instance] encodeFunCallAbiInterface:abiJson params:pararms responseBlock:^(id response)
+     {
+         //dcc私链
+         [[WXPassHelper instance] call2ContractAddress:[WexCommonFunc getDCCContractAddress] data:response type:WEX_DCC_NODE_SERVER responseBlock:^(id response)
+          {
+              NSLog(WeXLocalizedString(@"dcc私链balance=%@"),response);
+              NSDictionary *responseDict = response;
+              NSString * originBalance =[responseDict objectForKey:@"result"];
+              NSString * ethException =[responseDict objectForKey:@"ethException"];
+              if ([ethException isEqualToString:@"ethException"]) {
+                  _dccPrivateBalance = @"--";
+              }
+              else
+              {
+                  _dccPrivateBalance = [WexCommonFunc formatterStringWithContractBalance:originBalance decimals:[model.decimals integerValue]];
+              }
+              [self configDccDigitalAsset];
+          }];
+         //dccerc20
+         [[WXPassHelper instance] call2ContractAddress:model.contractAddress data:response type:YTF_DEVELOP_INFURA_SERVER responseBlock:^(id response) {
+             NSLog(WeXLocalizedString(@"dcc共连balance=%@"),response);
+             NSDictionary *responseDict = response;
+             NSString * originBalance =[responseDict objectForKey:@"result"];
+             NSString * ethException =[responseDict objectForKey:@"ethException"];
+             if ([ethException isEqualToString:@"ethException"]) {
+                 _dccPublicBalance = @"--";
+             }
+             else
+             {
+                 _dccPublicBalance = [WexCommonFunc formatterStringWithContractBalance:originBalance decimals:[model.decimals integerValue]];
+                 
+             }
+             [self configDccDigitalAsset];
+             
+         }];
+     }];
+}
+
+- (void)configDccDigitalAsset
+{
+    if (self.datasArray.count < 2) {
+        return;
+    }
+    WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[0];
+    if (_dccPublicBalance&&![_dccPublicBalance isEqualToString:@"--"]&&_dccPrivateBalance&&![_dccPrivateBalance isEqualToString:@"--"])
+    {
+        CGFloat dccBalance = [_dccPublicBalance floatValue]+[_dccPrivateBalance floatValue];
+        model.balance = [NSString stringWithFormat:@"%.4f",dccBalance];
+    }
+    else
+    {
+        model.balance = @"--";
+    }
+    [self configTotalDigitalAsset];
+    [_tableView reloadData];
+}
+
+
+- (void)createFtcBalanceRequest
+{
+    if (self.datasArray.count < 2) {
+        return;
+    }
+    WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[2];
+    //abi方法
+    NSString *abiJson = WEX_ERC20_ABI_BALANCE;
+    //参数为需要查询的地址
+    NSString *pararms = [NSString stringWithFormat:@"[\'%@\']",[WexCommonFunc getFromAddress]];
+    [[WXPassHelper instance] encodeFunCallAbiInterface:abiJson params:pararms responseBlock:^(id response) {
+        [[WXPassHelper instance] call2ContractAddress:[WexCommonFunc getFTCContractAddress] data:response type:YTF_DEVELOP_SERVER responseBlock:^(id response) {
+            NSDictionary *responseDict = response;
+            NSString * originBalance =[responseDict objectForKey:@"result"];
+            NSString * ethException =[responseDict objectForKey:@"ethException"];
+            if ([ethException isEqualToString:@"ethException"]) {
+                model.balance = @"--";
+            }
+            else
+            {
+                model.balance = [WexCommonFunc formatterStringWithContractBalance:originBalance decimals:[model.decimals integerValue]];
+                [self configTotalDigitalAsset];
+            }
+            [_tableView reloadData];
+        }];
+        
+    }];
+  
 }
 
 - (void)createETHAndERC20Banlance
 {
-    /** 连接以太坊(开发，测试，生产环境地址值不同，建议用宏区分不同开发环境) */
-    [[WXPassHelper instance] initProvider:YTF_DEVELOP_INFURA_SERVER responseBlock:^(id response)
-     {
-         [[WXPassHelper instance] getETHBalance2WithContractAddress:[WexCommonFunc getFromAddress] type:YTF_DEVELOP_INFURA_SERVER responseBlock:^(id response) {
-             WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[1];
-             if ([response isKindOfClass:[NSDictionary class]]) {
-                 model.balance = @"--";
-             }
-             else
-             {
-                 model.balance = [WexCommonFunc formatterStringWithContractBalance:response decimals:[model.decimals integerValue]];
-                 [self configTotalDigitalAsset];
-             }
-             [_tableView reloadData];
-             
-         }];
+    if (self.datasArray.count < 2) {
+        return;
+    }
+     [[WXPassHelper instance] getETHBalance2WithContractAddress:[WexCommonFunc getFromAddress] type:YTF_DEVELOP_INFURA_SERVER responseBlock:^(id response) {
+         WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[1];
+         if ([response isKindOfClass:[NSDictionary class]]) {
+             model.balance = @"--";
+         }
+         else
+         {
+             model.balance = [WexCommonFunc formatterStringWithContractBalance:response decimals:[model.decimals integerValue]];
+             [self configTotalDigitalAsset];
+         }
+         [_tableView reloadData];
+         
      }];
     
-    /** 连接以太坊(开发，测试，生产环境地址值不同，建议用宏区分不同开发环境) */
-    [[WXPassHelper instance] initProvider:YTF_DEVELOP_INFURA_SERVER responseBlock:^(id response)
-     {
-         
-         NSString *abiJson = @"{\"constant\":true,\"inputs\":[{\"name\":\"_owner\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"name\":\"balance\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}";
-         NSString *pararms = [NSString stringWithFormat:@"[\'%@\']",[WexCommonFunc getFromAddress]];
-         [[WXPassHelper instance] encodeFunCallAbiInterface:abiJson params:pararms responseBlock:^(id response) {
-             _encodeData = response;
-             for (int i = 2; i < self.datasArray.count; i++) {
-                 WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[i];
-                 [[WXPassHelper instance] call2ContractAddress:model.contractAddress data:_encodeData type:YTF_DEVELOP_INFURA_SERVER responseBlock:^(id response) {
-                     NSLog(@"balance=%@",response);
-                     NSDictionary *responseDict = response;
-                     [self updateERC20BalaceWithResponse:responseDict];
-                 }];
-             }
-         }];
-         
+     NSString *abiJson = WEX_ERC20_ABI_BALANCE;
+     NSString *pararms = [NSString stringWithFormat:@"[\'%@\']",[WexCommonFunc getFromAddress]];
+     [[WXPassHelper instance] encodeFunCallAbiInterface:abiJson params:pararms responseBlock:^(id response) {
+         _encodeData = response;
+         for (int i = 2; i < self.datasArray.count; i++) {
+             WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[i];
+             [[WXPassHelper instance] call2ContractAddress:model.contractAddress data:_encodeData type:YTF_DEVELOP_INFURA_SERVER responseBlock:^(id response) {
+                 NSDictionary *responseDict = response;
+                 [self updateERC20BalaceWithResponse:responseDict];
+             }];
+         }
      }];
+         
 }
 
 - (void)updateERC20BalaceWithResponse:(NSDictionary *)responseDict{
@@ -218,62 +321,75 @@
 }
 
 
-- (void)createGetQuoteRequest{
-    _getQuoteAdapter = [[WeXWalletDigitalGetQuoteAdapter alloc]  init];
-    _getQuoteAdapter.delegate = self;
-    WeXWalletDigitalGetQuoteParamModal *paramModal = [[WeXWalletDigitalGetQuoteParamModal alloc] init];
-    NSMutableString *varietyCodesStr = [NSMutableString string];
-    for (int i = 0; i < self.datasArray.count; i++) {
-        WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[i];
-        if (i == self.datasArray.count-1) {
-            [varietyCodesStr appendString:[NSString stringWithFormat:@"%@",model.symbol]];
-        }
-        else
-        {
-           [varietyCodesStr appendString:[NSString stringWithFormat:@"%@,",model.symbol]];
-        }
-
-    }
-    paramModal.varietyCodes = varietyCodesStr;
-    [_getQuoteAdapter run:paramModal];
-}
+//- (void)createGetQuoteRequest{
+//
+//    _getQuoteAdapter = [[WeXWalletDigitalGetQuoteAdapter alloc]  init];
+//    _getQuoteAdapter.delegate = self;
+//    WeXWalletDigitalGetQuoteParamModal *paramModal = [[WeXWalletDigitalGetQuoteParamModal alloc] init];
+//    NSMutableString *varietyCodesStr = [NSMutableString string];
+//    for (int i = 0; i < self.datasArray.count; i++) {
+//        WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[i];
+//        if (i == self.datasArray.count-1) {
+//            [varietyCodesStr appendString:[NSString stringWithFormat:@"%@",model.symbol]];
+//        }
+//        else
+//        {
+//           [varietyCodesStr appendString:[NSString stringWithFormat:@"%@,",model.symbol]];
+//        }
+//    }
+//    paramModal.varietyCodes = varietyCodesStr;
+//    [_getQuoteAdapter run:paramModal];
+//}
 
 #pragma mark - 请求回调
 - (void)wexBaseNetAdapterDelegate:(WexBaseNetAdapter *)adapter head:(WexBaseNetAdapterResponseHeadModal *)headModel response:(WeXBaseNetModal *)response{
-    if(adapter == _getQuoteAdapter){
-        WeXWalletDigitalGetQuoteResponseModal *model = (WeXWalletDigitalGetQuoteResponseModal *)response;
-        NSLog(@"model=%@",model);
-        for (WeXWalletDigitalGetQuoteResponseModal_item *quoteModel in model.data) {
-            for (WeXWalletDigitalGetTokenResponseModal_item *tokenModel in self.datasArray) {
-                if ([quoteModel.varietyCode isEqualToString:tokenModel.symbol]) {
-                    tokenModel.price = [NSString stringWithFormat:@"%.2f",quoteModel.price];
-                    break;
+//    if(adapter == _getQuoteAdapter){
+//        WeXWalletDigitalGetQuoteResponseModal *model = (WeXWalletDigitalGetQuoteResponseModal *)response;
+//        NSLog(@"model=%@",model);
+//        for (WeXWalletDigitalGetQuoteResponseModal_item *quoteModel in model.data) {
+//            for (WeXWalletDigitalGetTokenResponseModal_item *tokenModel in self.datasArray) {
+//                if ([quoteModel.varietyCode isEqualToString:tokenModel.symbol]) {
+//                    tokenModel.price = [NSString stringWithFormat:@"%.2f",quoteModel.price];
+//                    break;
+//                }
+//            }
+//        }
+//        [self configTotalDigitalAsset];
+//    }
+       if([adapter isKindOfClass:[WeXAgentMarketAdapter class]]){
+//        NSLog(@"response = %@",response);
+        if(response){
+            WeXAgentMarketResponseModel *model= (WeXAgentMarketResponseModel *)response;
+            for (WeXAgentMarketResponseModel_item *quoteModel in model.data) {
+                for (WeXWalletDigitalGetTokenResponseModal_item *tokenModel in self.datasArray) {
+                    if ([quoteModel.symbol isEqualToString:tokenModel.symbol]) {
+                        tokenModel.price = [NSString stringWithFormat:@"%f",[quoteModel.price floatValue]];
+                        break;
+                    }
                 }
             }
+//            [_tableView reloadData];
+              [self configTotalDigitalAsset];
         }
-        
-        [self configTotalDigitalAsset];
-        
-        
     }
 }
 
 - (void)configTotalDigitalAsset{
     CGFloat asset = 0.0;
     for (WeXWalletDigitalGetTokenResponseModal_item *model in self.datasArray) {
+//        NSLog(@"model = %@",model);
         if (model.balance&&model.price&&![model.balance isEqualToString:@"--"]) {
            asset += [model.balance floatValue]*[model.price floatValue];
             _assetlabel.text = [NSString stringWithFormat:@"≈¥%.4f",asset];
         }
     }
-    
 }
 
 
 - (void)setupNavgationType{
     
     self.navigationItem.hidesBackButton = YES;
-    UIBarButtonItem *rihgtItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"digital_cha1"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(rightItemClick)];
+    UIBarButtonItem *rihgtItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"dcc_animation_cha"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(rightItemClick)];
     self.navigationItem.rightBarButtonItem = rihgtItem;
     
 }
@@ -293,26 +409,27 @@
     }];
      _cardView = cardBackView;
     
-    UILabel *label1 = [[UILabel alloc] init];
-    label1.text = @"数字资产";
-    label1.font = [UIFont systemFontOfSize:20];
-    label1.textColor = ColorWithHex(0xb8b8b8);
-    label1.textAlignment = NSTextAlignmentLeft;
-    [cardBackView addSubview:label1];
-    [label1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(kNavgationBarHeight);
-        make.leading.equalTo(self.view).offset(20);
-        make.height.equalTo(@20);
-    }];
+//    UILabel *label1 = [[UILabel alloc] init];
+//    label1.text = WeXLocalizedString(@"数字资产");
+//    label1.font = [UIFont systemFontOfSize:15];
+//    label1.textColor = ColorWithHex(0xb8b8b8);
+//    label1.textAlignment = NSTextAlignmentLeft;
+//    [cardBackView addSubview:label1];
+//    [label1 mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view).offset(kNavgationBarHeight);
+//        make.leading.equalTo(self.view).offset(20);
+//        make.height.equalTo(@20);
+//    }];
     
     UILabel *assetlabel = [[UILabel alloc] init];
     assetlabel.text = @"--";
     assetlabel.font = [UIFont systemFontOfSize:25];
-    assetlabel.textColor = ColorWithLabelTitleBlack;
+    assetlabel.textColor = COLOR_LABEL_TITLE;
     assetlabel.textAlignment = NSTextAlignmentLeft;
     [cardBackView addSubview:assetlabel];
     [assetlabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(label1.mas_bottom).offset(10);
+//        make.top.equalTo(label1.mas_bottom).offset(10);
+           make.top.equalTo(self.view).offset(kNavgationBarHeight);
         make.leading.equalTo(self.view).offset(20);
         make.height.equalTo(@20);
     }];
@@ -320,18 +437,17 @@
     
     UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [addBtn setImage:[UIImage imageNamed:@"digital_add"] forState:UIControlStateNormal];
-    [addBtn setTitleColor:ColorWithRGB(248, 31, 117) forState:UIControlStateNormal];
     [addBtn addTarget:self action:@selector(addBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:addBtn];
     [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(kNavgationBarHeight+10);
-        make.trailing.equalTo(self.view).offset(-20);
+        make.top.equalTo(self.view).offset(kNavgationBarHeight);
+        make.trailing.equalTo(self.view).offset(-10);
         make.width.equalTo(@40);
         make.height.equalTo(@40);
     }];
     
 //    WeXCustomButton *shareBtn = [WeXCustomButton button];
-//    [shareBtn setTitle:@"分享" forState:UIControlStateNormal];
+//    [shareBtn setTitle:WeXLocalizedString(@"分享") forState:UIControlStateNormal];
 //    [shareBtn setTitleColor:ColorWithRGB(248, 31, 117) forState:UIControlStateNormal];
 //    [shareBtn addTarget:self action:@selector(shareBtnClick) forControlEvents:UIControlEventTouchUpInside];
 //    [self.view addSubview:shareBtn];
@@ -348,7 +464,7 @@
 //    UIButton *shareBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 //    shareBtn.frame = CGRectMake(0, 70, 100, 60);
 //    shareBtn.WeX_centerX = footView.WeX_centerX;
-//    [shareBtn setTitle:@"分享" forState:UIControlStateNormal];
+//    [shareBtn setTitle:WeXLocalizedString(@"分享") forState:UIControlStateNormal];
 //    [shareBtn setTitleColor:ColorWithRGB(248, 31, 117) forState:UIControlStateNormal];
 //    shareBtn.backgroundColor = [UIColor whiteColor];
 //    [shareBtn addTarget:self action:@selector(shareBtnClick) forControlEvents:UIControlEventTouchUpInside];
@@ -366,10 +482,9 @@
         make.leading.trailing.equalTo(self.view);
         make.bottom.equalTo(self.view);
     }];
-    
-    
-}
 
+    [_tableView registerClass:[WeXWalletNewCell class] forCellReuseIdentifier:kNewWalletCellID];
+}
 
 - (void)shareBtnClick
 {
@@ -378,7 +493,7 @@
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         WeXShareManager *shareManager = [[WeXShareManager alloc] init];
-        shareManager.shareImage = [self screenShot];
+//        shareManager.shareImage = [self screenShot];
         [shareManager shareWithParentController:self];
     });
     
@@ -417,15 +532,17 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellID = @"cellID";
-    WeXWalletDigitalListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    if (cell == nil) {
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletDigitalListCell" owner:self options:nil] lastObject];
-        cell.backgroundColor = [UIColor clearColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
+    WeXWalletNewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNewWalletCellID forIndexPath:indexPath];
+//    static NSString *cellID = @"cellID";
+//    WeXWalletDigitalListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+//    if (cell == nil) {
+//        cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletDigitalListCell" owner:self options:nil] lastObject];
+//        cell.backgroundColor = [UIColor clearColor];
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//    }
     WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[indexPath.row];
-    cell.model =  model;
+    [cell setModel:model];
+//    cell.model =  model;
     return cell;
     
 }
@@ -433,10 +550,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[indexPath.row];
-    WeXWalletDigitalAssetDetailController *ctrl = [[WeXWalletDigitalAssetDetailController alloc] init];
-    ctrl.tokenModel = model;
-    [self.navigationController pushViewController:ctrl animated:YES];
-  
+    if ([model.symbol isEqualToString:@"DCC"]) {
+        WeXTokenDccListViewController *ctrl = [[WeXTokenDccListViewController alloc] init];
+        ctrl.tokenModel = model;
+        [self.navigationController pushViewController:ctrl animated:YES];
+    }
+    else
+    {
+        WeXWalletDigitalAssetDetailController *ctrl = [[WeXWalletDigitalAssetDetailController alloc] init];
+        ctrl.tokenModel = model;
+        [self.navigationController pushViewController:ctrl animated:YES];
+    }
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC{
@@ -449,6 +573,26 @@
     return _interactiveTransition.interation ? _interactiveTransition : nil;
 }
 
+//获取各个币种的价格请求
+- (void)createGetAgentMarketRequest{
+    _getAgentAdapter = [[WeXAgentMarketAdapter alloc] init];
+    //    _getAgentAdapter.currentyName = self.tokenModel.symbol;
+    _getAgentAdapter.delegate = self;
+    WeXAgentMarketModel *paramModal = [[WeXAgentMarketModel alloc] init];
+    NSMutableString *varietyCodesStr = [NSMutableString string];
+    for (int i = 0; i < self.datasArray.count; i++) {
+        WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[i];
+        if (i == self.datasArray.count-1) {
+            [varietyCodesStr appendString:[NSString stringWithFormat:@"%@",model.symbol]];
+        }
+        else
+        {
+            [varietyCodesStr appendString:[NSString stringWithFormat:@"%@,",model.symbol]];
+        }
+    }
+    paramModal.coinTypes = varietyCodesStr;
+    [_getAgentAdapter run:paramModal];
+}
 
 
 @end

@@ -31,5 +31,6 @@
 
 @interface WeXWalletTransferWithTwoLabelCell : WeXWalletTransferCell
 @property (weak, nonatomic) IBOutlet UILabel *costLabel;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end

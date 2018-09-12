@@ -20,7 +20,6 @@
     return WexBaseUrlTypeAll;
 }
 
-
 - (Class)getResponseClass
 {
     return [WeXWalletAllGetRecordResponseModal class];

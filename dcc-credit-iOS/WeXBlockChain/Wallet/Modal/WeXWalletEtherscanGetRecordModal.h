@@ -27,8 +27,11 @@
 @property (nonatomic,copy)NSString *value;
 @property (nonatomic,copy)NSString *isError;
 @property (nonatomic,copy)NSString *gasPrice;
+@property (nonatomic,copy)NSString *gasLimit;
 @property (nonatomic,copy)NSString *gasUsed;
 @property (nonatomic,copy)NSString *blockNumber;
+@property (nonatomic,copy)NSString *nonce;
+@property (nonatomic,assign)BOOL isPending;
 @end
 
 @interface  WeXWalletEtherscanGetRecordResponseModal : WeXBaseNetModal

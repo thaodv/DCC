@@ -41,7 +41,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setNavigationNomalBackButtonType];
-//    [self setupNavgationType];
     [self setupSubViews];
 }
 
@@ -59,7 +58,7 @@
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         WeXShareManager *shareManager = [[WeXShareManager alloc] init];
-        shareManager.shareImage = [self screenShot];
+//        shareManager.shareImage = [self screenShot];
         [shareManager shareWithParentController:self];
     });
     
@@ -89,14 +88,17 @@
     }
     else if ([self.tokenModel.symbol isEqualToString:@"FTC"])
     {
-        [self createGetAllRecordRequest];
+        [self createGetAllRecordRequest:[WexCommonFunc getFTCContractAddress]];
+    }
+    else if ([self.tokenModel.symbol isEqualToString:@"DCC"]&&self.isPrivateChain)
+    {
+        [self createGetAllRecordRequest:[WexCommonFunc getDCCContractAddress]];
     }
     else
     {
         [self createGetEthplorerQuoteRequest];
     }
     
-    [self getPendingAction];
     
 }
 
@@ -133,12 +135,12 @@
     
 }
 
-#pragma -mark 获取全向交易记录请求
-- (void)createGetAllRecordRequest{
+#pragma -mark 获取BitExpress交易记录请求
+- (void)createGetAllRecordRequest:(NSString *)privateContractAddress{
     _getAllRecordAdapter = [[WeXWalletAllGetRecordAdapter alloc] init];
     _getAllRecordAdapter.delegate = self;
     WeXWalletAllGetRecordParamModal* paramModal = [[WeXWalletAllGetRecordParamModal alloc] init];
-    paramModal.contractAddress = [WexCommonFunc getFTCContractAddress];
+    paramModal.contractAddress = privateContractAddress;
     paramModal.address = [WexCommonFunc getFromAddress];
     paramModal.page = @"1";
     paramModal.pageSize = @"1000";
@@ -146,78 +148,12 @@
     
 }
 
-- (void)getPendingAction{
-    if ([self.tokenModel.symbol isEqualToString:@"FTC"])
-    {
-        _timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(refreshTransferRecord) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    }
-    else
-    {
-        _timer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(refreshTransferRecord) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    }
-    
-}
-
-- (void)refreshTransferRecord{
-    if ([self.tokenModel.symbol isEqualToString:@"FTC"]) {
-        /** 连接以太坊(开发，测试，生产环境地址值不同，建议用宏区分不同开发环境) */
-        [[WXPassHelper instance] initProvider:YTF_DEVELOP_SERVER responseBlock:^(id response)
-         {
-             WeXWalletTransferResultManager *manager = [WeXWalletTransferResultManager manager];
-             NSMutableArray *hashAarry = [manager.dataDict objectForKey:self.tokenModel.symbol];
-//             if (hashAarry.count) {
-                 for (int i = 0; i < hashAarry.count; i++) {
-                     WeXWalletTransferResultModel *resultModel = hashAarry[i];
-                     [[WXPassHelper instance] queryTransactionReceipt:resultModel.txhash responseBlock:^(id response) {
-                         NSLog(@"1--%@",response);
-                         NSString *transactionHash = [response objectForKey:@"transactionHash"];
-                         if (transactionHash) {
-                             [hashAarry removeObject:resultModel];
-                             
-                         }
-                     }];
-                 }
-             [self createGetAllRecordRequest];
-//             }
-         }];
-    }
-    else
-    {
-        WeXWalletTransferResultManager *manager = [WeXWalletTransferResultManager manager];
-        NSMutableArray *hashAarry = [manager.dataDict objectForKey:self.tokenModel.symbol];
-        for (int i = 0; i < hashAarry.count; i++) {
-            WeXWalletTransferResultModel *resultModel = hashAarry[i];
-            WeXWalletEtherscanGetPendingAdapter *getPendingAdapter = [[WeXWalletEtherscanGetPendingAdapter alloc] init];
-            getPendingAdapter.delegate = self;
-            WeXWalletEtherscanGetPendingParamModal *paramModal = [[WeXWalletEtherscanGetPendingParamModal alloc] init];
-            paramModal.module = @"proxy";
-            paramModal.action = @"eth_getTransactionReceipt";
-            paramModal.txhash = resultModel.txhash;
-            getPendingAdapter.txhash = resultModel.txhash;
-            [getPendingAdapter run:paramModal];
-        }
-    }
-}
 
 #pragma mark - 请求回调
 - (void)wexBaseNetAdapterDelegate:(WexBaseNetAdapter *)adapter head:(WexBaseNetAdapterResponseHeadModal *)headModel response:(WeXBaseNetModal *)response{
     if (adapter == _getRecordAdapter) {
         WeXWalletEtherscanGetRecordResponseModal *responseModel = (WeXWalletEtherscanGetRecordResponseModal *)response;
         _datasArray = responseModel.result;
-        WeXWalletTransferResultManager *manager = [WeXWalletTransferResultManager manager];
-        NSMutableArray *dataArray = [manager.dataDict objectForKey:self.tokenModel.symbol];
-        if (dataArray.count) {
-            for (int i= 0 ;i < dataArray.count; i++) {
-                WeXWalletTransferResultModel *resultModel = dataArray[i];
-                WeXWalletEtherscanGetRecordResponseModal_item *model = [[WeXWalletEtherscanGetRecordResponseModal_item alloc] init];
-                model.hashStr = resultModel.txhash;
-                model.timeStamp = @"待上链";
-                model.value = resultModel.value;
-                [_datasArray insertObject:model atIndex:0];
-            }
-        }
         if (_datasArray.count > 0) {
             _noMoreLabel.hidden = NO;
         }
@@ -235,51 +171,11 @@
             model.value = itemModel.value;
             [_datasArray  addObject:model];
         }
-        
-        WeXWalletTransferResultManager *manager = [WeXWalletTransferResultManager manager];
-        NSMutableArray *dataArray = [manager.dataDict objectForKey:self.tokenModel.symbol];
-        if (dataArray.count) {
-            for (int i= 0 ;i < dataArray.count; i++) {
-                WeXWalletTransferResultModel *resultModel = dataArray[i];
-                WeXWalletEtherscanGetRecordResponseModal_item *model = [[WeXWalletEtherscanGetRecordResponseModal_item alloc] init];
-                model.hashStr = resultModel.txhash;
-                model.timeStamp = @"待上链";
-                model.value = resultModel.value;
-                [_datasArray insertObject:model atIndex:0];
-            }
-        }
+    
         if (_datasArray.count > 0) {
             _noMoreLabel.hidden = NO;
         }
         [_tableView reloadData];
-        
-    }
-    else if([adapter isKindOfClass:[WeXWalletEtherscanGetPendingAdapter class]]){
-        WeXWalletEtherscanGetPendingAdapter *responseAdapter = (WeXWalletEtherscanGetPendingAdapter *)adapter;
-        WeXWalletEtherscanGetPendingResponseModal *responseModel = (WeXWalletEtherscanGetPendingResponseModal *)response;
-        if (responseModel.result == nil) {
-            //删除不为pinding的key
-            WeXWalletTransferResultManager *manager = [WeXWalletTransferResultManager manager];
-            NSMutableArray *hashAarry = [manager.dataDict objectForKey:self.tokenModel.symbol];
-            if (hashAarry.count) {
-                for (int i = 0; i < hashAarry.count; i++) {
-                    WeXWalletTransferResultModel *resultModel = hashAarry[i];
-                    if ([resultModel.txhash isEqualToString:responseAdapter.txhash]) {
-                        [hashAarry removeObject:resultModel];
-                        
-                        if ([self.tokenModel.symbol isEqualToString:@"ETH"]) {
-                            [self createGetRecordRequest];
-                        }
-                        else
-                        {
-                            [self createGetEthplorerQuoteRequest];
-                        }
-                        break;
-                    }
-                }
-            }
-            
-        }
         
     }
     else if([adapter isKindOfClass:[WeXWalletAllGetRecordAdapter class]]){
@@ -295,20 +191,6 @@
             model.blockNumber = itemModel.blockNumber;
             [_datasArray  addObject:model];
         }
-        
-        WeXWalletTransferResultManager *manager = [WeXWalletTransferResultManager manager];
-        NSMutableArray *dataArray = [manager.dataDict objectForKey:self.tokenModel.symbol];
-        if (dataArray.count) {
-            for (int i= 0 ;i < dataArray.count; i++) {
-                WeXWalletTransferResultModel *resultModel = dataArray[i];
-                WeXWalletEtherscanGetRecordResponseModal_item *model = [[WeXWalletEtherscanGetRecordResponseModal_item alloc] init];
-                model.hashStr = resultModel.txhash;
-                model.timeStamp = @"待上链";
-                model.value = resultModel.value;
-                [_datasArray insertObject:model atIndex:0];
-            }
-        }
-        
         if (_datasArray.count > 0) {
             _noMoreLabel.hidden = NO;
         }
@@ -317,15 +199,13 @@
     }
 }
 
-
-
 //初始化滚动视图
 -(void)setupSubViews{
     
     UILabel *recordlabel = [[UILabel alloc] init];
-    recordlabel.text = @"交易记录";
+    recordlabel.text = WeXLocalizedString(@"交易记录");
     recordlabel.font = [UIFont systemFontOfSize:20];
-    recordlabel.textColor = ColorWithLabelDescritionBlack;
+    recordlabel.textColor = COLOR_LABEL_DESCRIPTION;
     recordlabel.textAlignment = NSTextAlignmentLeft;
     [self.view addSubview:recordlabel];
     [recordlabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -338,10 +218,10 @@
     UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 20)];
     UILabel *noMoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, footView.frame.size.width, 20)];
     noMoreLabel.hidden = YES;
-    noMoreLabel.text = @"没有更多了";
+    noMoreLabel.text = WeXLocalizedString(@"没有更多了");
     noMoreLabel.textAlignment = NSTextAlignmentCenter;
     noMoreLabel.font = [UIFont systemFontOfSize:10];
-    noMoreLabel.textColor = ColorWithLabelWeakBlack;
+    noMoreLabel.textColor = COLOR_LABEL_WEAK;
     [footView addSubview:noMoreLabel];
     _noMoreLabel = noMoreLabel;
     
@@ -381,12 +261,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     WeXWalletEtherscanGetRecordResponseModal_item *recordModel  = self.datasArray[indexPath.row];
-    if ([recordModel.timeStamp isEqualToString:@"待上链"]) {
-        return;
-    }
+   
     WeXWalletDigitalRecordDetailController *ctrl = [[WeXWalletDigitalRecordDetailController alloc] init];
     ctrl.recordModel = recordModel;
     ctrl.tokenModel = self.tokenModel;
+    ctrl.isPrivateChain = self.isPrivateChain;
     [self.navigationController pushViewController:ctrl animated:YES];
     
 }

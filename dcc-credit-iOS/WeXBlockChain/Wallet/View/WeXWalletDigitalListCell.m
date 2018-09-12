@@ -33,7 +33,7 @@
 //    }
     
     
-    self.balanceLabel.textColor = ColorWithButtonRed;
+    self.balanceLabel.textColor = COLOR_THEME_ALL;
     if (model.balance) {
         self.balanceLabel.text = model.balance;
     }
@@ -49,8 +49,11 @@
     self.assetLabel.textColor = [UIColor lightGrayColor];
     NSString *asset = @"--";
     if (model.balance &&model.price) {
+//        NSLog(@"model.balance) = %@",model.balance);
+//        NSLog(@"model.price = %@",model.price);
         asset = [NSString stringWithFormat:@"≈¥%.4f",[model.balance floatValue]*[model.price floatValue]];
     }
+    
     self.assetLabel.text = asset;
    
 }

@@ -1,0 +1,12 @@
+
+/* Class = "UILabel"; text = "Gwei"; ObjectID = "8j4-oU-38w"; */
+"8j4-oU-38w.text" = "Gwei";
+
+/* Class = "UITextField"; placeholder = "转账金额"; ObjectID = "DLo-Qr-K0F"; */
+"DLo-Qr-K0F.placeholder" = "Amount to be transferred";
+
+/* Class = "UILabel"; text = "收款地址"; ObjectID = "Yym-it-Cwg"; */
+"Yym-it-Cwg.text" = "Payment collection address";
+
+/* Class = "UILabel"; text = "最高矿工费用"; ObjectID = "nQ4-dg-rtm"; */
+"nQ4-dg-rtm.text" = "Max miner fee";
