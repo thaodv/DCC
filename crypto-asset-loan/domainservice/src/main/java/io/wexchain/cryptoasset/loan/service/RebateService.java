@@ -14,9 +14,9 @@ import java.util.Optional;
  */
 public interface RebateService {
 
-    void rejectOrDeliverFail(Long orderId);
+    RebateOrder rejectOrDeliverFail(Long orderId);
 
-    void deliverSuccess(Long orderId);
+    RebateOrder deliverSuccess(Long orderId);
 
     Optional<RebateOrder> getRebateOrderByIdNullable(Long orderId);
 

@@ -1,28 +1,25 @@
 package io.wexchain.cryptoasset.loan.service.function.command;
 
-import io.wexchain.cryptoasset.loan.common.constant.GeneralCommandStatus;
-import io.wexchain.cryptoasset.loan.domain.UnretryableCommand;
-import io.wexchain.cryptoasset.loan.repository.UnretryableCommandRepository;
-import jodd.bean.BeanCopy;
+import java.util.Map;
+import java.util.function.Supplier;
+
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.support.TransactionTemplate;
 
-import java.util.Map;
-import java.util.function.Supplier;
+import io.wexchain.cryptoasset.loan.common.constant.GeneralCommandStatus;
+import io.wexchain.cryptoasset.loan.domain.UnretryableCommand;
+import io.wexchain.cryptoasset.loan.repository.UnretryableCommandRepository;
+import jodd.bean.BeanCopy;
 
 @Service
 public class UnretryableCommandFunction implements ContentEnabled<UnretryableCommand> {
 
 	@Autowired
 	private UnretryableCommandRepository unretryableCommandRepository;
-
-	@Autowired
-	private TransactionTemplate transactionTemplate;
 
 	public Long prepareCommandId(CommandIndex index, Map<String, String> params) {
 		UnretryableCommand orderCommand = prepareCommand(index, params);
@@ -117,9 +114,9 @@ public class UnretryableCommandFunction implements ContentEnabled<UnretryableCom
 		}
 	}
 
-	public void updateMemo(UnretryableCommand command, String memo) {
+	public UnretryableCommand updateMemo(UnretryableCommand command, String memo) {
 		command.setMemo(memo);
-		unretryableCommandRepository.save(command);
+		return unretryableCommandRepository.save(command);
 	}
 
 	public void updateMemo(String commandId, String memo) {
@@ -129,7 +126,6 @@ public class UnretryableCommandFunction implements ContentEnabled<UnretryableCom
 		unretryableCommandRepository.save(orderCommand);
 	}
 
-
 	public UnretryableCommand updateStatusAndMemo(UnretryableCommand command, String status, String memo) {
 		command.setStatus(status);
 		command.setMemo(memo);
@@ -137,7 +133,8 @@ public class UnretryableCommandFunction implements ContentEnabled<UnretryableCom
 	}
 
 	@Override
-	public <CNT> CommandAndContent<UnretryableCommand, CNT> fillContent(UnretryableCommand command, Supplier<CNT> consumer) {
+	public <CNT> CommandAndContent<UnretryableCommand, CNT> fillContent(UnretryableCommand command,
+			Supplier<CNT> consumer) {
 		return null;
 	}
 }

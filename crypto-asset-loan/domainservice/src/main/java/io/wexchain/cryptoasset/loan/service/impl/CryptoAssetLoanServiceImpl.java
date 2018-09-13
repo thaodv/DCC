@@ -1,22 +1,22 @@
 package io.wexchain.cryptoasset.loan.service.impl;
 
 import com.godmonth.status.executor.intf.OrderExecutor;
+import com.google.common.base.Function;
 import com.weihui.basic.util.marshaller.json.JsonUtil;
-import com.wexmarket.topia.commons.basic.exception.ErrorCodeException;
 import com.wexmarket.topia.commons.basic.exception.ErrorCodeValidate;
 import com.wexmarket.topia.commons.data.page.PageUtils;
+import com.wexmarket.topia.commons.data.rpc.PageTransformer;
 import com.wexmarket.topia.commons.pagination.Direction;
 import com.wexmarket.topia.commons.pagination.PageParam;
 import com.wexmarket.topia.commons.pagination.Pagination;
 import com.wexmarket.topia.commons.pagination.SortParam;
+import com.wexyun.open.api.domain.member.Member;
 import com.wexyun.open.api.domain.regular.loan.RegularPrepaymentBill;
 import com.wexyun.open.api.domain.regular.loan.RepaymentPlan;
 import com.wexyun.open.api.enums.BillStatus;
-import com.wexyun.open.api.util.ByteUtil;
-import com.wexyun.open.api.util.SHA256Util;
-import io.wexchain.cryptoasset.loan.api.ApplyRequest;
-import io.wexchain.cryptoasset.loan.api.QueryLoanOrderPageRequest;
-import io.wexchain.cryptoasset.loan.api.QueryLoanReportRequest;
+import com.wexyun.open.api.request.member.inner.InnerPersonalMemberInfoAddRequest;
+import io.wexchain.cryptoasset.hosting.frontier.model.TransferOrder;
+import io.wexchain.cryptoasset.loan.api.*;
 import io.wexchain.cryptoasset.loan.api.constant.CalErrorCode;
 import io.wexchain.cryptoasset.loan.api.constant.LoanOrderStatus;
 import io.wexchain.cryptoasset.loan.api.constant.LoanType;
@@ -25,26 +25,33 @@ import io.wexchain.cryptoasset.loan.api.model.Bill;
 import io.wexchain.cryptoasset.loan.api.model.LoanReport;
 import io.wexchain.cryptoasset.loan.api.model.OrderIndex;
 import io.wexchain.cryptoasset.loan.api.model.RepaymentBill;
+import io.wexchain.cryptoasset.loan.api.product.LoanProduct;
+import io.wexchain.cryptoasset.loan.domain.AuditingOrder;
 import io.wexchain.cryptoasset.loan.domain.LoanOrder;
+import io.wexchain.cryptoasset.loan.domain.RetryableCommand;
 import io.wexchain.cryptoasset.loan.ext.integration.configuration.LoanSdkConfiguration;
+import io.wexchain.cryptoasset.loan.repository.AuditingOrderRepository;
 import io.wexchain.cryptoasset.loan.repository.LoanOrderRepository;
+import io.wexchain.cryptoasset.loan.repository.RetryableCommandRepository;
 import io.wexchain.cryptoasset.loan.repository.query.LoanOrderQueryBuilder;
 import io.wexchain.cryptoasset.loan.service.CollectOrderService;
 import io.wexchain.cryptoasset.loan.service.CryptoAssetLoanService;
+import io.wexchain.cryptoasset.loan.service.LoanProductService;
 import io.wexchain.cryptoasset.loan.service.constant.LoanOrderExtParamKey;
 import io.wexchain.cryptoasset.loan.service.function.cah.CahFunction;
 import io.wexchain.cryptoasset.loan.service.function.chain.ChainOrderService;
 import io.wexchain.cryptoasset.loan.service.function.wexyun.WexyunLoanClient;
 import io.wexchain.cryptoasset.loan.service.model.MortgageOrder;
 import io.wexchain.cryptoasset.loan.service.processor.order.loan.LoanOrderInstruction;
+import io.wexchain.cryptoasset.loan.service.util.AddressUtil;
 import io.wexchain.cryptoasset.loan.service.util.AmountScaleUtil;
 import io.wexchain.dcc.cert.sdk.contract.CertData;
 import io.wexchain.dcc.loan.sdk.contract.Agreement;
 import io.wexchain.dcc.loan.sdk.contract.MortgageLoanOrder;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ContextedRuntimeException;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.slf4j.Logger;
@@ -52,30 +59,27 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.redis.util.ByteUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.net.URLDecoder;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 @Service
 public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
 
+	private static final String NOT_EXIST_MEMBER_ID = "-1";
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private LoanOrderRepository loanOrderRepository;
+
+	@Autowired
+	private AuditingOrderRepository auditingOrderRepository;
 
 	@Resource(name = "loanOrderExecutor")
 	private OrderExecutor<LoanOrder, LoanOrderInstruction> loanOrderExecutor;
@@ -95,8 +99,11 @@ public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
 	@Autowired
 	private LoanSdkConfiguration loanSdkConfiguration;
 
-	private static final char[] HEX_CHAR =
-			{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+	@Autowired
+	private LoanProductService loanProductService;
+
+	@Autowired
+	private RetryableCommandRepository retryableCommandRepository;
 
 	@Override
 	public LoanOrder advanceByChainOrderId(Long chainOrderId) {
@@ -105,7 +112,9 @@ public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
 
 	@Override
 	public LoanOrder advance(Long orderId) {
-		return loanOrderExecutor.execute(getLoanOrder(orderId), null, null).getModel();
+		LoanOrder loanOrder = getLoanOrder(orderId);
+		loanOrderExecutor.executeAsync(loanOrder, null, null);
+		return loanOrder;
 	}
 
 	@Override
@@ -127,8 +136,8 @@ public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
 
 	@Override
 	public Optional<LoanOrder> getLoanOrderByOrderIndexNullable(OrderIndex index) {
-		LoanOrder loanOrder = loanOrderRepository.findByChainOrderIdAndMemberId(
-				index.getChainOrderId(), index.getMemberId());
+		LoanOrder loanOrder = loanOrderRepository.findByChainOrderIdAndMemberId(index.getChainOrderId(),
+				index.getMemberId());
 		return Optional.ofNullable(loanOrder);
 	}
 
@@ -140,8 +149,8 @@ public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
 
 	@Override
 	public LoanOrder getLoanOrderByOrderIndex(OrderIndex index) {
-		return ErrorCodeValidate.notNull(loanOrderRepository.findByChainOrderIdAndMemberId(
-				index.getChainOrderId(), index.getMemberId()),
+		return ErrorCodeValidate.notNull(
+				loanOrderRepository.findByChainOrderIdAndMemberId(index.getChainOrderId(), index.getMemberId()),
 				CalErrorCode.ORDER_NOT_FOUND);
 	}
 
@@ -167,168 +176,87 @@ public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
 		OrderIndex orderIndex = applyRequest.getIndex();
 
 		// 查询链上订单
-		io.wexchain.dcc.loan.sdk.contract.LoanOrder chainLoanOrder =
-			chainOrderService.getLoanOrder(orderIndex.getChainOrderId());
+		io.wexchain.dcc.loan.sdk.contract.LoanOrder chainLoanOrder = chainOrderService
+				.getLoanOrder(orderIndex.getChainOrderId());
 
-		// 验证摘要
-		checkIdDigest(applyRequest, chainLoanOrder);
-		//checkApplicationDigest(applyRequest, chainLoanOrder);
+		//根据会员id获取借款人地址 TODO 索引删除memberId后该逻辑删除
+		if (orderIndex.getBorrowerAddress() == null){
+			String borrowerAddress = wexyunLoanClient.getAddressById(orderIndex.getMemberId());
+			orderIndex.setBorrowerAddress(borrowerAddress);
+		}
 
-		Map<String, String> imageExtParam = uploadImageFile(applyRequest);
+		//判断借款人是否与链上匹配
+		ErrorCodeValidate.isTrue(chainLoanOrder.getBorrower().equals(AddressUtil.getAddress(orderIndex.getBorrowerAddress())),CalErrorCode.BORROWER_ADDRESS_NOT_MATCH);
 
+		// 创建借款订单
 		LoanOrder loanOrder = getLoanOrderByOrderIndexNullable(orderIndex).orElseGet(() -> {
-			// 创建新订单
+
+			//判断云金融会员是否存在，不存在则创建
+			Member member = wexyunLoanClient.getMemberByIdentity(orderIndex.getBorrowerAddress());
+			if(member == null){
+				member = ErrorCodeValidate.notNull(wexyunLoanClient.register(orderIndex.getBorrowerAddress()),CalErrorCode.CREATE_MEMBER_FAIL);
+			}
+
 			LoanOrder order = new LoanOrder();
 			order.setChainOrderId(orderIndex.getChainOrderId());
 			order.setAssetCode(applyRequest.getAssetCode());
 			order.setAmount(applyRequest.getAmount());
-			order.setMemberId(orderIndex.getMemberId());
+			order.setMemberId(member.getMemberId());
+			order.setBorrowerAddress(orderIndex.getBorrowerAddress());
 			order.setStatus(LoanOrderStatus.CREATED);
 			order.setReceiverAddress(chainLoanOrder.getReceiveAddress());
 			order.setChainSync(false);
 
+			// 设置进件参数
 			Map<String, String> extParam = order.getExtParam();
+			// 身份信息
+			extParam.put(LoanOrderExtParamKey.BORROWER_NAME, applyRequest.getBorrowerName());
+			extParam.put(LoanOrderExtParamKey.ID_CARD_NO, applyRequest.getIdCardNo());
+			extParam.put(LoanOrderExtParamKey.ID_CARD_FRONT_PIC_UFS_PATH, applyRequest.getIdCardFrontPicUfsPath());
+			extParam.put(LoanOrderExtParamKey.ID_CARD_BACK_PIC_UFS_PATH, applyRequest.getIdCardBackPicUfsPath());
+			extParam.put(LoanOrderExtParamKey.FACE_PIC_UFS_PATH, applyRequest.getFacePicUfsPath());
+
+			// 银行卡信息
+			extParam.put(LoanOrderExtParamKey.BANK_CARD_NO, applyRequest.getBankCardNo());
+			extParam.put(LoanOrderExtParamKey.BANK_CARD_MOBILE, applyRequest.getBankCardMobile());
+
+			// 通话记录
+			extParam.put(LoanOrderExtParamKey.MOBILE, applyRequest.getMobile());
+			extParam.put(LoanOrderExtParamKey.COMMUNICATION_LOG, applyRequest.getCommunicationLog());
+
+			// 申请数据
 			extParam.put(LoanOrderExtParamKey.BORROW_DURATION, applyRequest.getBorrowDuration().toString());
-			extParam.put(LoanOrderExtParamKey.BORROW_DURATION_UNIT, applyRequest.getDurationUnit().name());
-			extParam.put(LoanOrderExtParamKey.APPLY_DATE, applyRequest.getApplyDate().toString());
-			extParam.put(LoanOrderExtParamKey.LOAN_TYPE, applyRequest.getLoanType());
-			extParam.put(LoanOrderExtParamKey.LOAN_PRODUCT_ID, applyRequest.getLoanProductId());
-			extParam.put(LoanOrderExtParamKey.APP_IDENTITY, applyRequest.getAppIdentity());
-			extParam.put(LoanOrderExtParamKey.EXPECT_ANNUAL_RATE, applyRequest.getExpectAnnualRate());
-			extParam.put(LoanOrderExtParamKey.REPAY_MODE, applyRequest.getRepayMode());
+			extParam.put(LoanOrderExtParamKey.BORROW_DURATION_UNIT, "DAY");
+			extParam.put(LoanOrderExtParamKey.APPLY_DATE, String.valueOf(applyRequest.getApplyDate().getTime()));
+
+			LoanProduct product = loanProductService.getLoanProductByCurrencySymbol(applyRequest.getAssetCode());
+			extParam.put(LoanOrderExtParamKey.LOAN_TYPE, product.getLoanType());
+
 			extParam.put(LoanOrderExtParamKey.LOAN_FEE,
 					String.valueOf(AmountScaleUtil.cah2Cal(chainLoanOrder.getFee())));
-
-			extParam.put(LoanOrderExtParamKey.BORROW_DURATION, applyRequest.getBorrowDuration().toString());
-
-			extParam.put(LoanOrderExtParamKey.BORROW_NAME, applyRequest.getBorrowName());
-			extParam.put(LoanOrderExtParamKey.BANK_CARD_NO, applyRequest.getBankCardNo());
-			extParam.put(LoanOrderExtParamKey.ID_NO, applyRequest.getCertNo());
-			extParam.put(LoanOrderExtParamKey.MOBILE, applyRequest.getMobile());
-			extParam.put(LoanOrderExtParamKey.BANK_MOBILE, applyRequest.getBankMobile());
-
-			extParam.putAll(imageExtParam);
 
 			return loanOrderRepository.save(order);
 		});
 
-		return loanOrderExecutor.execute(loanOrder, null, null).getModel();
-	}
+		loanOrderExecutor.executeAsync(loanOrder, null, null);
 
-	private Map<String, String> uploadImageFile(ApplyRequest applyRequest) {
-		if (StringUtils.isNotEmpty(applyRequest.getIdCardFrontPic())) {
-
-			logger.info("Id front image base64:{}",
-					StringUtils.abbreviate(applyRequest.getIdCardFrontPic(), 80));
-			logger.info("Id back image base64:{}",
-					StringUtils.abbreviate(applyRequest.getIdCardBackPic(), 80));
-			logger.info("Face front image base64:{}",
-					StringUtils.abbreviate(applyRequest.getFacePic(), 80));
-
-			File front = decryptByBase64(applyRequest.getIdCardFrontPic());
-			File back = decryptByBase64(applyRequest.getIdCardBackPic());
-			File face = decryptByBase64(applyRequest.getFacePic());
-
-			String frontPath = wexyunLoanClient.uploadImageFile(front);
-			logger.info("name:{}, front path:{}", applyRequest.getBorrowName(), frontPath);
-			String backPath = wexyunLoanClient.uploadImageFile(back);
-			logger.info("name:{}, back path:{}", applyRequest.getBorrowName(), backPath);
-			String facePath = wexyunLoanClient.uploadImageFile(face);
-			logger.info("name:{}, face path:{}", applyRequest.getBorrowName(), facePath);
-
-			deleteTempImg(front);
-			deleteTempImg(back);
-			deleteTempImg(face);
-
-			Map<String, String> map = new HashMap<>(3);
-			map.put(LoanOrderExtParamKey.CERT_FRONT, frontPath);
-			map.put(LoanOrderExtParamKey.CERT_BACK, backPath);
-			map.put(LoanOrderExtParamKey.FACE_FRONT, facePath);
-			return map;
-		}
-		return Collections.emptyMap();
-	}
-
-	private void deleteTempImg(File file) {
-		if (!file.delete()) {
-			logger.warn("Delete tmp file fail, file path:{}", file.getName());
-		}
-	}
-
-	private File decryptByBase64(String base64) {
-		try {
-			String tmp = System.getProperty("java.io.tmpdir");
-			String fileName = UUID.randomUUID().toString() + "-" + System.currentTimeMillis();
-			String filePath = tmp + "/" + fileName + ".jpeg";
-			Path path = Files.write(Paths.get(filePath), Base64.getDecoder().decode(base64),
-					StandardOpenOption.CREATE);
-			return path.toFile();
-		} catch (IOException e) {
-			throw new ContextedRuntimeException(e);
-		}
-	}
-
-
-	private void checkIdDigest(ApplyRequest applyRequest,
-							   io.wexchain.dcc.loan.sdk.contract.LoanOrder chainLoanOrder) {
-		byte[] idBytes = (applyRequest.getBorrowName() + applyRequest.getCertNo()).getBytes(StandardCharsets.UTF_8);
-		byte[] idHash = DigestUtils.sha256(idBytes);
-		if (!Arrays.equals(idHash, chainLoanOrder.getIdHash())) {
-            throw new ErrorCodeException(CalErrorCode.DIGEST_NOT_MATCH.name(), "身份摘要不匹配");
-        }
-	}
-
-	private void checkApplicationDigest(ApplyRequest applyRequest,
-										io.wexchain.dcc.loan.sdk.contract.LoanOrder chainLoanOrder) {
-		String applicationStr = "BitExpress"
-				+ applyRequest.getAssetCode()
-				+ applyRequest.getAmount().setScale(4, BigDecimal.ROUND_DOWN).toString()
-				+ applyRequest.getBorrowDuration() + "D"
-				+ 1 // 借款期数
-				+ applyRequest.getLoanType()
-				+ applyRequest.getApplyDate()
-				+ applyRequest.getIdCardFrontPic()
-				+ applyRequest.getIdCardBackPic()
-				+ applyRequest.getFacePic();
-
-		byte[] applicationHash = DigestUtils.sha256(applicationStr.getBytes(StandardCharsets.UTF_8));
-
-		logger.info("进件申请摘要字符串: {}", StringUtils.abbreviate(applicationStr, 100));
-		logger.info("链上申请hash: {}", bytesToHex(chainLoanOrder.getApplicationDigest()));
-		logger.info("计算申请hash: {}", bytesToHex(applicationHash));
-
-		if (!Arrays.equals(applicationHash, chainLoanOrder.getApplicationDigest())) {
-			throw new ErrorCodeException(CalErrorCode.AUDIT_NOTHING.name(), "进件失败。");
-		}
-	}
-
-
-	public static String bytesToHex(byte[] bytes) {
-		// 一个byte为8位，可用两个十六进制位标识
-		char[] buf = new char[bytes.length * 2];
-		int a = 0;
-		int index = 0;
-		for(byte b : bytes) { // 使用除与取余进行转换
-			if(b < 0) {
-				a = 256 + b;
-			} else {
-				a = b;
-			}
-
-			buf[index++] = HEX_CHAR[a / 16];
-			buf[index++] = HEX_CHAR[a % 16];
-		}
-
-		return new String(buf);
+		return loanOrder;
 	}
 
 	@Override
 	public Page<LoanOrder> queryLoanOrderPage(QueryLoanOrderPageRequest request) {
 		request.getSortPageParam()
 				.setSortParamList(Collections.singletonList(new SortParam(Direction.DESC, "createdTime")));
+
+		handleRequestBorrowerAddress(request);
+
+
+
 		PageRequest pageRequest = PageUtils.convert(request.getSortPageParam());
 		return loanOrderRepository.findAll(LoanOrderQueryBuilder.query(request), pageRequest);
 	}
+
+
 
 	@Override
 	public LoanOrder confirmRepayment(OrderIndex index) {
@@ -382,10 +310,19 @@ public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
 			repaymentBill.setOverdueFine(AmountScaleUtil.wexyun2Cal(repaymentPlan.getOverdueFine()));
 			repaymentBill.setAmount(AmountScaleUtil.wexyun2Cal(repaymentPlan.getAmount()));
 		}
-		BigDecimal repayAddressBalance = AmountScaleUtil
-				.cah2Cal(cahFunction.getBalance(loanOrder.getRepayAddress(), loanOrder.getAssetCode()));
-		if (repaymentBill.getAmount().compareTo(repayAddressBalance) > 0) {
-			repaymentBill.setNoPayAmount(repaymentBill.getAmount().subtract(repayAddressBalance));
+
+
+		BigInteger balance = cahFunction.getBalance(loanOrder.getRepayAddress(), loanOrder.getAssetCode());
+		BigInteger billAmount = AmountScaleUtil.cal2Cah(repaymentBill.getAmount());
+
+		if (billAmount.compareTo(balance) > 0) {
+			BigInteger subtract = billAmount.subtract(balance);
+			BigDecimal divide = new BigDecimal(subtract).divide(BigDecimal.ONE.scaleByPowerOfTen(18), 18, RoundingMode.DOWN);
+			if (divide.compareTo(new BigDecimal("0.0001")) < 0) {
+				repaymentBill.setNoPayAmount(new BigDecimal("0.0001"));
+			} else {
+				repaymentBill.setNoPayAmount(divide.setScale(4, RoundingMode.UP));
+			}
 		} else {
 			repaymentBill.setNoPayAmount(BigDecimal.ZERO);
 		}
@@ -399,25 +336,25 @@ public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
 		CertData data = chainOrderService.getCertData(queryLoanReportRequest.getAddress());
 		byte[] idHash = data.getContent().getDigest1();
 
-		Pagination<Agreement> agreementPagination = chainOrderService.queryAgreementPageByIdHashIndex(
-				idHash, new PageParam(0, Integer.MAX_VALUE));
+		Pagination<Agreement> agreementPagination = chainOrderService.queryAgreementPageByIdHashIndex(idHash,
+				new PageParam(0, Integer.MAX_VALUE));
 		List<LoanReport> loanReports = new ArrayList<>();
-		if(agreementPagination.getItems() != null){
+		if (CollectionUtils.isNotEmpty(agreementPagination.getItems())) {
 			for (int i = agreementPagination.getItems().size() - 1; i >= 0; i--) {
 				LoanReport loanReport = new LoanReport();
 				Agreement agreement = agreementPagination.getItems().get(i);
 				Boolean isMatching = false;
-				if(agreement.getBorrower().equalsIgnoreCase(queryLoanReportRequest.getAddress())){
+				if (agreement.getBorrower().equalsIgnoreCase(queryLoanReportRequest.getAddress())) {
 					isMatching = true;
 				}
-				//普通借贷
-				if(agreement.getCaller().equals(loanSdkConfiguration.getLoanAddress())){
-					setLoanReportOrderInfo(loanReport, new OrderIndex(agreement.getOrderId(),queryLoanReportRequest.getMemberId()),isMatching);
+				// 普通借贷
+				if (agreement.getCaller().equals(loanSdkConfiguration.getLoanAddress())) {
+					setLoanReportOrderInfo(loanReport, agreement.getOrderId(), isMatching);
 					loanReport.setLoanType(LoanType.LOAN);
 				}
-				//抵押借贷
-				if(agreement.getCaller().equals(loanSdkConfiguration.getMortgageLoanAddress())){
-					setMortgageLoanReportOrderInfo(loanReport,agreement.getOrderId(),isMatching);
+				// 抵押借贷
+				if (agreement.getCaller().equals(loanSdkConfiguration.getMortgageLoanAddress())) {
+					setMortgageLoanReportOrderInfo(loanReport, agreement.getOrderId(), isMatching);
 					loanReport.setLoanType(LoanType.MORTGAGE);
 				}
 				loanReport.setBorrowerAddress(agreement.getBorrower());
@@ -431,16 +368,110 @@ public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
 	public Integer queryYesterdayDeliverCount() {
 		Date from = DateTime.now().minusDays(1).withTimeAtStartOfDay().toDate();
 		Date to = DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate();
-		return loanOrderRepository.countYesterdayDeliver(from.getTime(),to.getTime());
+		return loanOrderRepository.countYesterdayDeliver(from.getTime(), to.getTime());
 
 	}
 
-	private void setMortgageLoanReportOrderInfo(LoanReport loanReport, long orderId, Boolean isMatching) {
+    @Override
+    public BigDecimal getTotalDeliverAmount(DeliverAmountRequest request) {
+        BigDecimal totalDeliverAmount = loanOrderRepository.getTotalDeliverAmount(request.getStartTime().toDate(),
+                request.getEndTime().toDate(),
+                request.getAssetCode());
+        if(totalDeliverAmount == null){
+            return BigDecimal.ZERO;
+        }
+        return totalDeliverAmount;
+    }
+
+	@Override
+	public List<Long> addBorrowerAddress() {
+		List<LoanOrder> loanOrders = loanOrderRepository.findByBorrowerAddressIsNull();
+		if(loanOrders != null){
+			List<Long> failLoanOrder = new ArrayList<>();
+			//补充数据
+			loanOrders.forEach(loanOrder -> {
+				try {
+					String memberId = loanOrder.getMemberId();
+					//查询地址
+					String borrowerAddress = wexyunLoanClient.getAddressById(memberId);
+					loanOrder.setBorrowerAddress(borrowerAddress);
+					loanOrderRepository.save(loanOrder);
+				}catch (Exception e){
+					failLoanOrder.add(loanOrder.getId());
+				}
+			});
+			return failLoanOrder;
+		}
+		return Collections.EMPTY_LIST;
+	}
+
+	@Override
+	public Pagination<LoanReport> queryLoanReportByIdentity(IdentityRequest identityRequest) {
+		byte[] idHash = getIdHash(identityRequest);
+
+		Pagination<Agreement> agreementPagination = chainOrderService.queryAgreementPageByIdHashIndex(idHash,
+				identityRequest.getPageParam());
+		if (logger.isDebugEnabled()) {
+			logger.debug("idHash:{},agreement.page:{},{}", "0x" + Hex.encodeHexString(idHash),
+					agreementPagination.getSortPageParam().getNumber(),
+					agreementPagination.getSortPageParam().getSize());
+		}
+		return PageTransformer.transform(agreementPagination, new Function<Agreement, LoanReport>() {
+
+			@Override
+			public LoanReport apply(Agreement agreement) {
+				LoanReport loanReport = new LoanReport();
+				// 普通借贷
+				if (agreement.getCaller().equals(loanSdkConfiguration.getLoanAddress())) {
+					setLoanReportOrderInfo(loanReport, agreement.getOrderId(), true);
+					loanReport.setLoanType(LoanType.LOAN);
+				}
+				// 抵押借贷
+				if (agreement.getCaller().equals(loanSdkConfiguration.getMortgageLoanAddress())) {
+					setMortgageLoanReportOrderInfo(loanReport, agreement.getOrderId(), true);
+					loanReport.setLoanType(LoanType.MORTGAGE);
+				}
+				loanReport.setBorrowerAddress(agreement.getBorrower());
+				return loanReport;
+			}
+		});
+
+	}
+
+    @Override
+    public AuditingOrder getAuditingOrder(Long orderId) {
+        return auditingOrderRepository.findById(orderId).get();
+    }
+
+	@Override
+	public AuditingOrder getAuditingOrderNullable(Long orderId) {
+		return auditingOrderRepository.findById(orderId).orElse(null);
+	}
+
+    @Override
+    public void handleTransferOrder(TransferOrder transferOrder) {
+		Optional<RetryableCommand> commandOpt =
+				retryableCommandRepository.findById(Long.valueOf(transferOrder.getRequestIdentity().getRequestNo()));
+		if (!commandOpt.isPresent()) {
+			logger.info("Not found command of transfer order message, id:{}, request no:{}",
+					transferOrder.getId(), transferOrder.getRequestIdentity().getRequestNo());
+		} else {
+			RetryableCommand command = commandOpt.get();
+			switch (command.getParentType()) {
+				case LoanOrder.TYPE_REF: {
+					logger.info("Advance loan order:{}", command.getParentId());
+					advance(command.getParentId());
+				}
+			}
+		}
+	}
+
+    private void setMortgageLoanReportOrderInfo(LoanReport loanReport, long orderId, Boolean isMatching) {
 		loanReport.setChainOrderId(orderId);
 
 		MortgageLoanOrder mortgageLoanOrder = chainOrderService.getMortgageLoanOrder(loanReport.getChainOrderId());
-		if(mortgageLoanOrder != null){
-			if(mortgageLoanOrder.getContent() != null){
+		if (mortgageLoanOrder != null) {
+			if (mortgageLoanOrder.getContent() != null) {
 				try {
 					MortgageOrder mortgageOrder = JsonUtil.parse(mortgageLoanOrder.getContent(), MortgageOrder.class);
 					loanReport.setDeliverDate(mortgageOrder.getDeliverTime());
@@ -451,10 +482,10 @@ public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
 					loanReport.setMortgageUnit(mortgageOrder.getMortgageUnit().toUpperCase());
 					Date startDate = mortgageOrder.getBillStartDate();
 					Date repaymentDate = mortgageOrder.getLastRepaymentTime();
-					loanReport.setBorrowDuration(new Interval(startDate.getTime(),repaymentDate.getTime()));
+					loanReport.setBorrowDuration(new Interval(startDate.getTime(), repaymentDate.getTime()));
 					loanReport.setDeliverDept(mortgageOrder.getDeliverDept());
 					List<Bill> bills = new ArrayList<>();
-					if(isMatching){
+					if (isMatching) {
 						Bill bill = new Bill();
 						bill.setAmount(mortgageOrder.getRepaymentInterest().add(mortgageOrder.getRepaymentPrincipal()));
 						bill.setExpectRepayDate(mortgageOrder.getLastRepaymentTime());
@@ -464,7 +495,8 @@ public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
 						bills = null;
 					}
 					loanReport.setBillList(bills);
-				}catch (Exception e){
+				} catch (Exception e) {
+					logger.error("构建抵押借贷报告错误：chainOrderId:[{}] , 错误信息[{}]",orderId,e);
 					return;
 				}
 			}
@@ -473,32 +505,39 @@ public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
 
 	}
 
-	private void setLoanReportOrderInfo(LoanReport loanReport, OrderIndex index, boolean isMatching){
-		getLoanOrderByChainOrderIdNullable(index.getChainOrderId()).ifPresent(loanOrder -> {
-			loanReport.setLoanProductId(loanOrder.getExtParam().get(LoanOrderExtParamKey.LOAN_PRODUCT_ID));
-			loanReport.setChainOrderId(index.getChainOrderId());
-			loanReport.setDeliverDate(new Date(Long.parseLong(loanOrder.getExtParam().get(LoanOrderExtParamKey.DELIVER_DATE))));
-			loanReport.setApplyDate(new Date(Long.parseLong(loanOrder.getExtParam().get(LoanOrderExtParamKey.APPLY_DATE))));
+	private void setLoanReportOrderInfo(LoanReport loanReport, Long chainOrderId, boolean isMatching) {
+		getLoanOrderByChainOrderIdNullable(chainOrderId).ifPresent(loanOrder -> {
+			//loanReport.setLoanProductId(loanOrder.getExtParam().get(LoanOrderExtParamKey.LOAN_PRODUCT_ID));
+			loanReport.setChainOrderId(chainOrderId);
+			if (loanOrder.getExtParam().get(LoanOrderExtParamKey.DELIVER_DATE) != null) {
+				loanReport.setDeliverDate(
+						new Date(Long.parseLong(loanOrder.getExtParam().get(LoanOrderExtParamKey.DELIVER_DATE))));
+			}
+			if (loanOrder.getExtParam().get(LoanOrderExtParamKey.APPLY_DATE) != null) {
+				loanReport.setApplyDate(
+						new Date(Long.parseLong(loanOrder.getExtParam().get(LoanOrderExtParamKey.APPLY_DATE))));
+			}
+
 			loanReport.setAmount(loanOrder.getAmount());
 			loanReport.setAssetCode(loanOrder.getAssetCode());
 			loanReport.setStatus(loanOrder.getStatus());
 
 			List<RepaymentPlan> repaymentPlans = wexyunLoanClient.queryRepaymentPlan(loanOrder.getApplyId());
-
 			Date startDate = repaymentPlans.get(0).getBillStartDate();
-			Date repaymentDate = repaymentPlans.get(repaymentPlans.size()-1).getLastRepaymentTime();
-			loanReport.setBorrowDuration(new Interval(startDate.getTime(),repaymentDate.getTime()));
+			Date repaymentDate = repaymentPlans.get(repaymentPlans.size() - 1).getLastRepaymentTime();
+			loanReport.setBorrowDuration(new Interval(startDate.getTime(), repaymentDate.getTime()));
 			List<Bill> bills = new ArrayList<>();
 			if (loanOrder.getStatus() != LoanOrderStatus.CREATED && loanOrder.getStatus() != LoanOrderStatus.REJECTED) {
-				if(isMatching){
+				if (isMatching) {
 					for (RepaymentPlan repaymentPlan : repaymentPlans) {
 						if (repaymentPlan.getStatus() != BillStatus.CANCELED) {
 							Bill bill = new Bill();
 							bill.setAmount(AmountScaleUtil.wexyun2Cal(repaymentPlan.getAmount()));
 							bill.setActualRepayDate(repaymentPlan.getRepaymentTime());
-							bill.setExpectRepayDate(repaymentPlan.getLastRepaymentTime());
+							bill.setExpectRepayDate(repaymentDate);
 							bill.setNumber("1");
-							bill.setStatus(io.wexchain.cryptoasset.loan.api.constant.BillStatus.valueOf(repaymentPlan.getStatus().name()));
+							bill.setStatus(io.wexchain.cryptoasset.loan.api.constant.BillStatus
+									.valueOf(repaymentPlan.getStatus().name()));
 							bills.add(bill);
 						}
 					}
@@ -508,6 +547,24 @@ public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
 			}
 			loanReport.setBillList(bills);
 		});
+	}
+
+	private byte[] getIdHash(IdentityRequest identityRequest) {
+
+		byte[] idBytes = (identityRequest.getRealName() + identityRequest.getCertNo()).getBytes(StandardCharsets.UTF_8);
+		byte[] idHash = DigestUtils.sha256(idBytes);
+		return idHash;
+	}
+
+	private void handleRequestBorrowerAddress(QueryLoanOrderPageRequest request) {
+		if (StringUtils.isNotEmpty(request.getBorrowerAddress()) && StringUtils.isEmpty(request.getMemberId())) {
+			Member member = wexyunLoanClient.getMemberByIdentity(request.getBorrowerAddress());
+			if (member != null) {
+				request.setMemberId(member.getMemberId());
+			} else {
+				request.setMemberId(NOT_EXIST_MEMBER_ID);
+			}
+		}
 	}
 
 }

@@ -166,10 +166,15 @@ public class CahFunctionImpl implements CahFunction {
 
 	private TransferOrder transfer(TransferRequest transferRequest) {
 		ResultResponse<TransferOrder> transferResult = transferFacade.transfer(transferRequest);
+		return Code2Exception.handleResultResponse(transferResult);
+	}
+
+	/*private TransferOrder transfer(TransferRequest transferRequest) {
+		ResultResponse<TransferOrder> transferResult = transferFacade.transfer(transferRequest);
 		TransferOrder transferOrder = Code2Exception.handleResultResponse(transferResult);
 		// 轮询
 		return loopQueryTransferResult(transferOrder.getRequestIdentity());
-	}
+	}*/
 
 	private BatchTransferOrder batchTransfer(BatchTransferRequest batchTransferRequest) {
 		ResultResponse<BatchTransferOrder> batchTransferResult = batchTransferFacade.submit(batchTransferRequest);

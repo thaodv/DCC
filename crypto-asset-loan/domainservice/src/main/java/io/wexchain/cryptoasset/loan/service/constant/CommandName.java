@@ -16,4 +16,8 @@ public class CommandName {
 
     public static final String CMD_FUEL = "FUEL";
     public static final String CMD_COLLECT = "COLLECT";
+
+    public static final String CMD_WEXYUN_APPLY = "WEXYUN_APPLY";
+
+
 }

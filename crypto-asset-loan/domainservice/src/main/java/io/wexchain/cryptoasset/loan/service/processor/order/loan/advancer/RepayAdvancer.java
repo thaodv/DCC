@@ -27,6 +27,7 @@ import io.wexchain.cryptoasset.loan.service.function.wexyun.model.Credit2Apply;
 import io.wexchain.cryptoasset.loan.service.processor.order.loan.LoanOrderInstruction;
 import io.wexchain.cryptoasset.loan.service.processor.order.loan.LoanOrderTrigger;
 import io.wexchain.cryptoasset.loan.service.util.AmountScaleUtil;
+import io.wexchain.dcc.loan.sdk.contract.OrderStatus;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.joda.time.DateTime;
@@ -64,9 +65,10 @@ public class RepayAdvancer extends AbstractAdvancer<LoanOrder, LoanOrderInstruct
     public AdvancedResult<LoanOrder, LoanOrderTrigger> advance(
             LoanOrder loanOrder, LoanOrderInstruction instruction, Object message) {
 
-        RepaymentPlan repaymentPlan = wexyunLoanClient.queryFirstRepaymentPlan(loanOrder.getApplyId());
+        logger.info("Loan order repay:{} --> start", loanOrder.getId());
 
-        logger.info("RepaymentPlan:{}", JSON.toJSONString(repaymentPlan));
+        RepaymentPlan repaymentPlan = wexyunLoanClient.queryFirstRepaymentPlan(loanOrder.getApplyId());
+        logger.info("Loan order repay:{} --> query repayment plan", loanOrder.getId(), JSON.toJSONString(repaymentPlan));
 
         if (repaymentPlan.getStatus() == BillStatus.WAITING_VERIFY) {
             // 还款试算
@@ -81,8 +83,9 @@ public class RepayAdvancer extends AbstractAdvancer<LoanOrder, LoanOrderInstruct
 
             // 还币地址余额
             BigInteger balance = cahFunction.getBalance(loanOrder.getRepayAddress(), loanOrder.getAssetCode());
+            logger.info("Loan order repay:{} --> check repay amount, repay address balance:{}, bill amount:{}",
+                    loanOrder.getId(), balance.toString(), repaymentAmount);
 
-            logger.info("Repayment wallet balance:{}, repayment amount:{}", balance.toString(), repaymentAmount);
             // 检查还款余额
             ErrorCodeValidate.isTrue(balance.compareTo(
                     AmountScaleUtil.cal2Cah(AmountScaleUtil.wexyun2Cal(repaymentAmount))) >= 0,
@@ -97,36 +100,36 @@ public class RepayAdvancer extends AbstractAdvancer<LoanOrder, LoanOrderInstruct
 
         if (repaymentPlan.getStatus() == BillStatus.VERIFIED || repaymentPlan.getStatus() == BillStatus.PAY_OFF) {
 
-           /* // 还款试算
-            RegularPrepaymentBill bill = wexyunLoanClient.queryRegularPrepaymentBill(loanOrder.getApplyId());
-            BigDecimal repaymentAmount = AmountScaleUtil.wexyun2Cal(bill.getAmount());
-            BigDecimal repaymentAmount = AmountScaleUtil.wexyun2Cal(bill.getAmount());*/
-
             BigDecimal repaymentAmount = AmountScaleUtil.wexyun2Cal(repaymentPlan.getAmount());
 
             // 链上确认还款
             chainOrderService.confirmRepayment(loanOrder.getChainOrderId());
+            logger.info("Loan order repay:{} --> chain order repaid:{}",
+                    loanOrder.getId(), loanOrder.getChainOrderId());
 
             // 更新还款摘要
             String repaymentDigest = calcRepaymentSha256(
                     loanOrder, Collections.singletonList(wexyunLoanClient.queryFirstRepaymentPlan(loanOrder.getApplyId())));
             chainOrderService.updateRepaymentDigest(loanOrder.getChainOrderId(), repaymentDigest);
+            logger.info("Loan order repay:{} --> update repayment digest:{}",
+                    loanOrder.getId(), repaymentDigest);
 
-            return new AdvancedResult<>(new TriggerBehavior<>(LoanOrderTrigger.REPAY, ol -> {
-                ol.setRepayAmount(repaymentAmount);
-                CollectOrder collectOrder = new CollectOrder();
-                collectOrder.setId(loanOrder.getId());
-                collectOrder.setRepayAmount(repaymentAmount);
-                collectOrder.setStatus(CollectOrderStatus.CREATED);
-                collectOrderRepository.save(collectOrder);
-            }));
+            if (chainOrderService.getLoanOrder(loanOrder.getChainOrderId()).getStatus() == OrderStatus.REPAID) {
+                return new AdvancedResult<>(new TriggerBehavior<>(LoanOrderTrigger.REPAY, ol -> {
+                    ol.setRepayAmount(repaymentAmount);
+                    CollectOrder collectOrder = new CollectOrder();
+                    collectOrder.setId(loanOrder.getId());
+                    collectOrder.setRepayAmount(repaymentAmount);
+                    collectOrder.setStatus(CollectOrderStatus.CREATED);
+                    collectOrderRepository.save(collectOrder);
+                }));
+            }
         }
         return null;
     }
 
     private String calcRepaymentSha256(LoanOrder loanOrder, List<RepaymentPlan> repaymentPlanList) {
         StringBuilder text = new StringBuilder();
-        text.append(loanOrder.getExtParam().get(LoanOrderExtParamKey.AGREEMENT_ID)); // 合同号
         text.append(loanOrder.getExtParam().get(LoanOrderExtParamKey.DELIVER_DATE)); // 放款时间
         for (RepaymentPlan repaymentPlan : repaymentPlanList) {
             text.append(repaymentPlan.getLastRepaymentTime().getTime());
@@ -158,7 +161,7 @@ public class RepayAdvancer extends AbstractAdvancer<LoanOrder, LoanOrderInstruct
             try {
                 Thread.sleep(1000L);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                throw new ContextedRuntimeException(e);
             }
         }
         throw new ContextedRuntimeException("Get repayment result fail, loan order id:" + loanOrder.getId());
