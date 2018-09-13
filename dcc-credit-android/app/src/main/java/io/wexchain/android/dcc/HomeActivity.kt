@@ -28,6 +28,7 @@ import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityHomeBinding
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
 import io.wexchain.dccchainservice.domain.ScfAccountInfo
@@ -59,7 +60,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
     private fun initPhototTask() {
         doAsync {
             val certIdPics = CertOperations.getTmpIdIdPics()
-            certIdPics.let {
+            certIdPics?.let {
                 if (it!!.first.exists()) {
                     it.first.reName("positivePhoto.jpg")
                 }
@@ -87,27 +88,45 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
     private fun checkUpgrade() {
         App.get().marketingApi.checkUpgrade(versionInfo.versionCode.toString())
                 .checkonMain()
-                .filter {
-                    it.mandatoryUpgrade
-                }
-                .subscribe {
-                    val oldVersionCode = ShareUtils.getInteger(Extras.SP_VERSION_CODE, 0)
+                .subscribeBy(
+                        onSuccess = {
+                            if (it.mandatoryUpgrade) {
+                                showUpgradeDialog(it)
+                            } else {
+                                val oldVersionName = ShareUtils.getString(Extras.SP_VERSION_NAME, "")
 
-                    if (versionInfo.versionCode > oldVersionCode) {
-                        showUpgradeDialog(it)
-                    }
-                }
+                                if (it.version != oldVersionName) {
+                                    showUpgradeDialog(it)
+                                }
+                            }
+                        },
+                        onError = {
+                            if (it is DccChainServiceException) {
+                                toast("当前已是最新版本")
+                            }
+                        })
     }
 
     private fun showUpgradeDialog(it: CheckUpgrade) {
         val dialog = UpgradeDialog(this)
-        dialog.createHomeDialog(it.version, it.updateLog)
-                .onClick({
-                    dialog.dismiss()
-                    ShareUtils.setInteger(Extras.SP_VERSION_CODE, versionInfo.versionCode)
-                }, {
-                    downloadApk(it.version, it.updateUrl)
-                })
+        if (it.mandatoryUpgrade) {
+            dialog.createHomeDialog(it.version, it.updateLog)
+                    .onClick {
+                        dialog.dismiss()
+                        downloadApk(it.version, it.updateUrl)
+                    }
+        } else {
+            dialog.createCheckDialog(it.version, it.updateLog)
+                    .onClick(
+                            onCancle = {
+                                dialog.dismiss()
+                                ShareUtils.setString(Extras.SP_VERSION_NAME, it.version)
+                            },
+                            onConfirm = {
+                                dialog.dismiss()
+                                downloadApk(it.version, it.updateUrl)
+                            })
+        }
     }
 
     private fun downloadApk(versionNumber: String, updateUrl: String) {

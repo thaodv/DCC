@@ -100,7 +100,7 @@ class SelectNodeActivity : BaseCompatActivity() {
         }
 
         ipfs_node_tip.onClick {
-            getClipboardManager().primaryClip = ClipData.newPlainText("网址", "https://open.dcc.finance")
+            getClipboardManager().primaryClip = ClipData.newPlainText("网址", "https://open.dcc.finance/cn/sdk/ipfs.html")
             toast("网址复制成功")
         }
     }

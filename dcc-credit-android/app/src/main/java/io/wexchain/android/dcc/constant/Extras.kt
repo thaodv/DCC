@@ -45,5 +45,5 @@ object Extras {
 
     const val SP_SELECTED_NODE_FILE = "select_node_file"
     const val SP_SELECTED_NODE = "select_node"
-    const val SP_VERSION_CODE = "version_code"
+    const val SP_VERSION_NAME = "version_name"
 }
