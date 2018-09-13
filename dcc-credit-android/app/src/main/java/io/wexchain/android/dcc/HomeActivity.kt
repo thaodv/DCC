@@ -28,6 +28,7 @@ import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityHomeBinding
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
 import io.wexchain.dccchainservice.domain.ScfAccountInfo
@@ -87,16 +88,23 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
     private fun checkUpgrade() {
         App.get().marketingApi.checkUpgrade(versionInfo.versionCode.toString())
                 .checkonMain()
-                .filter {
-                    it.mandatoryUpgrade
-                }
-                .subscribe {
-                    val oldVersionCode = ShareUtils.getInteger(Extras.SP_VERSION_CODE, 0)
+                .subscribeBy(
+                        onSuccess = {
+                            if (it.mandatoryUpgrade) {
+                                showUpgradeDialog(it)
+                            } else {
+                                val oldVersionCode = ShareUtils.getInteger(Extras.SP_VERSION_CODE, 0)
 
-                    if (versionInfo.versionCode > oldVersionCode) {
-                        showUpgradeDialog(it)
-                    }
-                }
+                                if (versionInfo.versionCode > oldVersionCode) {
+                                    showUpgradeDialog(it)
+                                }
+                            }
+                        },
+                        onError = {
+                            if (it is DccChainServiceException) {
+                                toast("当前已是最新版本")
+                            }
+                        })
     }
 
     private fun showUpgradeDialog(it: CheckUpgrade) {
