@@ -73,12 +73,16 @@
 #import "WeXDisPlayAdapter.h"
 #import "WeXOpenParamModel.h"
 #import "WeXLocalCacheManager.h"
+//ipfs处理
+#import "WeXIpfsKeyGetAdapter.h"
+#import "WeXIpfsKeyGetModel.h"
+#import "WeXIpfsContractHeader.h"
+#import "WeXVersionUpdateAdapter.h"
 
 static NSString * const reuseWexPassIdentifier = @"reuseWexPassIdentifier";
 static NSString * const kP2PCardCellIdentifier = @"WeXP2PImageCardCellIdentifier";
 static NSString * const kCoinProfitCellIdentifier = @"WeXCoinProfitCellID";
 static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
-
 
 static const CGFloat kCardHeightWidthRatio = 179.0/350.0;
 static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
@@ -133,6 +137,9 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
 @property (nonatomic,strong)WeXDisPlayAdapter *playAdapter;
 
 @property (nonatomic,assign)BOOL isAllowDisPlay;
+//ipfs
+@property (nonatomic,copy)NSString *contractAddress;
+@property (nonatomic,strong)WeXIpfsKeyGetAdapter *getIpfsKeyAdapter;
 
 @end
 
@@ -157,7 +164,6 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
     } else {
         _isAllowDisPlay = [WeXLocalCacheManager getAppearWithBundleID:[WexCommonFunc getVersion]];
     }
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateWithCheckModel) name:WEX_CHECK_MODEL_NOTIFY object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNickName) name:WEX_CHANGE_NICK_NAME_NOTIFY object:nil];
@@ -589,21 +595,6 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
 
 #pragma mark - 请求回调
 - (void)wexBaseNetAdapterDelegate:(WexBaseNetAdapter *)adapter head:(WexBaseNetAdapterResponseHeadModal *)headModel response:(WeXBaseNetModal *)response{
-//    if(adapter == _getQuoteAdapter){
-//        WeXWalletDigitalGetQuoteResponseModal *model = (WeXWalletDigitalGetQuoteResponseModal *)response;
-//        NSLog(@"model=%@",model);
-//        for (WeXWalletDigitalGetQuoteResponseModal_item *quoteModel in model.data) {
-//            for (WeXWalletDigitalGetTokenResponseModal_item *tokenModel in self.datasArray) {
-//                if ([quoteModel.varietyCode isEqualToString:tokenModel.symbol]) {
-//                    tokenModel.price = [NSString stringWithFormat:@"%.2f",quoteModel.price];
-//                    break;
-//                }
-//            }
-//        }
-//        [self configTotalDigitalAsset];
-//
-//    }
-//    else
     if (adapter == _getNonceAdapter){
         if ([headModel.systemCode isEqualToString:@"SUCCESS"]&&[headModel.businessCode isEqualToString:@"SUCCESS"]) {
             WeXBorrowGetNonceResponseModal *model = (WeXBorrowGetNonceResponseModal *)response;
@@ -741,23 +732,23 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
         }
     }
     else if([adapter isKindOfClass:[WeXAgentMarketAdapter class]]){
-//        NSLog(@"response = %@",response);
+        //        NSLog(@"response = %@",response);
         if ([headModel.systemCode isEqualToString:@"SUCCESS"]&&[headModel.businessCode isEqualToString:@"SUCCESS"]) {
-          if(response){
-            WeXAgentMarketResponseModel *model= (WeXAgentMarketResponseModel *)response;
-              
-            for (WeXAgentMarketResponseModel_item *quoteModel in model.data) {
-                for (WeXWalletDigitalGetTokenResponseModal_item *tokenModel in self.datasArray) {
-                    if ([quoteModel.symbol isEqualToString:tokenModel.symbol]) {
-                        tokenModel.price = [NSString stringWithFormat:@"%f",[quoteModel.price floatValue]];
-                        break;
+            if(response){
+                WeXAgentMarketResponseModel *model= (WeXAgentMarketResponseModel *)response;
+                
+                for (WeXAgentMarketResponseModel_item *quoteModel in model.data) {
+                    for (WeXWalletDigitalGetTokenResponseModal_item *tokenModel in self.datasArray) {
+                        if ([quoteModel.symbol isEqualToString:tokenModel.symbol]) {
+                            tokenModel.price = [NSString stringWithFormat:@"%f",[quoteModel.price floatValue]];
+                            break;
+                        }
                     }
                 }
+                //            [self.cardTabelView reloadData];
+                [self configTotalDigitalAsset];
             }
-//            [self.cardTabelView reloadData];
-            [self configTotalDigitalAsset];
         }
-    }
     }
     else if (adapter == _playAdapter) {
         if ([headModel.systemCode isEqualToString:@"SUCCESS"]&&[headModel.businessCode isEqualToString:@"SUCCESS"]) {
@@ -779,7 +770,7 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
             _isAllowDisPlay = [WeXLocalCacheManager getAppearWithBundleID:[WexCommonFunc getVersion]];
         }
         [_cardTabelView reloadData];
-    }
+    } 
 }
 
 
@@ -1324,6 +1315,8 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
     }];
    
     
+    
+    
     UILabel *nameLabel = [[UILabel alloc]init];
     nameLabel.textColor = [UIColor whiteColor];
     nameLabel.text = [WexDefaultConfig instance].nickName;
@@ -1393,6 +1386,7 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
     if ([[WeXGuideViewManager shareManager] checkGuideViewWithType:WexGuideViewTypeCoinProfit] || !_isAllowDisPlay) {
         return;
     }
+    [_cardTabelView setContentOffset:CGPointZero];
     CGFloat circleTopY = kNavgationBarHeight + (kScreenWidth-30) * kCardHeightWidthRatio + 20;
     CGRect circleFrame = CGRectMake(kScreenWidth - 72, circleTopY , 70, 70);
     __weak typeof(self) weakSelf = self;
@@ -1417,6 +1411,5 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
     [_backView removeFromSuperview];
     _backView = nil;
 }
-
 
 @end
