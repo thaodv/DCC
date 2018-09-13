@@ -60,7 +60,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
     private fun initPhototTask() {
         doAsync {
             val certIdPics = CertOperations.getTmpIdIdPics()
-            certIdPics.let {
+            certIdPics?.let {
                 if (it!!.first.exists()) {
                     it.first.reName("positivePhoto.jpg")
                 }
@@ -93,9 +93,9 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
                             if (it.mandatoryUpgrade) {
                                 showUpgradeDialog(it)
                             } else {
-                                val oldVersionCode = ShareUtils.getInteger(Extras.SP_VERSION_CODE, 0)
+                                val oldVersionName = ShareUtils.getString(Extras.SP_VERSION_NAME, "")
 
-                                if (versionInfo.versionCode > oldVersionCode) {
+                                if (it.version != oldVersionName) {
                                     showUpgradeDialog(it)
                                 }
                             }
@@ -109,13 +109,24 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
 
     private fun showUpgradeDialog(it: CheckUpgrade) {
         val dialog = UpgradeDialog(this)
-        dialog.createHomeDialog(it.version, it.updateLog)
-                .onClick({
-                    dialog.dismiss()
-                    ShareUtils.setInteger(Extras.SP_VERSION_CODE, versionInfo.versionCode)
-                }, {
-                    downloadApk(it.version, it.updateUrl)
-                })
+        if (it.mandatoryUpgrade) {
+            dialog.createHomeDialog(it.version, it.updateLog)
+                    .onClick {
+                        dialog.dismiss()
+                        downloadApk(it.version, it.updateUrl)
+                    }
+        } else {
+            dialog.createCheckDialog(it.version, it.updateLog)
+                    .onClick(
+                            onCancle = {
+                                dialog.dismiss()
+                                ShareUtils.setString(Extras.SP_VERSION_NAME, it.version)
+                            },
+                            onConfirm = {
+                                dialog.dismiss()
+                                downloadApk(it.version, it.updateUrl)
+                            })
+        }
     }
 
     private fun downloadApk(versionNumber: String, updateUrl: String) {
