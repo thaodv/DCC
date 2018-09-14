@@ -77,7 +77,6 @@
 #import "WeXIpfsKeyGetAdapter.h"
 #import "WeXIpfsKeyGetModel.h"
 #import "WeXIpfsContractHeader.h"
-#import "WeXVersionUpdateAdapter.h"
 
 static NSString * const reuseWexPassIdentifier = @"reuseWexPassIdentifier";
 static NSString * const kP2PCardCellIdentifier = @"WeXP2PImageCardCellIdentifier";
@@ -844,6 +843,9 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == _cardTabelView) {
+        if (section == 3) {
+            return _isAllowDisPlay ? 1 : 0;
+        }
         return 1;
     }
     
@@ -980,18 +982,16 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
 {
     if (tableView == _cardTabelView) {
         if (indexPath.section == 0) {
-            return (kScreenWidth-30)*kCardHeightWidthRatio;
+            return (kScreenWidth-30) * kCardHeightWidthRatio;
         }
-        else if (indexPath.section == 1)
-        {
+        else if (indexPath.section == 1) {
             return [WeXCoinProfitCell cellHeight];
-//            return 150;
         }
         else if (indexPath.section == 2) {
             return (kScreenWidth - 30) * kInviteFriendCardHeightWidthRatio;;
         }
         else if (indexPath.section == 3) {
-            return [WeXP2PImageCardCell p2pImageCellHeight];;
+            return _isAllowDisPlay ? [WeXP2PImageCardCell p2pImageCellHeight] : 0.01;
         }
         else if (indexPath.section == 4) {
             return 390;

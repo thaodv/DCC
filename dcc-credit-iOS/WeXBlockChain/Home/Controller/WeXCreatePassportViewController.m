@@ -56,6 +56,9 @@
 @end
 
 @implementation WeXCreatePassportViewController
+//查询上链最大查询次数
+static NSInteger const kMaxCount = 6;
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -419,8 +422,9 @@
             }
             else
             {
-                if (_requestCount > 4) {
+                if (_requestCount > kMaxCount) {
                     [WeXPorgressHUD hideLoading];
+                    _requestCount = 0;
                     [WeXPorgressHUD showText:WeXLocalizedString(@"创建钱包失败") onView:self.view];
                     return;
                 }
