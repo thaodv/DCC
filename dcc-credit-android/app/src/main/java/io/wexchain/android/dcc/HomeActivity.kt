@@ -52,16 +52,13 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         checkScfAccount()
         checkUpgrade()
         initPhototTask()
-
-
-        // tipsDialog.show()
     }
 
     private fun initPhototTask() {
         doAsync {
             val certIdPics = CertOperations.getTmpIdIdPics()
             certIdPics?.let {
-                if (it!!.first.exists()) {
+                if (it.first.exists()) {
                     it.first.reName("positivePhoto.jpg")
                 }
                 if (it.second.exists()) {
@@ -99,12 +96,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
                                     showUpgradeDialog(it)
                                 }
                             }
-                        },
-                        onError = {
-                            if (it is DccChainServiceException) {
-                                toast("当前已是最新版本")
-                            }
-                        })
+                        }, onError = {})
     }
 
     private fun showUpgradeDialog(it: CheckUpgrade) {
