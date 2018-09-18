@@ -160,12 +160,12 @@ object CertOperations {
                     Single.zip(
                             api.getCertContractAddress(business).compose(Result.checked()),
                             api.getTicket().compose(Result.checked()),
-                            pair()
-                    ).flatMap { (contractAddress, ticket) ->
-                        val tx = applyCall.txSigned(credentials, contractAddress, nonce)
-                        api.certApply(ticket.ticket, tx, null, business)
-                                .compose(Result.checked())
-                    }
+                            pair())
+                            .flatMap { (contractAddress, ticket) ->
+                                val tx = applyCall.txSigned(credentials, contractAddress, nonce)
+                                api.certApply(ticket.ticket, tx, null, business)
+                                        .compose(Result.checked())
+                            }
                 }
                 .certOrderByTx(api, business)
                 .flatMap {
@@ -198,14 +198,14 @@ object CertOperations {
         val data = certBankCardData!!.bankCardNo.toByteArray(Charsets.UTF_8) + certBankCardData.phoneNo.toByteArray(Charsets.UTF_8)
         val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
         val digest2 = byteArrayOf()
-        return Pair(digest1, digest2)
+        return digest1 to digest2
     }
 
     fun getLocalCmDigest(): Pair<ByteArray, ByteArray> {
         val cmCertOrderId = getCmCertOrderId()
         val data = getCmLogData(cmCertOrderId).blockingGet()
         val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
-        return Pair(digest1, byteArrayOf())
+        return digest1 to byteArrayOf()
     }
 
     fun getLocalIdDigest(): Pair<ByteArray, ByteArray> {
@@ -220,7 +220,7 @@ object CertOperations {
             update(MessageDigest.getInstance(DIGEST).digest(idPics.second))
             digest(MessageDigest.getInstance(DIGEST).digest(idPics.third))
         }
-        return Pair(digest1, digest2)
+        return digest1 to digest2
     }
 
     fun submitBankCardCert(

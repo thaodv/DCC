@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.Pop
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
@@ -26,7 +25,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityMyCreditBinding
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.digitalwallet.Erc20Helper
-import io.wexchain.ipfs.utils.doMain
+import io.wexchain.ipfs.utils.io_main
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
 import java.util.*
@@ -52,8 +51,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
     private fun getCloudToken() {
         IpfsOperations.getIpfsKey()
                 .checkKey()
-                .subscribeOn(Schedulers.io())
-                .doMain()
+                .io_main()
                 .subscribeBy {
                     val ipfsKeyHash = passport.getIpfsKeyHash()
                     binding.creditIpfsCloud.onClick {
@@ -153,8 +151,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                             }
                             App.get().chainGateway.getCertData(passport.address, ChainGateway.BUSINESS_COMMUNICATION_LOG).check()
                         }
-                        .subscribeOn(Schedulers.io())
-                        .doMain()
+                        .io_main()
                         .doFinally {
                             refreshCertStatus()
                         }
@@ -229,8 +226,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                 } else {
                     PassportOperations.ensureCaValidity(this) {
                         checkIpfsAndChainDigest(ChainGateway.BUSINESS_ID)
-                                .subscribeOn(Schedulers.io())
-                                .doMain()
+                                .io_main()
                                 .withLoading()
                                 .filter {
                                     if (!it) navigateTo(SubmitIdActivity::class.java)

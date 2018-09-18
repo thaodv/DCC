@@ -1,6 +1,7 @@
 package io.wexchain.ipfs.utils
 
 import android.util.Base64
+import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
 
@@ -29,5 +30,14 @@ fun String.get32MD5(): String {
 
 fun fillMD5(md5: String): String {
     return if (md5.length == 32) md5 else fillMD5("0$md5")
+}
+
+fun File.ensureNewFile() {
+    if (this.exists()) {
+        delete()
+    } else {
+        this.parentFile.mkdirs()
+        this.createNewFile()
+    }
 }
 

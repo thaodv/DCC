@@ -15,7 +15,6 @@ import android.widget.TextView
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
@@ -34,7 +33,7 @@ import io.wexchain.dcc.databinding.ActivityMyCloudBinding
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.digitalwallet.Erc20Helper
-import io.wexchain.ipfs.utils.doMain
+import io.wexchain.ipfs.utils.io_main
 import kotlinx.android.synthetic.main.activity_my_cloud.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -121,8 +120,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 Single.just(!idCertPassed).checkStatus(ChainGateway.BUSINESS_ID),
                 Single.just(!bankCertPassed).checkStatus(ChainGateway.BUSINESS_BANK_CARD),
                 Single.just(status != UserCertStatus.DONE).checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG))
-                .subscribeOn(Schedulers.io())
-                .doMain()
+                .io_main()
                 .withLoading()
                 .subscribeBy {
                     updateUI(it)
@@ -332,8 +330,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 val idCertPassed = CertOperations.isIdCertPassed()
                 Single.just(!idCertPassed)
                         .checkStatus(ChainGateway.BUSINESS_ID)
-                        .subscribeOn(Schedulers.io())
-                        .doMain()
+                        .io_main()
                         .subscribeBy {
                             IDStatus = it
                             updateIdItem()
@@ -347,8 +344,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 val bankCertPassed = CertOperations.isBankCertPassed()
                 Single.just(!bankCertPassed)
                         .checkStatus(ChainGateway.BUSINESS_BANK_CARD)
-                        .subscribeOn(Schedulers.io())
-                        .doMain()
+                        .io_main()
                         .subscribeBy {
                             BankStatus = it
                             updateBankItem()
@@ -362,8 +358,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 val status = CertOperations.getCmLogUserStatus()
                 Single.just(status != UserCertStatus.DONE)
                         .checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG)
-                        .subscribeOn(Schedulers.io())
-                        .doMain()
+                        .io_main()
                         .subscribeBy {
                             CmStatus = it
                             updateCmItem()
