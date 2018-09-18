@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import com.wexmarket.android.barcode.util.QrCodeDrawable
 import io.wexchain.android.dcc.network.GlideApp
+import io.wexchain.android.dcc.view.SwitchButton
 import io.wexchain.android.dcc.view.state.ExceedAware
 
 @set:BindingAdapter("visibleOrGone")
@@ -21,6 +22,15 @@ var View.visibleOrGone
     set(value) {
         this.visibility = if (value) View.VISIBLE else View.GONE
     }
+
+@set:BindingAdapter("SwitchStatus")
+var SwitchButton.switchStatus
+    get() = this.isChecked
+    set(value) {
+        this.isChecked = value
+    }
+
+
 
 @set:BindingAdapter("visibleOrInvisible")
 var View.visibleOrInvisible

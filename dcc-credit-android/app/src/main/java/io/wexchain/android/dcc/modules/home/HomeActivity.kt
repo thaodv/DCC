@@ -22,7 +22,7 @@ class HomeActivity : BaseCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home2)
         initView()
-        setDefaultFragment()
+        replaceFragment(ServiceFragment())
         initEvent()
     }
 
@@ -52,21 +52,13 @@ class HomeActivity : BaseCompatActivity() {
         }
     }
 
-    private fun setDefaultFragment() {
-        val fm = supportFragmentManager
-        val transaction = fm.beginTransaction()
-        transaction.replace(R.id.layFrame, ServiceFragment())
-        transaction.commit()
-    }
-
     private fun initView() {
         bottom_navigation_bar.apply {
             setMode(BottomNavigationBar.MODE_FIXED)
             setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC)
-            addItem(BottomNavigationItem(R.drawable.logo_bitexpress, "服务").setActiveColorResource(R.color.colorAccent))
-            addItem(BottomNavigationItem(R.drawable.logo_bitexpress, "发现").setActiveColorResource(R.color.colorAccent))
-            addItem(BottomNavigationItem(R.drawable.logo_bitexpress, "我的").setActiveColorResource(R.color.colorAccent))
-//            setFirstSelectedPosition(0)
+            addItem(BottomNavigationItem(R.drawable.tab_activity_service, "服务").setInactiveIconResource(R.drawable.tab_service).setActiveColorResource(R.color.main_tab))
+            addItem(BottomNavigationItem(R.drawable.tab_activity_find, "发现").setInactiveIconResource(R.drawable.tab_find).setActiveColorResource(R.color.main_tab))
+            addItem(BottomNavigationItem(R.drawable.tab_activity_mine, "我的").setInactiveIconResource(R.drawable.tab_mine).setActiveColorResource(R.color.main_tab))
             initialise()
         }
 

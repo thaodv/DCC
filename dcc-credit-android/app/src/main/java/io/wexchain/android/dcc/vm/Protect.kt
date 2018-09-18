@@ -35,4 +35,8 @@ class Protect(application: Application) : AndroidViewModel(application), UseProt
             protectEnableEvent.call()
         }
     }
+
+    fun getStatus():Boolean{
+        return type != null
+    }
 }

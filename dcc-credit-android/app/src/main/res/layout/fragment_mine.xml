@@ -1,16 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="io.wexchain.android.dcc.PassportSettingsActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="我的页面"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-</android.support.constraint.ConstraintLayout>
+        <import type="android.text.TextUtils" />
+
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper" />
+
+        <variable
+            name="passport"
+            type="io.wexchain.android.dcc.domain.Passport" />
+
+        <variable
+            name="protect"
+            type="io.wexchain.android.dcc.vm.Protect" />
+    </data>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F8F8FF">
+
+        <TextView
+            android:id="@+id/mine_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#fff"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="我的"
+            android:textColor="@color/main_tab"
+            android:textSize="17sp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/mine_title">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:id="@+id/v_line"
+                    style="@style/DividerHorizontal"
+                    android:layout_height="10dp"
+                    android:background="#F8F8FF"
+                    app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+                <TextView
+                    android:id="@+id/tv_user_avatar"
+                    style="@style/TextActionLine"
+                    android:text="@string/user_avatar"
+                    app:layout_constraintTop_toBottomOf="@id/v_line" />
+
+                <io.wexchain.android.dcc.view.RoundImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="40dp"
+                    android:scaleType="centerCrop"
+                    app:errorRes="@{@drawable/default_user_avatar}"
+                    app:imageUri="@{passport.avatarUri}"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_user_avatar"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_user_avatar"
+                    tools:src="@drawable/default_user_avatar" />
+
+                <View
+                    style="@style/DividerHorizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_avatar" />
+
+                <TextView
+                    android:id="@+id/tv_user_nickname"
+                    style="@style/TextActionLine"
+                    android:text="@string/user_nickname"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_avatar" />
+
+                <TextView
+                    android:id="@+id/tv_mine_wallet"
+                    style="@style/TextActionLine"
+                    android:layout_marginTop="10dp"
+                    android:text="数字钱包"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_nickname" />
+
+
+                <TextView
+                    android:id="@+id/tv_data_cloud"
+                    style="@style/TextActionLine"
+                    android:text="@string/data_cloud_storage"
+                    app:layout_constraintTop_toBottomOf="@id/tv_mine_wallet" />
+
+
+                <TextView
+                    android:id="@+id/tv_cloud_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/start_in"
+                    android:textColor="@color/text_min"
+                    android:textSize="17sp"
+                    android:visibility="invisible"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tv_data_cloud"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_cloud_loding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:src="@drawable/ipfs_cloud_loding"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_cloud_status" />
+
+                <TextView
+                    android:id="@+id/tv_passport_protect"
+                    style="@style/TextActionLine"
+                    android:layout_height="52dp"
+                    android:onClick="@{(v)->protect.switchProtectEnable()}"
+                    android:text="@string/local_protect"
+                    app:layout_constraintTop_toBottomOf="@id/tv_data_cloud" />
+
+
+                <io.wexchain.android.dcc.view.SwitchButton
+                    android:id="@+id/tv_passport_protect_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="10dp"
+                    android:onClick="@{(v)->protect.switchProtectEnable()}"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_data_cloud"
+                    SwitchStatus="@{protect.type!=null}" />
+
+                <TextView
+                    android:id="@+id/tv_address_book"
+                    style="@style/TextActionLine"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/address_book"
+                    app:layout_constraintTop_toBottomOf="@id/tv_passport_protect" />
+
+                <TextView
+                    android:id="@+id/tv_select_node"
+                    style="@style/TextActionLine"
+                    android:text="@string/select_node"
+                    app:layout_constraintTop_toBottomOf="@id/tv_address_book" />
+
+                <TextView
+                    android:id="@+id/tv_setting"
+                    style="@style/TextActionLine"
+                    android:layout_marginTop="10dp"
+                    android:text="设置"
+                    app:layout_constraintTop_toBottomOf="@id/tv_select_node" />
+
+            </android.support.constraint.ConstraintLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+</layout>

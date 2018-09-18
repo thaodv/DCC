@@ -449,6 +449,8 @@
             android:label="币生息"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.mine.SettingActivity" />
+
     </application>
 
 </manifest>

@@ -49,9 +49,9 @@ object ViewModelHelper {
             val charArray = list[list.size - 1].toCharArray()
             var tmp = ""
             for ((i, char) in charArray.withIndex()) {
-                tmp += if (i == 3|| i==5) {
+                tmp += if (i == 3 || i == 5) {
                     "$char-"
-                }else {
+                } else {
                     char
                 }
             }
@@ -577,8 +577,16 @@ object ViewModelHelper {
         return (str.subtract(poundge.toBigDecimal())).toPlainString() + "DCC"
     }
 
+    @JvmStatic
+    fun getProtectStatus(protect: Protect): Boolean {
+        return protect.type.get()!=null
+    }
+
 }
 
 fun BigDecimal.currencyToDisplayStr(): String {
     return this.setScale(4, RoundingMode.DOWN).toPlainString()
 }
+
+
+
