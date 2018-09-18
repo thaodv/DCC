@@ -4,12 +4,12 @@ import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.atLeastCreated
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.setWindowExtended
+import io.wexchain.android.dcc.modules.home.HomeActivity
 import io.wexchain.android.dcc.tools.PermissionHelper
 import io.wexchain.dcc.R
 import java.util.concurrent.TimeUnit

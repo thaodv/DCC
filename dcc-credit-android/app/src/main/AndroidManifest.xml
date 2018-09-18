@@ -440,6 +440,8 @@
             android:label="认购额度"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.home.HomeActivity"
+            />
 
     </application>
 
