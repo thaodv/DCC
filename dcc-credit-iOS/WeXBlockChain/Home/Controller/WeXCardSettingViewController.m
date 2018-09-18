@@ -111,209 +111,242 @@ typedef void(^SafeVertifyResponse)(void);
 }
 
 - (void)showToastInfo{
-    
-//    //粘贴背景框
-//    UIImageView *backImageView = [[UIImageView alloc] init];
-//    backImageView.image = [UIImage imageNamed:@"frame2"];
-//    [self.view addSubview:backImageView];
-//    [backImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerY.equalTo(self.view);
-//        make.centerX.equalTo(self.view);
-//        make.height.equalTo(@60);
-//        make.width.equalTo(@240);
-//    }];
-//
-//    //粘贴框提示文字
-//    UILabel *closeLabel = [[UILabel alloc] init];
-//    closeLabel.text = WeXLocalizedString(@"关闭本地安全保护成功，您可以开启其他安全保护方式。");
-//    closeLabel.font = [UIFont systemFontOfSize:13];
-//    closeLabel.textColor = COLOR_LABEL_DESCRIPTION;
-//    closeLabel.textAlignment = NSTextAlignmentCenter;
-//    closeLabel.numberOfLines = 0;
-//    [backImageView addSubview:closeLabel];
-//    [closeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(backImageView).offset(10);
-//        make.leading.equalTo(backImageView).offset(10);
-//        make.trailing.equalTo(backImageView).offset(-10);
-//        make.bottom.equalTo(backImageView).offset(-10);
-//    }];
-    
-    
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [closeLabel removeFromSuperview];
-//        [backImageView removeFromSuperview];
-//    });
-    
     [WeXPorgressHUD showText:WeXLocalizedString(@"关闭本地安全保护成功，您可以开启其他安全保护方式。") onView:self.view];
-
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.row==0)
-    {
-        return 90.f;
+    return indexPath.section == 0 && indexPath.row == 0 ? 90.f : 60.f;
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 4;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    switch (section) {
+        case 0:
+            return 2;
+            break;
+        case 1:
+            return 3;
+            break;
+        case 2:
+            return 2;
+            break;
+        case 3:
+            return 1;
+            break;
+        default:
+            return 0;
+            break;
     }
-    
-    return 60.f;
 }
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 12;
-}
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellID = @"cellID";
     static NSString *cellid_face= @"cellID_face";
-    UITableViewCell* tableCell=nil;
-    if(indexPath.row>0)
-    {
-        WeXCardSettingCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-        if (cell == nil) {
-            cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXCardSettingCell" owner:self options:nil] firstObject];
-            cell.backgroundColor = [UIColor clearColor];
-            cell.titleLabel.textColor = COLOR_LABEL_TITLE;
-            cell.titleLabel.font = [UIFont systemFontOfSize:18];
-            cell.desLabel.textColor = COLOR_LABEL_TITLE;
-            cell.desLabel.font = [UIFont systemFontOfSize:15];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            
-//          UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(cell.frame), CGRectGetHeight(cell.frame))];
-//          backView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1];
-//          cell.selectedBackgroundView = backView;
-        }
-        
-        tableCell=cell;
-       
-        if (indexPath.row == 1)
-        {
-            cell.titleLabel.text = WeXLocalizedString(@"昵称");
-            if([WexDefaultConfig instance].nickName)
-            {
-//                cell.desLabel.text=[WexDefaultConfig instance].nickName;
-            }
-            else{
-                cell.desLabel.text=@"";
+    UITableViewCell *tableCell=nil;
+    switch (indexPath.section) {
+        case 0: {
+            if (indexPath.row == 0) {
+                tableCell = [self getAvatarCellWithTableView:tableView ID:cellid_face];
+            } else {
+                WeXCardSettingCell *cell = (WeXCardSettingCell *)[self getCellWithTableView:tableView ID:cellID];
+                cell.titleLabel.text = WeXLocalizedString(@"昵称");
+                cell.desLabel.text = [WexDefaultConfig instance].nickName ? [WexDefaultConfig instance].nickName : @"";
+                tableCell = cell;
             }
         }
-        else if (indexPath.row == 2) {
-            cell.titleLabel.text = WeXLocalizedString(@"钱包地址");
-        }
-        else if (indexPath.row == 3)
-        {
-            cell.titleLabel.text = WeXLocalizedString(@"数据云存储");
-            cell.loadImgView.image = [UIImage imageNamed:@"loading1"];
-            cell.loadImgView.hidden = NO;
             
-            [self benginRefreshWithImageView: cell.loadImgView];
-            
-            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-            NSString *passWord = [user objectForKey:WEX_IPFS_MY_CHECKKEY];
-            NSString *twoPassWord = [user objectForKey:WEX_IPFS_MY_TWOCHECKKEY];
-            
-            if (_isIpfsAllow) {
-                if (passWord || twoPassWord ) {
-                    cell.desLabel.text = WeXLocalizedString(@"已启用,开始同步");
-//                    _isIpfsAllow = YES;
-                    [self removeAnimationClick:cell.loadImgView];
-                    cell.loadImgView.hidden = YES;
-                }else{
-                    [self removeAnimationClick:cell.loadImgView];
-                    cell.loadImgView.hidden = YES;
-                    cell.desLabel.text = WeXLocalizedString(@"立即开启");
-//                    _isIpfsAllow = NO;
+            break;
+        case 1: {
+            WeXCardSettingCell *cell = (WeXCardSettingCell *)[self getCellWithTableView:tableView ID:cellID];
+            tableCell = cell;
+            if (indexPath.row == 0) {
+                [cell.titleLabel setText:WeXLocalizedString(@"数字钱包")];
+            } else if (indexPath.row == 1) {
+                cell.titleLabel.text = WeXLocalizedString(@"数据云存储");
+                cell.loadImgView.image = [UIImage imageNamed:@"loading1"];
+                cell.loadImgView.hidden = NO;
+                [self benginRefreshWithImageView: cell.loadImgView];
+                NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+                NSString *passWord = [user objectForKey:WEX_IPFS_MY_CHECKKEY];
+                NSString *twoPassWord = [user objectForKey:WEX_IPFS_MY_TWOCHECKKEY];
+                
+                if (_isIpfsAllow) {
+                    if (passWord || twoPassWord ) {
+                        cell.desLabel.text = WeXLocalizedString(@"已启用,开始同步");
+                        [self removeAnimationClick:cell.loadImgView];
+                        cell.loadImgView.hidden = YES;
+                    }else{
+                        [self removeAnimationClick:cell.loadImgView];
+                        cell.loadImgView.hidden = YES;
+                        cell.desLabel.text = WeXLocalizedString(@"立即开启");
+                    }
                 }
+            } else {
+                cell.titleLabel.text = WeXLocalizedString(@"本地安全保护");
+                _model = [WexCommonFunc getPassport];
+                cell.desLabel.text = _model.passwordType == WeXPasswordTypeNone ? WeXLocalizedString(@"已关闭") : WeXLocalizedString(@"已开启");
+                _safetyDescriptionLabel = cell.desLabel;
             }
+            
         }
-        else if (indexPath.row == 4)
-        {
-            cell.titleLabel.text = WeXLocalizedString(@"备份钱包");
-        }
-        else if (indexPath.row == 5)
-        {
-            cell.titleLabel.text = WeXLocalizedString(@"WeXCardSettingVCChangeWalletPSD");
-        }
-        else if (indexPath.row == 6)
-        {
-            cell.titleLabel.text = WeXLocalizedString(@"地址簿");
-        }
-        else if (indexPath.row == 7) {
-            cell.titleLabel.text = WeXLocalizedString(@"选择节点");
-        }
-        else if (indexPath.row == 8)
-        {
-            cell.titleLabel.text = WeXLocalizedString(@"本地安全保护");
-            _model = [WexCommonFunc getPassport];
-            if (_model.passwordType == WeXPasswordTypeNone) {
-                cell.desLabel.text = WeXLocalizedString(@"已关闭");
+            break;
+        case 2: {
+            WeXCardSettingCell *cell = (WeXCardSettingCell *)[self getCellWithTableView:tableView ID:cellID];
+            tableCell = cell;
+            if (indexPath.row == 0) {
+                cell.titleLabel.text = WeXLocalizedString(@"地址簿");
+            } else {
+                cell.titleLabel.text = WeXLocalizedString(@"选择节点");
             }
-            else
-            {
-                cell.desLabel.text = WeXLocalizedString(@"已开启");
-            }
-            _safetyDescriptionLabel = cell.desLabel;
+            
         }
+            break;
+        case 3: {
+            WeXCardSettingCell *cell = (WeXCardSettingCell *)[self getCellWithTableView:tableView ID:cellID];
+            tableCell = cell;
+            cell.titleLabel.text = WeXLocalizedString(@"设置");
+        }
+            break;
+            
+        default:
+            tableCell = nil;
+            break;
+    }
+//    if(indexPath.row>0)
+//    {
+//        WeXCardSettingCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+//        if (cell == nil) {
+//            cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXCardSettingCell" owner:self options:nil] firstObject];
+//            cell.backgroundColor = [UIColor clearColor];
+//            cell.titleLabel.textColor = COLOR_LABEL_TITLE;
+//            cell.titleLabel.font = [UIFont systemFontOfSize:18];
+//            cell.desLabel.textColor = COLOR_LABEL_TITLE;
+//            cell.desLabel.font = [UIFont systemFontOfSize:15];
+//            cell.accessoryType = UITableViewCellAccessoryNone;
+//        }
+//
+//        tableCell=cell;
+//
+//        if (indexPath.row == 1)
+//        {
+//            cell.titleLabel.text = WeXLocalizedString(@"昵称");
+//            cell.desLabel.text = [WexDefaultConfig instance].nickName ? [WexDefaultConfig instance].nickName : @"";
+//        }
+//        else if (indexPath.row == 2) {
+//            cell.titleLabel.text = WeXLocalizedString(@"钱包地址");
+//        }
+//        else if (indexPath.row == 3)
+//        {
+//            cell.titleLabel.text = WeXLocalizedString(@"数据云存储");
+//            cell.loadImgView.image = [UIImage imageNamed:@"loading1"];
+//            cell.loadImgView.hidden = NO;
+//            [self benginRefreshWithImageView: cell.loadImgView];
+//            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+//            NSString *passWord = [user objectForKey:WEX_IPFS_MY_CHECKKEY];
+//            NSString *twoPassWord = [user objectForKey:WEX_IPFS_MY_TWOCHECKKEY];
+//
+//            if (_isIpfsAllow) {
+//                if (passWord || twoPassWord ) {
+//                    cell.desLabel.text = WeXLocalizedString(@"已启用,开始同步");
+//                    [self removeAnimationClick:cell.loadImgView];
+//                    cell.loadImgView.hidden = YES;
+//                }else{
+//                    [self removeAnimationClick:cell.loadImgView];
+//                    cell.loadImgView.hidden = YES;
+//                    cell.desLabel.text = WeXLocalizedString(@"立即开启");
+//                }
+//            }
+//        }
+//        else if (indexPath.row == 4)
+//        {
+//            cell.titleLabel.text = WeXLocalizedString(@"备份钱包");
+//        }
+//        else if (indexPath.row == 5)
+//        {
+//            cell.titleLabel.text = WeXLocalizedString(@"WeXCardSettingVCChangeWalletPSD");
+//        }
 //        else if (indexPath.row == 6)
 //        {
-//            cell.titleLabel.text = WeXLocalizedString(@"钱包介绍");
+//            cell.titleLabel.text = WeXLocalizedString(@"地址簿");
 //        }
-        else if (indexPath.row == 9)
-        {
-            cell.titleLabel.text = WeXLocalizedString(@"关于我们");
-        }
-
-//        else if (indexPath.row == 7)
+//        else if (indexPath.row == 7) {
+//            cell.titleLabel.text = WeXLocalizedString(@"选择节点");
+//        }
+//        else if (indexPath.row == 8)
 //        {
-//            cell.titleLabel.text = WeXLocalizedString(@"隐私协议");
+//            cell.titleLabel.text = WeXLocalizedString(@"本地安全保护");
+//            _model = [WexCommonFunc getPassport];
+//            if (_model.passwordType == WeXPasswordTypeNone) {
+//                cell.desLabel.text = WeXLocalizedString(@"已关闭");
+//            }
+//            else
+//            {
+//                cell.desLabel.text = WeXLocalizedString(@"已开启");
+//            }
+//            _safetyDescriptionLabel = cell.desLabel;
 //        }
-        else if (indexPath.row == 10)
-
-        {
-            cell.titleLabel.text = WeXLocalizedString(@"删除钱包(注销)");
-        }
-      
-        else if (indexPath.row == 11)
-        {
-            cell.titleLabel.text = WeXLocalizedString(@"版本更新");
-            NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
-            NSString *content = [NSString stringWithFormat:@"%@%@",WeXLocalizedString(@"当前版本"), [infoDict objectForKey:@"CFBundleShortVersionString"]];
-            cell.desLabel.text = content;
-        }
-    }
-    
-    else{
-        
-        SettingFaceViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellid_face];
-        if (cell == nil) {
-            cell = [[[NSBundle mainBundle] loadNibNamed:@"SettingFaceViewCell" owner:self options:nil] firstObject];
-            cell.backgroundColor = [UIColor clearColor];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            
-            UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(cell.frame), CGRectGetHeight(cell.frame))];
-            backView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1];
-            cell.selectedBackgroundView = backView;
-            tableCell=cell;
-            
-            if (indexPath.row == 0) {
-                UIImage* face=[IYFileManager cacheImageFileWithKey:WEX_FILE_USER_FACE];
-                
-                if(!face)
-                    face=[UIImage imageNamed:@"digital_head"];
-                
-                cell.viewFace.image=face;
-                
-                if(cell.viewFace) {
-                    cell.viewFace.layer.masksToBounds=YES;
-                    cell.viewFace.layer.cornerRadius=5.f; //设置为图片宽度的一半出来为圆形
-                }
-                CGRect frame=cell.viewLine.frame;
-                frame.size.height=0.5f;
-                cell.viewLine.frame=frame;
-            }
-        }
-    }
+//        //        else if (indexPath.row == 6)
+//        //        {
+//        //            cell.titleLabel.text = WeXLocalizedString(@"钱包介绍");
+//        //        }
+//        else if (indexPath.row == 9)
+//        {
+//            cell.titleLabel.text = WeXLocalizedString(@"关于我们");
+//        }
+//
+//        //        else if (indexPath.row == 7)
+//        //        {
+//        //            cell.titleLabel.text = WeXLocalizedString(@"隐私协议");
+//        //        }
+//        else if (indexPath.row == 10)
+//
+//        {
+//            cell.titleLabel.text = WeXLocalizedString(@"删除钱包(注销)");
+//        }
+//
+//        else if (indexPath.row == 11)
+//        {
+//            cell.titleLabel.text = WeXLocalizedString(@"版本更新");
+//            NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+//            NSString *content = [NSString stringWithFormat:@"%@%@",WeXLocalizedString(@"当前版本"), [infoDict objectForKey:@"CFBundleShortVersionString"]];
+//            cell.desLabel.text = content;
+//        }
+//    }
+//
+//    else{
+//
+//        SettingFaceViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellid_face];
+//        if (cell == nil) {
+//            cell = [[[NSBundle mainBundle] loadNibNamed:@"SettingFaceViewCell" owner:self options:nil] firstObject];
+//            cell.backgroundColor = [UIColor clearColor];
+//            cell.accessoryType = UITableViewCellAccessoryNone;
+//
+//            UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(cell.frame), CGRectGetHeight(cell.frame))];
+//            backView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1];
+//            cell.selectedBackgroundView = backView;
+//            tableCell=cell;
+//
+//            if (indexPath.row == 0) {
+//                UIImage* face=[IYFileManager cacheImageFileWithKey:WEX_FILE_USER_FACE];
+//
+//                if(!face)
+//                    face=[UIImage imageNamed:@"digital_head"];
+//
+//                cell.viewFace.image=face;
+//
+//                if(cell.viewFace) {
+//                    cell.viewFace.layer.masksToBounds=YES;
+//                    cell.viewFace.layer.cornerRadius=5.f; //设置为图片宽度的一半出来为圆形
+//                }
+//                CGRect frame=cell.viewLine.frame;
+//                frame.size.height=0.5f;
+//                cell.viewLine.frame=frame;
+//            }
+//        }
+//    }
     
     return tableCell;
     
@@ -445,6 +478,44 @@ typedef void(^SafeVertifyResponse)(void);
 - (void)passwordManagerVerifyException
 {
      _safetyDescriptionLabel.text = WeXLocalizedString(@"已关闭");
+}
+
+- (UITableViewCell *)getCellWithTableView:(UITableView *)tableView ID:(NSString *)cellID {
+    WeXCardSettingCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil) {
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXCardSettingCell" owner:self options:nil] firstObject];
+        cell.backgroundColor = [UIColor clearColor];
+        cell.titleLabel.textColor = COLOR_LABEL_TITLE;
+        cell.titleLabel.font = [UIFont systemFontOfSize:18];
+        cell.desLabel.textColor = COLOR_LABEL_TITLE;
+        cell.desLabel.font = [UIFont systemFontOfSize:15];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    return cell;
+}
+
+- (UITableViewCell *)getAvatarCellWithTableView:(UITableView *)tableView ID:(NSString *)cellID {
+    SettingFaceViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil) {
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"SettingFaceViewCell" owner:self options:nil] firstObject];
+        cell.backgroundColor = [UIColor clearColor];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(cell.frame), CGRectGetHeight(cell.frame))];
+        backView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1];
+        cell.selectedBackgroundView = backView;
+        UIImage* face=[IYFileManager cacheImageFileWithKey:WEX_FILE_USER_FACE];
+        if(!face)
+            face=[UIImage imageNamed:@"digital_head"];
+        cell.viewFace.image=face;
+        if(cell.viewFace) {
+            cell.viewFace.layer.masksToBounds=YES;
+            cell.viewFace.layer.cornerRadius=5.f; //设置为图片宽度的一半出来为圆形
+        }
+        CGRect frame=cell.viewLine.frame;
+        frame.size.height=0.5f;
+        cell.viewLine.frame=frame;
+    }
+    return cell;
 }
 
 - (void)deletePassword{

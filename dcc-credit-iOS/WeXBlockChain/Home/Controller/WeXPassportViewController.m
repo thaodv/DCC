@@ -77,6 +77,12 @@
 #import "WeXIpfsKeyGetAdapter.h"
 #import "WeXIpfsKeyGetModel.h"
 #import "WeXIpfsContractHeader.h"
+#import "WeXHomePushService.h"
+
+//测试新版我的模块
+#import "WeXNewMyController.h"
+#import "WeXVersionUpdateAdapter.h"
+
 
 static NSString * const reuseWexPassIdentifier = @"reuseWexPassIdentifier";
 static NSString * const kP2PCardCellIdentifier = @"WeXP2PImageCardCellIdentifier";
@@ -138,6 +144,7 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
 @property (nonatomic,assign)BOOL isAllowDisPlay;
 //ipfs
 @property (nonatomic,copy)NSString *contractAddress;
+
 @property (nonatomic,strong)WeXIpfsKeyGetAdapter *getIpfsKeyAdapter;
 
 @end
@@ -308,11 +315,8 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
     self.navigationController.delegate = nil;
     [self getDatas];
     [self getDefaultNodeDelay];
-    
     if ([self hasPassport]) {
-//        [self judgeIsDisplaySearchChainView];
         [self addCoinProfitGuideView];
-//        [self createGetQuoteRequest];
         [self createGetAgentMarketRequest];
         [self createGetBalaceRequest];
     }
@@ -327,9 +331,7 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
 }
 
 #pragma mark - 判断是否有钱包
-- (BOOL)hasPassport
-{
-    
+- (BOOL)hasPassport {
     NSString *address = [WexCommonFunc getFromAddress];
     if (!address) {
         return NO;
@@ -338,8 +340,7 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
 }
 
 #pragma mark - 创建钱包入口页面
-- (void)createPassportChooseView
-{
+- (void)createPassportChooseView {
     WeXCreatePassportChooseView *chooseView = [[WeXCreatePassportChooseView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     chooseView.delegate = self;
     [self.view addSubview:chooseView];
@@ -370,8 +371,7 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
 }
 
 
--(NSMutableArray *)datasArray
-{
+-(NSMutableArray *)datasArray {
     if (_datasArray == nil) {
         _datasArray = [NSMutableArray array];
     }
@@ -380,29 +380,22 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
 
 
 - (void)createGetBalaceRequest{
-    
     [[WXPassHelper instance] initPassHelperBlock:^(id response) {
-        if(response!=nil)
-        {
+        if(response!=nil) {
             NSError* error=response;
             NSLog(@"容器加载失败:%@",error);
             return;
         }
-        
         [self createDccBalanceRequest];
-        
         [self createETHAndERC20Banlance];
         
     }];
-    
 }
 
-- (void)createDccBalanceRequest
-{
+- (void)createDccBalanceRequest {
     if (self.datasArray.count == 0) {
         return;
     }
-    
     WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[0];
     //abi方法
     NSString *abiJson = WEX_ERC20_ABI_BALANCE;
@@ -420,8 +413,7 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
               if ([ethException isEqualToString:@"ethException"]) {
                   _dccPrivateBalance = @"--";
               }
-              else
-              {
+              else {
                   _dccPrivateBalance = [WexCommonFunc formatterStringWithContractBalance:originBalance decimals:[model.decimals integerValue]];
               }
               [self configDccDigitalAsset];
@@ -437,8 +429,7 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
              if ([ethException isEqualToString:@"ethException"]) {
                  _dccPublicBalance = @"--";
              }
-             else
-             {
+             else {
                  _dccPublicBalance = [WexCommonFunc formatterStringWithContractBalance:originBalance decimals:[model.decimals integerValue]];
                  
              }
@@ -686,16 +677,13 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
                     [weakSelf createApplyBonusRequest];
                 };
                 _redPacketView.jumpBtnBlock = ^{
-                    WeXActivityHomeViewController *ctrl = [[WeXActivityHomeViewController alloc] init];
-                    [weakSelf.navigationController pushViewController:ctrl animated:YES];
+                    [WeXHomePushService pushFromVC:weakSelf toVC:[WeXActivityHomeViewController new]];
                 };
                 [self.view addSubview:_redPacketView];
             }
             // MARK: - 糖果领取
-            else
-            {
-                WeXActivityHomeViewController *ctrl = [[WeXActivityHomeViewController alloc] init];
-                [self.navigationController pushViewController:ctrl animated:YES];
+            else {
+                [WeXHomePushService pushFromVC:self toVC:[WeXActivityHomeViewController new]];
             }
         }
         else if ([headModel.systemCode isEqualToString:@"SUCCESS"])
@@ -781,22 +769,22 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
 }
 
 - (void)leftItemClick{
-    WeXCardSettingViewController *ctrl = [[WeXCardSettingViewController alloc] init];
-    [self.navigationController pushViewController:ctrl animated:YES];
+    [WeXHomePushService pushFromVC:self toVC:[WeXCardSettingViewController new]];
 }
 
 - (void)rihgtItemClick{
-    
-    if (![self hasPassport])
-    {
+    if (![self hasPassport]) {
         [self createPassportChooseView];
         return;
     }
+    [WeXHomePushService pushFromVC:self toVC:[WeXCardSettingViewController new]];
+    //测试
+    WeXNewMyController *vc = [[WeXNewMyController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
     
-    WeXCardSettingViewController *ctrl = [[WeXCardSettingViewController alloc] init];
-    [self.navigationController pushViewController:ctrl animated:YES];
+//    WeXCardSettingViewController *ctrl = [[WeXCardSettingViewController alloc] init];
+//    [self.navigationController pushViewController:ctrl animated:YES];
 }
-
 
 
 - (void)setupSubViews;
@@ -975,7 +963,7 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
     UIWebViewController *coinWebVC = [UIWebViewController new];
     coinWebVC.urlStr = [[WeXLocalizedManager shareManager] isChinese] ? WexP2PLoadCoinURL : WexP2PLoadCoinURL_EN;
     coinWebVC.accountAddress = userAddress;
-    [self.navigationController pushViewController:coinWebVC animated:YES];
+    [WeXHomePushService pushFromVC:self toVC:coinWebVC];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -991,7 +979,9 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
             return (kScreenWidth - 30) * kInviteFriendCardHeightWidthRatio;;
         }
         else if (indexPath.section == 3) {
+
             return _isAllowDisPlay ? [WeXP2PImageCardCell p2pImageCellHeight] : 0.01;
+            return [WeXP2PImageCardCell p2pImageCellHeight];
         }
         else if (indexPath.section == 4) {
             return 390;
@@ -1041,19 +1031,16 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
         if (indexPath.section == 0) {
             WeXCardViewController *ctrl = [[WeXCardViewController alloc] init];
             self.navigationController.delegate = ctrl;
-            [self.navigationController pushViewController:ctrl animated:YES];
+            [WeXHomePushService pushFromVC:self toVC:ctrl];
         }
         // MARK: - 邀请好友
-        else if (indexPath.section == 2)
-        {
-            WeXInviteFriendViewController *ctrl = [[WeXInviteFriendViewController alloc] init];
-            [self.navigationController pushViewController:ctrl animated:YES];
+        else if (indexPath.section == 2) {
+            [WeXHomePushService pushFromVC:self toVC:[WeXInviteFriendViewController new]];
         }
-        else if (indexPath.section == 4)
-        {
+        else if (indexPath.section == 4) {
             WeXWalletDigitalAssetListController *ctrl = [[WeXWalletDigitalAssetListController alloc] init];
             ctrl.datasArray = self.datasArray;
-            [self.navigationController pushViewController:ctrl animated:YES];
+            [WeXHomePushService pushFromVC:self toVC:ctrl];
         }
     }
 }
@@ -1094,24 +1081,20 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
     selectedNodeVC.DidSelectedNode = ^(WeXNetworkCheckModel *model){
         
     };
-    [self.navigationController pushViewController:selectedNodeVC animated:YES];
+    [WeXHomePushService pushFromVC:self toVC:selectedNodeVC];
     WEXNSLOG(@"网络节点选择");
 }
 
 - (void)tapAddressClick{
-    WeXPassportLocationViewController *ctrl = [[WeXPassportLocationViewController alloc] init];
-    [self.navigationController pushViewController:ctrl animated:YES];
+    [WeXHomePushService pushFromVC:self toVC:[WeXPassportLocationViewController new]];
 }
 
 // MARK: - 糖果领取
-- (void)activityButtonClick
-{
+- (void)activityButtonClick {
     [[WeXNetworkCheckManager shareManager] startAllNodeNetworkDelay:^(NSArray<WeXNetworkCheckModel *> *result) {
         WEXNSLOG(@"result:%@",result);
     }];
-    
-    if (![self hasPassport])
-    {
+    if (![self hasPassport]) {
         [self createPassportChooseView];
         return;
     }
@@ -1120,68 +1103,48 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
     
 }
 // MARK: - 我的信用
-- (void)creditButtonClick
-{
-    if (![self hasPassport])
-    {
+- (void)creditButtonClick {
+    if (![self hasPassport]) {
         [self createPassportChooseView];
         return;
     }
-    WeXCreditHomeViewController *ctrl = [[WeXCreditHomeViewController alloc] init];
-    [self.navigationController pushViewController:ctrl animated:YES];
+    [WeXHomePushService pushFromVC:self toVC:[WeXCreditHomeViewController new]];
+
 }
 // MARK: - 信用借币
-- (void)borrowButtonClick
-{
-    if (![self hasPassport])
-    {
+- (void)borrowButtonClick {
+    if (![self hasPassport]) {
         [self createPassportChooseView];
         return;
     }
-    WeXCreditBorrowUSDTViewController *ctrl = [[WeXCreditBorrowUSDTViewController alloc] init];
-    [self.navigationController pushViewController:ctrl animated:YES];
-    
+    [WeXHomePushService pushFromVC:self toVC:[WeXCreditBorrowUSDTViewController new]];
 }
 // MARK: - 借贷报告
-- (void)reportButtonClick
-{
-    if (![self hasPassport])
-    {
+- (void)reportButtonClick {
+    if (![self hasPassport]) {
         [self createPassportChooseView];
         return;
     }
-    WeXLoanReportHomeViewController *ctrl = [[WeXLoanReportHomeViewController alloc] init];
-    [self.navigationController pushViewController:ctrl animated:YES];
+    [WeXHomePushService pushFromVC:self toVC:[WeXLoanReportHomeViewController new]];
 }
 
 #pragma mark WeXCreatePassportChooseViewDelegate
 // MARK: - 创建
-
--(void)clickCreatePassportButton
-{
-    WeXCreatePassportViewController *ctrl = [[WeXCreatePassportViewController alloc] init];
-    [self.navigationController pushViewController:ctrl animated:YES];
+-(void)clickCreatePassportButton {
+    [WeXHomePushService pushFromVC:self toVC:[WeXCreatePassportViewController new]];
 }
 // MARK: - 导入
-- (void)clickImportPassportButton
-{
-    WeXImportViewController *ctrl = [[WeXImportViewController alloc] init];
-    [self.navigationController pushViewController:ctrl animated:YES];
+- (void)clickImportPassportButton {
+    [WeXHomePushService pushFromVC:self toVC:[WeXImportViewController new]];
 }
 
 #pragma mark WeXGetRedPacketViewDelegate
-- (void)redPacketViewClickJumpButton
-{
-    
-}
-
 - (void)keyboardChangedWithTransition:(YYKeyboardTransition)transition {
     [UIView animateWithDuration:transition.animationDuration delay:0 options:transition.animationOption animations:^{
         if (transition.fromVisible) {
             _inviteCodeView.frame = self.view.bounds;
         }
-        else
-        {
+        else {
             ///用此方法获取键盘的rect
             CGRect kbFrame = [[YYKeyboardManager defaultManager] convertRect:transition.toFrame toView:self.view];
             ///从新计算view的位置并赋值
@@ -1194,8 +1157,7 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
     }];
 }
 
--(void)dealloc
-{
+-(void)dealloc {
     [[YYKeyboardManager defaultManager] removeObserver:self];
 }
 
@@ -1211,173 +1173,18 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
         WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[i];
         if (i == self.datasArray.count-1) {
              [varietyCodesStr appendString:[NSString stringWithFormat:@"%@",model.symbol]];
-        }
-        else
-        {
+        } else {
               [varietyCodesStr appendString:[NSString stringWithFormat:@"%@,",model.symbol]];
         }
-    
     }
-   
         paramModal.coinTypes = varietyCodesStr;
         [getAgentAdapter run:paramModal];
 }
-
-//用户第一次安装新版本时的新功能提示(searchchain)数据分析功能
-- (void)judgeIsDisplaySearchChainView{
-    
-    // 获取软件自身的版本号
-    NSDictionary *infoDict = [NSBundle mainBundle].infoDictionary;
-    NSString *currentVersion = infoDict[@"CFBundleShortVersionString"];
-    NSLog(@"currentVersion = %@", currentVersion);
-
-    // 获取沙盒中存储的软件版本号
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *sandboxVersion = [defaults objectForKey:@"wexVersion"];
-    NSLog(@"sandboxVersion = %@", sandboxVersion);
-    [defaults setObject:currentVersion forKey:@"wexVersion"];
-    [defaults synchronize];
-
-    if ([currentVersion compare:sandboxVersion] == NSOrderedDescending) {
-        [self addSearchChainView];
-    }else{
-    }
-}
-
-- (void)addSearchChainView{
-    
-    UIView *blackView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-    blackView .backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-    [self.view addSubview:blackView ];
-    _backView = blackView;
-    
-    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(15, 70, kScreenWidth-30, (kScreenWidth-30)*kCardHeightWidthRatio)];
-    [_backView addSubview:headerView];
-    UIImageView *oneBackImg = [[UIImageView alloc]init];
-    oneBackImg.image = [UIImage imageNamed:@"digital_card"];
-    [headerView addSubview:oneBackImg];
-    [oneBackImg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.bottom.equalTo(headerView);
-    }];
-    UIImageView *twoBackImg = [[UIImageView alloc]init];
-    twoBackImg.image = [UIImage imageNamed:@"digital_head"];
-    [headerView addSubview:twoBackImg];
-    [twoBackImg mas_makeConstraints:^(MASConstraintMaker *make) {
-      make.centerX.equalTo(headerView);
-      make.centerY.equalTo(headerView);
-      make.width.mas_equalTo(80);
-      make.height.mas_equalTo(80);
-    }];
-    
-    UILabel *addressLabel = [[UILabel alloc]init];
-    addressLabel.textColor = [UIColor whiteColor];
-    NSString *address = [WexCommonFunc getFromAddress];
-    if (address.length>8) {
-        NSString *subAddress1 = [address substringWithRange:NSMakeRange(address.length-8, 4)];
-        NSString *subAddress2 = [address substringWithRange:NSMakeRange(address.length-4, 4)];
-        addressLabel.text = [NSString stringWithFormat:@"0x  %@  %@",subAddress1,subAddress2];
-        //设置文本属性
-        NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc]init];
-        //设置行间距
-        [paraStyle setLineSpacing:5];
-        [paraStyle setLineBreakMode:NSLineBreakByWordWrapping];
-        //字体大小
-        UIFont *textFont = [UIFont systemFontOfSize:15];
-        //字体颜色
-        UIColor *textColor = [UIColor lightGrayColor];
-        NSDictionary *textDic = @{NSFontAttributeName : textFont,NSForegroundColorAttributeName : textColor,NSParagraphStyleAttributeName : paraStyle};
-        CGSize textSize = [addressLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width *0.5, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:textDic context:nil].size;
-        //设置虚线边框
-        CAShapeLayer *borderLayer = [CAShapeLayer layer];
-        borderLayer.bounds = CGRectMake(0, 0, textSize.width + 10, textSize.height + 10);
-        //中心点位置
-        borderLayer.position = CGPointMake(textSize.width *0.5, textSize.height *0.5);
-        
-        borderLayer.path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, textSize.width + 10, textSize.height + 10)].CGPath;
-        //边框的宽度
-        borderLayer.lineWidth = 2;
-        //边框虚线线段的宽度
-        borderLayer.lineDashPattern = @[@5,@5];
-        borderLayer.fillColor = [UIColor clearColor].CGColor;
-        borderLayer.strokeColor = [UIColor whiteColor].CGColor;
-        [addressLabel.layer addSublayer:borderLayer];
-        
-    }
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]  initWithTarget:self action:@selector(goToWebViewClick)];
-    addressLabel.userInteractionEnabled = YES;
-    [addressLabel addGestureRecognizer:tap];
-    addressLabel.font = [UIFont systemFontOfSize:15];
-    [headerView addSubview:addressLabel];
-    [addressLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(headerView.mas_bottom).offset(-10);
-        make.leading.equalTo(headerView).offset(25);
-        make.height.mas_equalTo(20);
-    }];
-   
-    
-    
-    
-    UILabel *nameLabel = [[UILabel alloc]init];
-    nameLabel.textColor = [UIColor whiteColor];
-    nameLabel.text = [WexDefaultConfig instance].nickName;
-    nameLabel.font = [UIFont systemFontOfSize:15];
-    [headerView addSubview:nameLabel];
-    [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(addressLabel.mas_top).offset(-5);
-        make.leading.equalTo(addressLabel);
-        make.height.mas_equalTo(20);
-    }];
-    
-    UIImageView *fingerImg = [[UIImageView alloc]init];
-    fingerImg.image = [UIImage imageNamed:@"finger"];
-    [headerView addSubview:fingerImg];
-    [fingerImg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(30);
-        make.width.mas_equalTo(24);
-        make.top.equalTo(headerView.mas_bottom).offset(-2);
-        make.leading.equalTo(_backView).offset(35);
-    }];
-    
-    UILabel *defultLabel = [[UILabel alloc]init];
-    defultLabel.text = @"新增了钱包地址的Searchain数据分析服务";
-    defultLabel.font = [UIFont systemFontOfSize:15];
-    defultLabel.textColor = [UIColor whiteColor];
-    defultLabel.textAlignment = NSTextAlignmentLeft;
-    [_backView addSubview:defultLabel];
-    [defultLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headerView.mas_bottom).offset(10);
-        make.leading.equalTo(fingerImg.mas_trailing).offset(10);
-        make.trailing.mas_equalTo(-15);
-        make.height.mas_offset(30);
-    }];
-    
-    UIButton *deleteBtn = [[UIButton alloc]initWithFrame:CGRectMake(kScreenWidth/2-124, (kScreenWidth-30)*kCardHeightWidthRatio +120, 114, 40)];
-    [deleteBtn setTitle:@"去看看" forState:UIControlStateNormal];
-    deleteBtn.titleLabel.font = [UIFont systemFontOfSize:15.0];
-    [deleteBtn setBackgroundColor:ColorWithHex(0x6766CC)];
-    deleteBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
-    deleteBtn.layer.cornerRadius = 6;
-    deleteBtn.clipsToBounds = YES;
-    [deleteBtn addTarget:self action:@selector(goToWebViewClick) forControlEvents:UIControlEventTouchUpInside];
-    [_backView addSubview:deleteBtn];
-    
-    UIButton *sureBtn = [[UIButton alloc]initWithFrame:CGRectMake(kScreenWidth/2+10, (kScreenWidth-30)*kCardHeightWidthRatio +120, 114, 40)];
-    [sureBtn setTitle:@"知道了" forState:UIControlStateNormal];
-    sureBtn.titleLabel.font = [UIFont systemFontOfSize:15.0];
-    sureBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [sureBtn setBackgroundColor:ColorWithHex(0x6766CC)];
-    sureBtn.layer.cornerRadius = 6;
-    sureBtn.clipsToBounds = YES;
-    [sureBtn addTarget:self action:@selector(removeSearchChainView) forControlEvents:UIControlEventTouchUpInside];
-    [_backView addSubview:sureBtn];
-   
-}
-
 - (void)goToWebViewClick{
     [self removeSearchChainView];
     WeXAddressWebViewController *vc = [[WeXAddressWebViewController alloc]init];
     vc.addressStr = [WexCommonFunc getFromAddress];
-    [self.navigationController pushViewController:vc animated:YES];
+    [WeXHomePushService pushFromVC:self toVC:vc];
 }
 
 // MARK: - 币生息引导页
@@ -1403,8 +1210,7 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
 - (void)pushToCoinProfitDetailVC {
     [_profitGuideView removeFromSuperview];
     _profitGuideView = nil;
-    WeXCoinProfitDetailViewController *coinProfitVC = [WeXCoinProfitDetailViewController new];
-    [self.navigationController pushViewController:coinProfitVC animated:YES];
+    [WeXHomePushService pushFromVC:self toVC:[WeXCoinProfitDetailViewController new]];
 }
 
 - (void)removeSearchChainView{
