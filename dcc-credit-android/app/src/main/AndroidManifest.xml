@@ -440,9 +440,15 @@
             android:label="认购额度"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name="io.wexchain.android.dcc.modules.home.HomeActivity"
-            />
-
+        <activity
+            android:name="io.wexchain.android.dcc.modules.home.HomeActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.bsx.BsxListActivity"
+            android:label="币生息"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
