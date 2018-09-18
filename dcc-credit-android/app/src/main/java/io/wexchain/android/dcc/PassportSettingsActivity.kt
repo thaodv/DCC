@@ -15,16 +15,15 @@ import android.view.animation.AnimationUtils
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
-import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
+import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.android.dcc.vm.Protect
@@ -35,7 +34,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportSettingsBinding
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CheckUpgrade
-import io.wexchain.ipfs.utils.doMain
+import io.wexchain.ipfs.utils.io_main
 import zlc.season.rxdownload3.core.Mission
 import java.io.File
 
@@ -96,8 +95,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
         val anim = AnimationUtils.loadAnimation(this, R.anim.rotate)
         IpfsOperations.getIpfsKey()
                 .checkKey()
-                .subscribeOn(Schedulers.io())
-                .doMain()
+                .io_main()
                 .doOnSubscribe {
                     binding.ivCloudLoding.startAnimation(anim)
                     binding.ivCloudLoding.visibility = View.VISIBLE

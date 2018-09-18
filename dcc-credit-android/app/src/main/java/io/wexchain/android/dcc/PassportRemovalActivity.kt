@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
@@ -25,7 +24,7 @@ import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportRemovalBinding
-import io.wexchain.ipfs.utils.doMain
+import io.wexchain.ipfs.utils.io_main
 
 class PassportRemovalActivity : BaseCompatActivity() {
 
@@ -64,8 +63,7 @@ class PassportRemovalActivity : BaseCompatActivity() {
     private fun getCloudToken() {
         IpfsOperations.getIpfsKey()
                 .checkKey()
-                .subscribeOn(Schedulers.io())
-                .doMain()
+                .io_main()
                 .subscribeBy {
                     val ipfsKeyHash = passport.getIpfsKeyHash()
                     binding.btnBackupData.onClick {

@@ -132,6 +132,7 @@ interface ChainGateway {
         @Query("txHash") txHash: String
     ): Single<Result<List<LoanChainOrder>>>
 
+
     companion object {
         const val BUSINESS_ID = "ID"
         const val BUSINESS_BANK_CARD = "BANK_CARD"
