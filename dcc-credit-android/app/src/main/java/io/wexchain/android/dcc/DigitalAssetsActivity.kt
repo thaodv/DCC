@@ -32,14 +32,6 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
         initToolbar()
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         setupTransitions()
-
-
-        binding.ibAdd.setOnClickListener {
-            startActivity(Intent(this, SearchDigitalCurrencyActivity::class.java))
-        }
-        binding.btnShare.setOnClickListener {
-            showShare()
-        }
     }
 
     override fun onResume() {
@@ -55,10 +47,6 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
         binding.rvAssets.adapter = adapter
 
         binding.assets!!.updateHoldingAndQuote()
-    }
-
-    private fun showShare() {
-//        ShareHelper.showShareWithCapture(this, window.decorView)
     }
 
     private fun setupTransitions() {
@@ -88,7 +76,6 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.menu_select_node, menu)
-
         return true
     }
 
@@ -96,6 +83,10 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
         return when (item?.itemId) {
             R.id.iv_select_node -> {
                 navigateTo(SelectNodeActivity::class.java)
+                true
+            }
+            R.id.iv_add_token->{
+                navigateTo(SearchDigitalCurrencyActivity::class.java)
                 true
             }
             else -> super.onOptionsItemSelected(item)

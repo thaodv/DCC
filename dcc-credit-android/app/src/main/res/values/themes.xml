@@ -14,7 +14,7 @@
         <item name="android:windowAnimationStyle">@style/AnimationDcc</item>
         <item name="android:windowBackground">@color/white</item>
 
-        <item name="navigationIcon">@drawable/arrow_left</item>
+        <item name="navigationIcon">@drawable/toolbar_cancel_bsx</item>
 
         <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
         <item name="cardViewStyle">@style/CardView.Light.Dcc</item>

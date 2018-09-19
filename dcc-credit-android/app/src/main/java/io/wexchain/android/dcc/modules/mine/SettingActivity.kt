@@ -29,6 +29,7 @@ class SettingActivity : BaseCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
+        initToolbar()
         initView()
         initClick()
     }

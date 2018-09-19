@@ -98,12 +98,12 @@ class FindFragment:BaseCompatFragment(), ItemViewClickListener<MarketingActivity
         App.get().marketingApi.queryActivity()
                 .compose(Result.checked())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
+               /* .doOnSubscribe {
                     (activity!! as HomeActivity).showLoadingDialog()
                 }
                 .doFinally {
                     (activity!! as HomeActivity). hideLoadingDialog()
-                }
+                }*/
                 .subscribe({ list ->
                     adapter.setList(list)
                 }, {

@@ -173,7 +173,7 @@
     <string name="update_key">更新密钥</string>
     <string name="bitexpress_member">Hi,BitEXPRESS会员</string>
     <string name="default_nickname">BitExpress会员</string>
-    <string name="candy_release_notice">&#x3000;&#x3000;我们会在这里不定期的发放免费糖果，建议您打开系统通知，我们将在第一时间提醒您领取新活动的糖果。</string>
+    <string name="candy_release_notice">&#x3000;&#x3000;神秘花园和知识问答PK即将上线。届时您可以通过知识问答PK获得阳光（可看做挖矿值），并根据阳光值的多少领取神秘花园的奖励。您还可以去其他小伙伴的神秘花园收取奖励哦~~</string>
     <string name="mining_rewardss">挖矿奖励</string>
     <string name="mining_contribution">挖矿贡献值 </string>
     <string name="mine_faster">加速挖矿</string>

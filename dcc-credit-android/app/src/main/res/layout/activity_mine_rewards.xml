@@ -85,7 +85,7 @@
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?android:attr/textColorLink"
+                android:textColor="#7B40FF"
                 android:text="@string/details"
                 app:layout_constraintTop_toBottomOf="@id/v_bg_mine"
                 app:layout_constraintRight_toRightOf="parent"

@@ -33,12 +33,11 @@ import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentMineBinding
 import io.wexchain.ipfs.utils.io_main
-import kotlinx.android.synthetic.main.fragment_mine.*
 
 /**
  *Created by liuyang on 2018/9/18.
  */
-class MineFragment: BindFragment<FragmentMineBinding>() {
+class MineFragment : BindFragment<FragmentMineBinding>() {
 
     private val passport by lazy {
         App.get().passportRepository
@@ -171,9 +170,7 @@ class MineFragment: BindFragment<FragmentMineBinding>() {
         App.get().passportRepository.currPassport.observe(this, Observer {
             binding.passport = it
         })
-
-        tv_passport_protect_status.isChecked
-
+        binding.tvNikename.text = passport.getCurrentPassport()?.nickname
     }
 
     class ChooseImageFromDialog : DialogFragment() {
