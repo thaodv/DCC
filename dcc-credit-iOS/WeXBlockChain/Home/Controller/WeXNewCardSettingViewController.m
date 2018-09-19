@@ -25,6 +25,7 @@
 #import "SettingFaceViewCell.h"
 #import "WeXVersionUpdateManager.h"
 #import "WeXSelectedNodeViewController.h"
+#import "AppDelegate.h"
 
 @interface WeXNewCardSettingViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -200,14 +201,13 @@
     defaultLabel.userInteractionEnabled = YES;
     UITapGestureRecognizer *twoTapGes = [[UITapGestureRecognizer alloc]  initWithTarget:self action:@selector(deleteClick)];
     [defaultLabel addGestureRecognizer:twoTapGes];
-    
     _tableView.tableFooterView = footerView;
 }
 
 - (void)deleteClick{
-    
-    WeXPassportDeleteViewController *ctrl = [[WeXPassportDeleteViewController alloc] init];
-    [self.navigationController pushViewController:ctrl animated:YES];
+    [(AppDelegate *)[UIApplication sharedApplication].delegate resetRootWindowController];
+//    WeXPassportDeleteViewController *ctrl = [[WeXPassportDeleteViewController alloc] init];
+//    [self.navigationController pushViewController:ctrl animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

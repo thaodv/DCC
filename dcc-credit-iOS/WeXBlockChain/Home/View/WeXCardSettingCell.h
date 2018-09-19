@@ -11,5 +11,8 @@
 @interface WeXCardSettingCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *desLabel;
+//20180905 ipfs节点图标
+//@property (nonatomic,strong)UIImageView *loadImgView;
+@property (strong, nonatomic) IBOutlet UIImageView *loadImgView;
 
 @end

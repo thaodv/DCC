@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -45,8 +45,16 @@
                             <constraint firstAttribute="height" constant="0.5" id="ar2-Iz-goA"/>
                         </constraints>
                     </view>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v9z-Nw-Vud">
+                        <rect key="frame" x="274" y="11" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="nvU-gB-ojv"/>
+                            <constraint firstAttribute="height" constant="20" id="o20-eN-Cbb"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="Zwu-FZ-QiS" firstAttribute="leading" secondItem="v9z-Nw-Vud" secondAttribute="trailing" constant="8" id="11B-9j-Cg9"/>
                     <constraint firstItem="0sF-vt-vZ9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="3Wx-gV-dMw"/>
                     <constraint firstAttribute="trailing" secondItem="Zwu-FZ-QiS" secondAttribute="trailing" constant="10" id="3cL-V8-ne8"/>
                     <constraint firstItem="kip-we-rjW" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="AoS-B7-bYO"/>
@@ -55,12 +63,14 @@
                     <constraint firstAttribute="bottom" secondItem="0sF-vt-vZ9" secondAttribute="bottom" id="iFl-S1-NV0"/>
                     <constraint firstAttribute="trailing" secondItem="0sF-vt-vZ9" secondAttribute="trailing" constant="10" id="k2y-dj-kGc"/>
                     <constraint firstItem="6Qa-cu-gru" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="nwt-mJ-Hcs"/>
+                    <constraint firstItem="v9z-Nw-Vud" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="pKC-RM-ej9"/>
                     <constraint firstItem="Zwu-FZ-QiS" firstAttribute="leading" secondItem="kip-we-rjW" secondAttribute="trailing" constant="10" id="uNu-tt-TU5"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
                 <outlet property="desLabel" destination="kip-we-rjW" id="Ydh-TD-rjr"/>
+                <outlet property="loadImgView" destination="v9z-Nw-Vud" id="9Cr-8t-dOg"/>
                 <outlet property="titleLabel" destination="6Qa-cu-gru" id="hrB-5W-7q2"/>
             </connections>
             <point key="canvasLocation" x="-132" y="14"/>
