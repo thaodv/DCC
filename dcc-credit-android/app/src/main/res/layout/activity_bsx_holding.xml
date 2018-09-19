@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:background="#F5F5FD"
         android:orientation="vertical"
-        tools:context="io.wexchain.android.dcc.modules.bsx.BsxMarketActivity">
+        tools:context="io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity">
 
         <include layout="@layout/include_toolbar"/>
 
@@ -81,32 +81,12 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:text="热门推荐"
-            android:textColor="#000"
-            android:textSize="12sp"/>
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_bsx_market"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:text="更多产品敬请期待~"
-            android:textColor="#BAC0C5"
-            android:textSize="12sp"
-            tools:ignore="HardcodedText"/>
+            tools:listitem="@layout/item_bsx_holding"/>
 
     </LinearLayout>
-
 </layout>

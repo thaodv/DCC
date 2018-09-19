@@ -1,6 +1,7 @@
 package io.wexchain.android.dcc.modules.bsx
 
 import android.os.Bundle
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityBsxMarketBinding
@@ -14,6 +15,7 @@ class BsxMarketActivity : BindActivity<ActivityBsxMarketBinding>() {
         super.onCreate(savedInstanceState)
         initToolbar(true)
 
+        binding.ivNext.setOnClickListener { navigateTo(BsxHoldingActivity::class.java) }
 
     }
 }

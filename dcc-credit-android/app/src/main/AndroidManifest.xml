@@ -449,8 +449,14 @@
             android:label="币生息"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name="io.wexchain.android.dcc.modules.mine.SettingActivity" />
-
+        <activity
+            android:name="io.wexchain.android.dcc.modules.mine.SettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity"
+            android:label="币生息持仓"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
