@@ -3,12 +3,12 @@ package io.wexchain.android.dcc.modules.bsx
 import android.os.Bundle
 import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.dcc.R
-import io.wexchain.dcc.databinding.ActivityBsxListBinding
+import io.wexchain.dcc.databinding.ActivityBsxMarketBinding
 
-class BsxListActivity : BindActivity<ActivityBsxListBinding>() {
+class BsxMarketActivity : BindActivity<ActivityBsxMarketBinding>() {
 
     override val contentLayoutId: Int
-        get() = R.layout.activity_bsx_list
+        get() = R.layout.activity_bsx_market
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

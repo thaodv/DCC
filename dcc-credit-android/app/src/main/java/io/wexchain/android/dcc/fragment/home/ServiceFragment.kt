@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import io.wexchain.android.dcc.base.BaseCompatFragment
-import io.wexchain.android.dcc.modules.bsx.BsxListActivity
+import io.wexchain.android.dcc.modules.bsx.BsxMarketActivity
 import io.wexchain.dcc.R
 
 /**
@@ -23,7 +23,7 @@ class ServiceFragment : BaseCompatFragment() {
         mBtBsx = view.findViewById(R.id.bt_bsx)
 
         mBtBsx.setOnClickListener {
-            startActivity(Intent(activity, BsxListActivity::class.java))
+            startActivity(Intent(activity, BsxMarketActivity::class.java))
         }
 
         return view

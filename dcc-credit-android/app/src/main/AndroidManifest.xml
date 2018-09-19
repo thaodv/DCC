@@ -445,7 +445,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name="io.wexchain.android.dcc.modules.bsx.BsxListActivity"
+            android:name="io.wexchain.android.dcc.modules.bsx.BsxMarketActivity"
             android:label="币生息"
             android:screenOrientation="portrait">
         </activity>

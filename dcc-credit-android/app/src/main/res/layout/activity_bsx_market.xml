@@ -7,40 +7,41 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#F5F5FD"
         android:orientation="vertical"
-        tools:context="io.wexchain.android.dcc.modules.bsx.BsxListActivity">
+        tools:context="io.wexchain.android.dcc.modules.bsx.BsxMarketActivity">
 
         <include layout="@layout/include_toolbar"/>
 
-
-        <View style="@style/DividerHorizontal"/>
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp">
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_bsx_market_top">
 
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:padding="10dp">
 
                 <TextView
                     android:id="@+id/tv_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="在投本金（￥）"/>
+                    android:layout_marginTop="20dp"
+                    android:text="在投本金（￥）"
+                    android:textColor="#000"
+                    android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/tv_invest_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_1"
-                    android:layout_centerHorizontal="true"
-                    android:text="≈ 30,000.89"/>
-
+                    android:text="≈ 30,000.89"
+                    android:textColor="#7B40FF"
+                    android:textSize="12sp"/>
 
             </RelativeLayout>
 
@@ -48,24 +49,25 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:padding="10dp">
 
                 <TextView
                     android:id="@+id/tv_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="预期收益（￥）"/>
+                    android:layout_marginTop="20dp"
+                    android:text="预期收益（￥）"
+                    android:textColor="#000"
+                    android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/tv_wait_profit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_2"
-                    android:layout_centerHorizontal="true"
-                    android:text="≈ 100.08"/>
-
+                    android:text="≈ 100.08"
+                    android:textColor="#7B40FF"
+                    android:textSize="12sp"/>
 
             </RelativeLayout>
 
@@ -79,51 +81,31 @@
 
         </LinearLayout>
 
-        <View style="@style/DividerHorizontal"/>
-
-        <View
-            style="@style/DividerHorizontal"
-            android:layout_marginTop="10dp"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp">
-
-            <View
-                android:id="@+id/v_tag"
-                android:layout_width="4dp"
-                android:layout_height="20dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:background="@color/blue_magenta"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="6dp"
-                android:layout_toRightOf="@+id/v_tag"
-                android:text="热门推荐"/>
-
-        </RelativeLayout>
-
-        <View
-            style="@style/DividerHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/divider_stroke_width"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
+            android:text="热门推荐"
+            android:textColor="#000"
+            android:textSize="12sp"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_list"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_bsx_list_first"/>
+            tools:listitem="@layout/item_bsx_market_first"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:text="更多产品敬请期待~"
+            android:textColor="#BAC0C5"
+            android:textSize="12sp"
+            tools:ignore="HardcodedText"/>
 
     </LinearLayout>
 
