@@ -1,9 +1,9 @@
 pragma solidity ^0.4.2;
 
-import "../ownership/HasToken.sol";
+import "../ownership/HasETH.sol";
 import "../math/SafeMath.sol";
 
-contract BSXContract is HasToken {
+contract BSXETHContract is HasETH {
 
     using SafeMath for uint256;
 
@@ -42,7 +42,7 @@ contract BSXContract is HasToken {
     event invested(address investor, uint256 investedAmount);
     event repaid(address investor, uint256 repaidAmount);
 
-    function BSXContract(){
+    function BSXETHContract(){
         status = Status.CREATED;
     }
 
@@ -60,20 +60,19 @@ contract BSXContract is HasToken {
     }
 
 
-    function invest(uint256 amount) public {
+    function invest() public payable {
         require(checkStatus(status, Status.OPENED));
-        require(amount >= minAmountPerHand);
-        require(investedTotalAmount.add(amount) <= investCeilAmount);
+        require(msg.value >= minAmountPerHand);
+        require(investedTotalAmount.add(msg.value) <= investCeilAmount);
         require(msg.sender == tx.origin);
 
-        require(token.superTransfer(this, amount));
         address investor = tx.origin;
         if (investedAmountMapping[investor] == 0) {
             investorArray.push(investor);
         }
-        investedAmountMapping[investor] = investedAmountMapping[investor].add(amount);
-        investedTotalAmount = investedTotalAmount.add(amount);
-        invested(msg.sender, amount);
+        investedAmountMapping[investor] = investedAmountMapping[investor].add(msg.value);
+        investedTotalAmount = investedTotalAmount.add(msg.value);
+        invested(msg.sender, msg.value);
     }
 
 
@@ -87,7 +86,7 @@ contract BSXContract is HasToken {
                 uint256 profitAmount = investedAmount.mul(rateNumerator).div(denominator);
                 uint256 repaidAmount = investedAmount.add(profitAmount);
 
-                token.safeTransfer(investor, repaidAmount);
+                investor.transfer(repaidAmount);
                 repaidAmountMapping[investor] = repaidAmount;
                 repaidTotalAmount = repaidTotalAmount.add(repaidAmount);
                 repaid(investor, repaidAmount);
@@ -135,16 +134,11 @@ contract BSXContract is HasToken {
         minAmountPerHand = _minAmountPerHand;
     }
 
-    function setERC20(address _ERC20) public onlyOwner {
-        require(_ERC20 != 0);
-        token = ERC20(_ERC20);
-    }
-
     function setSaleInfo(string _saleInf) public onlyOwner {
         saleInfo = _saleInf;
     }
 
-    function getInvestorArrayLength()public constant returns(uint256 length){
+    function getInvestorArrayLength() public view returns (uint256 length){
         return investorArray.length;
     }
 
