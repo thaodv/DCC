@@ -21,11 +21,13 @@
 
 #import "WeXPassportManagerRecordCell.h"
 #import "WeXNewPassportManagerRecordCell.h"
-
+#import "WeXLoginManagerTopCell.h"
+#import "WeXLoginManagerMoreDataCell.h"
+#import "WeXLoginRecoredViewController.h"
+#import "WeXHomePushService.h"
 
 #define kAutoLayoutHeight1 65+kNavgationBarHeight
 #define kAutoLayoutHeight2 105+kNavgationBarHeight
-
 
 
 typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
@@ -34,7 +36,6 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
     WeXPassportManagerTypeAllow,
     WeXPassportManagerTypeUpdatePubKey
 };
-
 
 
 @interface WeXLoginManagerViewController ()<UITableViewDelegate,UITableViewDataSource,WeXPasswordManagerDelegate>
@@ -78,28 +79,55 @@ typedef NS_ENUM(NSInteger,WeXPassportManagerType) {
 @property (nonatomic,strong)WeXDeletePubKeyAdapter *deletePubKeyAdapter;
 @property (nonatomic,strong)WeXGetPubKeyAdapter *getPubKeyAdapter;
 @property (nonatomic,strong)WeXGetTicketResponseModal *getTicketModel;
-
 @property (nonatomic,assign)WeXPassportManagerType managerType;
-
 @property (nonatomic,strong)NSMutableArray  *datasArray;
-
+//更新记录
+@property (nonatomic, strong) NSMutableArray  *updateRecordArrays;
+//变更记录
+@property (nonatomic, strong) NSMutableArray  *changeRecordArrays;
 @end
 
-static NSString *const kCellID = @"WeXPassportManagerRecordCellID";
+static NSString * const kCellID = @"WeXPassportManagerRecordCellID";
+static NSString * const kTopCellID = @"WeXLoginManagerTopCellID";
+static NSString * const kMoreDataCellID = @"WeXLoginManagerMoreDataCellID";
 
 @implementation WeXLoginManagerViewController
+
+static NSString * const kEnablePrefix = @"启用";
+static NSString * const kDisablePrefix = @"禁用";
+
+static NSInteger const kMaxCount = 3;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = WeXLocalizedString(@"统一登录管理");
     [self setupSubViews];
     [self commonInit];
-    [self setNavigationNomalBackButtonType];
+    [self configureNav];
     [self getAllManagerRecordType];
 }
 
+- (void)configureNav {
+    [self setNavigationNomalBackButtonType];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"变更记录" style:UIBarButtonItemStyleDone target:self action:@selector(changeRecordEvent:)];
+    [rightItem setTitleTextAttributes:@{NSFontAttributeName:WexFont(16),NSForegroundColorAttributeName:ColorWithHex(0xC009FF)} forState:UIControlStateNormal];
+    self.navigationItem.rightBarButtonItem = rightItem;
+    
+    _updateRecordArrays = [NSMutableArray new];
+    _changeRecordArrays = [NSMutableArray new];
+}
+
+
 - (void)commonInit{
     _model = [WexCommonFunc getPassport];
+}
+
+- (void)changeRecordEvent:(UIBarButtonItem *)item {
+    WeXLoginRecoredViewController *recoredVC = [WeXLoginRecoredViewController new];
+    recoredVC.type = WeXLoginRecoredTypeChange;
+    recoredVC.dataArray = self.changeRecordArrays;
+    [WeXHomePushService pushFromVC:self toVC:recoredVC];
+    WEXNSLOG(@"变更记录");
 }
 
 
@@ -227,9 +255,7 @@ static NSString *const kCellID = @"WeXPassportManagerRecordCellID";
         if ([headModel.systemCode isEqualToString:@"SUCCESS"]&&[headModel.businessCode isEqualToString:@"SUCCESS"]) {
             _getTicketModel = (WeXGetTicketResponseModal *)response;
             [self createGetContractAddressRequest];
-        }
-        else
-        {
+        } else {
             [WeXPorgressHUD hideLoading];
             [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
@@ -375,12 +401,9 @@ static NSString *const kCellID = @"WeXPassportManagerRecordCellID";
         }
        
     }
-    
-    
 }
 
--(NSMutableArray *)datasArray
-{
+-(NSMutableArray *)datasArray {
     if (_datasArray == nil) {
         _datasArray = [NSMutableArray array];
     }
@@ -390,12 +413,21 @@ static NSString *const kCellID = @"WeXPassportManagerRecordCellID";
 - (void)getAllManagerRecordType{
     RLMResults<WeXPassportManagerRLMModel *> *results = [WeXPassportManagerRLMModel allObjects];
     [self.datasArray removeAllObjects];
+    [self.changeRecordArrays removeAllObjects];
+    [self.updateRecordArrays removeAllObjects];
     NSLog(@"count=%lu",(unsigned long)results.count);
     for (WeXPassportManagerRLMModel *model in results) {
         [self.datasArray addObject:model];
     }
     self.datasArray = (NSMutableArray *)[[self.datasArray reverseObjectEnumerator] allObjects];
     
+    for (WeXPassportManagerRLMModel *model in _datasArray) {
+        if ([model.type hasPrefix:kEnablePrefix] | [model.type hasPrefix: kDisablePrefix]) {
+            [self.changeRecordArrays addObject:model];
+        } else {
+            [self.updateRecordArrays addObject:model];
+        }
+    }
     [_tableView reloadData];
 }
 
@@ -435,12 +467,9 @@ static NSString *const kCellID = @"WeXPassportManagerRecordCellID";
     if (_model.isAllow) {
         [self updateSubviews:YES];
     }
-    else
-    {
+    else {
         [self updateSubviews:NO];
     }
-    
-    
 }
 
 //初始化滚动视图
@@ -487,43 +516,28 @@ static NSString *const kCellID = @"WeXPassportManagerRecordCellID";
         make.leading.trailing.equalTo(self.view);
         make.bottom.equalTo(forbiddenBtn.mas_top);
     }];
-//    _backView = backView;
-    
-    UILabel *recordLabel= [[UILabel alloc] init];
-    recordLabel.text = WeXLocalizedString(@"统一登录变更记录");
-    recordLabel.font = [UIFont systemFontOfSize:18];
-    recordLabel.textColor = COLOR_LABEL_DESCRIPTION;
-    recordLabel.textAlignment = NSTextAlignmentLeft;
-    [backView addSubview:recordLabel];
-    [recordLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(backView).offset(0);
-        make.leading.equalTo(self.view).offset(10);
-        make.width.equalTo(@200);
-        make.height.equalTo(@40);
-    }];
     
     UIView *line = [[UIView alloc] init];
-    line.backgroundColor = COLOR_ALPHA_LINE;
+    line.backgroundColor = WexSepratorLineColor;
     [backView addSubview:line];
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(backView).offset(10);
-        make.trailing.equalTo(backView).offset(-10);
-        make.top.equalTo(recordLabel.mas_bottom);
-        make.height.equalTo(@HEIGHT_LINE);
+        make.width.mas_equalTo(kScreenWidth);
+        make.height.mas_equalTo(10);
+        make.top.mas_equalTo(0);
     }];
     
-    _tableView = [[UITableView alloc] init];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 300) style:UITableViewStyleGrouped];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.rowHeight = 50;
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenHeight, 30)];
-    footerLabel.text = WeXLocalizedString(@"没有更多记录了");
-    footerLabel.font = [UIFont systemFontOfSize:14];
-    footerLabel.textColor = [UIColor lightGrayColor];
-    footerLabel.textAlignment = NSTextAlignmentCenter;
-    _tableView.tableFooterView = footerLabel;
+//    UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenHeight, 30)];
+//    footerLabel.text = WeXLocalizedString(@"没有更多记录了");
+//    footerLabel.font = [UIFont systemFontOfSize:14];
+//    footerLabel.textColor = [UIColor lightGrayColor];
+//    footerLabel.textAlignment = NSTextAlignmentCenter;
+//    _tableView.tableFooterView = footerLabel;
     [backView addSubview:_tableView];
     [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(line.mas_bottom);
@@ -531,6 +545,8 @@ static NSString *const kCellID = @"WeXPassportManagerRecordCellID";
         make.bottom.equalTo(forbiddenBtn.mas_top);
     }];
     [_tableView registerClass:[WeXNewPassportManagerRecordCell class] forCellReuseIdentifier:kCellID];
+    [_tableView registerClass:[WeXLoginManagerTopCell class] forCellReuseIdentifier:kTopCellID];
+    [_tableView registerClass:[WeXLoginManagerMoreDataCell class] forCellReuseIdentifier:kMoreDataCellID];
     [_tableView layoutIfNeeded];
     NSLog(@"%@",NSStringFromCGRect(_tableView.frame));
    
@@ -562,10 +578,7 @@ static NSString *const kCellID = @"WeXPassportManagerRecordCellID";
     _requestCount = 0;
     //记录操作类型
     self.managerType = WeXPassportManagerTypeUpdatePubKey;
-    
     [self configLocalSafetyView];
-   
-    
 }
 
 - (void)createGraphFloatView{
@@ -604,13 +617,10 @@ static NSString *const kCellID = @"WeXPassportManagerRecordCellID";
             make.top.equalTo(self.view).offset(kAutoLayoutHeight2);
         }];
     }
-    else
-    {
+    else {
         [_forbiddenBtn setTitle:WeXLocalizedString(@"启用统一登录") forState:UIControlStateNormal];
         _loginStateLabel.text = WeXLocalizedString(@"统一登录状态:已禁用");
-
         _updateBtn.enabled = NO;
-//        _updateBtn.backgroundColor = [UIColor grayColor];
         _updateBtn.layer.borderWidth = 0;
         
         _priviteKeyLabel.hidden = YES;
@@ -618,40 +628,98 @@ static NSString *const kCellID = @"WeXPassportManagerRecordCellID";
             make.top.equalTo(self.view).offset(kAutoLayoutHeight1);
         }];
     }
-
 }
 
 
 #pragma mark - tableViewDelegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 40;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *headerView = [UIView new];
+    UILabel *titleLab =CreateLeftAlignmentLabel(WexFont(17), [UIColor blackColor]);
+    titleLab.frame = CGRectMake(10, 0, kScreenWidth - 10 * 2, 40);
+    [headerView addSubview:titleLab];
+    if (section == 0) {
+        [titleLab setText:@"统一登录"];
+    } else {
+        [titleLab setText:@"统一登录记录"];
+    }
+    return headerView;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.datasArray.count;
+    if (section == 0) {
+        return 1;
+    } else {
+        if (_updateRecordArrays.count >= kMaxCount) {
+            return kMaxCount + 1;
+        }
+        return _updateRecordArrays.count + 1;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 50;
+    if (indexPath.section == 0) {
+        return [WeXLoginManagerTopCell cellHeight];
+    } else {
+        if (_updateRecordArrays.count >= kMaxCount) {
+            return indexPath.row < kMaxCount ? 50 : 120;
+        } else {
+            return indexPath.row < _updateRecordArrays.count ? 50 : 120;
+        }
+    }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-   WeXNewPassportManagerRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID forIndexPath:indexPath];
-//    static NSString *cellID = @"cellID";
-//    WeXPassportManagerRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-//    if (cell == nil) {
-//        cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXPassportManagerRecordCell" owner:self options:nil] lastObject];
-//        cell.backgroundColor = [UIColor clearColor];
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//    }
-//    WeXPassportManagerRLMModel *model = [self.datasArray objectAtIndex:indexPath.row];
-//    cell.model = model;
-
-    WeXPassportManagerRLMModel *model = [self.datasArray objectAtIndex:indexPath.row];
-    [cell setManagerModel:model];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-    return cell;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        WeXLoginManagerTopCell *cell = [tableView dequeueReusableCellWithIdentifier:kTopCellID forIndexPath:indexPath];
+        cell.DidClickScan = ^{
+            WEXNSLOG(@"这是扫一扫");
+        };
+        return cell;
+    }
+    if (_updateRecordArrays.count > kMaxCount) {
+        if (indexPath.row < kMaxCount) {
+            WeXNewPassportManagerRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID forIndexPath:indexPath];
+            WeXPassportManagerRLMModel *model = _updateRecordArrays[indexPath.row];
+            [cell setManagerModel:model];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        } else {
+            WeXLoginManagerMoreDataCell *cell = [tableView dequeueReusableCellWithIdentifier:kMoreDataCellID forIndexPath:indexPath];
+            [cell setTitle:@"加载更多~~"];
+            return cell;
+        }
+    } else {
+        if (indexPath.row < _updateRecordArrays.count) {
+            WeXNewPassportManagerRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellID forIndexPath:indexPath];
+            WeXPassportManagerRLMModel *model = _updateRecordArrays[indexPath.row];
+            [cell setManagerModel:model];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        } else {
+            WeXLoginManagerMoreDataCell *cell = [tableView dequeueReusableCellWithIdentifier:kMoreDataCellID forIndexPath:indexPath];
+            [cell setTitle:@"没有更多记录了"];
+            return cell;
+        }
+    }
 }
-
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_updateRecordArrays.count > kMaxCount) {
+        if (indexPath.row >= kMaxCount) {
+            WeXLoginRecoredViewController *recoredVC = [WeXLoginRecoredViewController new];
+            recoredVC.type = WeXLoginRecoredTypeLogin;
+            recoredVC.dataArray = self.updateRecordArrays;
+            [WeXHomePushService pushFromVC:self toVC:recoredVC];
+        }
+    }
+}
 
 - (void)configLocalSafetyView{
     _model = [WexCommonFunc getPassport];

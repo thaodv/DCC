@@ -8,18 +8,24 @@
 
 #import "WeXHomeLoanCoinCell.h"
 #import "WeXQueryProductByLenderCodeModal.h"
+#import "WeXLoanCoinView.h"
 
 @interface WeXHomeLoanCoinCell ()
-@property (nonatomic, weak) UIImageView *leftIcon;
-@property (nonatomic, weak) UILabel *leftTitleLab;
-@property (nonatomic, weak) UILabel *leftSubtitleLab;
 
-@property (nonatomic, weak) UIImageView *rightIcon;
-@property (nonatomic, weak) UILabel *rightTitleLab;
-@property (nonatomic, weak) UILabel *rightSubtitleLab;
+@property (nonatomic, weak) WeXLoanCoinView *leftCoinView;
+@property (nonatomic, weak) WeXLoanCoinView *rightCoinView;
+//@property (nonatomic, weak) UIImageView *leftIcon;
+//@property (nonatomic, weak) UILabel *leftTitleLab;
+//@property (nonatomic, weak) UILabel *leftSubtitleLab;
+//
+//@property (nonatomic, weak) UIImageView *rightIcon;
+//@property (nonatomic, weak) UILabel *rightTitleLab;
+//@property (nonatomic, weak) UILabel *rightSubtitleLab;
 
 
 @end
+static NSInteger const kStartTag = 10;
+
 
 @implementation WeXHomeLoanCoinCell
 
@@ -28,70 +34,37 @@
 }
 
 - (void)wex_addSubViews {
-    UIImageView *leftIcon = [UIImageView new];
-    leftIcon.layer.cornerRadius = 6;
-    leftIcon.clipsToBounds = true;
-    [self.contentView addSubview:leftIcon];
-    self.leftIcon = leftIcon;
+    WeXLoanCoinView *leftCoinView = [WeXLoanCoinView new];
+    leftCoinView.tag = kStartTag;
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(leftCoinViewClick:)];
+    [leftCoinView addGestureRecognizer:tapGesture];
+    [self.contentView addSubview:leftCoinView];
+    self.leftCoinView = leftCoinView;
     
-    UILabel *leftTitleLab = CreateLeftAlignmentLabel(WexFont(13), ColorWithHex(0xBAC0C5));
-    [self.contentView addSubview:leftTitleLab];
-    self.leftTitleLab = leftTitleLab;
+    WeXLoanCoinView *rightCoinView = [WeXLoanCoinView new];
+    rightCoinView.tag = kStartTag + 1;
+    UITapGestureRecognizer *rightTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rightCoinViewClick:)];
+    [rightCoinView addGestureRecognizer:rightTapGesture];
     
-    UILabel *leftSubtitleLab = CreateLeftAlignmentLabel(WexFont(13), ColorWithHex(0xBAC0C5));
-    [self.contentView addSubview:leftSubtitleLab];
-    self.leftSubtitleLab = leftSubtitleLab;
-    
-    UIImageView *rightIcon = [UIImageView new];
-    rightIcon.layer.cornerRadius = 6;
-    rightIcon.clipsToBounds = true;
-    [self.contentView addSubview:rightIcon];
-    self.rightIcon = rightIcon;
-    
-    UILabel *rightTitleLab = CreateLeftAlignmentLabel(WexFont(13), ColorWithHex(0xBAC0C5));
-    [self.contentView addSubview:rightTitleLab];
-    self.rightTitleLab = rightTitleLab;
-    
-    UILabel *rightSubtitleLab = CreateLeftAlignmentLabel(WexFont(13), ColorWithHex(0xBAC0C5));
-    [self.contentView addSubview:rightSubtitleLab];
-    self.rightSubtitleLab = rightSubtitleLab;
+    [self.contentView addSubview:rightCoinView];
+    self.rightCoinView = rightCoinView;
     
 }
 
 - (void)wex_addConstraints {
-    [self.leftIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(14);
-        make.top.mas_equalTo(10);
-        make.size.mas_equalTo(CGSizeMake(43, 43));
+    
+    [self.leftCoinView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(0);
+        make.height.mas_equalTo(43);
+        make.right.equalTo(self.contentView.mas_centerX);
     }];
     
-    [self.leftTitleLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.leftIcon);
-        make.left.equalTo(self.leftIcon.mas_right).offset(13);
-        make.right.lessThanOrEqualTo(self.contentView.mas_centerX);
-    }];
-    [self.leftSubtitleLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.leftTitleLab.mas_bottom).offset(10);
-        make.left.equalTo(self.leftIcon.mas_right).offset(13);
-        make.right.lessThanOrEqualTo(self.contentView.mas_centerX);
-    }];
-    
-    [self.rightIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.rightCoinView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_centerX).offset(14);
-        make.top.mas_equalTo(10);
-        make.size.mas_equalTo(CGSizeMake(43, 43));
+        make.height.mas_equalTo(43);
+        make.right.mas_equalTo(0);
     }];
     
-    [self.rightTitleLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.rightIcon);
-        make.left.equalTo(self.rightIcon.mas_right).offset(13);
-        make.right.mas_lessThanOrEqualTo(0);
-    }];
-    [self.rightSubtitleLab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.rightTitleLab.mas_bottom).offset(10);
-        make.left.equalTo(self.rightIcon.mas_right).offset(13);
-        make.right.mas_lessThanOrEqualTo(0);
-    }];
 }
 
 + (CGFloat)cellHeight {
@@ -105,34 +78,42 @@
           rightModel:(WeXQueryProductByLenderCodeResponseModal_item *)rightModel {
     
     NSMutableArray *leftPeriodArray = leftModel.loanPeriodList;
+    NSString *leftPeriod = nil;
     if (leftPeriodArray.count >= 3) {
         WeXQueryProductByLenderCodeResponseModal_period *periodModel1 = leftPeriodArray[0];
         WeXQueryProductByLenderCodeResponseModal_period *periodModel3 = leftPeriodArray[2];
         NSMutableString *periodStr = [NSMutableString stringWithFormat:@"%@-%@%@",periodModel1.value,periodModel3.value,[WexCommonFunc transferChinesePeriod:periodModel3.unit]];
-        _leftSubtitleLab.text = [NSString stringWithFormat:@"%@:%@",WeXLocalizedString(@"周期"),periodStr];
+        leftPeriod = [NSString stringWithFormat:@"%@:%@",WeXLocalizedString(@"周期"),periodStr];
     }
     NSArray *leftValueArray = leftModel.volumeOptionList;
+    NSString *leftAmount = nil;
     if (leftValueArray.count >= 3) {
-        _leftTitleLab.text = [NSString stringWithFormat:@"%@:%@-%@%@",WeXLocalizedString(@"额度"),leftValueArray[0],leftValueArray[2],leftModel.currency.symbol];
+       leftAmount = [NSString stringWithFormat:@"%@:%@-%@%@",WeXLocalizedString(@"额度"),leftValueArray[0],leftValueArray[2],leftModel.currency.symbol];
     }
-    [self.leftIcon sd_setImageWithURL: [NSURL URLWithString:leftModel.logoUrl] placeholderImage:[UIImage imageNamed:@"ethereum"]];
+    [self.leftCoinView setIconURL:leftModel.logoUrl amount:leftAmount period:leftPeriod];
     
     NSMutableArray *rightPeriodArray = rightModel.loanPeriodList;
+    NSString *rightPeriod = nil;
     if (rightPeriodArray.count >= 3) {
         WeXQueryProductByLenderCodeResponseModal_period *periodModel1 = rightPeriodArray[0];
         WeXQueryProductByLenderCodeResponseModal_period *periodModel3 = rightPeriodArray[2];
         NSMutableString *periodStr = [NSMutableString stringWithFormat:@"%@-%@%@",periodModel1.value,periodModel3.value,[WexCommonFunc transferChinesePeriod:periodModel3.unit]];
-        _rightSubtitleLab.text = [NSString stringWithFormat:@"%@:%@",WeXLocalizedString(@"周期"),periodStr];
+        rightPeriod = [NSString stringWithFormat:@"%@:%@",WeXLocalizedString(@"周期"),periodStr];
     }
     NSArray *rightValueArray = rightModel.volumeOptionList;
+    NSString *rightAmount = nil;
     if (rightValueArray.count >= 3) {
-        _rightTitleLab.text = [NSString stringWithFormat:@"%@:%@-%@%@",WeXLocalizedString(@"额度"),rightValueArray[0],rightValueArray[2],rightModel.currency.symbol];
+        rightAmount = [NSString stringWithFormat:@"%@:%@-%@%@",WeXLocalizedString(@"额度"),rightValueArray[0],rightValueArray[2],rightModel.currency.symbol];
     }
-    [self.rightIcon sd_setImageWithURL: [NSURL URLWithString:rightModel.logoUrl] placeholderImage:[UIImage imageNamed:@"ethereum"]];
-    
-    [self.rightIcon setHidden:!rightModel];
-    [self.rightTitleLab setHidden:!rightModel];
-    [self.rightSubtitleLab setHidden:!rightModel];
+    [self.rightCoinView setIconURL:rightModel.logoUrl amount:rightAmount period:rightPeriod];
+    [self.rightCoinView setHidden:!rightModel];
 }
+- (void)rightCoinViewClick:(UITapGestureRecognizer *)gesture {
+    !self.DidClickCell ? : self.DidClickCell(WexLoanCoinCellClickTypeRight);
+}
+- (void)leftCoinViewClick:(UITapGestureRecognizer *)gesture {
+    !self.DidClickCell ? : self.DidClickCell(WexLoanCoinCellClickTypeLeft);
+}
+
 
 @end

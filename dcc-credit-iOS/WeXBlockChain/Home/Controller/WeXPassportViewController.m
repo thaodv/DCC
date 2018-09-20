@@ -92,6 +92,7 @@
 #import "WeXLoginManagerViewController.h"
 #import "WeXTokenPlusViewController.h"
 #import "WeXCPMarketViewController.h"
+#import "WeXBorrowProductDetailController.h"
 
 static NSString * const reuseWexPassIdentifier = @"reuseWexPassIdentifier";
 static NSString * const kP2PCardCellIdentifier = @"WeXP2PImageCardCellIdentifier";
@@ -934,11 +935,25 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
                     NSInteger start = indexPath.row - 2;
                     NSInteger index = start * 2;
                     [cell setLeftModel:self.loanDataArray[index] rightModel:self.loanDataArray[index + 1 ]];
+                    cell.DidClickCell = ^(WexLoanCoinCellClickType type) {
+                        if (type == WexLoanCoinCellClickTypeLeft) {
+                            [self pushToBorrowCoinControllerWithCoinModel:_loanDataArray[index]];
+                        } else {
+                            [self pushToBorrowCoinControllerWithCoinModel:_loanDataArray[index + 1]];
+                        }
+                    };
                 } else {
                     NSInteger start = indexPath.row - 2;
                     NSInteger index = start * 2;
                     NSInteger indexPlus = index + 1 ;
                     [cell setLeftModel:self.loanDataArray[index] rightModel:indexPlus >= _loanDataArray.count ? nil : _loanDataArray[indexPlus]];
+                    cell.DidClickCell = ^(WexLoanCoinCellClickType type) {
+                        if (type == WexLoanCoinCellClickTypeLeft) {
+                            [self pushToBorrowCoinControllerWithCoinModel:_loanDataArray[index]];
+                        } else {
+                            [self pushToBorrowCoinControllerWithCoinModel:_loanDataArray[index + 1]];
+                        }
+                    };
                 }
                 return cell;
             }
@@ -1053,6 +1068,13 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
     coinWebVC.urlStr = [[WeXLocalizedManager shareManager] isChinese] ? WexP2PLoadCoinURL : WexP2PLoadCoinURL_EN;
     coinWebVC.accountAddress = userAddress;
     [WeXHomePushService pushFromVC:self toVC:coinWebVC];
+}
+
+// MARK: - 信用借币
+- (void)pushToBorrowCoinControllerWithCoinModel:(WeXQueryProductByLenderCodeResponseModal_item *)model {
+    WeXBorrowProductDetailController *borrowCoinVC = [WeXBorrowProductDetailController new];
+    borrowCoinVC.productModel = model;
+    [WeXHomePushService pushFromVC:self toVC:borrowCoinVC];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

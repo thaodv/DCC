@@ -22,6 +22,7 @@
 #import "WeXIpfsContractHeader.h"
 #import "WeXMyIpfsSaveController.h"
 #import "WeXIpfsSavePasswordController.h"
+#import "AppDelegate.h"
 
 @interface WeXPassportDeleteViewController ()<WeXDeletePassportViewDelegate,WeXPasswordManagerDelegate>
 {
@@ -185,15 +186,15 @@
     [tokenManager initDefaultToken];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        WeXPassportViewController *ctrl = [[WeXPassportViewController alloc] init];
-        WeXBaseNavigationController *navCtrl = [[WeXBaseNavigationController alloc] initWithRootViewController:ctrl];
-        AppDelegate* appDelagete = (AppDelegate*)[UIApplication sharedApplication].delegate;
-        appDelagete.window.rootViewController = navCtrl;
+        [(AppDelegate *)[UIApplication sharedApplication].delegate resetRootWindowController];
+//        WeXPassportViewController *ctrl = [[WeXPassportViewController alloc] init];
+//        WeXBaseNavigationController *navCtrl = [[WeXBaseNavigationController alloc] initWithRootViewController:ctrl];
+//        AppDelegate* appDelagete = (AppDelegate*)[UIApplication sharedApplication].delegate;
+//        appDelagete.window.rootViewController = navCtrl;
     });
 }
 //点击备份
 - (void)deletePassportViewDidBackup{
-  
     WeXPassportBackupViewController *ctrl = [[WeXPassportBackupViewController alloc] init];
     [self.navigationController pushViewController:ctrl animated:YES];
 }
@@ -218,7 +219,6 @@
 - (void)passwordManagerVerifySuccess{
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self deleteCacheInfos];
-
     });
 }
 

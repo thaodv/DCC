@@ -14,6 +14,7 @@
 
 #import "WeXPassportViewController.h"
 #import "WeXReceiveAddressManager.h"
+#import "AppDelegate.h"
 
 
 
@@ -271,21 +272,19 @@ static const CGFloat kCardHeightWidthRatio = 179.0/350.0;
 
 - (void)skipBtnClick{
     [self configJumpController];
-   
 }
 
 - (void)safetyViewDidSetPassword{
     [self configJumpController];
- 
 }
 
-- (void)configJumpController
-{
-    for (UIViewController *ctrl in self.navigationController.viewControllers) {
-        if ([ctrl isKindOfClass:[WeXPassportViewController class]]) {
-            [self.navigationController popToViewController:ctrl animated:YES];
-        }
-    }
+- (void)configJumpController {
+//    for (UIViewController *ctrl in self.navigationController.viewControllers) {
+//        if ([ctrl isKindOfClass:[WeXPassportViewController class]]) {
+//            [self.navigationController popToViewController:ctrl animated:YES];
+//        }
+//    }
+    [(AppDelegate *)[UIApplication sharedApplication].delegate resetRootWindowController];
     
     
 //    if (self.isFromAuthorize) {

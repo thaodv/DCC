@@ -10,10 +10,18 @@
 @class WeXWalletDigitalGetTokenResponseModal_item;
 @class WeXQueryProductByLenderCodeResponseModal_item;
 
+typedef NS_ENUM(NSInteger,WexLoanCoinCellClickType) {
+    WexLoanCoinCellClickTypeLeft  = 0, //点击左边
+    WexLoanCoinCellClickTypeRight = 1, //点击右边
+};
+
 @interface WeXHomeLoanCoinCell : WeXBaseTableViewCell
+
+@property (nonatomic,copy) void (^DidClickCell)(WexLoanCoinCellClickType);
 
 - (void)setLeftModel:(WeXQueryProductByLenderCodeResponseModal_item *)leftModel
           rightModel:(WeXQueryProductByLenderCodeResponseModal_item *)rightModel;
+
 
 + (CGFloat)cellHeight;
 

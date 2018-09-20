@@ -21,6 +21,7 @@
     [super awakeFromNib];
 }
 - (void)wex_addSubViews {
+    [super wex_addSubViews];
     UILabel *titleLab =CreateLeftAlignmentLabel(WexFont(14.0), COLOR_LABEL_DESCRIPTION);
     [self.contentView addSubview:titleLab];
     self.titleLab = titleLab;
@@ -31,6 +32,7 @@
     
 }
 - (void)wex_addConstraints {
+    [super wex_addConstraints];
     [self.titleLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(10);
         make.centerY.mas_equalTo(0);

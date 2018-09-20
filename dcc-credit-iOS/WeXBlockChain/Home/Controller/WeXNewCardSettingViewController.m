@@ -26,7 +26,7 @@
 #import "WeXVersionUpdateManager.h"
 #import "WeXSelectedNodeViewController.h"
 #import "AppDelegate.h"
-
+#import "WeXHomePushService.h"
 @interface WeXNewCardSettingViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 {
@@ -205,7 +205,8 @@
 }
 
 - (void)deleteClick{
-    [(AppDelegate *)[UIApplication sharedApplication].delegate resetRootWindowController];
+//    [(AppDelegate *)[UIApplication sharedApplication].delegate resetRootWindowController];
+    [WeXHomePushService pushFromVC:self toVC:[WeXPassportDeleteViewController new]];
 //    WeXPassportDeleteViewController *ctrl = [[WeXPassportDeleteViewController alloc] init];
 //    [self.navigationController pushViewController:ctrl animated:YES];
 }
