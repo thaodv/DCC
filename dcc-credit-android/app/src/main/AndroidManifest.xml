@@ -64,7 +64,7 @@
         <activity
             android:name="io.wexchain.android.dcc.DigitalAssetsActivity"
             android:label="数字钱包"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.DccExchangeActivity"
             android:label="@string/dcc"
@@ -457,9 +457,17 @@
         <activity
             android:name="io.wexchain.android.dcc.modules.mine.SettingActivity"
             android:label="设置"
-            android:screenOrientation="portrait" />
-        <activity android:name="io.wexchain.android.dcc.modules.home.TokenPlusActivity" />
-
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.home.TokenPlusActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.bsx.BsxDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.bsx.BsxHoldingDetailActivity"
+            android:label="持仓详情"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
