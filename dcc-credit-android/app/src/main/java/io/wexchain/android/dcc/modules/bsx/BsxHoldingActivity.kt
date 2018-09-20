@@ -13,5 +13,6 @@ class BsxHoldingActivity : BindActivity<ActivityBsxHoldingBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar(true)
+        binding.tvBuyAgain.setOnClickListener { finish() }
     }
 }

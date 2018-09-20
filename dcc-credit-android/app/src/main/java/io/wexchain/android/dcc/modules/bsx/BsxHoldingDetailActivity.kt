@@ -1,13 +1,16 @@
 package io.wexchain.android.dcc.modules.bsx
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityBsxHoldingDetailBinding
 
-class BsxHoldingDetailActivity : AppCompatActivity() {
+class BsxHoldingDetailActivity : BindActivity<ActivityBsxHoldingDetailBinding>() {
+    override val contentLayoutId: Int
+        get() = R.layout.activity_bsx_holding_detail
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bsx_holding_detail)
+        initToolbar(true)
     }
 }
