@@ -10,6 +10,7 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import io.wexchain.android.common.checkLanguage
+import io.wexchain.android.common.versionInfo
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 import io.wexchain.android.dcc.tools.getString
@@ -579,7 +580,12 @@ object ViewModelHelper {
 
     @JvmStatic
     fun getProtectStatus(protect: Protect): Boolean {
-        return protect.type.get()!=null
+        return protect.type.get() != null
+    }
+
+    @JvmStatic
+    fun Context.getVersion(): String {
+        return getString(R.string.current_version) + versionInfo.versionName
     }
 
 }

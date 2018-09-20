@@ -6,14 +6,13 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.RelativeLayout
 import com.jcodecraeer.xrecyclerview.CustomFooterViewCallBack
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
-import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.AuthManageActivity
-import io.wexchain.android.dcc.LoanProductDetailActivity
+import io.wexchain.android.dcc.*
 import io.wexchain.android.dcc.base.BaseCompatFragment
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.bsx.BsxMarketActivity
@@ -58,14 +57,17 @@ class ServiceFragment : BaseCompatFragment() {
     }
 
     private fun initClick() {
+        header.findViewById<Button>(R.id.btn_borrow).onClick {
+            navigateTo(LoanActivity::class.java)
+        }
         foot.findViewById<RelativeLayout>(R.id.home_assets).onClick {
-            activity?.navigateTo(TokenPlusActivity::class.java)
+           navigateTo(TokenPlusActivity::class.java)
         }
         foot.findViewById<RelativeLayout>(R.id.home_login).onClick {
-            activity?.navigateTo(AuthManageActivity::class.java)
+            navigateTo(PassportActivity::class.java)
         }
-        foot.findViewById<RelativeLayout>(R.id.home_bsx).onClick {
-            activity?.navigateTo(BsxMarketActivity::class.java)
+        foot.findViewById<Button>(R.id.btn_bsx).onClick {
+            navigateTo(BsxMarketActivity::class.java)
         }
     }
 
@@ -91,11 +93,11 @@ class ServiceFragment : BaseCompatFragment() {
     }
 
     fun onItemClick(position: Int, viewId: Int) {
-        adapter.getItemOnPos(position).let {
+        /*adapter.getItemOnPos(position).let {
             activity?.navigateTo(LoanProductDetailActivity::class.java) {
                 putExtra(Extras.EXTRA_LOAN_PRODUCT_ID, it.id)
             }
-        }
+        }*/
     }
 
     private fun loadData() {

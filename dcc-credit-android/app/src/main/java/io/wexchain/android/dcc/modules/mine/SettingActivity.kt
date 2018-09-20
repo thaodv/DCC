@@ -1,20 +1,25 @@
 package io.wexchain.android.dcc.modules.mine
 
 import android.Manifest
+import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.rxkotlin.subscribeBy
-import io.wexchain.android.common.installApk
-import io.wexchain.android.common.onClick
-import io.wexchain.android.common.toast
-import io.wexchain.android.common.versionInfo
+import io.wexchain.android.common.*
 import io.wexchain.android.dcc.*
 import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
+import io.wexchain.android.dcc.vm.Protect
+import io.wexchain.android.localprotect.LocalProtectType
+import io.wexchain.android.localprotect.fragment.CreateProtectFragment
+import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivitySettingBinding
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CheckUpgrade
 import kotlinx.android.synthetic.main.activity_setting.*
@@ -24,37 +29,56 @@ import java.io.File
 /**
  *Created by liuyang on 2018/9/18.
  */
-class SettingActivity : BaseCompatActivity() {
+class SettingActivity : BindActivity<ActivitySettingBinding>() {
+
+    override val contentLayoutId: Int
+        get() = R.layout.activity_setting
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setting)
         initToolbar()
-        initView()
+        initVm()
         initClick()
     }
 
-    private fun initView() {
-        tv_current_vs.text = getString(R.string.current_version) + versionInfo.versionName
+    private fun initVm() {
+        val protect = getViewModel<Protect>()
+        protect.sync(this)
+        protect.protectEnableEvent.observe(this, Observer {
+            CreateProtectFragment.create(object : CreateProtectFragment.CreateProtectFinishListener {
+                override fun onCancel(): Boolean {
+                    return true
+                }
+
+                override fun cancelText(): String {
+                    return getString(R.string.cancel)
+                }
+
+                override fun onCreateProtectFinish(type: LocalProtectType) {
+                    toast(R.string.local_protect_enabled)
+                }
+
+            }).show(supportFragmentManager, null)
+        })
+        protect.protectDisabledEvent.observe(this, Observer {
+            toast(getString(R.string.local_security_is_disabled_successfully))
+        })
+        VerifyProtectFragment.serve(protect, this)
+        binding.protect = protect
+
     }
 
     private fun initClick() {
-        tv_passport_address.onClick {
-            startActivity(Intent(this, PassportAddressActivity::class.java))
-        }
-        tv_passport_backup.onClick {
-            startActivity(Intent(this, PassportExportActivity::class.java))
-        }
-        tv_modify_passport_password.onClick {
-            startActivity(Intent(this, ModifyPassportPasswordActivity::class.java))
-        }
-        tv_about_us.onClick {
+        binding.tvAboutUs.onClick {
             startActivity(Intent(this, AboutActivity::class.java))
         }
-        tv_delete_passport.onClick {
+        binding.tvDeletePassport.onClick {
             startActivity(Intent(this, PassportRemovalActivity::class.java))
         }
-        tv_check_update.onClick {
+        binding.tvSelectNode.onClick {
+            navigateTo(SelectNodeActivity::class.java)
+        }
+        binding.tvCheckUpdate.onClick {
             App.get().marketingApi.checkUpgrade(versionInfo.versionCode.toString())
                     .checkonMain()
                     .doOnSuccess {

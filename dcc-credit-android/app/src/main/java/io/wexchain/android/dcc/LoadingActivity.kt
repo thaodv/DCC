@@ -4,14 +4,17 @@ import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.atLeastCreated
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.onClick
 import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.dcc.modules.home.HomeActivity
 import io.wexchain.android.dcc.tools.PermissionHelper
 import io.wexchain.dcc.R
+import kotlinx.android.synthetic.main.activity_loading.*
 import java.util.concurrent.TimeUnit
 
 class LoadingActivity : AppCompatActivity() {
@@ -44,12 +47,26 @@ class LoadingActivity : AppCompatActivity() {
     }
 
     private fun delayedStart() {
-        Single.timer(1500, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { _ ->
-                    atLeastCreated {
-                        navigateTo(HomeActivity::class.java)
+        if (App.get().passportRepository.passportExists) {
+            Single.timer(1500, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { _ ->
+                        atLeastCreated {
+                            navigateTo(HomeActivity::class.java)
+                        }
                     }
-                }
+        } else {
+            create.visibility = View.VISIBLE
+            Import.visibility = View.VISIBLE
+            create.onClick {
+                navigateTo(CreatePassportActivity::class.java)
+            }
+            Import.onClick {
+                navigateTo(PassportImportActivity::class.java)
+            }
+
+        }
+
+
     }
 }

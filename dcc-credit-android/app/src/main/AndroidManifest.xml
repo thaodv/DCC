@@ -146,6 +146,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.PassportActivity"
+            android:label="统一登录"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.WebPageActivity"
@@ -460,6 +461,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.home.TokenPlusActivity"
+            android:label="TokenPlus介绍"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BsxDetailActivity"

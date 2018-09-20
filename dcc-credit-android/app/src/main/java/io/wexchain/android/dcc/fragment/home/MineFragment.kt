@@ -48,8 +48,14 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initVm()
         setupClicks()
+        initVm()
+    }
+
+    private fun initVm() {
+        passport.currPassport.observe(this, Observer {
+            binding.passport = it
+        })
     }
 
     override fun onResume() {
@@ -102,29 +108,31 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
 
     private fun setupClicks() {
         val binding = binding
-        binding.tvUserAvatar.setOnClickListener {
+        binding.tvUserAvatar.onClick {
             ChooseImageFromDialog.create(this).show(childFragmentManager, null)
         }
-        binding.tvUserNickname.setOnClickListener {
-            startActivity(Intent(activity, EditNicknameActivity::class.java))
+        binding.tvUserNickname.onClick {
+            navigateTo(EditNicknameActivity::class.java)
         }
-        binding.tvAddressBook.setOnClickListener {
-            startActivity(Intent(activity, AddressBookActivity::class.java))
-        }
-        binding.tvSelectNode.setOnClickListener {
-            startActivity(Intent(activity, SelectNodeActivity::class.java))
+        binding.tvAddressBook.onClick {
+            navigateTo(AddressBookActivity::class.java)
         }
         binding.tvSetting.onClick {
-            startActivity(Intent(activity, SettingActivity::class.java))
+            navigateTo(SettingActivity::class.java)
         }
         binding.tvMineWallet.onClick {
-            startActivity(Intent(activity, DigitalAssetsActivity::class.java))
+            navigateTo(DigitalAssetsActivity::class.java)
         }
-
+        binding.tvPassportBackup.onClick {
+            navigateTo(PassportExportActivity::class.java)
+        }
+        binding.tvModifyPassportPassword.onClick {
+            navigateTo(ModifyPassportPasswordActivity::class.java)
+        }
     }
 
     private fun pickImage() {
-        startActivity(Intent(activity, ChooseCutImageActivity::class.java))
+        navigateTo(ChooseCutImageActivity::class.java)
     }
 
     private fun captureImage() {
@@ -143,35 +151,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                 }
     }
 
-    private fun initVm() {
-        val protect = getViewModel<Protect>()
-        protect.sync(this)
-        protect.protectEnableEvent.observe(this, Observer {
-            CreateProtectFragment.create(object : CreateProtectFragment.CreateProtectFinishListener {
-                override fun onCancel(): Boolean {
-                    return true
-                }
 
-                override fun cancelText(): String {
-                    return getString(R.string.cancel)
-                }
-
-                override fun onCreateProtectFinish(type: LocalProtectType) {
-                    toast(R.string.local_protect_enabled)
-                }
-
-            }).show(childFragmentManager, null)
-        })
-        protect.protectDisabledEvent.observe(this, Observer {
-            toast(getString(R.string.local_security_is_disabled_successfully))
-        })
-        VerifyProtectFragment.serve(protect, this)
-        binding.protect = protect
-        App.get().passportRepository.currPassport.observe(this, Observer {
-            binding.passport = it
-        })
-        binding.tvNikename.text = passport.getCurrentPassport()?.nickname
-    }
 
     class ChooseImageFromDialog : DialogFragment() {
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

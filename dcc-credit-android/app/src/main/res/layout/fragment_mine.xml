@@ -6,17 +6,10 @@
 
     <data>
 
-        <import type="android.text.TextUtils" />
-
-        <import type="io.wexchain.android.dcc.vm.ViewModelHelper" />
-
         <variable
             name="passport"
             type="io.wexchain.android.dcc.domain.Passport" />
 
-        <variable
-            name="protect"
-            type="io.wexchain.android.dcc.vm.Protect" />
     </data>
 
 
@@ -83,6 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="30dp"
+                    android:text="@{passport.nickname}"
                     android:textColor="@color/FF4A4A4A"
                     android:textSize="17sp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/tv_user_nickname"
@@ -95,12 +89,29 @@
                     android:text="数字钱包"
                     app:layout_constraintTop_toBottomOf="@id/tv_user_nickname" />
 
+                <TextView
+                    android:id="@+id/tv_passport_backup"
+                    style="@style/TextActionLine"
+                    android:text="@string/export_passport"
+                    app:layout_constraintTop_toBottomOf="@id/tv_mine_wallet" />
+
+                <View
+                    style="@style/DividerHorizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tv_passport_backup" />
+
+                <TextView
+                    android:id="@+id/tv_modify_passport_password"
+                    style="@style/TextActionLine"
+                    android:text="@string/modify_passport_password"
+                    app:layout_constraintTop_toBottomOf="@id/tv_passport_backup" />
+
 
                 <TextView
                     android:id="@+id/tv_data_cloud"
                     style="@style/TextActionLine"
+                    android:layout_marginTop="10dp"
                     android:text="@string/data_cloud_storage"
-                    app:layout_constraintTop_toBottomOf="@id/tv_mine_wallet" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_modify_passport_password" />
 
 
                 <TextView
@@ -124,45 +135,20 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_cloud_status" />
 
-                <TextView
-                    android:id="@+id/tv_passport_protect"
-                    style="@style/TextActionLine"
-                    android:layout_height="52dp"
-                    android:onClick="@{(v)->protect.switchProtectEnable()}"
-                    android:text="@string/local_protect"
-                    app:layout_constraintTop_toBottomOf="@id/tv_data_cloud" />
-
-
-                <io.wexchain.android.dcc.view.SwitchButton
-                    android:id="@+id/tv_passport_protect_status"
-                    SwitchStatus="@{protect.type!=null}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginTop="10dp"
-                    android:onClick="@{(v)->protect.switchProtectEnable()}"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_data_cloud" />
 
                 <TextView
                     android:id="@+id/tv_address_book"
                     style="@style/TextActionLine"
-                    android:layout_marginTop="10dp"
                     android:text="@string/address_book"
-                    app:layout_constraintTop_toBottomOf="@id/tv_passport_protect" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_data_cloud" />
 
-                <TextView
-                    android:id="@+id/tv_select_node"
-                    style="@style/TextActionLine"
-                    android:text="@string/select_node"
-                    app:layout_constraintTop_toBottomOf="@id/tv_address_book" />
 
                 <TextView
                     android:id="@+id/tv_setting"
                     style="@style/TextActionLine"
                     android:layout_marginTop="10dp"
-                    android:text="设置"
-                    app:layout_constraintTop_toBottomOf="@id/tv_select_node" />
+                    android:text="更多"
+                    app:layout_constraintTop_toBottomOf="@id/tv_address_book" />
 
             </android.support.constraint.ConstraintLayout>
 
