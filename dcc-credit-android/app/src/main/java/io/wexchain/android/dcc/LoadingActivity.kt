@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.view.animation.AnimationUtils
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.atLeastCreated
@@ -56,17 +57,18 @@ class LoadingActivity : AppCompatActivity() {
                         }
                     }
         } else {
-            create.visibility = View.VISIBLE
-            Import.visibility = View.VISIBLE
-            create.onClick {
+            val animation = AnimationUtils.loadAnimation(this, R.anim.splash_logo)
+            iv_logo.startAnimation(animation)
+            tv_note.startAnimation(animation)
+            btn_create.visibility = View.VISIBLE
+            btn_import.visibility = View.VISIBLE
+            btn_create.onClick {
                 navigateTo(CreatePassportActivity::class.java)
             }
-            Import.onClick {
+            btn_import.onClick {
                 navigateTo(PassportImportActivity::class.java)
             }
-
         }
-
 
     }
 }

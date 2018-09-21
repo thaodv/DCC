@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -9,23 +8,10 @@
         android:layout_height="match_parent"
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical"
-        tools:context="io.wexchain.android.dcc.LoanProductListActivity">
+        android:background="#F5F5FD"
+        tools:context="io.wexchain.android.dcc.modules.home.LoanActivity">
 
-        <TextView
-            android:id="@+id/mine_title"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="#fff"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:text="服务"
-            android:textColor="@color/main_tab"
-            android:textSize="17sp" />
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="10dp"
-            android:background="#F8F8FF" />
+        <include layout="@layout/include_toolbar" />
 
         <com.jcodecraeer.xrecyclerview.XRecyclerView
             android:id="@+id/rv_list"
@@ -35,5 +21,7 @@
             tools:listitem="@layout/item_loan_product" />
 
     </LinearLayout>
+
 </layout>
+
 

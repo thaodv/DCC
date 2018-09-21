@@ -125,7 +125,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="专为资产大户持有者提供服务的高回报神器！"
+                android:text="专为数字货币持有者提供高效的套利服务!"
                 android:textColor="#BAC0C5"
                 android:textSize="12sp" />
 

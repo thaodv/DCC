@@ -101,7 +101,7 @@
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:text="@string/rewardss_available"
                 android:gravity="center_vertical"
-                android:textColor="@color/text_dark"
+                android:textColor="#000"
                 />
 
 

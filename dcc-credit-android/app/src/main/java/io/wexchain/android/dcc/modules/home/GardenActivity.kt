@@ -11,13 +11,12 @@ import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.dcc.R
 
 /**
- *Created by liuyang on 2018/9/19.
+ *Created by liuyang on 2018/9/21.
  */
-class TokenPlusActivity : BaseCompatActivity() {
-
+class GardenActivity :BaseCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tokenplus)
+        setContentView( R.layout.activity_tokenplus)
         initToolbar()
         loadFromWeb()
     }
@@ -43,6 +42,6 @@ class TokenPlusActivity : BaseCompatActivity() {
                 return true // Returning True means that application wants to leave the current WebView and handle the url itself, otherwise return false.
             }
         }
-        webView.loadLanguageUrl("https://open.dcc.finance/dapp/tokenPlus/tokenPlus.html")
+        webView.loadLanguageUrl("https://open.dcc.finance/dapp/tokenPlus/discovery.html")
     }
 }

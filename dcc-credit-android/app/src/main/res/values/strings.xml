@@ -180,6 +180,7 @@
     <string name="details">查看 >></string>
     <string name="rewardss_available">可领取奖励</string>
     <string name="rules">活动规则</string>
+    <string name="rules1"><font color="#C009FF">活动规则</font></string>
     <string name="basic_rewards">基础奖励</string>
     <string name="loan_application_rewards">借币奖励</string>
     <string name="repayment_rewards">还币奖励</string>
@@ -471,5 +472,6 @@
     <string name="service_bsx_title">多币种预计年化 <font color='#ff0000'>10%-40%</font></string>
 
     <string name="bsx_buy_again">想再买点？去<font color='#7B40FF'>币生息</font>市场看看 ></string>
+    <string name="tokenplus_tips">基于Linux环境搭建的量化交易系统，速度提升不止3倍\n无需自行购买服务器和配置交易软件，仅需注册账户，即可轻松套利\n每个用户独立服务器和IP，四重加密全面保障你的账户key安全\n遍布全球的服务器网络节点，优选离交易所最近节点，力争不错过每一次交易机会\n目前已支持国内前11大交易所，并持续增加中。</string>
 
 </resources>

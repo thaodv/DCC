@@ -8,21 +8,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RelativeLayout
+import android.widget.TextView
 import com.jcodecraeer.xrecyclerview.CustomFooterViewCallBack
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
-import io.wexchain.android.dcc.*
-import io.wexchain.android.dcc.base.BaseCompatFragment
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.LoanProductDetailActivity
+import io.wexchain.android.dcc.PassportActivity
+import io.wexchain.android.dcc.base.BindFragment
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.bsx.BsxMarketActivity
+import io.wexchain.android.dcc.modules.home.LoanActivity
 import io.wexchain.android.dcc.modules.home.TokenPlusActivity
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.BindingViewHolder
 import io.wexchain.android.dcc.view.adapter.ClickAwareHolder
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback
+import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.FragmentServiceBinding
 import io.wexchain.dcc.databinding.ItemLoanProductBinding
 import io.wexchain.dccchainservice.domain.LoanProduct
 import kotlinx.android.synthetic.main.fragment_service.*
@@ -30,18 +36,22 @@ import kotlinx.android.synthetic.main.fragment_service.*
 /**
  *Created by liuyang on 2018/9/18.
  */
-class ServiceFragment : BaseCompatFragment() {
+class ServiceFragment : BindFragment<FragmentServiceBinding>() {
+
+    override val contentLayoutId: Int
+        get() = R.layout.fragment_service
+
+    private val passport by lazy {
+        App.get().passportRepository.getCurrentPassport()
+    }
 
     private val adapter = Adapter(this::onItemClick)
+
     private val header by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
         LayoutInflater.from(activity).inflate(R.layout.service_header, service_toot, false)
     }
     private val foot by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
         LayoutInflater.from(activity).inflate(R.layout.service_foot, service_toot, false)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_service, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,8 +70,11 @@ class ServiceFragment : BaseCompatFragment() {
         header.findViewById<Button>(R.id.btn_borrow).onClick {
             navigateTo(LoanActivity::class.java)
         }
+        header.findViewById<TextView>(R.id.home_credit_more).onClick {
+            navigateTo(LoanActivity::class.java)
+        }
         foot.findViewById<RelativeLayout>(R.id.home_assets).onClick {
-           navigateTo(TokenPlusActivity::class.java)
+            navigateTo(TokenPlusActivity::class.java)
         }
         foot.findViewById<RelativeLayout>(R.id.home_login).onClick {
             navigateTo(PassportActivity::class.java)
@@ -69,6 +82,7 @@ class ServiceFragment : BaseCompatFragment() {
         foot.findViewById<Button>(R.id.btn_bsx).onClick {
             navigateTo(BsxMarketActivity::class.java)
         }
+
     }
 
     private fun initView() {
@@ -77,6 +91,7 @@ class ServiceFragment : BaseCompatFragment() {
         rv_list.layoutManager = GridLayoutManager(activity, 2)
         rv_list.setPullRefreshEnabled(false)
         rv_list.addHeaderView(header)
+        header.findViewById<TextView>(R.id.tv_passport_address).text = ViewModelHelper.maskAddress2(passport?.address)
         rv_list.setFootView(foot, object : CustomFooterViewCallBack {
             override fun onSetNoMore(yourFooterView: View?, noMore: Boolean) {
 
@@ -93,11 +108,11 @@ class ServiceFragment : BaseCompatFragment() {
     }
 
     fun onItemClick(position: Int, viewId: Int) {
-        /*adapter.getItemOnPos(position).let {
+        adapter.getItemOnPos(position - 2).let {
             activity?.navigateTo(LoanProductDetailActivity::class.java) {
                 putExtra(Extras.EXTRA_LOAN_PRODUCT_ID, it.id)
             }
-        }*/
+        }
     }
 
     private fun loadData() {

@@ -1,101 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="io.wexchain.android.dcc.modules.home.TokenPlusActivity"
+    android:orientation="vertical"
+    >
 
-    <include layout="@layout/include_toolbar"
-        android:id="@+id/token_toolbar"/>
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/include_toolbar"
+        />
 
-    <ScrollView
+    <WebView
+        android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-        app:layout_constraintTop_toBottomOf="@id/token_toolbar">
+        android:layout_height="match_parent"
+        />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/tokenplus_bannert"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="• 什么是Tokenplus"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="5dp"
-                android:text="Tokenplus是一款面向专业数字资产投资用户的资产自动套利工具 。"
-                android:textColor="@color/FF4A4A4A"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="• 有什么特色?"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="5dp"
-                android:text="基于Linux环境搭建的量化交易系统，速度提升不止3倍\n
-无需自行购买服务器和配置交易软件，仅需注册账户，即可轻松套利\n
-每个用户独立服务器和IP，四重加密全面保障你的账户key安全\n
-遍布全球的服务器网络节点，优选离交易所最近节点，力争不错过每一次交易机会\n
-目前已支持国内前11大交易所，并持续增加中。
-"
-                android:textColor="@color/FF4A4A4A"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="• 如何免费获取10玩usdt交易额度?"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <TextView
-                android:paddingBottom="80dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="5dp"
-                android:text="如果你持有数字资产，请填写以下信息即有机会免费获得10万交易额度。"
-                android:textColor="@color/FF4A4A4A"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-
-    </ScrollView>
-
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

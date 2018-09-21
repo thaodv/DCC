@@ -17,6 +17,7 @@ import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransactionScratch
 import io.wexchain.digitalwallet.util.computeTransCount
 import io.wexchain.digitalwallet.util.computeTransCountKeep2Number
+import java.math.BigDecimal
 
 class Private2PublicActivity : BindActivity<ActivityPrivate2PublicBinding>() {
 
@@ -27,6 +28,7 @@ class Private2PublicActivity : BindActivity<ActivityPrivate2PublicBinding>() {
     private var poundge: String = ""
 
     val txVm = Private2PublicVm()
+    private var transcount= BigDecimal(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

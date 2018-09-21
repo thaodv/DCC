@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="io.wexchain.dcc"
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="io.wexchain.dcc">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- for wechat sdk -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <!-- end of wechat sdk -->
     <application
@@ -29,315 +29,315 @@
             android:screenOrientation="portrait"
             android:theme="@style/DccLightTheme.App.Transparent.Loading">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.HomeActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.MyCreditActivity"
             android:label="@string/my_credit"
             android:screenOrientation="portrait"
-            android:theme="@style/DccLightTheme.App.Immerse"/>
+            android:theme="@style/DccLightTheme.App.Immerse" />
         <activity
             android:name="io.wexchain.android.dcc.SubmitPersonalInfoActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.EditContactInfoActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.SubmitIdActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
             android:label="@string/title_id_certification"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.SubmitBankCardActivity"
             android:label="@string/bank_account_verification"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.CreatePassportActivity"
             android:label="@string/create_new_digital_wallet"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.DigitalAssetsActivity"
             android:label="数字钱包"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.DccExchangeActivity"
             android:label="@string/dcc"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.SubmitCommunicationLogActivity"
             android:label="@string/title_phone_carrier_certification"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.PassportImportActivity"
             android:label="@string/title_import_wallet"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.DigitalCurrencyActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.DigitalTransactionDetailActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.DigitalTransactionsActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.CreateTransactionActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.QrScannerActivity"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/DccLightTheme.App.Transparent"/>
+            android:theme="@style/DccLightTheme.App.Transparent" />
         <activity
             android:name="io.wexchain.android.dcc.PassportAddressActivity"
             android:label="@string/passport_address"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.IdCertificationActivity"
             android:label="@string/title_id_certification_data"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.BankCardCertificationActivity"
             android:label="@string/title_bank_card_certification_data"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.CmLogCertificationActivity"
             android:label="@string/phone_carrier_certification_data"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.PassportSettingsActivity"
             android:label="@string/settings"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.PassportRemovalActivity"
             android:label="@string/passport_removal"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.EditNicknameActivity"
             android:label="@string/modify_nickname"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateUnspecified"/>
+            android:windowSoftInputMode="adjustResize|stateUnspecified" />
         <activity
             android:name="io.wexchain.android.dcc.PassportExportActivity"
             android:label="@string/passport_backup"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.ModifyPassportPasswordActivity"
             android:label="@string/change_the_wallet_password"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.SearchDigitalCurrencyActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.ChooseCutImageActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.MarketingListActivity"
             android:label="@string/collect_candies"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.MarketingScenariosActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.PassportActivity"
             android:label="统一登录"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.WebPageActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.PassportCreationSucceedActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.SubmitNewTokenActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.AuthManageActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.AboutActivity"
             android:label="@string/about_us"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.AffiliateActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/DccLightTheme.App.Transparent"/>
+            android:theme="@style/DccLightTheme.App.Transparent" />
         <activity
             android:name="io.wexchain.android.dcc.LoanActivity"
             android:label="@string/based_loan"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/DccLightTheme.App.Transparent"/>
+            android:theme="@style/DccLightTheme.App.Transparent" />
         <activity
             android:name="io.wexchain.android.dcc.AddBeneficiaryAddressActivity"
             android:label="@string/add_annew_collection_address"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.BeneficiaryAddressesManagementActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddAddressBookActivity"
             android:label="@string/add_address"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.LoanProductListActivity"
             android:label="@string/apply_for_a_crypto_loan"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.LoanProductDetailActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.StartLoanActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.LoanSubmitResultActivity"
             android:label="@string/result_of_loan_application"
             android:noHistory="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.LoanRecordsActivity"
             android:label="@string/loan_history"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.EditBeneficiaryAddressActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.EditAddressBookActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.LoanRecordDetailActivity"
             android:label="@string/loan_details"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.LoanRepayResultActivity"
             android:label="@string/result"
             android:noHistory="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.LoanRepayActivity"
             android:label="@string/repayment"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.ChooseBeneficiaryAddressActivity"
             android:label="@string/selected_address"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.ChooseAddressBookActivity"
             android:label="@string/select_address"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.ReviewRepayActivity"
             android:label="@string/confirmation_of_repayment"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.RequisiteCertListActivity"
             android:label="@string/required_information"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.IncentiveProgramActivity"
             android:label="@string/incentive_program"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.LoanAgreementActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.ViewPdfActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.CmCertDataActivity"
             android:label="报告原文"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.LoanReportActivity"
             android:label="@string/loan_report"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.LoanReportDetailActivity"
             android:label="@string/loan_details"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.LoanBillDetailActivity"
             android:label="@string/repayment_plan"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.DccAffiliateActivity"
             android:label="@string/invite_friends"
             android:screenOrientation="portrait"
-            android:theme="@style/DccLightTheme.App.Transparent.Aff"/>
+            android:theme="@style/DccLightTheme.App.Transparent.Aff" />
         <activity
             android:name="io.wexchain.android.dcc.DccAffiliateTermsActivity"
             android:label="@string/rules"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.DccAffiliateRecordsActivity"
             android:label="@string/invitation_history"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.CreateScfAccountActivity"
             android:label="@string/enter_invitation_code"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.DccEcoRewardsActivity"
             android:label="@string/eco_rewardsds"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.DccEcoRewardsListActivity"
             android:label="@string/reward_details"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.DccEcoRewardsTermsActivity"
             android:label="@string/rules"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name="io.wexchain.android.dcc.MineRewardsActivity"
             android:label="@string/mining_rewardss"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.DccMineRewardsTermsActivity"
             android:label="@string/rules"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.MinePtRulesActivity"
             android:label="@string/mine_faster"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.MinePtListActivity"
             android:label="@string/mining_contribution_details"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.MineRewardRecordsActivity"
             android:label="@string/rewards_collection_record"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.tl.TlPayActivity"
             android:exported="false">
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
 
-                <action android:name="io.wexchain.intent.action.SIGN_ETH_TRANSACTION_TL"/>
+                <action android:name="io.wexchain.intent.action.SIGN_ETH_TRANSACTION_TL" />
             </intent-filter>
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.tl.TlWebPageActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddressDetailActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddressBookQueryActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -346,129 +346,124 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
 
         <activity
             android:name="io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.trans.activity.Private2PublicActivity"
             android:label="@string/across_trans"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.trans.activity.Public2PrivateActivity"
             android:label="@string/across_trans"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.trans.activity.AcrossTransRecordActivity"
             android:label="@string/across_trans_record"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.trans.activity.TransPublic2PrivateDetailActivity"
             android:label="@string/across_trans_detail"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.trans.activity.TransPrivate2PublicDetailActivity"
             android:label="@string/across_trans_detail"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.RePaymentProcessActivity"
             android:label="@string/repayment_process"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity"
             android:label="@string/title_open_cloud"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.ResetPasswordActivity"
             android:label="重置密码"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity"
             android:label="我的云存储"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.CloudAddressActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.SelectNodeActivity"
             android:label="选择节点"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.EditNodeActivity"
             android:label="编辑节点"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <service android:name="io.wexchain.android.dcc.modules.ipfs.service.IpfsService"/>
+        <service android:name="io.wexchain.android.dcc.modules.ipfs.service.IpfsService" />
 
         <activity
             android:name="io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity"
             android:label="@string/select_node"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.base.StaticHtmlActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.RepayingActivity"
             android:label="还币"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.DoRepayActivity"
             android:label="还币"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.RePaymentErrorActivity"
             android:label="还币"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.MyInterestActivity"
             android:label="DCC私链币生息1期"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.MyInterestDetailActivity"
             android:label="币生息详情"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.BuyInterestActivity"
             android:label="认购额度"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.home.HomeActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BsxMarketActivity"
             android:label="币生息"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity"
             android:label="币生息持仓"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.mine.SettingActivity"
             android:label="设置"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.home.TokenPlusActivity"
             android:label="TokenPlus介绍"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BsxDetailActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BsxHoldingDetailActivity"
             android:label="持仓详情"
+            android:screenOrientation="portrait" />
+        <activity android:name="io.wexchain.android.dcc.modules.home.LoanActivity"
+            android:label="信用借币"
+            android:screenOrientation="portrait"/>
+        <activity android:name="io.wexchain.android.dcc.modules.home.GardenActivity"
+            android:label="神秘花園"
             android:screenOrientation="portrait"/>
     </application>
 

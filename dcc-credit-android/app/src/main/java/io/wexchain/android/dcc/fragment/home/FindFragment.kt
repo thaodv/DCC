@@ -11,10 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.*
 import io.wexchain.android.dcc.base.BaseCompatFragment
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.home.GardenActivity
 import io.wexchain.android.dcc.modules.home.HomeActivity
 import io.wexchain.android.dcc.view.adapter.*
 import io.wexchain.dcc.R
@@ -29,6 +31,10 @@ import kotlinx.android.synthetic.main.fragment_find.*
 class FindFragment:BaseCompatFragment(), ItemViewClickListener<MarketingActivity>  {
 
     private val adapter = Adapter(this::onItemClick)
+
+    private val header by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+        LayoutInflater.from(activity).inflate(R.layout.find_header, find_root, false)
+    }
 
     private val wrappedAdapter = BottomMoreItemsAdapter(
             adapter,
@@ -59,15 +65,26 @@ class FindFragment:BaseCompatFragment(), ItemViewClickListener<MarketingActivity
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rv_list.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL).apply {
-            setDrawable(ContextCompat.getDrawable(context!!,R.drawable.divider_space)!!)
-        })
-        rv_list.adapter = wrappedAdapter
+        initView()
         loadMa()
     }
 
+    private fun initView() {
+        rv_list.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL).apply {
+            setDrawable(ContextCompat.getDrawable(context!!, R.drawable.divider_space)!!)
+        })
+        rv_list.adapter = wrappedAdapter
+
+        rv_list.addHeaderView(header)
+        rv_list.setLoadingMoreEnabled(false)
+        rv_list.setPullRefreshEnabled(false)
+        header.onClick {
+            navigateTo(GardenActivity::class.java)
+        }
+    }
+
     fun onItemClick(position: Int, viewId: Int) {
-        val pos = position
+        val pos = position -2
         onItemClick(adapter.getItemOnPos(pos), pos, viewId)
     }
 
@@ -75,17 +92,17 @@ class FindFragment:BaseCompatFragment(), ItemViewClickListener<MarketingActivity
         item?.let {
             when(it.code){
                 "10002"->{
-                    activity!!. navigateTo(DccAffiliateActivity::class.java)
+                    navigateTo(DccAffiliateActivity::class.java)
                 }
                 "10003"->{
-                    activity!!.navigateTo(DccEcoRewardsActivity::class.java)
+                    navigateTo(DccEcoRewardsActivity::class.java)
                 }
                 "10004"->{
-                    activity!!.navigateTo(MineRewardsActivity::class.java)
+                    navigateTo(MineRewardsActivity::class.java)
                 }
                 else->{
                     if (it.status == MarketingActivity.Status.STARTED) {
-                        activity?.navigateTo(MarketingScenariosActivity::class.java) {
+                        navigateTo(MarketingScenariosActivity::class.java) {
                             putExtra(Extras.EXTRA_MARKETING_ACTIVITY, it)
                         }
                     }
@@ -98,12 +115,6 @@ class FindFragment:BaseCompatFragment(), ItemViewClickListener<MarketingActivity
         App.get().marketingApi.queryActivity()
                 .compose(Result.checked())
                 .observeOn(AndroidSchedulers.mainThread())
-               /* .doOnSubscribe {
-                    (activity!! as HomeActivity).showLoadingDialog()
-                }
-                .doFinally {
-                    (activity!! as HomeActivity). hideLoadingDialog()
-                }*/
                 .subscribe({ list ->
                     adapter.setList(list)
                 }, {
