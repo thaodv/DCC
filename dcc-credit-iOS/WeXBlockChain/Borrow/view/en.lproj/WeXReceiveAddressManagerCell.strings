@@ -1,0 +1,15 @@
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "86O-ob-IHL"; */
+"86O-ob-IHL.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "编辑"; ObjectID = "Xic-Az-ktS"; */
+"Xic-Az-ktS.normalTitle" = "Edit";
+
+/* Class = "UIButton"; normalTitle = "删除"; ObjectID = "Yer-x5-FPz"; */
+"Yer-x5-FPz.normalTitle" = "Delete";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Z03-uX-PDs"; */
+"Z03-uX-PDs.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "默认地址"; ObjectID = "qyr-fV-taz"; */
+"qyr-fV-taz.normalTitle" = "Default address";

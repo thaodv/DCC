@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="WeXAddReceiveAddressCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <point key="canvasLocation" x="112" y="-300"/>
+        </tableViewCell>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="hDN-WW-p5u" customClass="WeXAddReceiveAddressTextFiedCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hDN-WW-p5u" id="FoJ-bQ-bFp">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JN4-8M-Nvo">
+                        <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                        <nil key="textColor"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits"/>
+                    </textField>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KBq-m6-d8f">
+                        <rect key="frame" x="15" y="42.5" width="345" height="1"/>
+                        <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="Rxg-cj-I8v"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="JN4-8M-Nvo" secondAttribute="trailing" constant="15" id="82e-Lq-MO2"/>
+                    <constraint firstAttribute="bottom" secondItem="KBq-m6-d8f" secondAttribute="bottom" id="Cam-0A-05J"/>
+                    <constraint firstAttribute="trailing" secondItem="KBq-m6-d8f" secondAttribute="trailing" constant="15" id="Dr0-6D-kmS"/>
+                    <constraint firstAttribute="bottom" secondItem="JN4-8M-Nvo" secondAttribute="bottom" id="IQC-rA-dXy"/>
+                    <constraint firstItem="JN4-8M-Nvo" firstAttribute="leading" secondItem="FoJ-bQ-bFp" secondAttribute="leading" constant="15" id="ONF-vt-Kdm"/>
+                    <constraint firstItem="KBq-m6-d8f" firstAttribute="leading" secondItem="FoJ-bQ-bFp" secondAttribute="leading" constant="15" id="mlx-Va-KZi"/>
+                    <constraint firstItem="JN4-8M-Nvo" firstAttribute="top" secondItem="FoJ-bQ-bFp" secondAttribute="top" id="uqB-jZ-DdD"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="nameTextField" destination="JN4-8M-Nvo" id="lqg-ks-7c5"/>
+            </connections>
+            <point key="canvasLocation" x="-194" y="-157"/>
+        </tableViewCell>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="4VI-rV-pGf" customClass="WeXAddReceiveAddressTextFiedAndButtonCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4VI-rV-pGf" id="5mb-Vn-8Cv">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Yjo-AA-9ot">
+                        <rect key="frame" x="15" y="0.0" width="320" height="43"/>
+                        <nil key="textColor"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits"/>
+                    </textField>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MDO-XV-s1X">
+                        <rect key="frame" x="340" y="12" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="pSt-iX-Afe"/>
+                            <constraint firstAttribute="height" constant="20" id="wDz-kF-NWm"/>
+                        </constraints>
+                        <state key="normal" title="Button" image="borrow_scan"/>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tQa-wB-Rg3">
+                        <rect key="frame" x="15" y="42.5" width="345" height="1"/>
+                        <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="gZx-uI-vLg"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="MDO-XV-s1X" firstAttribute="centerY" secondItem="5mb-Vn-8Cv" secondAttribute="centerY" id="3me-hV-0sc"/>
+                    <constraint firstItem="tQa-wB-Rg3" firstAttribute="leading" secondItem="5mb-Vn-8Cv" secondAttribute="leading" constant="15" id="IXo-r7-00z"/>
+                    <constraint firstAttribute="trailing" secondItem="MDO-XV-s1X" secondAttribute="trailing" constant="15" id="Jqm-wz-gT8"/>
+                    <constraint firstItem="Yjo-AA-9ot" firstAttribute="leading" secondItem="5mb-Vn-8Cv" secondAttribute="leading" constant="15" id="NEN-IG-xux"/>
+                    <constraint firstAttribute="trailing" secondItem="tQa-wB-Rg3" secondAttribute="trailing" constant="15" id="WuZ-Pc-1u1"/>
+                    <constraint firstItem="MDO-XV-s1X" firstAttribute="leading" secondItem="Yjo-AA-9ot" secondAttribute="trailing" constant="5" id="jlb-oy-Vh4"/>
+                    <constraint firstAttribute="bottom" secondItem="Yjo-AA-9ot" secondAttribute="bottom" id="kTz-Fa-NIY"/>
+                    <constraint firstItem="Yjo-AA-9ot" firstAttribute="top" secondItem="5mb-Vn-8Cv" secondAttribute="top" id="ozS-kR-0O1"/>
+                    <constraint firstAttribute="bottom" secondItem="tQa-wB-Rg3" secondAttribute="bottom" id="zG0-uA-ck5"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="addressTextField" destination="Yjo-AA-9ot" id="2Lm-W2-aTj"/>
+                <outlet property="scanButton" destination="MDO-XV-s1X" id="Heq-hL-7MS"/>
+            </connections>
+            <point key="canvasLocation" x="-173" y="195"/>
+        </tableViewCell>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Tc5-fr-bvs" customClass="WeXAddReceiveAddressLabelAndButtonCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Tc5-fr-bvs" id="Kgf-jr-mKW">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="设置为默认地址" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YKP-sP-AG2">
+                        <rect key="frame" x="15" y="0.0" width="150" height="43.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="150" id="Eqc-p5-5G2"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kHx-Ra-w9r">
+                        <rect key="frame" x="340" y="12" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="Ocs-QO-gcX"/>
+                            <constraint firstAttribute="height" constant="20" id="Si6-R8-lBP"/>
+                        </constraints>
+                        <state key="normal" title="Button" image="borrow_unnormal_address"/>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QLS-UY-C7c">
+                        <rect key="frame" x="15" y="42.5" width="345" height="1"/>
+                        <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="w6Y-hq-cMe"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="QLS-UY-C7c" firstAttribute="leading" secondItem="Kgf-jr-mKW" secondAttribute="leading" constant="15" id="3hh-Dc-BJ6"/>
+                    <constraint firstItem="kHx-Ra-w9r" firstAttribute="centerY" secondItem="Kgf-jr-mKW" secondAttribute="centerY" id="Ga7-U3-M4o"/>
+                    <constraint firstAttribute="trailing" secondItem="kHx-Ra-w9r" secondAttribute="trailing" constant="15" id="UCL-cc-jQX"/>
+                    <constraint firstItem="YKP-sP-AG2" firstAttribute="leading" secondItem="Kgf-jr-mKW" secondAttribute="leading" constant="15" id="VBt-zf-OOq"/>
+                    <constraint firstAttribute="bottom" secondItem="YKP-sP-AG2" secondAttribute="bottom" id="hEE-9M-ilA"/>
+                    <constraint firstItem="YKP-sP-AG2" firstAttribute="top" secondItem="Kgf-jr-mKW" secondAttribute="top" id="kt3-zk-7zU"/>
+                    <constraint firstAttribute="trailing" secondItem="QLS-UY-C7c" secondAttribute="trailing" constant="15" id="m5p-Ul-xC5"/>
+                    <constraint firstAttribute="bottom" secondItem="QLS-UY-C7c" secondAttribute="bottom" id="vZO-Qw-KCj"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="defaultButton" destination="kHx-Ra-w9r" id="KiH-c3-5Di"/>
+                <outlet property="defaultLabel" destination="YKP-sP-AG2" id="pvf-TK-VUT"/>
+            </connections>
+            <point key="canvasLocation" x="-172" y="-14"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="borrow_scan" width="19" height="19"/>
+        <image name="borrow_unnormal_address" width="19" height="19"/>
+    </resources>
+</document>
