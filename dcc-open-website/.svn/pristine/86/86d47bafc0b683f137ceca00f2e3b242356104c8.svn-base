@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>关于我们</title>
+  <style>
+    body{
+      padding:0 10px;
+    }
+   p{
+     white-space: pre-wrap;
+     font-size:14px;
+   }
+  </style>
+</head>
+<body>
+  <p>
+BitExpress is a Dapp based on Distributed Credit Chain, aiming to solve digital asset loan problems in a decentralized scenario. Borrowers can send verified personal information to the lender via the Dapp. The lender then reviews and approves the application, and issue the loan. On the BitExpress platform, users can borrow digital assets urgently needed, and lender could collect interests corresponding to the loan principal, terms and amount.
+
+
+If you are interested in collaboration, have questions or would like to explore career opportunities, please contact us.
+    
+Company:Mobile Internet finance group limited company.
+E-mail:yimtoken1@163.com
+  </p>
+</body>
+</html>

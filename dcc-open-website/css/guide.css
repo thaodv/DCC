@@ -1,0 +1,17 @@
+.sdk aside li a{
+  padding-left:0;
+}
+body main .guide-intro{
+  white-space: pre-wrap;
+  font-size:14px;
+  line-height:26px;
+  padding:0 180px 30px 0;
+}
+body main .guide-intro h4{
+  line-height:30px;
+  font-weight:600;
+}
+.guide-intro a.sdk-mail:focus,.guide-intro a.sdk-mail:hover,.guide-intro a{
+  color: #6b61e1;
+  text-decoration: decoration;
+}
