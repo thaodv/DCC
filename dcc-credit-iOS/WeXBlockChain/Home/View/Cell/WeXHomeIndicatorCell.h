@@ -10,6 +10,9 @@
 
 @interface WeXHomeIndicatorCell : WeXBaseTableViewCell
 
+@property (nonatomic,copy) void (^DidClickRight)(void);
+
+
 - (void)setLeftTitle:(NSString *)leftTitle
           rightTitle:(NSString *)rightTitle;
 

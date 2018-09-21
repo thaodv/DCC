@@ -12,6 +12,7 @@
 @property (nonatomic, weak) UILabel *titleLab;
 //347 * 203
 @property (nonatomic, weak) UIImageView *cardImageView;
+@property (nonatomic, weak) UILabel *accountTipsLab;
 @property (nonatomic, weak) UILabel *addressLab;
 
 @end
@@ -30,6 +31,10 @@ static CGFloat const kImageRatio =  347.0 / 204.0;
     [cardImageView setImage:[UIImage imageNamed:@"digital_card"]];
     [self.contentView addSubview:cardImageView];
     self.cardImageView = cardImageView;
+    
+    UILabel *accountTipsLab = CreateLeftAlignmentLabel(WexFont(16), ColorWithHex(0xFFFFFF));
+    [self.cardImageView addSubview:accountTipsLab];
+    self.accountTipsLab = accountTipsLab;
     
     UILabel *addressLab = CreateLeftAlignmentLabel(WexFont(16), ColorWithHex(0xFFFFFF));
     [self.cardImageView addSubview:addressLab];
@@ -50,6 +55,11 @@ static CGFloat const kImageRatio =  347.0 / 204.0;
         make.height.mas_equalTo((kScreenWidth - 2 * 14) / kImageRatio) ;
     }];
     
+    [self.accountTipsLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(14);
+        make.bottom.equalTo(self.addressLab.mas_top).offset(-10);
+    }];
+    
     [self.addressLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(14);
         make.bottom.mas_equalTo(-15);
@@ -58,6 +68,7 @@ static CGFloat const kImageRatio =  347.0 / 204.0;
 
 - (void)setTitleText:(NSString *)titleText
          addressText:(NSString *)addressText {
+    [self.accountTipsLab setText:@"Account No."];
     [self.titleLab setText:titleText];
     [self.addressLab setText:addressText];
 }

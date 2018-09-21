@@ -21,6 +21,10 @@
     self.leftLab = leftLab;
     
     UILabel *rightLab = CreateRightAlignmentLabel(WexFont(15.0), ColorWithHex(0xC009FF));
+    rightLab.userInteractionEnabled = true;
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rightEvent:)];
+    [rightLab addGestureRecognizer:tapGesture];
+    
     [self.contentView addSubview:rightLab];
     self.rightLab = rightLab;
 }
@@ -38,6 +42,10 @@
         make.centerY.equalTo(self.self.leftLab);
         make.right.mas_equalTo(-10);
     }];
+}
+
+- (void)rightEvent:(UITapGestureRecognizer *)gesture {
+    !self.DidClickRight ? : self.DidClickRight();
 }
 
 - (void)setLeftTitle:(NSString *)leftTitle rightTitle:(NSString *)rightTitle {

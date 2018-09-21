@@ -871,11 +871,9 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
     return headerView;
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView == _cardTabelView) {
-        if (indexPath.section == 0)
-        {
+        if (indexPath.section == 0) {
             WeXHomeTopCardCell *cell = [tableView dequeueReusableCellWithIdentifier:kTopCardCellID forIndexPath:indexPath];
             NSString *address = [WexCommonFunc getFromAddress];
             NSString *shortAddress = nil;
@@ -885,40 +883,14 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
                 shortAddress = [NSString stringWithFormat:@"0x  %@  %@",subAddress1,subAddress2];
             }
             [cell setTitleText:@"我的征信" addressText:shortAddress];
-//            WeXPassportCardPassCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXPassportCardCell" owner:self options:nil] objectAtIndex:1];
-//            cell.backgroundColor = [UIColor clearColor];
-//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//            cell.nickLabel.text = [WexDefaultConfig instance].nickName;
-//            _nickNameLabel = cell.nickLabel;
-//            _nickNameLabel.font = [UIFont systemFontOfSize:15];
-//            NSString *address = [WexCommonFunc getFromAddress];
-//            if (address.length>8) {
-//                NSString *subAddress1 = [address substringWithRange:NSMakeRange(address.length-8, 4)];
-//                NSString *subAddress2 = [address substringWithRange:NSMakeRange(address.length-4, 4)];
-//                cell.addressLabel.text = [NSString stringWithFormat:@"0x  %@  %@",subAddress1,subAddress2];
-//            }
-            
-//            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]  initWithTarget:self action:@selector(goToWebViewClick)];
-//            cell.addressLabel.userInteractionEnabled = YES;
-//            [cell.addressLabel addGestureRecognizer:tap];
-//            _addressLabel = cell.addressLabel;
-//            _addressLabel.font = [UIFont systemFontOfSize:15];
-//
-//            UIImage *headImage = [IYFileManager cacheImageFileWithKey:WEX_FILE_USER_FACE];
-//            if (headImage == nil) {
-//                cell.headImageView.image = [UIImage imageNamed:@"digital_head"];
-//            }
-//            else{
-//                cell.headImageView.image = headImage;
-//            }
-//            cell.headImageView.layer.cornerRadius = 40;
-//            cell.headImageView.layer.masksToBounds = YES;
-//            _headImageView = cell.headImageView;
             return cell;
         }
         else if (indexPath.section == 1) {
             if (indexPath.row == 0) {
                 WeXHomeIndicatorCell *indicatorCell = [tableView dequeueReusableCellWithIdentifier:kIndicatorCellID forIndexPath:indexPath];
+                indicatorCell.DidClickRight = ^{
+                    [self borrowButtonClick];
+                };
                 [indicatorCell setLeftTitle:@"信用借币" rightTitle:@"更多币种"];
                 return indicatorCell;
             } else if (indexPath.row == 1) {
@@ -957,17 +929,6 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
                 }
                 return cell;
             }
-//            __weak typeof(self) weakSelf  = self;
-//            WeXCoinProfitCell *cell = [tableView dequeueReusableCellWithIdentifier:kCoinProfitCellIdentifier forIndexPath:indexPath];
-//            cell.DidClickCell = ^(WexCoinProfitCellType type) {
-//                __strong typeof(weakSelf) strongSelf = weakSelf;
-//                if (![strongSelf hasPassport]) {
-//                    [strongSelf createPassportChooseView];
-//                    return;
-//                }
-//                [strongSelf handleProfitCellCLickWithType:type];
-//            };
-//            [cell setIsAllowAppear:_isAllowDisPlay];
         }
         else if (indexPath.section == 2) {
             if (indexPath.row == 0) {
@@ -994,18 +955,6 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
                 [cell setLeftIconName:@"zichan" title:@"TokenPlus套利工具" subTitle:@"专为资产大户持有者提供服务的高回报神器！" actionTitle:nil];
                 return cell;
             }
-            
-//            WeXP2PImageCardCell *cardCell = [tableView dequeueReusableCellWithIdentifier:kP2PCardCellIdentifier forIndexPath:indexPath];
-//            [cardCell setCardBackgroundImage:WeXLocalizedString(@"banner")];
-//            __weak typeof(self) weakSelf  = self;
-//            cardCell.DidClickP2PLoanCard = ^{
-//                if (![self hasPassport]) {
-//                    [self createPassportChooseView];
-//                    return;
-//                }
-//                [weakSelf p2pLoanCoinEvent];
-//            };
-//            return cardCell;
         }
         else if (indexPath.section == 4)
         {
@@ -1018,41 +967,11 @@ static const CGFloat kInviteFriendCardHeightWidthRatio = 135.0/345.0;
                 [cell setLeftIconName:@"saoma" title:@"扫码登录" subTitle:@"使用个人数字认证信息实现联合登录！" actionTitle:nil];
                 return cell;
             }
-//            WeXPassportCardDigitalCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXPassportCardCell" owner:self options:nil] objectAtIndex:3];
-//            cell.backgroundColor = [UIColor clearColor];
-//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//            cell.cardView.backgroundColor = [UIColor whiteColor];
-//            cell.cardView.layer.cornerRadius = 5;
-//            _tokenTabelView = cell.tokenTabelView;
-//            _tokenTabelView.delegate = self;
-//            _tokenTabelView.dataSource = self;
-//            _tokenTabelView.scrollEnabled = NO;
-//            _tokenTabelView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//            _tokenTabelView.backgroundColor = [UIColor clearColor];
-//            _tokenTabelView.userInteractionEnabled = NO;
-//            cell.backImageView.backgroundColor = [UIColor clearColor];
-//            cell.detailLabel.textColor = COLOR_THEME_ALL;
-//            cell.titleLabel.textColor = COLOR_LABEL_DESCRIPTION;
-//            cell.totalAssetLabel.textColor =COLOR_LABEL_DESCRIPTION;
-//            _assetlabel = cell.totalAssetLabel;
-//            _assetlabel.text = _assetStr;
-//            _assetlabel.font = [UIFont systemFontOfSize:25];
-//            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeNodeEvent:)];
-//            [cell.netbackView addGestureRecognizer:tapGesture];
-//            if (self.nodeDelayModel) {
-//                [cell setNodeNetworkDelayModel:self.nodeDelayModel];
-//            }
-//            [_tokenTabelView registerClass:[WeXWalletNewCell class] forCellReuseIdentifier:kNewWalletCellID];
-//            return cell;
         }
     }
-//    WeXWalletDigitalListCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletDigitalListCell" owner:self options:nil] lastObject];
-//    cell.backgroundColor = [UIColor clearColor];
-//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[indexPath.row];
     WeXWalletNewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNewWalletCellID forIndexPath:indexPath];
     [cell setModel:model];
-//    cell.model =  model;
     return cell;
 }
 
