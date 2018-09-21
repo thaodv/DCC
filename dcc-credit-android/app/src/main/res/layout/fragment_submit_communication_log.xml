@@ -28,7 +28,7 @@
 
         <include
             android:id="@+id/input_phone"
-            layout="@layout/include_input_text"
+            layout="@layout/certs_include_input_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hint="@{@string/please_input_phone_no}"
@@ -39,7 +39,7 @@
 
         <include
             android:id="@+id/input_password"
-            layout="@layout/include_input_text"
+            layout="@layout/certs_include_input_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hint="@{@string/please_input_phone_service_password}"

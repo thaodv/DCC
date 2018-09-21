@@ -100,7 +100,7 @@ class MarketingScenariosActivity : BaseCompatActivity(), ItemViewClickListener<M
                 }
                 else -> {
                     // cert undone
-                    navigateTo(MyCreditActivity::class.java)
+                    navigateTo(MyCreditNewActivity::class.java)
                 }
             }
         }

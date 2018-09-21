@@ -1,1 +1,1 @@
-include ':app', ':ewallet', ':livenesslib',':idcardlib',':idverify',':network', ':localprotect', ':common', ':dccchainservice',':barcode',':tllibrary', ':ipfslib'
+include ':app', ':regloginlib', ':ewallet', ':livenesslib',':idcardlib',':idverify',':network', ':localprotect', ':common', ':dccchainservice',':barcode',':tllibrary', ':ipfslib', ':certs',':tongniucertmodule'

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="io.wexchain.android.dcc.fragment.LivenessDetectionFragment"
+        >
+
+    <data>
+        <variable
+                name="portrait"
+                type="byte[]"/>
+        <variable
+                name="certFee"
+                type="String"/>
+    </data>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+        <ImageButton
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/ivbg"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                imageRawBytes="@{portrait}"
+                errorRes="@{@drawable/face_detect}"
+                tools:src="@drawable/face_detect"
+                android:scaleType="fitCenter"
+                android:layout_margin="32dp"
+                />
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+                android:id="@+id/tv_face_detect_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="请取下眼镜,确保面部光线充足按提示操作"
+                />
+
+        <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="16dp"
+                />
+
+
+
+        <Button
+            android:layout_gravity="center_horizontal"
+                android:id="@+id/btn_proceed"
+                android:layout_width="260dp"
+                android:layout_height="wrap_content"
+                android:text="@{portrait==null?@string/next_step:@string/do_certification}"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="48dp"
+                tools:text="开始人脸识别"
+            android:background="@drawable/bgbtpurple"
+            android:textColor="@color/white"
+                />
+
+    </LinearLayout>
+</layout>

@@ -21,6 +21,9 @@
         <variable
             name="asMobileVm"
             type="io.wexchain.android.dcc.vm.AuthenticationStatusVm" />
+        <variable
+            name="asTongniuVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -110,6 +113,11 @@
                         android:id="@+id/card_as_mobile"
                         layout="@layout/include_card_auth_status"
                         app:vm="@{asMobileVm}" />
+
+                    <include
+                        android:id="@+id/card_as_tongniu"
+                        layout="@layout/include_card_auth_status"
+                        app:vm="@{asTongniuVm}" />
 
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>

@@ -147,7 +147,7 @@ class RequisiteCertListActivity : BaseCompatActivity() {
             CertificationType.MOBILE -> {
                 when (status) {
                     UserCertStatus.DONE -> {
-//                        navigateTo(CmLogCertificationActivity::class.java)
+//                        navigateTo(TnLogCertificationActivity::class.java)
                     }
                     UserCertStatus.NONE, UserCertStatus.TIMEOUT -> {
                         PassportOperations.ensureCaValidity(this) {
@@ -168,6 +168,8 @@ class RequisiteCertListActivity : BaseCompatActivity() {
             CertificationType.PERSONAL -> "真实信息认证"
             CertificationType.BANK -> getString(R.string.bank_account_verification)
             CertificationType.MOBILE -> getString(R.string.carrier_verification)
+            CertificationType.TONGNIU -> "真实信息认证"
+            CertificationType.LOANREPORT -> "借贷记录全整合"
         }
     }
 }

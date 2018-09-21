@@ -38,7 +38,12 @@
             android:name="io.wexchain.android.dcc.HomeActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="io.wexchain.android.dcc.MyCreditActivity"
+        android:name="io.wexchain.android.dcc.MyCreditActivity"
+        android:label="@string/my_credit"
+        android:screenOrientation="portrait"
+        android:theme="@style/DccLightTheme.App.Immerse"/>
+        <activity
+            android:name="io.wexchain.android.dcc.MyCreditNewActivity"
             android:label="@string/my_credit"
             android:screenOrientation="portrait"
             android:theme="@style/DccLightTheme.App.Immerse"/>

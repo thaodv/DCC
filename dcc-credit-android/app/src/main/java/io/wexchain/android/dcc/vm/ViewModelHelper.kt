@@ -13,6 +13,7 @@ import io.wexchain.android.common.checkLanguage
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 import io.wexchain.android.dcc.tools.getString
+import io.wexchain.android.dcc.vm.ViewModelHelper.getCertTypeIcon
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
@@ -67,10 +68,12 @@ object ViewModelHelper {
     fun Context.getCertTypeIcon(certificationType: CertificationType?): Drawable? {
         val drawableId = when (certificationType) {
             null -> 0
-            CertificationType.ID -> R.drawable.shape_id
+            CertificationType.ID -> R.drawable.shape_newid
             CertificationType.PERSONAL -> R.drawable.shape_personal
-            CertificationType.BANK -> R.drawable.shape_bank_card
-            CertificationType.MOBILE -> R.drawable.shape_mobile
+            CertificationType.BANK -> R.drawable.shape_newbankcard
+            CertificationType.MOBILE -> R.drawable.shape_newmobile
+            CertificationType.TONGNIU -> R.drawable.shape_newmobile
+            CertificationType.LOANREPORT -> R.drawable.shape_newloanreport
         }
         return ContextCompat.getDrawable(this, drawableId)
     }
@@ -91,8 +94,32 @@ object ViewModelHelper {
             UserCertStatus.TIMEOUT -> "已过期"
             UserCertStatus.INCOMPLETE -> getString(R.string.verifying)
             UserCertStatus.DONE -> getString(R.string.verified)
+            UserCertStatus.LOANREPORT -> "查看报告"
             else -> ""
         }
+    }
+
+    @JvmStatic
+    fun Context.getCertStatusShape(userCertStatus: String?): Drawable?  {
+        val drawableId = when (userCertStatus) {
+            "已认证" -> R.drawable.shape_certstatu_green
+            "认证完成" -> R.drawable.shape_certstatu_green
+            "已过期" -> R.drawable.shape_certstatu_red
+            "未认证" -> R.drawable.shape_certstatu_red
+            "查看报告" -> R.drawable.shape_certstatu_purple
+            "认证中" -> R.drawable.shape_certstatu_blue
+            else -> R.drawable.shape_certstatu_red
+
+        }
+        return ContextCompat.getDrawable(this, drawableId)
+       /* return when (userCertStatus) {
+            "已认证" -> R.drawable.shape_certstatu_green
+            "已过期" -> R.drawable.shape_certstatu_red
+            "未认证" -> R.drawable.shape_certstatu_red
+            "查看报告" -> R.drawable.shape_certstatu_purple
+            "认证中" -> R.drawable.shape_certstatu_blue
+            else -> R.drawable.shape_certstatu_red
+        }*/
     }
 
     @JvmStatic

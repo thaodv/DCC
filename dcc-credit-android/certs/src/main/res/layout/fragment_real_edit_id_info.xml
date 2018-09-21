@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        >
+
+    <data>
+
+        <variable
+                name="vm"
+                type="worhavah.certs.vm.RealCardInfoVm"
+                />
+    </data>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/content_padding_horizontal"
+                android:paddingRight="@dimen/content_padding_horizontal"
+                android:paddingBottom="16dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:descendantFocusability="beforeDescendants"
+                >
+
+
+
+            <TextView
+                android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="请拍摄身份证照片,系统自动识别"
+                    />
+
+            <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                <ImageButton
+                        android:id="@+id/ib_id_front"
+                        android:layout_width="0dp"
+                        android:layout_height="105dp"
+                        android:scaleType="fitXY"
+                        imageRawBytes="@{vm.imgFront}"
+                        errorRes="@{@drawable/cn_id_front}"
+                        tools:src="@drawable/cn_id_front"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/ib_id_back"
+                    android:background="@drawable/cn_id_front"
+
+                        />
+
+
+                <ImageButton
+                    android:background="@drawable/cn_id_back"
+                        android:id="@+id/ib_id_back"
+                        android:layout_width="0dp"
+                        android:layout_height="105dp"
+                        android:scaleType="fitXY"
+                        imageRawBytes="@{vm.imgBack}"
+                        errorRes="@{@drawable/cn_id_back}"
+                        tools:src="@drawable/cn_id_back"
+                        app:layout_constraintLeft_toRightOf="@id/ib_id_front"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginLeft="24dp"
+                        />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="姓名"
+                    android:layout_marginTop="4dp"
+                    />
+
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:text="@={vm.name}"
+                    android:maxLength="50"
+                    android:singleLine="true"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/please_try_ocr"
+                    android:textSize="@dimen/text_size_sub_title"
+                    />
+
+            <View
+                    style="@style/DividerHorizontal"
+                    />
+
+
+
+
+
+            <View
+                    style="@style/DividerHorizontal"
+                    />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="身份证号"
+                    />
+
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:text="@={vm.idNo}"
+                    android:maxLength="18"
+                    android:digits="0123456789xX"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/please_try_ocr"
+                    android:textSize="@dimen/text_size_sub_title"
+                    />
+
+            <View
+                    style="@style/DividerHorizontal"
+                    />
+
+
+
+            <Button
+                android:layout_marginTop="50dp"
+                android:layout_gravity="center"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{(v)->vm.confirmToNext()}"
+                    android:text="下一步"
+                android:background="@drawable/bgbtpurple"
+                android:textColor="@color/white"
+                    />
+        </LinearLayout>
+    </ScrollView>
+
+</layout>
