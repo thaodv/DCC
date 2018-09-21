@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="FullWidthDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+
+    <style name="DialogTheme_NoBackground" parent="android:style/Theme.Dialog">
+        <item name="android:background">@color/whitetrans</item>
+        <item name="android:windowBackground">@color/whitetrans</item> <!--背景透明-->
+        <item name="android:windowNoTitle">true</item> <!--无标题-->
+        <item name="android:windowFullscreen">false</item> <!--全屏-->
+        <item name="android:windowContentOverlay">@null</item> <!--定义contentoverlay的背景-->
+        <item name="android:windowIsTranslucent">true</item> <!--半透明-->
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="deleteAddressBookDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
+    <style name="FullWidthDialog.SlideRight" parent="FullWidthDialog">
+        <item name="android:windowAnimationStyle">@style/AnimationSlideRight</item>
+    </style>
+    <style name="AnimationSlideRight">
+        <item name="android:windowEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_right</item>
+    </style>
+    <style name="Widget.AppCompat.Button.Borderless.PinButton">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display1</item>
+        <item name="android:textColor">@color/blue_magenta</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:padding">0dp</item>
+    </style>
+</resources>
