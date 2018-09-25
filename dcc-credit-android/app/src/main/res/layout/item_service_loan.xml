@@ -11,13 +11,12 @@
     </data>
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="@dimen/content_padding_horizontal"
         android:layout_marginRight="@dimen/content_padding_horizontal"
         android:layout_marginTop="4dp"
-        android:background="@drawable/bg_loan_status_default"
         android:minHeight="66dp">
 
 
@@ -33,16 +32,15 @@
 
 
         <TextView
-            android:id="@+id/tv_product_currency"
+            android:id="@+id/tv_product_volume_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="@{product.currency.symbol}"
+            android:text="@string/amount1"
             android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
             app:layout_constraintBottom_toTopOf="@id/tv_product_period_label"
             app:layout_constraintLeft_toRightOf="@id/iv_logo"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="DCC"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
@@ -50,37 +48,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
-            android:text="@{product.getAheadRate()}"
+            android:text="@{product.volumeRangeStr}"
             android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_product_volume_label"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toRightOf="@id/tv_product_volume_label"
-            tools:text="日利率：0.1%" />
-
-        <TextView
-            android:id="@+id/tv_product_period_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="12dp"
-            android:text="最高"
-            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/iv_logo"
-            app:layout_constraintTop_toBottomOf="@id/tv_product_volume_label" />
+            tools:text="1.0000-4.0000ETH" />
 
         <TextView
             android:id="@+id/tv_product_period_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="12dp"
-            android:text="@{product.getMaxRangeStr}"
-            tools:text="4.0000ETH"
-            android:textColor="#001C00"
+            android:text="@string/term1"
             android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/tv_product_period_tag"
+            app:layout_constraintLeft_toRightOf="@id/iv_logo"
             app:layout_constraintTop_toBottomOf="@id/tv_product_volume_label" />
 
         <TextView
@@ -91,7 +74,6 @@
             android:text="@{product.periodStr}"
             android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_product_period_label"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toRightOf="@id/tv_product_period_label"
             tools:text="7天-30天" />
 

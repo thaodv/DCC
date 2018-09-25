@@ -8,8 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:descendantFocusability="blocksDescendants"
-        android:orientation="vertical"
-        tools:context="io.wexchain.android.dcc.LoanProductListActivity">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/mine_title"
@@ -32,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
-            tools:listitem="@layout/item_loan_product" />
+            tools:listitem="@layout/item_service_loan" />
 
     </LinearLayout>
 </layout>

@@ -16,6 +16,7 @@ import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.LoanProductDetailActivity
 import io.wexchain.android.dcc.PassportActivity
+import io.wexchain.android.dcc.PassportAddressActivity
 import io.wexchain.android.dcc.base.BindFragment
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.bsx.BsxMarketActivity
@@ -30,6 +31,7 @@ import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentServiceBinding
 import io.wexchain.dcc.databinding.ItemLoanProductBinding
+import io.wexchain.dcc.databinding.ItemServiceLoanBinding
 import io.wexchain.dccchainservice.domain.LoanProduct
 import kotlinx.android.synthetic.main.fragment_service.*
 
@@ -63,7 +65,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        rv_list?.destroy()
+        binding.rvList.destroy()
     }
 
     private fun initClick() {
@@ -72,6 +74,9 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
         }
         header.findViewById<TextView>(R.id.home_credit_more).onClick {
             navigateTo(LoanActivity::class.java)
+        }
+        header.findViewById<TextView>(R.id.tv_passport_address).onClick {
+            navigateTo(PassportAddressActivity::class.java)
         }
         foot.findViewById<RelativeLayout>(R.id.home_assets).onClick {
             navigateTo(TokenPlusActivity::class.java)
@@ -87,24 +92,26 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
     private fun initView() {
         adapter.lifecycleOwner = this
-        rv_list.adapter = adapter
-        rv_list.layoutManager = GridLayoutManager(activity, 2)
-        rv_list.setPullRefreshEnabled(false)
-        rv_list.addHeaderView(header)
+        binding.rvList.run {
+            adapter = this@ServiceFragment.adapter
+            layoutManager = GridLayoutManager(activity, 2)
+            setPullRefreshEnabled(false)
+            addHeaderView(header)
+            setFootView(foot, object : CustomFooterViewCallBack {
+                override fun onSetNoMore(yourFooterView: View?, noMore: Boolean) {
+
+                }
+
+                override fun onLoadingMore(yourFooterView: View?) {
+
+                }
+
+                override fun onLoadMoreComplete(yourFooterView: View?) {
+
+                }
+            })
+        }
         header.findViewById<TextView>(R.id.tv_passport_address).text = ViewModelHelper.maskAddress2(passport?.address)
-        rv_list.setFootView(foot, object : CustomFooterViewCallBack {
-            override fun onSetNoMore(yourFooterView: View?, noMore: Boolean) {
-
-            }
-
-            override fun onLoadingMore(yourFooterView: View?) {
-
-            }
-
-            override fun onLoadMoreComplete(yourFooterView: View?) {
-
-            }
-        })
     }
 
     fun onItemClick(position: Int, viewId: Int) {
@@ -125,17 +132,17 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
 
     private class Adapter(val onPosClick: (Int, Int) -> Unit) :
-            DataBindAdapter<ItemLoanProductBinding, LoanProduct>(
-                    R.layout.item_loan_product,
+            DataBindAdapter<ItemServiceLoanBinding, LoanProduct>(
+                    R.layout.item_service_loan,
                     itemDiffCallback = defaultItemDiffCallback()
             ) {
-        override fun bindData(binding: ItemLoanProductBinding, item: LoanProduct?) {
+        override fun bindData(binding: ItemServiceLoanBinding, item: LoanProduct?) {
             binding.product = item
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<ItemLoanProductBinding> {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<ItemServiceLoanBinding> {
             val layoutInflater = LayoutInflater.from(parent.context)
-            val binding: ItemLoanProductBinding = DataBindingUtil.inflate(layoutInflater, layout, parent, false)
+            val binding: ItemServiceLoanBinding = DataBindingUtil.inflate(layoutInflater, layout, parent, false)
             return ClickAwareHolder(binding, onPosClick)
         }
     }

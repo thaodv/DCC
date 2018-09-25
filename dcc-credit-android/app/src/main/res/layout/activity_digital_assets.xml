@@ -51,22 +51,27 @@
             app:layout_constraintTop_toBottomOf="@id/v_line"
             tools:text="~$43681365.43159" />
 
-        <CheckedTextView
-            android:id="@+id/ib_add"
+        <TextView
+            android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="哈哈哈"
+            android:drawablePadding="8dp"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="15dp"
+            android:onClick="@{(v)->assets.filter()}"
+            android:drawableLeft="@{assets.assetsFilter?@drawable/tv_state_enabled:@drawable/tv_state_disabled}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/v_line" />
+            android:text="隐藏0资产币种"
+            app:layout_constraintTop_toBottomOf="@id/v_line"
+            tools:drawableLeft="@drawable/tv_state_disabled" />
 
         <android.support.constraint.Barrier
             android:id="@+id/barrier_bottom"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="assets_amount_value,ib_add" />
+            app:constraint_referenced_ids="assets_amount_value,tv_status" />
 
 
         <android.support.v7.widget.RecyclerView

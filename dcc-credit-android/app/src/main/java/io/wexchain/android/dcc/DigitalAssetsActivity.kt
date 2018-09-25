@@ -1,7 +1,6 @@
 package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewCompat
 import android.view.Menu
@@ -14,18 +13,22 @@ import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
+import io.wexchain.android.dcc.tools.Log
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.DigitalAssetsAdapter
 import io.wexchain.android.dcc.vm.DigitalAssetsVm
+import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityDigitalAssetsBinding
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
+import java.math.BigDecimal
 
 class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), ItemViewClickListener<DigitalCurrency> {
 
     override val contentLayoutId: Int = R.layout.activity_digital_assets
+    private var tmpList: List<DigitalCurrency>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,13 +43,39 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
         val assetsVm = getViewModel<DigitalAssetsVm>()
         assetsVm.ensureHolderAddress(this)
         assetsVm.assets.observe(this, Observer {
+            tmpList = it
             adapter.setList(it)
+        })
+        assetsVm.assetsFilter.set(false)
+        assetsVm.filterEvent.observe(this, Observer {
+            val b = assetsVm.assetsFilter.get()!!
+            assetsVm.assetsFilter.set(!b)
+            if (b){
+                adapter.setList(tmpList)
+            }else{
+                val tmp = mutableListOf<DigitalCurrency>()
+                tmpList!!.forEach {
+                    val hoding = assetsVm.holding[it]
+                    val balanceStr = ViewModelHelper.getBalanceStr(it, hoding)
+                    if (balanceStr != "--" && balanceStr.isNotEmpty()) {
+                        val value = BigDecimal(balanceStr)
+                        if (value.compareTo(BigDecimal.ZERO) != 0){
+                            tmp.add(it)
+                        }
+                    }
+                }
+                adapter.setList(tmp)
+            }
+
+
         })
         binding.assets = assetsVm
         adapter.assetsVm = assetsVm
         binding.rvAssets.adapter = adapter
 
         binding.assets!!.updateHoldingAndQuote()
+
+
     }
 
     private fun setupTransitions() {
@@ -85,7 +114,7 @@ class DigitalAssetsActivity : BindActivity<ActivityDigitalAssetsBinding>(), Item
                 navigateTo(SelectNodeActivity::class.java)
                 true
             }
-            R.id.iv_add_token->{
+            R.id.iv_add_token -> {
                 navigateTo(SearchDigitalCurrencyActivity::class.java)
                 true
             }

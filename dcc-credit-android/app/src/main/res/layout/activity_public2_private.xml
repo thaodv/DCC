@@ -3,26 +3,23 @@
 
     <data>
 
-        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper" />
 
         <variable
             name="vm"
-            type="io.wexchain.android.dcc.vm.DccExchangeVm"/>
+            type="io.wexchain.android.dcc.vm.DccExchangeVm" />
 
         <variable
             name="tx"
-            type="io.wexchain.android.dcc.modules.trans.vm.Public2PrivateVm"
-            />
+            type="io.wexchain.android.dcc.modules.trans.vm.Public2PrivateVm" />
 
         <variable
             name="passport"
-            type="io.wexchain.android.dcc.domain.Passport"
-            />
+            type="io.wexchain.android.dcc.domain.Passport" />
 
     </data>
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -31,7 +28,7 @@
         android:orientation="vertical"
         tools:context="io.wexchain.android.dcc.modules.trans.activity.Public2PrivateActivity">
 
-        <include layout="@layout/include_toolbar"/>
+        <include layout="@layout/include_toolbar" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,7 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_centerInParent="true"
-                    android:background="#FFF"/>
+                    android:background="#FFF" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -61,7 +58,7 @@
                     android:layout_above="@+id/v_line_tip2"
                     android:text="DCC\n@Ethereum"
                     android:textColor="#FFF"
-                    android:textSize="11sp"/>
+                    android:textSize="11sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -72,7 +69,7 @@
                     android:text="@{ViewModelHelper.getBalanceStr(vm.dcc,vm.publicHolding)}"
                     android:textColor="#FFF"
                     android:textSize="12sp"
-                    tools:text="10.00"/>
+                    tools:text="10.00" />
 
             </RelativeLayout>
 
@@ -81,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:src="@drawable/icon_trans_public2private"/>
+                android:src="@drawable/icon_trans_public2private" />
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -95,7 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_centerInParent="true"
-                    android:background="#FFF"/>
+                    android:background="#FFF" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -103,7 +100,7 @@
                     android:layout_above="@+id/v_line_tip1"
                     android:text="DCC\n@Distributed Credit Chain"
                     android:textColor="#FFF"
-                    android:textSize="11sp"/>
+                    android:textSize="11sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -114,7 +111,7 @@
                     android:text="@{ViewModelHelper.getBalanceStr(vm.dcc,vm.juzixHolding)}"
                     android:textColor="#FFF"
                     android:textSize="12sp"
-                    tools:text="10.00"/>
+                    tools:text="10.00" />
 
             </RelativeLayout>
 
@@ -123,8 +120,7 @@
         <View
             style="@style/DividerHorizontal"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            />
+            android:layout_marginRight="15dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -133,7 +129,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/across_trans_count"
             android:textColor="#404040"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -152,8 +148,7 @@
                 android:inputType="numberDecimal"
                 android:paddingRight="60dp"
                 android:text="@={tx.amount}"
-                tools:text="100"
-                />
+                tools:text="100" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -163,16 +158,14 @@
                 android:gravity="center_vertical"
                 android:text="@string/dcc"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/text_dark"
-                />
+                android:textColor="@color/text_dark" />
 
         </RelativeLayout>
 
         <View
             style="@style/DividerHorizontal"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            />
+            android:layout_marginRight="15dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -182,11 +175,12 @@
             android:gravity="center_vertical">
 
             <TextView
+                android:id="@+id/tv_public_tips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/across_trans_public_count"
                 android:textColor="#404040"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_public_count"
@@ -196,7 +190,7 @@
                 android:text="@{ViewModelHelper.getBalanceStr(vm.dcc,vm.publicHolding)}"
                 android:textColor="#404040"
                 android:textSize="16sp"
-                tools:text="1000"/>
+                tools:text="1000" />
 
             <Button
                 android:id="@+id/bt_all"
@@ -206,7 +200,7 @@
                 android:background="@null"
                 android:text="@string/all"
                 android:textColor="#5756B3"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -214,8 +208,7 @@
             style="@style/DividerHorizontal"
             android:layout_height="10dp"
             android:background="#F8F8FF"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -232,7 +225,7 @@
                 android:gravity="center_vertical"
                 android:text="Gas Price"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/text_dark"/>
+                android:textColor="@color/text_dark" />
 
             <EditText
                 android:id="@+id/et_gas_price"
@@ -246,8 +239,7 @@
                 android:paddingLeft="60dp"
                 android:paddingRight="60dp"
                 android:text="@={tx.gasPrice}"
-                tools:text="50"
-                />
+                tools:text="50" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -257,16 +249,14 @@
                 android:gravity="center_vertical"
                 android:text="@string/gwei"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/text_dark"
-                />
+                android:textColor="@color/text_dark" />
 
         </RelativeLayout>
 
         <View
             style="@style/DividerHorizontal"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            />
+            android:layout_marginRight="15dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -283,7 +273,7 @@
                 android:gravity="center_vertical"
                 android:text="Gas Limit"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/text_dark"/>
+                android:textColor="@color/text_dark" />
 
             <EditText
                 android:id="@+id/et_ges_limit"
@@ -298,8 +288,7 @@
                 android:paddingRight="60dp"
                 android:text="@={tx.gasLimit}"
                 android:textColor="@color/text_dark"
-                tools:text="50"
-                />
+                tools:text="50" />
 
 
         </RelativeLayout>
@@ -307,8 +296,7 @@
         <View
             style="@style/DividerHorizontal"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            />
+            android:layout_marginRight="15dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -325,7 +313,7 @@
                 android:gravity="center_vertical"
                 android:text="@string/Maximum_absenteeism"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/text_dark"/>
+                android:textColor="@color/text_dark" />
 
             <EditText
                 android:id="@+id/et_absenteeism"
@@ -340,8 +328,7 @@
                 android:paddingRight="60dp"
                 android:text="@={tx.maxTransactionFeeText}"
                 android:textColor="@color/text_dark"
-                tools:text="50"
-                />
+                tools:text="50" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -351,21 +338,19 @@
                 android:gravity="center_vertical"
                 android:text="ETH"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/text_dark"
-                />
+                android:textColor="@color/text_dark" />
 
         </RelativeLayout>
 
         <View
             style="@style/DividerHorizontal"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            />
+            android:layout_marginRight="15dp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -378,7 +363,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:src="@drawable/icon_warning"/>
+                android:src="@drawable/icon_warning" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -387,7 +372,7 @@
                 android:layout_toRightOf="@+id/iv_warning"
                 android:text="@string/across_trans_warning_tip"
                 android:textColor="#4A4A4A"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -397,7 +382,7 @@
                 android:layout_marginTop="5dp"
                 android:text="@string/across_trans_warning_tips2"
                 android:textColor="#4A4A4A"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
 
         </RelativeLayout>
 
@@ -409,7 +394,7 @@
             android:onClick="@{(v)->tx.checkAndProceed(passport.address)}"
             android:text="@string/next"
             android:textColor="#FFF"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
 
     </LinearLayout>
 

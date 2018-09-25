@@ -463,7 +463,7 @@
             android:label="信用借币"
             android:screenOrientation="portrait"/>
         <activity android:name="io.wexchain.android.dcc.modules.home.GardenActivity"
-            android:label="神秘花園"
+            android:label="神秘花园"
             android:screenOrientation="portrait"/>
     </application>
 

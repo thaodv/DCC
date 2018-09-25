@@ -95,6 +95,22 @@
                     android:text="@string/export_passport"
                     app:layout_constraintTop_toBottomOf="@id/tv_mine_wallet" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="100dp"
+                    android:background="@drawable/background_red"
+                    android:text="重要"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:textColor="#fff"
+                    android:textSize="12sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_passport_backup"
+                    app:layout_constraintStart_toStartOf="parent" />
+
                 <View
                     style="@style/DividerHorizontal"
                     app:layout_constraintTop_toBottomOf="@id/tv_passport_backup" />

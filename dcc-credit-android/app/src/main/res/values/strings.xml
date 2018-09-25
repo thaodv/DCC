@@ -426,6 +426,7 @@
     <string name="across_trans_count">转移数量</string>
     <string name="across_trans_private_count">私链数量:</string>
     <string name="across_trans_public_count">公链数量:</string>
+    <string name="across_trans_public_tip"><font color="#ED190F">数量已超过私链数量</font></string>
     <string name="across_trans_poundage">手续费</string>
     <string name="across_trans_toaccount_num">到账数量</string>
     <string name="all">全部</string>

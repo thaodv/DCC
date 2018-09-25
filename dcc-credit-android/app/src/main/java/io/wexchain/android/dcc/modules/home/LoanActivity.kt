@@ -43,7 +43,7 @@ class LoanActivity : BindActivity<ActivityLoan2Binding>() {
     private val adapter = Adapter(this::onItemClick)
 
     private fun onItemClick(i: Int, j: Int) {
-        adapter.getItemOnPos(i-2).let {
+        adapter.getItemOnPos(i - 2).let {
             navigateTo(LoanProductDetailActivity::class.java) {
                 putExtra(Extras.EXTRA_LOAN_PRODUCT_ID, it.id)
             }
@@ -63,11 +63,12 @@ class LoanActivity : BindActivity<ActivityLoan2Binding>() {
 
     private fun initView() {
         adapter.lifecycleOwner = this
-        rv_list.adapter = adapter
-        rv_list.layoutManager = LinearLayoutManager(this)
-        rv_list.setPullRefreshEnabled(false)
-        rv_list.setLoadingMoreEnabled(false)
-        rv_list.addHeaderView(header)
+        binding.rvList.run {
+            adapter = this@LoanActivity.adapter
+            layoutManager = LinearLayoutManager(this@LoanActivity)
+            setPullRefreshEnabled(false)
+            addHeaderView(header)
+        }
     }
 
 

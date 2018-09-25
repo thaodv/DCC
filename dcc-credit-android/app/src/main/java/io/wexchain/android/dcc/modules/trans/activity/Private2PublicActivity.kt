@@ -1,7 +1,11 @@
 package io.wexchain.android.dcc.modules.trans.activity
 
 import android.arch.lifecycle.Observer
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.App
@@ -28,7 +32,7 @@ class Private2PublicActivity : BindActivity<ActivityPrivate2PublicBinding>() {
     private var poundge: String = ""
 
     val txVm = Private2PublicVm()
-    private var transcount= BigDecimal(0)
+    private var transcount = BigDecimal(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +63,47 @@ class Private2PublicActivity : BindActivity<ActivityPrivate2PublicBinding>() {
             binding.etTransCount.setSelection(binding.tvPrivateCount.text.length)
         }
 
+        binding.etTransCount.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val txt = s?.toString()
+                if (txt == ".") {
+                    binding.etTransCount.setText("0.")
+                    binding.etTransCount.setSelection(2)
+                    return
+                }
+                if (!txt.isNullOrEmpty()) {
+                    val publicCount = binding.tvPrivateCount.text.toString()
+                    val maxinp = BigDecimal(publicCount)
+                    val inp = BigDecimal(txt)
+                    val result = inp.compareTo(maxinp)
+                    if (result == 1) {
+                        binding.tvPrivateCount.visibility = View.INVISIBLE
+                        binding.tvPrivateTips.text = getString(R.string.across_trans_public_tip)
+                        binding.tvPrivateTips.setTextColor(Color.parseColor("#ED190F"))
+                    } else {
+                        hidTips()
+                    }
+                } else {
+                    hidTips()
+                }
+            }
+        })
+
         setupEvents(dc, feeRate)
+    }
+
+    private fun hidTips() {
+        binding.tvPrivateCount.visibility = View.VISIBLE
+        binding.tvPrivateTips.text = getString(R.string.across_trans_private_count)
+        binding.tvPrivateTips.setTextColor(Color.parseColor("#404040"))
     }
 
     private fun setupEvents(dc: DigitalCurrency, feeRate: String?) {

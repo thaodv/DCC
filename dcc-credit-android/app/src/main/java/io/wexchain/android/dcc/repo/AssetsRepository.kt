@@ -94,8 +94,7 @@ class AssetsRepository(
                 }
             })
         } else {
-            getDigitalCurrencyAgent(dc)
-                    .getBalanceOf(address)
+            getDigitalCurrencyAgent(dc).getBalanceOf(address)
         }
     }
 
