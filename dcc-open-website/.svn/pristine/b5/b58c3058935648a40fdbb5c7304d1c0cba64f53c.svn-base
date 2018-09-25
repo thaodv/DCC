@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>接入指南-DCC开放平台</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="keywords" content="DCC,Distributed Credit,Distributed Bank,Blockchain,分布式银行,DCC开放平台" />
+  <meta name="description" content="开放平台主要提供数据、服务市场功能，该交易市场服务于数据机构、AI风控算法服务商、信贷结构等机构合作者，机构合作者在使用链上服务的同时通过该平台可以查看、筛选、接洽自己需要的其他合作机构，利用DCC达成合作"/>
+  <link rel="shortcut icon" href="../../favicon.ico">
+
+  <link href="../../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/common.css">
+  <link rel="stylesheet" href="../../css/sdk.css">
+  <link rel="stylesheet" href="../../css/guide.css">
+  <link rel="stylesheet" href="../../lib/mCustomScrollbar/jquery.mCustomScrollbar.css">
+  <script src="https://cdn.bootcss.com/bignumber.js/7.2.1/bignumber.js"></script>
+  <script src="../../lib/jquery-3.3.1.min.js"></script>
+  <script src="../../lib/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="../../lib/template-web.js"></script>
+  <script src="../../lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="./sdk.js"></script>
+
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7ebdd6ce1e64ddfc4c27b2eaca23a85d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+</head>
+<body class="guideH5">
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand d-block" href="./index.html">
+          <img alt="Brand" src="../../images/logo-cn.svg">
+        </a>
+        <a class="navbar-brand  d-none" href="./guide.html">
+          <img alt="Brand" src="../../images/logo-cn.svg">
+        </a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="../index.html" >首页</a>
+        </li>
+        <li>
+          <a href="../introduction/index.html" >业务说明</a>
+        </li>
+        <li>
+          <a href="../about_us/index.html" >关于我们</a>
+        </li>
+        <li>
+          <a href="../reward/index.html" >生态奖励</a>
+        </li>
+        <li>
+          <a href="../sdk/index.html" class="active">SDK服务</a>
+        </li>
+        <li>
+          <a href="http://explorer.dcc.finance" target="_blank">区块链浏览器</a>
+        </li>
+        <li>
+          <a href="../coming_soon/index.html"  class="ctm-btn">立即加入</a>
+        </li>
+        <li class="li-i18n">
+          <div>
+            <a href="../../reward/index.html">English</a>&nbsp;/&nbsp;<a href="./index.html">中文</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <section class='container-fluid sdk guideSdk' id="top">
+     <aside>
+       <h4>接入指南</h4>
+       <h5 class="sdk-fw">&nbsp;认证服务</h5>
+        <ul>
+          <li class="sdk-act"><a href="./guide.html">多项数据认证iOS SDK</a></li>
+       </ul>
+       <h5 class=" sdk-cz">&nbsp;数据存储服务</h5>
+        <ul>
+          <li><a href="./ipfs.html">IPFS节点搭建说明</a></li>
+      </ul>
+     </aside>
+     <main >
+        <section class="d-none m-sdk">
+            <h4>接入指南</h4>
+            <h5 class="sdk-fw">&nbsp;认证服务</h5>
+             <ul>
+               <li class="sdk-act"><a href="./guide.html">多项数据认证iOS SDK</a></li>
+            </ul>
+            <h5 class="sdk-cz">&nbsp;数据存储服务</h5>
+             <ul>
+               <li ><a href="./ipfs.html">IPFS节点搭建说明</a></li>
+           </ul>
+          </section>
+        <div class="guide-intro">
+<h4>1. 导入sdk文件夹</h4>AIAuthSdk 
+
+<h4>2. 工程初始化配置</h4>targets —> General —>  deployment info 不要勾选 Landscape  Left和 Landscape Right
+targets —> General —> Embedded Binarles 一定要添加AIAuthIdentifys.framework,否则工程运行报错
+targets —> Build Phases —> Link Binary With Libraries —>  添加系统库 libz.tbd   libstdc++.tbd   libc++.tbd
+info.plist 里需要配置网络请求字段和相机权限等字段如下
+info.plist —>  添加 key （App Transport Security Settings） 在其自目录下添加 BOOL 值 （Allow Arbitrary Loads）Value 设为 YES
+info.plist —>  添加 key （Privacy - Camera Usage Description） Value 设为(“认证”需要访问您的相机,如果不允许，你将无法使用扫一扫等功能。)
+info.plist —>  添加 key （Privacy - Face ID Usage Description） Value 设为(“认证”需要您的人像识别,如果不允许，你将无法使用人像识别等功能。)
+工程配置完毕后编译一下看有无报错
+
+<h4>3.具体使用说明</h4>目前sdk里集成了实名认证功能（包括身份证认证，人脸识别），银行卡认证，手机运营商认证。
+主要文件说明 
+AIAuthenStateObject.h  (使用者可以获取3种认证的状态)
+AIAuthHelperObject.h   (sdk最重要的文件，用于认证初始化数据，以及认证请求的监控..)
+AIIdentifyAuthenController (实名认证跳转界面，目前不开放界面，使用者直接跳转即可)
+AIIdentifyResultController  (实名认证成功后的查看界面，目前不开放界面，使用者直接跳转即可)
+AIBankCardAuthenController (银行卡认证跳转界面，目前不开放界面，使用者直接跳转即可)
+AIBanCardkResultController  (银行卡认证成功后的查看界面，目前不开放界面，使用者直接跳转即可)
+AIPhoneAuthenController (手机运营商认证跳转界面，目前不开放界面，使用者直接跳转即可)
+AIPhoneResultController  (手机运营商成功后的查看界面，目前不开放界面，使用者直接跳转即可)
+
+在需要集成sdk的界面自定义入口时，参考demo，首先需要初始化数据，认证sdk需要使用者提供rsa私钥，钱包私钥，用户钱包地址。 使用者可以体验时调用  [AIAuthHelperObject experienceIdentify];
+实际开始时，请调用  [AIAuthHelperObject authIdentifyWithRasPrivateKey:(NSString *) WithWalletPrivateKey:(NSString *) WithWalletAddress:(NSString *)
+功能集成页面可参照demo里的AIMainAutherController，界面使用者可以自定义，功能实现参照demo  全局监听请求状态的方法 + (void)getRequestResposeSuccess:(AIAuthHelperSuccessRequest)successStr WithError:(AIAuthHelperErrorRequest)errorsStr;
+
+<h4>4 特别说明 ：</h4>(1).SDK 内部的银行卡和手机运营商认证需要依赖实名认证，具体可参照demo，跳转到银行卡认证和手机运营商认证时需要先判断是否实名认证通过。
+(2).实名认证和银行卡认证可以即时得到结果，但是手机运行商认证成功需要一个过程，
+AIAuthHelperObject.h 里提供了方法查询更新状态的方法
+  + (void)updatePhoneOperatorStatus;
+(3).目前SDK内部的身份证扫描和人脸是扫描需要授权，是和工程的Bundle ID 绑定的，用户测试时可以使用demo里的Bundle Id测试，后续有意向可以联系我们团队为您的工程里的Bundle ID 开通授权的权限.联系方式：<a class="sdk-mail" href="mailto:contact@dcc.finance?subject=DCC开放平台+申请SDK权限">contact@dcc.finance</a>,发送邮件时标题格式为 ：DCC开放平台+申请SDK权限
+        </div>
+        <a class="d-none g-back" id="goToTop">返回 顶部</a>
+     </main>
+  </section>
+        
+</body>
+</html>

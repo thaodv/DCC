@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#FFFFFF</color>
+    <color name="selectedcolor">#ad6dfd</color>
+    <color name="unselectedcolor">#484848</color>
+    <color name="weakfont">#8e8e8e</color>
+    <color name="redfont">#ff686b</color>
+    <color name="greyback">#f5f5f5</color>
+    <color name="light_blue_magenta">#e8e8f7</color>
+    <color name="blue_magenta">#6766cc</color>
+    <color name="purple_magenta">#ac6dfb</color>
+    <color name="gray_alpha">#66000000</color>
+    <color name="light_gray_alpha">#0f000000</color>
+    <color name="whitetrans">#00000000</color>
+
+    <color name="blue_magenta_loading">#53368a</color>
+    <color name="lightpurple">#bcb6ed</color>
+    <color name="colorPrimary">@color/white</color>
+    <color name="colorPrimaryDark">@color/white</color>
+    <color name="colorAccent">@color/blue_magenta</color>
+    <color name="gray_mask">#B2484848</color>
+    <color name="gray_line">#0f000000</color>
+    <color name="light_dim">#c8c8ff</color>
+    <color name="gray_bgbt">#f0f0f0</color>
+    <color name="light_white">#c5a4ea</color>
+</resources>

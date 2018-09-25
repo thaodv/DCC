@@ -32,6 +32,7 @@ import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.api.*
 import io.wexchain.digitalwallet.proxy.*
 import io.wexchain.ipfs.core.IpfsCore
+import worhavah.regloginlib.Net.Networkutils
 import zlc.season.rxdownload3.core.DownloadConfig
 import java.lang.ref.WeakReference
 import java.math.BigInteger
@@ -78,7 +79,12 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
     override fun onCreate() {
         super.onCreate()
+
+
         instance = WeakReference(this)
+
+        Networkutils.letinit(this)
+        worhavah.certs.tools.CertOperations.init(this)
         val themeWrapper = ContextThemeWrapper(this, io.wexchain.dcc.R.style.DccLightTheme_App)
         RxJavaPlugins.setErrorHandler {
             val ex = it.cause ?: it
@@ -89,12 +95,15 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         }
         initLibraries(this)
 
+
+
         initNode()
         ShareUtils.init(this)
 
         initServices(this)
         initData(this)
         initIpfs()
+
     }
 
     private fun initIpfs() {

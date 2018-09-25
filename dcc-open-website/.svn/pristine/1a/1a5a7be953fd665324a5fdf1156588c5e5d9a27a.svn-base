@@ -1,0 +1,334 @@
+   body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; }
+    body, button, input, select, textarea { font:12px/1.5tahoma, arial, \5b8b\4f53; }
+    address, cite, dfn, em, var { font-style:normal; }
+    code, kbd, pre, samp { font-family:couriernew, courier, monospace; }
+    small{ font-size:12px; }
+    ul, ol { list-style:none; }
+    a { text-decoration:none; }
+    a:hover { text-decoration:none; }
+    sup { vertical-align:text-top; }
+    sub{ vertical-align:text-bottom; }
+    legend { color:#000; }
+    fieldset, img { border:0; }
+    button, input, select, textarea { font-size:100%; }
+
+.fl{
+  float:left;
+}
+.fr{
+  float:right;
+}
+.li-i18n > div {
+    padding: 30px 0;
+    margin-right: 30px;
+}
+
+.li-i18n a {
+    color: #6b61e1;
+    text-decoration: none;
+}
+.li-i18n a:hover {
+    color: #34c6fa;
+}
+body {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif, Microsoft YaHei, STHeitiSC-Light, simsun, WenQuanYi Zen Hei, WenQuanYi Micro Hei, sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased
+}
+@media screen and (max-width:1280px){
+  html,body{
+    width:1260px;
+  }
+}
+@media (-webkit-max-device-pixel-ratio: 1) {
+  ::-webkit-scrollbar-track-piece {
+    background-color: #FFFFFF;
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #c2c2c2;
+    background-clip: padding-box;
+    min-height: 28px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #A0A0A0;
+  }
+}
+body .container-fluid {
+  width: 1260px
+}
+
+body .container-fluid p {
+  font-size: 12px
+}
+
+body .container-fluid h2 {
+  font-size: 30px;
+  margin: 64px 0
+}
+
+.contactIcon {
+  overflow: hidden;
+  background-image: url(../images/contactIcon.png)
+}
+
+.contactIcon-email {
+  float: left;
+  width: 26px;
+  height: 26px;
+  background-position: 0 0
+}
+
+.contactIcon-Telegram {
+  float: left;
+  width: 25px;
+  height: 25px;
+  background-position: -1px -36px
+}
+.navbar {
+  border: none;
+  background-color: #fff
+}
+
+.navbar img[alt=Brand] {
+  height: 40px;
+  margin-top: 5px;
+  margin-left: 40px
+}
+
+
+.navbar .navbar-nav>li>a.active,
+.navbar .navbar-nav>li>a:hover {
+  color: #34c6fa
+}
+
+.navbar .navbar-nav>li>a.ctm-btn {
+  background-color: #6b61e1;
+  color: #fff !important;
+  padding: 6px 20px !important;
+  border-radius: 4px;
+  margin-top: 24px;
+  margin-left: 40px;
+  margin-right: 60px
+}
+.navbar .navbar-nav>li>a {
+  font-size: 16px;
+  padding: 30px 20px!important;
+  color: #6b61e1
+}
+
+footer,
+footer .inline-contact span a {
+  color: #666
+}
+
+footer {
+  height: 150px;
+  background-color: #0d0f12;
+}
+
+/* 修改footer */
+.fl{
+  float:left;
+}
+.copyRight {
+  width:450px;
+  line-height: 150px;
+  text-align: center;
+  color: #736b93;
+  font-size: 1px
+}
+
+footer .logo{
+  display: block;
+  width:380px;
+  line-height: 150px;
+  padding:0 40px;
+  text-decoration: none;
+}
+
+footer .logo img {
+  display: inline-block;
+  max-height:120px;
+}
+footer .logo .footer-tt{
+  font-size:18px;
+  /* font-weight:600; */
+  color:#6b61e1;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-left:-15px;
+}
+
+footer .contactBlock {
+  display: inline-block;
+  float: right;
+  height: 70px;
+  margin: 40px 0 0 54px
+}
+
+.contactIcon-list {
+  width: 100%;
+  height: 25px;
+  line-height: 25px;
+  overflow: hidden;
+  font-size: 16px;
+  color: #838383;
+  margin: 5px 0
+}
+
+.contactIcon-list .contactIcon {
+  overflow: hidden;
+  background-image: url(../images/contactIcon.png);
+  background-repeat: no-repeat
+}
+
+.contactIcon-list b {
+  margin-right: 6px
+}
+
+.contactIcon-email {
+  display: inline-block;
+  float: left;
+  width: 26px;
+  height: 26px;
+  background-position: 0 0
+}
+
+.contactIcon-Telegram {
+  display: inline-block;
+  float: left;
+  width: 25px;
+  height: 25px;
+  background-position: -1px -36px
+}
+
+footer .contactIcon-list span a:hover {
+  color: #fff;
+  text-decoration: underline
+}
+
+footer .contactIcon-list span a {
+  color: #838383;
+  text-decoration: none
+}
+footer .shares{
+  width:400px;
+  height:150px;
+  line-height:140px;
+  float:right;
+}
+footer .shares a img{
+  width:32px;
+}
+footer .wx{
+  position: relative;
+}
+footer .wx .dcc{
+  position: absolute;
+  width:80px;
+  left:-20px;
+  top:-100px;
+  display:none;
+}
+footer .wx:hover .dcc{
+  display:block;
+}
+
+.d-block{
+  display:block;
+}
+.d-none{
+  display:none;
+}
+@media (max-width: 768px){
+  .navbar-header{
+    height:80px;
+  }
+  ul.nav{
+    display:none;
+  }
+  .sdk{
+    padding-top:0;
+  }
+  .m-sdk h4{
+    color:#53487d;
+    margin:10px 0px;
+  }
+  .sdk .m-sdk li{
+    padding-left:22px;
+  }
+  .m-sdk h5{
+    padding:6px;
+  }
+  html,body,body section.container-fluid{
+    width:100%;
+    box-sizing:border-box;
+  }
+  section.sdk aside{
+    background: #f6f5fd;
+    position: fixed;
+    left: 0;top:80px;
+    height: 100%;
+    transform: translate(-200px);
+  }
+  section.sdk main{
+    width:100%;
+    padding-right:0;
+  }
+  body main div.guide-intro{
+    padding:0 0 30px;
+  }
+  .d-block{
+    display:none;
+  }
+  .d-none{
+    display:block;
+  }
+/* ipfs */
+  div.ipfs img{
+    width:100%!important;
+  }
+  body .ipfs{
+    word-break:break-word;
+  }
+
+  .menu{
+    padding-top:6px;
+    position: absolute;
+    top:0px;
+    right: -33px;
+    width: 33px;
+    height: 34px;
+    background:#fff;
+    border:1px solid #000;
+  }
+  .menu span{
+    display: block;
+    width:20px;
+    height:4px;
+    border-top:1px solid #000;
+    margin:3px auto;
+  }
+  .g-back{
+    position:fixed;
+    right:30px;
+    bottom:40px;
+    text-decoration: none;
+    color:#6b61e1;
+    width:37px;
+    height:37px;
+    border:1px solid #6b61e1;
+    border-radius:23px;
+    text-align:center;
+    /* line-height:30px; */
+    font-size:12px;
+  }
+  .g-back:focus, .g-back:hover{
+    color:#6b61e1;
+    text-decoration: none;
+  }
+}

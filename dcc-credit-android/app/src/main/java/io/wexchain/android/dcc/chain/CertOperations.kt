@@ -17,8 +17,8 @@ import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.tools.RetryWithDelay
-import io.wexchain.android.dcc.tools.check
-import io.wexchain.android.dcc.tools.pair
+import worhavah.regloginlib.tools.check
+import worhavah.regloginlib.tools.pair
 import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.android.dcc.view.dialog.CertFeeConfirmDialog
 import io.wexchain.android.dcc.vm.ViewModelHelper
@@ -36,6 +36,7 @@ import io.wexchain.ipfs.entity.BankInfo
 import io.wexchain.ipfs.entity.IdInfo
 import io.wexchain.ipfs.entity.PhoneInfo
 import io.wexchain.ipfs.utils.base64
+import worhavah.certs.tools.CertOperations.getTNLogUserStatus
 import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -66,7 +67,7 @@ object CertOperations {
                     val fee = it.toLong()
                     CertFeeConfirmDialog.create(fee, proceedAction).show(context(), "confirm_cert_fee")
 //                    if (fee > 0){
-//                        CertFeeConfirmDialog.create(proceedAction).show(context(),"confirm_cert_fee")
+//                        CertsCertFeeConfirmDialog.create(proceedAction).show(context(),"confirm_cert_fee")
 //                    }else{
 //                        proceedAction()
 //                    }
@@ -423,6 +424,8 @@ object CertOperations {
 
     }
 
+
+
     fun getCommunicationLogReport(passport: Passport): Single<CmLogReportData> {
         require(passport.authKey != null)
         val address = passport.address
@@ -643,6 +646,18 @@ object CertOperations {
             }
             CertificationType.MOBILE -> {
                 getCmLogUserStatus()
+            }
+            CertificationType.TONGNIU -> {
+               val i= getTNLogUserStatus()
+                when (i){
+                    worhavah.certs.tools . UserCertStatus.DONE -> UserCertStatus.DONE
+                    worhavah.certs.tools .  UserCertStatus.NONE -> UserCertStatus.NONE
+                    worhavah.certs.tools .  UserCertStatus.INCOMPLETE -> UserCertStatus.INCOMPLETE
+                }
+
+            }
+            CertificationType.LOANREPORT -> {
+                UserCertStatus.LOANREPORT
             }
             else -> UserCertStatus.NONE
         }

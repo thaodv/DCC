@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        >
+
+    <data>
+
+        <variable
+                name="passport"
+                type="worhavah.regloginlib.Passport"
+                />
+
+        <variable
+                name="fromImport"
+                type="boolean"
+                />
+    </data>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+        android:orientation="vertical"
+            >
+
+<ImageView
+    android:layout_marginTop="30dp"
+    android:layout_gravity="center"
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:scaleType="fitXY"
+    android:background="@drawable/picsuc"
+
+    />
+
+        <TextView
+                android:id="@+id/tv_creation_succeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{fromImport?@string/import_succeed:@string/creation_succeed}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="16dp"
+                android:drawablePadding="10dp"
+                tools:text="恭喜你，通行证创建成功"
+            android:gravity="center"
+            android:layout_gravity="center"
+                android:elevation="4dp"
+            android:textSize="16sp"
+                />
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+
+                android:orientation="vertical"
+                android:padding="0dp"
+                >
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+android:background="@drawable/bgbtgrey"
+                android:paddingRight="30dp"
+                android:paddingLeft="30dp"
+                >
+                <TextView
+                    android:id="@+id/tv_protect_notice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                   android:layout_marginTop="16dp"
+                    android:text="通行证地址"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical"
+                    />
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text=""
+                    android:textSize="14sp"
+                    android:gravity="center_vertical"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="为了保护资产安全，请稍后无比备份钱包私钥"
+                    android:textSize="14sp"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp"
+                    />
+
+
+            </LinearLayout>
+
+
+            <TextView
+                    android:id="@+id/tv_warning_backup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:text="为了使用安全，建议立即设置本地安全保护"
+                android:textColor="@color/gray_alpha"
+                android:layout_gravity="center"
+                android:gravity="center"
+                    />
+
+        </LinearLayout>
+
+        <Button
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+                android:id="@+id/btn_enable_protect"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+
+                android:text="立即设置本地安全保护"
+
+
+                android:layout_marginBottom="16dp"
+            android:background="@drawable/bgbtpurple2"
+            android:textColor="@color/white"
+                />
+
+        <TextView
+            android:layout_gravity="center"
+            android:gravity="center"
+                android:id="@+id/btn_skip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="80dp"
+                android:text="@string/skip"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textSize="15sp"
+            android:textColor="@color/purple"
+                />
+
+    </LinearLayout>
+</layout>

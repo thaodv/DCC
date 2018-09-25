@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper" />
+
+        <variable
+            name="vm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+
+        android:layout_height="wrap_content">
+
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:background="@drawable/bg_round_rect_noframe_white"
+            android:minHeight="80dp"
+            android:onClick="@{(v)->vm.performOperation()}">
+
+
+            <TextView
+                android:id="@+id/tv_as_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:text="@{vm.title}"
+                android:textColor="@color/text_dark"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_as_detail"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="真实信息认证" />
+
+            <TextView
+                android:id="@+id/tv_as_detail"
+                android:layout_marginLeft="50dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="2dp"
+                android:singleLine="false"
+                android:text="@{vm.authDetail}"
+                android:textColor="@color/text_gray"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/tv_as_status"
+                app:layout_constraintTop_toBottomOf="@id/tv_as_title"
+                tools:text="更全面的认证" />
+
+
+
+
+
+            <TextView
+                android:id="@+id/tv_as_status"
+                android:layout_width="70dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="16dp"
+                android:width="80dp"
+                android:gravity="center"
+                android:text="@{ViewModelHelper.getCertStatusOpText(context,vm.status)}"
+                android:textColor="#FFFFFFFF"
+                android:textSize="14sp"
+                android:background="@{ViewModelHelper.getCertStatusShape( context,ViewModelHelper.getCertStatusOpText(context,vm.status))}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="@string/verified" />
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="0dp"
+                android:background="@{ViewModelHelper.getCertStatusBarColor(context,vm.status)}"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/iv_cert_type"
+            android:layout_width="56dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:maxWidth="60dp"
+            android:src="@{ViewModelHelper.getCertTypeIcon(context,vm.certificationType)}"
+            tools:src="@drawable/shape_bank_card"
+
+            />
+    </RelativeLayout>
+</layout>

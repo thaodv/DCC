@@ -2,8 +2,10 @@ package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
+import com.tencent.mm.opensdk.utils.Log
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.Pop
@@ -15,20 +17,27 @@ import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.domain.CertificationType
+import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
-import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.tools.StringUtils
+import worhavah.regloginlib.tools.check
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityMyCreditBinding
 import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.dccchainservice.domain.CmLogReportData
+import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.ipfs.utils.io_main
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
+import worhavah.tongniucertmodule.SubmitTNLogActivity
 import java.util.*
+
 
 class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
 
@@ -46,6 +55,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
         binding.asBankVm = obtainAuthStatus(CertificationType.BANK)
         binding.asMobileVm = obtainAuthStatus(CertificationType.MOBILE)
         binding.asPersonalVm = obtainAuthStatus(CertificationType.PERSONAL)
+        binding.asTongniuVm = obtainAuthStatus(CertificationType.TONGNIU)
     }
 
     private fun getCloudToken() {
@@ -167,6 +177,46 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                                 })
             }
         }
+
+        binding.asTongniuVm?.let {
+            if (it.status.get() == UserCertStatus.INCOMPLETE) {
+                //get report
+                val passport = App.get().passportRepository.getCurrentPassport()!!
+                getTNLogReport(passport) .doFinally {
+                    refreshCertStatus()
+                }
+                    .subscribeBy(
+                        onSuccess = {
+                            if(null!=it){
+                                Log.e("getTNLogReport",it)
+                            }
+                        },
+                        onError = {
+                            Pop.toast(it.message ?: "系统错误", this)
+                        })
+
+            }
+        }
+    }
+
+    fun getTNLogReport(passport: Passport): Single<String> {
+        require(passport.authKey != null)
+        val address = passport.address
+        val privateKey = passport.authKey!!.getPrivateKey()
+        val orderId =worhavah.certs.tools.CertOperations.certPrefs.certCmLogOrderId.get()
+
+           return  worhavah.certs.tools.CertOperations.tnCertApi.TNgetReport(
+            address = address,
+            orderId = orderId,
+
+            signature = ParamSignatureUtil.sign(
+                privateKey, mapOf(
+                    "address" to address,
+                    "orderId" to orderId.toString()
+                )
+            )
+        )
+               //.compose(Result.checked())
     }
 
     private fun getDescription(certificationType: CertificationType): String {
@@ -175,6 +225,8 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
             CertificationType.PERSONAL -> getString(R.string.safer_assessment)
             CertificationType.BANK -> getString(R.string.for_quick_approvalto_improve)
             CertificationType.MOBILE -> getString(R.string.to_improve_the_approval)
+            CertificationType.TONGNIU -> getString(R.string.to_improve_the_approval)
+            CertificationType.LOANREPORT -> "借贷记录全整合"
         }
     }
 
@@ -184,6 +236,8 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
             CertificationType.PERSONAL -> getString(R.string.verify_your_legal_documentation)
             CertificationType.BANK -> getString(R.string.bank_account_verification)
             CertificationType.MOBILE -> getString(R.string.carrier_verification)
+            CertificationType.TONGNIU -> getString(R.string.to_improve_the_approval)
+            CertificationType.LOANREPORT -> "借贷记录全整合"
         }
     }
 
@@ -268,6 +322,14 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                     }
                 }
             }
+            CertificationType.TONGNIU -> {
+                        PassportOperations.ensureCaValidity(this) {
+                         //  navigateTo(worhavah.tongniucertmodule.CmCertDataActivity::class.java)
+                       //     startActivity(Intent(this, TnLogCertificationActivity::class.java))
+                            startActivity(Intent(this, SubmitTNLogActivity::class.java))
+                        }
+                }
+
         }
     }
 

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>discovery</title>
+  <style>
+    /* html{
+      font-size:20px;
+    } */
+    html,body{width:100%;height:100%;margin:0;padding:0;}
+    p{
+      margin:0;
+      padding:0;
+      text-align:justify; 
+      text-justify:distribute;
+    }
+    .white{color:white;}
+    .clearfix::after{
+      content:"";
+      height:0;
+      display: block;
+      visibility: hidden;
+      clear: both;
+    }
+    .clearfix{
+      zoom:1;
+    }
+    .g-bg{
+      width:100%;
+      height:auto;
+      min-height:100%;
+      background:url('./images/beijing@2x.png') no-repeat;
+      background-size:100% 100%;
+    }
+    .text{
+      font-size:0.8rem;
+      line-height:1.25rem;
+      width:100%;
+      padding-top:11vh ;
+      position: relative;
+      text-align:center;
+
+    }
+    .text span{
+      display: inline-block;
+      text-align:left;
+    }
+    .textlogo1::after{
+      content:"";
+      display:inline-block;
+      width:4.6rem;
+      height:2.8rem;
+      background:url('./images/081@2x.png') no-repeat;
+      background-size:100% 100%;
+    }
+    .text2,.text3,.text4,.text5{
+      width:100%;
+    }
+    .textlogo2::before{
+      content:"";
+      display:inline-block;
+      /* margin:0 0.4rem 0 2.2rem; */
+      width:6.1rem;
+      height:2.2rem;
+      background:url('./images/082@2x.png') no-repeat;
+      background-size:100% 100%;
+    }
+    .text3{
+      padding-top:8vh;
+      /* padding-left:1.2rem; */
+      box-sizing: border-box;
+    }
+    .textlogo3::after{
+      content:"";
+      display:inline-block;
+      margin-left:0.25rem;
+      width:4.25rem;
+      height:2.45rem;
+      background:url('./images/083@2x.png') no-repeat;
+      background-size:100% 100%;
+    }
+    .text4{
+      padding-top:7vh;
+    }
+    .textlogo4::before{
+      content:"";
+      display:inline-block;
+      /* margin-left:3.7rem; */
+      margin-right:0.6rem;
+      width:3.65rem;
+      height:2.45rem;
+      background:url('./images/084@2x.png') no-repeat;
+      background-size:100% 100%;
+    }
+    .text5{
+      text-align:center;
+      padding-top:7vh;
+      padding-bottom:5vh;
+    }
+    .textlogo5::before{
+      content:"";
+      display:block;
+     margin:0 auto;
+      width:7.25rem;
+      height:3.9rem;
+      background:url('./images/085@2x.png') no-repeat;
+      background-size:100% 100%;
+    }
+  </style>
+  <script>
+    window.addEventListener(('orientationchange' in window ? 'orientationchange' : 'resize'), (function () {
+      function c () {
+        var d = document.documentElement
+        var cw = d.clientWidth || 750
+        d.style.fontSize = (20 * (cw / 375)) > 40 ? 40 + 'px' : (20 * (cw / 375)) + 'px'
+      }
+
+      c()
+      return c
+    })(), false)
+  </script> 
+
+</head>
+<body>
+  <div class="g-bg">
+    <p class="white text textlogo1"><span>互动游戏、实力PK，<br>赢取阳关获得丰富token收益</span></p>
+    <p class="white text text2 textlogo2 clearfix">&nbsp;&nbsp;<span>强土豪、偷好友，<br>让你token拿不停</span></p>
+    <p class="white text text3 textlogo3">兑换红包、让你的垃圾币变废为宝</p>
+    <p class="white text text4 textlogo4">每日任务、奖励不断</p>
+    <p class="white text text5 textlogo5">什么值得投？每日给你最新币圈交易动态</p>
+  </div>
+</body>
+</html>

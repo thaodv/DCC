@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+                name="inputPw"
+                type="worhavah.regloginlib.tools.InputPasswordVm"
+                />
+    </data>
+
+    <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="worhavah.regloginlib.passportutil.CreatePassportActivity"
+            android:orientation="vertical"
+            >
+
+        <include
+                layout="@layout/include_toolbar"
+                android:id="@+id/toolbar"
+                />
+
+        <TextView
+                android:id="@+id/tv_wallet_password_notice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="密码用于保护私钥和交易授权,强度非常重要\n应用提供方不存储密码,也无法帮你找回,请务必记牢"
+                android:gravity="left"
+                style="@style/NoticeTextLabel"
+                />
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:minHeight="43dp"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                >
+
+            <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:background="@null"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:maxLength="20"
+                    android:text="@={inputPw.password}"
+                    android:hint="@{inputPw.passwordHint}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="17sp"
+                    android:layout_marginLeft="4dp"
+                    android:inputType="textPassword"
+                    android:onFocusChange="@{(v,hasFocus)->inputPw.checkPassword(hasFocus)}"
+
+                    />
+
+            <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical"
+                android:layout_marginRight="15dp"
+                    android:background="@{inputPw.secure?@drawable/secure_view_off:@drawable/secure_view}"
+                    android:scaleType="center"
+                    android:onClick="@{(v)->inputPw.changeSecure()}"
+                    />
+        </LinearLayout>
+
+        <TextView
+                android:id="@+id/tv_wallet_password_guide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+                android:text="不少于8位字符，建议混合大小写字母、数字、特殊符号"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_marginBottom="4dp"
+                />
+
+        <Button
+                android:id="@+id/btn_create_passport"
+            android:layout_marginTop="22dp"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:text="立即创建"
+            android:background="@drawable/btpurple"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:layout_gravity="center_horizontal"
+                />
+
+        <TextView
+                android:id="@+id/tv_backup_notice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                />
+
+    </LinearLayout>
+</layout>

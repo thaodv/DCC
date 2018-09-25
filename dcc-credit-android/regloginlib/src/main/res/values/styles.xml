@@ -1,0 +1,82 @@
+<resources>
+    <style name="NoTitle" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="navigationIcon">@drawable/arrow_left</item>
+    </style>
+    <style name="NoticeTextLabel">
+        <item name="android:padding">4dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginLeft">@dimen/content_padding_horizontal</item>
+        <item name="android:layout_marginRight">@dimen/content_padding_horizontal</item>
+        <item name="android:background">@color/light_blue_magenta</item>
+        <item name="android:textSize">@dimen/text_size_sub_title</item>
+    </style>
+    <style name="TextAppearance.AppCompat.DccSupplementary">
+        <item name="android:textSize">@dimen/text_size_supplementary</item>
+        <item name="android:textColor">@color/text_gray</item>
+    </style>
+    <style name="Full">
+        <item name="android:minHeight">37dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">10dp</item>
+    </style>
+    <style name="DividerHorizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/divider_stroke_width</item>
+        <item name="android:background">@color/light_gray_alpha</item>
+    </style>
+
+    <style name="Dcc">
+        <item name="android:padding">0dp</item>
+        <item name="android:background">@null</item>
+    </style>
+    <style name="Small">
+        <item name="android:minHeight">23dp</item>
+        <item name="android:textSize">@dimen/text_size_supplementary</item>
+    </style>
+
+    <style name="Theme.AppCompat.Light.Dialog.Alert.Dcc" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance.AppCompat.Medium.Dcc</item>
+        <item name="android:windowAnimationStyle">@style/AnimationDccSlideBottom</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Medium.Dcc" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/text_dark</item>
+    </style>
+    <style name="AnimationDccSlideBottom">
+        <item name="android:windowEnterAnimation">@anim/slide_bottom_enter</item>
+        <item name="android:windowExitAnimation">@anim/slide_bottom_exit</item>
+    </style>
+    <style name="NoActionBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+
+    <style name="dialog_activity" parent="@style/Theme.AppCompat.Light.Dialog">
+        <!-- 去黑边 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- 设置是否可滑动 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 设置是否透明 -->
+        <item name="android:windowIsTranslucent">false</item>
+        <!-- 无标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 背景 -->
+        <item name="android:background">@null</item>
+        <!-- 窗口背景 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 是否变暗 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 点击空白部分activity不消失 -->
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <!-- 无标题 有的手机设置这行代码-->
+        <item name="windowNoTitle">true</item>
+    </style>
+</resources>

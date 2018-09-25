@@ -1,6 +1,11 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-platform-android'
+
 apply plugin: 'kotlin-android'
 
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion compile_sdk
     buildToolsVersion build_tool_version
@@ -14,7 +19,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
-
+    dataBinding {
+        enabled true
+    }
     buildTypes {
         release {
             consumerProguardFiles 'proguard-rules.pro'
@@ -25,15 +32,20 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     implementation "com.android.support:appcompat-v7:$support_lib_version"
-
     implementation "android.arch.lifecycle:extensions:$arch_lifecycle_version"
     implementation "android.arch.lifecycle:reactivestreams:$arch_lifecycle_version"
-
-
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //  kapt "com.android.databinding:compiler:$android_gradle_plugin_version"
+    api "io.reactivex.rxjava2:rxjava:$rxjava_version"
+    implementation project(':barcode')
+    api 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
+    compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
+    implementation "com.android.support:recyclerview-v7:$support_lib_version"
+    api "android.arch.persistence.room:rxjava2:$room_version"
+    api 'com.github.zellius:rxlocationmanager-rxjava2:1.0.0'
+    api "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
 }

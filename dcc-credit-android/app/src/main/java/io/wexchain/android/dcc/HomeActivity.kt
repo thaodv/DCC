@@ -22,7 +22,7 @@ import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
 import io.wexchain.android.dcc.tl.TlWebPageActivity
 import io.wexchain.android.dcc.tools.ShareUtils
-import io.wexchain.android.dcc.tools.checkonMain
+import worhavah.regloginlib.tools.checkonMain
 import io.wexchain.android.dcc.tools.reName
 import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
@@ -205,7 +205,8 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         }
         findViewById<View>(R.id.tv_credit).setOnClickListener {
             if (App.get().passportRepository.passportEnabled) {
-                navigateTo(MyCreditActivity::class.java)
+              //  navigateTo(MyCreditActivity::class.java)
+                navigateTo(MyCreditNewActivity::class.java)
             } else {
                 if (!App.get().passportRepository.passportExists) {
                     showIntroWalletDialog()

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 17.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="497.968px" height="86.667px" viewBox="0 0 497.968 86.667" enable-background="new 0 0 497.968 86.667"
+	 xml:space="preserve">
+<g>
+	<g>
+		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="-2.2979" y1="42.659" x2="117.0671" y2="49.8787">
+			<stop  offset="0" style="stop-color:#20CEFF"/>
+			<stop  offset="1" style="stop-color:#6B5CE4"/>
+		</linearGradient>
+		<path fill="url(#SVGID_1_)" d="M9.987,82.678l-6.861-3.961V8.087l6.861-3.961l30.584,17.658l2.287,3.961v35.315l-2.287,3.961
+			L9.987,82.678z M12.274,16.009v54.786L33.71,58.419V28.385L12.274,16.009z"/>
+	</g>
+	<g>
+		<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="-1.9624" y1="37.1078" x2="117.4025" y2="44.3275">
+			<stop  offset="0" style="stop-color:#20CEFF"/>
+			<stop  offset="1" style="stop-color:#6B5CE4"/>
+		</linearGradient>
+		<polygon fill="url(#SVGID_2_)" points="121.763,54.855 102.102,66.205 82.354,54.804 82.354,32.001 102.102,20.599 121.762,31.95 
+			130.91,26.669 102.102,10.036 73.206,26.719 73.206,60.086 102.102,76.768 130.911,60.136 		"/>
+	</g>
+	<g>
+		<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="-2.1062" y1="39.488" x2="117.2589" y2="46.7077">
+			<stop  offset="0" style="stop-color:#20CEFF"/>
+			<stop  offset="1" style="stop-color:#6B5CE4"/>
+		</linearGradient>
+		<polygon fill="url(#SVGID_3_)" points="70.538,61.626 62.606,66.205 42.857,54.804 42.857,32.001 62.606,20.599 70.538,25.179 
+			79.686,19.897 62.606,10.036 33.71,26.719 33.71,60.086 62.606,76.768 79.686,66.907 		"/>
+	</g>
+</g>
+<circle fill="#6B5CE4" cx="155.434" cy="43.402" r="3.908"/>
+<text transform="matrix(1 0 0 1 348.5919 56.8641)" fill="#6B61E1" font-family="'MicrosoftYaHei'" font-size="22.2776">[中文beta]</text>
+<text transform="matrix(1 0 0 1 181.2577 56.8641)" fill="#6B5CE4" font-family="'MicrosoftYaHei'" font-size="39.2078">开放平台</text>
+</svg>

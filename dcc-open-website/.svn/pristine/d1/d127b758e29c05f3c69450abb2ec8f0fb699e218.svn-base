@@ -1,0 +1,267 @@
+/* 清除浮动 */
+.clearfix:after{
+  display: block;
+  clear: both;
+  content: "";
+  visibility: hidden;
+  height: 0;
+}
+.clearfix{
+  zoom:1;
+}
+
+.sdk{
+  min-height:100vh;
+  padding-top:100px;
+  display:flex;
+}
+/* aside */
+.sdk aside{
+ width:200px;
+ min-height:500px;
+ margin-right:30px;
+ margin-bottom:30px;
+ padding:0px 20px 0;
+ background:#f6f5fd;
+}
+.sdk aside h4{
+  color:#53487d;
+  margin:40px 0px;
+}
+.sdk aside h4,.sdk aside h5{
+  font-weight:700;
+}
+.sdk aside h5{
+  font-size:16px;
+  font-weight:600;
+  margin:10px 0;
+}
+.sdk .sdk-fw::before{
+  content:"";
+  display: inline-block;
+  vertical-align: bottom;
+  width:20px;
+  height:24px;
+  background:url("../images/sprite.png") no-repeat 0 -155px;
+}
+.sdk .sdk-cz::before{
+  content:"";
+  display: inline-block;
+  vertical-align: bottom;
+  width:20px;
+  height:24px;
+  background:url("../images/sprite.png") no-repeat 0 -115px;
+}
+.sdk aside li a,main .m-sdk ul a{
+  color:#464444db;
+  padding-left:26px;
+  text-decoration: none;
+}
+.sdk aside .sdk-act a, .sdk main .sdk-act a,.sdk aside .sdk-a a:hover, main .sdk-a a:hover{
+  color:#3a1a7d;
+}
+.sdk main{
+  width:1080px;
+  padding-right:20px;
+}
+.sdk li{
+  list-style: none;
+  padding:5px 0;
+}
+/* head */
+.sdk .hd{
+  padding-top:20px;
+  box-shadow:0px 0px 20px 3px #ccc;
+}
+.sdk .hd-l{
+  width:500px;
+}
+.sdk .hd-l p{
+  margin:10px 0;
+  line-height:20px;
+  font-size: 14px;
+}
+.sdk .hd-l span{
+  color:gray;;
+}
+.sdk .hd-l a{
+  color:#3d1d7a;
+  font-weight: 600;
+  font-size:12px;
+}
+.sdk .hd-r{
+  width:300px;
+  color:#3a137f;
+}
+.sdk .hd-r span{
+  font-size:14px;
+  color:#737373;
+}
+.sdk .hd-down{
+  width:140px;
+  margin-right:5px;
+  text-align:center;
+}
+.sdk  .hd-z{
+  text-align:center;
+  line-height:20px;
+}
+.sdk  .hd-z a{
+  color:#3a137f;
+}
+.sdk  .hd-z .demo{
+  float:left;
+}
+.sdk  .hd-z .demo::before{
+  display: inline-block;
+  content:"";
+  width:26px;
+  height:20px;
+  vertical-align:bottom;
+  background:url("../images/fwjs/xz.svg") no-repeat center center;
+  background-size:32px 14px;
+}
+.sdk .hd-down a:hover{
+  text-decoration: none;
+} 
+.sdk .hd-z .guide,.sdk .hd-z .guide:hover{
+  text-decoration: underline;
+}
+
+.sdk a.hd-btn{
+  display:block;
+  padding:10px 8px;
+  margin:15px 0 20px;
+  color:#3a137f;
+  text-indent: 1em;
+  border-radius:5px;
+}
+.sdk .hd-btn-android{
+  background:#ddd url("../images/sprite.png") no-repeat 12px 10px;
+  background-size:17px;
+}
+.sdk a.hd-btn-ios{
+  background:#e8defc url("../images/sprite.png") no-repeat 12px -24px;
+  background-size:17px;
+}
+.sdk .hd-source{
+  vertical-align: middle;
+  line-height:16px;
+}
+.sdk .hd-source::before{
+  content:" ";
+  display:inline-block;
+  width:24px;
+  height:16px;
+  background:url("../images/sprite.png") no-repeat 0 -80px;
+}
+/* tab */
+.sdk .tab{
+  width:495px;
+  height:42px;
+  margin:60px auto 50px;
+  line-height:42px;
+  /* background:yellowgreen; */
+}
+.sdk .tab li{
+  width:165px;
+  border:1px solid #bfbfbf;
+  border-right:0;
+  float:left;
+  text-align:center;
+}
+.sdk .tab .tab-last{
+  border-right:1px solid #dcdcdc
+}
+.sdk .tab li.active{
+  border:1px solid #3a137f;
+}
+/* 基础功能 */
+.basic .basic-mg{
+  width:30%;
+  height:560px;
+  padding:10px 16px;
+  margin:0 16px 20px 0;
+  float:left;
+  text-align:center;
+  color:#fff;
+  background:#6b65de;
+}
+.basic .basic-mg h4{
+  margin-bottom:10px;
+}
+.basic .basic-mg img{
+  height:440px;
+}
+.basic .basic-mg p{
+  margin-top:10px;
+  text-align:left;
+}
+/* 功能说明 */
+.sdk .func{
+  display:none;
+}
+
+.sdk .func div{
+  margin-bottom:40px;
+ 
+}
+.sdk .func div p{
+  font-size:14px;
+  line-height:24px;
+}
+.sdk .part{
+  padding:0 20px 30px;
+}
+
+/*接入指南 */
+.sdk .access{
+  display: none;
+}
+.sdk .access h4{
+  font-size:18px;
+  line-height:36px;
+}
+.sdk .access p{
+  font-size:14px;
+  line-height:32px;
+}
+.sdk .access p{
+  margin-bottom:36px;;
+}
+.sdk .access a{
+  color:#6b5ce4;
+  text-decoration: none;
+}
+/**/
+body .ipfs p{
+  font-size:14px;
+  line-height:25px;
+  margin:20px 0;
+}
+.ipfs code{
+  color:rgb(56,130,0);
+  background:none;
+}
+.ipfs .s-fragement{
+  padding:5px 0;
+  font-size:14px;
+  background:rgb(246,248,250);
+  margin-bottom:20px;
+}
+.ipfs h4{
+  padding:10px 0;
+  font-size:18px;
+  font-weight:600;
+}
+.ipfs .g-con{
+  padding:10px 0;
+}
+.ipfs .g-con+p{
+  padding:0;
+  margin:10px 0; 
+}
+.ipfs a:focus,.ipfs a:hover,.ipfs a{
+  color: #6b61e1;
+  text-decoration: decoration;
+}

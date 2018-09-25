@@ -56,7 +56,7 @@
                 />
 
 
-        <include layout="@layout/include_input_text"
+        <include layout="@layout/certs_include_input_text"
             android:id="@+id/input_bank_card_no"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
             app:text="@={vm.bankCardNo}"
             />
 
-        <include layout="@layout/include_input_text"
+        <include layout="@layout/certs_include_input_text"
             android:id="@+id/input_bank_phone_num"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
