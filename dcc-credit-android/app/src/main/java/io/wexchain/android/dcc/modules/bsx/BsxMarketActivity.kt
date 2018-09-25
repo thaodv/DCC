@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.modules.bsx
 
+import android.content.Intent
 import android.os.Bundle
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
@@ -33,15 +34,18 @@ class BsxMarketActivity : BindActivity<ActivityBsxMarketBinding>(), ItemViewClic
 
     override fun onResume() {
         super.onResume()
-        App.get().scfApi.getBsxMarketList().checkonMain().subscribe({
-            binding.records = it
-        }, {
-            toast(it.message ?: "系统错误")
-        })
+        App.get().scfApi.getBsxMarketList()
+                .checkonMain()
+                .withLoading()
+                .subscribe({
+                    binding.records = it
+                }, {
+                    toast(it.message ?: "系统错误")
+                })
     }
 
     override fun onItemClick(item: BsxMarketBean?, position: Int, viewId: Int) {
-
+        startActivity(Intent(this, BsxDetailActivity::class.java).putExtra("assetCode", item!!.assetCode).putExtra("contractAddress", item!!.contractAddress))
     }
 
     private class Adapter(itemViewClickListener: ItemViewClickListener<BsxMarketBean>) :

@@ -13,6 +13,7 @@ public class BsxMarketBean implements Serializable {
     public String status;
     public String minPerHand;
     public SaleInfoBean saleInfo;
+    public String contractAddress;
     
     public static class SaleInfoBean {
         /**

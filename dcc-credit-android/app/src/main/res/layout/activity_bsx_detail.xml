@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <variable
+            name="saleInfo"
+            type="io.wexchain.android.dcc.domain.SaleInfo"
+            />
+
+        <variable
+            name="minAmountPerHandDCC"
+            type="String"
+            />
+
+        <variable
+            name="totalamountDCC"
+            type="String"
+            />
+
+        <variable
+            name="lastamountDCC"
+            type="String"
+            />
+
+        <variable
+            name="canbuy"
+            type="boolean"
+            />
+
+    </data>
+
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -36,6 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:text="@{saleInfo.annualRateP() }"
                     android:textColor="@color/white"
                     android:textSize="31sp"
                     tools:text="10.00%"/>
@@ -70,6 +100,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="4dp"
+                        android:text="@{minAmountPerHandDCC}"
                         android:textColor="@color/white"
                         android:textSize="14sp"
                         tools:text="10"/>
@@ -104,6 +135,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="4dp"
+                        android:text="@{saleInfo.periodDay() }"
                         android:textColor="@color/white"
                         android:textSize="14sp"
                         tools:text="10"/>
@@ -168,6 +200,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
+                    android:text="@{saleInfo.profitMethod}"
                     android:textColor="@color/upgrade_title_color"
                     android:textSize="14sp"/>
 
@@ -202,6 +235,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
+                    android:text="@{totalamountDCC}"
                     android:textColor="@color/upgrade_title_color"
                     android:textSize="14sp"/>
 
@@ -236,6 +270,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
+                    android:text="@{saleInfo.showCloseTime()}"
                     android:textColor="@color/upgrade_title_color"
                     android:textSize="14sp"/>
 
@@ -270,6 +305,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
+                    android:text="@{lastamountDCC}"
                     android:textColor="@color/FFED190F"
                     android:textSize="14sp"/>
 
@@ -371,6 +407,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="4dp"
+                        android:text="@{saleInfo.showIncomeTime()}"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="14sp"/>
 
@@ -426,6 +463,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="4dp"
+                        android:text="@{saleInfo.showEndTime()}"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="14sp"/>
 
@@ -476,6 +514,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:text="@{saleInfo.presentation}"
                 android:textColor="#FF4A4A4A"
                 android:textSize="14sp"
                 tools:text="      币生息DCC私链1期是面向DCC用户的一款固定周期、固定DCC收益的数字资产增值理财产品；具有：极低风险（不包括数字资产本身价格的涨跌），保本保息、到期还本付息的特点。

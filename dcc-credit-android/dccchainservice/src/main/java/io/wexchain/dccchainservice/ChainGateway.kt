@@ -58,6 +58,9 @@ interface ChainGateway {
     @GET("dcc/cert/1/getAbi")
     fun getContractAbi(@Query("business") business: String): Single<Result<String>>
 
+    /**
+     * 获取合约地址
+     */
     @GET("dcc/cert/1/getContractAddress")
     fun getCertContractAddress(@Query("business") business: String): Single<Result<String>>
 

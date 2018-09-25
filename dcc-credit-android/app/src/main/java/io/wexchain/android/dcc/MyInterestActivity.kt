@@ -72,7 +72,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
     }
 
     private fun getbiSaleInfo() {
-        val getAllowance = Erc20Helper.getSaleInfo(BintApi.contract, "", "")
+        val getAllowance = Erc20Helper.getBsxSaleInfo(BintApi.contract)
         App.get().bintApi.postStatus(
                 EthJsonRpcRequestBody(
                         method = "eth_call",
@@ -100,7 +100,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
     }
 
     private fun getbiminAmountPerHand() {
-        val getAllowance = Erc20Helper.getMinAmountPerHando(BintApi.contract, "", "")
+        val getAllowance = Erc20Helper.getBsxMinAmountPerHand(BintApi.contract)
         App.get().bintApi.postStatus(
                 EthJsonRpcRequestBody(
                         method = "eth_call",
@@ -123,7 +123,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
     }
 
     private fun getbiInvestCeilAmount() {
-        val getAllowance = Erc20Helper.getInvestCeilAmount(BintApi.contract, "", "")
+        val getAllowance = Erc20Helper.getBsxInvestCeilAmount(BintApi.contract)
         App.get().bintApi.postStatus(
                 EthJsonRpcRequestBody(
                         method = "eth_call",
@@ -145,7 +145,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
     }
 
     private fun getbiInvestedTotalAmount() {
-        val getAllowance = Erc20Helper.investedTotalAmount(BintApi.contract, "", "")
+        val getAllowance = Erc20Helper.investedBsxTotalAmount(BintApi.contract)
         App.get().bintApi.postStatus(
                 EthJsonRpcRequestBody(
                         method = "eth_call",
@@ -168,7 +168,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
     private fun checkStatu() {
         require(null != saleInfo)
 
-        val getAllowance = Erc20Helper.getStatus(BintApi.contract, "", "")
+        val getAllowance = Erc20Helper.getBsxStatus(BintApi.contract)
         App.get().bintApi.postStatus(
                 EthJsonRpcRequestBody(
                         method = "eth_call",

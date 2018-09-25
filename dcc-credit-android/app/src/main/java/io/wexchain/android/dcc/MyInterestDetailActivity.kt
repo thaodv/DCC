@@ -37,7 +37,7 @@ class MyInterestDetailActivity : BindActivity<ActivityMyInterestdetailBinding>()
     }
 
     private fun getbiInvestedTotalAmount() {
-        val getAllowance = Erc20Helper.investedAmountMapping(BintApi.contract, App.get().passportRepository.getCurrentPassport()!!.address)
+        val getAllowance = Erc20Helper.investedBsxAmountMapping(BintApi.contract, App.get().passportRepository.getCurrentPassport()!!.address)
         App.get().bintApi.postStatus(
                 EthJsonRpcRequestBody(
                         method = "eth_call",
@@ -68,7 +68,7 @@ class MyInterestDetailActivity : BindActivity<ActivityMyInterestdetailBinding>()
     }
 
     private fun getbiStatues() {
-        val getAllowance = Erc20Helper.getStatus(BintApi.contract, "", "")
+        val getAllowance = Erc20Helper.getBsxStatus(BintApi.contract)
         App.get().bintApi.postStatus(
                 EthJsonRpcRequestBody(
                         method = "eth_call",
@@ -89,7 +89,7 @@ class MyInterestDetailActivity : BindActivity<ActivityMyInterestdetailBinding>()
     }
 
     private fun getbiSaleInfo() {
-        val getAllowance = Erc20Helper.getSaleInfo(BintApi.contract, "", "")
+        val getAllowance = Erc20Helper.getBsxSaleInfo(BintApi.contract)
         App.get().bintApi.postStatus(
                 EthJsonRpcRequestBody(
                         method = "eth_call",
