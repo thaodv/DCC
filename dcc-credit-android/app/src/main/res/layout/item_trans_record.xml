@@ -11,7 +11,6 @@
             name="order"
             type="io.wexchain.dccchainservice.domain.AccrossTransRecord"
             />
-
     </data>
 
     <LinearLayout

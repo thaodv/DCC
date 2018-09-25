@@ -10,7 +10,7 @@ public class BsxMarketBean implements Serializable {
     
     public String logo;
     public String assetCode;
-    public int status;
+    public String status;
     public String minPerHand;
     public SaleInfoBean saleInfo;
     
@@ -38,8 +38,8 @@ public class BsxMarketBean implements Serializable {
         public long closeTime;
         public long incomeTime;
         public long endTime;
-        public int period;
-        public int annualRate;
+        public String period;
+        public String annualRate;
         public String profitMethod;
     }
 }

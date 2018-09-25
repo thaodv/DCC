@@ -588,6 +588,54 @@ object ViewModelHelper {
         return getString(R.string.current_version) + versionInfo.versionName
     }
 
+    @JvmStatic
+    fun showBsxRate(rate: String): String {
+        return "+$rate%"
+    }
+
+    @JvmStatic
+    fun showBsxMinCount(min: String, type: String): String {
+        return min + type
+    }
+
+    @JvmStatic
+    fun showBsPeriod(period: String): String {
+        return period + "天"
+    }
+
+    @JvmStatic
+    fun Context.showBsxTopBgStatus(status: String): Drawable? {
+        return when (status) {
+            "4" -> ContextCompat.getDrawable(this, R.drawable.bg_bsx_market_item_top2)
+            else -> {
+                ContextCompat.getDrawable(this, R.drawable.bg_bsx_market_item_top)
+            }
+        }
+    }
+
+    @JvmStatic
+    fun Context.showBsxBodyBgStatus(status: String): Drawable? {
+        return when (status) {
+            "4" -> ContextCompat.getDrawable(this, R.drawable.bg_bsx_market_item_body2)
+            else -> {
+                ContextCompat.getDrawable(this, R.drawable.bg_bsx_market_item_body)
+            }
+        }
+    }
+
+    @JvmStatic
+    fun Context.showBsxStatus(status: String): Drawable? {
+        return when (status) {
+            "1" -> ContextCompat.getDrawable(this, R.drawable.img_bsx_status_1)
+            "2" -> ContextCompat.getDrawable(this, R.drawable.img_bsx_status_2)
+            "3" -> ContextCompat.getDrawable(this, R.drawable.img_bsx_status_3)
+            else -> {
+                ContextCompat.getDrawable(this, R.drawable.img_bsx_status_4)
+            }
+        }
+    }
+
+
 }
 
 fun BigDecimal.currencyToDisplayStr(): String {

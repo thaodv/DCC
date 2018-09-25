@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <variable
+            name="records"
+            type="java.util.List&lt;io.wexchain.dccchainservice.domain.BsxMarketBean&gt;"
+            />
+    </data>
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -92,8 +100,10 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_list"
+            dataList="@{records}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             tools:listitem="@layout/item_bsx_market"/>
 

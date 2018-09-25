@@ -7,13 +7,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
 
-class ScfTokenManager(context: Context){
-    private val tokenStore = SharedPreferencesKVStore(context.getSharedPreferences(TOKEN_SP_NAME,Context.MODE_PRIVATE))
+class ScfTokenManager(context: Context) {
+    private val tokenStore = SharedPreferencesKVStore(context.getSharedPreferences(TOKEN_SP_NAME, Context.MODE_PRIVATE))
     private val lock = ReentrantReadWriteLock()
 
     @get:GuardedBy("lock")
     @set:GuardedBy("lock")
-    var scfToken:String?
+    var scfToken: String?
         get() {
             lock.read {
                 return tokenStore.get(SCF_TOKEN)
@@ -21,9 +21,9 @@ class ScfTokenManager(context: Context){
         }
         set(value) {
             lock.write {
-                if(value!=null){
-                    tokenStore.put(SCF_TOKEN,value)
-                }else{
+                if (value != null) {
+                    tokenStore.put(SCF_TOKEN, value)
+                } else {
                     tokenStore.removeAll(listOf(SCF_TOKEN))
                 }
             }

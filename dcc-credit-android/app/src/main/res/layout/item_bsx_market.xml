@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
+        <variable
+            name="bsxMarketBean"
+            type="io.wexchain.dccchainservice.domain.BsxMarketBean"
+            />
+
+    </data>
+
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -17,10 +28,12 @@
             android:id="@+id/rl_top"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@drawable/bg_bsx_market_item_top">
+            android:background="@{ViewModelHelper.showBsxTopBgStatus(context,bsxMarketBean.status)}"
+            tools:background="@drawable/bg_bsx_market_item_top">
 
             <ImageView
                 android:id="@+id/iv_logo"
+                imageUrl="@{bsxMarketBean.logo}"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
@@ -34,6 +47,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/iv_logo"
+                android:text="@{bsxMarketBean.saleInfo.name}"
                 android:textColor="#fff"
                 android:textSize="14sp"
                 tools:text="ETH币生息1期"/>
@@ -45,6 +59,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
+                android:text="@{ViewModelHelper.showBsxRate(bsxMarketBean.saleInfo.annualRate)}"
                 android:textColor="#fff"
                 android:textSize="14sp"
                 tools:text="+10.00%"/>
@@ -58,9 +73,10 @@
             android:layout_below="@+id/rl_top"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:background="@drawable/bg_bsx_market_item_body"
+            android:background="@{ViewModelHelper.showBsxBodyBgStatus(context,bsxMarketBean.status)}"
             android:baselineAligned="false"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:background="@drawable/bg_bsx_market_item_body">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -88,6 +104,7 @@
                         android:id="@+id/tv_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{bsxMarketBean.assetCode}"
                         android:textColor="#FF4A4A4A"
                         android:textSize="16sp"
                         tools:text="DCC"/>
@@ -111,6 +128,7 @@
                         android:id="@+id/rv_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{ViewModelHelper.showBsxRate(bsxMarketBean.saleInfo.annualRate)}"
                         android:textColor="#FFED190F"
                         android:textSize="16sp"
                         tools:text="+10.00%"/>
@@ -145,6 +163,7 @@
                         android:id="@+id/tv_period"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{ViewModelHelper.showBsPeriod(bsxMarketBean.saleInfo.period)}"
                         android:textColor="#FFED190F"
                         android:textSize="16sp"
                         tools:text="28天"/>
@@ -168,6 +187,7 @@
                         android:id="@+id/tv_min_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{ViewModelHelper.showBsxMinCount(bsxMarketBean.minPerHand,bsxMarketBean.assetCode)}"
                         android:textColor="#FF4A4A4A"
                         android:textSize="16sp"
                         tools:text="100DCC"/>
@@ -186,6 +206,7 @@
             android:layout_below="@id/rl_top"
             android:layout_marginRight="10dp"
             android:layout_marginTop="-10dp"
+            android:background="@{ViewModelHelper.showBsxStatus(context,bsxMarketBean.status)}"
             tools:src="@drawable/img_bsx_status_1"/>
 
     </RelativeLayout>
