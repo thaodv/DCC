@@ -34,6 +34,15 @@ class BsxMarketActivity : BindActivity<ActivityBsxMarketBinding>(), ItemViewClic
 
     override fun onResume() {
         super.onResume()
+        App.get().scfApi.getHoldingSum(App.get().passportRepository.currPassport.value!!.address)
+                .checkonMain()
+                .withLoading()
+                .subscribe({
+                    binding.tvInvestMoney.text = "≈" + it.corpus
+                    binding.tvWaitProfit.text = "≈" + it.profit
+                }, {
+
+                })
         App.get().scfApi.getBsxMarketList()
                 .checkonMain()
                 .withLoading()
@@ -45,7 +54,10 @@ class BsxMarketActivity : BindActivity<ActivityBsxMarketBinding>(), ItemViewClic
     }
 
     override fun onItemClick(item: BsxMarketBean?, position: Int, viewId: Int) {
-        startActivity(Intent(this, BsxDetailActivity::class.java).putExtra("assetCode", item!!.assetCode).putExtra("contractAddress", item!!.contractAddress))
+        startActivity(Intent(this, BsxDetailActivity::class.java)
+                .putExtra("assetCode", item!!.assetCode)
+                .putExtra("name", item!!.name)
+                .putExtra("contractAddress", item!!.contractAddress))
     }
 
     private class Adapter(itemViewClickListener: ItemViewClickListener<BsxMarketBean>) :
