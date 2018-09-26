@@ -29,12 +29,15 @@ typedef NS_ENUM(NSInteger,WeXCPCompoundType) {
 
 - (void)setLeftTextFiled:(NSString *)text;
 
+
+
 /**
- 设置键盘是否带有小数
- 
- @param aDot 带有小数
+ 设置键盘是否带有小数 以及最多输入几位小数
+
+ @param aDot 是否需要小数
+ @param maxDotNum 最多几位小数
  */
-- (void)setKeyBoardIsWithDot:(BOOL)aDot;
+- (void)setKeyBoardIsWithDot:(BOOL)aDot maxDotNum:(NSInteger)maxDotNum;
 
 
 @end

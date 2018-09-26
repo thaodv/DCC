@@ -15,6 +15,10 @@
 #import "WeXHomePushService.h"
 #import "WeXCPUserPotAssetAdapter.h"
 
+#import "WeXCPBuyInETHViewController.h"
+#import "WeXCPBuyAmoutViewController.h"
+#import "WeXCPActivityMainResModel.h"
+
 @interface WeXCPPotListViewController ()
 @property (nonatomic, strong) WeXCPPotListAdapter *potListAdapter;
 @property (nonatomic, strong) NSMutableArray <WeXCPPotListResultModel *> *postList;
@@ -182,6 +186,9 @@ static NSString * const kNoRecordCellID    = @"WeXCPNoRecordCellID";
     } else {
         if (_postList.count > 0) {
             WeXCPPotInfoCell *cell = (WeXCPPotInfoCell *)currentCell;
+            cell.DidClickProductName = ^{
+                [self pushToBuyCoinViewControllerWithIndexPath:indexPath];
+            };
             [cell setPotListModel:_postList[indexPath.row]];
         } else {
             WeXCPNoRecordCell *cell = (WeXCPNoRecordCell *)currentCell;
@@ -189,6 +196,34 @@ static NSString * const kNoRecordCellID    = @"WeXCPNoRecordCellID";
         }
     }
     
+}
+
+- (void)pushToBuyCoinViewControllerWithIndexPath:(NSIndexPath *)indexPath {
+    WeXCPPotListResultModel *listModel = _postList[indexPath.row ];
+    WeXCPActivityListModel *model      = [WeXCPActivityListModel new];
+    WeXCPActivityListSaleInfoModel *saleInfoModel = [WeXCPActivityListSaleInfoModel new];
+    saleInfoModel.presentation = listModel.saleInfo.presentation;
+    saleInfoModel.name = listModel.saleInfo.name;
+    saleInfoModel.startTime = listModel.saleInfo.startTime;
+    saleInfoModel.closeTime = listModel.saleInfo.closeTime;
+    saleInfoModel.incomeTime = listModel.saleInfo.incomeTime;
+    saleInfoModel.endTime = listModel.saleInfo.endTime;
+    saleInfoModel.annualRate = listModel.saleInfo.annualRate;
+    saleInfoModel.period = listModel.saleInfo.period;
+    saleInfoModel.profitMethod = listModel.saleInfo.profitMethod;
+    model.name      = listModel.name;
+    model.assetCode = listModel.assetCode;
+    model.contractAddress = listModel.contractAddress;
+    model.saleInfo = saleInfoModel;
+    if ([listModel.assetCode isEqualToString:@"DCC"]) {
+        WeXCPBuyAmoutViewController *buyDCCVC = [WeXCPBuyAmoutViewController new];
+        buyDCCVC.productModel = model;
+        [WeXHomePushService pushFromVC:self toVC:buyDCCVC];
+    } else {
+        WeXCPBuyInETHViewController *buyETHVC = [WeXCPBuyInETHViewController new];
+        buyETHVC.productModel = model;
+        [WeXHomePushService pushFromVC:self toVC:buyETHVC];
+    }
 }
 
 @end
