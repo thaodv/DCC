@@ -30,148 +30,135 @@
                 >
 
             <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <TextView
-                        android:id="@+id/tv_cert_org"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:gravity="center_vertical"
-                        android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:text="@string/authenticator"
-                        />
+                    android:id="@+id/tv_cert_org"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:text="认证方：同牛"
+                    android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:layout_width="90dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="10dp"
                     android:src="@drawable/cert_badge"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <View
-                        android:id="@+id/divider_0"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/divider_stroke_width"
-                        app:layout_constraintTop_toBottomOf="@id/tv_cert_org"
-                        style="@style/DividerHorizontal"
-                        />
+                    android:id="@+id/divider_0"
+                    style="@style/DividerHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_stroke_width"
+                    app:layout_constraintTop_toBottomOf="@id/tv_cert_org" />
 
                 <TextView
-                        android:id="@+id/tv_name_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:gravity="center_vertical"
-                        android:text="@{vm.title1}"
-                        app:layout_constraintTop_toBottomOf="@id/divider_0"
-                        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                        tools:text="title1"
-                        />
+                    android:id="@+id/tv_name_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:text="@{vm.title1}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                    app:layout_constraintTop_toBottomOf="@id/divider_0"
+                    tools:text="title1" />
 
                 <TextView
-                        android:id="@+id/tv_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBaseline_toBaselineOf="@id/tv_name_label"
-                        app:layout_constraintRight_toRightOf="parent"
-                        android:text="@{vm.value1}"
-                        />
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.value1}"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_name_label"
+                    app:layout_constraintRight_toRightOf="parent" />
 
                 <View
-                        android:id="@+id/divider_h1"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/divider_stroke_width"
-                        app:layout_constraintTop_toBottomOf="@id/tv_name_label"
-                        style="@style/DividerHorizontal"
-                        />
+                    android:id="@+id/divider_h1"
+                    style="@style/DividerHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_stroke_width"
+                    app:layout_constraintTop_toBottomOf="@id/tv_name_label" />
 
                 <TextView
-                        android:id="@+id/tv_id_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:gravity="center_vertical"
-                        android:text="@{vm.title2}"
-                        app:layout_constraintTop_toBottomOf="@id/divider_h1"
-                        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                        tools:text="title2"
-                        />
+                    android:id="@+id/tv_id_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:text="@{vm.title2}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                    app:layout_constraintTop_toBottomOf="@id/divider_h1"
+                    tools:text="title2" />
 
                 <TextView
-                        android:id="@+id/tv_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBaseline_toBaselineOf="@id/tv_id_label"
-                        app:layout_constraintRight_toRightOf="parent"
-                        android:text="@{vm.value2}"
-                        />
+                    android:id="@+id/tv_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.value2}"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_id_label"
+                    app:layout_constraintRight_toRightOf="parent" />
 
                 <View
-                        android:id="@+id/divider_h2"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/divider_stroke_width"
-                        app:layout_constraintTop_toBottomOf="@id/tv_id_label"
-                        style="@style/DividerHorizontal"
-                        />
+                    android:id="@+id/divider_h2"
+                    style="@style/DividerHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_stroke_width"
+                    app:layout_constraintTop_toBottomOf="@id/tv_id_label" />
 
                 <TextView
-                        android:id="@+id/tv_expired_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:gravity="center_vertical"
-                        android:text="@{vm.title3}"
-                        app:layout_constraintTop_toBottomOf="@id/divider_h2"
-                        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                        tools:text="title3"
-                        />
+                    android:id="@+id/tv_expired_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:text="@{vm.title3}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                    app:layout_constraintTop_toBottomOf="@id/divider_h2"
+                    tools:text="title3" />
 
                 <TextView
-                        android:id="@+id/tv_expired"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBaseline_toBaselineOf="@id/tv_expired_label"
-                        app:layout_constraintRight_toRightOf="parent"
-                        android:text="@{vm.value3}"
-                        />
+                    android:id="@+id/tv_expired"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.value3}"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_expired_label"
+                    app:layout_constraintRight_toRightOf="parent" />
 
 
                 <View
-                        android:id="@+id/divider_h3"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/divider_stroke_width"
-                        app:layout_constraintTop_toBottomOf="@id/tv_expired_label"
-                        style="@style/DividerHorizontal"
-                        />
+                    android:id="@+id/divider_h3"
+                    style="@style/DividerHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_stroke_width"
+                    app:layout_constraintTop_toBottomOf="@id/tv_expired_label" />
+
                 <FrameLayout
-                        android:id="@+id/fl_data"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/divider_h3"
-                        android:onClick="@{(v)->vm.showData()}"
-                        >
+                    android:id="@+id/fl_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{(v)->vm.showData()}"
+                    app:layout_constraintTop_toBottomOf="@id/divider_h3">
+
                     <TextView
-                            android:id="@+id/tv_data_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:gravity="center_vertical"
-                            android:text="@string/for_details"
-                            app:layout_constraintTop_toBottomOf="@id/divider_h2"
-                            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            />
+                        android:id="@+id/tv_data_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/for_details"
+                        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_h2" />
 
                     <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="40dp"
+                        android:layout_width="30dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="right|center_vertical"
                         android:padding="10dp"
-                            android:layout_gravity="right|center_vertical"
-                            android:src="@drawable/arrow_right"
-                            />
+                        android:src="@drawable/arrow_right" />
                 </FrameLayout>
 
             </android.support.constraint.ConstraintLayout>

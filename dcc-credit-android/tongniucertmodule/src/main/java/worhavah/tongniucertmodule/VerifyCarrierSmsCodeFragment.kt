@@ -4,11 +4,16 @@ import android.os.Bundle
 import android.view.View
 import com.wexmarket.android.passport.base.BindFragment
 import io.reactivex.Flowable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.Pop
+import io.wexchain.android.common.runOnMainThread
+import io.wexchain.android.common.toast
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
+import worhavah.certs.tools.Base64toBitTools
 import worhavah.certs.tools.CertOperations
 import worhavah.mobilecertmodule.R
 import worhavah.mobilecertmodule.databinding.FragmentTnverifyCarrierSmsCodeBinding
@@ -25,18 +30,24 @@ class VerifyCarrierSmsCodeFragment: BindFragment<FragmentTnverifyCarrierSmsCodeB
         starttimer()
         binding.btnSubmitCode.setOnClickListener {
             binding.code?.let {
-                listener?.onSubmitSmsCode(it)
+                listener?.onSubmitSmsCode(null,it)
             }
         }
         binding.recode .setOnClickListener {
             starttimer()
-                listener?.reCode( )
+                listener?.reCode( )!!.observeOn(AndroidSchedulers.mainThread())
+
+                    .subscribe ({
+                        runOnMainThread {
+                             toast( "短信已发送")
+                        }
+                    },{ })
         }
     }
 
     interface Listener{
-        fun onSubmitSmsCode(code:String)
-        fun reCode( )
+        fun onSubmitSmsCode(authCode:String?,smsCode:String?)
+        fun reCode( ) :Single<String>
     }
 
     companion object {
@@ -58,14 +69,20 @@ class VerifyCarrierSmsCodeFragment: BindFragment<FragmentTnverifyCarrierSmsCodeB
             .observeOn(AndroidSchedulers.mainThread())//操作UI主要在UI线程
             .subscribe(object : Subscriber<Long> {
                 override fun onSubscribe(s: Subscription?) {
-                    binding.recode.isEnabled = false//在发送数据的时候设置为不能点击
-                    binding.recode.setTextColor(resources.getColor(worhavah.certs.R.color.gray_mask))//背景色设为灰色
-                    mSubscription = s
-                    s?.request(Long.MAX_VALUE)//设置请求事件的数量，重要，必须调用
+                    if(activity!=null){
+                        binding.recode.isEnabled = false//在发送数据的时候设置为不能点击
+                        binding.recode.setTextColor(resources.getColor(worhavah.certs.R.color.gray_mask))//背景色设为灰色
+                        mSubscription = s
+                        s?.request(Long.MAX_VALUE)//设置请求事件的数量，重要，必须调用
+                    }
+
                 }
 
                 override fun onNext(aLong: Long?) {
-                    binding.recode.text = "${aLong}s后重发" //接受到一条就是会操作一次UI
+                    if(activity!=null){
+                        binding.recode.text = "${aLong}s后重发" //接受到一条就是会操作一次UI
+
+                    }
                 }
 
                 override fun onComplete() {

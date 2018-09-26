@@ -8,6 +8,9 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
 import worhavah.certs.bean.TNcert1
+import worhavah.certs.bean.TNcertAdvance
+import worhavah.certs.bean.TNcertReport
+import worhavah.certs.bean.TNcertResent
 import worhavah.certs.beans.BeanValidHomeResult
 import worhavah.certs.beans.BeanValidMailResult
 import worhavah.certs.beans.BeanValidResult
@@ -37,10 +40,10 @@ interface tnCertApi {
         @Part("address") address:String,
         @Part("orderId") orderId:Long,
         @Part("taskStage") taskStage: String,
-        @Part("authCode") authCode: String,
-        @Part("smsCode") smsCode: String ,
+        @Part("authCode") authCode: String?,
+        @Part("smsCode") smsCode: String? ,
         @Part("signature") signature:String
-        ):Single<Result<String>>
+        ):Single<Result<TNcertAdvance>>
 
     @POST("dcc/endorsement/tongniu/communicationLog/resend/code")
     @Multipart
@@ -49,7 +52,7 @@ interface tnCertApi {
         @Part("orderId") orderId:Long,
 
         @Part("signature") signature:String
-    ):Single<Result<String>>
+    ):Single<Result<TNcertResent>>
 
     @POST("dcc/endorsement/tongniu/communicationLog/getReport")
     @Multipart
@@ -58,7 +61,7 @@ interface tnCertApi {
         @Part("orderId") orderId:Long,
 
         @Part("signature") signature:String
-    ):Single<String>
+    ):Single<Result<TNcertReport>>
 
 
 

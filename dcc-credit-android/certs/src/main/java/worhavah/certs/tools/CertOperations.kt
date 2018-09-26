@@ -41,6 +41,7 @@ import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import org.web3j.crypto.Credentials
 import worhavah.certs.BuildConfig
 import worhavah.certs.CertListner
+import worhavah.certs.R
 import worhavah.certs.beans.BankCardInfo
 import worhavah.regloginlib.AuthKey
 import worhavah.regloginlib.EthsHelper
@@ -80,8 +81,6 @@ object CertOperations {
                 }
         })
         idVerifyHelper = IdVerifyHelper(context)
-
-
     }
 
     fun submitBankCardCert(
@@ -344,6 +343,10 @@ object CertOperations {
     fun getCmLogPhoneNo(): String? {
         return certPrefs.certCmLogPhoneNo.get()
     }
+
+    fun getTnLogPhoneNo(): String? {
+        return certPrefs.certTNLogPhoneNo.get()
+    }
     fun isIdCertPassed(): Boolean {
        /* if (certPrefs.certIdOrderId.get() == INVALID_CERT_ORDER_ID) {
             return false
@@ -449,7 +452,9 @@ i
     fun getCmCertOrderId(): Long {
         return certPrefs.certCmLogOrderId.get()
     }
-
+    fun getTNCertOrderId(): Long {
+        return certPrefs.certTNLogOrderId.get()
+    }
 
     private val gson = Gson()
     private const val INVALID_CERT_ORDER_ID = -1L
@@ -485,7 +490,7 @@ i
         val certTNLogState = StringPref("certTNLogState")
         val certTNLogPhoneNo = StringPref("certTNLogPhoneNo")
         val certTNLogPassword = StringPref("certTNLogPassword")
-
+        val certTNLogData = StringPref("certTNLogData")
         //手机邮箱
         val certPhoneNum= StringPref("certPhoneNum")
         val certPhoneData = StringPref("certPhoneData")
@@ -978,7 +983,14 @@ i
             }
             .observeOn(AndroidSchedulers.mainThread())
     }
-
+    fun getTNLogData(orderId: Long): Single<ByteArray> {
+        return Single.just(certTNLogReportFileName(orderId))
+            .observeOn(Schedulers.io())
+            .map {
+                File(context!!.filesDir, it).readBytes()
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+    }
     fun getCommunicationLogReport(passport: Passport): Single<CmLogReportData> {
         require(passport.authKey != null)
         val address = passport.address
@@ -1049,12 +1061,13 @@ i
     fun onTNLogSuccessGot(reportData: String) {
         certPrefs.certTNLogState.set(UserCertStatus.DONE.name)
         val orderId = certPrefs.certTNLogOrderId.get()
-        Schedulers.io().scheduleDirect {
+      certPrefs.certTNLogData.set(reportData)
+        /*Schedulers.io().scheduleDirect {
             File(context!!.filesDir, certTNLogReportFileName(orderId)).apply {
                 ensureNewFile()
                 writeBytes(Base64.decode(reportData, Base64.DEFAULT))
             }
-        }
+        }*/
     }
 
     fun onCmLogSuccessGot(reportData: String) {

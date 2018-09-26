@@ -21,7 +21,7 @@ class TnLogCertificationActivity : BindActivity<ActivityTncertificationDataCmBin
         super.onCreate(savedInstanceState)
         initToolbar()
         val data = CertOperations.getCertIdData()!!
-        val phoneNo = CertOperations.getCmLogPhoneNo()!!
+        val phoneNo = CertOperations.getTnLogPhoneNo()!!
         val vm = getViewModel<CertificationDataVm>().apply {
             this.title1.set(getString(R.string.phone_num))
             this.title2.set(getString(R.string.phone_owner_name))
@@ -36,8 +36,8 @@ class TnLogCertificationActivity : BindActivity<ActivityTncertificationDataCmBin
             }
         })
         vm.showDataEvent.observe(this, Observer {
-            navigateTo(CmCertDataActivity::class.java){
-                putExtra(Extras2.EXTRA_CERT_ORDER_ID,CertOperations.getCmCertOrderId())
+            navigateTo(TNCertDataActivity::class.java){
+                putExtra(Extras2.EXTRA_CERT_ORDER_ID,CertOperations.getTNCertOrderId())
             }
         })
         binding.vm = vm

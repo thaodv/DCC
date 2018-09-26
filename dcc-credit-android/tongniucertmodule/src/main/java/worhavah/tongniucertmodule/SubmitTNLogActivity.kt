@@ -14,6 +14,8 @@ import io.wexchain.dccchainservice.domain.CertProcess
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import worhavah.certs.bean.TNcert1
+import worhavah.certs.bean.TNcertAdvance
+import worhavah.certs.bean.TNcertResent
 import worhavah.certs.tools.CertOperations
 import worhavah.mobilecertmodule.R
 import worhavah.regloginlib.Net.Networkutils
@@ -21,21 +23,30 @@ import worhavah.regloginlib.Passport
 
 class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listener,
     VerifyCarrierSmsCodeFragment.Listener, VerifyCarrierQueryPasswordFragment.Listener {
-    override fun reCode( ) {
-         sentCode( ).doOnSubscribe {
-             showLoadingDialog()
+    override fun reCode( ):Single<String> {
+
+       return  sentCode( ).map {
+             it.auth_code
          }
+            /* .observeOn(AndroidSchedulers.mainThread())
+             .doOnSubscribe {
+                 showLoadingDialog()
+             }
              .doFinally {
                  hideLoadingDialog()
              }
              .subscribe ({ process ->
-                 // handleCertProcess(process)
+                 img= process.auth_code
 
-             },{toast(it.message.toString())})
+             },{toast(it.message.toString())})*/
     }
+    var img:String=""
 
     private val inputPhoneInfoFragment by lazy { InputPhoneInfoFragment.create(this) }
     private val verifyCarrierSmsCodeFragment by lazy { VerifyCarrierSmsCodeFragment.create(this) }
+    private val verifyCarrierImgCodeFragment by lazy { VerifyCarrierImgCodeFragment.create(this,img) }
+
+
     private val verifyCarrierQueryPasswordFragment by lazy {
         VerifyCarrierQueryPasswordFragment.create(
             this
@@ -47,7 +58,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
     private lateinit var realId: String
 
     private var submitOrderId: Long? = null
-    private var taskStage: String? = null
+    private var taskStage: String? = ""
 
     private var submitPhoneNo: String? = null
     private var submitServicePassword: String? = null
@@ -91,10 +102,14 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
                     }
                     .subscribe ({ process ->
                        // handleCertProcess(process)
+                        taskStage=process.data.next_stage
                         if(process.status.subCode.contains("105")){
-                            taskStage=process.data.next_stage
+
                             verifyViaSms()
-                        }else if(process.status.subCode.contains("137")){
+                        }else if(process.status.subCode.contains("101")){
+                            img=process.data.auth_code.toString()
+                            verifyViaImg()
+                        }else if(process.status.subCode.contains("137")||process.status.subCode.contains("2007")){
                             Pop.toast("认证申请提交成功",this)
                             CertOperations.onTNLogRequestSuccess(submitOrderId!!,submitPhoneNo!!,submitServicePassword!!)
                             finish()
@@ -133,29 +148,29 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
             )
         ).compose(Result.checked())
     }
-    fun pushAdvance(code:String): Single<String>{
+    fun pushAdvance(authCode:String?,smsCode:String?): Single<TNcertAdvance>{
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
         return  CertOperations.tnCertApi.TNAdvance(
             address = address,
             orderId = submitOrderId!!,
             taskStage = taskStage!!,
-            authCode = code,
-            smsCode = code,
+            authCode = authCode,
+            smsCode = smsCode,
             signature = ParamSignatureUtil.sign(
                 privateKey, mapOf(
                     "address" to address,
+                    "authCode" to authCode,
                     "orderId" to submitOrderId!!.toString(),
-                    "taskStage" to taskStage!!,
-                    "authCode" to code,
-                    "smsCode" to code
+                    "smsCode" to smsCode,
+                    "taskStage" to taskStage!!
                 )
             )
         ).compose(Result.checked())
     }
 
-    override fun onSubmitSmsCode(code: String) {
-        pushAdvance(code) .doOnSubscribe {
+    override fun onSubmitSmsCode(authCode:String?,smsCode:String?) {
+        pushAdvance(authCode ,smsCode ) .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
             showLoadingDialog()
         }
             .doFinally {
@@ -163,7 +178,11 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
             }
             .subscribe ({ process ->
                 // handleCertProcess(process)
-
+                if(process.status.subCode.contains("137")||process.status.subCode.contains("2007")){
+                    Pop.toast("认证申请提交成功",this)
+                    CertOperations.onTNLogRequestSuccess(submitOrderId!!,submitPhoneNo!!,submitServicePassword!!)
+                    finish()
+                }
             },{toast(it.message.toString())})
         /*val process = currentProcess
         if(process != null){
@@ -176,7 +195,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
             }
         }*/
     }
-    fun sentCode( ):Single<String> {
+    fun sentCode( ):Single<TNcertResent> {
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
       return  CertOperations.tnCertApi.TNGetcode(
@@ -188,7 +207,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
                     "orderId" to submitOrderId!!.toString()
                 )
             )
-        ).compose(Result.checked())
+        ) .compose(Result.checked())
     }
 
 
@@ -285,7 +304,9 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
     private fun verifyViaSms() {
         replaceFragment(verifyCarrierSmsCodeFragment, R.id.fl_container)
     }
-
+    private fun verifyViaImg() {
+        replaceFragment(verifyCarrierImgCodeFragment, R.id.fl_container)
+    }
     private fun onRequestSuccess() {
         Pop.toast("认证申请提交成功",this)
         CertOperations.onCmLogRequestSuccess(submitOrderId!!,submitPhoneNo!!,submitServicePassword!!)
@@ -317,13 +338,13 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
     }
 
     private fun checkPreconditions() {
-        if (!Networkutils.passportRepository.passportEnabled) {
+      /*  if (!Networkutils.passportRepository.passportEnabled) {
             runOnMainThread {
                 Pop.toast(R.string.ca_not_enabled, this)
                 finish()
             }
             return
-        }
+        }*/
         val certId = CertOperations.getCertId()
         if (certId == null) {
             runOnMainThread {
