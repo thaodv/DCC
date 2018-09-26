@@ -49,9 +49,6 @@
 @property (nonatomic, assign) NSInteger requestCount;
 @property (nonatomic, copy) NSString *txHash;
 
-
-
-
 @end
 
 static NSString *const kCPCompundCellID  = @"WeXCPCompoundCellID";
@@ -82,12 +79,6 @@ static NSString *const kDefaultBalance   = @"--";
     _getContractAddress.delegate = self;
     [_getContractAddress run:nil];
 }
-- (void)dismiss {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [WeXPorgressHUD hideLoading];
-        [self.tableView reloadData];
-    });
-}
 - (void)configureNavigaionBar {
     [self setNavigationNomalBackButtonType];
     [self.tableView setBackgroundColor:ColorWithHex(0xF8F8FF)];
@@ -112,6 +103,7 @@ static NSString *const kDefaultBalance   = @"--";
     [tableView registerClass:[WeXCPCompoundCell class] forCellReuseIdentifier:kCPCompundCellID];
     [tableView registerClass:[WeXCoinProfitOnlyTextCell  class] forCellReuseIdentifier:kCPOnlyTextCellID];
 }
+
 #pragma mark UITableViewDatasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;

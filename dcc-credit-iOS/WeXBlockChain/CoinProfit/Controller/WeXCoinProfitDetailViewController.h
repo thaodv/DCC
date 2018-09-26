@@ -9,6 +9,9 @@
 #import "WeXBaseReuseTableViewController.h"
 
 @interface WeXCoinProfitDetailViewController : WeXBaseReuseTableViewController
+//代币
+@property (nonatomic, copy) NSString *assetCode;
+
 
 - (void)wex_refreshContent;
 

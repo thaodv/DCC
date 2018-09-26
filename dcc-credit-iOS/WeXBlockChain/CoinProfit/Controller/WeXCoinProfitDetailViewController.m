@@ -17,6 +17,9 @@
 #import "WeXCPHeader.h"
 #import "WeXCPGetContractAddressAdapter.h"
 #import "NSString+WexTool.h"
+#import "WeXCPBuyInETHViewController.h"
+#import "WeXHomePushService.h"
+#import "WeXCPPotListViewController.h"
 
 @interface WeXCoinProfitDetailViewController ()
 
@@ -35,7 +38,6 @@
 @property (nonatomic, copy) NSString *cpMinBuyAmount;
 //状态
 @property (nonatomic, copy) NSString *cpStatus;
-
 
 @end
 
@@ -223,12 +225,12 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
             NSString *title = _titles[indexPath.row];
             NSString *subTitle = nil;
             if (indexPath.row == 0) {
-                subTitle = @"DCC";
+                subTitle = _assetCode;
             } else if (indexPath.row == 1) {
                 subTitle = self.infoResModel.profitMethod;
             } else if (indexPath.row == 2) {
                 if ([self.cpTotalAmount length] > 0) {
-                    subTitle = [NSString stringWithFormat:@"%@DCC",self.cpTotalAmount];
+                    subTitle = [NSString stringWithFormat:@"%@%@",self.cpTotalAmount,_assetCode];
                 }
             } else if (indexPath.row == 3) {
                 if ([self.infoResModel.endTime length] > 0) {
@@ -238,7 +240,7 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
             } else {
                 if ([self.cpRemainAmout length] > 0) {
                     NSString *rate = [NSString stringWithFormat:@"%.1f",[self.cpRemainAmout floatValue] * 100 / [self.cpTotalAmount floatValue]];
-                    subTitle = [NSString stringWithFormat:@"%@ DCC (%@%@)",self.cpRemainAmout,rate,@"%"];
+                    subTitle = [NSString stringWithFormat:@"%@ %@ (%@%@)",self.cpRemainAmout,_assetCode,rate,@"%"];
                 }
             }
             if (indexPath.row == _titles.count - 1) {
@@ -299,15 +301,22 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
 // MARK: - 持仓
 - (void)positionEvent:(UIBarButtonItem *)buttonItem {
     WEXNSLOG(@"持仓");
-    WeXCPPotDetailViewController *potDetailVC = [WeXCPPotDetailViewController new];
-    [self.navigationController pushViewController:potDetailVC animated:YES];
+//    WeXCPPotDetailViewController *potDetailVC = [WeXCPPotDetailViewController new];
+//    [self.navigationController pushViewController:potDetailVC animated:YES];
+    [WeXHomePushService pushFromVC:self toVC:[WeXCPPotListViewController new]];
 }
 
 // MARK: - 认购
 - (void)buyInEvent {
-    WeXCPBuyAmoutViewController *buyAmountVC = [WeXCPBuyAmoutViewController new];
     [WeXPorgressHUD hideLoading];
-    [self.navigationController pushViewController:buyAmountVC animated:YES];
+    if ([_assetCode isEqualToString:@"DCC"]) {
+        [WeXHomePushService pushFromVC:self toVC:[WeXCPBuyAmoutViewController new]];
+    } else {
+        [WeXHomePushService pushFromVC:self toVC:[WeXCPBuyInETHViewController new]];
+    }
+//    WeXCPBuyAmoutViewController *buyAmountVC = [WeXCPBuyAmoutViewController new];
+//
+//    [self.navigationController pushViewController:buyAmountVC animated:YES];
     WEXNSLOG(@"呵呵呵哒");
 }
 
