@@ -358,7 +358,7 @@ static NSInteger const kMaxTimes = 5;
 // MARK: - 刷新剩余额度
 - (void)refreshRemainAmout {
     if ([self.totalAmount length] > 0 && [self.haveBuyAmount length] > 0) {
-        NSInteger remainAmout = [self.totalAmount integerValue] - [self.haveBuyAmount integerValue];
+        float remainAmout = [self.totalAmount floatValue] - [self.haveBuyAmount floatValue];
         self.remainAmount = [@(remainAmout) stringValue];
         [self.tableView reloadData];
     }
@@ -483,7 +483,7 @@ static NSInteger const kMaxTimes = 5;
             }
             else if (indexPath.row == 1) {
                 WeXCPCompoundCell *cell = (WeXCPCompoundCell *)currentCell;
-                [cell setKeyBoardIsWithDot:true];
+                [cell setKeyBoardIsWithDot:true maxDotNum:2];
                 if (self.minBuyAmount) {
                     NSString *placeHolder = [NSString stringWithFormat:@"%@%@%@",@"最小认购额度",self.minBuyAmount,_productModel.assetCode];
                     [cell setLeftTitle:nil rightText:_productModel.assetCode placeHolder:placeHolder type:WeXCPCompoundTypeTextFiledAndLabel];

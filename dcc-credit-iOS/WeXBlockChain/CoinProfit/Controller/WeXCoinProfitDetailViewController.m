@@ -99,7 +99,7 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
     NSDictionary *attributes = @{NSFontAttributeName:WexFont(15),
                                  NSForegroundColorAttributeName:ColorWithHex(0x5756B3)
                                  };
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:attributes forState:UIControlStateNormal];
+//    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:attributes forState:UIControlStateNormal];
 }
 
 - (void)wexRegisterTableViewCell:(UITableView *)tableView {
@@ -441,7 +441,11 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
 
 - (void)refreshRemainAmount {
     if ([self.cpTotalAmount length] > 0 && [self.cpHaveSaleAmout length] > 0) {
-        self.cpRemainAmout = [@([self.cpTotalAmount integerValue] - [self.cpHaveSaleAmout integerValue]) stringValue];
+        if ([_productModel.assetCode isEqualToString:@"DCC"]) {
+            self.cpRemainAmout = [@([self.cpTotalAmount integerValue] - [self.cpHaveSaleAmout integerValue]) stringValue];
+        } else {
+            self.cpRemainAmout = [@([self.cpTotalAmount floatValue] - [self.cpHaveSaleAmout floatValue]) stringValue];
+        }
 //        [self reloadCellWithRow:4 section:1];
         [self.tableView reloadData];
     }

@@ -19,6 +19,8 @@ typedef NS_ENUM(NSInteger,CPPotInfoCellType) {
 @class WeXCPPotListResultModel;
 @interface WeXCPPotInfoCell : WeXBaseTableViewCell
 
+@property (nonatomic,copy) void (^DidClickProductName)(void);
+
 - (void)setTitle:(NSString *)title
           profit:(NSString *)profit
           principal:(NSString *)principal

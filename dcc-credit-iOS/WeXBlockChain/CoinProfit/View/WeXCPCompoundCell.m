@@ -15,6 +15,9 @@
 @property (nonatomic, weak) UITextField *leftTextField;
 @property (nonatomic, weak) UILabel *rightLab;
 
+@property (nonatomic, assign) NSInteger maxDotNum;
+
+
 @end
 
 @implementation WeXCPCompoundCell
@@ -123,6 +126,23 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     !self.DidInputText ? : self.DidInputText(textField.text);
 }
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSInteger dotLocation = [textField.text rangeOfString:@"."].location;
+    if (dotLocation != NSNotFound) {
+        //      禁止输入多个小数点
+        if ([string isEqualToString:@"."]) {
+            return NO;
+        }
+    }
+    //  判断小数点最多 _maxDotNum 位
+    if (_maxDotNum >0 && dotLocation != NSNotFound && range.location > dotLocation + _maxDotNum) {
+        return NO;
+    }
+    return true;
+    
+}
+
 - (void)setLeftTitle:(NSString *)leftTitle
     rightButtonImage:(NSString *)image {
     [self setLeftTitle:leftTitle rightText:nil placeHolder:nil type:WeXCPCompoundTypeLabelAndButton];
@@ -139,13 +159,15 @@
     [self.leftTextField setText:text];
 }
 /**
- 设置键盘是否带有小数
+ 设置键盘是否带有小数 以及最多输入几位小数
  
- @param aDot 带有小数
+ @param aDot 是否需要小数
+ @param maxDotNum 最多几位小数
  */
-- (void)setKeyBoardIsWithDot:(BOOL)aDot {
+- (void)setKeyBoardIsWithDot:(BOOL)aDot maxDotNum:(NSInteger)maxDotNum {
     if (aDot) {
         [self.leftTextField setKeyboardType:UIKeyboardTypeDecimalPad];
+        [self setMaxDotNum:maxDotNum];
     } else {
         [self.leftTextField setKeyboardType:UIKeyboardTypeNumberPad];
     }

@@ -46,6 +46,7 @@ static CGFloat const kInfoViewH = 237;
 - (void)wex_addSubViews {
     [self.contentView setBackgroundColor:WexSepratorLineColor];
     UIImageView *headImageView = [[UIImageView alloc] initWithFrame:CGRectMake(14, 0, kScreenWidth - 2 * 14,( kScreenWidth - 2 * 14) / kImageRatio)];
+    headImageView.userInteractionEnabled = true;
     headImageView.image = [UIImage imageNamed:@"Rectangle-bg"];
     [self.contentView addSubview:headImageView];
     self.headImageView = headImageView;
@@ -55,6 +56,10 @@ static CGFloat const kInfoViewH = 237;
     self.coinIconImageView = coinIconImageView;
     
     UILabel *titleLab = CreateLeftAlignmentLabel(WexFont(14), [UIColor whiteColor]);
+    titleLab.userInteractionEnabled = true;
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickProductNameEvent:)];
+    [titleLab addGestureRecognizer:tapGesture];
+    
     titleLab.adjustsFontSizeToFitWidth = true;
     [self.headImageView addSubview:titleLab];
     self.titleLab = titleLab;
@@ -141,6 +146,7 @@ static CGFloat const kInfoViewH = 237;
         make.centerY.mas_equalTo(0);
         make.left.equalTo(self.coinIconImageView.mas_right).offset(11);
         make.right.lessThanOrEqualTo(self.titleProfitLab.mas_left).offset(-5);
+        make.height.mas_equalTo(30);
     }];
     [self.titleProfitLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(0);
@@ -213,6 +219,11 @@ static CGFloat const kInfoViewH = 237;
         make.size.mas_equalTo(CGSizeMake(79, 53));
     }];
 }
+
+- (void)clickProductNameEvent:(UITapGestureRecognizer *)gesture {
+    !self.DidClickProductName ? : self.DidClickProductName();
+}
+
 - (void)setTitle:(NSString *)title
           profit:(NSString *)profit
        principal:(NSString *)principal
