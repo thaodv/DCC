@@ -18,12 +18,22 @@ typedef NS_ENUM(NSInteger,WexCPBuyButtonType) {
     WexCPBuyButtonTypeDisable = 1, //认购Button不可点击
 };
 
+typedef NS_ENUM(NSInteger,WexCPBuyButtonTipsType) {
+    WexCPBuyButtonTipsTypePrivate = 0, //购买私链上的(DCC)
+    WexCPBuyButtonTipsTypePublic  = 1, //购买公链上的(ETH)
+};
+
 @interface WeXCPBuyBottomView : WeXBaseView
 
 + (instancetype)createBuyBottomView:(CGRect)frame
                          clickEvent:(void(^)(WeXCPBuyBottomViewType))click;
 
++ (instancetype)createBuyBottomView:(CGRect)frame
+                           tipsType:(WexCPBuyButtonTipsType)type
+                         clickEvent:(void(^)(WeXCPBuyBottomViewType))click;
+
 - (void)setBuyInButtonType:(WexCPBuyButtonType)type
                      title:(NSString *)title;
+
 
 @end

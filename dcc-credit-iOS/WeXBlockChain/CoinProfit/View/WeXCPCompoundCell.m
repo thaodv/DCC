@@ -138,6 +138,18 @@
 - (void)setLeftTextFiled:(NSString *)text {
     [self.leftTextField setText:text];
 }
+/**
+ 设置键盘是否带有小数
+ 
+ @param aDot 带有小数
+ */
+- (void)setKeyBoardIsWithDot:(BOOL)aDot {
+    if (aDot) {
+        [self.leftTextField setKeyboardType:UIKeyboardTypeDecimalPad];
+    } else {
+        [self.leftTextField setKeyboardType:UIKeyboardTypeNumberPad];
+    }
+}
 
 
 - (void)awakeFromNib {

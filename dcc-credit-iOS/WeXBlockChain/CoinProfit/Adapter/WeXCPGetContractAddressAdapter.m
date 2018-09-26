@@ -10,23 +10,19 @@
 
 @implementation WeXCPGetContractAddressAdapter
 
-- (NSString*)getRequestUrl
-{
+- (NSString*)getRequestUrl {
     return @"contract/1/getContractAddress/bsx_01";
 }
 
-- (WexBaseUrlType)getBasetUrlType
-{
+- (WexBaseUrlType)getBasetUrlType {
     return WexBaseUrlTypeDCCIpfsActivity;
 }
 
--(WexNetAdapterRequestType)getNetAdapterRequestType
-{
+-(WexNetAdapterRequestType)getNetAdapterRequestType {
     return WexNetAdapterRequestTypeGET;
 }
 
-- (Class)getResponseClass
-{
+- (Class)getResponseClass {
     return [WeXCPGetContractAddressResModel class];
 }
 

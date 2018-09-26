@@ -21,6 +21,10 @@
 #import "WeXDigitalAssetRLMModel.h"
 #import "NSString+WexTool.h"
 #import "WeXGetReceiptResult2Adapter.h"
+#import "WeXCPActivityMainResModel.h"
+#import "WeXHomePushService.h"
+#import "WeXCPPotListViewController.h"
+
 #define kDccTransDetailViewHeight 350
 
 
@@ -297,8 +301,11 @@ static NSString *const kDefaultBalance   = @"--";
     NSString* contractAddress = self.responseModel.result;
     // 以太坊私钥地址
     NSString* privateKey = cacheModel.walletPrivateKey;
+    
+    //根据不同期数来获取对应的URL
+    NSString *DCCURL = [WEXCP_INVEST_V_URL stringByAppendingString:[_productModel.name formatInputString]];
     if ([contractAddress length] > 0) {
-        [[WXPassHelper instance] initProvider:WEXCP_INVEST_URL responseBlock:^(id response) {
+        [[WXPassHelper instance] initProvider:DCCURL responseBlock:^(id response) {
             [[WXPassHelper instance] signTransactionWithContractAddress:contractAddress abiInterface:WEXCP_INVEST_ABI_BALANCE params:abiParamsValues privateKey:privateKey responseBlock:^(id response) {
                 [[WXPassHelper instance] sendRawTransaction:response responseBlock:^(id response) {
                     self.isBuyEvent = NO;
@@ -331,15 +338,16 @@ static NSString *const kDefaultBalance   = @"--";
     //已认购额度
     NSString *haveBuyAmountJson = WEXCP_InvestedTotalAmount_ABI_BALANCE;
     
-    
+    //根据不同期数来获取对应的URL
+    NSString *DCCURL = [WEXCP_INVEST_V_URL stringByAppendingString:[_productModel.name formatInputString]];
 
-    [[WXPassHelper instance] initProvider:WEXCP_INVEST_URL responseBlock:^(id response) {
+    [[WXPassHelper instance] initProvider: DCCURL responseBlock:^(id response) {
         //产品起购额度
         [[WXPassHelper instance] encodeFunCallAbiInterface:minAmountJson params:params responseBlock:^(id response) {
             [[WXPassHelper instance] callContractAddress:self.responseModel.result data:response responseBlock:^(id response) {
                 NSDictionary *responseDict = response;
-                NSString * originBalance =[responseDict objectForKey:@"result"];
-                NSString * ethException =[responseDict objectForKey:@"ethException"];
+                NSString * originBalance = [responseDict objectForKey:@"result"];
+                NSString * ethException  = [responseDict objectForKey:@"ethException"];
                 if (![ethException isEqualToString:@"ethException"]) {
                     NSString *balace = [WexCommonFunc formatterStringWithContractBalance:originBalance decimals:18];
                     self.minBuyAmount = balace;
@@ -413,11 +421,16 @@ static NSString *const kDefaultBalance   = @"--";
 - (void)buySuccessEvent {
     [WeXPorgressHUD showText:@"认购成功" onView:self.view];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        WeXCPPotDetailViewController *potDetailVC = [WeXCPPotDetailViewController new];
+//        WeXCPPotDetailViewController *potDetailVC = [WeXCPPotDetailViewController new];
+//        [self.dccTransDetailView removeFromSuperview];
+//        [self.detailCoverView    removeFromSuperview];
+//        potDetailVC.popToCoinProfitDetailVC = true;
+//        potDetailVC.buyProductModel = _productModel;
+//        [WeXHomePushService pushFromVC:self toVC:potDetailVC];
+        
         [self.dccTransDetailView removeFromSuperview];
         [self.detailCoverView    removeFromSuperview];
-        potDetailVC.popToCoinProfitDetailVC = true;
-        [self.navigationController pushViewController:potDetailVC animated:YES];
+        [WeXHomePushService pushFromVC:self toVC:[WeXCPPotListViewController new]];
     });
 }
 - (void)appearBottomView {

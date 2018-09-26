@@ -8,9 +8,18 @@
 
 #import "WeXBaseReuseTableViewController.h"
 
+@class WeXCPActivityListModel;
+@class WeXCPPotListResultModel;
+
 @interface WeXCPPotDetailViewController : WeXBaseReuseTableViewController
 
 @property (nonatomic, assign) BOOL popToCoinProfitDetailVC;
+
+@property (nonatomic,strong) WeXCPActivityListModel *buyProductModel;
+//持仓列表传过来数据
+@property (nonatomic, strong) WeXCPPotListResultModel  * potListModel;
+
+
 
 
 @end
