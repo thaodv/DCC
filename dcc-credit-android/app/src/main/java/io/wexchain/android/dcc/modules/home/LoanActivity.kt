@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.navigateTo
@@ -23,11 +24,13 @@ import io.wexchain.android.dcc.view.adapter.BindingViewHolder
 import io.wexchain.android.dcc.view.adapter.ClickAwareHolder
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback
+import io.wexchain.android.dcc.vm.ViewModelHelper.loanPeriodText
 import io.wexchain.android.dcc.vm.ViewModelHelper.loanStatusText
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityLoan2Binding
 import io.wexchain.dcc.databinding.ItemLoanProductBinding
 import io.wexchain.dccchainservice.domain.LoanProduct
+import io.wexchain.dccchainservice.domain.LoanRecord
 import io.wexchain.dccchainservice.domain.LoanRecordSummary
 import io.wexchain.ipfs.utils.io_main
 import kotlinx.android.synthetic.main.activity_loan2.*
@@ -73,29 +76,47 @@ class LoanActivity : BindActivity<ActivityLoan2Binding>() {
 
 
     private fun loadData() {
+
         Singles.zip(
                 ScfOperations.withScfTokenInCurrentPassport {
                     App.get().scfApi.queryOrderPage(it, 0L, 10L)
+                }.flatMap {
+                    val item = it.items
+                    if (item.isNotEmpty()) {
+                        ScfOperations
+                                .withScfTokenInCurrentPassport {
+                                    App.get().scfApi.getLoanRecordById(it, item[0].orderId)
+                                }.map {
+                                    item[0] to it
+                                }
+                    } else {
+                        Single.just(null to null)
+                    }
                 },
                 App.get().scfApi.queryLoanProductsByLenderCode().check())
                 .io_main()
                 .subscribeBy {
-                    val item = it.first.items
-                    if (item.isNotEmpty()) {
-                        showHeader(item[0])
+                    val item = it.first
+                    if (item.first != null && item.second != null) {
+                        showHeader(item.first!!, item.second!!)
                     }
                     adapter.setList(it.second)
                 }
     }
 
-    private fun showHeader(data: LoanRecordSummary) {
+    private fun showHeader(data: LoanRecordSummary, second: LoanRecord) {
         header.findViewById<View>(R.id.cv_header).visibility = View.VISIBLE
+        header.findViewById<TextView>(R.id.tv_time).text = loanPeriodText(second)
 
         header.findViewById<TextView>(R.id.tv_order).text = data.orderId.toString()
         header.findViewById<TextView>(R.id.tv_money).text = data.amount.toEngineeringString()
-        header.findViewById<TextView>(R.id.tv_time).text = data.orderId.toString()
         header.findViewById<TextView>(R.id.tv_currency).text = data.currency?.symbol
-        header.findViewById<TextView>(R.id.tv_repay).text = data.orderId.toString()
+        header.findViewById<TextView>(R.id.tv_repay).text =
+                if (second.expectLoanInterest == null || second.amount == null) {
+                    "---"
+                } else {
+                    second.amount.add(second.expectLoanInterest).toString()
+                }
         header.findViewById<TextView>(R.id.tv_status).text = loanStatusText(data.status)
         header.findViewById<Button>(R.id.btn_more).onClick {
             navigateTo(LoanRecordsActivity::class.java)

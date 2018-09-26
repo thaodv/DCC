@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="@drawable/bg_round_rect_frame_toast"
+    android:background="@drawable/background_new_toast"
     >
 
     <TextView
@@ -13,8 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:textSize="18sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@color/text_dark"
+        android:textColor="@color/text_white"
         tools:text="@tools:sample/lorem"
         />
 

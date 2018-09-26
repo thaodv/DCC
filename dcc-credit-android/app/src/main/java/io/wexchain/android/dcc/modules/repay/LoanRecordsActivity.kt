@@ -68,9 +68,10 @@ class LoanRecordsActivity : BindActivity<ActivityLoanRecordsBinding>(), ItemView
     }
 
     private fun finishAndGotoLoan() {
-        ActivityCompat.finishAfterTransition(this)
+        finish()
+       /* ActivityCompat.finishAfterTransition(this)
         navigateTo(LoanActivity::class.java) {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        }
+        }*/
     }
 }
