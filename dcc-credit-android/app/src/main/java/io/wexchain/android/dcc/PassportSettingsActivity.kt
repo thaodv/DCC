@@ -20,6 +20,7 @@ import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
 import io.wexchain.android.dcc.constant.RequestCodes
+import io.wexchain.android.dcc.fragment.home.MineFragment
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity

@@ -162,9 +162,9 @@
     <string name="based_loan">信用借币</string>
     <string name="more">更多</string>
     <string name="digital_assets">数字资产</string>
-    <string name="status_enabled">统一登录状态:可用</string>
-    <string name="status_disabled">统一登录状态:不可用</string>
-    <string name="oauth_login_history">统一登录使用记录</string>
+    <string name="status_enabled">状态</string>
+    <string name="status_disabled">状态</string>
+    <string name="oauth_login_history">统一登录记录</string>
     <string name="no_more_records">没有更多记录了</string>
     <string name="auth_management">统一登录管理</string>
     <string name="auth_key_change_log">统一登录变更记录</string>
@@ -173,13 +173,14 @@
     <string name="update_key">更新密钥</string>
     <string name="bitexpress_member">Hi,BitEXPRESS会员</string>
     <string name="default_nickname">BitExpress会员</string>
-    <string name="candy_release_notice">&#x3000;&#x3000;我们会在这里不定期的发放免费糖果，建议您打开系统通知，我们将在第一时间提醒您领取新活动的糖果。</string>
+    <string name="candy_release_notice">&#x3000;&#x3000;神秘花园和知识问答PK即将上线。届时您可以通过知识问答PK获得阳光（可看做挖矿值），并根据阳光值的多少领取神秘花园的奖励。您还可以去其他小伙伴的神秘花园收取奖励哦~~</string>
     <string name="mining_rewardss">挖矿奖励</string>
     <string name="mining_contribution">挖矿贡献值 </string>
     <string name="mine_faster">加速挖矿</string>
     <string name="details">查看 >></string>
     <string name="rewardss_available">可领取奖励</string>
     <string name="rules">活动规则</string>
+    <string name="rules1"><font color="#C009FF">活动规则</font></string>
     <string name="basic_rewards">基础奖励</string>
     <string name="loan_application_rewards">借币奖励</string>
     <string name="repayment_rewards">还币奖励</string>
@@ -425,6 +426,7 @@
     <string name="across_trans_count">转移数量</string>
     <string name="across_trans_private_count">私链数量:</string>
     <string name="across_trans_public_count">公链数量:</string>
+    <string name="across_trans_public_tip"><font color="#ED190F">数量已超过私链数量</font></string>
     <string name="across_trans_poundage">手续费</string>
     <string name="across_trans_toaccount_num">到账数量</string>
     <string name="all">全部</string>
@@ -460,7 +462,7 @@
     <string name="user_id_back">身份证反面照</string>
     <string name="user_activity_photo">人像照片</string>
 
-    <string name="select_node">选择节点</string>
+    <string name="select_node">选择以太坊节点</string>
     <string name="select_node_green"><font color='#9B9B9B'>已连接（网络质量好）</font></string>
     <string name="select_node_yellow"><font color='#9B9B9B'>（网络质量一般）</font></string>
     <string name="select_node_red"><font color='#9B9B9B'>（网络质量差）</font></string>
@@ -468,6 +470,9 @@
     <string name="ipfs_select_node_tip">说明：\n
 云端数据默认存储在Bit Express提供的节点，您也可以自己搭建节点，选择把数据存储在自建节点上。
         搭建节点教程可以访问 <u>https://open.dcc.finance/cn/sdk/ipfs.html</u></string>
+    <string name="service_bsx_title">多币种预计年化 <font color='#ff0000'>10%-40%</font></string>
 
+    <string name="bsx_buy_again">想再买点？去<font color='#7B40FF'>币生息</font>市场看看 ></string>
+    <string name="tokenplus_tips">基于Linux环境搭建的量化交易系统，速度提升不止3倍\n无需自行购买服务器和配置交易软件，仅需注册账户，即可轻松套利\n每个用户独立服务器和IP，四重加密全面保障你的账户key安全\n遍布全球的服务器网络节点，优选离交易所最近节点，力争不错过每一次交易机会\n目前已支持国内前11大交易所，并持续增加中。</string>
 
 </resources>

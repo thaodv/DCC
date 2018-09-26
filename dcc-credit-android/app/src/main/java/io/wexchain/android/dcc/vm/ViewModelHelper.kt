@@ -10,6 +10,7 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import io.wexchain.android.common.checkLanguage
+import io.wexchain.android.common.versionInfo
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 import io.wexchain.android.dcc.tools.getString
@@ -50,9 +51,9 @@ object ViewModelHelper {
             val charArray = list[list.size - 1].toCharArray()
             var tmp = ""
             for ((i, char) in charArray.withIndex()) {
-                tmp += if (i == 3|| i==5) {
+                tmp += if (i == 3 || i == 5) {
                     "$char-"
-                }else {
+                } else {
                     char
                 }
             }
@@ -604,8 +605,69 @@ object ViewModelHelper {
         return (str.subtract(poundge.toBigDecimal())).toPlainString() + "DCC"
     }
 
+    @JvmStatic
+    fun getProtectStatus(protect: Protect): Boolean {
+        return protect.type.get() != null
+    }
+
+    @JvmStatic
+    fun Context.getVersion(): String {
+        return getString(R.string.current_version) + versionInfo.versionName
+    }
+
+    @JvmStatic
+    fun showBsxRate(rate: String): String {
+        return "+$rate%"
+    }
+
+    @JvmStatic
+    fun showBsxMinCount(min: String, type: String): String {
+        return min + type
+    }
+
+    @JvmStatic
+    fun showBsPeriod(period: String): String {
+        return period + "天"
+    }
+
+    @JvmStatic
+    fun Context.showBsxTopBgStatus(status: String): Drawable? {
+        return when (status) {
+            "4" -> ContextCompat.getDrawable(this, R.drawable.bg_bsx_market_item_top2)
+            else -> {
+                ContextCompat.getDrawable(this, R.drawable.bg_bsx_market_item_top)
+            }
+        }
+    }
+
+    @JvmStatic
+    fun Context.showBsxBodyBgStatus(status: String): Drawable? {
+        return when (status) {
+            "4" -> ContextCompat.getDrawable(this, R.drawable.bg_bsx_market_item_body2)
+            else -> {
+                ContextCompat.getDrawable(this, R.drawable.bg_bsx_market_item_body)
+            }
+        }
+    }
+
+    @JvmStatic
+    fun Context.showBsxStatus(status: String): Drawable? {
+        return when (status) {
+            "1" -> ContextCompat.getDrawable(this, R.drawable.img_bsx_status_1)
+            "2" -> ContextCompat.getDrawable(this, R.drawable.img_bsx_status_2)
+            "3" -> ContextCompat.getDrawable(this, R.drawable.img_bsx_status_3)
+            else -> {
+                ContextCompat.getDrawable(this, R.drawable.img_bsx_status_4)
+            }
+        }
+    }
+
+
 }
 
 fun BigDecimal.currencyToDisplayStr(): String {
     return this.setScale(4, RoundingMode.DOWN).toPlainString()
 }
+
+
+

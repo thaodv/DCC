@@ -158,6 +158,9 @@ object IpfsOperations {
         return agent.getNonce(passport.getCurrentPassport()!!.address)
     }
 
+    /**
+     * 获取合约地址
+     */
     fun getIpfsAddress(business: String): Single<String> {
         return App.get().contractApi.getIpfsContractAddress(business).check()
     }

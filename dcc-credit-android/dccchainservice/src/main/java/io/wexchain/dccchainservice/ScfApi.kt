@@ -314,6 +314,18 @@ interface ScfApi {
                                @Field("assetCode") assetCode: String = "DCC_JUZIX"
     ): Single<Result<ExchangeCondition>>
 
+    /**
+     * 获取币生息市场
+     */
+    @GET("bsx/getActiveList")
+    fun getBsxMarketList(): Single<Result<List<BsxMarketBean>>>
+
+    /**
+     * 获取用户持仓列表
+     */
+    @GET("bsx/getPositionList")
+    fun getBsxHoldingList(@Field("userAddress") userAddress: String): Single<Result<List<BsxMarketBean>>>
+
     companion object {
         const val HEADER_TOKEN = "x-auth-token"
     }

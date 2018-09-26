@@ -3,7 +3,9 @@ package io.wexchain.android.common
 import android.annotation.SuppressLint
 import android.content.Context
 import android.support.annotation.StringRes
+import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import java.lang.ref.WeakReference
@@ -51,6 +53,7 @@ object Pop {
             val toast = Toast(context)
             toast.duration = duration
             toast.view = view
+            toast.setGravity(Gravity.CENTER,0,0)
             view.findViewById<TextView>(android.R.id.message).text = text
             toast
         }else {

@@ -4,14 +4,18 @@ import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.tbruyelle.rxpermissions2.RxPermissions
+import android.view.View
+import android.view.animation.AnimationUtils
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.atLeastCreated
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.onClick
 import io.wexchain.android.common.setWindowExtended
+import io.wexchain.android.dcc.modules.home.HomeActivity
 import io.wexchain.android.dcc.tools.PermissionHelper
 import io.wexchain.dcc.R
+import kotlinx.android.synthetic.main.activity_loading.*
 import java.util.concurrent.TimeUnit
 
 class LoadingActivity : AppCompatActivity() {
@@ -44,12 +48,27 @@ class LoadingActivity : AppCompatActivity() {
     }
 
     private fun delayedStart() {
-        Single.timer(1500, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { _ ->
-                    atLeastCreated {
-                        navigateTo(HomeActivity::class.java)
+        if (App.get().passportRepository.passportExists) {
+            Single.timer(1500, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { _ ->
+                        atLeastCreated {
+                            navigateTo(HomeActivity::class.java)
+                        }
                     }
-                }
+        } else {
+            val animation = AnimationUtils.loadAnimation(this, R.anim.splash_logo)
+            iv_logo.startAnimation(animation)
+            tv_note.startAnimation(animation)
+            btn_create.visibility = View.VISIBLE
+            btn_import.visibility = View.VISIBLE
+            btn_create.onClick {
+                navigateTo(CreatePassportActivity::class.java)
+            }
+            btn_import.onClick {
+                navigateTo(PassportImportActivity::class.java)
+            }
+        }
+
     }
 }
