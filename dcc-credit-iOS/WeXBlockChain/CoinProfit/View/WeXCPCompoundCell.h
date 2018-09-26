@@ -29,5 +29,12 @@ typedef NS_ENUM(NSInteger,WeXCPCompoundType) {
 
 - (void)setLeftTextFiled:(NSString *)text;
 
+/**
+ 设置键盘是否带有小数
+ 
+ @param aDot 带有小数
+ */
+- (void)setKeyBoardIsWithDot:(BOOL)aDot;
+
 
 @end

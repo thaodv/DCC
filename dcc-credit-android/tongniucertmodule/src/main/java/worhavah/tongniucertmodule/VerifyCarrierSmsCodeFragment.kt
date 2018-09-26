@@ -86,10 +86,13 @@ class VerifyCarrierSmsCodeFragment: BindFragment<FragmentTnverifyCarrierSmsCodeB
                 }
 
                 override fun onComplete() {
-                    binding.recode.text = "免费获取"
-                    binding.recode.isEnabled = true
-                    binding.recode.setTextColor(resources.getColor(worhavah.certs.R.color.purple))//背景色设为灰色
-                    mSubscription?.cancel()//取消订阅，防止内存泄漏
+                    if(activity!=null){
+                        binding.recode.text = "免费获取"
+                        binding.recode.isEnabled = true
+                        binding.recode.setTextColor(resources.getColor(worhavah.certs.R.color.purple))//背景色设为灰色
+                        mSubscription?.cancel()//取消订阅，防止内存泄漏
+                    }
+
                 }
 
                 override fun onError(t: Throwable?) {

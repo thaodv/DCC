@@ -28,6 +28,10 @@
 @property (nonatomic, copy) NSString *minPerHand;
 @property (nonatomic, strong) WeXCPActivityListSaleInfoModel <WeXCPActivityListSaleInfoModel> *saleInfo;
 @property (nonatomic, copy) NSString *status;
+@property (nonatomic, copy) NSString *name; //第几期
+@property (nonatomic, copy) NSString *contractAddress; //合约地址
+
+
 
 @end
 

@@ -25,6 +25,8 @@ typedef NS_ENUM(NSInteger,WeXCoinProfitOnlyTextCellType) {
         highText:(NSString *)highText;
 
 
+
+
 @end
 
 @class WeXCPSaleInfoResModel;

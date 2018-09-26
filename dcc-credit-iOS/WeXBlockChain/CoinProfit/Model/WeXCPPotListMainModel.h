@@ -32,11 +32,19 @@
 
 @protocol WeXCPPotListSaleInfoModel;
 @interface WeXCPPotListResultModel : WeXBaseNetModal
+//投资本金
 @property (nonatomic, copy) NSString *positionAmount;
+//应回金额(本金 + 利息)
 @property (nonatomic, copy) NSString *expectedRepay;
 @property (nonatomic, copy) NSString *status;
 @property (nonatomic, copy) NSString *assetCode;
 @property (nonatomic, strong) WeXCPPotListSaleInfoModel <WeXCPPotListSaleInfoModel> *saleInfo;
+//期数
+@property (nonatomic, copy) NSString *name;
+// 合约地址
+@property (nonatomic, copy) NSString *contractAddress;
+
+
 
 @end
 
