@@ -10,6 +10,7 @@ import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.toast
+import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.dcc.vm.InputPasswordVm
@@ -63,8 +64,8 @@ class CreatePassportActivity : BindActivity<ActivityCreatePassportBinding>() {
 
     private fun onCreateSuccess() {
         toast("创建成功")
-        finish()
         navigateTo(CreateScfAccountActivity::class.java)
+        finish()
     }
 
     private fun ensurePassportIsAbsent() {

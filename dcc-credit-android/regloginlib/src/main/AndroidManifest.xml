@@ -41,7 +41,6 @@
         android:label="删除钱包"
         android:screenOrientation="portrait"/>
 
-
     <activity android:name="worhavah.regloginlib.tools.ReLoginActivity"
         android:fitsSystemWindows="true"
         android:screenOrientation="portrait"

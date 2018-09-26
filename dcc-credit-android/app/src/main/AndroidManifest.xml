@@ -25,7 +25,6 @@
         tools:replace="android:allowBackup,android:icon,android:label,android:theme,android:supportsRtl">
         <activity
             android:name="io.wexchain.android.dcc.LoadingActivity"
-            android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/DccLightTheme.App.Transparent.Loading">
             <intent-filter>

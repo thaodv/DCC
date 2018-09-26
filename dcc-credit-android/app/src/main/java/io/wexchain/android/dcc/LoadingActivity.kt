@@ -54,6 +54,7 @@ class LoadingActivity : AppCompatActivity() {
                     .subscribe { _ ->
                         atLeastCreated {
                             navigateTo(HomeActivity::class.java)
+                            finish()
                         }
                     }
         } else {

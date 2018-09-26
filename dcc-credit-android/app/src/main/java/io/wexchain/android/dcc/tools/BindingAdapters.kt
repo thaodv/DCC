@@ -23,13 +23,12 @@ var View.visibleOrGone
         this.visibility = if (value) View.VISIBLE else View.GONE
     }
 
-@set:BindingAdapter("SwitchStatus")
+@set:BindingAdapter("switchStatus")
 var SwitchButton.switchStatus
     get() = this.isChecked
     set(value) {
         this.isChecked = value
     }
-
 
 
 @set:BindingAdapter("visibleOrInvisible")

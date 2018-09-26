@@ -9,6 +9,7 @@ import io.wexchain.android.dcc.fragment.PastePrivateKeyFragment
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.*
+import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
@@ -78,14 +79,8 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
         toast("导入成功")
         ScfOperations.getScfAccountInfo()
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe {
-                showLoadingDialog()
-            }
-            .doFinally {
-                hideLoadingDialog()
-            }
+            .withLoading()
             .subscribe({acc->
-                finish()
                 if(acc === ScfAccountInfo.ABSENT){
                     navigateTo(CreateScfAccountActivity::class.java){
                         putExtra(Extras.FROM_IMPORT,true)
@@ -95,6 +90,7 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
                         putExtra(Extras.FROM_IMPORT,true)
                     }
                 }
+                finish()
             })
     }
 

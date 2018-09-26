@@ -13,10 +13,8 @@ import com.jcodecraeer.xrecyclerview.CustomFooterViewCallBack
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
-import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.LoanProductDetailActivity
-import io.wexchain.android.dcc.PassportActivity
-import io.wexchain.android.dcc.PassportAddressActivity
+import io.wexchain.android.common.toast
+import io.wexchain.android.dcc.*
 import io.wexchain.android.dcc.base.BindFragment
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.bsx.BsxMarketActivity
@@ -30,7 +28,6 @@ import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback
 import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentServiceBinding
-import io.wexchain.dcc.databinding.ItemLoanProductBinding
 import io.wexchain.dcc.databinding.ItemServiceLoanBinding
 import io.wexchain.dccchainservice.domain.LoanProduct
 import kotlinx.android.synthetic.main.fragment_service.*
@@ -74,6 +71,14 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
         }
         header.findViewById<TextView>(R.id.home_credit_more).onClick {
             navigateTo(LoanActivity::class.java)
+        }
+
+        header.findViewById<View>(R.id.card_passport).setOnClickListener {
+            if (App.get().passportRepository.passportEnabled) {
+                navigateTo(MyCreditNewActivity::class.java)
+            } else {
+                toast(R.string.ca_not_enabled)
+            }
         }
         header.findViewById<TextView>(R.id.tv_passport_address).onClick {
             navigateTo(PassportAddressActivity::class.java)
