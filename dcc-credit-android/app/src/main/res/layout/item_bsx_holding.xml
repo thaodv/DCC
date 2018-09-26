@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
+        <variable
+            name="bsxHoldingBean"
+            type="io.wexchain.dccchainservice.domain.BsxHoldingBean"
+            />
+
+    </data>
+
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -17,7 +28,8 @@
             android:id="@+id/rl_top"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@drawable/bg_bsx_market_item_top">
+            android:background="@{ViewModelHelper.showBsxTopBgStatus(context,bsxHoldingBean.status)}"
+            tools:background="@drawable/bg_bsx_market_item_top">
 
             <ImageView
                 android:id="@+id/iv_logo"
@@ -34,6 +46,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/iv_logo"
+                android:text="@{bsxHoldingBean.saleInfo.name}"
                 android:textColor="#fff"
                 android:textSize="14sp"
                 tools:text="ETH币生息1期"/>
@@ -45,6 +58,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
+                android:text="@{ViewModelHelper.showBsxRate(bsxHoldingBean.saleInfo.annualRate)}"
                 android:textColor="#fff"
                 android:textSize="14sp"
                 tools:text="+10.00%"/>
@@ -58,9 +72,10 @@
             android:layout_below="@+id/rl_top"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:background="@drawable/bg_bsx_market_item_body"
+            android:background="@{ViewModelHelper.showBsxBodyBgStatus(context,bsxHoldingBean.status)}"
             android:baselineAligned="false"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:background="@drawable/bg_bsx_market_item_body">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -88,6 +103,7 @@
                         android:id="@+id/tv_invest_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{bsxHoldingBean.investMoney()}"
                         android:textColor="#FF4A4A4A"
                         android:textSize="16sp"
                         tools:text="500DCC"/>
@@ -111,6 +127,7 @@
                         android:id="@+id/rv_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{ViewModelHelper.showBsxRate(bsxHoldingBean.saleInfo.annualRate)}"
                         android:textColor="#FFED190F"
                         android:textSize="16sp"
                         tools:text="+10.00%"/>
@@ -145,6 +162,7 @@
                         android:id="@+id/tv_start_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{bsxHoldingBean.saleInfo.showIncomeTime()}"
                         android:textColor="#FF4A4A4A"
                         android:textSize="16sp"
                         tools:text="2018-06-06"/>
@@ -168,9 +186,10 @@
                         android:id="@+id/tv_period"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{ViewModelHelper.showBsPeriod(bsxHoldingBean.saleInfo.period)}"
                         android:textColor="#FFED190F"
                         android:textSize="16sp"
-                        tools:text="100DCC"/>
+                        tools:text="100天"/>
 
                 </LinearLayout>
 
@@ -202,6 +221,7 @@
                         android:id="@+id/tv_end_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{bsxHoldingBean.saleInfo.showEndTime()}"
                         android:textColor="#FF4A4A4A"
                         android:textSize="16sp"
                         tools:text="28天"/>
@@ -225,6 +245,7 @@
                         android:id="@+id/tv_total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{bsxHoldingBean.expect()}"
                         android:textColor="#FF4A4A4A"
                         android:textSize="16sp"
                         tools:text="100DCC"/>
@@ -243,6 +264,7 @@
             android:layout_below="@id/rl_top"
             android:layout_marginRight="10dp"
             android:layout_marginTop="-10dp"
+            android:background="@{ViewModelHelper.showBsxStatus(context,bsxHoldingBean.status)}"
             tools:src="@drawable/img_bsx_status_1"/>
 
     </RelativeLayout>
