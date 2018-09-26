@@ -57,12 +57,9 @@ class BuyInterestActivity : BindActivity<ActivityBuyInterestBinding>() {
                 var amount = BigDecimal(binding.etBuyamount.text.toString())
 
                 BuyConfirmDialogFragment.create(
-                        EthsTransactionScratch(dccJuzix, p.address, BintApi.contract, amount, GAS_PRICE.toBigDecimal(),
-                                GAS_LIMIT)
-                )
-                        .show(supportFragmentManager, null)
+                        EthsTransactionScratch(dccJuzix, p.address, BintApi.contract, amount, GAS_PRICE.toBigDecimal(), GAS_LIMIT)
+                ).show(supportFragmentManager, null)
             }
-            // testInvest()
         }
         binding.tvPubtopri.setOnClickListener {
             navigateTo(DccExchangeActivity::class.java)
