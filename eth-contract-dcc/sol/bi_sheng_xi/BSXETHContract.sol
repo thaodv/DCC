@@ -59,20 +59,19 @@ contract BSXETHContract is HasETH {
         checkAndChangeStatus(status, Status.CLOSED, Status.ENDED);
     }
 
-
     function invest() public payable {
+        address investor = msg.sender;
+        uint256 weiAmount=msg.value;
         require(checkStatus(status, Status.OPENED));
-        require(msg.value >= minAmountPerHand);
-        require(investedTotalAmount.add(msg.value) <= investCeilAmount);
-        require(msg.sender == tx.origin);
+        require(weiAmount >= minAmountPerHand);
+        require(investedTotalAmount.add(weiAmount) <= investCeilAmount);
 
-        address investor = tx.origin;
         if (investedAmountMapping[investor] == 0) {
             investorArray.push(investor);
         }
-        investedAmountMapping[investor] = investedAmountMapping[investor].add(msg.value);
-        investedTotalAmount = investedTotalAmount.add(msg.value);
-        invested(msg.sender, msg.value);
+        investedAmountMapping[investor] = investedAmountMapping[investor].add(weiAmount);
+        investedTotalAmount = investedTotalAmount.add(weiAmount);
+        invested(investor,weiAmount);
     }
 
 
