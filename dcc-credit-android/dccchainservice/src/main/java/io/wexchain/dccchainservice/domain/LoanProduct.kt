@@ -76,6 +76,18 @@ data class LoanProduct(
         return "$startStr-$endStr${c.symbol}"
     }
 
+    fun getMaxRangeStr(): String {
+        require(volumeOptionList.isNotEmpty())
+        val c = currency
+        val start = volumeOptionList.first()
+        val end = volumeOptionList.last()
+        val startStr = start.toPlainString()
+        val endStr = end.toPlainString()
+        return "$endStr${c.symbol}"
+    }
+
+    fun getAheadRate() = "日利率：${repayAheadRate.multiply(BigDecimal(100))}%"
+
     fun getInterestRateStr(): String {
         val rateStr = loanRate.divide(BigDecimal("3.65"), RoundingMode.DOWN).setScale(2, RoundingMode.DOWN).toPlainString()//interest rate in day
         return "$rateStr%"

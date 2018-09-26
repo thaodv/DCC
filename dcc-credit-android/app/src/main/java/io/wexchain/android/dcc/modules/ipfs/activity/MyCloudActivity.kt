@@ -29,6 +29,7 @@ import io.wexchain.android.dcc.tools.Log
 import io.wexchain.android.dcc.view.dialog.CloudstorageDialog
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
+import io.wexchain.dcc.R.id.cloud_id_progress
 import io.wexchain.dcc.databinding.ActivityMyCloudBinding
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
@@ -40,7 +41,10 @@ import org.jetbrains.anko.uiThread
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
 import org.web3j.abi.datatypes.Utf8String
+import worhavah.regloginlib.tools.pair
 import java.util.*
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Function4
 
 
 /**
@@ -54,10 +58,13 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
     private var IDStatus = STATUS_DEFAULT
     private var BankStatus = STATUS_DEFAULT
     private var CmStatus = STATUS_DEFAULT
+    private var TnStatus = STATUS_DEFAULT
 
     private var ID_Token = ""
     private var Bank_Token = ""
     private var Cm_Token = ""
+    private var Tn_Token = ""
+
     private var isEnabled = mutableListOf<String>()
     private lateinit var viewMode: MyCloudVm
     private lateinit var mBinder: IpfsBinder
@@ -110,21 +117,52 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
             }
         }
     }
-
+    val jobs = mutableListOf<Single<Int>>()
+    val listMerger = Function<Array<Any>, List<Int>> {
+        it.flatMap { it as List<Int> } }
     private fun initData() {
+
+
         val idCertPassed = CertOperations.isIdCertPassed()
         val bankCertPassed = CertOperations.isBankCertPassed()
         val status = CertOperations.getCmLogUserStatus()
+        val tnstatus =worhavah.certs.tools. CertOperations.getTNLogUserStatus()
+       /* jobs.add( Single.just(!idCertPassed).checkStatus(ChainGateway.BUSINESS_ID))
+        jobs.add(   Single.just(!bankCertPassed).checkStatus(ChainGateway.BUSINESS_BANK_CARD))
+        jobs.add(   Single.just(status != UserCertStatus.DONE).checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG))
+        Singles.zip(
+            jobs,listMerger
+        )
+            .io_main()
+            .withLoading()
+            .subscribeBy {
+                updateUI(it)
+            }*/
 
         Singles.zip(
                 Single.just(!idCertPassed).checkStatus(ChainGateway.BUSINESS_ID),
                 Single.just(!bankCertPassed).checkStatus(ChainGateway.BUSINESS_BANK_CARD),
-                Single.just(status != UserCertStatus.DONE).checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG))
+                Single.just(status != UserCertStatus.DONE).checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG)
+        )
                 .io_main()
                 .withLoading()
                 .subscribeBy {
                     updateUI(it)
                 }
+
+       /* Single.concat  (
+            Single.just(!idCertPassed).checkStatus(ChainGateway.BUSINESS_ID),
+            Single.just(!bankCertPassed).checkStatus(ChainGateway.BUSINESS_BANK_CARD),
+            Single.just(status != UserCertStatus.DONE).checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG)
+        ).sub
+            .io_main()
+            .withLoading()
+            .subscribeBy {
+                updateUI(it)
+            }*/
+
+
+
     }
 
     private fun updateUI(it: Triple<Int, Int, Int>) {
@@ -134,6 +172,14 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         updateIdItem()
         updateBankItem()
         updateCmItem()
+
+        val tnstatus =worhavah.certs.tools. CertOperations.getTNLogUserStatus()
+        Single.just(tnstatus != UserCertStatus.DONE).checkStatus(ChainGateway.TN_COMMUNICATION_LOG) .io_main()
+            .withLoading()
+            .subscribeBy {
+                TnStatus= it
+                updateTnItem()
+            }
     }
 
     fun Single<Boolean>.checkStatus(business: String): Single<Int> {
@@ -232,6 +278,35 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         }
     }
 
+
+    private fun updateTnItem() {
+        cloud_tn_progress.visibility = View.INVISIBLE
+        with(viewMode) {
+            tnsize.set(TnStatus == STATUS_UPLOAD)
+            tnselected.set(TnStatus == STATUS_UPLOAD || TnStatus == STATUS_DOWNLOAD)
+            tnaddress.set(TnStatus == STATUS_NEWEST)
+            tntag.set(if (TnStatus == STATUS_UPLOAD || TnStatus == STATUS_DOWNLOAD) R.drawable.my_cloud_tag_selector else R.drawable.cloud_item_noselected)
+            tnstatus.set(checkStatusTxt(TnStatus))
+            tnAddressEvent.observe(this@MyCloudActivity, Observer {
+                if (TnStatus == STATUS_NEWEST) {
+                    navigateTo(CloudAddressActivity::class.java) {
+                        putExtra("address", Tn_Token)
+                    }
+                }
+            })
+        }
+
+        if (CmStatus == STATUS_UPLOAD) {
+            doAsync {
+                mBinder.createTnData { size ->
+                    uiThread {
+                        viewMode.tnsizetxt.set(size)
+                    }
+                }
+            }
+        }
+    }
+
     private fun updateBankItem() {
         cloud_bank_progress.visibility = View.INVISIBLE
         with(viewMode) {
@@ -286,6 +361,10 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                             ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
                                 Cm_Token = (it[4] as Utf8String).value
                             }
+                            ChainGateway.TN_COMMUNICATION_LOG -> {
+                                Tn_Token = (it[4] as Utf8String).value
+                            }
+
                         }
                         digest1 = (it[6] as DynamicBytes).value
                         digest2 = (it[7] as DynamicBytes).value
@@ -364,6 +443,20 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                             updateCmItem()
                         }
             }
+            ChainGateway.TN_COMMUNICATION_LOG -> {
+                cloud_tn_selected.text = "已完成"
+                TnStatus = STATUS_DEFAULT
+                cloud_item_cm.isClickable = false
+                isEnabled.remove(TNDATA)
+                val status = worhavah.certs.tools.CertOperations.getTNLogUserStatus()
+                Single.just(status != UserCertStatus.DONE)
+                    .checkStatus(ChainGateway.TN_COMMUNICATION_LOG)
+                    .io_main()
+                    .subscribeBy {
+                        TnStatus = it
+                        updateTnItem()
+                    }
+            }
         }
     }
 
@@ -402,6 +495,14 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                     downLoadData(ChainGateway.BUSINESS_COMMUNICATION_LOG, PHONE_OPERATOR)
                 }
             }
+            if (cloud_item_tn.isSelected) {
+                cloud_item_tn.isEnabled = false
+                if (TnStatus == STATUS_UPLOAD) {
+                    uploadData(ChainGateway.TN_COMMUNICATION_LOG, TNDATA)
+                } else if (TnStatus == STATUS_DOWNLOAD) {
+                    downLoadData(ChainGateway.TN_COMMUNICATION_LOG, TNDATA)
+                }
+            }
         }
 
         fun clickEvent(layout: ConstraintLayout, txt: TextView, data: String, status: Int) {
@@ -430,6 +531,9 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         cloud_item_cm.onClick {
             clickEvent(cloud_item_cm, cloud_cm_selected, PHONE_OPERATOR, CmStatus)
         }
+        cloud_item_tn.onClick {
+            clickEvent(cloud_item_tn, cloud_tn_selected, TNDATA, TnStatus)
+        }
     }
 
     private fun uploadData(business: String, filename: String) {
@@ -450,6 +554,9 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
             }
             ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
                 toast("运营商认证信息上传失败")
+            }
+            ChainGateway.TN_COMMUNICATION_LOG -> {
+                toast("同牛认证信息上传失败")
             }
         }
     }
@@ -483,6 +590,10 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 cloud_cm_progress.visibility = View.VISIBLE
                 cloud_cm_progress.progress = progress
             }
+            ChainGateway.TN_COMMUNICATION_LOG -> {
+                cloud_tn_progress.visibility = View.VISIBLE
+                cloud_tn_progress.progress = progress
+            }
         }
     }
 
@@ -500,5 +611,6 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         const val ID_ENTIFY_DATA = "identifyData"
         const val BANK_CARD_DATA = "bankCardData"
         const val PHONE_OPERATOR = "phoneOperator"
+        const val TNDATA = "sameCowPhoneOperator"
     }
 }

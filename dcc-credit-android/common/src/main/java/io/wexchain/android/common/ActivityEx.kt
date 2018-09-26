@@ -33,6 +33,12 @@ inline fun <T : Activity> Activity.navigateTo(activity: Class<T>, options: Bundl
     }, options)
 }
 
+inline fun <T : Activity> Fragment.navigateTo(activity: Class<T>, options: Bundle? = null, crossinline extras: Intent.() -> Unit = {}) {
+    this.activity?.startActivity(Intent(this.activity, activity).apply {
+        this.extras()
+    }, options)
+}
+
 fun Activity.resultOk(data: (Intent.() -> Unit)? = null) {
     val resultData = data?.run { Intent().apply { data() } }
     this.setResult(Activity.RESULT_OK, resultData)

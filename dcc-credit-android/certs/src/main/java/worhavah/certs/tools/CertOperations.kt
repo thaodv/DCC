@@ -484,13 +484,15 @@ i
         val certCmLogState = StringPref("certCmLogState")
         val certCmLogPhoneNo = StringPref("certCmLogPhoneNo")
         val certCmLogPassword = StringPref("certCmLogPassword")
-
+        val certCmLogExpired = LongPref("certCmLogExpired", -1L)
         //TN log
         val certTNLogOrderId = LongPref("certTNLogOrderId", INVALID_CERT_ORDER_ID)
         val certTNLogState = StringPref("certTNLogState")
         val certTNLogPhoneNo = StringPref("certTNLogPhoneNo")
         val certTNLogPassword = StringPref("certTNLogPassword")
         val certTNLogData = StringPref("certTNLogData")
+        val certTNLogExpired = LongPref("certCmLogExpired", -1L)
+
         //手机邮箱
         val certPhoneNum= StringPref("certPhoneNum")
         val certPhoneData = StringPref("certPhoneData")
@@ -502,7 +504,18 @@ i
         val certHALine2= StringPref("certHALine2")
     }
 
-
+    fun getTNLogCertExpired(): Long {
+        return certPrefs.certTNLogExpired.get()
+    }
+    fun getLocalTnDigest(): Pair<ByteArray, ByteArray> {
+        val cmCertOrderId = getTNCertOrderId()
+        val data = getTNLogData(cmCertOrderId).blockingGet()
+        val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
+        return digest1 to byteArrayOf()
+    }
+    fun saveTnLogCertExpired(expired: Long) {
+        certPrefs.certTNLogExpired.set(expired)
+    }
     fun submitCert(
         passport: Passport,
         eMail: String,

@@ -181,8 +181,12 @@ class VerifyProtectFragment : DialogFragment(), GesturePasswordFragment.Listener
             })
         }
 
-        fun serve(useProtect: UseProtect, activity: AppCompatActivity) {
-            serve(useProtect, activity, { activity.supportFragmentManager })
+        fun serve(useProtect: UseProtect, activity: Any) {
+            if (activity is AppCompatActivity){
+                serve(useProtect, activity, { activity.supportFragmentManager })
+            }else if (activity is Fragment){
+                serve(useProtect, activity, { activity.childFragmentManager })
+            }
         }
     }
 }

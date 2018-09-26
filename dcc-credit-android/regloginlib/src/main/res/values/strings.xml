@@ -113,8 +113,8 @@
     <string name="export_keystore_description">二维码显示的是KeyStore信息,KEYSTORE是私钥的签名保护文件,通过钱包密码对KEYSTORE文件签名.单独拥有KEYSTORE文件或者钱包密码都无法使用钱包.而同时拥有KEYSTORE文件和钱包密码则可以再任何设备使用钱包.强烈建议您在使用钱包前做好备份</string>
     <string name="export_private_key_description">当前二维码显示的是私钥明文,私钥明文是您对钱包所有权的认证方式.通过导入私钥可以再任何设备使用钱包,并创建钱包对应的KeyStore文件和钱包密码.强烈建议您在使用钱包前做好备份.</string>
     <string name="ca_not_enabled">您当前使用的统一登录秘钥与链上不一致,将影响部分功能的正常使用</string>
-    <string name="please_input_current_passport_password">请输入原钱包密码:</string>
-    <string name="please_input_new_passport_password">请输入新钱包密码:</string>
+    <string name="please_input_current_passport_password">原钱包密码:</string>
+    <string name="please_input_new_passport_password">新钱包密码:</string>
     <string name="password_length_invalid">密码输入有误 请重新输入</string>
     <string name="hint_search_token">搜索Token名称、简写或合约地址</string>
     <string name="submit_new_token">提交新token</string>

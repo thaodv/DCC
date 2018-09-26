@@ -13,7 +13,7 @@ import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.chain.privateChainNonce
 import io.wexchain.android.dcc.chain.txSigned
 import io.wexchain.android.dcc.tools.RetryWithDelay
-import io.wexchain.android.dcc.tools.pair
+import worhavah.regloginlib.tools.pair
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.ChainGateway

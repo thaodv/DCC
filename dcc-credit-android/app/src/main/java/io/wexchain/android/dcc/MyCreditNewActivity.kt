@@ -40,6 +40,7 @@ import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
 import worhavah.certs.bean.TNcertReport
 import worhavah.certs.tools.CertOperations.onTNLogSuccessGot
+import worhavah.certs.tools.CertOperations.saveTnLogCertExpired
 import worhavah.tongniucertmodule.SubmitTNLogActivity
 import worhavah.tongniucertmodule.TnLogCertificationActivity
 import java.math.BigDecimal
@@ -214,7 +215,22 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
             if (it.status.get() == UserCertStatus.INCOMPLETE) {
                 //get report
                 val passport = App.get().passportRepository.getCurrentPassport()!!
-                getTNLogReport(passport) .doFinally {
+                getTNLogReport(passport)
+                    .flatMap {
+
+                        if(null!=it){
+                            //Log.e("getTNLogReport",it.reportData.toString())
+                            if(it.isComplete.equals("Y")){
+                                onTNLogSuccessGot(it.reportData.toString())
+                                setVM()
+
+                            }
+                        }
+
+
+                        App.get().chainGateway.getCertData(passport.address, ChainGateway.TN_COMMUNICATION_LOG).check()
+                    }
+                    .doFinally {
                     aa+=-1
                     if(aa>0){
                         refreshCertStatus()
@@ -222,15 +238,16 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                 }
                     .subscribeBy(
                         onSuccess = {
-                            if(null!=it){
-                                //Log.e("getTNLogReport",it.reportData.toString())
+                            val content = it.content
+                            if (0L != content.expired) {
+                                 saveTnLogCertExpired(content.expired)
+                            }
+                           /* if(null!=it){
                                 if(it.isComplete.equals("Y")){
                                     onTNLogSuccessGot(it.reportData.toString())
                                     setVM()
                                 }
-
-                             //   CertOperations.saveCmLogCertExpired(content.expired)
-                            }
+                            }*/
                         },
                         onError = {
                             Pop.toast(it.message ?: "系统错误", this)

@@ -102,7 +102,7 @@
     <string name="set_local_security">开启本地安全保护</string>
     <string name="code_for_more_reward">输入邀请码可以获得更多奖励</string>
     <string name="confirm">确定</string>
-    <string name="WeXCreatePassportViewController_description3">成功创建数字钱包后,请即时在设置->备份数字钱包 中进行备份,以防数字资产丢失</string>
+    <string name="WeXCreatePassportViewController_description3">成功创建数字钱包后,请即时在我的->备份钱包 中进行备份,以防数字资产丢失</string>
     <string name="wallet_password_guide">不少于8位字符，建议混合大小写字母、数字、特殊符号</string>
     <string name="please_paste_keystore">请粘贴KEYSTORE信息</string>
     <string name="please_set_passport_password">设置数字钱包密码</string>
@@ -140,8 +140,8 @@
     <string name="remove_passport_description">删除钱包后,您只能通过导入钱包恢复当前钱包的使用,如果您未备份钱包,则无法继续使用当前钱包.强烈建议您在删除钱包之前备份钱包</string>
     <string name="title_remove_passport">删除钱包</string>
     <string name="back_up_wallet">备份钱包</string>
-    <string name="please_input_current_passport_password">请输入原钱包密码:</string>
-    <string name="please_input_new_passport_password">请输入新钱包密码:</string>
+    <string name="please_input_current_passport_password">原钱包密码:</string>
+    <string name="please_input_new_passport_password">新钱包密码:</string>
     <string name="export_keystore_description">二维码显示的是KeyStore信息,KEYSTORE是私钥的签名保护文件,通过钱包密码对KEYSTORE文件签名.单独拥有KEYSTORE文件或者钱包密码都无法使用钱包.而同时拥有KEYSTORE文件和钱包密码则可以再任何设备使用钱包.强烈建议您在使用钱包前做好备份</string>
     <string name="confirm2">确认</string>
     <string name="loan_contract">借币合同</string>

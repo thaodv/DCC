@@ -6,6 +6,7 @@ import android.databinding.ObservableArrayMap
 import android.databinding.ObservableField
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
+import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.common.map
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.App
@@ -27,6 +28,14 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
     }
 
     val assetsSumValue = ObservableField<String>()
+
+    val assetsFilter = ObservableField<Boolean>()
+    val filterEvent = SingleLiveEvent<Void>()
+
+    fun filter() {
+        filterEvent.call()
+    }
+
     val assets = Transformations.map(assetsRepository.displayCurrencies) {
         updateHoldingAndQuote(it)
         updateSumValue()

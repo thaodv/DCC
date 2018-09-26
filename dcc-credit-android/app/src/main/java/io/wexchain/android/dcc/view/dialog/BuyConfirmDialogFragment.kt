@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.*
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
@@ -21,7 +20,10 @@ import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.repay.LoanRepayActivity
 import io.wexchain.android.dcc.modules.repay.RePaymentErrorActivity
 import io.wexchain.android.dcc.modules.repay.RepayingActivity
-import io.wexchain.android.dcc.tools.*
+import io.wexchain.android.dcc.tools.BintApi
+import io.wexchain.android.dcc.tools.MultiChainHelper
+import io.wexchain.android.dcc.tools.RetryWithDelay
+import io.wexchain.android.dcc.tools.sendRawTransaction
 import io.wexchain.android.dcc.vm.TransactionConfirmVm
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
@@ -32,7 +34,6 @@ import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.digitalwallet.EthsTransactionScratch
-import io.wexchain.digitalwallet.api.transactionReceipt
 import org.web3j.abi.FunctionEncoder
 import org.web3j.crypto.TransactionEncoder
 import org.web3j.protocol.core.methods.request.RawTransaction
@@ -162,7 +163,7 @@ class BuyConfirmDialogFragment : DialogFragment() {
    var agent = App.get().assetsRepository.getDigitalCurrencyAgent(dccJuzix)
 
     fun Invest() {
-       val approve = Erc20Helper.invest(binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger())
+       val approve = Erc20Helper.investBsx(binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger())
        agent.getNonce(p.address).observeOn(AndroidSchedulers.mainThread()).flatMap {
            val rawTransaction = RawTransaction.createTransaction(
                it,

@@ -6,4 +6,10 @@
         android:icon="@drawable/img_node_yellow"
         android:title="Select"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/iv_add_token"
+        android:icon="@drawable/toolbar_add"
+        android:title="add"
+        app:showAsAction="ifRoom"/>
 </menu>

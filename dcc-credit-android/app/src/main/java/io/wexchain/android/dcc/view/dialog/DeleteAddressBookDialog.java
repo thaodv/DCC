@@ -19,6 +19,7 @@ public class DeleteAddressBookDialog extends Dialog implements View.OnClickListe
     
     public ImageView mIvWarning;
     public TextView mTvText;
+    public TextView mTvTips;
     private TextView mBtCancel;
     private TextView mBtSure;
     
@@ -35,6 +36,7 @@ public class DeleteAddressBookDialog extends Dialog implements View.OnClickListe
         
         mIvWarning = findViewById(R.id.iv_warning);
         mTvText = findViewById(R.id.tv_text);
+        mTvTips = findViewById(R.id.tips);
         mBtCancel = findViewById(R.id.bt_cancel);
         mBtSure = findViewById(R.id.bt_sure);
         
@@ -45,6 +47,10 @@ public class DeleteAddressBookDialog extends Dialog implements View.OnClickListe
     public void setBtnText(String sure,String cancel){
         mBtCancel.setText(cancel);
         mBtSure.setText(sure);
+    }
+
+    public void setTips(String tips){
+        mTvTips.setText(tips);
     }
     
     @Override

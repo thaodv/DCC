@@ -46,18 +46,13 @@ class CreateScfAccountActivity : BaseCompatActivity() {
     private fun registerScfAccount(code: String?) {
         ScfOperations.registerWithCurrentPassport(code)
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe {
-                showLoadingDialog()
-            }
-            .doFinally {
-                hideLoadingDialog()
-            }
+            .withLoading()
             .subscribe{_->
                 App.get().passportRepository.scfAccountExists = true
-                finish()
                 navigateTo(PassportCreationSucceedActivity::class.java){
                     putExtra(Extras.FROM_IMPORT,intent.getBooleanExtra(Extras.FROM_IMPORT,false))
                 }
+                finish()
             }
     }
 

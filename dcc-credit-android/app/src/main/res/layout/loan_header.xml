@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:paddingTop="10dp"
+    android:layout_height="wrap_content">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cv_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@drawable/loan_header_bg"
+        android:paddingBottom="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="最近订单"
+            android:textColor="#fff"
+            android:textSize="17sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="@drawable/background_loan"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="更多订单"
+            android:textColor="#fff"
+            android:textSize="13sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_title"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <View
+            android:id="@+id/line_1"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="10dp"
+            android:background="#D3A9FF"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <TextView
+            android:id="@+id/tv_order_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="10dp"
+            android:text="订单号"
+            android:textColor="#D3A9FF"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line_1" />
+
+        <TextView
+            android:id="@+id/tv_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="1000005421"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_order_id"
+            app:layout_constraintTop_toBottomOf="@id/tv_order_id" />
+
+        <TextView
+            android:id="@+id/tv_money_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="借款金额"
+            android:textColor="#D3A9FF"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_order"
+            app:layout_constraintTop_toBottomOf="@id/tv_order" />
+
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="1000005421"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_money_num"
+            app:layout_constraintTop_toBottomOf="@id/tv_money_num" />
+
+        <TextView
+            android:id="@+id/tv_time_stamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="借款周期"
+            android:textColor="#D3A9FF"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_money"
+            app:layout_constraintTop_toBottomOf="@id/tv_money" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="1000005421"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_time_stamp"
+            app:layout_constraintTop_toBottomOf="@id/tv_time_stamp" />
+
+        <TextView
+            android:id="@+id/tv_currency_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
+            android:text="币种"
+            android:textColor="#D3A9FF"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line_1" />
+
+        <TextView
+            android:id="@+id/tv_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="DCC"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_currency_type"
+            app:layout_constraintTop_toBottomOf="@id/tv_currency_type" />
+
+        <TextView
+            android:id="@+id/tv_repay_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="应还金额"
+            android:textColor="#D3A9FF"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_currency"
+            app:layout_constraintTop_toBottomOf="@id/tv_currency" />
+
+        <TextView
+            android:id="@+id/tv_repay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="10005Dcc"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_repay_num"
+            app:layout_constraintTop_toBottomOf="@id/tv_repay_num" />
+
+        <TextView
+            android:id="@+id/tv_status_is"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="状态"
+            android:textColor="#D3A9FF"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_repay"
+            app:layout_constraintTop_toBottomOf="@id/tv_repay" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="审核中"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_status_is"
+            app:layout_constraintTop_toBottomOf="@id/tv_status_is" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/mine_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:text="热门币种"
+        android:textColor="#000"
+        android:textSize="17sp"
+        app:layout_constraintTop_toBottomOf="@id/cv_header" />
+
+
+</android.support.constraint.ConstraintLayout>
+

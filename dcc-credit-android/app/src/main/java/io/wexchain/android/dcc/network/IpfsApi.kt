@@ -35,6 +35,9 @@ interface IpfsApi {
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<EthJsonTxReceipt>>
 
+    /**
+     * 获取合约地址
+     */
     @GET("contract/1/getContractAddress/{business}")
     fun getIpfsContractAddress(@Path("business") business: String): Single<Result<String>>
 
@@ -43,6 +46,8 @@ interface IpfsApi {
 
         const val IPFS_KEY_HASH = "ipfs_key_hash"
         const val IPFS_METADATA = "ipfs_metadata"
+        const val BSX_DCC_01 = "bsx_01"
+        const val BSX_ETH = "bsx_01"
 
         internal val idAtomic = AtomicLong(0L)
     }
