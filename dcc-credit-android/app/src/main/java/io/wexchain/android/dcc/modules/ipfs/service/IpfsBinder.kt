@@ -26,5 +26,7 @@ class IpfsBinder(private val service: IpfsService): Binder() {
     fun createCmData(onSize:(String)->Unit){
         service.createCmData(onSize)
     }
-
+    fun createTnData(onSize:(String)->Unit){
+        service.createTnData(onSize)
+    }
 }
