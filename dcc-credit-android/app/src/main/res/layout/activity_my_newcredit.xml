@@ -176,6 +176,8 @@
         android:id="@+id/credit_ipfs_cloud"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="30dp"
+        android:background="@color/white"
       android:layout_alignParentBottom="true"
         android:gravity="center"
         android:layout_marginBottom="20dp"
