@@ -3,6 +3,7 @@ package io.wexchain.digitalwallet.proxy
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.digitalwallet.api.*
+import io.wexchain.digitalwallet.api.domain.EthJsonRpcResponse
 import io.wexchain.digitalwallet.api.domain.EthJsonTxInfo
 import io.wexchain.digitalwallet.api.domain.EthJsonTxReceipt
 import io.wexchain.digitalwallet.api.domain.EthJsonTxScratch
@@ -33,10 +34,46 @@ interface EthsRpcAgent {
     fun transactionByHash(txId: String): Single<EthJsonTxInfo>
     fun transactionReceipt(txId: String): Single<EthJsonTxReceipt>
 
+    fun getBsxStatus(contractAddress: String): Single<EthJsonRpcResponse<String>>
+
+    fun getBsxSaleInfo(contractAddress: String): Single<EthJsonRpcResponse<String>>
+
+    fun getBsxMinAmountPerHand(contractAddress: String): Single<EthJsonRpcResponse<String>>
+
+    fun getBsxInvestCeilAmount(contractAddress: String): Single<EthJsonRpcResponse<String>>
+
+    fun investedBsxTotalAmount(contractAddress: String): Single<EthJsonRpcResponse<String>>
+
+    fun investedBsxAmountMapping(contractAddress: String, userAddress: String): Single<EthJsonRpcResponse<String>>
+
     companion object {
         fun by(ethJsonRpcApi: EthJsonRpcApi): EthsRpcAgent {
             val api = ethJsonRpcApi
             return object : EthsRpcAgent {
+
+                override fun investedBsxAmountMapping(contractAddress: String, userAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.investedBsxAmountMapping(contractAddress, userAddress)
+                }
+
+                override fun getBsxStatus(contractAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.getBsxStatus(contractAddress)
+                }
+
+                override fun getBsxSaleInfo(contractAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.getBsxSaleInfo(contractAddress)
+                }
+
+                override fun getBsxMinAmountPerHand(contractAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.getBsxMinAmountPerHand(contractAddress)
+                }
+
+                override fun getBsxInvestCeilAmount(contractAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.getBsxInvestCeilAmount(contractAddress)
+                }
+
+                override fun investedBsxTotalAmount(contractAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.investedBsxTotalAmount(contractAddress)
+                }
 
                 override fun transactionByHash(txId: String): Single<EthJsonTxInfo> {
                     return api.transactionByHash(txId)
@@ -97,6 +134,30 @@ interface EthsRpcAgent {
         fun by(ethJsonRpcApi: EthJsonRpcApiWithAuth): EthsRpcAgent {
             val api = ethJsonRpcApi
             return object : EthsRpcAgent {
+                override fun investedBsxAmountMapping(contractAddress: String, userAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.investedBsxAmountMapping(contractAddress, userAddress)
+                }
+
+                override fun getBsxStatus(contractAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.getBsxStatus(contractAddress)
+                }
+
+                override fun getBsxSaleInfo(contractAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.getBsxSaleInfo(contractAddress)
+                }
+
+                override fun getBsxMinAmountPerHand(contractAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.getBsxMinAmountPerHand(contractAddress)
+                }
+
+                override fun getBsxInvestCeilAmount(contractAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.getBsxInvestCeilAmount(contractAddress)
+                }
+
+                override fun investedBsxTotalAmount(contractAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.investedBsxTotalAmount(contractAddress)
+                }
+
                 override fun transactionByHash(txId: String): Single<EthJsonTxInfo> {
                     return api.transactionByHash(txId)
                 }
@@ -153,7 +214,29 @@ interface EthsRpcAgent {
         fun by(infuraApi: InfuraApi): EthsRpcAgent {
             val api = infuraApi
             return object : EthsRpcAgent {
+                override fun investedBsxAmountMapping(contractAddress: String, userAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.investedBsxAmountMapping(contractAddress, userAddress)
+                }
 
+                override fun getBsxStatus(contractAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.getBsxStatus(contractAddress)
+                }
+
+                override fun getBsxSaleInfo(contractAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.getBsxSaleInfo(contractAddress)
+                }
+
+                override fun getBsxMinAmountPerHand(contractAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.getBsxMinAmountPerHand(contractAddress)
+                }
+
+                override fun getBsxInvestCeilAmount(contractAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.getBsxInvestCeilAmount(contractAddress)
+                }
+
+                override fun investedBsxTotalAmount(contractAddress: String): Single<EthJsonRpcResponse<String>> {
+                    return api.investedBsxTotalAmount(contractAddress)
+                }
 
                 override fun transactionByHash(txId: String): Single<EthJsonTxInfo> {
                     return api.transactionByHash(txId)
