@@ -9,6 +9,8 @@
 #import "WeXBaseTableViewCell.h"
 
 @class WeXCPSaleInfoResModel;
+@class WeXCPActivityListModel;
+
 
 typedef NS_ENUM(NSInteger,WexCPStatusLabelType) {
     WexCPStatusLabelTypeCreate = 0,     //活动创建
@@ -24,18 +26,21 @@ typedef NS_ENUM(NSInteger,WexCPStatusLabelType) {
 
 - (void)setSaleInfoModel:(WeXCPSaleInfoResModel *)resModel;
 
-- (void)setMinBuyAmount:(NSString *)minAmount;
+- (void)setMinBuyAmount:(NSString *)minAmount assetCode:(NSString *)assetCode;
 
+- (void)setNewCoinProfitDetailWithProductModel:(WeXCPActivityListModel *)model;
 
 /**
  持仓界面
  @param resModel Model
  @param type WexCPStatusLabelType
  @param totalAmount 投资总金额
+ @param assetCode 代币
  */
 - (void)setSaleInfoModel:(WeXCPSaleInfoResModel *)resModel
                     type:(WexCPStatusLabelType)type
-             totalAmount:(NSString *)totalAmount;
+             totalAmount:(NSString *)totalAmount
+               assetCode:(NSString *)assetCode;
 
 
 /**
@@ -44,10 +49,12 @@ typedef NS_ENUM(NSInteger,WexCPStatusLabelType) {
  @param resModel model
  @param status 状态string
  @param amount 金额
+ @param assetCode 代币
  */
 - (void)setSaleInfoModel:(WeXCPSaleInfoResModel *)resModel
             statusString:(NSString *)status
-             totalAmount:(NSString *)amount;
+             totalAmount:(NSString *)amount
+               assetCode:(NSString *)assetCode;
 
 
 @end

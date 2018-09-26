@@ -16,11 +16,15 @@
 #import "WeXCPBuyInETHViewController.h"
 #import "WeXCPMarketActivityListAdapter.h"
 #import "WeXCoinProfitDetailViewController.h"
+#import "WeXHomeTableFooterView.h"
+#import "WeXCPUserPotAssetAdapter.h"
 
 @interface WeXCPMarketViewController ()
 
 @property (nonatomic, strong) WeXCPMarketActivityListAdapter *productListAdapter;
 @property (nonatomic, strong) NSMutableArray  <WeXCPActivityListModel *>*dataListArray;
+@property (nonatomic, strong) WeXCPUserPotAssetAdapter   * potAssetAdapter;
+@property (nonatomic, strong) WeXCPUserPotAssetResModel  * potAssetModel;
 
 @end
 
@@ -37,13 +41,37 @@ static NSString * const kProductInfoCellID = @"WeXCPProductInfoCellID";
     [self configureData];
 }
 - (void)configureData {
-    [self wex_unistallRefreshHeader];
+//    [self wex_unistallRefreshHeader];
     [self.tableView setBackgroundColor:WexSepratorLineColor];
     [self setNavigationNomalBackButtonType];
+    WeXHomeTableFooterView *footerView = [[WeXHomeTableFooterView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 45)];
+    [footerView setLineHide];
+    [footerView setBackgroundColor:WexSepratorLineColor];
+    [footerView setTitle:@"更多产品敬请期待~"];
+    self.tableView.tableFooterView= footerView;
 }
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self requestUserPotAsset];
+}
+- (void)wex_refreshAction {
+    [self requestProductList];
+    [self requestUserPotAsset];
+}
+
 - (void)wex_autoRefreshAction {
     [WeXPorgressHUD showLoadingAddedTo:self.view];
     [self requestProductList];
+}
+
+- (void)requestUserPotAsset {
+    if (!_potAssetAdapter) {
+        _potAssetAdapter = [WeXCPUserPotAssetAdapter new];
+    }
+    WeXCPUserPotAssetParamModel *param = [WeXCPUserPotAssetParamModel new];
+    param.userAddress = [WexCommonFunc getFromAddress];
+    _potAssetAdapter.delegate = self;
+    [_potAssetAdapter run:param];
 }
 
 - (void)requestProductList {
@@ -54,7 +82,6 @@ static NSString * const kProductInfoCellID = @"WeXCPProductInfoCellID";
     [_productListAdapter run:nil];
 }
 
-
 - (NSMutableArray *)dataListArray{
     if(!_dataListArray){
         _dataListArray = [NSMutableArray new];
@@ -64,15 +91,26 @@ static NSString * const kProductInfoCellID = @"WeXCPProductInfoCellID";
 
 
 - (void)wexBaseNetAdapterDelegate:(WexBaseNetAdapter *)adapter head:(WexBaseNetAdapterResponseHeadModal *)headModel response:(WeXBaseNetModal *)response {
-    if ([headModel.businessCode isEqualToString:WexSuccess] && [headModel.businessCode isEqualToString:WexSuccess]) {
-        WeXCPActivityMainResModel *resModel = (WeXCPActivityMainResModel *)response;
-        [self.dataListArray removeAllObjects];
-        [self.dataListArray addObjectsFromArray:resModel.result];
-        [self.tableView reloadData];
-        [WeXPorgressHUD hideLoading];
-    } else {
-        [WeXPorgressHUD hideLoading];
-        [WeXPorgressHUD showText:@"系统错误" onView:self.view];
+    if (adapter == _productListAdapter) {
+        if ([headModel.businessCode isEqualToString:WexSuccess] && [headModel.businessCode isEqualToString:WexSuccess]) {
+            WeXCPActivityMainResModel *resModel = (WeXCPActivityMainResModel *)response;
+            [self.dataListArray removeAllObjects];
+            [self.dataListArray addObjectsFromArray:resModel.result];
+            [self.tableView reloadData];
+            [self wex_endRefresh];
+        } else {
+            [self wex_endRefresh];
+            [WeXPorgressHUD showText:@"系统错误" onView:self.view];
+        }
+    }
+    else if (adapter == _potAssetAdapter) {
+        if ([headModel.businessCode isEqualToString:WexSuccess] && [headModel.businessCode isEqualToString:WexSuccess]) {
+            WeXCPUserPotAssetResModel *resModel = (WeXCPUserPotAssetResModel *)response;
+            self.potAssetModel = resModel;
+            [self.tableView reloadData];
+        } else {
+            [WeXPorgressHUD showText:@"系统错误" onView:self.view];
+        }
     }
     WEXNSLOG(@"%@---%@",headModel,response);
 }
@@ -129,19 +167,15 @@ static NSString * const kProductInfoCellID = @"WeXCPProductInfoCellID";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        [WeXHomePushService pushFromVC:self toVC:[WeXCPPotListViewController new]];
+        WeXCPPotListViewController *potListVC = [WeXCPPotListViewController new];
+        potListVC.userPotAssetModel = _potAssetModel;
+        [WeXHomePushService pushFromVC:self toVC:potListVC];
     } else {
-        WeXCPActivityListModel *product = _dataListArray[indexPath.row - 1];
 //      这是跳转到币生息详情的
         WeXCoinProfitDetailViewController *detailVC = [WeXCoinProfitDetailViewController new];
-        detailVC.title = product.saleInfo.name;
-        detailVC.assetCode = product.assetCode;
-        [WeXHomePushService pushFromVC:self toVC:[WeXCoinProfitDetailViewController new]];
-//        if ([product.assetCode isEqualToString:@"DCC"]) {
-//            [WeXHomePushService pushFromVC:self toVC:[WeXCPBuyAmoutViewController new]];
-//        } else {
-//            [WeXHomePushService pushFromVC:self toVC:[WeXCPBuyInETHViewController new]];
-//        }
+        detailVC.title        = _dataListArray[indexPath.row - 1].saleInfo.name;
+        detailVC.productModel = _dataListArray[indexPath.row - 1];
+        [WeXHomePushService pushFromVC:self toVC:detailVC];
     }
 }
 
@@ -150,7 +184,9 @@ static NSString * const kProductInfoCellID = @"WeXCPProductInfoCellID";
            indexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         WeXCPMarketTopAmountCell *cell = (WeXCPMarketTopAmountCell *)currentCell;
-        [cell setPrincipal:@"2000.89" profit:@"100.08"];
+        NSString *principal = [NSString stringWithFormat:@"%.2f",_potAssetModel.corpus];
+        NSString *benefit   = [NSString stringWithFormat:@"%.2f",_potAssetModel.profit];
+        [cell setPrincipal:principal profit:benefit];
     } else {
         if (indexPath.row == 0) {
             WeXHomeIndicatorCell *cell = (WeXHomeIndicatorCell *)currentCell;

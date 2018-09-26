@@ -11,11 +11,14 @@
 #import "WeXCPPotInfoCell.h"
 #import "WeXCPPotListAdapter.h"
 #import "WeXCPNoRecordCell.h"
+#import "WeXCPPotDetailViewController.h"
+#import "WeXHomePushService.h"
+#import "WeXCPUserPotAssetAdapter.h"
 
 @interface WeXCPPotListViewController ()
 @property (nonatomic, strong) WeXCPPotListAdapter *potListAdapter;
 @property (nonatomic, strong) NSMutableArray <WeXCPPotListResultModel *> *postList;
-
+@property (nonatomic, strong) WeXCPUserPotAssetAdapter  * potAssetAdapter;
 
 @end
 
@@ -32,6 +35,11 @@ static NSString * const kNoRecordCellID    = @"WeXCPNoRecordCellID";
     self.title = WeXLocalizedString(@"币生息持仓");
     [self configureData];
 }
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self requestUserPotAsset];
+}
+
 
 - (void)wex_autoRefreshAction {
     [WeXPorgressHUD showLoadingAddedTo:self.view];
@@ -47,6 +55,16 @@ static NSString * const kNoRecordCellID    = @"WeXCPNoRecordCellID";
     [_potListAdapter run:param];
 }
 
+- (void)requestUserPotAsset {
+    if (!_potAssetAdapter) {
+        _potAssetAdapter = [WeXCPUserPotAssetAdapter new];
+    }
+    WeXCPUserPotAssetParamModel *param = [WeXCPUserPotAssetParamModel new];
+    param.userAddress = [WexCommonFunc getFromAddress];
+    _potAssetAdapter.delegate = self;
+    [_potAssetAdapter run:param];
+}
+
 
 - (NSMutableArray *)postList{
     if(!_postList){
@@ -56,22 +74,35 @@ static NSString * const kNoRecordCellID    = @"WeXCPNoRecordCellID";
 }
 
 - (void)configureData {
-    [self wex_unistallRefreshHeader];
     [self.tableView setBackgroundColor:WexSepratorLineColor];
     [self setNavigationNomalBackButtonType];
 }
+- (void)wex_refreshAction {
+    [self requestUserPotAsset];
+    [self requestPostList];
+}
 
 - (void)wexBaseNetAdapterDelegate:(WexBaseNetAdapter *)adapter head:(WexBaseNetAdapterResponseHeadModal *)headModel response:(WeXBaseNetModal *)response {
-    if ([headModel.businessCode isEqualToString:WexSuccess] && [headModel.businessCode isEqualToString:WexSuccess]) {
-        WeXCPPotListMainModel *resModel = (WeXCPPotListMainModel *)response;
-        [self.postList removeAllObjects];
-        [self.postList addObjectsFromArray:resModel.result];
-        [self.tableView reloadData];
-        [WeXPorgressHUD hideLoading];
-    } else {
-        [WeXPorgressHUD hideLoading];
-        [WeXPorgressHUD showText:@"系统错误" onView:self.view];
+    if (adapter == _potListAdapter) {
+        if ([headModel.businessCode isEqualToString:WexSuccess] && [headModel.businessCode isEqualToString:WexSuccess]) {
+            WeXCPPotListMainModel *resModel = (WeXCPPotListMainModel *)response;
+            [self.postList removeAllObjects];
+            [self.postList addObjectsFromArray:resModel.result];
+            [self.tableView reloadData];
+            [self wex_endRefresh];
+        } else {
+            [self wex_endRefresh];
+            [WeXPorgressHUD showText:@"系统错误" onView:self.view];
+        }
     }
+    else if (adapter == _potAssetAdapter) {
+        if ([headModel.businessCode isEqualToString:WexSuccess] && [headModel.businessCode isEqualToString:WexSuccess]) {
+            WeXCPUserPotAssetResModel *resModel = (WeXCPUserPotAssetResModel *)response;
+            self.userPotAssetModel = resModel;
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+        }
+    }
+
     WEXNSLOG(@"%@---%@",headModel,response);
 }
 
@@ -131,7 +162,12 @@ static NSString * const kNoRecordCellID    = @"WeXCPNoRecordCellID";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    if (indexPath.section > 0) {
+        // MARK: - 跳转到币生息详情页
+        WeXCPPotDetailViewController *potDetailVC = [WeXCPPotDetailViewController new];
+        potDetailVC.potListModel = _postList[indexPath.row];
+        [WeXHomePushService pushFromVC:self toVC:potDetailVC];
+    }
 }
 
 - (void)wexTableView:(UITableView *)tableView
@@ -139,7 +175,10 @@ static NSString * const kNoRecordCellID    = @"WeXCPNoRecordCellID";
            indexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         WeXCPMarketTopAmountCell *cell = (WeXCPMarketTopAmountCell *)currentCell;
-        [cell setPrincipal:@"2000.89" profit:@"100.08"];
+        NSString *principal = [NSString stringWithFormat:@"%.2f",_userPotAssetModel.corpus];
+        NSString *benefit   = [NSString stringWithFormat:@"%.2f",_userPotAssetModel.profit];
+        [cell setPrincipal:principal profit:benefit];
+        [cell setRightArrowHide:true];
     } else {
         if (_postList.count > 0) {
             WeXCPPotInfoCell *cell = (WeXCPPotInfoCell *)currentCell;

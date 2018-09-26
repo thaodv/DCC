@@ -8,6 +8,8 @@
 
 #import "WeXBaseReuseTableViewController.h"
 
-@interface WeXCPPotListViewController : WeXBaseReuseTableViewController
+@class WeXCPUserPotAssetResModel;
 
+@interface WeXCPPotListViewController : WeXBaseReuseTableViewController
+@property (nonatomic, strong) WeXCPUserPotAssetResModel  * userPotAssetModel;
 @end

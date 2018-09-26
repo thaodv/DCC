@@ -16,6 +16,10 @@
 #import "WeXCPSaleInfoResModel.h"
 #import "NSString+WexTool.h"
 #import "WeXCoinProfitDetailViewController.h"
+#import "WeXCPActivityMainResModel.h"
+#import "WeXCPPotListMainModel.h"
+
+
 
 @interface WeXCPPotDetailViewController ()
 
@@ -44,6 +48,9 @@ static NSString *const kCPNoRecordCellID  = @"WeXCPNoRecordCellID";
     [super viewDidLoad];
     self.title = WeXLocalizedString(@"币生息详情");
     [self configureNavigaionBar];
+    WeXCPGetContractAddressResModel *responseModel = [WeXCPGetContractAddressResModel new];
+    responseModel.result =  _potListModel.contractAddress;;
+    self.responseModel = responseModel;
     [self wex_autoRefresh];
 }
 - (void)configureNavigaionBar {
@@ -53,14 +60,15 @@ static NSString *const kCPNoRecordCellID  = @"WeXCPNoRecordCellID";
 }
 - (void)wex_autoRefresh {
     [WeXPorgressHUD showLoadingAddedTo:self.view];
-    [self getCPContractAddress];
+    [self requestSaleInfo];
 }
 - (void)wex_refreshAction {
-    if ([self.responseModel.result length] > 0) {
-        [self requestSaleInfo];
-    } else {
-        [self getCPContractAddress];
-    }
+//    if ([self.responseModel.result length] > 0) {
+//        [self requestSaleInfo];
+//    } else {
+//        [self getCPContractAddress];
+//    }
+     [self requestSaleInfo];
 }
 - (void)backItemClick {
     if (self.popToCoinProfitDetailVC) {
@@ -86,11 +94,11 @@ static NSString *const kCPNoRecordCellID  = @"WeXCPNoRecordCellID";
 
 #pragma mark UITableViewDatasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self.cpInvestTotalAmount integerValue] <= 0 ? 1 : 2;
+    return [self.cpInvestTotalAmount floatValue] <= 0 ? 1 : 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([self.cpInvestTotalAmount integerValue] <= 0) {
+    if ([self.cpInvestTotalAmount floatValue] <= 0) {
         return 1;
     }
     switch (section) {
@@ -118,7 +126,7 @@ static NSString *const kCPNoRecordCellID  = @"WeXCPNoRecordCellID";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.cpInvestTotalAmount integerValue] <= 0) {
+    if ([self.cpInvestTotalAmount floatValue] <= 0) {
         return 55 * 6 + 50;
     }
     switch (indexPath.section) {
@@ -143,7 +151,7 @@ static NSString *const kCPNoRecordCellID  = @"WeXCPNoRecordCellID";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.cpInvestTotalAmount integerValue] <= 0) {
+    if ([self.cpInvestTotalAmount floatValue] <= 0) {
         return [self wexTableview:tableView cellForRowWithIdentifier:kCPNoRecordCellID indexPath:indexPath];
     }
     switch (indexPath.section) {
@@ -174,7 +182,7 @@ static NSString *const kCPNoRecordCellID  = @"WeXCPNoRecordCellID";
 - (void)wexTableView:(UITableView *)tableView
        configureCell:(UITableViewCell *)currentCell
            indexPath:(NSIndexPath *)indexPath {
-    if ([self.cpInvestTotalAmount integerValue] <= 0) {
+    if ([self.cpInvestTotalAmount floatValue] <= 0) {
         WeXCPNoRecordCell *cell = (WeXCPNoRecordCell *)currentCell;
         [cell setImageName:@"Wex_Coin_NoRecord" subText:@"暂无记录"];
     } else {
@@ -182,7 +190,7 @@ static NSString *const kCPNoRecordCellID  = @"WeXCPNoRecordCellID";
             case 0: {
                 WeXCoinProfitTopProfitCell *cell = (WeXCoinProfitTopProfitCell *)currentCell;
                 if ([self.cpInvestTotalAmount length] > 0 && [self.cpStatus length] > 0) {
-                    [cell setSaleInfoModel:self.infoResModel statusString:self.cpStatus totalAmount:self.cpInvestTotalAmount];
+                    [cell setSaleInfoModel:self.infoResModel statusString:self.cpStatus totalAmount:self.cpInvestTotalAmount assetCode:_potListModel.assetCode];
                 }
             }
                 break;
@@ -220,7 +228,7 @@ static NSString *const kCPNoRecordCellID  = @"WeXCPNoRecordCellID";
 }
 
 - (void)refreshTopHeadCell {
-    if ([self.cpInvestTotalAmount integerValue] <= 0) {
+    if ([self.cpInvestTotalAmount floatValue] <= 0) {
         [self.tableView reloadData];
     }
     if ([self.cpInvestTotalAmount length] > 0 && [self.cpStatus length] > 0) {
@@ -236,11 +244,15 @@ static NSString *const kCPNoRecordCellID  = @"WeXCPNoRecordCellID";
     NSString *params   = @"[]";
     NSString *p_params = [NSString stringWithFormat:@"[\'%@\']",[WexCommonFunc getFromAddress]];
     //投资总额度
-    NSString *totalAmountJson = WEXCP_PInvestedTotalAmount_ABI_BALANCE;
+    NSString *totalAmountJson = [_potListModel.assetCode isEqualToString:@"ETH"] ? WEXCP_ETH_PInvestedTotalAmount_ABI : WEXCP_PInvestedTotalAmount_ABI_BALANCE;
     //活动状态
-    NSString *statusJson = WEXCP_STATUS_ABI_BALANCE;
+    NSString *statusJson = [_potListModel.assetCode isEqualToString:@"ETH"] ? WEXCP_ETH_Status_ABI : WEXCP_STATUS_ABI_BALANCE;
     
-    [[WXPassHelper instance] initProvider:WEXCP_INVEST_URL responseBlock:^(id response) {
+    //根据不同期数来获取对应的URL
+    NSString *DCCURL = [WEXCP_INVEST_V_URL stringByAppendingString:[_potListModel.name formatInputString]];
+    NSString *webURL = [_potListModel.assetCode isEqualToString:@"ETH"] ? YTF_DEVELOP_INFURA_SERVER : DCCURL;
+    
+    [[WXPassHelper instance] initProvider:webURL responseBlock:^(id response) {
         //活动状态
         [[WXPassHelper instance] encodeFunCallAbiInterface:statusJson params:params responseBlock:^(id response) {
             [[WXPassHelper instance] callContractAddress:self.responseModel.result data:response responseBlock:^(id response) {

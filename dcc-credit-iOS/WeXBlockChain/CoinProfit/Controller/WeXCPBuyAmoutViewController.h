@@ -8,6 +8,11 @@
 
 #import "WeXBaseReuseTableViewController.h"
 
+@class WeXCPActivityListModel;
+
 @interface WeXCPBuyAmoutViewController : WeXBaseReuseTableViewController
+
+@property (nonatomic, strong) WeXCPActivityListModel * productModel;
+
 
 @end
