@@ -10,7 +10,7 @@ import io.wexchain.android.dcc.constant.Extras2
 import worhavah.certs.tools.CertOperations
 import worhavah.mobilecertmodule.R
 
-class CmCertDataActivity : BaseCompatActivity() {
+class TNCertDataActivity : BaseCompatActivity() {
 
     private val orderId
         get() = intent.getLongExtra(Extras2.EXTRA_CERT_ORDER_ID, -1L)
@@ -19,7 +19,7 @@ class CmCertDataActivity : BaseCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tncm_cert_data)
         initToolbar()
-      //  showCmCertData()
+        showCmCertData()
     }
 
     private fun showCmCertData() {
@@ -29,7 +29,9 @@ class CmCertDataActivity : BaseCompatActivity() {
                 finish()
             }
         } else {
-            CertOperations.getCmLogData(id)
+
+            setCertData( CertOperations.certPrefs.certTNLogData.get( ))
+          /*  CertOperations.getTNLogData(id)
                 .map {
                     it.toString(Charsets.UTF_8)
                 }
@@ -42,7 +44,7 @@ class CmCertDataActivity : BaseCompatActivity() {
                         toast("读取认证报告错误$id")
                         finish()
                     }
-                })
+                })*/
         }
     }
 

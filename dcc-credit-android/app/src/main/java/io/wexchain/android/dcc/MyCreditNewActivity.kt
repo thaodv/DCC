@@ -38,8 +38,10 @@ import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.ipfs.utils.io_main
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
+import worhavah.certs.bean.TNcertReport
 import worhavah.certs.tools.CertOperations.onTNLogSuccessGot
 import worhavah.tongniucertmodule.SubmitTNLogActivity
+import worhavah.tongniucertmodule.TnLogCertificationActivity
 import java.math.BigDecimal
 import java.util.*
 
@@ -221,9 +223,12 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                     .subscribeBy(
                         onSuccess = {
                             if(null!=it){
-                                Log.e("getTNLogReport",it)
-                                 onTNLogSuccessGot(it)
-                                setVM()
+                                //Log.e("getTNLogReport",it.reportData.toString())
+                                if(it.isComplete.equals("Y")){
+                                    onTNLogSuccessGot(it.reportData.toString())
+                                    setVM()
+                                }
+
                              //   CertOperations.saveCmLogCertExpired(content.expired)
                             }
                         },
@@ -235,7 +240,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
         }
     }
 
-    fun getTNLogReport(passport: Passport): Single<String> {
+    fun getTNLogReport(passport: Passport): Single<TNcertReport> {
         require(passport.authKey != null)
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
@@ -251,7 +256,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                     "orderId" to orderId.toString()
                 )
             )
-        )
+        ).compose(Result.checked())
                //.compose(Result.checked())
     }
 
@@ -359,15 +364,27 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                 }
             }
             CertificationType.TONGNIU -> {
+                when (status) {
+                    UserCertStatus.DONE, UserCertStatus.TIMEOUT -> {
+                       // navigateTo(TnLogCertificationActivity::class.java)
+                        startActivity(Intent(this, TnLogCertificationActivity::class.java))
+                    }
+                    UserCertStatus.NONE -> {
                         PassportOperations.ensureCaValidity(this) {
-                         //  navigateTo(worhavah.tongniucertmodule.CmCertDataActivity::class.java)
-                       //     startActivity(Intent(this, TnLogCertificationActivity::class.java))
+                            //  navigateTo(worhavah.tongniucertmodule.TNCertDataActivity::class.java)
+                            //     startActivity(Intent(this, TnLogCertificationActivity::class.java))
                             startActivity(Intent(this, SubmitTNLogActivity::class.java))
                         }
+                    }
+                    UserCertStatus.INCOMPLETE -> {
+                        // get report processing
+                    }
+                }
+
                 }
             CertificationType.LOANREPORT -> {
                 PassportOperations.ensureCaValidity(this) {
-                    //  navigateTo(worhavah.tongniucertmodule.CmCertDataActivity::class.java)
+                    //  navigateTo(worhavah.tongniucertmodule.TNCertDataActivity::class.java)
                     //     startActivity(Intent(this, TnLogCertificationActivity::class.java))
                 //    startActivity(Intent(this, SubmitTNLogActivity::class.java))
                     navigateTo(LoanReportActivity::class.java)

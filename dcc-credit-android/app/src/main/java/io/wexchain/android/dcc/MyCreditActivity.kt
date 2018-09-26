@@ -35,7 +35,9 @@ import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.ipfs.utils.io_main
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
+import worhavah.certs.bean.TNcertReport
 import worhavah.tongniucertmodule.SubmitTNLogActivity
+import worhavah.tongniucertmodule.TnLogCertificationActivity
 import java.util.*
 
 
@@ -188,7 +190,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                     .subscribeBy(
                         onSuccess = {
                             if(null!=it){
-                                Log.e("getTNLogReport",it)
+                               // Log.e("getTNLogReport",it)
                             }
                         },
                         onError = {
@@ -199,7 +201,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
         }
     }
 
-    fun getTNLogReport(passport: Passport): Single<String> {
+    fun getTNLogReport(passport: Passport): Single<TNcertReport> {
         require(passport.authKey != null)
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
@@ -215,7 +217,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                     "orderId" to orderId.toString()
                 )
             )
-        )
+        ).compose(Result.checked())
                //.compose(Result.checked())
     }
 
@@ -323,11 +325,24 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                 }
             }
             CertificationType.TONGNIU -> {
+
+                when (status) {
+                    UserCertStatus.DONE, UserCertStatus.TIMEOUT -> {
+                       // navigateTo(TnLogCertificationActivity::class.java)
+                        startActivity(Intent(this, TnLogCertificationActivity::class.java))
+                    }
+                    UserCertStatus.NONE -> {
                         PassportOperations.ensureCaValidity(this) {
-                         //  navigateTo(worhavah.tongniucertmodule.CmCertDataActivity::class.java)
-                       //     startActivity(Intent(this, TnLogCertificationActivity::class.java))
+                            //  navigateTo(worhavah.tongniucertmodule.TNCertDataActivity::class.java)
+                            //     startActivity(Intent(this, TnLogCertificationActivity::class.java))
                             startActivity(Intent(this, SubmitTNLogActivity::class.java))
                         }
+                    }
+                    UserCertStatus.INCOMPLETE -> {
+                        // get report processing
+                    }
+                }
+
                 }
 
         }

@@ -49,6 +49,7 @@
     <string name="repayment_date_colon">还币日期:</string>
     <string name="please_select">请选择</string>
     <string name="sms_code1">请输入短信验证码</string>
+    <string name="img_code1">请输入图形验证码</string>
     <string name="press_the_camera">请点击上方按钮拍照识别 例:20180101\-20380101</string>
     <string name="please_make_sure_that_the_information">请仔细核对一下信息是否与证件上的一致,若发现识别有误,请手动修改,通过认证后,无法修改信息.</string>
     <string name="extra">备\u3000\u3000注:</string>
@@ -235,7 +236,7 @@
     <string name="id_no_label">身份证号</string>
     <string name="id_no_label_to">身份证号:</string>
     <string name="cert_expired_label">认证有效期</string>
-    <string name="authenticator">认证方：云金融</string>
+    <string name="authenticator">认证方：同牛</string>
     <string name="fill_info_warning">随意填写会对您的信用审核造成负面影响</string>
     <string name="provide_photos_of_both_sides">请拍摄身份证照片，系统自动识别：</string>
     <string name="please_try_ocr">请点击上方按钮拍照识别</string>
