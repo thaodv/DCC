@@ -40,12 +40,7 @@
         android:name="worhavah.regloginlib.passportutil.PassportRemovalActivity"
         android:label="删除钱包"
         android:screenOrientation="portrait"/>
-    <activity
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:name="worhavah.regloginlib.passportutil.PassportExportActivity"
-        android:screenOrientation="portrait"
-        android:label="钱包备份"
-        />
+
 
     <activity android:name="worhavah.regloginlib.tools.ReLoginActivity"
         android:fitsSystemWindows="true"
