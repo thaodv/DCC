@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
+import android.text.TextUtils
 import android.view.View
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
@@ -159,6 +160,14 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
          setVM()
         refreshCertStatus()
         getCloudToken()
+        worhavah.certs.tools.CertOperations.certPrefs.certLasttime.get().apply {
+            if(TextUtils.isEmpty(this)){
+                binding.tvShowtime.visibility=View.GONE
+            }else{
+                binding.tvShowtime.visibility=View.VISIBLE
+                binding.tvShowtime.text="更新时间："+this
+            }
+        }
     }
 
      var aa=15;
@@ -199,6 +208,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                                     val content = it.content
                                     if (0L != content.expired) {
                                         CertOperations.saveCmLogCertExpired(content.expired)
+                                        worhavah.certs.tools.CertOperations.certed()
                                     }
                                 },
                                 onError = {
@@ -220,6 +230,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                             if(it.isComplete.equals("Y")){
                                 android.util.Log.e("it.reportData ", it.reportData.toString() )
                                 onTNLogSuccessGot(it.reportData.toString() )
+                                worhavah.certs.tools.CertOperations.certed()
                                 setVM()
                                // getTNrealdata()
                             }

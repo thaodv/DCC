@@ -36,6 +36,8 @@ import io.wexchain.android.common.*
 import io.wexchain.dccchainservice.CertApi2
 import io.wexchain.dccchainservice.MarketingApi
 import io.wexchain.dccchainservice.domain.*
+import io.wexchain.dccchainservice.util.DateUtil
+import io.wexchain.dccchainservice.util.DateUtil.*
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import org.web3j.crypto.Credentials
 import worhavah.certs.BuildConfig
@@ -501,6 +503,8 @@ i
         val certHAData = StringPref("certHAData")
         val certHALine1= StringPref("certHALine1")
         val certHALine2= StringPref("certHALine2")
+
+        val certLasttime= StringPref("certLasttime")
     }
 
     fun getTNLogCertExpired(): Long {
@@ -973,6 +977,11 @@ i
         certPrefs.certCmLogPhoneNo.set(phoneNo)
         certPrefs.certCmLogPassword.set(password)
     }
+
+    fun certed(){
+        certPrefs.certLasttime.set(getCurrentDate2())
+    }
+
 
     fun onTNLogRequestSuccess(orderId: Long, phoneNo: String, password: String) {
         certPrefs.certTNLogOrderId.set(orderId)

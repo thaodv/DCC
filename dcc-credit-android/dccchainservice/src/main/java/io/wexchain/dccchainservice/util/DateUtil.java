@@ -85,9 +85,9 @@ public class DateUtil {
         return time;
     }
   /*  public static void main(String[] args) throws Exception {
-
         //parsIntToDate(1534211619,FORMAT_10);
-        System.out.print( getStringTime(1534211619000l,"yyyy-MM-dd"));
+     //   System.out.print( getStringTime(1534211619000l,"yyyy-MM-dd"));
+        System.out.print( getCurrentDate2());
     }*/
     
     /**
@@ -278,5 +278,13 @@ public class DateUtil {
         Date date = new Date();
         return dateFormat.format(date);
     }
-    
+    /**
+     * 获取当前的日期
+     *
+     * @return
+     */
+    public static String getCurrentDate2() {
+        Date date = new Date();
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
+    }
 }

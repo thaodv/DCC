@@ -42,6 +42,7 @@ import org.web3j.abi.datatypes.DynamicBytes
 import org.web3j.abi.datatypes.Utf8String
 import java.util.*
 import io.reactivex.functions.Function;
+import worhavah.certs.tools.CertOperations.certed
 
 
 /**
@@ -397,6 +398,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
     }
 
     private fun successful(business: String) {
+        certed()
         when (business) {
             ChainGateway.BUSINESS_ID -> {
                 cloud_id_selected.text = "已完成"
