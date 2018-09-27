@@ -36,6 +36,7 @@ import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import io.wexchain.ipfs.entity.BankInfo
 import io.wexchain.ipfs.entity.IdInfo
 import io.wexchain.ipfs.entity.PhoneInfo
+import io.wexchain.ipfs.entity.TNPhoneInfo
 import io.wexchain.ipfs.utils.base64
 import worhavah.certs.tools.CertOperations
 import worhavah.certs.tools.CertOperations.getTNLogUserStatus
@@ -691,12 +692,13 @@ object CertOperations {
                 }
     }
 
-    fun saveIpfsTNData(phoneInfo: PhoneInfo) {
-        saveTnLogCertExpired(phoneInfo.mobileAuthenExpired)
-        worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.set(phoneInfo.mobileAuthenOrderid.toLong())
-        worhavah.certs.tools.CertOperations.certPrefs.certTNLogState.set(phoneInfo.mobileAuthenStatus)
-        worhavah.certs.tools.CertOperations. certPrefs.certTNLogPhoneNo.set(phoneInfo.mobileAuthenNumber)
-        worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(phoneInfo.mobileAuthenCmData.base64().toString())
+    fun saveIpfsTNData(phoneInfo: TNPhoneInfo) {
+        saveTnLogCertExpired(phoneInfo.sameCowmobileAuthenExpired)
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.set(phoneInfo.sameCowmobileAuthenOrderid.toLong())
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogState.set(phoneInfo.sameCowmobileAuthenStatus)
+        worhavah.certs.tools.CertOperations. certPrefs.certTNLogPhoneNo.set(phoneInfo.sameCowmobileAuthenNumber)
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(phoneInfo.sameCowmobileAuthenCmData.base64().toString())
+       // worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(String(Base64.encode(phoneInfo.sameCowmobileAuthenCmData.toByteArray(),Base64.NO_WRAP)  ))
        /* File(App.get().filesDir, certCmLogReportFileName(phoneInfo.mobileAuthenOrderid.toLong()))
             .apply {
                 ensureNewFile()
