@@ -19,6 +19,8 @@
 #import "WeXCPBuyAmoutViewController.h"
 #import "WeXCPActivityMainResModel.h"
 
+#import "WeXCPMarketViewController.h"
+
 @interface WeXCPPotListViewController ()
 @property (nonatomic, strong) WeXCPPotListAdapter *potListAdapter;
 @property (nonatomic, strong) NSMutableArray <WeXCPPotListResultModel *> *postList;
@@ -44,6 +46,22 @@ static NSString * const kNoRecordCellID    = @"WeXCPNoRecordCellID";
     [self requestUserPotAsset];
 }
 
+- (void)backItemClick {
+    BOOL containCPMarketVC = NO;
+    UIViewController *cpMarketVC = nil;
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isKindOfClass:[WeXCPMarketViewController class]]) {
+            containCPMarketVC = true;
+            cpMarketVC = controller;
+            break;
+        }
+    }
+    if (containCPMarketVC) {
+        [self.navigationController popToViewController:cpMarketVC animated:true];
+    } else {
+        [self.navigationController popViewControllerAnimated:true];
+    }
+}
 
 - (void)wex_autoRefreshAction {
     [WeXPorgressHUD showLoadingAddedTo:self.view];

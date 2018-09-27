@@ -287,7 +287,7 @@ static CGFloat const kRatio = 375 / 129.0;
     [self.periodLab setText:[NSString stringWithFormat:@"%@%@",model.saleInfo.period,@"天"]];
     [self.buyNumTitleLab setText:@"起购数量"];
     [self.verticalLine setHidden:false];
-    NSString *minBuyAmount = [NSString stringWithFormat:@"%@%@",model.minPerHand,model,model.assetCode];
+    NSString *minBuyAmount = [NSString stringWithFormat:@"%@%@",model.minPerHand,model.assetCode];
     [self.buyNumLab setText:minBuyAmount];
 }
 

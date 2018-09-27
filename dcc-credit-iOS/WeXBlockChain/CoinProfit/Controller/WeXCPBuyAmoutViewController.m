@@ -72,8 +72,9 @@ static NSString *const kDefaultBalance   = @"--";
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self getCPContractAddress];
+//    [self getCPContractAddress];
     [self getPrivateWalletBalance];
+    [self getSomeAmountInfoRequest];
 }
 
 - (void)getCPContractAddress {
@@ -298,7 +299,8 @@ static NSString *const kDefaultBalance   = @"--";
     NSString *value = [[WexCommonFunc stringWithOriginString:self.amount multiplyString:EIGHTEEN_ZERO] stringValue];
     NSString* abiParamsValues = [NSString stringWithFormat:@"[\'%@\']",value]; 
     // 合约地址(开发，测试，生产环境地址值不同，建议用宏区分不同开发环境)
-    NSString* contractAddress = self.responseModel.result;
+//2018.9.27 合约地址区分不同期数
+    NSString* contractAddress = _productModel.contractAddress;
     // 以太坊私钥地址
     NSString* privateKey = cacheModel.walletPrivateKey;
     
@@ -337,14 +339,15 @@ static NSString *const kDefaultBalance   = @"--";
     NSString *minAmountJson   = WEXCP_MinAmountPerHand_ABI_BALANCE;
     //已认购额度
     NSString *haveBuyAmountJson = WEXCP_InvestedTotalAmount_ABI_BALANCE;
-    
     //根据不同期数来获取对应的URL
     NSString *DCCURL = [WEXCP_INVEST_V_URL stringByAppendingString:[_productModel.name formatInputString]];
+// 2018.9.29 不同期数对应的合约地址不同
+    NSString *contractAddress = _productModel.contractAddress;
 
     [[WXPassHelper instance] initProvider: DCCURL responseBlock:^(id response) {
         //产品起购额度
         [[WXPassHelper instance] encodeFunCallAbiInterface:minAmountJson params:params responseBlock:^(id response) {
-            [[WXPassHelper instance] callContractAddress:self.responseModel.result data:response responseBlock:^(id response) {
+            [[WXPassHelper instance] callContractAddress:contractAddress data:response responseBlock:^(id response) {
                 NSDictionary *responseDict = response;
                 NSString * originBalance = [responseDict objectForKey:@"result"];
                 NSString * ethException  = [responseDict objectForKey:@"ethException"];
@@ -360,7 +363,7 @@ static NSString *const kDefaultBalance   = @"--";
         
         //总额度
         [[WXPassHelper instance] encodeFunCallAbiInterface:totalAmountJson params:params responseBlock:^(id response) {
-            [[WXPassHelper instance] callContractAddress:self.responseModel.result data:response responseBlock:^(id response) {
+            [[WXPassHelper instance] callContractAddress:contractAddress data:response responseBlock:^(id response) {
                 NSDictionary *responseDict = response;
                 NSString * originBalance =[responseDict objectForKey:@"result"];
                 NSString * ethException =[responseDict objectForKey:@"ethException"];
@@ -376,7 +379,7 @@ static NSString *const kDefaultBalance   = @"--";
         
         //已认购额度
         [[WXPassHelper instance] encodeFunCallAbiInterface:haveBuyAmountJson params:params responseBlock:^(id response) {
-            [[WXPassHelper instance] callContractAddress:self.responseModel.result data:response responseBlock:^(id response) {
+            [[WXPassHelper instance] callContractAddress:contractAddress data:response responseBlock:^(id response) {
                 NSDictionary *responseDict = response;
                 NSString * originBalance   = [responseDict objectForKey:@"result"];
                 NSString * ethException    = [responseDict objectForKey:@"ethException"];
@@ -443,7 +446,7 @@ static NSString *const kDefaultBalance   = @"--";
     WeXWalletDccTranstionDetailView  *transDetailView = [[WeXWalletDccTranstionDetailView alloc] initWithFrame:CGRectMake(0, kScreenHeight, kScreenWidth, kDccTransDetailViewHeight)];
     [transDetailView setTranstionViewType:WeXWalletTranstionViewTypeCPBuy];
     transDetailView.fromLabel.text  = [WexCommonFunc getFromAddress];
-    transDetailView.toLabel.text    = self.responseModel.result;
+    transDetailView.toLabel.text    = _productModel.contractAddress;
 
     transDetailView.valueLabel.text = [NSString stringWithFormat:@"%.4f%@",[self.amount floatValue],@"DCC"];
     transDetailView.backgroundColor   = [UIColor whiteColor];
@@ -517,7 +520,7 @@ static NSString *const kDefaultBalance   = @"--";
     WeXWalletTransferPendingModel *model = [[WeXWalletTransferPendingModel alloc] init];
     model.from = [WexCommonFunc getFromAddress];
     //收款地址,智能合约地址
-    model.to   = self.responseModel.result;
+    model.to   = _productModel.contractAddress;
     NSDate *nowTime = [NSDate date];
     NSTimeInterval timeStamp = nowTime.timeIntervalSince1970;
     model.timeStamp = [NSString stringWithFormat:@"%f",timeStamp];

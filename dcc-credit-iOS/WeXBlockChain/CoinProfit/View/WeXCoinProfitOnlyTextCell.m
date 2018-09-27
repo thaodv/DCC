@@ -151,7 +151,9 @@
 - (void)wex_addSubViews {
     [super wex_addSubViews];
     UILabel *titleLab = CreateLeftAlignmentLabel(WexFont(14), ColorWithHex(0x4A4A4A));
+    titleLab.adjustsFontSizeToFitWidth = false;
     titleLab.numberOfLines = 0;
+    titleLab.preferredMaxLayoutWidth = kScreenWidth - 10 * 2;
     [self.contentView addSubview:titleLab];
     self.contentLab = titleLab;
 
@@ -169,6 +171,8 @@
 
 - (void)setTextContent:(NSString *)text {
     [self.contentLab setText:text];
+    [self.contentLab sizeToFit];
+    [self layoutIfNeeded];
 }
 
 - (void)setTest {
@@ -177,6 +181,7 @@
 
 - (void)setSaleInfoResModel:(WeXCPSaleInfoResModel *)resModel {
     [self setTextContent:resModel.presentation];
+    
 }
 
 

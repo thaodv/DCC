@@ -69,9 +69,9 @@ static NSString * const kCPCompundCellID  = @"WeXCPCompoundCellID";
 static NSString * const kCPOnlyTextCellID = @"WeXCoinProfitOnlyTextCellID";
 static NSString * const kCPLeftAndRightCellID = @"WeXCPLeftAndRightLabelCellID";
 
-static NSTimeInterval const kTimerGap = 3.0;
-static NSInteger const kMaxTimes = 5;
+static NSTimeInterval const kTimerGap = 5.0;
 
+static NSInteger const kMaxTimes = 7;
 
 
 @implementation WeXCPBuyInETHViewController
@@ -218,6 +218,8 @@ static NSInteger const kMaxTimes = 5;
                         [self buySuccessEvent];
                         WEXNSLOG(@"购买成功");
                     } else {
+                        [WeXPorgressHUD hideLoading];
+                        [WeXPorgressHUD showText:@"购买失败,请稍后再试" onView:self.view];
                         WEXNSLOG(@"购买失败");
                     }
                 }];
@@ -469,7 +471,6 @@ static NSInteger const kMaxTimes = 5;
             [cell setTitle:[NSString stringWithFormat:@"%@%@",_productModel.saleInfo.name,@"(剩余额度 --)"] highText:@"--"];
             if ([self.remainAmount length]> 0) {
                 NSString *highText = [NSString stringWithFormat:@"%@ %@",self.remainAmount,_productModel.assetCode];
-                
                 NSString *text = [NSString stringWithFormat:@"%@(剩余额度 %@)",_productModel.saleInfo.name,highText];
                 [cell setTitle:text highText:highText];
             }
@@ -519,6 +520,9 @@ static NSInteger const kMaxTimes = 5;
             [cell setLeftTitle:_sectionTitles[indexPath.row] rightTitle:_sectionSubtitles[indexPath.row]];
             if (indexPath.row == 0) {
                 cell.textField.userInteractionEnabled = true;
+                if ([self.priceTextFiled.text length] > 0) {
+                    [cell.textField setText:_priceTextFiled.text];
+                }
                 self.priceTextFiled = cell.textField;
                 cell.textField.delegate = self;
             } else if (indexPath.row == 1) {

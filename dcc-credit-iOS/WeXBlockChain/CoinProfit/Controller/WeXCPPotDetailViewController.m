@@ -18,8 +18,7 @@
 #import "WeXCoinProfitDetailViewController.h"
 #import "WeXCPActivityMainResModel.h"
 #import "WeXCPPotListMainModel.h"
-
-
+#import "WeXCoinProfitDetailViewController.h"
 
 @interface WeXCPPotDetailViewController ()
 
@@ -197,7 +196,10 @@ static NSString *const kCPNoRecordCellID  = @"WeXCPNoRecordCellID";
             case 1: {
                 if (indexPath.row == 0) {
                     WeXCPCompoundCell *cell = (WeXCPCompoundCell *)currentCell;
-                    [cell setLeftTitle:self.infoResModel.name rightButtonImage:nil];
+                    [cell setLeftTitle:self.infoResModel.name rightButtonImage:@"Wex_Coin_Arrow"];
+                    cell.DidClickAllButton = ^{
+                        [self pushToBuyCoinViewController];
+                    };
                 }
                 else{
                     WeXCoinProfitOnlyTextCell *cell = (WeXCoinProfitOnlyTextCell *)currentCell;
@@ -322,6 +324,29 @@ static NSString *const kCPNoRecordCellID  = @"WeXCPNoRecordCellID";
             [WeXPorgressHUD showText:@"系统错误" onView:self.view];
         }
     }
+}
+
+// MARK: - 跳转到认购页面
+- (void)pushToBuyCoinViewController {
+    WeXCoinProfitDetailViewController *profitDetailVC = [WeXCoinProfitDetailViewController new];
+    WeXCPActivityListModel *productModel = [WeXCPActivityListModel new];
+    WeXCPActivityListSaleInfoModel *saleInfoModel = [WeXCPActivityListSaleInfoModel new];
+    productModel.name = _potListModel.name;
+    productModel.assetCode = _potListModel.assetCode;
+    productModel.status = _potListModel.status;
+    productModel.contractAddress = _potListModel.contractAddress;
+    saleInfoModel.name = _potListModel.saleInfo.name;
+    saleInfoModel.startTime = _potListModel.saleInfo.startTime;
+    saleInfoModel.presentation = _potListModel.saleInfo.presentation;
+    saleInfoModel.closeTime = _potListModel.saleInfo.closeTime;
+    saleInfoModel.incomeTime = _potListModel.saleInfo.incomeTime;
+    saleInfoModel.endTime = _potListModel.saleInfo.endTime;
+    saleInfoModel.period = _potListModel.saleInfo.period;
+    saleInfoModel.annualRate = _potListModel.saleInfo.annualRate;
+    saleInfoModel.profitMethod = _potListModel.saleInfo.profitMethod;
+    productModel.saleInfo = saleInfoModel;
+    profitDetailVC.productModel = productModel;
+    [WeXHomePushService pushFromVC:self toVC:profitDetailVC];
 }
 
 - (void)didReceiveMemoryWarning {

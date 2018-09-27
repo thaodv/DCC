@@ -102,7 +102,9 @@ static NSString * const kPublicText = @"• 认购成功后不可撤销。";
     self.contentLab = contentLab;
     
     WeXCustomButton *buyButton = [WeXCustomButton button];
+    [buyButton setBackgroundImage:[WexCommonFunc imageWithColor:ColorWithHex(0x7B40FF)] forState:UIControlStateNormal];
     [buyButton setTitle:@"立即认购" forState:UIControlStateNormal];
+    buyButton.layer.borderWidth = 0;
     [buyButton addTarget:self action:@selector(buyInEvent:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:buyButton];
     self.buyInButton = buyButton;

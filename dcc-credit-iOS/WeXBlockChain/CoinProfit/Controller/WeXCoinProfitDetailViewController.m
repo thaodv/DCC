@@ -55,6 +55,7 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSAssert(_productModel, @"productModel参数为空");
     _titles = @[@"认购币种",@"收益方式",@"产品额度",@"时间限制",@"剩余额度"];
     self.title = WeXLocalizedString(@"币生息");
     [self configureNavigaionBar];
@@ -94,11 +95,11 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
 - (void)configureNavigaionBar {
     [self setNavigationNomalBackButtonType];
     [self.tableView setBackgroundColor:ColorWithHex(0xF8F8FF)];
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"持仓" style:UIBarButtonItemStyleDone target:self action:@selector(positionEvent:)];
-    self.navigationItem.rightBarButtonItem = rightButton;
-    NSDictionary *attributes = @{NSFontAttributeName:WexFont(15),
-                                 NSForegroundColorAttributeName:ColorWithHex(0x5756B3)
-                                 };
+//    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"持仓" style:UIBarButtonItemStyleDone target:self action:@selector(positionEvent:)];
+//    self.navigationItem.rightBarButtonItem = rightButton;
+//    NSDictionary *attributes = @{NSFontAttributeName:WexFont(15),
+//                                 NSForegroundColorAttributeName:ColorWithHex(0x5756B3)
+//                                 };
 //    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:attributes forState:UIControlStateNormal];
 }
 
