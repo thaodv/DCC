@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.constant
+package io.wexchain.android.common.constant
 
 /**
  * Created by lulingzhi on 2017/11/24.

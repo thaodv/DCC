@@ -11,7 +11,7 @@ import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.view.dialog.CloudstorageDialog
 import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R

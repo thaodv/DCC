@@ -3,6 +3,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_passport_auth"
-        android:title="变更记录"
+        android:title="@string/passport_auth"
         app:showAsAction="ifRoom"/>
 </menu>

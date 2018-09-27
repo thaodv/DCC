@@ -163,6 +163,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.AuthManageActivity"
+            android:label="统一登录变更记录"
             android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.AboutActivity"
@@ -450,11 +451,11 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.mine.SettingActivity"
-            android:label="设置"
+            android:label="更多"
             android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.home.TokenPlusActivity"
-            android:label="TokenPlus介绍"
+            android:label="Tokenplus介绍"
             android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BsxDetailActivity"

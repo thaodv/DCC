@@ -3,7 +3,6 @@ package io.wexchain.android.dcc
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.animation.AnimationUtils
 import io.reactivex.Single
@@ -12,13 +11,14 @@ import io.wexchain.android.common.atLeastCreated
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.setWindowExtended
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.modules.home.HomeActivity
 import io.wexchain.android.dcc.tools.PermissionHelper
 import io.wexchain.dcc.R
 import kotlinx.android.synthetic.main.activity_loading.*
 import java.util.concurrent.TimeUnit
 
-class LoadingActivity : AppCompatActivity() {
+class LoadingActivity : BaseCompatActivity() {
 
     private lateinit var helper: PermissionHelper
     private val WRITE_EXTERNAL_STORAGE_CODE = 102

@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.setInterceptScroll
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BaseCompatFragment
+import io.wexchain.android.common.base.BaseCompatFragment
 import org.web3j.utils.Numeric
 import wex.regloginlib.R
 import wex.regloginlib.databinding.FragmentExportPrivateKeyBinding

@@ -2,19 +2,14 @@ package worhavah.tongniucertmodule
 
 import android.os.Bundle
 import android.view.View
-import com.wexmarket.android.passport.base.BindFragment
+import io.wexchain.android.common.base.BindFragment
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.Pop
 import io.wexchain.android.common.runOnMainThread
 import io.wexchain.android.common.toast
-import io.wexchain.dccchainservice.domain.Result
-import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
-import worhavah.certs.tools.Base64toBitTools
-import worhavah.certs.tools.CertOperations
 import worhavah.mobilecertmodule.R
 import worhavah.mobilecertmodule.databinding.FragmentTnverifyCarrierSmsCodeBinding
 import java.util.concurrent.TimeUnit

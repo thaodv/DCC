@@ -11,13 +11,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.dp2px
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.view.adapter.*
-import io.wexchain.android.dcc.view.recycler.SpacingDecoration
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ItemMarketingActivityBinding
 import io.wexchain.dccchainservice.domain.MarketingActivity

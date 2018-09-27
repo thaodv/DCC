@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import io.wexchain.android.common.commitTransaction
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.fragment.home.FindFragment
 import io.wexchain.android.dcc.fragment.home.MineFragment
 import io.wexchain.android.dcc.fragment.home.ServiceFragment

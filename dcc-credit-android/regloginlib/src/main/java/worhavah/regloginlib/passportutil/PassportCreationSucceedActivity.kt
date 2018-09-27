@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BindActivity
-import io.wexchain.android.dcc.constant.Extras2
+import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras2
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.fragment.CreateProtectFragment
 import wex.regloginlib.R

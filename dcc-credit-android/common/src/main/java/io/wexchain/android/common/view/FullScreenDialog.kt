@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.view.dialog
+package io.wexchain.android.common.view
 
 import android.app.Dialog
 import android.content.Context
@@ -9,8 +9,7 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import worhavah.regloginlib.setQrContentSrc
-import io.wexchain.dcc.R
+import io.wexchain.android.common.R
 
 
 /**
@@ -18,21 +17,6 @@ import io.wexchain.dcc.R
  */
 class FullScreenDialog(context: Context, @StyleRes theme: Int = R.style.FullWidthDialog) : Dialog(context, theme) {
     companion object {
-        fun createQr(context: Context, content: String, autoDismiss: Boolean = true): FullScreenDialog {
-            val dialog = FullScreenDialog(context)
-            dialog.setContentView(R.layout.dialog_fullscreen_image)
-            val imageView = dialog.findViewById<ImageView>(R.id.iv_fullscreen)
-            if (autoDismiss) {
-                imageView.setOnClickListener {
-                    dialog.dismiss()
-                }
-            }
-            setQrContentSrc(imageView, content)
-            dialog.makeWindowFullscreenAndTransparent()
-            dialog.setCanceledOnTouchOutside(true)
-            dialog.setCancelable(true)
-            return dialog
-        }
 
         fun createLoading(context: Context): FullScreenDialog {
             val dialog = FullScreenDialog(context)

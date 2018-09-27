@@ -6,8 +6,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.View
 import io.reactivex.Single
-import io.wexchain.android.common.UrlManage
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import wex.regloginlib.R

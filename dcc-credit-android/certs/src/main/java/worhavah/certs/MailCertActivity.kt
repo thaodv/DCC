@@ -3,15 +3,12 @@ package worhavah.certs
 import android.os.Bundle
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.Pop
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.runOnMainThread
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
 import worhavah.certs.databinding.ActivityMailcertBinding
-import worhavah.certs.databinding.ActivityPhonecertBinding
 import worhavah.certs.tools.CertOperations
 import worhavah.regloginlib.Net.Networkutils
 import worhavah.regloginlib.Passport

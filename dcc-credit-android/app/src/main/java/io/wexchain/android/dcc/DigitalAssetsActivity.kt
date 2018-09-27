@@ -9,11 +9,10 @@ import android.view.View
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.withTransitionEnabled
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
-import io.wexchain.android.dcc.tools.Log
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.DigitalAssetsAdapter
 import io.wexchain.android.dcc.vm.DigitalAssetsVm

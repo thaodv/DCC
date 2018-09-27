@@ -1,7 +1,7 @@
 package io.wexchain.android.dcc.modules.bsx
 
 import android.os.Bundle
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityBsxHoldingBinding
 

@@ -2,7 +2,7 @@ package worhavah.certs
 
 import android.os.Bundle
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import worhavah.certs.beans.BeanValidMailResult
 import worhavah.certs.databinding.ActivityMailcertedBinding
 import worhavah.certs.tools.CertOperations

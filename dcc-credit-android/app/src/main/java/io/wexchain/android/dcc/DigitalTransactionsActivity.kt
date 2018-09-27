@@ -5,7 +5,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.*
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter

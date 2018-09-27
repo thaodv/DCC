@@ -3,22 +3,14 @@ package worhavah.tongniucertmodule
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import com.wexmarket.android.passport.base.BindFragment
-import io.reactivex.Flowable
+import io.wexchain.android.common.base.BindFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.Pop
 import io.wexchain.android.common.runOnMainThread
 import io.wexchain.android.common.toast
-import io.wexchain.dccchainservice.domain.Result
-import io.wexchain.dccchainservice.util.ParamSignatureUtil
-import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
 import worhavah.certs.tools.Base64toBitTools.stringToBitmap
-import worhavah.certs.tools.CertOperations
 import worhavah.mobilecertmodule.R
 import worhavah.mobilecertmodule.databinding.FragmentTnverifyCarrierImgCodeBinding
-import worhavah.mobilecertmodule.databinding.FragmentTnverifyCarrierSmsCodeBinding
-import java.util.concurrent.TimeUnit
 
 class VerifyCarrierImgCodeFragment: BindFragment<FragmentTnverifyCarrierImgCodeBinding>() {
     override val contentLayoutId: Int = R.layout.fragment_tnverify_carrier_img_code

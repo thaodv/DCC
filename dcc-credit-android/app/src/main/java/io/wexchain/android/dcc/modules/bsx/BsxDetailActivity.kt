@@ -5,7 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import com.alibaba.fastjson.JSON
 import io.wexchain.android.common.runOnMainThread
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.BsxOperations
 import io.wexchain.android.dcc.domain.SaleInfo
 import io.wexchain.android.dcc.network.IpfsApi

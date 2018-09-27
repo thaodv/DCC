@@ -4,8 +4,8 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.dcc.base.BindActivity
-import io.wexchain.android.dcc.constant.Extras2
+import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras2
 import worhavah.certs.tools.CertOperations
 import worhavah.certs.vm.CertificationDataVm
 import worhavah.mobilecertmodule.R

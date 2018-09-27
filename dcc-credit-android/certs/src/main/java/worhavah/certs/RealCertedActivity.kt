@@ -1,27 +1,12 @@
 package worhavah.certs
 
-import android.graphics.Color
 import android.os.Bundle
-import io.reactivex.Flowable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.Pop
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.runOnMainThread
-import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BindActivity
-import org.reactivestreams.Subscriber
-import org.reactivestreams.Subscription
+import io.wexchain.android.common.base.BindActivity
 import worhavah.certs.beans.BeanValidResult
-import worhavah.certs.databinding.ActivityPhonecertBinding
-import worhavah.certs.databinding.ActivityPhonecertedBinding
 import worhavah.certs.databinding.ActivityRealcertedBinding
 import worhavah.certs.tools.CertOperations
-import worhavah.certs.tools.CertOperations.savePNCertData
-import worhavah.regloginlib.Net.Networkutils
-import worhavah.regloginlib.Passport
 import worhavah.regloginlib.tools.CustomDialog
-import worhavah.regloginlib.tools.ScfOperations
-import java.util.concurrent.TimeUnit
 
 class RealCertedActivity : BindActivity<ActivityRealcertedBinding>(){
     override val contentLayoutId: Int

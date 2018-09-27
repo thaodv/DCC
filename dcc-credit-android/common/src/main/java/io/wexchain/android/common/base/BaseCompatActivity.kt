@@ -1,6 +1,8 @@
-package io.wexchain.android.dcc.base
+package io.wexchain.android.common.base
 
+import android.app.Activity
 import android.graphics.Color
+import android.os.Bundle
 import android.support.annotation.IdRes
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
@@ -9,8 +11,8 @@ import android.view.MenuItem
 import android.widget.TextView
 import io.reactivex.Single
 import io.wexchain.android.common.R
-import io.wexchain.android.common.view.MyDialog
-
+import io.wexchain.android.common.constant.Extras2
+import io.wexchain.android.common.view.FullScreenDialog
 
 abstract class BaseCompatActivity : AppCompatActivity() {
 
@@ -18,7 +20,10 @@ abstract class BaseCompatActivity : AppCompatActivity() {
     protected var toolbar: Toolbar? = null
 
     protected val intendedTitle: String?
-        get() = intent.getStringExtra("title")
+        get() = intent.getStringExtra(Extras2.EXTRA_TITLE)
+
+    protected val currentActivity: Activity
+        get() = ActivityCollector.currentActivity
 
     fun initToolbar(showHomeAsUp: Boolean = true): Toolbar? {
         toolbar = findViewById(R.id.toolbar)
@@ -38,7 +43,20 @@ abstract class BaseCompatActivity : AppCompatActivity() {
         return toolbar
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        ActivityCollector.addActivity(this)
+    }
+
+    protected fun finishAllActivity() = ActivityCollector.finishAll()
+
+
+    protected fun finishActivity(vararg tClass: Class<*>) {
+        ActivityCollector.finishActivitys(*tClass)
+    }
+
     override fun onDestroy() {
+        ActivityCollector.removeActivity(this)
         super.onDestroy()
         toolbar = null
         toolbarTitle = null
@@ -51,7 +69,6 @@ abstract class BaseCompatActivity : AppCompatActivity() {
             if (color != Color.TRANSPARENT) setTextColor(color)
         }
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         item ?: return super.onOptionsItemSelected(item)
@@ -80,39 +97,29 @@ abstract class BaseCompatActivity : AppCompatActivity() {
 
     }
 
-//    private var loadingDialog: FullScreenDialog? = null
+    private var loadingDialog: FullScreenDialog? = null
 
-   /* fun showLoadingDialog() {
+    fun showLoadingDialog() {
         var d = loadingDialog
         if (d == null) {
             d = FullScreenDialog.createLoading(this)
             loadingDialog = d
         }
         d.show()
-    }*/
+    }
 
-     var loadingDialog2: MyDialog?= null
-    fun showLoadingDialog() {
-        if (null==loadingDialog2 ) {
-             loadingDialog2 = MyDialog(this,R.style.DialogTheme_NoBackground)
-            // loadingDialog2 = WaitTransDialog(this )
-        }
-        loadingDialog2!! .getWindow().setDimAmount(0f);//核心代码
-        loadingDialog2!!.setCancelable(false)
-        loadingDialog2!!.show()
-    }
-    /*fun hideLoadingDialog() {
-        loadingDialog?.dismiss()
-    }*/
     fun hideLoadingDialog() {
-        loadingDialog2?.dismiss()
+        loadingDialog?.dismiss()
     }
+
     fun <T> Single<T>.withLoading(): Single<T> {
         return this
-            .doOnSubscribe {
-                showLoadingDialog()
-            }.doFinally {
-                hideLoadingDialog()
-            }
+                .doOnSubscribe {
+                    showLoadingDialog()
+                }.doFinally {
+                    hideLoadingDialog()
+                }
     }
 }
+
+

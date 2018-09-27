@@ -1,7 +1,7 @@
 package io.wexchain.android.dcc
 
 import android.os.Bundle
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.dcc.R
 
 class IncentiveProgramActivity : BaseCompatActivity() {

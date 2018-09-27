@@ -6,7 +6,7 @@ import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.base.ActivityCollector
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment

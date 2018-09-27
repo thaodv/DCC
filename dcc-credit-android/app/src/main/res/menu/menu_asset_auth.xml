@@ -3,6 +3,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_asset_auth"
-        android:title="资产授权"
+        android:title="@string/asset_auth"
         app:showAsAction="ifRoom"/>
 </menu>

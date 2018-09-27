@@ -183,7 +183,7 @@ object ViewModelHelper {
     fun maskAddress2(address: String?): String? {
         return if (address != null && address.length >= 8) {
             val length = address.length
-            return "0X ${address.substring(length - 8, length - 4).toUpperCase()} ${address.substring(length - 4)}"
+            return "0x ${address.substring(length - 8, length - 4).toUpperCase()} ${address.substring(length - 4)}"
         } else null
     }
 

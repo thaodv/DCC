@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.*

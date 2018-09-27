@@ -17,7 +17,7 @@ import io.wexchain.android.dcc.network.CommonApi
 import io.wexchain.android.dcc.network.IpfsApi
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.PassportRepository
-import io.wexchain.android.dcc.repo.ScfTokenManager
+import worhavah.regloginlib.ScfTokenManager
 import io.wexchain.android.dcc.repo.db.PassportDatabase
 import io.wexchain.android.dcc.tools.*
 import io.wexchain.android.idverify.IdVerifyHelper

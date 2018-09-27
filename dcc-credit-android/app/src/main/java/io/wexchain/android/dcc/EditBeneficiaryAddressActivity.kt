@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.EditText
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress

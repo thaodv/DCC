@@ -3,7 +3,7 @@ package io.wexchain.android.dcc
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.home.HomeActivity

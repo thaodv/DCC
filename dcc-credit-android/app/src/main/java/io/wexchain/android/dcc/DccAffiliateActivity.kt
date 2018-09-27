@@ -2,6 +2,7 @@ package io.wexchain.android.dcc
 
 import android.content.ClipData
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialog
 import android.view.Menu
@@ -14,7 +15,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.chain.ScfOperations
@@ -29,6 +30,7 @@ class DccAffiliateActivity : BindActivity<ActivityDccAffiliateBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
+        toolbarTitle?.setTextColor(Color.parseColor("#ffffff"))
         initClicks()
     }
 

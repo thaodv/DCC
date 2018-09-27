@@ -1,22 +1,13 @@
 package worhavah.certs
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.Gravity
-import android.widget.Toast
-import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.Pop
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.runOnMainThread
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BindActivity
-import org.reactivestreams.Subscriber
-import org.reactivestreams.Subscription
+import io.wexchain.android.common.base.BindActivity
 import worhavah.certs.beans.Beancitys
 import worhavah.certs.databinding.ActivityAddresscertBinding
-import worhavah.certs.databinding.ActivityMailcertBinding
-import worhavah.certs.databinding.ActivityPhonecertBinding
 import worhavah.certs.tools.CertOperations
 import worhavah.certs.tools.CertOperations.getcertHANum
 import worhavah.certs.views.ChangeAddressPopwindow
@@ -24,7 +15,6 @@ import worhavah.regloginlib.Net.Networkutils
 import worhavah.regloginlib.Passport
 import worhavah.regloginlib.tools.ScfOperations
 import java.util.HashMap
-import java.util.concurrent.TimeUnit
 
 class AddressCertActivity : BindActivity<ActivityAddresscertBinding>(){
     override val contentLayoutId: Int

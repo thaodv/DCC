@@ -79,11 +79,13 @@
             tools:listitem="@layout/item_digital_currency_select" />
 
         <Button
+            style="@style/Widget.AppCompat.Button.Dcc.Full"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:id="@+id/btn_submit_new_token"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:minWidth="160dp"
             android:text="@string/submit_new_token"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

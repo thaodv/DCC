@@ -1,24 +1,18 @@
 package io.wexchain.android.dcc
 
-import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import io.wexchain.android.common.Pop
-import io.wexchain.android.dcc.base.BindActivity
-import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.repo.db.AddressBook
 import io.wexchain.android.dcc.repo.db.AuthKeyChangeRecord
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback
 import io.wexchain.android.dcc.vm.AuthManage
-import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
-import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityAuthManageBinding
 import io.wexchain.dcc.databinding.ItemAuthkeyChangeRecordBinding
-import io.wexchain.dccchainservice.DccChainServiceException
 
 class AuthManageActivity : BindActivity<ActivityAuthManageBinding>(), ItemViewClickListener<AddressBook> {
 

@@ -9,7 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.Pop
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.constant.Extras

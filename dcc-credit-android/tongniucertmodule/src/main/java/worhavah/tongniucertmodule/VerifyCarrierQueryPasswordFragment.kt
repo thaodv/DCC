@@ -2,7 +2,7 @@ package worhavah.tongniucertmodule
 
 import android.os.Bundle
 import android.view.View
-import com.wexmarket.android.passport.base.BindFragment
+import io.wexchain.android.common.base.BindFragment
 import worhavah.mobilecertmodule.R
 import worhavah.mobilecertmodule.databinding.FragmentTnverifyCarrierQueryPasswordBinding
 

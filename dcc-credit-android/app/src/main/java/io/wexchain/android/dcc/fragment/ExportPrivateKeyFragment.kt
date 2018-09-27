@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.setInterceptScroll
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BaseCompatFragment
+import io.wexchain.android.common.base.BaseCompatFragment
 import io.wexchain.android.dcc.view.dialog.FullScreenDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentExportPrivateKeyBinding

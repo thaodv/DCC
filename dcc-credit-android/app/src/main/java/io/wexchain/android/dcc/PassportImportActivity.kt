@@ -3,13 +3,12 @@ package io.wexchain.android.dcc
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import com.google.gson.JsonSyntaxException
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.fragment.PasteKeystoreFragment
 import io.wexchain.android.dcc.fragment.PastePrivateKeyFragment
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.*
-import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
@@ -90,6 +89,7 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
                         putExtra(Extras.FROM_IMPORT,true)
                     }
                 }
+                finishActivity(LoadingActivity::class.java)
                 finish()
             })
     }

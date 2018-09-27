@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.constant
+package io.wexchain.android.common.constant
 
 import android.support.v4.util.Pair
 import android.support.v4.view.ViewCompat

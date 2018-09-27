@@ -7,21 +7,19 @@ import android.os.Bundle
 import android.view.View
 import com.megvii.idcardlib.IDCardScanActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.wexmarket.android.passport.ResultCodes
-import com.wexmarket.android.passport.base.BindFragment
+import io.wexchain.android.common.constant.ResultCodes
+import io.wexchain.android.common.base.BindFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BaseCompatActivity
-import io.wexchain.android.dcc.constant.RequestCodes
+import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.common.constant.RequestCodes
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.idverify.IdVerifyHelper.Companion.SIDE_BACK
 import io.wexchain.android.idverify.IdVerifyHelper.Companion.SIDE_FRONT
-import worhavah.certs.databinding.FragmentEditIdInfoBinding
 import worhavah.certs.databinding.FragmentRealEditIdInfoBinding
 import worhavah.certs.tools.CertOperations
-import worhavah.certs.vm.EditIdCardInfoVm
 import worhavah.certs.vm.RealCardInfoVm
 
 class RealInputIdInfoFragment : BindFragment<FragmentRealEditIdInfoBinding>() {

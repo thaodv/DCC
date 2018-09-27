@@ -7,6 +7,7 @@ import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.wexchain.android.common.base.BaseCompatFragment
 
 /**
  * Created by lulingzhi on 2017/11/24.

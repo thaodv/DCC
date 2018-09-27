@@ -2,11 +2,9 @@ package worhavah.tongniucertmodule
 
 import android.os.Bundle
 import android.widget.TextView
-import io.wexchain.android.common.atLeastCreated
 import io.wexchain.android.common.postOnMainThread
-import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BaseCompatActivity
-import io.wexchain.android.dcc.constant.Extras2
+import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.common.constant.Extras2
 import worhavah.certs.tools.CertOperations
 import worhavah.mobilecertmodule.R
 
