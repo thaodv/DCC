@@ -119,14 +119,14 @@ class IpfsService : Service() {
         val cmCertOrderId = worhavah.certs.tools.CertOperations.getTNCertOrderId()
         val cmLogPhoneNo = worhavah.certs.tools.CertOperations.getTnLogPhoneNo()
         val status = worhavah.certs.tools.CertOperations.getTNLogUserStatus().name
-        val json = worhavah.certs.tools.CertOperations.getTNLogData(cmCertOrderId).blockingGet()
+       // val json = worhavah.certs.tools.CertOperations.getTNLogData(cmCertOrderId).blockingGet()
         val cmLogCertExpired = worhavah.certs.tools.CertOperations.getTNLogCertExpired()
-
+val js2= worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.get()!!.toByteArray()
         val phoneInfo = TNPhoneInfo(
             sameCowmobileAuthenStatus = status,
             sameCowmobileAuthenOrderid = cmCertOrderId.toInt(),
             sameCowmobileAuthenNumber = cmLogPhoneNo!!,
-            sameCowmobileAuthenCmData = json.base64(),
+            sameCowmobileAuthenCmData = js2.base64(),
             sameCowmobileAuthenExpired = cmLogCertExpired)
 
         val data = phoneInfo.toJson()
@@ -261,6 +261,10 @@ class IpfsService : Service() {
                         ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
                             val phoneInfo = it.toBean(PhoneInfo::class.java)
                             CertOperations.saveIpfsCmData(phoneInfo)
+                        }
+                        ChainGateway.TN_COMMUNICATION_LOG -> {
+                            val phoneInfo = it.toBean(PhoneInfo::class.java)
+                            CertOperations.saveIpfsTNData(phoneInfo)
                         }
                         else -> {
                         }
