@@ -209,6 +209,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
 
         binding.asTongniuVm?.let {
             if (it.status.get() == UserCertStatus.INCOMPLETE) {
+                //     if (true) {
                 //get report
                 val passport = App.get().passportRepository.getCurrentPassport()!!
                 getTNLogReport(passport)
@@ -217,13 +218,12 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                         if(null!=it){
                             //Log.e("getTNLogReport",it.reportData.toString())
                             if(it.isComplete.equals("Y")){
-                                onTNLogSuccessGot(it.reportData.toString())
+                                android.util.Log.e("it.reportData ", it.reportData.toString() )
+                                onTNLogSuccessGot(it.reportData.toString() )
                                 setVM()
-
+                               // getTNrealdata()
                             }
                         }
-
-
                         App.get().chainGateway.getCertData(passport.address, ChainGateway.TN_COMMUNICATION_LOG).check()
                     }
                     .doFinally {
@@ -252,6 +252,20 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
             }
         }
     }
+    fun getTNrealdata(){
+        getTNLogReport2(App.get().passportRepository.getCurrentPassport()!!) .subscribeBy(
+            onSuccess = {
+                android.util.Log.e(" getTNLogReport2 ", it  )
+                val ss=it
+                var dd=ss.substring(it.indexOf("\"reportData\":\"")+14,it.length-2)
+                android.util.Log.e(" getTNLogReport2 dddddd", dd  )
+                onTNLogSuccessGot(dd )
+                setVM()
+
+                it
+            }
+        )
+    }
 
     fun getTNLogReport(passport: Passport): Single<TNcertReport> {
         require(passport.authKey != null)
@@ -271,6 +285,25 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
             )
         ).compose(Result.checked())
                //.compose(Result.checked())
+    }
+    fun getTNLogReport2(passport: Passport): Single<String> {
+        require(passport.authKey != null)
+        val address = passport.address
+        val privateKey = passport.authKey!!.getPrivateKey()
+        val orderId =worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.get()
+
+        return  worhavah.certs.tools.CertOperations.tnCertApi.TNgetReport2(
+            address = address,
+            orderId = orderId,
+
+            signature = ParamSignatureUtil.sign(
+                privateKey, mapOf(
+                    "address" to address,
+                    "orderId" to orderId.toString()
+                )
+            )
+        )
+        //.compose(Result.checked())
     }
 
     private fun getDescription(certificationType: CertificationType): String {

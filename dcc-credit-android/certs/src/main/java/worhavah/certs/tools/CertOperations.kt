@@ -31,6 +31,7 @@ import EventMsg
 import RxBus
 import android.support.annotation.WorkerThread
 import android.util.Log
+import com.wexmarket.android.network.cookie.Logutil
 import io.wexchain.android.common.*
 import io.wexchain.dccchainservice.CertApi2
 import io.wexchain.dccchainservice.MarketingApi
@@ -506,19 +507,30 @@ i
         return certPrefs.certTNLogExpired.get()
     }
     fun getLocalTnDigest(): Pair<ByteArray, ByteArray> {
-        val cmCertOrderId = getTNCertOrderId()
-       // val data = getTNLogData(cmCertOrderId).blockingGet()
-       // var data = Base64.decode(CertOperations.certPrefs.certTNLogData.get(), Base64.DEFAULT)
-        var data=Base64.encodeToString(CertOperations.certPrefs.certTNLogData.get()!!.toByteArray(), Base64.DEFAULT)
-        val digest1 = MessageDigest.getInstance(DIGEST).digest(data.toByteArray())
-        String264()
+        val digest1 = MessageDigest.getInstance(DIGEST).digest(CertOperations.certPrefs.certTNLogData.get()!!.toByteArray())
         return digest1 to byteArrayOf()
     }
 
-
     fun String264(){
-        var data=Base64.encodeToString("hskhkajhkjhkjhkh1231".toByteArray(), Base64.DEFAULT)
-        Log.e("String264String264",data)
+        var sssss="hskhkajhkjhkjhkh1231"
+        var data=Base64.encodeToString(sssss.toByteArray(), Base64.DEFAULT)
+        val digest1 = MessageDigest.getInstance(DIGEST).digest(data.toByteArray())
+        val digest11 = MessageDigest.getInstance(DIGEST).digest(sssss.toByteArray())
+        Log.e("t get64digest",data)
+        val dig264String= String (Base64.encode(digest1,Base64.DEFAULT) )
+        Log.e("t dig264String",dig264String)
+        val dig264String222= String (Base64.encode(digest11,Base64.DEFAULT) )
+        Log.e("t dig264String222",dig264String222)
+        val dig264String2= String(digest1)
+        Log.e("t dig264String2",dig264String2)
+        var dd=Base64.decode(sssss.toByteArray(), Base64.DEFAULT)
+      //  var dd2=Base64.decode(sssss.toByteArray(), Base64.DEFAULT)
+        Log.e("t get64digest 1",String(dd))
+        val digest2 = MessageDigest.getInstance(DIGEST).digest(dd)
+        val dig264String22= String (Base64.encode(digest2,Base64.DEFAULT) )
+        Log.e("t dig264String22",dig264String22)
+        val dig264String23= String(digest2)
+        Log.e("t dig264String23",dig264String23)
     }
     fun saveTnLogCertExpired(expired: Long) {
         certPrefs.certTNLogExpired.set(expired)

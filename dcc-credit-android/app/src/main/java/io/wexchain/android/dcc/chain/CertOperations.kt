@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.support.annotation.WorkerThread
 import android.support.v4.app.FragmentManager
 import android.util.Base64
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Single
@@ -89,6 +90,9 @@ object CertOperations {
                    /* if(business.equals(ChainGateway.TN_COMMUNICATION_LOG)){
                         de1 = MessageDigest.getInstance("SHA256").digest(Base64.decode(content.digest1, Base64.DEFAULT))
                     }*/
+                   /* val d3=Base64.encode(de1, Base64.DEFAULT)
+                    Log.e("d3=  ", String(d3))*/
+                   // Log.e("d3=d3=",dig264String)
                     Pair(de1, de2)
                 }
     }
@@ -104,6 +108,12 @@ object CertOperations {
                 }
         return getChainDigest(business)
                 .map {
+                  /*  if(business.equals(ChainGateway.TN_COMMUNICATION_LOG)){
+                        Log.e("it.first",String(it.first))
+                        Log.e("localDigest!!.first",String(localDigest!!.first))
+                        Log.e("it.first  decode",String(Base64.encode(it.first, Base64.DEFAULT)))
+                        Log.e("localDigest!!.decode",String(Base64.encode(localDigest!!.first, Base64.DEFAULT)) )
+                    }*/
                     Arrays.equals(it.first, localDigest!!.first) && Arrays.equals(it.second, localDigest.second)
                 }
     }

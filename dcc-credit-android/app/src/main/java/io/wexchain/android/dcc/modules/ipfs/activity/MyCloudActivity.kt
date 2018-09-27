@@ -191,7 +191,8 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                         .blockingGet()
             } else {//本地有数据
                 val checkChainData = CertOperations.checkLocalIdAndChainData(business).blockingGet()
-                if (checkChainData||business.equals(ChainGateway.TN_COMMUNICATION_LOG)) {//true 本地数据和链上最新一致
+                if (checkChainData ) {//true 本地数据和链上最新一致
+                 //if (checkChainData||business.equals(ChainGateway.TN_COMMUNICATION_LOG)) {//true 本地数据和链上最新一致
                     checkIpfsAndChainDigest(business)
                             .map {
                                 //true ipfs数据和链上最新一致
