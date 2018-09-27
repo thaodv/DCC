@@ -312,7 +312,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
             CertificationType.PERSONAL -> getString(R.string.safer_assessment)
             CertificationType.BANK -> getString(R.string.for_quick_approvalto_improve)
             CertificationType.MOBILE -> getString(R.string.to_improve_the_approval)
-            CertificationType.TONGNIU -> getString(R.string.to_improve_the_approval)
+            CertificationType.TONGNIU -> "用于现金借贷审核"
             CertificationType.LOANREPORT -> "借贷记录全整合"
         }
     }
@@ -323,7 +323,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
             CertificationType.PERSONAL -> getString(R.string.verify_your_legal_documentation)
             CertificationType.BANK -> getString(R.string.bank_account_verification)
             CertificationType.MOBILE -> getString(R.string.carrier_verification)
-            CertificationType.TONGNIU -> "同牛认证"
+            CertificationType.TONGNIU -> "同牛运营商认证"
             CertificationType.LOANREPORT -> "借贷报告"
         }
     }
