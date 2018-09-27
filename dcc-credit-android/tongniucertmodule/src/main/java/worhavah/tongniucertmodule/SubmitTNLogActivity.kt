@@ -125,7 +125,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
         phoneNo: String,
         password: String
     ): Single<TNcert1> {
-        require(passport.authKey != null)
+       // require(passport.authKey != null)
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
         Log.e("orderId",orderId.toString())
