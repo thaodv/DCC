@@ -208,7 +208,7 @@ static NSInteger const kMaxCount = 6;
     NSTextAttachment *attach = [[NSTextAttachment alloc] init];
     attach.image = [UIImage imageNamed:@"passport_set"];
     attach.bounds = CGRectMake(0, -3, 15, 15);
-    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:WeXLocalizedString(@"成功创建数字钱包后，请即时在>数字备份钱包中备份，以防数字资产丢失")];
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:WeXLocalizedString(@"成功创建数字钱包后，请即时在>备份钱包中备份，以防数字资产丢失")];
     NSAttributedString *imageAttrStr = [NSAttributedString attributedStringWithAttachment:attach];
     [attrStr insertAttributedString:imageAttrStr atIndex:14];
     if ([[WeXLocalizedManager shareManager] isChinese]) {

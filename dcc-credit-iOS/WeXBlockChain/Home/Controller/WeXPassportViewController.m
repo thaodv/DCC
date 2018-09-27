@@ -35,7 +35,7 @@
 #import "WeXImportViewController.h"
 
 #import "WeXActivityHomeViewController.h"
-#import "WeXCreditBorrowUSDTViewController.h"
+//#import "WeXCreditBorrowUSDTViewController.h"
 #import "WeXLoanReportHomeViewController.h"
 
 #import "WeXGetRedPacketView.h"
@@ -138,6 +138,7 @@ static NSString * const kLoanCoinCellID = @"WeXHomeLoanCoinCellID";
 
 @property (nonatomic,strong)WeXRegisterMemberAdapter *registerAdapter;
 
+//红包相关
 @property (nonatomic,strong)WeXActivityQueryBonusAdapter *queryBonusAdapter;
 
 @property (nonatomic,strong)WeXActvityApplyBonusAdapter *applyBonusAdapter;
@@ -166,7 +167,7 @@ static NSString * const kLoanCoinCellID = @"WeXHomeLoanCoinCellID";
 @property (nonatomic, strong) WeXLoanGetOrderDetailAdapter *getOrderDetailAdapter;
 @property (nonatomic, strong) WeXLoanGetOrderDetailResponseModal *orderDetailModel;
 @property (nonatomic, copy) NSString *loanCoinLogoURL;
-
+@property (nonatomic, assign) CGPoint offset;
 
 @end
 
@@ -181,10 +182,6 @@ static NSString * const kLoanCoinCellID = @"WeXHomeLoanCoinCellID";
     [self setupSubViews];
     //查询信用借币
     [self createQueryProductsRequest];
-
-    WeXVersionUpdateManager *manager = [WeXVersionUpdateManager shareManager];
-    [manager configVersionUpdateViewOnView:self.navigationController.view isUpdate:true];
-    
     [self addNotificationCenter];
     [self configExceptionRegisterQuestion];
     //如果本地没有缓存则是隐藏状态
@@ -239,7 +236,7 @@ static NSString * const kLoanCoinCellID = @"WeXHomeLoanCoinCellID";
 
 #pragma -mark 发送请求
 - (void)createQuerytBonusRequest{
-    [WeXPorgressHUD showLoadingAddedTo:self.view];
+//    [WeXPorgressHUD showLoadingAddedTo:self.view];
     _queryBonusAdapter = [[WeXActivityQueryBonusAdapter alloc] init];
     _queryBonusAdapter.delegate = self;
     [_queryBonusAdapter run:nil];
@@ -267,7 +264,7 @@ static NSString * const kLoanCoinCellID = @"WeXHomeLoanCoinCellID";
 }
 // MARK: - 信用借币相关
 - (void)createQueryProductsRequest{
-    if (!_queryBonusAdapter) {
+    if (!_queryProductsAdapter) {
         _queryProductsAdapter = [[WeXQueryProductByLenderCodeAdapter alloc] init];
     }
     _queryProductsAdapter.delegate = self;
@@ -326,15 +323,18 @@ static NSString * const kLoanCoinCellID = @"WeXHomeLoanCoinCellID";
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:COLOR_NAV_TITLE}];
     self.navigationController.delegate = nil;
     [self getDatas];
-    [self getDefaultNodeDelay];
+//    [self getDefaultNodeDelay];
     if ([self hasPassport]) {
 //        [self createGetAgentMarketRequest];
         [self createGetBalaceRequest];
+//      查询是否红包
+        [self createQuerytBonusRequest];
     }
 //    [self requestLastOrder];
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    self.offset = _cardTabelView.contentOffset;
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:WexDefault4ATitleColor}];
 }
 
@@ -665,9 +665,9 @@ static NSString * const kLoanCoinCellID = @"WeXHomeLoanCoinCellID";
                 [self.view addSubview:_redPacketView];
             }
             // MARK: - 糖果领取
-            else {
-                [WeXHomePushService pushFromVC:self toVC:[WeXActivityHomeViewController new]];
-            }
+//            else {
+//                [WeXHomePushService pushFromVC:self toVC:[WeXActivityHomeViewController new]];
+//            }
         }
         else if ([headModel.systemCode isEqualToString:@"SUCCESS"]) {
             [WeXPorgressHUD hideLoading];
@@ -835,7 +835,7 @@ static NSString * const kLoanCoinCellID = @"WeXHomeLoanCoinCellID";
         } else if (section == 2) {
             return _isAllowDisPlay ? 2 : 0;
         } else if (section == 3) {
-            return 2;
+            return _isAllowDisPlay ? 2 : 0;
         } else if (section == 4) {
             return 2;
         }
@@ -846,6 +846,9 @@ static NSString * const kLoanCoinCellID = @"WeXHomeLoanCoinCellID";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 1 || section == 2 || section == 3) {
+        return _isAllowDisPlay ? 10 : 0.01;
+    }
     return 10;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {

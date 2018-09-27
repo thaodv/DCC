@@ -233,6 +233,11 @@ typedef void(^SafeVertifyResponse)(void);
         else if (indexPath.section == 1 && indexPath.row == 1)
         {
             cell.titleLabel.text = WeXLocalizedString(@"备份钱包");
+            cell.specialLabel.text = WeXLocalizedString(@"重要");
+            cell.specialLabel.backgroundColor = [UIColor redColor];
+            cell.specialLabel.textColor = ColorWithHex(0xFFFFFF);
+            cell.specialLabel.layer.cornerRadius = 10;
+            cell.specialLabel.clipsToBounds = YES;
           
         }
         else if (indexPath.section == 1 && indexPath.row == 2)

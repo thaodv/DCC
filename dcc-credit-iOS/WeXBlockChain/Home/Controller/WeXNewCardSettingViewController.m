@@ -27,6 +27,8 @@
 #import "WeXSelectedNodeViewController.h"
 #import "AppDelegate.h"
 #import "WeXHomePushService.h"
+
+
 @interface WeXNewCardSettingViewController ()<UITableViewDelegate,UITableViewDataSource,WeXPasswordManagerDelegate>
 
 {
@@ -35,6 +37,7 @@
     WeXPasswordCacheModal *_model;
     
     WeXPasswordManager *_manager;
+    UISwitch *_safeSwitch;
 }
 
 @end
@@ -47,10 +50,17 @@
     self.navigationItem.title = WeXLocalizedString(@"更多");
     [self setNavigationNomalBackButtonType];
     [self setupSubViews];
+    [self commonInit];
     
     // Do any additional setup after loading the view.
 }
 
+- (void)commonInit{
+    
+    _model = [WexCommonFunc getPassport];
+    NSLog(@"_model=%@",_model);
+    
+}
 //初始化滚动视图
 -(void)setupSubViews{
     _tableView = [[UITableView alloc] init];
@@ -130,14 +140,20 @@
         {
             cell.titleLabel.text = WeXLocalizedString(@"本地安全保护");
             _model = [WexCommonFunc getPassport];
+            cell.safeSwitch.hidden = NO;
+            cell.arrowImg.hidden = YES;
+            
             if (_model.passwordType == WeXPasswordTypeNone) {
-                cell.desLabel.text = WeXLocalizedString(@"已关闭");
+//                cell.desLabel.text = WeXLocalizedString(@"已关闭");
+                cell.safeSwitch.on = NO;
             }
             else
             {
-                cell.desLabel.text = WeXLocalizedString(@"已开启");
+                cell.safeSwitch.on = YES;
+//                cell.desLabel.text = WeXLocalizedString(@"已开启");
             }
-            _safetyDescriptionLabel = cell.desLabel;
+            [cell.safeSwitch addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventTouchUpInside];
+            _safeSwitch = cell.safeSwitch;
         }
         
         else if ( indexPath.row == 2)
@@ -227,6 +243,68 @@
     [WeXHomePushService pushFromVC:self toVC:[WeXPassportDeleteViewController new]];
 //    WeXPassportDeleteViewController *ctrl = [[WeXPassportDeleteViewController alloc] init];
 //    [self.navigationController pushViewController:ctrl animated:YES];
+}
+
+
+#pragma mark - WeXPasswordManagerDelegate
+- (void)passwordManagerDidSetPasswordSuccess
+{
+//    _safetyDescriptionLabel.text = WeXLocalizedString(@"已开启");
+    _safeSwitch.on = YES;
+}
+
+- (void)passwordManagerVerifySuccess{
+//    _safetyDescriptionLabel.text = WeXLocalizedString(@"已关闭");
+     _safeSwitch.on = NO;
+    
+    [self deletePassword];
+    //关闭秘密后，显示提示
+    [self showToastInfo];
+}
+
+- (void)passwordManagerVerifyException
+{
+//    _safetyDescriptionLabel.text = WeXLocalizedString(@"已关闭");
+     _safeSwitch.on = NO;
+}
+
+- (void)deletePassword{
+    //删除passport中密码
+    _model = [WexCommonFunc getPassport];
+    _model.numberPassword = nil;
+    _model.gesturePassword = nil;
+    _model.passwordType = WeXPasswordTypeNone;
+    [WexCommonFunc savePassport:_model];
+}
+
+- (void)showToastInfo{
+    
+    [WeXPorgressHUD showText:WeXLocalizedString(@"关闭本地安全保护成功，您可以开启其他安全保护方式。") onView:self.view];
+}
+
+- (void)switchAction:(UISwitch *)sender{
+    
+    if (sender.on == YES) {
+        sender.on = NO;
+    }else{
+        sender.on = YES;
+    }
+    
+    _model = [WexCommonFunc getPassport];
+    if (_model.passwordType == WeXPasswordTypeNone) {
+        WeXPasswordManager *manager = [WeXPasswordManager managerWithType:WeXPasswordManagerTypeCreate parentController:self];
+        manager.delegate = self;
+        [manager loadPassword];
+        _manager = manager;
+    }
+    else {
+        WeXPasswordManager *manager = [WeXPasswordManager managerWithType:WeXPasswordManagerTypeVerify parentController:self];
+        manager.delegate = self;
+        [manager loadPassword];
+        _manager = manager;
+    }
+    
+ 
 }
 
 - (void)didReceiveMemoryWarning {
