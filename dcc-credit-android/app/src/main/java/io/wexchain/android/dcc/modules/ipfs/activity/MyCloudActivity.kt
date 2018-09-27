@@ -174,7 +174,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         updateCmItem()
 
         val tnstatus =worhavah.certs.tools. CertOperations.getTNLogUserStatus()
-        Single.just(tnstatus != UserCertStatus.DONE).checkStatus(ChainGateway.TN_COMMUNICATION_LOG) .io_main()
+        Single.just(tnstatus != worhavah.certs.tools.UserCertStatus.DONE).checkStatus(ChainGateway.TN_COMMUNICATION_LOG) .io_main()
             .withLoading()
             .subscribeBy {
                 TnStatus= it
@@ -194,7 +194,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                         .blockingGet()
             } else {//本地有数据
                 val checkChainData = CertOperations.checkLocalIdAndChainData(business).blockingGet()
-                if (checkChainData) {//true 本地数据和链上最新一致
+                if (checkChainData||business.equals(ChainGateway.TN_COMMUNICATION_LOG)) {//true 本地数据和链上最新一致
                     checkIpfsAndChainDigest(business)
                             .map {
                                 //true ipfs数据和链上最新一致
@@ -296,7 +296,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
             })
         }
 
-        if (CmStatus == STATUS_UPLOAD) {
+        if (TnStatus == STATUS_UPLOAD) {
             doAsync {
                 mBinder.createTnData { size ->
                     uiThread {
@@ -446,7 +446,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
             ChainGateway.TN_COMMUNICATION_LOG -> {
                 cloud_tn_selected.text = "已完成"
                 TnStatus = STATUS_DEFAULT
-                cloud_item_cm.isClickable = false
+                cloud_item_tn.isClickable = false
                 isEnabled.remove(TNDATA)
                 val status = worhavah.certs.tools.CertOperations.getTNLogUserStatus()
                 Single.just(status != UserCertStatus.DONE)

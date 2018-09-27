@@ -36,7 +36,9 @@ import io.wexchain.ipfs.entity.BankInfo
 import io.wexchain.ipfs.entity.IdInfo
 import io.wexchain.ipfs.entity.PhoneInfo
 import io.wexchain.ipfs.utils.base64
+import worhavah.certs.tools.CertOperations
 import worhavah.certs.tools.CertOperations.getTNLogUserStatus
+import worhavah.certs.tools.CertOperations.saveTnLogCertExpired
 import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -82,8 +84,11 @@ object CertOperations {
                 .check()
                 .map {
                     val content = it.content
-                    val de1 = Base64.decode(content.digest1, Base64.DEFAULT)
+                    var de1 = Base64.decode(content.digest1, Base64.DEFAULT)
                     val de2 = Base64.decode(content.digest2, Base64.DEFAULT)
+                   /* if(business.equals(ChainGateway.TN_COMMUNICATION_LOG)){
+                        de1 = MessageDigest.getInstance("SHA256").digest(Base64.decode(content.digest1, Base64.DEFAULT))
+                    }*/
                     Pair(de1, de2)
                 }
     }
@@ -94,6 +99,7 @@ object CertOperations {
                     ChainGateway.BUSINESS_ID -> getLocalIdDigest()
                     ChainGateway.BUSINESS_BANK_CARD -> getLocalBankDigest()
                     ChainGateway.BUSINESS_COMMUNICATION_LOG -> getLocalCmDigest()
+                    ChainGateway.TN_COMMUNICATION_LOG-> worhavah.certs.tools.CertOperations.getLocalTnDigest()
                     else -> null
                 }
         return getChainDigest(business)
@@ -673,6 +679,19 @@ object CertOperations {
                     ensureNewFile()
                     writeBytes(phoneInfo.mobileAuthenCmData.base64())
                 }
+    }
+
+    fun saveIpfsTNData(phoneInfo: PhoneInfo) {
+        saveTnLogCertExpired(phoneInfo.mobileAuthenExpired)
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.set(phoneInfo.mobileAuthenOrderid.toLong())
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogState.set(phoneInfo.mobileAuthenStatus)
+        worhavah.certs.tools.CertOperations. certPrefs.certTNLogPhoneNo.set(phoneInfo.mobileAuthenNumber)
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(phoneInfo.mobileAuthenCmData.base64().toString())
+       /* File(App.get().filesDir, certCmLogReportFileName(phoneInfo.mobileAuthenOrderid.toLong()))
+            .apply {
+                ensureNewFile()
+                writeBytes(phoneInfo.mobileAuthenCmData.base64())
+            }*/
     }
 
     fun saveIpfsBankData(bankInfo: BankInfo) {

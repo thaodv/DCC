@@ -8,11 +8,7 @@ import com.google.gson.Gson
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import io.wexchain.android.common.Prefs
-import io.wexchain.android.common.UrlManage
-import io.wexchain.android.common.ensureNewFile
 import io.wexchain.android.common.kotlin.weak
-import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.tools.RetryWithDelay
 import worhavah.regloginlib.tools.pair
 import io.wexchain.android.idverify.IdCardEssentialData
@@ -34,6 +30,8 @@ import kotlin.collections.ArrayList
 import EventMsg
 import RxBus
 import android.support.annotation.WorkerThread
+import android.util.Log
+import io.wexchain.android.common.*
 import io.wexchain.dccchainservice.CertApi2
 import io.wexchain.dccchainservice.MarketingApi
 import io.wexchain.dccchainservice.domain.*
@@ -509,9 +507,18 @@ i
     }
     fun getLocalTnDigest(): Pair<ByteArray, ByteArray> {
         val cmCertOrderId = getTNCertOrderId()
-        val data = getTNLogData(cmCertOrderId).blockingGet()
-        val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
+       // val data = getTNLogData(cmCertOrderId).blockingGet()
+       // var data = Base64.decode(CertOperations.certPrefs.certTNLogData.get(), Base64.DEFAULT)
+        var data=Base64.encodeToString(CertOperations.certPrefs.certTNLogData.get()!!.toByteArray(), Base64.DEFAULT)
+        val digest1 = MessageDigest.getInstance(DIGEST).digest(data.toByteArray())
+        String264()
         return digest1 to byteArrayOf()
+    }
+
+
+    fun String264(){
+        var data=Base64.encodeToString("hskhkajhkjhkjhkh1231".toByteArray(), Base64.DEFAULT)
+        Log.e("String264String264",data)
     }
     fun saveTnLogCertExpired(expired: Long) {
         certPrefs.certTNLogExpired.set(expired)
