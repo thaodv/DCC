@@ -473,6 +473,12 @@
     <string name="service_bsx_title">多币种预计年化 <font color='#ff0000'>10%-40%</font></string>
 
     <string name="bsx_buy_again">想再买点？去<font color='#7B40FF'>币生息</font>市场看看 ></string>
+    <string name="passport_auth"><font color='#C009FF'>变更记录</font></string>
+    <string name="asset_auth"><font color='#C009FF'>资产授权</font></string>
+    <string name="asset_delete"><font color='#C009FF'>一键删除</font></string>
+    <string name="skip_creat"><font color='#C009FF'>跳过</font></string>
+    <string name="from_gallery"><font color='#C009FF'>相册</font></string>
+
     <string name="tokenplus_tips">基于Linux环境搭建的量化交易系统，速度提升不止3倍\n无需自行购买服务器和配置交易软件，仅需注册账户，即可轻松套利\n每个用户独立服务器和IP，四重加密全面保障你的账户key安全\n遍布全球的服务器网络节点，优选离交易所最近节点，力争不错过每一次交易机会\n目前已支持国内前11大交易所，并持续增加中。</string>
 
 </resources>

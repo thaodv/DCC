@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.*
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.fragment.InputBankCardInfoFragment

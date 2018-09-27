@@ -10,7 +10,7 @@ import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.replaceFragment
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.fragment.InputIdInfoFragment

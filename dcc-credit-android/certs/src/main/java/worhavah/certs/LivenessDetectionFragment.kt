@@ -7,11 +7,11 @@ import android.view.View
 import com.google.gson.Gson
 import com.megvii.livenesslib.LivenessActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.wexmarket.android.passport.ResultCodes
-import com.wexmarket.android.passport.base.BindFragment
+import io.wexchain.android.common.constant.ResultCodes
+import io.wexchain.android.common.base.BindFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.constant.RequestCodes
+import io.wexchain.android.common.constant.RequestCodes
 import io.wexchain.android.idverify.domain.LivenessResult
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.Result
@@ -22,7 +22,7 @@ import worhavah.regloginlib.Net.Networkutils
 import java.math.BigInteger
 import java.math.RoundingMode
 
-class LivenessDetectionFragment:BindFragment<FragmentLivenessDetectionBinding>() {
+class LivenessDetectionFragment: BindFragment<FragmentLivenessDetectionBinding>() {
 
     override val contentLayoutId: Int = R.layout.fragment_liveness_detection
 

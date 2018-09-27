@@ -35,12 +35,11 @@
             android:text="@string/local_protect"
             app:layout_constraintTop_toBottomOf="@id/tv_select_node" />
 
-        <!--switchStatus="@{protect.type!=null}"-->
-
         <io.wexchain.android.dcc.view.SwitchButton
             android:id="@+id/tv_passport_protect_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            switchStatus="@{protect.type!=null}"
             android:layout_marginRight="30dp"
             android:layout_marginTop="10dp"
             app:layout_constraintRight_toRightOf="parent"

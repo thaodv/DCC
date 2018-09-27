@@ -1,11 +1,10 @@
 package io.wexchain.android.dcc
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.dcc.BR

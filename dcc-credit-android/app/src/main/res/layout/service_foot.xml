@@ -118,7 +118,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TokenPlus套利工具"
+                android:text="Tokenplus套利工具"
                 android:textColor="@color/FF4A4A4A"
                 android:textSize="14sp" />
 

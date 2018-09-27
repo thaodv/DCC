@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import io.wexchain.android.common.kotlin.Either
 import io.wexchain.android.common.kotlin.Left
 import io.wexchain.android.common.kotlin.Right
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.MultiTypeListAdapter
 import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback

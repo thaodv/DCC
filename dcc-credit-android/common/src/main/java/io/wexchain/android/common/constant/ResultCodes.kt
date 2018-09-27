@@ -1,4 +1,4 @@
-package com.wexmarket.android.passport
+package io.wexchain.android.common.constant
 
 import android.app.Activity
 

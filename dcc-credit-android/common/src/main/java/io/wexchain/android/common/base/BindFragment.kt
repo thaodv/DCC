@@ -1,4 +1,4 @@
-package com.wexmarket.android.passport.base
+package io.wexchain.android.common.base
 
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
@@ -7,7 +7,6 @@ import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.wexchain.android.dcc.base.BaseCompatFragment
 
 /**
  * Created by lulingzhi on 2017/11/24.

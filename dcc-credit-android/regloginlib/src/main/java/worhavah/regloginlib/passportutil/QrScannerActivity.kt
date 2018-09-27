@@ -25,9 +25,9 @@ import io.wexchain.android.common.isOnMainThread
 import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BindActivity
-import io.wexchain.android.dcc.constant.Extras2
-import io.wexchain.android.dcc.constant.RequestCodes
+import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras2
+import io.wexchain.android.common.constant.RequestCodes
 import wex.regloginlib.R
 import wex.regloginlib.databinding.ActivityQrScannerBinding
 import worhavah.regloginlib.tools.isEthAddress

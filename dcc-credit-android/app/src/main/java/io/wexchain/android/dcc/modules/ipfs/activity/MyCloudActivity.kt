@@ -19,7 +19,7 @@ import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.modules.ipfs.service.IpfsBinder
@@ -29,7 +29,6 @@ import io.wexchain.android.dcc.tools.Log
 import io.wexchain.android.dcc.view.dialog.CloudstorageDialog
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
-import io.wexchain.dcc.R.id.cloud_id_progress
 import io.wexchain.dcc.databinding.ActivityMyCloudBinding
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
@@ -41,10 +40,8 @@ import org.jetbrains.anko.uiThread
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
 import org.web3j.abi.datatypes.Utf8String
-import worhavah.regloginlib.tools.pair
 import java.util.*
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Function4
 
 
 /**

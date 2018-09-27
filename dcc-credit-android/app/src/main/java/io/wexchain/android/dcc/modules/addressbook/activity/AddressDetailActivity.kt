@@ -7,7 +7,7 @@ import android.view.Gravity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.base.StaticHtmlActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.repo.db.AddressBook

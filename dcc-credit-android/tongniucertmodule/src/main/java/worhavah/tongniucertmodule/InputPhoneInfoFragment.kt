@@ -4,7 +4,7 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
-import com.wexmarket.android.passport.base.BindFragment
+import io.wexchain.android.common.base.BindFragment
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.getViewModel
 import io.wexchain.dccchainservice.ChainGateway

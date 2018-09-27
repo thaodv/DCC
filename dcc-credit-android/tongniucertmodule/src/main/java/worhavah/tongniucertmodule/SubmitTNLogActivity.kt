@@ -8,7 +8,7 @@ import io.wexchain.android.common.Pop
 import io.wexchain.android.common.replaceFragment
 import io.wexchain.android.common.runOnMainThread
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.CertProcess
 import io.wexchain.dccchainservice.domain.Result

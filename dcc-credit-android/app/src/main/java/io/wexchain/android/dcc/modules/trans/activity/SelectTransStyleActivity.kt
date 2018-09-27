@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.CreateTransactionActivity
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.addressbook.activity.AddAddressBookActivity
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity

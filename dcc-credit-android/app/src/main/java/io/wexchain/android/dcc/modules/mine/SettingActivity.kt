@@ -9,8 +9,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.*
-import io.wexchain.android.dcc.base.BaseCompatActivity
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
@@ -22,7 +21,6 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivitySettingBinding
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CheckUpgrade
-import kotlinx.android.synthetic.main.activity_setting.*
 import zlc.season.rxdownload3.core.Mission
 import java.io.File
 

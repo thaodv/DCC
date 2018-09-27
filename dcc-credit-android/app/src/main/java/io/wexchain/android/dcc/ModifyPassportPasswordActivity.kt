@@ -6,8 +6,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BaseCompatActivity
-import io.wexchain.android.dcc.view.dialog.CustomDialog
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.vm.ModifyPassword
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment

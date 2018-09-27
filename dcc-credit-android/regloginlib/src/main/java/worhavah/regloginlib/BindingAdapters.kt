@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.tools
+package worhavah.regloginlib
 import android.databinding.BindingAdapter
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
@@ -14,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.wexmarket.android.barcode.util.QrCodeDrawable
 import io.wexchain.android.dcc.tools.DoNothingTransformationMethod
 import worhavah.ViewBackgroundTarget
-import worhavah.regloginlib.ExceedAware
 
 @set:BindingAdapter("visibleOrGone")
 var View.visibleOrGone

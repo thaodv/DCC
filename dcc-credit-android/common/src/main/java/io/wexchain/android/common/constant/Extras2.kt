@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.constant
+package io.wexchain.android.common.constant
 
 object Extras2 {
     const val EXTRA_TITLE = "title"

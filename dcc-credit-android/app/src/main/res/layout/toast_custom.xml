@@ -15,7 +15,7 @@
         android:layout_gravity="center_horizontal"
         android:textSize="18sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@color/text_white"
+        android:textColor="#fff"
         tools:text="@tools:sample/lorem"
         />
 

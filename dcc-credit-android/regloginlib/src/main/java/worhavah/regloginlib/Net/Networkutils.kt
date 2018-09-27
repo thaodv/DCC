@@ -6,7 +6,7 @@ import com.wexmarket.android.network.Networking
 import io.reactivex.Single
 import io.wexchain.android.common.UrlManage
 import io.wexchain.android.common.kotlin.weak
-import io.wexchain.android.dcc.repo.ScfTokenManager
+import worhavah.regloginlib.ScfTokenManager
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.DigitalCurrency

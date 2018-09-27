@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.repo
+package worhavah.regloginlib
 
 import android.content.Context
 import android.support.annotation.GuardedBy

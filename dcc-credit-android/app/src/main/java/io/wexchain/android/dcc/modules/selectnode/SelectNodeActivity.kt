@@ -1,12 +1,16 @@
 package io.wexchain.android.dcc.modules.selectnode
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.wexmarket.android.network.Networking
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.android.dcc.tools.ShareUtils
@@ -93,11 +97,12 @@ class SelectNodeActivity : BaseCompatActivity() {
                 cb1.setCompoundDrawables(null, null, red, null)
                 res = resources.getString(R.string.select_node_red)
             }
-            cb1.text = nodeList[0].name + "\n  " + res
+
+            cb1.text = spannableString(nodeList[0].name, res)
         }, {
             LogUtils.e(it)
             cb1.setCompoundDrawables(null, null, red, null)
-            cb1.text = nodeList[0].name + "\n  " + resources.getString(R.string.select_node_red)
+            cb1.text = spannableString(nodeList[0].name, resources.getString(R.string.select_node_red))
         })
 
         val createApi2 = Networking(App.get()).createApi(EthJsonRpcApiWithAuth::class.java, base2)
@@ -120,12 +125,13 @@ class SelectNodeActivity : BaseCompatActivity() {
                 cb2.setCompoundDrawables(null, null, red, null)
                 res = resources.getString(R.string.select_node_red)
             }
-            cb2.text = nodeList[1].name + "\n  " + res
+
+            cb2.text = spannableString(nodeList[1].name, res)
 
         }, {
             LogUtils.e(it)
             cb2.setCompoundDrawables(null, null, red, null)
-            cb2.text = nodeList[1].name + "\n  " + resources.getString(R.string.select_node_red)
+            cb2.text = spannableString(nodeList[1].name, resources.getString(R.string.select_node_red))
         })
         val createApi3 = Networking(App.get()).createApi(EthJsonRpcApiWithAuth::class.java, base3)
         val agent3 = EthsRpcAgent.by(createApi3)
@@ -147,11 +153,11 @@ class SelectNodeActivity : BaseCompatActivity() {
                 cb3.setCompoundDrawables(null, null, red, null)
                 res = resources.getString(R.string.select_node_red)
             }
-            cb2.text = nodeList[2].name + "\n  " + res
+            cb2.text = spannableString(nodeList[2].name, res)
         }, {
             LogUtils.e(it)
             cb3.setCompoundDrawables(null, null, red, null)
-            cb3.text = nodeList[2].name + "\n  " + resources.getString(R.string.select_node_red)
+            cb3.text = spannableString(nodeList[2].name, resources.getString(R.string.select_node_red))
         })
         val createApi4 = Networking(App.get()).createApi(EthJsonRpcApiWithAuth::class.java, base4)
         val agent4 = EthsRpcAgent.by(createApi4)
@@ -173,11 +179,11 @@ class SelectNodeActivity : BaseCompatActivity() {
                 cb4.setCompoundDrawables(null, null, red, null)
                 res = resources.getString(R.string.select_node_red)
             }
-            cb4.text = nodeList[3].name + "\n  " + res
+            cb4.text = spannableString(nodeList[3].name, res)
         }, {
             LogUtils.e(it)
             cb4.setCompoundDrawables(null, null, red, null)
-            cb4.text = nodeList[3].name + "\n  " + resources.getString(R.string.select_node_red)
+            cb4.text = spannableString(nodeList[3].name, resources.getString(R.string.select_node_red))
         })
 
         cb1.setOnCheckedChangeListener { _, isChecked ->
@@ -210,6 +216,14 @@ class SelectNodeActivity : BaseCompatActivity() {
             }
         })
 
+    }
+
+    private fun spannableString(name: String, res: String): SpannableString {
+        val cbtxt = "$name\n  $res"
+        val spannableString = SpannableString(cbtxt)
+        val colorSpan = ForegroundColorSpan(Color.parseColor("#9B9B9B"))
+        spannableString.setSpan(colorSpan, cbtxt.length - res.length, cbtxt.length, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
+        return spannableString
     }
 
     override fun onDestroy() {

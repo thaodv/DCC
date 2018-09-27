@@ -15,9 +15,10 @@ import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.LoanProductDetailActivity
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.repay.LoanRecordDetailActivity
 import io.wexchain.android.dcc.modules.repay.LoanRecordsActivity
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.adapter.BindingViewHolder
@@ -76,7 +77,6 @@ class LoanActivity : BindActivity<ActivityLoan2Binding>() {
 
 
     private fun loadData() {
-
         Singles.zip(
                 ScfOperations.withScfTokenInCurrentPassport {
                     App.get().scfApi.queryOrderPage(it, 0L, 10L)
@@ -120,6 +120,11 @@ class LoanActivity : BindActivity<ActivityLoan2Binding>() {
         header.findViewById<TextView>(R.id.tv_status).text = loanStatusText(data.status)
         header.findViewById<Button>(R.id.btn_more).onClick {
             navigateTo(LoanRecordsActivity::class.java)
+        }
+        header.findViewById<View>(R.id.cv_header).onClick {
+            navigateTo(LoanRecordDetailActivity::class.java) {
+                putExtra(Extras.EXTRA_LOAN_RECORD_ID, data.orderId)
+            }
         }
     }
 

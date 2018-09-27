@@ -5,12 +5,12 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.wexmarket.android.passport.base.BindFragment
+import io.wexchain.android.common.base.BindFragment
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.getViewModel
-import io.wexchain.android.dcc.constant.RequestCodes
+import io.wexchain.android.common.constant.RequestCodes
 import io.wexchain.android.dcc.tools.isKeyStoreValid
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.Wallet

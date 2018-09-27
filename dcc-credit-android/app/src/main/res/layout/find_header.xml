@@ -15,7 +15,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="80dp">
+        android:minHeight="100dp">
 
         <ImageView
             android:layout_width="match_parent"
@@ -32,6 +32,7 @@
             android:text="神秘花园"
             android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
             android:textColor="@color/text_white"
+            android:textSize="18sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,6 +44,7 @@
             android:text="@string/status2"
             android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
             android:textColor="@color/text_white"
+            android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="@id/tv_marketing_title"
             app:layout_constraintTop_toBottomOf="@id/tv_marketing_title" />
 
@@ -53,6 +55,7 @@
             android:layout_marginLeft="4dp"
             android:text="施工中"
             android:textColor="@color/text_white"
+            android:textSize="14sp"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_marketing_status"
             app:layout_constraintLeft_toRightOf="@id/tv_marketing_status" />
 

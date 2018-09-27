@@ -7,7 +7,8 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.repo.db.CaAuthRecord
 import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
@@ -106,6 +107,9 @@ class PassportActivity : BindActivity<ActivityPassportBinding>(),
                     hideLoadingDialog()
                 }
             }
+        })
+        authManage.successEvent.observe(this,Observer{
+            toast("更新密钥成功")
         })
         VerifyProtectFragment.serve(authManage, this, { this.supportFragmentManager })
         binding.authManage = authManage

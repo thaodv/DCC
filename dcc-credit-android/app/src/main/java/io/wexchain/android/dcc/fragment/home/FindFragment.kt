@@ -14,10 +14,9 @@ import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.*
-import io.wexchain.android.dcc.base.BaseCompatFragment
+import io.wexchain.android.common.base.BaseCompatFragment
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.home.GardenActivity
-import io.wexchain.android.dcc.modules.home.HomeActivity
 import io.wexchain.android.dcc.view.adapter.*
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ItemMarketingActivityBinding
@@ -28,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_find.*
 /**
  *Created by liuyang on 2018/9/18.
  */
-class FindFragment:BaseCompatFragment(), ItemViewClickListener<MarketingActivity>  {
+class FindFragment: BaseCompatFragment(), ItemViewClickListener<MarketingActivity>  {
 
     private val adapter = Adapter(this::onItemClick)
 

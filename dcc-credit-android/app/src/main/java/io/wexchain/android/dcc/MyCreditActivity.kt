@@ -5,13 +5,12 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
-import com.tencent.mm.opensdk.utils.Log
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.Pop
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
@@ -20,7 +19,6 @@ import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
-import io.wexchain.android.dcc.tools.StringUtils
 import worhavah.regloginlib.tools.check
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
@@ -28,7 +26,6 @@ import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityMyCreditBinding
 import io.wexchain.dccchainservice.ChainGateway
-import io.wexchain.dccchainservice.domain.CmLogReportData
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import io.wexchain.digitalwallet.Erc20Helper
