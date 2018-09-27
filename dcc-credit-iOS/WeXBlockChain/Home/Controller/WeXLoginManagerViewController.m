@@ -389,18 +389,16 @@ static NSInteger const kMaxCount = 3;
                     [self saveManagerRecordWithTypeString:WeXLocalizedString(@"启用统一登录")];
                 }
             }
-            else
-            {
+            else {
                 [WeXPorgressHUD showText:WeXLocalizedString(@"系统繁忙,请稍后再试!") onView:self.view];
             }
         }
-        else
-        {
+        else {
             [WeXPorgressHUD hideLoading];
             [WeXPorgressHUD showText:WeXLocalizedString(@"系统错误，请稍后再试!") onView:self.view];
         }
-       
     }
+    [_tableView reloadData];
 }
 
 -(NSMutableArray *)datasArray {
@@ -420,13 +418,8 @@ static NSInteger const kMaxCount = 3;
         [self.datasArray addObject:model];
     }
     self.datasArray = (NSMutableArray *)[[self.datasArray reverseObjectEnumerator] allObjects];
-    
     for (WeXPassportManagerRLMModel *model in _datasArray) {
-        if ([model.type hasPrefix:kEnablePrefix] | [model.type hasPrefix: kDisablePrefix]) {
-            [self.changeRecordArrays addObject:model];
-        } else {
-            [self.updateRecordArrays addObject:model];
-        }
+        [self.changeRecordArrays addObject:model];
     }
     [_tableView reloadData];
 }
@@ -532,12 +525,7 @@ static NSInteger const kMaxCount = 3;
     _tableView.rowHeight = 50;
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenHeight, 30)];
-//    footerLabel.text = WeXLocalizedString(@"没有更多记录了");
-//    footerLabel.font = [UIFont systemFontOfSize:14];
-//    footerLabel.textColor = [UIColor lightGrayColor];
-//    footerLabel.textAlignment = NSTextAlignmentCenter;
-//    _tableView.tableFooterView = footerLabel;
+
     [backView addSubview:_tableView];
     [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(line.mas_bottom);
@@ -560,14 +548,12 @@ static NSInteger const kMaxCount = 3;
 - (void)forbiddenBtnClick:(UIButton *)btn{
     
     _requestCount = 0;
-    
     //当前流程为启用
     if (_model.isAllow) {
         self.managerType = WeXPassportManagerTypeAllow;
     }
     //当前流程为禁用
-    else
-    {
+    else {
         self.managerType = WeXPassportManagerTypeForbidden;
     }
     
@@ -679,6 +665,8 @@ static NSInteger const kMaxCount = 3;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         WeXLoginManagerTopCell *cell = [tableView dequeueReusableCellWithIdentifier:kTopCellID forIndexPath:indexPath];
+        WeXPasswordCacheModal *model = [WexCommonFunc getPassport];
+        [cell setStatus:model.isAllow];
         cell.DidClickScan = ^{
             WEXNSLOG(@"这是扫一扫");
         };

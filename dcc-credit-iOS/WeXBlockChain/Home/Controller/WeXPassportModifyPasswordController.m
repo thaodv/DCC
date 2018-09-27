@@ -63,7 +63,7 @@
     _oldPsdTextField.borderStyle = UITextBorderStyleNone;
     _oldPsdTextField.secureTextEntry = YES;
     UILabel *leftLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,170,45)];
-    leftLabel1.text = WeXLocalizedString(@"请输入原钱包密码:");
+    leftLabel1.text = WeXLocalizedString(@"原钱包密码:");
     leftLabel1.font = [UIFont systemFontOfSize:17];
     leftLabel1.textColor = COLOR_LABEL_DESCRIPTION;
     _oldPsdTextField.backgroundColor = [UIColor clearColor];
@@ -109,7 +109,7 @@
     _newestPsdTextField.borderStyle = UITextBorderStyleNone;
     _newestPsdTextField.secureTextEntry = YES;
     UILabel *leftLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(0,0,170,45)];
-    leftLabel2.text = WeXLocalizedString(@"请输入新钱包密码:");
+    leftLabel2.text = WeXLocalizedString(@"新钱包密码:");
     leftLabel2.font = [UIFont systemFontOfSize:17];
     leftLabel2.textColor = COLOR_LABEL_DESCRIPTION;
     leftLabel2.backgroundColor = [UIColor clearColor];

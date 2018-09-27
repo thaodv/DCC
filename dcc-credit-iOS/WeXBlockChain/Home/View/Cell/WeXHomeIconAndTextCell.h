@@ -8,9 +8,10 @@
 
 #import "WeXBaseTableViewCell.h"
 
+@class WeXLoanGetOrderDetailResponseModal;
+
 @interface WeXHomeIconAndTextCell : WeXBaseTableViewCell
 @property (nonatomic,copy) void (^DidClickEvent)(void);
-
 
 
 - (void)setLeftIconName:(NSString *)leftIcon
@@ -23,6 +24,9 @@
                highText:(NSString *)highText
                subTitle:(NSString *)subTitle
             actionTitle:(NSString *)actionTitle;
+
+- (void)setRepayCoinDataModel:(WeXLoanGetOrderDetailResponseModal *)model
+                      iconURL:(NSString *)iconURL;
 
 + (CGFloat)cellHeight;
 

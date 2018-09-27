@@ -49,10 +49,11 @@ static CGFloat const kImageRatio = 249 / 96.0;
     self.scanButton = scanButton;
     
     YLButton *statusButton = [YLButton new];
+    [statusButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
     [statusButton setImage:[UIImage imageNamed:@"WexStausEnable"] forState:UIControlStateNormal];
     statusButton.titleLabel.font = WexFont(15.0);
     statusButton.imageRect = CGRectMake(45, 6, 16, 16);
-    statusButton.titleRect = CGRectMake(0, 6, 45, 16);
+    statusButton.titleRect = CGRectMake(0, 6, 35, 16);
     [statusButton setTitle:@"状态" forState:UIControlStateNormal];
     [statusButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.contentView addSubview:statusButton];
@@ -93,8 +94,9 @@ static CGFloat const kImageRatio = 249 / 96.0;
 + (CGFloat)cellHeight {
     return  (kScreenWidth - 111 - 15 ) / kImageRatio + 10;
 }
-- (void)setStatus:(NSString *)status {
-    
+- (void)setStatus:(BOOL)isAllow {
+    NSString *imageName = isAllow ? @"WexStausEnable" :  @"WexStausDisable";
+    [self.statusButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
 }
 
 - (void)scanEvent:(UIButton *)sender {

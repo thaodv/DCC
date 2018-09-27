@@ -21,7 +21,7 @@
 
 #define kSafeViewHeight 400
 
-static const CGFloat kCardHeightWidthRatio = 179.0/350.0;
+static const CGFloat kCardHeightWidthRatio = 203.0/347.0;
 
 
 @interface WeXRegisterSuccessViewController ()<WeXHomeSafetyViewDelegate>
@@ -43,14 +43,9 @@ static const CGFloat kCardHeightWidthRatio = 179.0/350.0;
     [self setupSubViews];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:WEX_CHANGE_ADDRESS_NOTIFY object:nil userInfo:nil];
-    
     WeXReceiveAddressManager *manager = [WeXReceiveAddressManager shareManager];
     [manager initDefaultAddress];
-        
 }
-
-
-
 
 - (void)commonInit{
     _model = [WexCommonFunc getPassport];
@@ -69,7 +64,7 @@ static const CGFloat kCardHeightWidthRatio = 179.0/350.0;
         make.trailing.equalTo(self.view).offset(-15);
         make.height.equalTo(cardBackView.mas_width).multipliedBy(kCardHeightWidthRatio);
     }];
-    
+//    digital_card
     UIImageView *cardImageView = [[UIImageView alloc] init];
     cardImageView.image = [UIImage imageNamed:@"digital_card"];
     cardImageView.layer.magnificationFilter = kCAFilterNearest;
@@ -78,24 +73,24 @@ static const CGFloat kCardHeightWidthRatio = 179.0/350.0;
         make.edges.equalTo(cardBackView);
     }];
     
-    UIImageView *headImageView = [[UIImageView alloc] init];
-    UIImage *headImage = [IYFileManager cacheImageFileWithKey:WEX_FILE_USER_FACE];
-    if (headImage == nil) {
-        headImageView.image = [UIImage imageNamed:@"digital_head"];
-    }
-    else
-    {
-        headImageView.image = headImage;
-    }
-    headImageView.layer.cornerRadius = 40;
-    headImageView.layer.masksToBounds = YES;
-    [cardBackView addSubview:headImageView];
-    [headImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(cardBackView);
-        make.centerY.equalTo(cardBackView);
-        make.width.equalTo(@80);
-        make.height.equalTo(@80);
-    }];
+//    UIImageView *headImageView = [[UIImageView alloc] init];
+//    UIImage *headImage = [IYFileManager cacheImageFileWithKey:WEX_FILE_USER_FACE];
+//    if (headImage == nil) {
+//        headImageView.image = [UIImage imageNamed:@"digital_head"];
+//    }
+//    else
+//    {
+//        headImageView.image = headImage;
+//    }
+//    headImageView.layer.cornerRadius = 40;
+//    headImageView.layer.masksToBounds = YES;
+//    [cardBackView addSubview:headImageView];
+//    [headImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerX.equalTo(cardBackView);
+//        make.centerY.equalTo(cardBackView);
+//        make.width.equalTo(@80);
+//        make.height.equalTo(@80);
+//    }];
     
     UILabel *addressLabel = [[UILabel alloc] init];
     NSString *address = [WexCommonFunc getFromAddress];
@@ -124,7 +119,7 @@ static const CGFloat kCardHeightWidthRatio = 179.0/350.0;
         make.bottom.equalTo(addressLabel.mas_top).offset(-10);
         make.leading.equalTo(addressLabel);
         make.height.equalTo(@20);
-        make.trailing.equalTo(headImageView.mas_leading);
+        make.trailing.equalTo(addressLabel.mas_trailing);
     }];
     
     

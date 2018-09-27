@@ -12,4 +12,6 @@
 
 - (void)setTitle:(NSString *)title;
 
+- (void)setLineHide;
+
 @end

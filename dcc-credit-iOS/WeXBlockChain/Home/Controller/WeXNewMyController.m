@@ -74,14 +74,15 @@ typedef void(^SafeVertifyResponse)(void);
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
-    //    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    //    dispatch_async(queue, ^{
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:COLOR_NAV_TITLE}];
     [self createGetIpfsKeyRequest];
-    //    });
-    
     if(_tableView)
         [_tableView reloadData];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:WexDefault4ATitleColor}];
 }
 
 - (void)commonInit{
@@ -110,9 +111,10 @@ typedef void(^SafeVertifyResponse)(void);
     //    _footerView.hidden = YES;
     [self.view addSubview:_tableView];
     [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(kNavgationBarHeight+5);
+        make.top.equalTo(self.view).offset(kNavgationBarHeight);
         make.leading.trailing.equalTo(self.view);
-        make.bottom.equalTo(self.view);
+//        make.height.mas_equalTo(kScreenHeight - kNavgationBarHeight);
+        make.bottom.mas_equalTo(-kTabBarHeight);
     }];
     
 }
@@ -127,7 +129,7 @@ typedef void(^SafeVertifyResponse)(void);
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 22;
+    return 10;
 }
 
 //section底部间距
@@ -137,9 +139,8 @@ typedef void(^SafeVertifyResponse)(void);
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-  
-    UIView *contentView = [[[UIView alloc] init] initWithFrame:CGRectMake(0, 0, kScreenWidth, 20)];
-    contentView.backgroundColor =  ColorWithHex(0xF8F8FF) ;
+    UIView *contentView = [[[UIView alloc] init] initWithFrame:CGRectMake(0, 0, kScreenWidth, 10)];
+    contentView.backgroundColor =  ColorWithHex(0xF5F5FD) ;
     return contentView;
 }
 
@@ -231,6 +232,25 @@ typedef void(^SafeVertifyResponse)(void);
         }
         else if (indexPath.section == 1 && indexPath.row == 1)
         {
+            cell.titleLabel.text = WeXLocalizedString(@"备份钱包");
+          
+        }
+        else if (indexPath.section == 1 && indexPath.row == 2)
+        {
+            cell.titleLabel.text = WeXLocalizedString(@"WeXCardSettingVCChangeWalletPSD");
+//            cell.titleLabel.text = WeXLocalizedString(@"本地安全保护");
+//            _model = [WexCommonFunc getPassport];
+//            if (_model.passwordType == WeXPasswordTypeNone) {
+//                cell.desLabel.text = WeXLocalizedString(@"已关闭");
+//            }
+//            else
+//            {
+//                cell.desLabel.text = WeXLocalizedString(@"已开启");
+//            }
+//            _safetyDescriptionLabel = cell.desLabel;
+        }
+        else if (indexPath.section == 2 && indexPath.row == 0)
+        {
             cell.titleLabel.text = WeXLocalizedString(@"数据云存储");
             cell.loadImgView.image = [UIImage imageNamed:@"loading1"];
             cell.loadImgView.hidden = NO;
@@ -252,33 +272,16 @@ typedef void(^SafeVertifyResponse)(void);
                     cell.desLabel.text = WeXLocalizedString(@"立即开启");
                 }
             }
-        }
-
-        else if (indexPath.section == 1 && indexPath.row == 2)
-        {
-            cell.titleLabel.text = WeXLocalizedString(@"本地安全保护");
-            _model = [WexCommonFunc getPassport];
-            if (_model.passwordType == WeXPasswordTypeNone) {
-                cell.desLabel.text = WeXLocalizedString(@"已关闭");
-            }
-            else
-            {
-                cell.desLabel.text = WeXLocalizedString(@"已开启");
-            }
-            _safetyDescriptionLabel = cell.desLabel;
-        }
-        else if (indexPath.section == 2 && indexPath.row == 0)
-        {
-            cell.titleLabel.text = WeXLocalizedString(@"地址簿");
+           
         }
         
         else if (indexPath.section == 2 && indexPath.row == 1) {
-            cell.titleLabel.text = WeXLocalizedString(@"选择节点");
+            cell.titleLabel.text = WeXLocalizedString(@"地址簿");
         }
         
         else if (indexPath.section == 3 && indexPath.row == 0)
         {
-            cell.titleLabel.text = WeXLocalizedString(@"设置");
+            cell.titleLabel.text = WeXLocalizedString(@"更多");
         }
     }
     return tableCell;
@@ -297,10 +300,34 @@ typedef void(^SafeVertifyResponse)(void);
     }
     else if (indexPath.section == 1 && indexPath.row == 0) {
         WeXWalletDigitalAssetListController *ctrl = [[WeXWalletDigitalAssetListController alloc] init];
-        ctrl.datasArray = self.datasArray;
+//        ctrl.datasArray = self.datasArray;
         [WeXHomePushService pushFromVC:self toVC:ctrl];
     }
     else if (indexPath.section == 1 && indexPath.row == 1)
+    {
+        WeXPassportBackupViewController *ctrl = [[WeXPassportBackupViewController alloc] init];
+        [WeXHomePushService pushFromVC:self toVC:ctrl];
+    }
+    else if (indexPath.section == 1 && indexPath.row == 2)
+    {
+        WeXPassportModifyPasswordController *ctrl = [[WeXPassportModifyPasswordController alloc] init];
+        [WeXHomePushService pushFromVC:self toVC:ctrl];
+//        _model = [WexCommonFunc getPassport];
+//        if (_model.passwordType == WeXPasswordTypeNone) {
+//            WeXPasswordManager *manager = [WeXPasswordManager managerWithType:WeXPasswordManagerTypeCreate parentController:self];
+//            manager.delegate = self;
+//            [manager loadPassword];
+//            _manager = manager;
+//        }
+//        else {
+//            WeXPasswordManager *manager = [WeXPasswordManager managerWithType:WeXPasswordManagerTypeVerify parentController:self];
+//            manager.delegate = self;
+//            [manager loadPassword];
+//            _manager = manager;
+//        }
+    }
+
+    else if (indexPath.section == 2 && indexPath.row == 0)
     {
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         NSString *passWord = [user objectForKey:WEX_IPFS_MY_CHECKKEY];
@@ -315,32 +342,15 @@ typedef void(^SafeVertifyResponse)(void);
                 [WeXHomePushService pushFromVC:self toVC:ctrl];
             }
         }
+       
     }
-    else if (indexPath.section == 1 && indexPath.row == 2)
-    {
-        _model = [WexCommonFunc getPassport];
-        if (_model.passwordType == WeXPasswordTypeNone) {
-            WeXPasswordManager *manager = [WeXPasswordManager managerWithType:WeXPasswordManagerTypeCreate parentController:self];
-            manager.delegate = self;
-            [manager loadPassword];
-            _manager = manager;
-        }
-        else {
-            WeXPasswordManager *manager = [WeXPasswordManager managerWithType:WeXPasswordManagerTypeVerify parentController:self];
-            manager.delegate = self;
-            [manager loadPassword];
-            _manager = manager;
-        }
-    }
-
-    else if (indexPath.section == 2 && indexPath.row == 0)
-    {
+    else if (indexPath.section == 2 && indexPath.row == 1) {
+        
         WeXAddressBookController *ctrl = [[WeXAddressBookController alloc] init];
         ctrl.addressBookType = WeXMainAddressBookTypeRead;
         [WeXHomePushService pushFromVC:self toVC:ctrl];
-    }
-    else if (indexPath.section == 2 && indexPath.row == 1) {
-        [WeXHomePushService pushFromVC:self toVC:[WeXSelectedNodeViewController new]];
+        
+//        [WeXHomePushService pushFromVC:self toVC:[WeXSelectedNodeViewController new]];
     }
     
     else if (indexPath.section == 3 && indexPath.row == 0) {

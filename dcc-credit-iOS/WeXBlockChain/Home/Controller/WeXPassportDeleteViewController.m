@@ -187,10 +187,6 @@
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [(AppDelegate *)[UIApplication sharedApplication].delegate resetRootWindowController];
-//        WeXPassportViewController *ctrl = [[WeXPassportViewController alloc] init];
-//        WeXBaseNavigationController *navCtrl = [[WeXBaseNavigationController alloc] initWithRootViewController:ctrl];
-//        AppDelegate* appDelagete = (AppDelegate*)[UIApplication sharedApplication].delegate;
-//        appDelagete.window.rootViewController = navCtrl;
     });
 }
 //点击备份

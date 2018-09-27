@@ -14,7 +14,7 @@
 
 
 // 0 不可用, 1可用
-- (void)setStatus:(NSString *)status;
+- (void)setStatus:(BOOL)status;
 
 + (CGFloat)cellHeight;
 

@@ -7,7 +7,8 @@
 //
 
 #import "WeXBaseReuseTableViewController.h"
+#import "WeXBaseWebViewController.h"
 
-@interface WeXTokenPlusViewController : WeXBaseReuseTableViewController
+@interface WeXTokenPlusViewController : WeXBaseWebViewController
 
 @end

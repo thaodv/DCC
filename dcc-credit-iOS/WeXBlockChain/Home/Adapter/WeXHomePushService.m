@@ -16,7 +16,11 @@
     if (!isPush) {
         dispatch_async(dispatch_get_main_queue(), ^{
             to.hidesBottomBarWhenPushed = YES;
-            [from.navigationController pushViewController:to animated:YES];
+            if ([from isKindOfClass:[UINavigationController class]]) {
+                [(UINavigationController *)from pushViewController:to animated:YES];
+            } else {
+                [from.navigationController pushViewController:to animated:YES];
+            }
         });
     }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

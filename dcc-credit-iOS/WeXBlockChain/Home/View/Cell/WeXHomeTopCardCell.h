@@ -10,6 +10,9 @@
 
 @interface WeXHomeTopCardCell : WeXBaseTableViewCell
 
+@property (nonatomic,copy) void (^ClickWalletAddress)(void);
+
+
 - (void)setTitleText:(NSString *)titleText
          addressText:(NSString *)addressText;
 

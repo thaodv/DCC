@@ -7,6 +7,8 @@
 //
 
 #import "WeXHomeIconAndTextCell.h"
+#import "WeXLoanGetOrderDetailModal.h"
+
 
 @interface WeXHomeIconAndTextCell ()
 @property (nonatomic, weak) UIImageView *leftIcon;
@@ -107,6 +109,24 @@
         [self.titleLab setAttributedText:attributeStr];
     }
 }
+- (void)setRepayCoinDataModel:(WeXLoanGetOrderDetailResponseModal *)model
+                      iconURL:(NSString *)iconURL {
+    [self.leftIcon sd_setImageWithURL:[NSURL URLWithString:iconURL] placeholderImage:WexCoinHolderImage];
+    NSString *title = [NSString stringWithFormat:@"%@%@%@",@"应还借币:",model.amount,model.currency.symbol];
+    NSString *period = [NSString stringWithFormat:@"%@%@%@后",@"还币日期:",model.borrowDuration,[WexCommonFunc transferChinesePeriod:model.durationUnit]];
+    [self.titleLab setText:title];
+    [self.actionLabel setText:@"去还币"];
+    [self.subTextLab setText:period];
+    [self.actionLabel setHidden:NO];
+    [self.actionLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.subTextLab);
+        make.right.mas_equalTo(-14);
+        make.height.mas_equalTo(25);
+        CGSize titleSize = [@"去还币" sizeWithAttributes:@{NSFontAttributeName:WexFont(14)}];
+        make.width.mas_equalTo(titleSize.width + 20);
+    }];
+}
+
 - (void)tapEvent:(UITapGestureRecognizer *)gesture {
     !self.DidClickEvent ? : self.DidClickEvent();
 }

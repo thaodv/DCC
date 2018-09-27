@@ -61,8 +61,7 @@ typedef void(^SafeVertifyResponse)(void);
     [self setNavigationNomalBackButtonType];
     [self commonInit];
     [self setupSubViews];
-//    [self createGetIpfsKeyRequest];
-       [self addIpfsAnimation];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -782,22 +781,6 @@ typedef void(^SafeVertifyResponse)(void);
 }
 
 
-
-- (void)addIpfsAnimation{
-    
-//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:3 inSection:0];
-//    WeXCardSettingCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
-//    cell.loadImgView = [[UIImageView alloc]init];
-//    cell.loadImgView.image = [UIImage imageNamed:@"loading"];
-//    [cell.contentView addSubview:cell.loadImgView];
-//    [cell.loadImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.width.mas_equalTo(19);
-//        make.height.mas_equalTo(19);
-//        make.trailing.equalTo(cell.contentView).offset(-10);
-//        make.centerY.equalTo(cell.contentView);
-//    }];
-    
-}
 
 @end
 

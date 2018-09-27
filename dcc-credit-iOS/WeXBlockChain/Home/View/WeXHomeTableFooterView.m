@@ -66,6 +66,10 @@
 - (void)setTitle:(NSString *)title {
     [self.titleLab setText:title];
 }
+- (void)setLineHide {
+    [self.leftSepratorLine  setHidden:true];
+    [self.rightSepratorLine setHidden:true];
+}
 
 
 

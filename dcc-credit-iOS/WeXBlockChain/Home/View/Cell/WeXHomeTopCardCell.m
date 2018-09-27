@@ -28,15 +28,23 @@ static CGFloat const kImageRatio =  347.0 / 204.0;
     self.titleLab = titleLab;
 
     UIImageView *cardImageView = [UIImageView new];
+    cardImageView.userInteractionEnabled = true;
     [cardImageView setImage:[UIImage imageNamed:@"digital_card"]];
     [self.contentView addSubview:cardImageView];
     self.cardImageView = cardImageView;
     
     UILabel *accountTipsLab = CreateLeftAlignmentLabel(WexFont(16), ColorWithHex(0xFFFFFF));
+    accountTipsLab.userInteractionEnabled = true;
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickAddress:)];
+    [accountTipsLab addGestureRecognizer:tapGesture];
     [self.cardImageView addSubview:accountTipsLab];
     self.accountTipsLab = accountTipsLab;
     
     UILabel *addressLab = CreateLeftAlignmentLabel(WexFont(16), ColorWithHex(0xFFFFFF));
+    addressLab.userInteractionEnabled = true;
+    UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickAddress:)];
+    [addressLab addGestureRecognizer:tapGesture2];
+    
     [self.cardImageView addSubview:addressLab];
     self.addressLab = addressLab;
 }
@@ -71,6 +79,10 @@ static CGFloat const kImageRatio =  347.0 / 204.0;
     [self.accountTipsLab setText:@"Account No."];
     [self.titleLab setText:titleText];
     [self.addressLab setText:addressText];
+}
+
+- (void)clickAddress:(UITapGestureRecognizer *)gesture {
+    !self.ClickWalletAddress ? : self.ClickWalletAddress();
 }
 
 + (CGFloat)cellHeight {

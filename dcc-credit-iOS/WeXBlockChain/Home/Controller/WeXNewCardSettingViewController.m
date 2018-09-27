@@ -27,10 +27,14 @@
 #import "WeXSelectedNodeViewController.h"
 #import "AppDelegate.h"
 #import "WeXHomePushService.h"
-@interface WeXNewCardSettingViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface WeXNewCardSettingViewController ()<UITableViewDelegate,UITableViewDataSource,WeXPasswordManagerDelegate>
 
 {
-    UITableView *_tableView;    
+    UITableView *_tableView;
+    UILabel *_safetyDescriptionLabel;
+    WeXPasswordCacheModal *_model;
+    
+    WeXPasswordManager *_manager;
 }
 
 @end
@@ -40,7 +44,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationItem.title = WeXLocalizedString(@"设置");
+    self.navigationItem.title = WeXLocalizedString(@"更多");
     [self setNavigationNomalBackButtonType];
     [self setupSubViews];
     
@@ -53,24 +57,24 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.backgroundColor = ColorWithHex(0xF8F8FF);
-//    _tableView.tableFooterView = [UIView new];
+    _tableView.tableFooterView = [UIView new];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self reSetTableViewFooterView];
+//    [self reSetTableViewFooterView];
 
     [self.view addSubview:_tableView];
     [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(kNavgationBarHeight+5);
         make.leading.trailing.equalTo(self.view);
-        make.bottom.equalTo(self.view);
+        make.bottom.equalTo(self.view).offset(-60);
     }];
-    
+    [self reSetFooterView];
 }
 
 //section的高度
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 22;
+    return 10;
 }
 
 //section底部间距
@@ -81,8 +85,8 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     
-    UIView *contentView = [[[UIView alloc] init] initWithFrame:CGRectMake(0, 0, kScreenWidth, 20)];
-    contentView.backgroundColor =  ColorWithHex(0xF8F8FF) ;
+    UIView *contentView = [[[UIView alloc] init] initWithFrame:CGRectMake(0, 0, kScreenWidth, 10)];
+    contentView.backgroundColor =  ColorWithHex(0xF5F5FD) ;
     return contentView;
 }
 
@@ -92,20 +96,13 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return 3;
-    }else if (section == 1){
-        return 2;
-    }else{
-        return 1;
-    }
+    return 4;
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -122,28 +119,38 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
-        if (indexPath.section == 0 && indexPath.row == 0)
-        {
-           cell.titleLabel.text = WeXLocalizedString(@"钱包地址");
+//        if ( indexPath.row == 0)
+//        {
+//           cell.titleLabel.text = WeXLocalizedString(@"钱包地址");
+//        }
+        if ( indexPath.row == 0) {
+            cell.titleLabel.text = WeXLocalizedString(@"选择以太坊节点");
         }
-        else if (indexPath.section == 0 && indexPath.row == 1) {
-           cell.titleLabel.text = WeXLocalizedString(@"备份钱包");
-        }
-        else if (indexPath.section == 0 && indexPath.row == 2)
+        else if ( indexPath.row == 1)
         {
-            cell.titleLabel.text = WeXLocalizedString(@"WeXCardSettingVCChangeWalletPSD");
+            cell.titleLabel.text = WeXLocalizedString(@"本地安全保护");
+            _model = [WexCommonFunc getPassport];
+            if (_model.passwordType == WeXPasswordTypeNone) {
+                cell.desLabel.text = WeXLocalizedString(@"已关闭");
+            }
+            else
+            {
+                cell.desLabel.text = WeXLocalizedString(@"已开启");
+            }
+            _safetyDescriptionLabel = cell.desLabel;
         }
         
-        else if (indexPath.section == 1 && indexPath.row == 0)
-        {
-            cell.titleLabel.text = WeXLocalizedString(@"关于我们");
-        }
-        else if (indexPath.section == 1 && indexPath.row == 1)
+        else if ( indexPath.row == 2)
         {
             cell.titleLabel.text = WeXLocalizedString(@"版本更新");
             NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
             NSString *content = [NSString stringWithFormat:@"%@%@",WeXLocalizedString(@"当前版本"), [infoDict objectForKey:@"CFBundleShortVersionString"]];
             cell.desLabel.text = content;
+           
+        }
+        else if (indexPath.row == 3)
+        {
+            cell.titleLabel.text = WeXLocalizedString(@"关于我们");
         }
     
     return cell;
@@ -152,48 +159,58 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    if (indexPath.section == 0 && indexPath.row == 0) {
-        WeXPassportLocationViewController *ctrl = [[WeXPassportLocationViewController alloc] init];
-        [self.navigationController pushViewController:ctrl animated:YES];
-    }
-    else if (indexPath.section == 0 && indexPath.row == 1)
+//    if (indexPath.row == 0) {
+//        WeXPassportLocationViewController *ctrl = [[WeXPassportLocationViewController alloc] init];
+//        [WeXHomePushService pushFromVC:self toVC:ctrl];
+//    }
+//    else
+    if (indexPath.row == 0)
     {
-        WeXPassportBackupViewController *ctrl = [[WeXPassportBackupViewController alloc] init];
+        WeXSelectedNodeViewController *ctrl = [[WeXSelectedNodeViewController alloc] init];
         [self.navigationController pushViewController:ctrl animated:YES];
     }
-    else if (indexPath.section == 0 && indexPath.row == 2) {
+    else if (indexPath.row == 1) {
         
-        WeXPassportModifyPasswordController *ctrl = [[WeXPassportModifyPasswordController alloc] init];
-        [self.navigationController pushViewController:ctrl animated:YES];
+        _model = [WexCommonFunc getPassport];
+        if (_model.passwordType == WeXPasswordTypeNone) {
+            WeXPasswordManager *manager = [WeXPasswordManager managerWithType:WeXPasswordManagerTypeCreate parentController:self];
+            manager.delegate = self;
+            [manager loadPassword];
+            _manager = manager;
+        }
+        else {
+            WeXPasswordManager *manager = [WeXPasswordManager managerWithType:WeXPasswordManagerTypeVerify parentController:self];
+            manager.delegate = self;
+            [manager loadPassword];
+            _manager = manager;
+        }
     }
-    else if (indexPath.section == 1 && indexPath.row == 0)
-    {
-        WeXAboutUsWebViewController *ctrl = [[WeXAboutUsWebViewController alloc] init];
-        [self.navigationController pushViewController:ctrl animated:YES];
-    }
-    else if (indexPath.section == 1 && indexPath.row == 1)
+    else if (indexPath.row == 2)
     {
         WeXVersionUpdateManager *manager = [WeXVersionUpdateManager shareManager];
         [manager configVersionUpdateViewOnView:self.view isUpdate:false];
+      
+    }
+    else if (indexPath.row == 3)
+    {
+        WeXAboutUsWebViewController *ctrl = [[WeXAboutUsWebViewController alloc] init];
+        [WeXHomePushService pushFromVC:self toVC:ctrl];
     }
     
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.selected = NO;
 }
 
-- (void)reSetTableViewFooterView{
+- (void)reSetFooterView{
     
-    UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 82)];
+    UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight-52, kScreenWidth,52)];
     
-    UIView *backgroudView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 22)];
-    backgroudView.backgroundColor =  ColorWithHex(0xF8F8FF);
-    [footerView addSubview:backgroudView];
-    
-    UIView *deleteView = [[UIView alloc]initWithFrame:CGRectMake(0,22, kScreenWidth, 60)];
+    UIView *deleteView = [[UIView alloc]initWithFrame:CGRectMake(0,0, kScreenWidth, 52)];
     deleteView.backgroundColor = [UIColor whiteColor];
     [footerView addSubview:deleteView];
-    UILabel *defaultLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 60)];
-    defaultLabel.textColor = COLOR_LABEL_TITLE;
+    UILabel *defaultLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 52)];
+    defaultLabel.textColor = [UIColor whiteColor];
+    defaultLabel.backgroundColor = ColorWithHex(0x7B40FF);
     defaultLabel.font = [UIFont systemFontOfSize:18];
     defaultLabel.textAlignment =  NSTextAlignmentCenter;
     defaultLabel.text = @"删除钱包";
@@ -201,7 +218,8 @@
     defaultLabel.userInteractionEnabled = YES;
     UITapGestureRecognizer *twoTapGes = [[UITapGestureRecognizer alloc]  initWithTarget:self action:@selector(deleteClick)];
     [defaultLabel addGestureRecognizer:twoTapGes];
-    _tableView.tableFooterView = footerView;
+    
+    [self.view addSubview:footerView];
 }
 
 - (void)deleteClick{
