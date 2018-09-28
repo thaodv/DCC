@@ -54,7 +54,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
         )
     }
 
-    private lateinit var passport: Passport
+    private   var passport =Networkutils.passportRepository.getCurrentPassport()!!
     private lateinit var realName: String
     private lateinit var realId: String
 

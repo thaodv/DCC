@@ -6,7 +6,7 @@
     xmlns:io.wexchain.rns.tools="http://schemas.android.com/io.wexchain.rns.tools"
     android:layout_width="match_parent"
     android:layout_height="40dp"
-    android:background="#fff"
+    android:background="#ffffff"
     app:contentInsetEnd="0dp"
     app:contentInsetLeft="0dp"
     app:contentInsetRight="0dp"
