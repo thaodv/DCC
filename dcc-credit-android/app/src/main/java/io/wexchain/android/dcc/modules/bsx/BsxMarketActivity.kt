@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.modules.bsx
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import io.wexchain.android.common.navigateTo
@@ -32,8 +33,18 @@ class BsxMarketActivity : BindActivity<ActivityBsxMarketBinding>(), ItemViewClic
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
+        App.get().scfApi.getHoldingSum(App.get().passportRepository.currPassport.value!!.address)
+                .checkonMain()
+                .withLoading()
+                .subscribe({
+                    binding.tvInvestMoney.text = "≈" + if(null == it.corpus){"0"} else it.corpus
+                    binding.tvWaitProfit.text = "≈" + if(null == it.profit){"0"}else it.profit
+                }, {
+
+                })
         App.get().scfApi.getBsxMarketList()
                 .checkonMain()
                 .withLoading()
@@ -45,7 +56,10 @@ class BsxMarketActivity : BindActivity<ActivityBsxMarketBinding>(), ItemViewClic
     }
 
     override fun onItemClick(item: BsxMarketBean?, position: Int, viewId: Int) {
-        startActivity(Intent(this, BsxDetailActivity::class.java).putExtra("assetCode", item!!.assetCode).putExtra("contractAddress", item!!.contractAddress))
+        startActivity(Intent(this, BsxDetailActivity::class.java)
+                .putExtra("assetCode", item!!.assetCode)
+                .putExtra("name", item!!.name)
+                .putExtra("contractAddress", item!!.contractAddress))
     }
 
     private class Adapter(itemViewClickListener: ItemViewClickListener<BsxMarketBean>) :

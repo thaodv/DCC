@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="tx"
+            type="io.wexchain.android.dcc.modules.bsx.BsxEthBuyVm"/>
+
+        <variable
+            name="asIdVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
+            />
+
+        <variable
+            name="asPersonalVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
+            />
+
+        <variable
+            name="asBankVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
+            />
+
+        <variable
+            name="asMobileVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
+            />
+
+        <variable
+            name="passport"
+            type="io.wexchain.android.dcc.domain.Passport"/>
+
+    </data>
+
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="io.wexchain.android.dcc.modules.bsx.BsxEthBuyActivity">
+
+        <include layout="@layout/include_toolbar"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp">
+
+                    <TextView
+                        android:id="@+id/tv_ordername"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/FF4A4A4A"
+                        android:textSize="14sp"
+                        tools:text="私链DCC币生息1期（剩余额度 1000 ETH）"/>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="#FFF8F8FF"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginTop="10dp"
+                        android:text="认购额度"
+                        android:textColor="@color/FF4A4A4A"
+                        android:textSize="14sp"/>
+
+                    <EditText
+                        android:id="@+id/et_buyamount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="0dp"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:inputType="numberDecimal"
+                        android:minWidth="200dp"
+                        android:text="@={tx.amount}"
+                        android:textSize="12sp"
+                        tools:hint="最小认购额度100"/>
+
+                    <TextView
+                        android:id="@+id/tv_exprofit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="40dp"
+                        android:gravity="center_vertical"
+                        android:text="ETH"
+                        android:textColor="@color/upgrade_title_color"
+                        android:textSize="14sp"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp">
+
+                    <TextView
+                        android:id="@+id/tv1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="可用额度:"
+                        android:textColor="@color/FF4A4A4A"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_canuselable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/tv1"
+                        android:textColor="@color/FF4A4A4A"
+                        android:textSize="14sp"
+                        tools:text="1000.89"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/tv_canuselable"
+                        android:text="ETH"
+                        android:textColor="@color/FF4A4A4A"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="全部"
+                        android:textColor="#FF6766CC"
+                        android:textSize="14sp"/>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="#FFF8F8FF"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:text="Gas Price"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/text_dark"/>
+
+                    <EditText
+                        android:id="@+id/et_gas_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:gravity="right|center_vertical"
+                        android:hint="@string/custom_gas_price"
+                        android:inputType="numberDecimal"
+                        android:paddingLeft="60dp"
+                        android:paddingRight="60dp"
+                        android:text="@={tx.gasPrice}"
+                        tools:text="50"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:text="@string/gwei"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/text_dark"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:text="Gas Limit"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/text_dark"/>
+
+                    <EditText
+                        android:id="@+id/et_ges_limit"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:gravity="right|center_vertical"
+                        android:hint="@string/custom_gas_limit"
+                        android:inputType="numberDecimal"
+                        android:paddingLeft="60dp"
+                        android:paddingRight="60dp"
+                        android:text="@={tx.gasLimit}"
+                        android:textColor="@color/text_dark"
+                        tools:text="50"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:text="@string/Maximum_absenteeism"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/text_dark"/>
+
+                    <EditText
+                        android:id="@+id/et_absenteeism"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:enabled="false"
+                        android:gravity="right|center_vertical"
+                        android:inputType="numberDecimal"
+                        android:paddingLeft="60dp"
+                        android:paddingRight="60dp"
+                        android:text="@={tx.maxTransactionFeeText}"
+                        android:textColor="@color/text_dark"
+                        tools:text="50"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:text="ETH"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/text_dark"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <ImageView
+                        android:id="@+id/iv_warning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/icon_warning"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/iv_warning"
+                        android:text="@string/across_trans_warning_tip"
+                        android:textColor="#4A4A4A"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/iv_warning"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="8dp"
+                        android:text="•认购成功后不可撤销。"
+                        android:textColor="#4A4A4A"
+                        android:textSize="14sp"/>
+
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/btn_buy"
+                    style="@style/Widget.AppCompat.Button.Dcc.Full"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="45dp"
+                    android:onClick="@{(v)->tx.checkAndProceed(passport.address)}"
+                    android:text="立即认购"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+</layout>

@@ -22,7 +22,7 @@ public class BytesUtils {
         System.out.println(new BigDecimal(i).scaleByPowerOfTen(-18).setScale(0))  ;
 
     }*/
-
+    
     public static String test01() {
         int start = 127;
         int bytesSizeLen = 3;
@@ -40,27 +40,37 @@ public class BytesUtils {
         System.out.println(sss = new String(bytes));
         return sss;
     }
-
+    
     public static int encodeStringsimple(String s) {
         BigInteger i = Numeric.toBigInt(s);
-
+        
         // ss = new BigDecimal(i).scaleByPowerOfTen(-18);
         int ss = new BigDecimal(i).scaleByPowerOfTen(-18).setScale(0).toBigInteger().intValue();
         System.out.println(ss);
         return ss;
-
+        
     }
-
+    
+    public static double encodeStringsimple2(String s) {
+        BigInteger i = Numeric.toBigInt(s);
+        
+        // ss = new BigDecimal(i).scaleByPowerOfTen(-18);
+        double ss = new BigDecimal(i).scaleByPowerOfTen(-18).setScale(2).doubleValue();
+        System.out.println(ss);
+        return ss;
+        
+    }
+    
     public static int encodeStringstatu(String s) {
         BigInteger i = Numeric.toBigInt(s);
-
+        
         // ss = new BigDecimal(i).scaleByPowerOfTen(-18);
         int ss = new BigDecimal(i).toBigInteger().intValue();
         System.out.println(ss);
         return ss;
-
+        
     }
-
+    
     public static String encodeString(String s) {
         int start = 127;
         int bytesSizeLen = 3;
@@ -78,11 +88,11 @@ public class BytesUtils {
         System.out.println(sss = new String(bytes));
         return sss;
     }
-
+    
     public static byte[] decodeHex(String data) throws Exception {
         return decodeHex(data.toCharArray());
     }
-
+    
     public static byte[] decodeHex(char[] data) throws Exception {
         int len = data.length;
         if ((len & 1) != 0) {
@@ -90,7 +100,7 @@ public class BytesUtils {
         } else {
             byte[] out = new byte[len >> 1];
             int i = 0;
-
+            
             for (int j = 0; j < len; ++i) {
                 int f = toDigit(data[j], j) << 4;
                 ++j;
@@ -98,11 +108,11 @@ public class BytesUtils {
                 ++j;
                 out[i] = (byte) (f & 255);
             }
-
+            
             return out;
         }
     }
-
+    
     protected static int toDigit(char ch, int index) throws Exception {
         int digit = Character.digit(ch, 16);
         if (digit == -1) {

@@ -27,7 +27,7 @@ object JuzixData {
                 Chain.JUZIX_PRIVATE to juzixPrefs.dccContractAddress.get()!!
         ))
         updateDccJuzixAddress(app).subscribe()
-        updateBsxAddress(app).subscribe()
+        //updateBsxAddress(app).subscribe()
     }
 
     private fun updateDccJuzixAddress(app: App): Single<String> {

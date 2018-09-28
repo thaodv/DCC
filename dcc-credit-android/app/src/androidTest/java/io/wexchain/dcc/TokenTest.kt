@@ -43,7 +43,7 @@ class TokenTest {
         bintApi = App.get().networking.createApi(BintApi::class.java, BintApi.getUrl)
     }
 
-    private val contract = "0x92319baa1648ef13ce86df30a8e31b0768b482b7"//"0xaa305e07b4e7e0b2deb892a3cbd924db1d5ba874"
+    private val contract = "0xe8d7dcf900542bc69aeffd93d4e421a584c3c0a0"//"0xaa305e07b4e7e0b2deb892a3cbd924db1d5ba874"
 
 
     @Test
@@ -130,14 +130,14 @@ class TokenTest {
 
         val signed = Numeric.toHexString(TransactionEncoder.signMessage(rawTransaction, owner))
 
-        val txHash = infuraApi.sendRawTransaction(signed)
-                .blockingGet()
+        val txHash = infuraApi.sendRawTransaction(signed).blockingGet()
         println("sent approve tx")
         val response = infuraApi.transactionReceipt(txHash)
                 .retryWhen(RetryWithDelay.createGrowth(8, 1000))
                 .blockingGet()
         println("receipt got: approve tx")
-        testAllowance()
+        println(response)
+        //testAllowance()
     }
 
 
@@ -192,6 +192,12 @@ class TokenTest {
                 .blockingGet()
         println("receipt got: approve tx")
         testAllowance()
+    }
+
+    @Test
+    fun tes(){
+        val s = BigDecimal("21000000000").scaleByPowerOfTen(-9).toString()
+        println(s)
     }
 
 }

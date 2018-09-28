@@ -110,12 +110,12 @@ class MyInterestDetailActivity : BindActivity<ActivityMyInterestdetailBinding>()
     }
 
     private fun setUI() {
+        binding.totalamountDCClable = "在投本金（DCC）"
         if (mystatu == 4) {//已关闭
-            binding.totalamountDCClable = "投资本金（DCC）"
             binding.totalamountstatu = "已结束"
             binding.isClose = true
         } else {
-            binding.totalamountDCClable = "在投本金（DCC）"
+
             binding.isClose = false
             if (mystatu == 0 || mystatu == 1) {
                 binding.totalamountstatu = "募集中"

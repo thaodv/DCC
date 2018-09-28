@@ -8,6 +8,7 @@ import io.wexchain.android.dcc.network.sendRawTransaction
 import io.wexchain.android.dcc.network.transactionReceipt
 import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.android.dcc.tools.RetryWithDelay
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.Erc20Helper
@@ -135,13 +136,11 @@ object BsxOperations {
         return agent.getNonce(passport.getCurrentPassport()!!.address)
     }
 
-    var contractAddress: String = ""
-
     /**
      * 获取合约地址
      */
     private fun getBsxAddress(business: String): Single<String> {
-        return Single.just(contractAddress)//App.get().contractApi.getIpfsContractAddress(business).check()
+        return App.get().contractApi.getIpfsContractAddress(business).check()
     }
 
 

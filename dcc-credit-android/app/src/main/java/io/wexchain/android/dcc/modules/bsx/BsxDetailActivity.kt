@@ -1,42 +1,47 @@
 package io.wexchain.android.dcc.modules.bsx
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import com.alibaba.fastjson.JSON
+import io.reactivex.Single
 import io.wexchain.android.common.runOnMainThread
-import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.BsxOperations
 import io.wexchain.android.dcc.domain.SaleInfo
 import io.wexchain.android.dcc.network.IpfsApi
 import io.wexchain.android.dcc.tools.BytesUtils
 import io.wexchain.android.dcc.tools.BytesUtils.encodeStringsimple
+import io.wexchain.android.dcc.tools.BytesUtils.encodeStringsimple2
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityBsxDetailBinding
+import io.wexchain.digitalwallet.api.domain.EthJsonRpcResponse
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigDecimal
 
 class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
 
     companion object {
-        var MINBUYAMOUNT = 0
-        var LASTAM = 0
+        var MINBUYAMOUNT = 0.0
+        var LASTAM = 0.0
         var ONAME = "私链DCC币生息1期"
     }
 
     private val assetCode get() = intent.getStringExtra("assetCode")
+    private val name get() = intent.getStringExtra("name")
     private val contractAddress get() = intent.getStringExtra("contractAddress")
 
-    override val contentLayoutId: Int
-        get() = R.layout.activity_bsx_detail
+    override val contentLayoutId: Int = R.layout.activity_bsx_detail
 
-     var bussiness: String = IpfsApi.BSX_ETH
+    lateinit var bussiness: String
 
     lateinit var saleInfo: SaleInfo
 
     private var totalAmount: Int = 0
-    private var lastAmount: Int = 0
-    private var minAmountPerHand: Int = 0
+    private var lastAmount: Double = 0.0
+    private var minAmountPerHand: Double = 0.0
 
     var statu = "已结束"
 
@@ -52,18 +57,49 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
         binding.canbuy = canBuy
         sstvBuyit = binding.btBuy.background as ColorDrawable
 
-        BsxOperations.contractAddress = contractAddress
+
+        if ("DCC" == assetCode) {
+            if ("1" == name) {
+                bussiness = IpfsApi.BSX_DCC_01
+            } else if ("2" == name) {
+                bussiness = IpfsApi.BSX_DCC_02
+            }
+        } /*else if ("ETH" == assetCode) {
+            bussiness = ""
+        }*/
+
+        binding.btBuy.setOnClickListener {
+            if (canBuy) {
+
+                if ("DCC" == assetCode) {
+                    startActivity(Intent(this, BsxDccBuyActivity::class.java)
+                            .putExtra("contractAddress", contractAddress))
+                } else {
+                    startActivity(Intent(this, BsxEthBuyActivity::class.java)
+                            .putExtra("contractAddress", contractAddress))
+                }
+            }
+        }
 
     }
 
     override fun onResume() {
         super.onResume()
+
         getBsxSaleInfo()
+
     }
 
     private fun getBsxSaleInfo() {
-        BsxOperations.getBsxSaleInfo(bussiness)
-                .doMain()
+        var ss: Single<EthJsonRpcResponse<String>>
+
+        if ("DCC" == assetCode) {
+            ss = BsxOperations.getBsxSaleInfo(bussiness)
+        } else {
+            ss = App.get().publicRpc.getBsxSaleInfo(contractAddress)
+        }
+
+        ss.doMain()
                 .doOnSubscribe {
                     showLoadingDialog()
                 }.doFinally {
@@ -79,14 +115,28 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
     }
 
     private fun getBsxMinAmountPerHando() {
-        BsxOperations.getBsxMinAmountPerHand(bussiness)
-                .doMain()
+
+        var ss: Single<EthJsonRpcResponse<String>>
+
+        if ("DCC" == assetCode) {
+            ss = BsxOperations.getBsxMinAmountPerHand(bussiness)
+        } else {
+            ss = App.get().publicRpc.getBsxMinAmountPerHand(contractAddress)
+        }
+
+        ss.doMain()
                 .doOnSubscribe {
                     showLoadingDialog()
                 }.doFinally {
                     hideLoadingDialog()
                 }.subscribe({
-                    minAmountPerHand = BytesUtils.encodeStringsimple(it.result)
+
+                    if ("DCC" == assetCode) {
+                        minAmountPerHand = BytesUtils.encodeStringsimple(it.result).toDouble()
+                    } else {
+                        minAmountPerHand = BytesUtils.encodeStringsimple2(it.result)
+                    }
+
                     MINBUYAMOUNT = minAmountPerHand
                     binding.minAmountPerHandDCC = minAmountPerHand.toString() + assetCode
                     getBsxInvestCeilAmount()
@@ -96,15 +146,23 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
     }
 
     private fun getBsxInvestCeilAmount() {
-        BsxOperations.getBsxInvestCeilAmount(bussiness)
-                .doMain()
+
+        var ss: Single<EthJsonRpcResponse<String>>
+
+        if ("DCC" == assetCode) {
+            ss = BsxOperations.getBsxInvestCeilAmount(bussiness)
+        } else {
+            ss = App.get().publicRpc.getBsxInvestCeilAmount(contractAddress)
+        }
+
+        ss.doMain()
                 .doOnSubscribe {
                     showLoadingDialog()
                 }.doFinally {
                     hideLoadingDialog()
                 }.subscribe({
                     totalAmount = encodeStringsimple(it.result)
-                    binding.totalamountDCC = ("" + totalAmount + " DCC")
+                    binding.totalamountDCC = ("" + totalAmount + assetCode)
                     getbiInvestedTotalAmount()
                 }, {
                     it.printStackTrace()
@@ -112,14 +170,27 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
     }
 
     private fun getbiInvestedTotalAmount() {
-        BsxOperations.investedBsxTotalAmount(bussiness)
-                .doMain()
+
+        var ss: Single<EthJsonRpcResponse<String>>
+
+        if ("DCC" == assetCode) {
+            ss = BsxOperations.investedBsxTotalAmount(bussiness)
+        } else {
+            ss = App.get().publicRpc.investedBsxTotalAmount(contractAddress)
+        }
+
+        ss.doMain()
                 .doOnSubscribe {
                     showLoadingDialog()
                 }.doFinally {
                     hideLoadingDialog()
                 }.subscribe({
-                    lastAmount = encodeStringsimple(it.result)
+                    if ("DCC" == assetCode) {
+                        lastAmount = encodeStringsimple(it.result).toDouble()
+                    } else {
+                        lastAmount = encodeStringsimple2(it.result)
+                    }
+
                     var ssss = BigDecimal((totalAmount - lastAmount) * 100).divide(BigDecimal(totalAmount), 1, BigDecimal.ROUND_HALF_UP).setScale(1)
                     binding.lastamountDCC = ("" + (totalAmount - lastAmount) + assetCode + " (" + ssss + "%）")
                     getBsxStatus()
@@ -129,8 +200,16 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
     }
 
     private fun getBsxStatus() {
-        BsxOperations.getBsxStatus(bussiness)
-                .doMain()
+
+        var ss: Single<EthJsonRpcResponse<String>>
+
+        if ("DCC" == assetCode) {
+            ss = BsxOperations.getBsxStatus(bussiness)
+        } else {
+            ss = App.get().publicRpc.getBsxStatus(contractAddress)
+        }
+
+        ss.doMain()
                 .doOnSubscribe {
                     showLoadingDialog()
                 }.doFinally {

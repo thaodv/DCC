@@ -5,22 +5,20 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.databinding.ObservableBoolean
 import android.support.annotation.MainThread
-import com.tencent.mm.opensdk.utils.Log
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
-import io.wexchain.android.common.*
+import io.wexchain.android.common.SingleLiveEvent
+import io.wexchain.android.common.filter
+import io.wexchain.android.common.observing
+import io.wexchain.android.common.zipLiveData
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.android.dcc.modules.trans.activity.Public2PrivateActivity
 import io.wexchain.android.dcc.tools.AutoLoadLiveData
-import io.wexchain.android.dcc.tools.SharedPreferenceUtil
-import io.wexchain.android.dcc.view.dialog.WaitTransDialog
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
-import java.math.BigInteger
+import io.wexchain.ipfs.utils.doMain
 import java.util.concurrent.TimeUnit
 
 /**
@@ -190,8 +188,7 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
                             val txhash = it.txId
                             val nn = it.nonce
                             agent.transactionReceipt(txhash)
-                                .observeOn(AndroidSchedulers.mainThread())
-
+                                .doMain()
                                 .doOnSuccess {
                                     val blockNumber = it.blockNumber
                                     if (blockNumber != null && !blockNumber.equals("") && !blockNumber.contains("None")) {
