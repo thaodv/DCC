@@ -34,6 +34,9 @@
 @property (nonatomic, weak) UILabel *totalLab;
 @property (nonatomic, weak) UIImageView *statusImageview;
 
+@property (nonatomic, weak) UIView *totastView;
+@property (nonatomic, weak) UIView *headToastView;
+
 @end
 
 @implementation WeXCPPotInfoCell
@@ -122,6 +125,21 @@ static CGFloat const kInfoViewH = 237;
     UILabel * totalLab = CreateLeftAlignmentLabel(WexFont(16), WexDefault4ATitleColor);
     [self.backInfoView addSubview:totalLab];
     self.totalLab = totalLab;
+    
+    UIView *totastView = [UIView new];
+    totastView.frame = backInfoView.frame;
+    [totastView addBottomCornerRadius:8.0 fillColor:ColorWithRGBA(74, 74, 74, 0.5)];
+    [totastView setHidden:true];
+    [self.contentView addSubview:totastView];
+    self.totastView = totastView;
+    
+    UIView *headToastView = [UIView new];
+    headToastView.frame = headImageView.frame;
+    headToastView.backgroundColor = ColorWithRGBA(74, 74, 74, 0.5);
+    headToastView.layer.cornerRadius = 8;
+    [headToastView setHidden:true];
+    [self.contentView addSubview:headToastView];
+    self.headToastView = headToastView;
     
     UIImageView *statusImageview = [UIImageView new];
     [self.contentView addSubview:statusImageview];
@@ -250,30 +268,35 @@ static CGFloat const kInfoViewH = 237;
     switch (type) {
         case CPPotInfoCellTypeBuying: {
             [self.statusImageview setImage:[UIImage imageNamed:@"wex_buying"]];
-            [self.backInfoView addBottomCornerRadius:8 fillColor:[UIColor whiteColor]];
-
+            [self.totastView    setHidden:true];
+            [self.headToastView setHidden:true];
         }
             break;
         case CPPotInfoCellTypeIncoming: {
             [self.statusImageview setImage:[UIImage imageNamed:@"wex_incoming"]];
-            [self.backInfoView addBottomCornerRadius:8 fillColor:[UIColor whiteColor]];
+            [self.totastView    setHidden:true];
+            [self.headToastView setHidden:true];
 
         }
             break;
         case CPPotInfoCellTypeSellOver: {
             [self.statusImageview setImage:[UIImage imageNamed:@"wex_send_over"]];
-            [self.backInfoView addBottomCornerRadius:8 fillColor:ColorWithRGBA(74, 74, 74, 0.40)];
+            [self.totastView    setHidden:NO];
+            [self.headToastView setHidden:NO];
         }
             break;
         case CPPotInfoCellTypeOver: {
             [self.statusImageview setImage:[UIImage imageNamed:@"wex_over"]];
-            [self.backInfoView addBottomCornerRadius:8 fillColor:ColorWithRGBA(74, 74, 74, 0.40)];
+            [self.totastView    setHidden:NO];
+            [self.headToastView setHidden:NO];
         }
             break;
             
         default: {
             [self.statusImageview setImage:[UIImage imageNamed:@"wex_buying"]];
             [self.backInfoView addBottomCornerRadius:8 fillColor:[UIColor whiteColor]];
+            [self.totastView    setHidden:true];
+            [self.headToastView setHidden:true];
         }
             break;
     }
