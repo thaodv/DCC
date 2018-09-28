@@ -70,6 +70,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="5dp"
+            android:textColor="#fff"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="5dp"
@@ -118,7 +119,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tokenplus套利工具"
+                android:text="Tokenplus套利神器"
                 android:textColor="@color/FF4A4A4A"
                 android:textSize="14sp" />
 
