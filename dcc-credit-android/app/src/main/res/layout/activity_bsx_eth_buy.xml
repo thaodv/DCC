@@ -4,6 +4,10 @@
     <data>
 
         <variable
+            name="tx"
+            type="io.wexchain.android.dcc.modules.bsx.BsxEthBuyVm"/>
+
+        <variable
             name="asIdVm"
             type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
             />
@@ -24,9 +28,9 @@
             />
 
         <variable
-            name="buyamount"
-            type="String"
-            />
+            name="passport"
+            type="io.wexchain.android.dcc.domain.Passport"/>
+
     </data>
 
 
@@ -99,7 +103,7 @@
                         android:gravity="center_vertical"
                         android:inputType="numberDecimal"
                         android:minWidth="200dp"
-                        android:text="@{buyamount}"
+                        android:text="@={tx.amount}"
                         android:textSize="12sp"
                         tools:hint="最小认购额度100"/>
 
@@ -129,14 +133,33 @@
                     android:layout_marginRight="15dp">
 
                     <TextView
-                        android:id="@+id/tv_canuselable"
+                        android:id="@+id/tv1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
+                        android:text="可用额度:"
+                        android:textColor="@color/FF4A4A4A"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_canuselable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/tv1"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="14sp"
-                        tools:text="可用额度：1000.89 ETH"/>
+                        tools:text="1000.89"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/tv_canuselable"
+                        android:text="ETH"
+                        android:textColor="@color/FF4A4A4A"
+                        android:textSize="14sp"/>
 
                     <TextView
                         android:id="@+id/tv_total"
@@ -183,6 +206,7 @@
                         android:inputType="numberDecimal"
                         android:paddingLeft="60dp"
                         android:paddingRight="60dp"
+                        android:text="@={tx.gasPrice}"
                         tools:text="50"/>
 
                     <TextView
@@ -230,6 +254,7 @@
                         android:inputType="numberDecimal"
                         android:paddingLeft="60dp"
                         android:paddingRight="60dp"
+                        android:text="@={tx.gasLimit}"
                         android:textColor="@color/text_dark"
                         tools:text="50"/>
 
@@ -268,6 +293,7 @@
                         android:inputType="numberDecimal"
                         android:paddingLeft="60dp"
                         android:paddingRight="60dp"
+                        android:text="@={tx.maxTransactionFeeText}"
                         android:textColor="@color/text_dark"
                         tools:text="50"/>
 
@@ -325,6 +351,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
                     android:layout_marginTop="45dp"
+                    android:onClick="@{(v)->tx.checkAndProceed(passport.address)}"
                     android:text="立即认购"/>
 
             </LinearLayout>
