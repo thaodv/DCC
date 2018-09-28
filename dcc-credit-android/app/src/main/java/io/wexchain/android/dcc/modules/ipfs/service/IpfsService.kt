@@ -263,7 +263,7 @@ val js2= worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.get()!!.toB
                             CertOperations.saveIpfsCmData(phoneInfo)
                         }
                         ChainGateway.TN_COMMUNICATION_LOG -> {
-                            val phoneInfo = it.toBean(PhoneInfo::class.java)
+                            val phoneInfo = it.toBean(TNPhoneInfo::class.java)
                             CertOperations.saveIpfsTNData(phoneInfo)
                         }
                         else -> {

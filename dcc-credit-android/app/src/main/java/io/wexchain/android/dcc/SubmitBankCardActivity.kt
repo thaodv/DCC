@@ -147,6 +147,7 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
         if (certOrder.status.isPassed()) {
             toast("认证成功")
             CertOperations.saveBankCertData(certOrder,bankCardInfo)
+            worhavah.certs.tools.CertOperations.certed()
             finish()
         } else {
             toast(getString(R.string.verification_failed))

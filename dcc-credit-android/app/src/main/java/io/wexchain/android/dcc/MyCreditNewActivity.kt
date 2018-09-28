@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
+import android.text.TextUtils
 import android.view.View
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
@@ -159,6 +160,14 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
          setVM()
         refreshCertStatus()
         getCloudToken()
+        worhavah.certs.tools.CertOperations.certPrefs.certLasttime.get().apply {
+            if(TextUtils.isEmpty(this)){
+                binding.tvShowtime.visibility=View.GONE
+            }else{
+                binding.tvShowtime.visibility=View.VISIBLE
+                binding.tvShowtime.text="更新时间："+this
+            }
+        }
     }
 
      var aa=15;
@@ -199,6 +208,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                                     val content = it.content
                                     if (0L != content.expired) {
                                         CertOperations.saveCmLogCertExpired(content.expired)
+                                        worhavah.certs.tools.CertOperations.certed()
                                     }
                                 },
                                 onError = {
@@ -209,6 +219,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
 
         binding.asTongniuVm?.let {
             if (it.status.get() == UserCertStatus.INCOMPLETE) {
+                //     if (true) {
                 //get report
                 val passport = App.get().passportRepository.getCurrentPassport()!!
                 getTNLogReport(passport)
@@ -217,13 +228,13 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                         if(null!=it){
                             //Log.e("getTNLogReport",it.reportData.toString())
                             if(it.isComplete.equals("Y")){
-                                onTNLogSuccessGot(it.reportData.toString())
+                                android.util.Log.e("it.reportData ", it.reportData.toString() )
+                                onTNLogSuccessGot(it.reportData.toString() )
+                                worhavah.certs.tools.CertOperations.certed()
                                 setVM()
-
+                               // getTNrealdata()
                             }
                         }
-
-
                         App.get().chainGateway.getCertData(passport.address, ChainGateway.TN_COMMUNICATION_LOG).check()
                     }
                     .doFinally {
@@ -252,6 +263,20 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
             }
         }
     }
+    fun getTNrealdata(){
+        getTNLogReport2(App.get().passportRepository.getCurrentPassport()!!) .subscribeBy(
+            onSuccess = {
+                android.util.Log.e(" getTNLogReport2 ", it  )
+                val ss=it
+                var dd=ss.substring(it.indexOf("\"reportData\":\"")+14,it.length-2)
+                android.util.Log.e(" getTNLogReport2 dddddd", dd  )
+                onTNLogSuccessGot(dd )
+                setVM()
+
+                it
+            }
+        )
+    }
 
     fun getTNLogReport(passport: Passport): Single<TNcertReport> {
         require(passport.authKey != null)
@@ -272,6 +297,25 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
         ).compose(Result.checked())
                //.compose(Result.checked())
     }
+    fun getTNLogReport2(passport: Passport): Single<String> {
+        require(passport.authKey != null)
+        val address = passport.address
+        val privateKey = passport.authKey!!.getPrivateKey()
+        val orderId =worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.get()
+
+        return  worhavah.certs.tools.CertOperations.tnCertApi.TNgetReport2(
+            address = address,
+            orderId = orderId,
+
+            signature = ParamSignatureUtil.sign(
+                privateKey, mapOf(
+                    "address" to address,
+                    "orderId" to orderId.toString()
+                )
+            )
+        )
+        //.compose(Result.checked())
+    }
 
     private fun getDescription(certificationType: CertificationType): String {
         return when (certificationType) {
@@ -279,7 +323,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
             CertificationType.PERSONAL -> getString(R.string.safer_assessment)
             CertificationType.BANK -> getString(R.string.for_quick_approvalto_improve)
             CertificationType.MOBILE -> getString(R.string.to_improve_the_approval)
-            CertificationType.TONGNIU -> getString(R.string.to_improve_the_approval)
+            CertificationType.TONGNIU -> "用于现金借贷审核"
             CertificationType.LOANREPORT -> "借贷记录全整合"
         }
     }
@@ -290,7 +334,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
             CertificationType.PERSONAL -> getString(R.string.verify_your_legal_documentation)
             CertificationType.BANK -> getString(R.string.bank_account_verification)
             CertificationType.MOBILE -> getString(R.string.carrier_verification)
-            CertificationType.TONGNIU -> "同牛认证"
+            CertificationType.TONGNIU -> "同牛运营商认证"
             CertificationType.LOANREPORT -> "借贷报告"
         }
     }

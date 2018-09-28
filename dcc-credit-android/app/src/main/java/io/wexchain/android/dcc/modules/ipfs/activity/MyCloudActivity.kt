@@ -42,6 +42,7 @@ import org.web3j.abi.datatypes.DynamicBytes
 import org.web3j.abi.datatypes.Utf8String
 import java.util.*
 import io.reactivex.functions.Function;
+import worhavah.certs.tools.CertOperations.certed
 
 
 /**
@@ -191,7 +192,8 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                         .blockingGet()
             } else {//本地有数据
                 val checkChainData = CertOperations.checkLocalIdAndChainData(business).blockingGet()
-                if (checkChainData||business.equals(ChainGateway.TN_COMMUNICATION_LOG)) {//true 本地数据和链上最新一致
+                if (checkChainData ) {//true 本地数据和链上最新一致
+                 //if (checkChainData||business.equals(ChainGateway.TN_COMMUNICATION_LOG)) {//true 本地数据和链上最新一致
                     checkIpfsAndChainDigest(business)
                             .map {
                                 //true ipfs数据和链上最新一致
@@ -396,6 +398,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
     }
 
     private fun successful(business: String) {
+        certed()
         when (business) {
             ChainGateway.BUSINESS_ID -> {
                 cloud_id_selected.text = "已完成"

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.support.annotation.WorkerThread
 import android.support.v4.app.FragmentManager
 import android.util.Base64
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Single
@@ -35,6 +36,7 @@ import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import io.wexchain.ipfs.entity.BankInfo
 import io.wexchain.ipfs.entity.IdInfo
 import io.wexchain.ipfs.entity.PhoneInfo
+import io.wexchain.ipfs.entity.TNPhoneInfo
 import io.wexchain.ipfs.utils.base64
 import worhavah.certs.tools.CertOperations
 import worhavah.certs.tools.CertOperations.getTNLogUserStatus
@@ -89,6 +91,9 @@ object CertOperations {
                    /* if(business.equals(ChainGateway.TN_COMMUNICATION_LOG)){
                         de1 = MessageDigest.getInstance("SHA256").digest(Base64.decode(content.digest1, Base64.DEFAULT))
                     }*/
+                   /* val d3=Base64.encode(de1, Base64.DEFAULT)
+                    Log.e("d3=  ", String(d3))*/
+                   // Log.e("d3=d3=",dig264String)
                     Pair(de1, de2)
                 }
     }
@@ -104,6 +109,12 @@ object CertOperations {
                 }
         return getChainDigest(business)
                 .map {
+                  /*  if(business.equals(ChainGateway.TN_COMMUNICATION_LOG)){
+                        Log.e("it.first",String(it.first))
+                        Log.e("localDigest!!.first",String(localDigest!!.first))
+                        Log.e("it.first  decode",String(Base64.encode(it.first, Base64.DEFAULT)))
+                        Log.e("localDigest!!.decode",String(Base64.encode(localDigest!!.first, Base64.DEFAULT)) )
+                    }*/
                     Arrays.equals(it.first, localDigest!!.first) && Arrays.equals(it.second, localDigest.second)
                 }
     }
@@ -681,12 +692,13 @@ object CertOperations {
                 }
     }
 
-    fun saveIpfsTNData(phoneInfo: PhoneInfo) {
-        saveTnLogCertExpired(phoneInfo.mobileAuthenExpired)
-        worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.set(phoneInfo.mobileAuthenOrderid.toLong())
-        worhavah.certs.tools.CertOperations.certPrefs.certTNLogState.set(phoneInfo.mobileAuthenStatus)
-        worhavah.certs.tools.CertOperations. certPrefs.certTNLogPhoneNo.set(phoneInfo.mobileAuthenNumber)
-        worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(phoneInfo.mobileAuthenCmData.base64().toString())
+    fun saveIpfsTNData(phoneInfo: TNPhoneInfo) {
+        saveTnLogCertExpired(phoneInfo.sameCowmobileAuthenExpired)
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.set(phoneInfo.sameCowmobileAuthenOrderid.toLong())
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogState.set(phoneInfo.sameCowmobileAuthenStatus)
+        worhavah.certs.tools.CertOperations. certPrefs.certTNLogPhoneNo.set(phoneInfo.sameCowmobileAuthenNumber)
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(phoneInfo.sameCowmobileAuthenCmData.base64().toString())
+       // worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(String(Base64.encode(phoneInfo.sameCowmobileAuthenCmData.toByteArray(),Base64.NO_WRAP)  ))
        /* File(App.get().filesDir, certCmLogReportFileName(phoneInfo.mobileAuthenOrderid.toLong()))
             .apply {
                 ensureNewFile()

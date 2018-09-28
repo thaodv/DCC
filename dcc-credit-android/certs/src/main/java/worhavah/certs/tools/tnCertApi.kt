@@ -63,7 +63,14 @@ interface tnCertApi {
         @Part("signature") signature:String
     ):Single<Result<TNcertReport>>
 
+    @POST("dcc/endorsement/tongniu/communicationLog/getReport")
+    @Multipart
+    fun TNgetReport2(
+        @Part("address") address:String,
+        @Part("orderId") orderId:Long,
 
+        @Part("signature") signature:String
+    ):Single< String >
 
 
 

@@ -56,7 +56,7 @@ class MyCloudVm : ViewModel() {
     }
 
     fun tnAddressCall() {
-        cmAddressEvent.call()
+        tnAddressEvent.call()
     }
 
 }

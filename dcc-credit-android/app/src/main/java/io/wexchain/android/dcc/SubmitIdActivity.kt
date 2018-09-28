@@ -76,6 +76,7 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
             toast("认证成功")
             scheduleReDoLoginToRefreshMinePts()
             CertOperations.saveIdCertData(certOrder, idData)
+            worhavah.certs.tools.CertOperations.certed()
             finish()
         } else {
             toast(getString(R.string.verification_failed))
