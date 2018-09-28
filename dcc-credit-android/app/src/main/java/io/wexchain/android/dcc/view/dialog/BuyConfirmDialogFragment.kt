@@ -123,40 +123,42 @@ class BuyConfirmDialogFragment : DialogFragment() {
 
     fun Invest() {
         val approve = Erc20Helper.investBsx(binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger())
-        agent.getNonce(p.address).observeOn(AndroidSchedulers.mainThread()).flatMap {
-            val rawTransaction = RawTransaction.createTransaction(
-                    it,
-                    JuzixConstants.GAS_PRICE,
-                    JuzixConstants.GAS_LIMIT,
-                    BintApi.contract,
-                    BigInteger.ZERO,
-                    FunctionEncoder.encode(approve)
-            )
-            val signed = Numeric.toHexString(
-                    TransactionEncoder.signMessage(
-                            rawTransaction,
-                            App.get().passportRepository.getCurrentPassport()!!.credential
+        agent.getNonce(p.address)
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap {
+                    val rawTransaction = RawTransaction.createTransaction(
+                            it,
+                            JuzixConstants.GAS_PRICE,
+                            JuzixConstants.GAS_LIMIT,
+                            BintApi.contract,
+                            BigInteger.ZERO,
+                            FunctionEncoder.encode(approve)
                     )
-            )
-            App.get().bintApi.sendRawTransaction(signed)
+                    val signed = Numeric.toHexString(
+                            TransactionEncoder.signMessage(
+                                    rawTransaction,
+                                    App.get().passportRepository.getCurrentPassport()!!.credential
+                            )
+                    )
+                    App.get().bintApi.sendRawTransaction(signed)
 
-        }.flatMap { txHash ->
-            App.get().chainGateway.getReceiptResult(txHash)
-                    .compose(Result.checked())
-                    .map {
-                        if (!it.hasReceipt) {
-                            throw DccChainServiceException("no receipt yet")
-                        }
-                        it
-                    }
-                    .retryWhen(RetryWithDelay.createSimple(6, 5000L))
-                    .map {
-                        if (!it.approximatelySuccess) {
-                            throw DccChainServiceException()
-                        }
-                        txHash
-                    }
-        }
+                }.flatMap { txHash ->
+                    App.get().chainGateway.getReceiptResult(txHash)
+                            .compose(Result.checked())
+                            .map {
+                                if (!it.hasReceipt) {
+                                    throw DccChainServiceException("no receipt yet")
+                                }
+                                it
+                            }
+                            .retryWhen(RetryWithDelay.createSimple(6, 5000L))
+                            .map {
+                                if (!it.approximatelySuccess) {
+                                    throw DccChainServiceException()
+                                }
+                                txHash
+                            }
+                }
                 .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
                     showLoadingDialog()
                 }

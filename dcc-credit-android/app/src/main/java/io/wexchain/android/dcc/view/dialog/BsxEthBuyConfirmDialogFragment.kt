@@ -7,32 +7,38 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.*
-import com.wexmarket.android.passport.ResultCodes
+import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.MyInterestDetailActivity
 import io.wexchain.android.dcc.base.ActivityCollector
-import io.wexchain.android.dcc.chain.BsxOperations
-import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.bsx.BsxDetailActivity
+import io.wexchain.android.dcc.modules.bsx.BsxEthBuyActivity
+import io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity
 import io.wexchain.android.dcc.modules.repay.LoanRepayActivity
 import io.wexchain.android.dcc.modules.repay.RePaymentErrorActivity
 import io.wexchain.android.dcc.modules.repay.RepayingActivity
-import io.wexchain.android.dcc.tools.MultiChainHelper
+import io.wexchain.android.dcc.tools.LogUtils
+import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.android.dcc.vm.TransactionConfirmVm
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.DialogConfirmBuyEthInvestmentBinding
-import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
+import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.digitalwallet.EthsTransactionScratch
+import io.wexchain.digitalwallet.util.gweiTowei
 import io.wexchain.ipfs.utils.doMain
+import org.web3j.abi.FunctionEncoder
+import org.web3j.crypto.TransactionEncoder
+import org.web3j.protocol.core.methods.request.RawTransaction
+import org.web3j.utils.Numeric
 import java.math.BigDecimal
 
 /**
  * Created by sisel on 2018/1/22.
  */
 class BsxEthBuyConfirmDialogFragment : DialogFragment() {
-    var isRepayment = 0
 
     private lateinit var binding: DialogConfirmBuyEthInvestmentBinding
 
@@ -45,30 +51,16 @@ class BsxEthBuyConfirmDialogFragment : DialogFragment() {
         vm.syncProtect(this)
         vm.txSentEvent.observe(this, Observer {
             it?.let {
-                if (isRepayment == 0) {
-                    toast("转账申请提交成功")
-                    activity?.setResult(ResultCodes.RESULT_OK, Intent().apply {
-                        putExtra(Extras.EXTRA_DIGITAL_TRANSACTION_SCRATCH, it.first)
-                        putExtra(Extras.EXTRA_DIGITAL_TRANSACTION_ID, it.second)
-                    })
-                    activity?.finish()
-                } else {
-                    startActivity(Intent(App.get(), RepayingActivity::class.java))
-                    ActivityCollector.finishActivity(LoanRepayActivity::class.java)
-                    activity?.finish()
-                }
+                startActivity(Intent(App.get(), RepayingActivity::class.java))
+                ActivityCollector.finishActivity(LoanRepayActivity::class.java)
+                activity?.finish()
 
             }
         })
         vm.txSendFailEvent.observe(this, Observer {
             it?.let {
-                if (isRepayment == 0) {
-
-                    toast("转账提交失败")
-                } else {
-                    startActivity(Intent(App.get(), RePaymentErrorActivity::class.java))
-                    ActivityCollector.finishActivity(LoanRepayActivity::class.java)
-                }
+                startActivity(Intent(App.get(), RePaymentErrorActivity::class.java))
+                ActivityCollector.finishActivity(LoanRepayActivity::class.java)
             }
 
 
@@ -102,32 +94,65 @@ class BsxEthBuyConfirmDialogFragment : DialogFragment() {
         return binding.root
     }
 
-    val dccJuzix = MultiChainHelper.dispatch(Currencies.DCC).first { it.chain == Chain.JUZIX_PRIVATE }
     val p = App.get().passportRepository.getCurrentPassport()!!
-    var agent = App.get().assetsRepository.getDigitalCurrencyAgent(dccJuzix)
+
+    val assetsRepository = App.get().assetsRepository
+
+    val dccPublic = Currencies.Ethereum
+
+    val agent = App.get().assetsRepository.getDigitalCurrencyAgent(dccPublic)
 
     private fun invest() {
 
-        BsxOperations
-                .investBsx(io.wexchain.android.dcc.network.IpfsApi.BSX_DCC_02, binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger(), Chain.JUZIX_PRIVATE)
+        //val approve = Erc20Helper.investBsx(binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger())
+        val approve = Erc20Helper.investEthBsx()
+
+        LogUtils.i("approve", binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger().toString())
+
+        agent.getNonce(p.address)
+                .doMain()
+                .flatMap {
+                    LogUtils.i("invest-nonce", it.toString())
+                    val rawTransaction = RawTransaction.createTransaction(
+                            it,
+                            gweiTowei(binding.vm!!.tx.gasPrice),
+                            binding.vm!!.tx.gasLimit,
+                            getContractAddress(),
+                            binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger(),
+                            FunctionEncoder.encode(approve)
+                    )
+                    val signed = Numeric.toHexString(TransactionEncoder.signMessage(rawTransaction, p.credential))
+                    agent.sendRawTransaction(signed)
+                }
+                .flatMap { txHash ->
+                    agent.transactionReceipt(txHash)
+                            .retryWhen(
+                                    RetryWithDelay.createSimple(
+                                            6,
+                                            3000L
+                                    )
+                            )
+                }
                 .doMain()
                 .doOnSubscribe {
                     showLoadingDialog()
                 }.doFinally {
                     hideLoadingDialog()
-                    dismiss()
                 }
                 .subscribe({
                     toast("交易成功")
-                    hideLoadingDialog()
                     dismiss()
-                    startActivity(Intent(activity, MyInterestDetailActivity::class.java))
+                    navigateTo(BsxHoldingActivity::class.java)
+                    ActivityCollector.finishActivity(BsxEthBuyActivity::class.java)
+                    ActivityCollector.finishActivity(BsxDetailActivity::class.java)
                     activity!!.finish()
                 }, {
+                    stackTrace(it)
                     toast("交易失败")
-                    hideLoadingDialog()
                     dismiss()
                 })
+
+
     }
 
     override fun onResume() {
@@ -149,10 +174,14 @@ class BsxEthBuyConfirmDialogFragment : DialogFragment() {
 
     fun hideLoadingDialog() {
         loadingDialog?.hide()
+        dismiss()
     }
 
     private fun getScratch() =
             arguments?.getSerializable(ARG_SCRATCH)!! as EthsTransactionScratch
+
+    private fun getContractAddress() =
+            arguments?.getSerializable(CONTRACTADDRESS)!! as String
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setStyle(STYLE_NORMAL, R.style.Theme_AppCompat_Light_Dialog_Alert_Dcc)
@@ -167,13 +196,14 @@ class BsxEthBuyConfirmDialogFragment : DialogFragment() {
 
     companion object {
         const val ARG_SCRATCH = "argument_transaction_scratch"
+        const val CONTRACTADDRESS = "contractAddress"
 
-        fun create(ethsTransactionScratch: EthsTransactionScratch, isRepayment: Int = 0): BsxEthBuyConfirmDialogFragment {
+        fun create(ethsTransactionScratch: EthsTransactionScratch, contractAddress: String): BsxEthBuyConfirmDialogFragment {
             return BsxEthBuyConfirmDialogFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_SCRATCH, ethsTransactionScratch)
+                    putSerializable(CONTRACTADDRESS, contractAddress)
                 }
-                this.isRepayment = isRepayment
             }
         }
     }

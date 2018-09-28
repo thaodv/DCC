@@ -13,8 +13,8 @@ import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.repay.LoanRepayActivity
-import io.wexchain.android.dcc.modules.repay.RepayingActivity
 import io.wexchain.android.dcc.modules.repay.RePaymentErrorActivity
+import io.wexchain.android.dcc.modules.repay.RepayingActivity
 import io.wexchain.android.dcc.vm.TransactionConfirmVm
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
@@ -60,7 +60,7 @@ class TransactionConfirmDialogFragment : DialogFragment() {
 
                     toast("转账提交失败")
                     if (isEdit) activity?.finish()
-                }else{
+                } else {
                     startActivity(Intent(App.get(), RePaymentErrorActivity::class.java))
                     ActivityCollector.finishActivity(LoanRepayActivity::class.java)
                 }

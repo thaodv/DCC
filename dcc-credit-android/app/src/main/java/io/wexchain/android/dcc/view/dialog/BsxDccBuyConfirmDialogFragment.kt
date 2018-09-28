@@ -8,12 +8,15 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.*
 import com.wexmarket.android.passport.ResultCodes
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.MyInterestDetailActivity
 import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.chain.BsxOperations
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.bsx.BsxDccBuyActivity
+import io.wexchain.android.dcc.modules.bsx.BsxDetailActivity
+import io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity
 import io.wexchain.android.dcc.modules.repay.LoanRepayActivity
 import io.wexchain.android.dcc.modules.repay.RePaymentErrorActivity
 import io.wexchain.android.dcc.modules.repay.RepayingActivity
@@ -123,7 +126,9 @@ class BsxDccBuyConfirmDialogFragment : DialogFragment() {
                     toast("交易成功")
                     hideLoadingDialog()
                     dismiss()
-                    startActivity(Intent(activity, MyInterestDetailActivity::class.java))
+                    navigateTo(BsxHoldingActivity::class.java)
+                    ActivityCollector.finishActivity(BsxDccBuyActivity::class.java)
+                    ActivityCollector.finishActivity(BsxDetailActivity::class.java)
                     activity!!.finish()
                 }, {
                     toast("交易失败")
