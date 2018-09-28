@@ -3,11 +3,10 @@ package io.wexchain.android.dcc.vm
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import android.databinding.ObservableLong
 import android.os.SystemClock
 import io.reactivex.Flowable
 import io.wexchain.android.common.switchMap
-import io.wexchain.android.dcc.tools.AutoLoadLiveData
+import worhavah.regloginlib.tools.AutoLoadLiveData
 import java.util.concurrent.TimeUnit
 
 class VerifyBankCardSmsCodeVm : ViewModel() {

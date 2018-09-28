@@ -2,18 +2,19 @@
 <layout>
 
     <data>
+
         <variable
             name="vm"
-            type="io.wexchain.android.dcc.vm.InputPhoneInfoVm"/>
+            type="io.wexchain.android.dcc.vm.InputPhoneInfoVm" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
         <TextView
             android:id="@+id/tv_cert_org"
@@ -23,10 +24,10 @@
             android:textAppearance="@style/TextAppearance.AppCompat.DccProviderHeadline"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <include
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:id="@+id/input_phone"
             layout="@layout/certs_include_input_text"
             android:layout_width="match_parent"
@@ -34,8 +35,7 @@
             app:hint="@{@string/please_input_phone_no}"
             app:layout_constraintTop_toBottomOf="@id/tv_cert_org"
             app:text="@={vm.phoneNo}"
-            app:title="@{@string/phone_no}"
-            />
+            app:title="@{@string/phone_no}" />
 
         <include
             android:id="@+id/input_password"
@@ -45,8 +45,7 @@
             app:hint="@{@string/please_input_phone_service_password}"
             app:layout_constraintTop_toBottomOf="@id/input_phone"
             app:text="@={vm.servicePassword}"
-            app:title="@{@string/phone_service_password}"
-            />
+            app:title="@{@string/phone_service_password}" />
 
         <TextView
             android:id="@+id/tv_cert_fee"
@@ -58,25 +57,24 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/input_password"
-            tools:text="认证费123.00DCC"
-            />
+            tools:text="认证费123.00DCC" />
 
         <Button
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:id="@+id/btn_submit"
             style="@style/Widget.AppCompat.Button.Dcc.Full"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/submit"
-            app:layout_constraintTop_toBottomOf="@id/tv_cert_fee"
-            />
+            app:layout_constraintTop_toBottomOf="@id/tv_cert_fee" />
 
         <TextView
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/communication_log_submit_hint"
             android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
-            app:layout_constraintTop_toBottomOf="@id/btn_submit"
-            />
+            app:layout_constraintTop_toBottomOf="@id/btn_submit" />
 
     </android.support.constraint.ConstraintLayout>
 

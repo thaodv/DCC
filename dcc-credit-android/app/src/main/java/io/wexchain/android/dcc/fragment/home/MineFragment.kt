@@ -120,9 +120,6 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
         binding.tvSetting.onClick {
             navigateTo(SettingActivity::class.java)
         }
-        binding.tvMineWallet.onClick {
-            navigateTo(DigitalAssetsActivity::class.java)
-        }
         binding.tvPassportBackup.onClick {
             navigateTo(PassportExportActivity::class.java)
         }

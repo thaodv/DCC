@@ -60,11 +60,10 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
         initClick()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         binding.rvList.destroy()
     }
-
     private fun initClick() {
         header.findViewById<Button>(R.id.btn_borrow).onClick {
             navigateTo(LoanActivity::class.java)
