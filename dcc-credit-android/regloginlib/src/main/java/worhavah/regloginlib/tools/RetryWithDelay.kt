@@ -1,8 +1,6 @@
-package io.wexchain.android.dcc.tools
+package worhavah.regloginlib.tools
 
 import io.reactivex.Flowable
-import io.reactivex.Single
-import io.reactivex.SingleSource
 import io.reactivex.functions.Function
 import org.reactivestreams.Publisher
 import java.util.concurrent.TimeUnit

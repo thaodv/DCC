@@ -12,7 +12,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.wexmarket.android.barcode.util.QrCodeDrawable
-import io.wexchain.android.dcc.tools.DoNothingTransformationMethod
+import worhavah.regloginlib.tools.DoNothingTransformationMethod
 import worhavah.ViewBackgroundTarget
 
 @set:BindingAdapter("visibleOrGone")

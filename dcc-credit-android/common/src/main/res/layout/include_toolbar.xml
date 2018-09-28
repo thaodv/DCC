@@ -5,9 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:io.wexchain.rns.tools="http://schemas.android.com/io.wexchain.rns.tools"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:background="#ffffff"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/white"
     app:contentInsetEnd="0dp"
+    app:contentInsetStartWithNavigation="0dp"
     app:contentInsetLeft="0dp"
     app:contentInsetRight="0dp"
     app:contentInsetStart="0dp">
@@ -15,6 +16,7 @@
     <TextView
         android:id="@+id/toolbar_title"
         style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:background="#ffffff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

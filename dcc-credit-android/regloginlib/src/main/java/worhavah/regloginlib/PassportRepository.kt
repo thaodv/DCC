@@ -18,7 +18,6 @@ import io.wexchain.android.common.kotlin.weak
 import io.wexchain.android.common.map
 
 
-import io.wexchain.android.dcc.tools.RoomHelper
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.Wallet
 import org.web3j.crypto.WalletFile

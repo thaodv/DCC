@@ -11,8 +11,8 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.constant.RequestCodes
-import io.wexchain.android.dcc.tools.isEcPrivateKeyValid
-import io.wexchain.android.dcc.tools.isPasswordValid
+import worhavah.regloginlib.tools.isEcPrivateKeyValid
+import worhavah.regloginlib.tools.isPasswordValid
 import org.web3j.crypto.Credentials
 import wex.regloginlib.R
 import wex.regloginlib.databinding.FragmentPastePrivateKeyBinding

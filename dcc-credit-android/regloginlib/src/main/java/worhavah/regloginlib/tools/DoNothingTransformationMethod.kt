@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.tools
+package worhavah.regloginlib.tools
 
 import android.graphics.Rect
 import android.text.method.TransformationMethod

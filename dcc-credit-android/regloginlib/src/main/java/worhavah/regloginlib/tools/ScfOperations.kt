@@ -2,22 +2,15 @@ package worhavah.regloginlib.tools
 
 import android.content.Intent
 import android.util.Log
-import android.view.View
 
-import io.reactivex.Observer
 import io.reactivex.Single
 import io.reactivex.SingleTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.SingleLiveEvent
-import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.tools.MultiChainHelper
-import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.ScfAccountInfo
-import io.wexchain.dccchainservice.domain.TicketResponse
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import retrofit2.HttpException
 import worhavah.regloginlib.Net.*

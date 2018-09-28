@@ -1,13 +1,10 @@
 package worhavah.regloginlib
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.support.annotation.MainThread
 import io.reactivex.Single
-import io.wexchain.android.common.zipLiveData
 
-import io.wexchain.android.dcc.tools.MultiChainHelper
-import io.wexchain.android.dcc.tools.RoomHelper
+import worhavah.regloginlib.tools.MultiChainHelper
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency

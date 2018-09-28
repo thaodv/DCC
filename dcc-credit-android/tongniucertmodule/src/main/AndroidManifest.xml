@@ -11,15 +11,18 @@
         <activity
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name="worhavah.tongniucertmodule.SubmitTNLogActivity"
+            android:label="同牛手机运营商认证"
             android:screenOrientation="portrait"/>
 
         <activity
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name="worhavah.tongniucertmodule.TnLogCertificationActivity"
+            android:label="同牛手机运营商信息"
             android:screenOrientation="portrait"/>
         <activity
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name="worhavah.tongniucertmodule.TNCertDataActivity"
+            android:label="报告原文"
             android:screenOrientation="portrait"/>
     </application>
 

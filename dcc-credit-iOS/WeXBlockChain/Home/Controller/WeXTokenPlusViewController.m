@@ -15,11 +15,6 @@
 @property (nonatomic, strong) NSArray <NSString *> *titles;
 @property (nonatomic, strong) NSArray <NSString *> *subtitles;
 
-@property (nonatomic, copy) NSString *webURL;
-
-
-
-
 @end
 
 static NSString * const kCardCellID = @"WeXTokenPlusCardCellID";
@@ -29,16 +24,17 @@ static NSString * const kTextCellID = @"WeXTokenPlusTextCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = WeXLocalizedString(@"TokenPlus介绍");
+    self.navigationItem.title = _titleName;
     [self setNavigationNomalBackButtonType];
     self.webView.delegate = self;
-    NSString *webURL;
-    if ([[WeXLocalizedManager shareManager] isChinese]) {
-        webURL = [WEX_WEB_BASE_URL stringByAppendingString:@"dapp/tokenPlus/discovery.html"];
-    } else {
-        webURL = [WEX_WEB_BASE_URL stringByAppendingString:@"dapp/tokenPlus/discovery.html"];
-    }
-    self.webURL = webURL;
+    
+//    NSString *webURL;
+//    if ([[WeXLocalizedManager shareManager] isChinese]) {
+//        webURL = [WEX_WEB_BASE_URL stringByAppendingString:@"dapp/tokenPlus/discovery.html"];
+//    } else {
+//        webURL = [WEX_WEB_BASE_URL stringByAppendingString:@"dapp/tokenPlus/discovery.html"];
+//    }
+//    self.webURL = webURL;
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_webURL]]];
     [WeXPorgressHUD showLoadingAddedTo:self.view];
 }

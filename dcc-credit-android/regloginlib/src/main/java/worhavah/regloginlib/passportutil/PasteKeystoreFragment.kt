@@ -11,7 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.constant.RequestCodes
-import io.wexchain.android.dcc.tools.isKeyStoreValid
+import worhavah.regloginlib.tools.isKeyStoreValid
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.Wallet
 import wex.regloginlib.R
