@@ -33,7 +33,7 @@
     <string name="title_import_wallet">导入已有钱包</string>
     <string name="on_chain_dcc">\@Distributed Credit Chain</string>
     <string name="on_chain_ethereum">\@Ethereum</string>
-    <string name="dcc">DRC</string>
+    <string name="dcc">DCC</string>
     <string name="market_quote">市场价格</string>
     <string name="quote_not_available">未能查询到该币种市场价格</string>
     <string name="_24h_high">24H High</string>

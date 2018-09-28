@@ -20,7 +20,7 @@ class CertFeeConfirmVm :ViewModel(){
     fun loadHolding(){
         ScfOperations.loadHolding()
             .subscribe ({ value ->
-                holding.set("${value.toPlainString()} DRC")
+                holding.set("${value.toPlainString()} DCC")
             },{
                 it.printStackTrace()
             })
