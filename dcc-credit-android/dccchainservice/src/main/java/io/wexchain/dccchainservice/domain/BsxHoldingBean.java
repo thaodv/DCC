@@ -2,6 +2,7 @@ package io.wexchain.dccchainservice.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import io.wexchain.dccchainservice.util.DateUtil;
 
@@ -60,14 +61,15 @@ public class BsxHoldingBean implements Serializable {
     }
     
     public String investMoney() {
-        return positionAmount + assetCode;
+        return new BigDecimal(positionAmount).setScale(4, RoundingMode.DOWN) + assetCode;
     }
     
     public String expect() {
-        return expectedRepay + assetCode;
+        return new BigDecimal(expectedRepay).setScale(4, RoundingMode.DOWN) + assetCode;
     }
     
     public String getProfit() {
-        return new BigDecimal(expectedRepay).subtract(new BigDecimal(positionAmount)).toPlainString();
+        return new BigDecimal(expectedRepay).subtract(new BigDecimal(positionAmount)).setScale(4,
+                RoundingMode.DOWN).toPlainString();
     }
 }
