@@ -693,12 +693,12 @@ object CertOperations {
     }
 
     fun saveIpfsTNData(phoneInfo: TNPhoneInfo) {
-        saveTnLogCertExpired(phoneInfo.sameCowmobileAuthenExpired)
-        worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.set(phoneInfo.sameCowmobileAuthenOrderid.toLong())
-        worhavah.certs.tools.CertOperations.certPrefs.certTNLogState.set(phoneInfo.sameCowmobileAuthenStatus)
-        worhavah.certs.tools.CertOperations. certPrefs.certTNLogPhoneNo.set(phoneInfo.sameCowmobileAuthenNumber)
-        worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(String(phoneInfo.sameCowmobileAuthenCmData.base64()) )
-       // worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(String(Base64.encode(phoneInfo.sameCowmobileAuthenCmData.toByteArray(),Base64.NO_WRAP)  ))
+        saveTnLogCertExpired(java.lang.Long.parseLong(phoneInfo.sameCowMobileAuthenExpired) )
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.set(phoneInfo.sameCowMobileAuthenOrderid.toLong())
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogState.set(phoneInfo.sameCowMobileAuthenStatus)
+        worhavah.certs.tools.CertOperations. certPrefs.certTNLogPhoneNo.set(phoneInfo.sameCowMobileAuthenNumber)
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(String(phoneInfo.sameCowMobileAuthenCmData.base64()) )
+       // worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(String(Base64.encode(phoneInfo.sameCowMobileAuthenCmData.toByteArray(),Base64.NO_WRAP)  ))
        /* File(App.get().filesDir, certCmLogReportFileName(phoneInfo.mobileAuthenOrderid.toLong()))
             .apply {
                 ensureNewFile()
