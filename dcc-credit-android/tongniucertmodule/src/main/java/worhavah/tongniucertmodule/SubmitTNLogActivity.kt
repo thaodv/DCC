@@ -2,6 +2,7 @@ package worhavah.tongniucertmodule
 
 import android.os.Bundle
 import android.util.Log
+import com.githang.statusbar.StatusBarCompat
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.Pop
@@ -68,6 +69,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tndefault_fragment_container2)
+        StatusBarCompat.setStatusBarColor(this,resources.getColor(R.color.white))
         initToolbar()
         checkPreconditions()
     }

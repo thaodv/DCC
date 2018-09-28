@@ -5,6 +5,7 @@
     <application
         android:allowBackup="true"
         android:label="mobilecertmodule"
+
         >
 
         <activity
