@@ -60,7 +60,8 @@ class BsxHoldingDetailActivity : BindActivity<ActivityBsxHoldingDetailBinding>()
         binding.rlDetail.setOnClickListener {
             startActivity(Intent(this, BsxDetailActivity::class.java)
                     .putExtra("assetCode", bsxHoldingBean!!.assetCode)
-                    .putExtra("name", bsxHoldingBean!!.name))
+                    .putExtra("name", bsxHoldingBean!!.name)
+                    .putExtra("contractAddress", bsxHoldingBean!!.contractAddress))
         }
 
     }

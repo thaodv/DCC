@@ -137,7 +137,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
                         minAmountPerHand = BytesUtils.encodeStringsimple2(it.result)
                     }
 
-                    MINBUYAMOUNT = minAmountPerHand.toDouble()
+                    MINBUYAMOUNT = minAmountPerHand
                     binding.minAmountPerHandDCC = minAmountPerHand.toString() + assetCode
                     getBsxInvestCeilAmount()
                 }, {

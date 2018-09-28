@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.modules.bsx
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import io.wexchain.android.common.navigateTo
@@ -32,14 +33,15 @@ class BsxMarketActivity : BindActivity<ActivityBsxMarketBinding>(), ItemViewClic
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
         App.get().scfApi.getHoldingSum(App.get().passportRepository.currPassport.value!!.address)
                 .checkonMain()
                 .withLoading()
                 .subscribe({
-                    binding.tvInvestMoney.text = "≈" + it.corpus
-                    binding.tvWaitProfit.text = "≈" + it.profit
+                    binding.tvInvestMoney.text = "≈" + if(null == it.corpus){"0"} else it.corpus
+                    binding.tvWaitProfit.text = "≈" + if(null == it.profit){"0"}else it.profit
                 }, {
 
                 })

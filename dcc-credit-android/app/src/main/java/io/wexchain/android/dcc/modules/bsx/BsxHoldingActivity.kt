@@ -36,8 +36,8 @@ class BsxHoldingActivity : BindActivity<ActivityBsxHoldingBinding>(), ItemViewCl
                 .checkonMain()
                 .withLoading()
                 .subscribe({
-                    binding.tvInvestMoney.text = "≈" + it.corpus
-                    binding.tvWaitProfit.text = "≈" + it.profit
+                    binding.tvInvestMoney.text = "≈" + if(null == it.corpus){"0"} else it.corpus
+                    binding.tvWaitProfit.text = "≈" + if(null == it.profit){"0"}else it.profit
                 }, {
 
                 })
