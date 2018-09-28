@@ -17,16 +17,50 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/include_toolbar" />
+
+        <RelativeLayout
+            android:id="@+id/digital_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#fff">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="发现"
+                android:textColor="@color/main_tab"
+                android:textSize="17sp" />
+
+
+            <ImageView
+                android:id="@+id/digital_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:src="@drawable/toolbar_add" />
+
+            <ImageView
+                android:id="@+id/digital_select_node"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_toLeftOf="@id/digital_add"
+                android:src="@drawable/img_node_yellow" />
+
+
+        </RelativeLayout>
 
         <View
             android:id="@+id/v_line"
             style="@style/DividerHorizontal"
             android:layout_height="10dp"
             android:background="#F8F8FF"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@id/digital_title" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -55,14 +89,14 @@
             android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawablePadding="8dp"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="15dp"
-            android:onClick="@{(v)->assets.filter()}"
             android:drawableLeft="@{assets.assetsFilter?@drawable/tv_state_enabled:@drawable/tv_state_disabled}"
+            android:drawablePadding="8dp"
+            android:onClick="@{(v)->assets.filter()}"
+            android:text="隐藏0资产币种"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintRight_toRightOf="parent"
-            android:text="隐藏0资产币种"
             app:layout_constraintTop_toBottomOf="@id/v_line"
             tools:drawableLeft="@drawable/tv_state_disabled" />
 

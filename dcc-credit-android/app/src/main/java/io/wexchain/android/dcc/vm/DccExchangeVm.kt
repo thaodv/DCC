@@ -6,7 +6,7 @@ import io.reactivex.Flowable
 import io.wexchain.android.common.map
 import io.wexchain.android.common.switchMap
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.tools.AutoLoadLiveData
+import worhavah.regloginlib.tools.AutoLoadLiveData
 import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
