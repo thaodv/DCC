@@ -5,22 +5,16 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.databinding.ObservableBoolean
 import android.support.annotation.MainThread
-import com.tencent.mm.opensdk.utils.Log
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.android.dcc.modules.trans.activity.Public2PrivateActivity
-import io.wexchain.android.dcc.tools.AutoLoadLiveData
-import io.wexchain.android.dcc.tools.SharedPreferenceUtil
-import io.wexchain.android.dcc.view.dialog.WaitTransDialog
+import worhavah.regloginlib.tools.AutoLoadLiveData
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
-import java.math.BigInteger
 import java.util.concurrent.TimeUnit
 
 /**
