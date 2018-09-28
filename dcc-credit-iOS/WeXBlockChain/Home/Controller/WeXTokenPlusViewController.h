@@ -11,4 +11,7 @@
 
 @interface WeXTokenPlusViewController : WeXBaseWebViewController
 
+@property (nonatomic, copy) NSString *titleName;
+@property (nonatomic, copy) NSString *webURL;
+
 @end

@@ -215,8 +215,14 @@ static const CGFloat kCardHeightWidthRatio = 203.0/347.0;
         make.trailing.equalTo(tableBackView).offset(-15);
     }];
  
-    WeXCustomButton *skipBtn = [WeXCustomButton button];
+    UIButton *skipBtn = [[UIButton alloc]init];
     [skipBtn setTitle:WeXLocalizedString(@"跳过") forState:UIControlStateNormal];
+    [skipBtn setBackgroundColor:[UIColor whiteColor]];
+    [skipBtn setTitleColor:ColorWithHex(0x7B40FF) forState:UIControlStateNormal];
+    [skipBtn setImage:[UIImage imageNamed:@"jian2"] forState:UIControlStateNormal];
+    [skipBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, - skipBtn.imageView.image.size.width, 0, skipBtn.imageView.image.size.width)];
+    [skipBtn setImageEdgeInsets:UIEdgeInsetsMake(0, skipBtn.titleLabel.bounds.size.width+40, 0, -skipBtn.titleLabel.bounds.size.width)];
+
     [skipBtn addTarget:self action:@selector(skipBtnClick) forControlEvents:UIControlEventTouchUpInside];
     skipBtn.titleLabel.font = [UIFont systemFontOfSize:15];
     [self.view addSubview:skipBtn];
