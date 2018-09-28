@@ -248,3 +248,4 @@ fun EthJsonRpcApi.investedBsxAmountMapping(contractAddress: String, address: Str
             id = this.nextId()
     ))
 }
+

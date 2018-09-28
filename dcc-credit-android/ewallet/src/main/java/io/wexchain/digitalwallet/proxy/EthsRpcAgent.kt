@@ -32,6 +32,7 @@ interface EthsRpcAgent {
     fun sendTransaction(nonce: Single<BigInteger>, encodeTx: (BigInteger) -> String): Single<Pair<BigInteger, String>>
 
     fun transactionByHash(txId: String): Single<EthJsonTxInfo>
+
     fun transactionReceipt(txId: String): Single<EthJsonTxReceipt>
 
     fun getBsxStatus(contractAddress: String): Single<EthJsonRpcResponse<String>>
@@ -46,10 +47,16 @@ interface EthsRpcAgent {
 
     fun investedBsxAmountMapping(contractAddress: String, userAddress: String): Single<EthJsonRpcResponse<String>>
 
+    fun sendRawTransaction(rawTransaction: String): Single<String>
+
     companion object {
         fun by(ethJsonRpcApi: EthJsonRpcApi): EthsRpcAgent {
             val api = ethJsonRpcApi
             return object : EthsRpcAgent {
+
+                override fun sendRawTransaction(rawTransaction: String): Single<String> {
+                    return api.sendRawTransaction(rawTransaction)
+                }
 
                 override fun investedBsxAmountMapping(contractAddress: String, userAddress: String): Single<EthJsonRpcResponse<String>> {
                     return api.investedBsxAmountMapping(contractAddress, userAddress)
@@ -134,6 +141,10 @@ interface EthsRpcAgent {
         fun by(ethJsonRpcApi: EthJsonRpcApiWithAuth): EthsRpcAgent {
             val api = ethJsonRpcApi
             return object : EthsRpcAgent {
+                override fun sendRawTransaction(rawTransaction: String): Single<String> {
+                    return api.sendRawTransaction(rawTransaction)
+                }
+
                 override fun investedBsxAmountMapping(contractAddress: String, userAddress: String): Single<EthJsonRpcResponse<String>> {
                     return api.investedBsxAmountMapping(contractAddress, userAddress)
                 }
@@ -214,6 +225,11 @@ interface EthsRpcAgent {
         fun by(infuraApi: InfuraApi): EthsRpcAgent {
             val api = infuraApi
             return object : EthsRpcAgent {
+
+                override fun sendRawTransaction(rawTransaction: String): Single<String> {
+                    return api.sendRawTransaction(rawTransaction)
+                }
+
                 override fun investedBsxAmountMapping(contractAddress: String, userAddress: String): Single<EthJsonRpcResponse<String>> {
                     return api.investedBsxAmountMapping(contractAddress, userAddress)
                 }

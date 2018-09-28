@@ -39,14 +39,14 @@ abstract class EthCurrencyAgent(
      * @return TxId of successfully submitted transaction 转账接口
      */
     fun sendTransferTransaction(from: Credentials, to: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, remarks: String? = null): Single<Pair<BigInteger, String>> {
-        return rpcAgent.sendTransaction(getNonce(from.address), { nonce -> encodeTransfer(nonce, from, to, amount, gasPrice, gasLimit, remarks) })
+        return rpcAgent.sendTransaction(getNonce(from.address)) { nonce -> encodeTransfer(nonce, from, to, amount, gasPrice, gasLimit, remarks) }
     }
     /* */
     /**
      * @return TxId of successfully submitted transaction 编辑撤销转账接口
      */
     fun editTransferTransaction(nonceo: Single<BigInteger>, from: Credentials, to: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, remarks: String? = null): Single<Pair<BigInteger, String>> {
-        return rpcAgent.sendTransaction(nonceo, { nonce -> encodeTransfer(nonce, from, to, amount, gasPrice, gasLimit, remarks) })
+        return rpcAgent.sendTransaction(nonceo) { nonce -> encodeTransfer(nonce, from, to, amount, gasPrice, gasLimit, remarks) }
     }
 
     /**
@@ -88,6 +88,10 @@ abstract class EthCurrencyAgent(
 
     fun investedBsxAmountMapping(contractAddress: String, userAddress: String): Single<EthJsonRpcResponse<String>> {
         return rpcAgent.investedBsxAmountMapping(contractAddress, userAddress)
+    }
+
+    fun sendRawTransaction(rawTransaction: String): Single<String>{
+        return rpcAgent.sendRawTransaction(rawTransaction)
     }
 
 }
