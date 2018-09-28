@@ -124,19 +124,6 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         val idCertPassed = CertOperations.isIdCertPassed()
         val bankCertPassed = CertOperations.isBankCertPassed()
         val status = CertOperations.getCmLogUserStatus()
-        val tnstatus =worhavah.certs.tools. CertOperations.getTNLogUserStatus()
-       /* jobs.add( Single.just(!idCertPassed).checkStatus(ChainGateway.BUSINESS_ID))
-        jobs.add(   Single.just(!bankCertPassed).checkStatus(ChainGateway.BUSINESS_BANK_CARD))
-        jobs.add(   Single.just(status != UserCertStatus.DONE).checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG))
-        Singles.zip(
-            jobs,listMerger
-        )
-            .io_main()
-            .withLoading()
-            .subscribeBy {
-                updateUI(it)
-            }*/
-
         Singles.zip(
                 Single.just(!idCertPassed).checkStatus(ChainGateway.BUSINESS_ID),
                 Single.just(!bankCertPassed).checkStatus(ChainGateway.BUSINESS_BANK_CARD),
@@ -147,18 +134,6 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 .subscribeBy {
                     updateUI(it)
                 }
-
-       /* Single.concat  (
-            Single.just(!idCertPassed).checkStatus(ChainGateway.BUSINESS_ID),
-            Single.just(!bankCertPassed).checkStatus(ChainGateway.BUSINESS_BANK_CARD),
-            Single.just(status != UserCertStatus.DONE).checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG)
-        ).sub
-            .io_main()
-            .withLoading()
-            .subscribeBy {
-                updateUI(it)
-            }*/
-
 
 
     }
@@ -445,7 +420,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
             }
             ChainGateway.TN_COMMUNICATION_LOG -> {
                 cloud_tn_selected.text = "已完成"
-                TnStatus = STATUS_DEFAULT
+                TnStatus = STATUS_NEWEST
                 cloud_item_tn.isClickable = false
                 isEnabled.remove(TNDATA)
                 val status = worhavah.certs.tools.CertOperations.getTNLogUserStatus()
@@ -453,7 +428,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                     .checkStatus(ChainGateway.TN_COMMUNICATION_LOG)
                     .io_main()
                     .subscribeBy {
-                        TnStatus = it
+                        TnStatus = 4
                         updateTnItem()
                     }
             }
