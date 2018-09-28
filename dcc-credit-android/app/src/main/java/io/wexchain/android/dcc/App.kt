@@ -17,12 +17,13 @@ import io.wexchain.android.dcc.network.CommonApi
 import io.wexchain.android.dcc.network.IpfsApi
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.PassportRepository
-import worhavah.regloginlib.ScfTokenManager
+import io.wexchain.android.dcc.repo.ScfTokenManager
 import io.wexchain.android.dcc.repo.db.PassportDatabase
 import io.wexchain.android.dcc.tools.*
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.dcc.BuildConfig
+import io.wexchain.dcc.R
 import io.wexchain.dcc.WxApiManager
 import io.wexchain.dccchainservice.*
 import io.wexchain.dccchainservice.domain.Result
@@ -82,9 +83,9 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
 
         instance = WeakReference(this)
-        initcerts( )
+        initcerts()
 
-        val themeWrapper = ContextThemeWrapper(this, io.wexchain.dcc.R.style.DccLightTheme_App)
+        val themeWrapper = ContextThemeWrapper(this, R.style.DccLightTheme_App)
         RxJavaPlugins.setErrorHandler {
             val ex = it.cause ?: it
             if (ex is DccChainServiceException && !ex.message.isNullOrBlank()) {
@@ -104,7 +105,8 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         initIpfs()
 
     }
-    public fun initcerts(  ){
+
+    public fun initcerts() {
         Networkutils.letinit(this)
         worhavah.certs.tools.CertOperations.init(this)
     }

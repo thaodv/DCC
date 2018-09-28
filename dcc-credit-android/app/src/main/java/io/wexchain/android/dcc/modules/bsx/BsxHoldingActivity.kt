@@ -1,10 +1,12 @@
 package io.wexchain.android.dcc.modules.bsx
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.dcc.tools.StringUtils
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
@@ -30,14 +32,19 @@ class BsxHoldingActivity : BindActivity<ActivityBsxHoldingBinding>(), ItemViewCl
         binding.rvList.adapter = adapter
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
         App.get().scfApi.getHoldingSum(App.get().passportRepository.currPassport.value!!.address)
                 .checkonMain()
                 .withLoading()
                 .subscribe({
-                    binding.tvInvestMoney.text = "≈" + if(null == it.corpus){"0"} else it.corpus
-                    binding.tvWaitProfit.text = "≈" + if(null == it.profit){"0"}else it.profit
+                    binding.tvInvestMoney.text = "≈" + if (null == it.corpus) {
+                        "0"
+                    } else StringUtils.keep4double(it.corpus)
+                    binding.tvWaitProfit.text = "≈" + if (null == it.profit) {
+                        "0"
+                    } else StringUtils.keep4double(it.profit)
                 }, {
 
                 })

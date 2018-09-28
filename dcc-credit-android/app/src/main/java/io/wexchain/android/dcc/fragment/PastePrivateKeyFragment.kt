@@ -7,7 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import io.wexchain.android.dcc.constant.RequestCodes
-import io.wexchain.android.dcc.base.BindFragment
+import io.wexchain.android.common.base.BindFragment
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

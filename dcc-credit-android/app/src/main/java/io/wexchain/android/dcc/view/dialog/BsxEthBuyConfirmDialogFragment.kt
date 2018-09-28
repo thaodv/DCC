@@ -7,11 +7,11 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.*
+import io.wexchain.android.common.base.ActivityCollector
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.modules.bsx.BsxDetailActivity
 import io.wexchain.android.dcc.modules.bsx.BsxEthBuyActivity
 import io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity
@@ -128,7 +128,7 @@ class BsxEthBuyConfirmDialogFragment : DialogFragment() {
                     agent.transactionReceipt(txHash)
                             .retryWhen(
                                     RetryWithDelay.createSimple(
-                                            6,
+                                            10,
                                             3000L
                                     )
                             )

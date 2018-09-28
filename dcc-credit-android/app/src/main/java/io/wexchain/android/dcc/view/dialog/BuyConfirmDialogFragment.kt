@@ -10,11 +10,11 @@ import android.util.Log
 import android.view.*
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.base.ActivityCollector
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.MyInterestDetailActivity
-import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.chain.JuzixConstants
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.repay.LoanRepayActivity

@@ -13,7 +13,7 @@ import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.common.base.BaseCompatActivity
-import io.wexchain.android.dcc.base.BindFragment
+import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.vm.EditIdCardInfoVm
 import io.wexchain.android.dcc.vm.domain.IdCardCertData

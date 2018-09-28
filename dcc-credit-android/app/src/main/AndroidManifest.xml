@@ -37,10 +37,6 @@
             android:name="io.wexchain.android.dcc.HomeActivity"
             android:screenOrientation="portrait"/>
         <activity
-        android:name="io.wexchain.android.dcc.MyCreditActivity"
-        android:label="@string/my_credit"
-        android:screenOrientation="portrait"
-        android:theme="@style/DccLightTheme.App.Immerse"/>
             android:name="io.wexchain.android.dcc.MyCreditActivity"
             android:label="@string/my_credit"
             android:screenOrientation="portrait"
@@ -49,7 +45,7 @@
             android:name="io.wexchain.android.dcc.MyCreditNewActivity"
             android:label="@string/my_credit"
             android:screenOrientation="portrait"
-            android:theme="@style/DccLightTheme.App.Immerse" />
+            android:theme="@style/DccLightTheme.App.Immerse"/>
         <activity
             android:name="io.wexchain.android.dcc.SubmitPersonalInfoActivity"
             android:screenOrientation="portrait"/>
@@ -167,9 +163,8 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.AuthManageActivity"
-            android:screenOrientation="portrait"/>
             android:label="统一登录变更记录"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.AboutActivity"
             android:label="@string/about_us"
@@ -456,16 +451,12 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.mine.SettingActivity"
-            android:label="设置"
-            android:screenOrientation="portrait"/>
             android:label="更多"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.home.TokenPlusActivity"
-            android:label="TokenPlus介绍"
-            android:screenOrientation="portrait"/>
             android:label="Tokenplus介绍"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BsxDetailActivity"
             android:screenOrientation="portrait"/>
@@ -481,12 +472,15 @@
             android:name="io.wexchain.android.dcc.modules.home.GardenActivity"
             android:label="神秘花园"
             android:screenOrientation="portrait"/>
-        <activity android:name="io.wexchain.android.dcc.modules.bsx.BsxDccBuyActivity">
+        <activity
+            android:name="io.wexchain.android.dcc.modules.bsx.BsxDccBuyActivity"
+            android:label="认购额度"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BsxEthBuyActivity"
-            android:label="@string/title_activity_bsx_eth_buy"
-            android:theme="@style/DccLightTheme.App">
+            android:label="认购额度"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

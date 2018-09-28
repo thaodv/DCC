@@ -3,10 +3,12 @@ package io.wexchain.android.dcc.modules.bsx
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityBsxHoldingDetailBinding
 import io.wexchain.dccchainservice.domain.BsxHoldingBean
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class BsxHoldingDetailActivity : BindActivity<ActivityBsxHoldingDetailBinding>() {
 
@@ -21,8 +23,8 @@ class BsxHoldingDetailActivity : BindActivity<ActivityBsxHoldingDetailBinding>()
 
         binding.tvIdtitle.text = "在投本金(" + bsxHoldingBean.assetCode + ")"
         binding.tvCapital.text = bsxHoldingBean.positionAmount
-        binding.tvProfit.text = bsxHoldingBean.profit
-        binding.tvPendding.text = bsxHoldingBean.expectedRepay
+        binding.tvProfit.text = BigDecimal(bsxHoldingBean.profit).setScale(4, RoundingMode.DOWN).toPlainString()
+        binding.tvPendding.text = BigDecimal(bsxHoldingBean.expectedRepay).setScale(4, RoundingMode.DOWN).toPlainString()
         binding.tvOrdername.text = bsxHoldingBean.saleInfo.name
         binding.tvExprofit.text = bsxHoldingBean.saleInfo.annualRate + "%"
         binding.tvDuration.text = bsxHoldingBean.saleInfo.period + "天"
@@ -61,6 +63,7 @@ class BsxHoldingDetailActivity : BindActivity<ActivityBsxHoldingDetailBinding>()
             startActivity(Intent(this, BsxDetailActivity::class.java)
                     .putExtra("assetCode", bsxHoldingBean!!.assetCode)
                     .putExtra("name", bsxHoldingBean!!.name)
+                    .putExtra("titleName", bsxHoldingBean!!.saleInfo.name)
                     .putExtra("contractAddress", bsxHoldingBean!!.contractAddress))
         }
 

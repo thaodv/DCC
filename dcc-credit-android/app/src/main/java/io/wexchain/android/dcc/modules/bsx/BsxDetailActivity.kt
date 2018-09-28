@@ -6,9 +6,9 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import com.alibaba.fastjson.JSON
 import io.reactivex.Single
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.runOnMainThread
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.BsxOperations
 import io.wexchain.android.dcc.domain.SaleInfo
 import io.wexchain.android.dcc.network.IpfsApi
@@ -24,13 +24,14 @@ import java.math.BigDecimal
 class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
 
     companion object {
-        var MINBUYAMOUNT = 0.0
-        var LASTAM = 0.0
-        var ONAME = "私链DCC币生息1期"
+        var MINBUYAMOUNT: String = ""
+        var LASTAM: String = ""
+        var ONAME = ""
     }
 
     private val assetCode get() = intent.getStringExtra("assetCode")
     private val name get() = intent.getStringExtra("name")
+    private val titleName get() = intent.getStringExtra("titleName")
     private val contractAddress get() = intent.getStringExtra("contractAddress")
 
     override val contentLayoutId: Int = R.layout.activity_bsx_detail
@@ -39,9 +40,9 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
 
     lateinit var saleInfo: SaleInfo
 
-    private var totalAmount: Int = 0
-    private var lastAmount: Double = 0.0
-    private var minAmountPerHand: Double = 0.0
+    private var totalAmount: String = ""
+    private var lastAmount: String = ""
+    private var minAmountPerHand: String = ""
 
     var statu = "已结束"
 
@@ -52,7 +53,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar(true)
-
+        title = titleName
         binding.realnamecert.text = assetCode
         binding.canbuy = canBuy
         sstvBuyit = binding.btBuy.background as ColorDrawable
@@ -132,13 +133,15 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
                 }.subscribe({
 
                     if ("DCC" == assetCode) {
-                        minAmountPerHand = BytesUtils.encodeStringsimple(it.result).toDouble()
+                        minAmountPerHand = BytesUtils.encodeStringsimple(it.result).toString()
                     } else {
                         minAmountPerHand = BytesUtils.encodeStringsimple2(it.result)
                     }
 
                     MINBUYAMOUNT = minAmountPerHand
-                    binding.minAmountPerHandDCC = minAmountPerHand.toString() + assetCode
+
+                    binding.minAmountPerHandDCC = minAmountPerHand + assetCode
+
                     getBsxInvestCeilAmount()
                 }, {
 
@@ -161,7 +164,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
                 }.doFinally {
                     hideLoadingDialog()
                 }.subscribe({
-                    totalAmount = encodeStringsimple(it.result)
+                    totalAmount = encodeStringsimple(it.result).toString()
                     binding.totalamountDCC = ("" + totalAmount + assetCode)
                     getbiInvestedTotalAmount()
                 }, {
@@ -186,13 +189,21 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
                     hideLoadingDialog()
                 }.subscribe({
                     if ("DCC" == assetCode) {
-                        lastAmount = encodeStringsimple(it.result).toDouble()
+                        lastAmount = encodeStringsimple(it.result).toString()
                     } else {
                         lastAmount = encodeStringsimple2(it.result)
                     }
 
-                    var ssss = BigDecimal((totalAmount - lastAmount) * 100).divide(BigDecimal(totalAmount), 1, BigDecimal.ROUND_HALF_UP).setScale(1)
-                    binding.lastamountDCC = ("" + (totalAmount - lastAmount) + assetCode + " (" + ssss + "%）")
+                    val per = BigDecimal(totalAmount).subtract(BigDecimal(lastAmount)).multiply(BigDecimal("100")).divide(BigDecimal(totalAmount), 1, BigDecimal.ROUND_HALF_UP)
+
+                    var res = ""
+
+                    if ("DCC" == assetCode) {
+                        res = BigDecimal(totalAmount).subtract(BigDecimal(lastAmount)).setScale(0).toPlainString()
+                    } else {
+                        res = BigDecimal(totalAmount).subtract(BigDecimal(lastAmount)).setScale(4).toPlainString()
+                    }
+                    binding.lastamountDCC = ("$res$assetCode ($per%）")
                     getBsxStatus()
                 }, {
                     it.printStackTrace()
@@ -220,7 +231,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
                     if (mystatu != 1) {
                         statu = "已结束"
                         canBuy = false
-                    } else if (minAmountPerHand > (totalAmount - lastAmount)) {
+                    } else if (BigDecimal(minAmountPerHand).compareTo(BigDecimal(totalAmount).subtract(BigDecimal(lastAmount))) == 1) {
                         statu = "已售罄"
                         canBuy = false
                         //   binding.tvBuyit.setBackgroundResource(R.color.B2484848)
@@ -229,7 +240,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
                         canBuy = true
                         // binding.tvBuyit.setBackgroundResource(R.color.FF6766CC)
                     }
-                    LASTAM = totalAmount - lastAmount
+                    LASTAM = BigDecimal(totalAmount).subtract(BigDecimal(lastAmount)).toPlainString()
                     ONAME = saleInfo.name
                     runOnMainThread {
                         setButton()

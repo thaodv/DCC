@@ -480,6 +480,5 @@
     <string name="from_gallery"><font color='#C009FF'>相册</font></string>
 
     <string name="tokenplus_tips">基于Linux环境搭建的量化交易系统，速度提升不止3倍\n无需自行购买服务器和配置交易软件，仅需注册账户，即可轻松套利\n每个用户独立服务器和IP，四重加密全面保障你的账户key安全\n遍布全球的服务器网络节点，优选离交易所最近节点，力争不错过每一次交易机会\n目前已支持国内前11大交易所，并持续增加中。</string>
-    <string name="title_activity_bsx_eth_buy">BsxEthBuyActivity</string>
 
 </resources>

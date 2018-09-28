@@ -8,10 +8,10 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.*
 import com.wexmarket.android.passport.ResultCodes
+import io.wexchain.android.common.base.ActivityCollector
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.chain.BsxOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.bsx.BsxDccBuyActivity

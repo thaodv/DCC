@@ -6,12 +6,12 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.DccExchangeActivity
-import io.wexchain.android.dcc.base.BindActivity
 import io.wexchain.android.dcc.chain.JuzixConstants
 import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.android.dcc.view.dialog.BsxDccBuyConfirmDialogFragment
@@ -35,13 +35,14 @@ class BsxDccBuyActivity : BindActivity<ActivityBsxDccBuyBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initToolbar()
+        initToolbar(true)
+        toolbarTitle!!.text = "认购额度"
         binding.etBuyamount.hint = "最小认购额度" + BsxDetailActivity.MINBUYAMOUNT
 
         var sp = BsxDetailActivity.ONAME + "（剩余额度 " + BsxDetailActivity.LASTAM + " DCC）"
         val spannableString = SpannableString(sp)
         val colorSpan = ForegroundColorSpan(Color.parseColor("#ED190F"))
-        spannableString.setSpan(colorSpan, sp.length - 5 - BsxDetailActivity.LASTAM.toString().length, sp.length - 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
+        spannableString.setSpan(colorSpan, sp.length - 5 - BsxDetailActivity.LASTAM.length, sp.length - 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
         binding.tvOrdername.text = spannableString
         checkBalance()
         initclick()

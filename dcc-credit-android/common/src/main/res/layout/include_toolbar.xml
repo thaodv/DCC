@@ -3,12 +3,13 @@
     android:id="@+id/toolbar"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:io.wexchain.rns.tools="http://schemas.android.com/io.wexchain.rns.tools"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/white"
+    android:background="?attr/colorPrimary"
     app:contentInsetEnd="0dp"
     app:contentInsetStartWithNavigation="0dp"
+    app:navigationIcon="@drawable/toolbar_cancel_bsx"
     app:contentInsetLeft="0dp"
     app:contentInsetRight="0dp"
     app:contentInsetStart="0dp">
@@ -16,19 +17,10 @@
     <TextView
         android:id="@+id/toolbar_title"
         style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-        android:background="#ffffff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="#484848"
-        io.wexchain.rns.tools:text="title标题"/>
+        android:textColor="#4A4A4A"
+        android:layout_gravity="center_vertical|left"
+        tools:text="title标题"/>
 
 </android.support.v7.widget.Toolbar>
-    <!--<android.support.v7.widget.Toolbar-->
-    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:io.wexchain.rns.tools="http://schemas.android.com/io.wexchain.rns.tools"-->
-    <!--android:id="@+id/toolbar"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:theme="@style/ToolbarOverlay"-->
-    <!--/>-->
