@@ -64,6 +64,7 @@ class AuthManage(application: Application) : AndroidViewModel(application), UseP
                     App.get().passportRepository.addAuthKeyChangedRecord(
                             AuthKeyChangeRecord(p.address, System.currentTimeMillis(), updateType)
                     )
+                    App.get().initcerts()
                     successEvent.call()
                 }
                 .doOnSubscribe {

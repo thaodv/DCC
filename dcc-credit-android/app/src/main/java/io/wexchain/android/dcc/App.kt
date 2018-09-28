@@ -82,9 +82,8 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
 
         instance = WeakReference(this)
+        initcerts( )
 
-        Networkutils.letinit(this)
-        worhavah.certs.tools.CertOperations.init(this)
         val themeWrapper = ContextThemeWrapper(this, io.wexchain.dcc.R.style.DccLightTheme_App)
         RxJavaPlugins.setErrorHandler {
             val ex = it.cause ?: it
@@ -104,6 +103,10 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         initData(this)
         initIpfs()
 
+    }
+    public fun initcerts(  ){
+        Networkutils.letinit(this)
+        worhavah.certs.tools.CertOperations.init(this)
     }
 
     private fun initIpfs() {

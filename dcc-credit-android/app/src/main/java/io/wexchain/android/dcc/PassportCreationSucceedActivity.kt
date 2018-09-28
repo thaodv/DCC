@@ -22,6 +22,7 @@ class PassportCreationSucceedActivity: BindActivity<ActivityPassportCreationSucc
         }
         binding.btnSkip.setOnClickListener { skip() }
         setupData()
+        App.get().initcerts()
     }
 
 

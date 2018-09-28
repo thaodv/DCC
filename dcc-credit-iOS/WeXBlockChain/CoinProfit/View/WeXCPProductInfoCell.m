@@ -27,6 +27,8 @@
 @property (nonatomic, weak) UILabel *amountLab;
 @property (nonatomic, weak) UIImageView *statusImageview;
 @property (nonatomic, weak) UIView *totastView;
+@property (nonatomic, weak) UIView *headToastView;
+
 @end
 
 @implementation WeXCPProductInfoCell
@@ -40,6 +42,7 @@ static CGFloat const kImageRatio = 347.0 / 67.0;
     headImageView.image = [UIImage imageNamed:@"Rectangle-bg"];
     [self.contentView addSubview:headImageView];
     self.headImageView = headImageView;
+    
     
     UIImageView *coinIconImageView = [UIImageView new];
     [self.headImageView addSubview:coinIconImageView];
@@ -92,9 +95,25 @@ static CGFloat const kImageRatio = 347.0 / 67.0;
     [self.backInfoView addSubview:amountLab];
     self.amountLab = amountLab;
     
+    UIView *totastView = [UIView new];
+    totastView.frame = backInfoView.frame;
+    [totastView addBottomCornerRadius:8.0 fillColor:ColorWithRGBA(74, 74, 74, 0.5)];
+    [totastView setHidden:true];
+    [self.contentView addSubview:totastView];
+    self.totastView = totastView;
+    
+    UIView *headToastView = [UIView new];
+    headToastView.frame = headImageView.frame;
+    headToastView.backgroundColor = ColorWithRGBA(74, 74, 74, 0.5);
+    headToastView.layer.cornerRadius = 8;
+    [headToastView setHidden:true];
+    [self.contentView addSubview:headToastView];
+    self.headToastView = headToastView;
+    
     UIImageView *statusImageview = [UIImageView new];
     [self.contentView addSubview:statusImageview];
     self.statusImageview = statusImageview;
+
 
 }
 
@@ -177,30 +196,35 @@ static CGFloat const kImageRatio = 347.0 / 67.0;
     switch (type) {
         case ProductInfoCellTypeBuying: {
             [self.statusImageview setImage:[UIImage imageNamed:@"wex_buying"]];
-            [self.backInfoView addBottomCornerRadius:8 fillColor:[UIColor whiteColor]];
+            [self.totastView setHidden:true];
+            [self.headToastView setHidden:true];
         }
             
             break;
         case ProductInfoCellTypeIncoming: {
             [self.statusImageview setImage:[UIImage imageNamed:@"wex_incoming"]];
-            [self.backInfoView addBottomCornerRadius:8 fillColor:[UIColor whiteColor]];
+            [self.totastView setHidden:true];
+            [self.headToastView setHidden:true];
 
         }
             break;
         case ProductInfoCellTypeSellOver: {
             [self.statusImageview setImage:[UIImage imageNamed:@"wex_send_over"]];
-            [self.backInfoView addBottomCornerRadius:8 fillColor:ColorWithRGBA(74, 74, 74, 0.4)];
+            [self.totastView setHidden:NO];
+            [self.headToastView setHidden:NO];
         }
             break;
         case ProductInfoCellTypeOver: {
             [self.statusImageview setImage:[UIImage imageNamed:@"wex_over"]];
-            [self.backInfoView addBottomCornerRadius:8 fillColor:ColorWithRGBA(74, 74, 74, 0.4)];
+            [self.totastView setHidden:NO];
+            [self.headToastView setHidden:NO];
         }
             break;
             
         default: {
             [self.statusImageview setImage:[UIImage imageNamed:@"wex_buying"]];
-            [self.backInfoView addBottomCornerRadius:8 fillColor:[UIColor whiteColor]];
+            [self.totastView setHidden:true];
+            [self.headToastView setHidden:true];
         }
             break;
     }
@@ -214,7 +238,7 @@ static CGFloat const kImageRatio = 347.0 / 67.0;
     [self.periodTitleLab setText:@"管理期限"];
     [self.periodLab setText:period];
     [self.amountTitleLab setText:@"起购数量"];
-    [self.amountLab setText:minAmount];
+    [self.amountLab setText:[minAmount stringByAppendingString:symbol]];
 }
 
 - (void)awakeFromNib {

@@ -263,6 +263,7 @@ static NSInteger const kMaxTimes = 7;
                         });
                     } else {
                         _requestCount = 0;
+                        
                         !complte ? : complte (false);
                         return ;
                     }
