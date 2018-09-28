@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.tools
+package worhavah.regloginlib.tools
 
 import java.util.regex.Pattern
 

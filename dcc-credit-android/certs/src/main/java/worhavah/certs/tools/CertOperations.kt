@@ -9,7 +9,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.kotlin.weak
-import io.wexchain.android.dcc.tools.RetryWithDelay
+import worhavah.regloginlib.tools.RetryWithDelay
 import worhavah.regloginlib.tools.pair
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.android.idverify.IdVerifyHelper
@@ -31,18 +31,15 @@ import EventMsg
 import RxBus
 import android.support.annotation.WorkerThread
 import android.util.Log
-import com.wexmarket.android.network.cookie.Logutil
 import io.wexchain.android.common.*
 import io.wexchain.dccchainservice.CertApi2
 import io.wexchain.dccchainservice.MarketingApi
 import io.wexchain.dccchainservice.domain.*
-import io.wexchain.dccchainservice.util.DateUtil
 import io.wexchain.dccchainservice.util.DateUtil.*
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import org.web3j.crypto.Credentials
 import worhavah.certs.BuildConfig
 import worhavah.certs.CertListner
-import worhavah.certs.R
 import worhavah.certs.beans.BankCardInfo
 import worhavah.regloginlib.AuthKey
 import worhavah.regloginlib.EthsHelper

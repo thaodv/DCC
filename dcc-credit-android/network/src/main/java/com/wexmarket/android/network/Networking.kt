@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.wexmarket.android.network.cookie.CookieSendLoggingInterceptor
 import com.wexmarket.android.network.cookie.CookieStoreFactory
+import com.wexmarket.android.network.cookie.Logutil
 import io.reactivex.schedulers.Schedulers
 import okhttp3.CookieJar
 import okhttp3.JavaNetCookieJar
@@ -68,9 +69,9 @@ class Networking {
                     .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
                     .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                     .apply {
-                        if (debug) {
+                        if (true) {
                             addInterceptor(HttpLoggingInterceptor {
-                                Log.d(LOG_TAG_OKHTTP, it)
+                                Logutil.d(LOG_TAG_OKHTTP, it)
                             }.setLevel(HttpLoggingInterceptor.Level.BODY))
                             addNetworkInterceptor(CookieSendLoggingInterceptor())
                         }
