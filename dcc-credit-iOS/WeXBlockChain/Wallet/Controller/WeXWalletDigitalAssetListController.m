@@ -26,7 +26,7 @@
 //#import "WeXNetworkCheckManager.h"
 #import "WeXSelectedNodeViewController.h"
 #import "WeXWalletNewCell.h"
-
+#import "WeXHomePushService.h"
 
 @interface WeXWalletDigitalAssetListController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -47,6 +47,10 @@
 @property (nonatomic, strong) UIButton *networkDelayButton;
 @property (nonatomic, strong) WeXNetworkCheckModel *checkModel;
 
+@property (nonatomic,strong)UIButton *hideZeroBtn;
+@property (nonatomic,assign)BOOL isZeroHided;
+@property (nonatomic,assign)BOOL isAllowHidedBtn;
+
 @end
 
 static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
@@ -60,18 +64,54 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
     [self setNavigationNomalBackButtonType];
     NSLog(@"_datasArray = %@",_datasArray);
     [self setupSubViews];
-    [self setupNodeNavgationType];
+    [self setNavitem];
+    [self configureTabUI];
 }
 
-- (void)setupNodeNavgationType{
-    _networkDelayButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _networkDelayButton.bounds = CGRectMake(0, 0, 30, 21);
+- (void)configureTabUI {
+    if (self.isTab) {
+        [self.navigationItem setLeftBarButtonItem:nil];
+        [_tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_assetlabel.mas_bottom).offset(20);
+            make.left.right.equalTo(self.view);
+            make.bottom.mas_equalTo(-kTabBarHeight);
+        }];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:WexDefault4ATitleColor}];
+}
+
+-(void)setNavitem{
+    //导航右边的按钮
+    UIView *leftview = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 80, 40)];
+    _networkDelayButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 5, 35, 30)];
     [_networkDelayButton setImage:[UIImage imageNamed:@"Oval"] forState:UIControlStateNormal];
     [_networkDelayButton setImage:[UIImage imageNamed:@"Oval"] forState:UIControlStateSelected];
-    [_networkDelayButton setImage:[UIImage imageNamed:@"Oval"] forState:UIControlStateHighlighted];
+    _networkDelayButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [_networkDelayButton addTarget:self action:@selector(selectNodeEvent:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_networkDelayButton];
+    [leftview addSubview:_networkDelayButton];
+    UIButton *addClickBtn = [[UIButton alloc]initWithFrame:CGRectMake(40, 5, 35, 30)];
+    [addClickBtn setImage:[UIImage imageNamed:@"5A"] forState:UIControlStateNormal];
+    [addClickBtn setImage:[UIImage imageNamed:@"5A"] forState:UIControlStateSelected];
+    [addClickBtn addTarget:self action:@selector(addBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [leftview addSubview:addClickBtn];
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:leftview];
+    self.navigationItem.rightBarButtonItem = rightButton;
+    
 }
+
+//- (void)setupNodeNavgationType{
+//    _networkDelayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//    _networkDelayButton.bounds = CGRectMake(0, 0, 30, 21);
+//    [_networkDelayButton setImage:[UIImage imageNamed:@"Oval"] forState:UIControlStateNormal];
+//    [_networkDelayButton setImage:[UIImage imageNamed:@"Oval"] forState:UIControlStateSelected];
+//    [_networkDelayButton setImage:[UIImage imageNamed:@"Oval"] forState:UIControlStateHighlighted];
+//    [_networkDelayButton addTarget:self action:@selector(selectNodeEvent:) forControlEvents:UIControlEventTouchUpInside];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_networkDelayButton];
+//}
 
 - (void)setNodeNetworkDelayModel:(WeXNetworkCheckModel *)model {
     UIImage *image = [UIImage imageNamed:@"Oval-Good"];
@@ -101,18 +141,25 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
     selectNodeVC.DidSelectedNode = ^(WeXNetworkCheckModel *result) {
         
     };
-    [self.navigationController pushViewController:selectNodeVC animated:YES];
+    [WeXHomePushService pushFromVC:self toVC:selectNodeVC];
+//    [self.navigationController pushViewController:selectNodeVC animated:YES];
 }
 
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.delegate = nil;
-    [self getDatas];
+    if (!_isZeroHided) {
+        [self getDatas];
+    }
 //  [self createGetQuoteRequest];
     [self createGetAgentMarketRequest];
     [self createGetBalaceRequest];
     [self getNodeNetWorkDelay];
+    if (self.isTab) {
+        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:COLOR_NAV_TITLE}];
+        self.navigationController.delegate = nil;
+    }
 }
 
 // MARK: - 获取节点网络延迟
@@ -148,7 +195,6 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
     return _datasArray;
 }
 
-
 - (void)createGetBalaceRequest{
 
     [[WXPassHelper instance] initPassHelperBlock:^(id response) {
@@ -163,9 +209,7 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
         [self createETHAndERC20Banlance];
         
     }];
-
 }
-
 
 - (void)createDccBalanceRequest
 {
@@ -225,6 +269,12 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
     {
         CGFloat dccBalance = [_dccPublicBalance floatValue]+[_dccPrivateBalance floatValue];
         model.balance = [NSString stringWithFormat:@"%.4f",dccBalance];
+        WEXNSLOG(@"model.balance = %@",model.balance);
+        //新增需求隐藏0持有量币种
+        if ([model.balance isEqualToString:@"0.0000"]) {
+            model.isZeroHided = YES;
+        }
+        WEXNSLOG(@"0.0");
     }
     else
     {
@@ -255,7 +305,10 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
             }
             else
             {
-                model.balance = [WexCommonFunc formatterStringWithContractBalance:originBalance decimals:[model.decimals integerValue]];
+                model.balance = [WexCommonFunc formatterStringWithContractBalance:originBalance
+                                                                         decimals:[model.decimals integerValue]];
+                WEXNSLOG(@"model.balance = %@",model.balance);
+                WEXNSLOG(@"0.0");
                 [self configTotalDigitalAsset];
             }
             [_tableView reloadData];
@@ -278,6 +331,12 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
          else
          {
              model.balance = [WexCommonFunc formatterStringWithContractBalance:response decimals:[model.decimals integerValue]];
+             WEXNSLOG(@"model.balance = %@",model.balance);
+             //新增需求隐藏0持有量币种
+             if ([model.balance isEqualToString:@"0.0000"]) {
+                 model.isZeroHided = YES;
+             }
+             WEXNSLOG(@"0.0");
              [self configTotalDigitalAsset];
          }
          [_tableView reloadData];
@@ -311,11 +370,18 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
             else
             {
                 model.balance = [WexCommonFunc formatterStringWithContractBalance:originBalance decimals:[model.decimals integerValue]];
+                 WEXNSLOG(@"model.balance = %@",model.balance);
+                //新增需求隐藏0持有量币种
+                if ([model.balance isEqualToString:@"0.0000"]) {
+                    model.isZeroHided = YES;
+                }
+                 WEXNSLOG(@"0.0");
             }
             
             break;
         }
     }
+      _isAllowHidedBtn = YES;
     [self configTotalDigitalAsset];
     [_tableView reloadData];
 }
@@ -383,6 +449,7 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
             _assetlabel.text = [NSString stringWithFormat:@"≈¥%.4f",asset];
         }
     }
+  
 }
 
 
@@ -409,56 +476,55 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
     }];
      _cardView = cardBackView;
     
-//    UILabel *label1 = [[UILabel alloc] init];
-//    label1.text = WeXLocalizedString(@"数字资产");
-//    label1.font = [UIFont systemFontOfSize:15];
-//    label1.textColor = ColorWithHex(0xb8b8b8);
-//    label1.textAlignment = NSTextAlignmentLeft;
-//    [cardBackView addSubview:label1];
-//    [label1 mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.view).offset(kNavgationBarHeight);
-//        make.leading.equalTo(self.view).offset(20);
-//        make.height.equalTo(@20);
-//    }];
+    UIView *lineView = [[UIView alloc]init];
+    lineView.backgroundColor = ColorWithHex(0xF5F5FD);
+    [cardBackView addSubview:lineView];
+    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(cardBackView).offset(0);
+        make.leading.trailing.equalTo(self.view).offset(00);
+        make.height.equalTo(@10);
+    }];
+    
+    UILabel *label1 = [[UILabel alloc] init];
+    label1.text = WeXLocalizedString(@"总资产");
+    label1.font = [UIFont systemFontOfSize:17];
+    label1.textColor = ColorWithHex(0x000000);
+    label1.textAlignment = NSTextAlignmentLeft;
+    [cardBackView addSubview:label1];
+    [label1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(cardBackView).offset(20);
+        make.leading.equalTo(self.view).offset(20);
+        make.height.equalTo(@20);
+    }];
     
     UILabel *assetlabel = [[UILabel alloc] init];
     assetlabel.text = @"--";
     assetlabel.font = [UIFont systemFontOfSize:25];
-    assetlabel.textColor = COLOR_LABEL_TITLE;
+    assetlabel.textColor = ColorWithHex(0x000000);
     assetlabel.textAlignment = NSTextAlignmentLeft;
     [cardBackView addSubview:assetlabel];
     [assetlabel mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.equalTo(label1.mas_bottom).offset(10);
-           make.top.equalTo(self.view).offset(kNavgationBarHeight);
+        make.top.equalTo(label1.mas_bottom).offset(10);
         make.leading.equalTo(self.view).offset(20);
         make.height.equalTo(@20);
     }];
     _assetlabel = assetlabel;
     
-    UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [addBtn setImage:[UIImage imageNamed:@"digital_add"] forState:UIControlStateNormal];
-    [addBtn addTarget:self action:@selector(addBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:addBtn];
-    [addBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(kNavgationBarHeight);
-        make.trailing.equalTo(self.view).offset(-10);
-        make.width.equalTo(@40);
-        make.height.equalTo(@40);
+    _hideZeroBtn = [[UIButton alloc]init];
+    [_hideZeroBtn setImage:[UIImage imageNamed:@"recent"] forState:UIControlStateNormal];
+    [_hideZeroBtn setImage:[UIImage imageNamed:@"2C"] forState:UIControlStateSelected];
+    [_hideZeroBtn addTarget:self action:@selector(hideListClick) forControlEvents:UIControlEventTouchUpInside];
+    _hideZeroBtn.titleLabel.font = [UIFont systemFontOfSize:13.0f];
+    [_hideZeroBtn setTitleColor:ColorWithHex(0x4A4A4A) forState:UIControlStateNormal];
+    [_hideZeroBtn setTitle:@"隐藏0资产币种" forState:UIControlStateNormal];
+    [cardBackView addSubview:_hideZeroBtn];
+    [_hideZeroBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(label1.mas_bottom).offset(10);
+        make.trailing.equalTo(self.view).offset(-20);
+        make.height.equalTo(@20);
     }];
-    
-//    WeXCustomButton *shareBtn = [WeXCustomButton button];
-//    [shareBtn setTitle:WeXLocalizedString(@"分享") forState:UIControlStateNormal];
-//    [shareBtn setTitleColor:ColorWithRGB(248, 31, 117) forState:UIControlStateNormal];
-//    [shareBtn addTarget:self action:@selector(shareBtnClick) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:shareBtn];
-//    [shareBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(self.view).offset(-30);
-//        make.centerX.equalTo(self.view);
-//        make.width.equalTo(@170);
-//        make.height.equalTo(@50);
-//    }];
-    
-    
+  
     _tableView = [[UITableView alloc] init];
 //    UIView *footView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 150)];
 //    UIButton *shareBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -469,8 +535,8 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
 //    shareBtn.backgroundColor = [UIColor whiteColor];
 //    [shareBtn addTarget:self action:@selector(shareBtnClick) forControlEvents:UIControlEventTouchUpInside];
 //    [footView addSubview:shareBtn];
-    
 //    _tableView.tableFooterView = footView;
+    
     [cardBackView addSubview:_tableView];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -486,6 +552,44 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
     [_tableView registerClass:[WeXWalletNewCell class] forCellReuseIdentifier:kNewWalletCellID];
 }
 
+- (void)hideListClick{
+    
+    if (_isAllowHidedBtn) {//控制持有代币数量未查询时的情况
+        _hideZeroBtn.selected = !_hideZeroBtn.selected;
+        WEXNSLOG(@"datasArray = %@",_datasArray);
+        if (_hideZeroBtn.selected) {
+            //        NSMutableArray *hidesArray =  [[NSMutableArray alloc]init];
+            NSArray * hidesArray = [NSArray arrayWithArray: self.datasArray];
+            for (WeXWalletDigitalGetTokenResponseModal_item *model in hidesArray) {
+                if (model.isZeroHided) {
+                    [self.datasArray removeObject:model];
+                }
+            }
+            WEXNSLOG(@"datasArray.count = %ld",_datasArray.count);
+            _isZeroHided = YES;
+            [_tableView reloadData];
+            [self createGetAgentMarketRequest];
+            [self createGetBalaceRequest];
+            [self getNodeNetWorkDelay];
+            
+        }else{
+            _isZeroHided = NO;
+            _isAllowHidedBtn = NO;
+            [self getDatas];
+            [self createGetAgentMarketRequest];
+            [self createGetBalaceRequest];
+            [self getNodeNetWorkDelay];
+            
+        }
+    }else{
+        [WeXPorgressHUD showText:@"数据未加载完全,请稍后再试" onView:self.view];
+    }
+    
+   
+   
+    
+}
+
 - (void)shareBtnClick
 {
     WeXShareQRImageView *shareView = [[WeXShareQRImageView alloc] initWithFrame:self.view.bounds];
@@ -496,7 +600,6 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
 //        shareManager.shareImage = [self screenShot];
         [shareManager shareWithParentController:self];
     });
-    
 }
 
 - (UIImage *)screenShot {
@@ -514,8 +617,9 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
 }
 
 - (void)addBtnClick{
-    WeXWalletDigitalAssetAddController *ctrl = [[WeXWalletDigitalAssetAddController alloc] init];
-    [self.navigationController pushViewController:ctrl animated:YES];
+//    WeXWalletDigitalAssetAddController *ctrl = [[WeXWalletDigitalAssetAddController alloc] init];
+//    [self.navigationController pushViewController:ctrl animated:YES];
+    [WeXHomePushService pushFromVC:self toVC:[WeXWalletDigitalAssetAddController new]];
 }
 
 - (void)rightItemClick
@@ -547,19 +651,18 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
     
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     WeXWalletDigitalGetTokenResponseModal_item *model = self.datasArray[indexPath.row];
     if ([model.symbol isEqualToString:@"DCC"]) {
         WeXTokenDccListViewController *ctrl = [[WeXTokenDccListViewController alloc] init];
         ctrl.tokenModel = model;
-        [self.navigationController pushViewController:ctrl animated:YES];
-    }
-    else
-    {
+        [WeXHomePushService pushFromVC:ctrl toVC:ctrl];
+//        [self.navigationController pushViewController:ctrl animated:YES];
+    } else {
         WeXWalletDigitalAssetDetailController *ctrl = [[WeXWalletDigitalAssetDetailController alloc] init];
         ctrl.tokenModel = model;
-        [self.navigationController pushViewController:ctrl animated:YES];
+        [WeXHomePushService pushFromVC:self toVC:ctrl];
+//        [self.navigationController pushViewController:ctrl animated:YES];
     }
 }
 
@@ -594,5 +697,8 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
     [_getAgentAdapter run:paramModal];
 }
 
+- (void)dealloc {
+    WEXNSLOG(@"%@,%s",self,__func__);
+}
 
 @end
