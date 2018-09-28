@@ -8,7 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.tools.isPasswordValid
+import worhavah.regloginlib.tools.isPasswordValid
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.UseProtect
 import io.wexchain.dcc.R

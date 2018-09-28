@@ -2,7 +2,6 @@ package worhavah.tongniucertmodule
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import com.githang.statusbar.StatusBarCompat
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.base.BindActivity
@@ -20,7 +19,6 @@ class TnLogCertificationActivity : BindActivity<ActivityTncertificationDataCmBin
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        StatusBarCompat.setStatusBarColor(this,resources.getColor(R.color.white))
         initToolbar()
         val data = CertOperations.getCertIdData()!!
         val phoneNo = CertOperations.getTnLogPhoneNo()!!

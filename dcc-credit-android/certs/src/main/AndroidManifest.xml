@@ -5,10 +5,6 @@ android:allowBackup="true"
 android:label="cert"
     >
 
-    <activity
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:name="worhavah.certs.SubmitIdActivity"
-        android:screenOrientation="portrait"/>
 
     <activity
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
@@ -41,11 +37,7 @@ android:label="cert"
         android:name="worhavah.certs.AddressCertedActivity"
         android:label="家庭住址"
         android:screenOrientation="portrait"/>
-    <activity
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:name="worhavah.certs.RealCertActivity"
-        android:label="实名认证"
-        android:screenOrientation="portrait"/>
+
     <activity
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:name="worhavah.certs.RealCertedActivity"

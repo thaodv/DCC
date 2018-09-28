@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
-                android:text="发现"
+                android:text="钱包"
                 android:textColor="@color/main_tab"
                 android:textSize="17sp" />
 

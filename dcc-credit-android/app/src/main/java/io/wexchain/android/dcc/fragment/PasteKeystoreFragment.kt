@@ -13,7 +13,7 @@ import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.QrScannerActivity
 import io.wexchain.android.dcc.repo.PassportRepository
-import io.wexchain.android.dcc.tools.isKeyStoreValid
+import worhavah.regloginlib.tools.isKeyStoreValid
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentPasteKeystoreBinding
