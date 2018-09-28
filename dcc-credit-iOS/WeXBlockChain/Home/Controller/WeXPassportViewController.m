@@ -652,22 +652,20 @@ static NSString * const kLoanCoinCellID = @"WeXHomeLoanCoinCellID";
             WEXNSLOG(@"%@",model);
             if (model.resultList.count > 0) {
                 WeXActivityQueryBonusResponseModal_item *itemModel = [model.resultList objectAtIndex:0];
-                _bonusId = itemModel.redeemTokenId;
-                _redPacketView = [[WeXGetRedPacketView alloc] initWithFrame:self.view.bounds];
-                _redPacketView.delegate = self;
-                __weak typeof(self) weakSelf = self;
-                _redPacketView.confirmBtnBlock = ^{
-                    [weakSelf createApplyBonusRequest];
-                };
-                _redPacketView.jumpBtnBlock = ^{
-                    [WeXHomePushService pushFromVC:weakSelf toVC:[WeXActivityHomeViewController new]];
-                };
-                [self.view addSubview:_redPacketView];
+                [self configureRedViewWithID:itemModel.redeemTokenId];
+//                _bonusId = itemModel.redeemTokenId;
+//                _redPacketView = [[WeXGetRedPacketView alloc] initWithFrame:self.view.bounds];
+//                _redPacketView.delegate = self;
+//                __weak typeof(self) weakSelf = self;
+//                _redPacketView.confirmBtnBlock = ^{
+//                    [weakSelf createApplyBonusRequest];
+//                };
+//                _redPacketView.jumpBtnBlock = ^{
+//                    __strong typeof(weakSelf) strongSelf = weakSelf;
+//                    [strongSelf ->_redPacketView dismiss];
+//                };
+//                [self.view addSubview:_redPacketView];
             }
-            // MARK: - 糖果领取
-//            else {
-//                [WeXHomePushService pushFromVC:self toVC:[WeXActivityHomeViewController new]];
-//            }
         }
         else if ([headModel.systemCode isEqualToString:@"SUCCESS"]) {
             [WeXPorgressHUD hideLoading];
@@ -784,9 +782,30 @@ static NSString * const kLoanCoinCellID = @"WeXHomeLoanCoinCellID";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+// MARK: - 配置红包是否显示
+- (void)configureRedViewWithID:(NSString *)ID {
+    _bonusId = ID;
+    _redPacketView = [[WeXGetRedPacketView alloc] initWithFrame:self.view.bounds];
+    _redPacketView.delegate = self;
+    __weak typeof(self) weakSelf = self;
+    _redPacketView.confirmBtnBlock = ^{
+        [weakSelf createApplyBonusRequest];
+    };
+    _redPacketView.jumpBtnBlock = ^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf ->_redPacketView dismiss];
+    };
+    [self.view addSubview:_redPacketView];
+}
+
 
 - (void)setupSubViews; {
-    _cardTabelView = [[UITableView alloc]  initWithFrame:CGRectMake(0, kNavgationBarHeight, kScreenWidth, kScreenHeight-kNavgationBarHeight - kTabBarHeight ) style:UITableViewStyleGrouped];
+    
+    UIView *backView = [[UIView alloc]initWithFrame:CGRectMake(0, kNavgationBarHeight, kScreenWidth, 10)];
+    [backView setBackgroundColor:WexSepratorLineColor];
+    [self.view addSubview:backView];
+    
+    _cardTabelView = [[UITableView alloc]  initWithFrame:CGRectMake(0, kNavgationBarHeight+10, kScreenWidth, kScreenHeight-kNavgationBarHeight - kTabBarHeight -10 ) style:UITableViewStyleGrouped];
     _cardTabelView.backgroundColor = [UIColor clearColor];
     _cardTabelView.dataSource = self;
     _cardTabelView.delegate = self;
@@ -846,11 +865,15 @@ static NSString * const kLoanCoinCellID = @"WeXHomeLoanCoinCellID";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return CGFLOAT_MIN;
+    }
     if (section == 1 || section == 2 || section == 3) {
         return _isAllowDisPlay ? 10 : 0.01;
     }
     return 10;
 }
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     WeXHomeSectionHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kSectionHeaderID];
     [headerView.contentView setBackgroundColor:WexSepratorLineColor];
@@ -949,7 +972,7 @@ static NSString * const kLoanCoinCellID = @"WeXHomeLoanCoinCellID";
                 return cell;
             } else {
                 WeXHomeIconAndTextCell *cell = [tableView dequeueReusableCellWithIdentifier:kIconAndTextCellID forIndexPath:indexPath];
-                [cell setLeftIconName:@"zichan" title:@"Tokenplus套利工具" subTitle:@"专为资产大户持有者提供服务的高回报神器！" actionTitle:nil];
+                [cell setLeftIconName:@"zichan" title:@"Tokenplus 套利神器" subTitle:@"专为数字货币持有者提供高效的套利服务！" actionTitle:nil];
                 return cell;
             }
         }
@@ -1062,7 +1085,10 @@ static NSString * const kLoanCoinCellID = @"WeXHomeLoanCoinCellID";
         }
         // MARK: - 资产套利
         else if (indexPath.section == 3) {
-            [WeXHomePushService pushFromVC:self toVC:[WeXTokenPlusViewController new]];
+            WeXTokenPlusViewController *vc = [[WeXTokenPlusViewController alloc]init];
+            vc.titleName = @"TokenPlus介绍";
+            vc.webURL = @"http://open.dcc.finance/dapp/tokenPlus/tokenPlus.html";
+            [WeXHomePushService pushFromVC:self toVC:vc];
         }
         //统一登录管理
         else if (indexPath.section == 4) {

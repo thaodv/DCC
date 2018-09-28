@@ -99,6 +99,11 @@ typedef void(^SafeVertifyResponse)(void);
 
 //初始化滚动视图
 -(void)setupSubViews{
+    
+    UIView *backView = [[UIView alloc]initWithFrame:CGRectMake(0, kNavgationBarHeight, kScreenWidth, 10)];
+    [backView setBackgroundColor:WexSepratorLineColor];
+    [self.view addSubview:backView];
+    
     _tableView = [[UITableView alloc] init];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -111,10 +116,10 @@ typedef void(^SafeVertifyResponse)(void);
     //    _footerView.hidden = YES;
     [self.view addSubview:_tableView];
     [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(kNavgationBarHeight);
+        make.top.equalTo(self.view).offset(kNavgationBarHeight+10);
         make.leading.trailing.equalTo(self.view);
-//        make.height.mas_equalTo(kScreenHeight - kNavgationBarHeight);
-        make.bottom.mas_equalTo(-kTabBarHeight);
+        make.height.mas_equalTo(kScreenHeight - kNavgationBarHeight-10 - kTabBarHeight);
+//        make.bottom.mas_equalTo(-kTabBarHeight);
     }];
     
 }
@@ -129,6 +134,9 @@ typedef void(^SafeVertifyResponse)(void);
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (section == 0) {
+        return CGFLOAT_MIN;
+    }
     return 10;
 }
 
@@ -148,6 +156,9 @@ typedef void(^SafeVertifyResponse)(void);
     if(indexPath.section == 0 && indexPath.row==0)
     {
         return 90.f;
+    }
+    if (indexPath.section == 1 && indexPath.row == 0) {
+        return 0.01;
     }
     
     return 60.f;
@@ -228,7 +239,10 @@ typedef void(^SafeVertifyResponse)(void);
             cell.desLabel.text = [WexDefaultConfig instance].nickName ? [WexDefaultConfig instance].nickName : @"";
         }
         else if (indexPath.section == 1 && indexPath.row == 0) {
-            cell.titleLabel.text = WeXLocalizedString(@"数字钱包");
+            [cell.titleLabel setHidden:true];
+            [cell.specialLabel setHidden:true];
+            [cell.arrowImg setHidden:true];
+//            cell.titleLabel.text = WeXLocalizedString(@"数字钱包");
         }
         else if (indexPath.section == 1 && indexPath.row == 1)
         {
