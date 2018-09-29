@@ -38,6 +38,7 @@ import org.web3j.abi.datatypes.DynamicBytes
 import worhavah.certs.bean.TNcertReport
 import worhavah.certs.tools.CertOperations.onTNLogSuccessGot
 import worhavah.certs.tools.CertOperations.saveTnLogCertExpired
+import worhavah.regloginlib.Net.Networkutils
 import worhavah.tongniucertmodule.SubmitTNLogActivity
 import worhavah.tongniucertmodule.TnLogCertificationActivity
 import java.math.BigDecimal
@@ -56,6 +57,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
         super.onCreate(savedInstanceState)
 //        setWindowExtended()
         initToolbarS()
+        Networkutils.passportRepository.load()
         countDownProgress = findViewById<View>(R.id.countdownProgress) as CountDownProgress
         countDownProgress.setCountdownTime(900)
         setVM()
