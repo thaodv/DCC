@@ -21,10 +21,13 @@ import io.wexchain.android.dcc.modules.repay.LoanRepayActivity
 import io.wexchain.android.dcc.modules.repay.RePaymentErrorActivity
 import io.wexchain.android.dcc.modules.repay.RepayingActivity
 import io.wexchain.android.dcc.tools.MultiChainHelper
+import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.android.dcc.vm.TransactionConfirmVm
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.DialogConfirmBuyinvestmentBinding
+import io.wexchain.dccchainservice.DccChainServiceException
+import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.EthsTransactionScratch
@@ -116,6 +119,23 @@ class BsxDccBuyConfirmDialogFragment : DialogFragment() {
         BsxOperations
                 .investBsx(io.wexchain.android.dcc.network.IpfsApi.BSX_DCC_02, binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger(), Chain.JUZIX_PRIVATE)
                 .doMain()
+                .flatMap { txHash ->
+                    App.get().chainGateway.getReceiptResult(txHash)
+                            .compose(Result.checked())
+                            .map {
+                                if (!it.hasReceipt) {
+                                    throw DccChainServiceException("no receipt yet")
+                                }
+                                it
+                            }
+                            .retryWhen(RetryWithDelay.createSimple(10, 5000L))
+                            .map {
+                                if (!it.approximatelySuccess) {
+                                    throw DccChainServiceException()
+                                }
+                                txHash
+                            }
+                }
                 .doOnSubscribe {
                     showLoadingDialog()
                 }.doFinally {

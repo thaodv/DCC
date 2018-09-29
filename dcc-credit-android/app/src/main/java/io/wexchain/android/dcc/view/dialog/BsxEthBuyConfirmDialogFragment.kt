@@ -107,7 +107,9 @@ class BsxEthBuyConfirmDialogFragment : DialogFragment() {
         //val approve = Erc20Helper.investBsx(binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger())
         val approve = Erc20Helper.investEthBsx()
 
-        LogUtils.i("approve", binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger().toString())
+        LogUtils.i("approve-1",FunctionEncoder.encode(approve))
+
+        LogUtils.i("approve-2", binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger().toString())
 
         agent.getNonce(p.address)
                 .doMain()
@@ -123,8 +125,10 @@ class BsxEthBuyConfirmDialogFragment : DialogFragment() {
                     )
                     val signed = Numeric.toHexString(TransactionEncoder.signMessage(rawTransaction, p.credential))
                     agent.sendRawTransaction(signed)
+                            .doMain()
                 }
-                .flatMap { txHash ->
+                .flatMap {
+                    txHash ->
                     agent.transactionReceipt(txHash)
                             .retryWhen(
                                     RetryWithDelay.createSimple(
@@ -140,12 +144,17 @@ class BsxEthBuyConfirmDialogFragment : DialogFragment() {
                     hideLoadingDialog()
                 }
                 .subscribe({
-                    toast("交易成功")
-                    dismiss()
-                    navigateTo(BsxHoldingActivity::class.java)
-                    ActivityCollector.finishActivity(BsxEthBuyActivity::class.java)
-                    ActivityCollector.finishActivity(BsxDetailActivity::class.java)
-                    activity!!.finish()
+                    if ("0x1" == it.status) {
+                        toast("交易成功")
+                        dismiss()
+                        navigateTo(BsxHoldingActivity::class.java)
+                        ActivityCollector.finishActivity(BsxEthBuyActivity::class.java)
+                        ActivityCollector.finishActivity(BsxDetailActivity::class.java)
+                        activity!!.finish()
+                    } else {
+                        toast("交易失败")
+                        dismiss()
+                    }
                 }, {
                     stackTrace(it)
                     toast("交易失败")

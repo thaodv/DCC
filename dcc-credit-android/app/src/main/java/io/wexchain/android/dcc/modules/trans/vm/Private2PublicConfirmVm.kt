@@ -159,35 +159,28 @@ class Private2PublicConfirmVm(
                                                 scratch.remarks
                                         )
                                     } else {
-                                        agent.getNonce(p.address).flatMap {
-                                            if (it > eth.nonce) {
-                                                agent.sendTransferTransaction(
-                                                        cre,
-                                                        scratch.to,
-                                                        dc.toIntExact(scratch.amount),
-                                                        price,
-                                                        scratch.gasLimit,
-                                                        scratch.remarks
-                                                )
-                                            } else {
-                                                /* val waitTransDialog = WaitTransDialog(App.get())
-                                                 waitTransDialog.mTvText.text = "请待「待上链」交易变为「已上链」后再提交新的交易。"
-                                                 waitTransDialog.show()
-                                                 Single.error<Pair<BigInteger, String>>(
-                                                         IllegalStateException("")
-                                                 )
- */
-                                                agent.sendTransferTransaction(
-                                                        cre,
-                                                        scratch.to,
-                                                        dc.toIntExact(scratch.amount),
-                                                        price,
-                                                        scratch.gasLimit,
-                                                        scratch.remarks
-                                                )
-
-                                            }
-                                        }
+                                        agent.getNonce(p.address)
+                                                .flatMap {
+                                                    if (it > eth.nonce) {
+                                                        agent.sendTransferTransaction(
+                                                                cre,
+                                                                scratch.to,
+                                                                dc.toIntExact(scratch.amount),
+                                                                price,
+                                                                scratch.gasLimit,
+                                                                scratch.remarks
+                                                        )
+                                                    } else {
+                                                        agent.sendTransferTransaction(
+                                                                cre,
+                                                                scratch.to,
+                                                                dc.toIntExact(scratch.amount),
+                                                                price,
+                                                                scratch.gasLimit,
+                                                                scratch.remarks
+                                                        )
+                                                    }
+                                                }
                                     }
                                 } else {
                                     agent.sendTransferTransaction(
@@ -209,7 +202,6 @@ class Private2PublicConfirmVm(
                                         scratch.remarks
                                 )
                             }
-
                         }
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe {
