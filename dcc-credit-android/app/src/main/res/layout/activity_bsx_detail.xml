@@ -20,11 +20,6 @@
             />
 
         <variable
-            name="lastamountDCC"
-            type="String"
-            />
-
-        <variable
             name="canbuy"
             type="boolean"
             />
@@ -238,7 +233,6 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
-                        android:text="@{totalamountDCC}"
                         android:textColor="@color/upgrade_title_color"
                         android:textSize="14sp"/>
 
@@ -308,7 +302,6 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
-                        android:text="@{lastamountDCC}"
                         android:textColor="@color/FFED190F"
                         android:textSize="14sp"/>
 
