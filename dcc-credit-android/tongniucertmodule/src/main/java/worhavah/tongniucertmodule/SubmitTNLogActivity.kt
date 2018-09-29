@@ -72,7 +72,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tndefault_fragment_container2)
         StatusBarCompat.setStatusBarColor(this,resources.getColor(R.color.white))
-        initToolbar()
+        initToolbar(true,true)
         checkPreconditions()
 
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertID.get().apply {
