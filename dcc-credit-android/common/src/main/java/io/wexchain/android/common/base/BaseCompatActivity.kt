@@ -29,7 +29,6 @@ abstract class BaseCompatActivity : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar)
         val tb = toolbar
         if (tb != null) {
-            tb.setBackgroundColor(Color.parseColor("#FFFFFF"))
             setSupportActionBar(toolbar)
             toolbarTitle = tb.findViewById(R.id.toolbar_title)
             intendedTitle?.let { title = it }

@@ -14,6 +14,8 @@ class LoanSubmitResultActivity : BaseCompatActivity() {
         setContentView(R.layout.activity_loan_submit_result)
         initToolbar(false)
         findViewById<View>(R.id.btn_loan_records).setOnClickListener {
+            finishActivity(LoanProductDetailActivity::class.java)
+            finishActivity(StartLoanActivity::class.java)
             navigateTo(LoanRecordsActivity::class.java)
         }
     }

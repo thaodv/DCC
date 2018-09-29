@@ -26,7 +26,7 @@
         <activity
             android:name="io.wexchain.android.dcc.LoadingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/DccLightTheme.App.Transparent.Loading">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

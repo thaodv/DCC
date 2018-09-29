@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.View
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.dcc.LoanProductDetailActivity
+import io.wexchain.android.dcc.StartLoanActivity
+import io.wexchain.android.dcc.modules.home.LoanActivity
 import io.wexchain.dcc.R
 
 class LoanRepayResultActivity : BaseCompatActivity() {
@@ -13,7 +16,10 @@ class LoanRepayResultActivity : BaseCompatActivity() {
         setContentView(R.layout.activity_loan_repay_result)
         initToolbar(false)
         findViewById<View>(R.id.btn_to_records).setOnClickListener {
-            navigateTo(LoanRecordsActivity::class.java)
+            finishActivity(ReviewRepayActivity::class.java)
+            finishActivity(LoanRecordDetailActivity::class.java)
+            finishActivity(LoanRecordsActivity::class.java)
+            navigateTo(LoanActivity::class.java)
         }
     }
 }
