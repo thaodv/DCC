@@ -454,7 +454,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                     }
                     UserCertStatus.INCOMPLETE -> {
                         // get report processing
-                        startActivity(Intent(this, SubmitTNLogActivity::class.java))
+                  //      startActivity(Intent(this, SubmitTNLogActivity::class.java))
                     }
                 }
 
