@@ -18,7 +18,7 @@
                 android:id="@+id/tv_cert_org"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
+            android:textAppearance="@style/TextAppearance.AppCompat.DccProviderHeadline"
                 android:text="认证方：同牛"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -26,6 +26,7 @@
                 />
 
         <include layout="@layout/certs_include_input_text"
+            android:layout_marginTop="16dp"
                  android:id="@+id/input_phone"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
@@ -58,7 +59,8 @@
                 />
 
         <Button
-            android:background="@drawable/bgbtblue"
+
+            android:background="@drawable/background_button"
             android:textColor="@color/white"
                 android:id="@+id/btn_submit"
                 android:layout_width="match_parent"
@@ -67,7 +69,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_cert_fee"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="16dp"
                 android:onClick="@{(v)->vm.submit()}"
                 />
 

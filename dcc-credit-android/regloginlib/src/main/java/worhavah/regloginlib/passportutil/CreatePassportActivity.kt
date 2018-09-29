@@ -9,7 +9,7 @@ import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.toast
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.constant.Extras2
-import io.wexchain.android.dcc.tools.isPasswordValid
+import worhavah.regloginlib.tools.isPasswordValid
 import wex.regloginlib.R
 import wex.regloginlib.databinding.ActivityCreatePassportBinding
 import worhavah.regloginlib.PassportRepository

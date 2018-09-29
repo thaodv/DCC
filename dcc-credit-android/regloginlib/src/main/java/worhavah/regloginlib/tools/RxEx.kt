@@ -3,7 +3,6 @@ package worhavah.regloginlib.tools
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
-import io.wexchain.android.dcc.tools.RoomHelper
 import io.wexchain.dccchainservice.domain.Result
 
 

@@ -28,7 +28,7 @@ import io.wexchain.android.dcc.repo.db.AddressBook
 import io.wexchain.android.dcc.repo.db.TransRecord
 import io.wexchain.android.dcc.tools.CommonUtils
 import io.wexchain.android.dcc.tools.LogUtils
-import io.wexchain.android.dcc.tools.isAddressShortNameValid
+import worhavah.regloginlib.tools.isAddressShortNameValid
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityEditAddressBookBinding
 import io.wexchain.digitalwallet.util.isEthAddress

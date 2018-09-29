@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="io.wexchain.android.dcc.modules.bsx.BsxDccBuyActivity">
+
+    <data>
+
+        <variable
+            name="asIdVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
+            />
+
+        <variable
+            name="asPersonalVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
+            />
+
+        <variable
+            name="asBankVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
+            />
+
+        <variable
+            name="asMobileVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm"
+            />
+
+        <variable
+            name="buyamount"
+            type="String"
+            />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_toolbar"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp">
+
+                    <TextView
+                        android:id="@+id/tv_ordername"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/FF4A4A4A"
+                        android:textSize="16sp"
+                        tools:text="私链DCC币生息1期（剩余额度 1000 DCC）"/>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="#FFF8F8FF"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginTop="20dp"
+                        android:text="认购额度"
+                        android:textColor="@color/FF4A4A4A"
+                        android:textSize="16sp"/>
+
+                    <EditText
+                        android:id="@+id/et_buyamount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginTop="56dp"
+                        android:background="@null"
+                        android:hint="最小认购额度100"
+                        android:inputType="number"
+                        android:minWidth="200dp"
+                        android:text="@{buyamount}"/>
+
+                    <TextView
+                        android:id="@+id/tv_exprofit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="56dp"
+                        android:text="DCC"
+                        android:textColor="@color/upgrade_title_color"
+                        android:textSize="14sp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="#EFEFEF"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp">
+
+                    <TextView
+                        android:id="@+id/tv_canuselable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="可用额度：1000.89 DCC"
+                        android:textColor="@color/FF4A4A4A"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:text="全部"
+                        android:textColor="#FF6766CC"
+                        android:textSize="14sp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="#EFEFEF"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="#FFF8F8FF"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/iv_warning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/icon_warning"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/iv_warning"
+                        android:text="@string/across_trans_warning_tip"
+                        android:textColor="#4A4A4A"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_pubtopri"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/iv_warning"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/across_trans_warning_tips3"
+                        android:textColor="#4A4A4A"
+                        android:textSize="14sp"/>
+
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/btn_buy"
+                    style="@style/Widget.AppCompat.Button.Dcc.Full"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="45dp"
+                    android:text="立即认购"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+</layout>

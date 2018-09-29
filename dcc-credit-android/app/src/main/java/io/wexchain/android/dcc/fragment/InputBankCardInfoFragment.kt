@@ -1,8 +1,9 @@
 package io.wexchain.android.dcc.fragment
 
+import android.app.Dialog
 import android.os.Bundle
-import android.support.design.widget.BottomSheetDialog
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.View
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -10,7 +11,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.base.BindFragment
+import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
@@ -96,13 +97,20 @@ class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), 
         bankDialog?.dismiss()
     }
 
-    private var bankDialog: BottomSheetDialog? = null
+    private var bankDialog: Dialog? = null
 
     private fun showOrHideBanksSheet() {
         var dialog = bankDialog
         if (dialog == null) {
-            dialog = BottomSheetDialog(context!!).apply {
+            dialog = Dialog(context!!,R.style.FullWidthWhiteDialog).apply {
                 setContentView(R.layout.dialog_banks)
+                val dialogWindow = window
+                val lp = dialogWindow.attributes
+                val d = context.resources.displayMetrics
+                lp.width = d.widthPixels
+                lp.height = (d.heightPixels * 0.6).toInt()
+                lp.gravity = Gravity.BOTTOM
+                dialogWindow.attributes = lp
                 this.findViewById<View>(R.id.btn_cancel)!!.setOnClickListener { dismiss() }
                 this.findViewById<RecyclerView>(R.id.rv_list)!!.adapter = adapter
             }

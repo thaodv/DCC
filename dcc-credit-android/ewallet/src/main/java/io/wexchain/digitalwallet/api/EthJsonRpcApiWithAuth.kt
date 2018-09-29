@@ -179,3 +179,57 @@ fun EthJsonRpcApiWithAuth.getErc20Balance(contractAddress: String, address: Stri
             Numeric.toBigInt(it.result!!)
     }
 }
+
+fun EthJsonRpcApiWithAuth.getBsxStatus(contractAddress: String, tag: String = "latest"): Single<EthJsonRpcResponse<String>> {
+    val call = Erc20Helper.getBsxStatus(contractAddress)
+    return this.postCall(EthJsonRpcRequestBody(
+            method = "eth_call",
+            params = listOf(call, tag),
+            id = this.nextId()
+    ))
+}
+
+fun EthJsonRpcApiWithAuth.getBsxSaleInfo(contractAddress: String, tag: String = "latest"): Single<EthJsonRpcResponse<String>> {
+    val call = Erc20Helper.getBsxSaleInfo(contractAddress)
+    return this.postCall(EthJsonRpcRequestBody(
+            method = "eth_call",
+            params = listOf(call, tag),
+            id = this.nextId()
+    ))
+}
+
+fun EthJsonRpcApiWithAuth.getBsxMinAmountPerHand(contractAddress: String, tag: String = "latest"): Single<EthJsonRpcResponse<String>> {
+    val call = Erc20Helper.getBsxMinAmountPerHand(contractAddress)
+    return this.postCall(EthJsonRpcRequestBody(
+            method = "eth_call",
+            params = listOf(call, tag),
+            id = this.nextId()
+    ))
+}
+
+fun EthJsonRpcApiWithAuth.getBsxInvestCeilAmount(contractAddress: String, tag: String = "latest"): Single<EthJsonRpcResponse<String>> {
+    val call = Erc20Helper.getBsxInvestCeilAmount(contractAddress)
+    return this.postCall(EthJsonRpcRequestBody(
+            method = "eth_call",
+            params = listOf(call, tag),
+            id = this.nextId()
+    ))
+}
+
+fun EthJsonRpcApiWithAuth.investedBsxTotalAmount(contractAddress: String, tag: String = "latest"): Single<EthJsonRpcResponse<String>> {
+    val call = Erc20Helper.investedBsxTotalAmount(contractAddress)
+    return this.postCall(EthJsonRpcRequestBody(
+            method = "eth_call",
+            params = listOf(call, tag),
+            id = this.nextId()
+    ))
+}
+
+fun EthJsonRpcApiWithAuth.investedBsxAmountMapping(contractAddress: String, address: String, tag: String = "latest"): Single<EthJsonRpcResponse<String>> {
+    val call = Erc20Helper.investedBsxAmountMapping(contractAddress, address)
+    return this.postCall(EthJsonRpcRequestBody(
+            method = "eth_call",
+            params = listOf(call, tag),
+            id = this.nextId()
+    ))
+}

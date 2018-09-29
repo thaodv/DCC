@@ -22,7 +22,7 @@ import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
 import io.wexchain.android.dcc.tl.TlWebPageActivity
 import io.wexchain.android.dcc.tools.ShareUtils
-import worhavah.regloginlib.tools.checkonMain
+import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.tools.reName
 import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog

@@ -313,7 +313,9 @@ object ScfOperations {
                 .compose(withScfTokenInCurrentPassport())
     }
 
-    val currentToken = Single.fromCallable { App.get().scfTokenManager.scfToken }
+    val currentToken = Single.fromCallable {
+        App.get().scfTokenManager.scfToken
+    }
 
     private fun isTokenFail(e: Throwable): Boolean {
         return e is DccChainServiceException && e.businessCode == BusinessCodes.TOKEN_FORBIDDEN

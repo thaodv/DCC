@@ -3,13 +3,13 @@ package io.wexchain.android.dcc.fragment
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
+import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.transitionBundle
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.DigitalAssetsActivity
 import io.wexchain.android.dcc.HomeActivity
-import io.wexchain.android.dcc.base.BindFragment
 import io.wexchain.android.dcc.constant.Transitions
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.DigitalAssetsAdapter

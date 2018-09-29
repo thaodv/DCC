@@ -12,12 +12,11 @@ import android.view.*
 import android.view.animation.AnimationUtils
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.rxkotlin.subscribeBy
-import io.wexchain.android.common.getViewModel
+import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.*
-import io.wexchain.android.dcc.base.BindFragment
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
 import io.wexchain.android.dcc.constant.RequestCodes
@@ -25,11 +24,6 @@ import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.modules.mine.SettingActivity
-import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
-import io.wexchain.android.dcc.vm.Protect
-import io.wexchain.android.localprotect.LocalProtectType
-import io.wexchain.android.localprotect.fragment.CreateProtectFragment
-import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentMineBinding
 import io.wexchain.ipfs.utils.io_main

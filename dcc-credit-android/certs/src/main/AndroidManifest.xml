@@ -1,55 +1,45 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="worhavah.certs" >
-<application
-android:allowBackup="true"
-android:label="cert"
-    >
+<manifest package="worhavah.certs"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <activity
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:name="worhavah.certs.SubmitIdActivity"
-        android:screenOrientation="portrait"/>
+    <application
+        android:allowBackup="true"
+        android:label="cert">
 
-    <activity
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:name="worhavah.certs.PhoneCertActivity"
-        android:label="验证手机号码"
-        android:screenOrientation="portrait"/>
+        <activity
+            android:name="worhavah.certs.PhoneCertActivity"
+            android:label="验证手机号码"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
-    <activity
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:name="worhavah.certs.MailCertActivity"
-        android:label="个人邮箱"
-        android:screenOrientation="portrait"/>
-    <activity
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:name="worhavah.certs.MailCertedActivity"
-        android:label="个人邮箱"
-        android:screenOrientation="portrait"/>
-    <activity
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:name="worhavah.certs.PhoneCertedActivity"
-        android:label="手机号码"
-        android:screenOrientation="portrait"/>
-    <activity
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:name="worhavah.certs.AddressCertActivity"
-        android:label="家庭住址"
-        android:screenOrientation="portrait"/>
-    <activity
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:name="worhavah.certs.AddressCertedActivity"
-        android:label="家庭住址"
-        android:screenOrientation="portrait"/>
-    <activity
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:name="worhavah.certs.RealCertActivity"
-        android:label="实名认证"
-        android:screenOrientation="portrait"/>
-    <activity
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:name="worhavah.certs.RealCertedActivity"
-        android:label="身份认证信息"
-        android:screenOrientation="portrait"/>
-</application>
-    </manifest>
+        <activity
+            android:name="worhavah.certs.MailCertActivity"
+            android:label="个人邮箱"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name="worhavah.certs.MailCertedActivity"
+            android:label="个人邮箱"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name="worhavah.certs.PhoneCertedActivity"
+            android:label="手机号码"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name="worhavah.certs.AddressCertActivity"
+            android:label="家庭住址"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name="worhavah.certs.AddressCertedActivity"
+            android:label="家庭住址"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name="worhavah.certs.RealCertedActivity"
+            android:label="身份认证信息"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+    </application>
+</manifest>

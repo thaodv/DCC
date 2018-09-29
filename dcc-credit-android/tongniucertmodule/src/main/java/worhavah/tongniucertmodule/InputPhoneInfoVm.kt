@@ -3,7 +3,7 @@ package worhavah.tongniucertmodule
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import io.wexchain.android.common.SingleLiveEvent
-import io.wexchain.android.dcc.tools.isPhoneNumValid
+import worhavah.regloginlib.tools.isPhoneNumValid
 
 class InputPhoneInfoVm : ViewModel() {
     val phoneNo = ObservableField<String>()

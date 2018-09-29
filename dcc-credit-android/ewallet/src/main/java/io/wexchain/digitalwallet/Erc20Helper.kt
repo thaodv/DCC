@@ -143,11 +143,20 @@ object Erc20Helper {
         )
     }
 
-    fun investBsx(amount: BigInteger): Function = Function(
-            "invest",
-            Arrays.asList<Type<*>>(Uint256(amount)),
-            Arrays.asList<TypeReference<*>>()
-    )
+    fun investBsx(amount: BigInteger): Function {
+        return Function(
+                "invest",
+                Arrays.asList<Type<*>>(Uint256(amount)),
+                Arrays.asList<TypeReference<*>>()
+        )
+    }
+    fun investEthBsx( ): Function {
+        return Function(
+                "invest",
+                Arrays.asList<Type<*>>(),
+                Arrays.asList<TypeReference<*>>()
+        )
+    }
 
     fun getIpfsKey(it: String, address: String): EthJsonTxScratch {
         return EthJsonTxScratch(

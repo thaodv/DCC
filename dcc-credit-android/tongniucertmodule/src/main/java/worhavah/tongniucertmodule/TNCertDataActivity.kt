@@ -2,7 +2,6 @@ package worhavah.tongniucertmodule
 
 import android.os.Bundle
 import android.widget.TextView
-import com.githang.statusbar.StatusBarCompat
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.constant.Extras2
@@ -17,7 +16,6 @@ class TNCertDataActivity : BaseCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tncm_cert_data)
-        StatusBarCompat.setStatusBarColor(this,resources.getColor(R.color.white))
         initToolbar()
         showCmCertData()
     }

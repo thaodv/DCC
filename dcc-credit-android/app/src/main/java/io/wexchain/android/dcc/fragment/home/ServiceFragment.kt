@@ -11,11 +11,11 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import com.jcodecraeer.xrecyclerview.CustomFooterViewCallBack
 import io.reactivex.rxkotlin.subscribeBy
+import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.*
-import io.wexchain.android.dcc.base.BindFragment
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.bsx.BsxMarketActivity
 import io.wexchain.android.dcc.modules.home.LoanActivity

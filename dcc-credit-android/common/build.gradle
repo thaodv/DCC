@@ -43,7 +43,7 @@ dependencies {
     api "io.reactivex.rxjava2:rxjava:$rxjava_version"
     implementation project(':barcode')
     api 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
-    compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
+    implementation 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
     implementation "com.android.support:recyclerview-v7:$support_lib_version"
     api "android.arch.persistence.room:rxjava2:$room_version"
     api 'com.github.zellius:rxlocationmanager-rxjava2:1.0.0'
