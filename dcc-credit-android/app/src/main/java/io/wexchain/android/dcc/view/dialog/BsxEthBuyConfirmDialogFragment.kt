@@ -135,7 +135,7 @@ class BsxEthBuyConfirmDialogFragment : DialogFragment() {
                     getScratch().remarks = FunctionEncoder.encode(approve)
 
                     TransHelper.afterTransSuc(getScratch(), it.second)
-                    toast("认购成功")
+                    toast("转账提交成功")
                     hideLoadingDialog()
                     dismiss()
                     navigateTo(BsxHoldingActivity::class.java)
