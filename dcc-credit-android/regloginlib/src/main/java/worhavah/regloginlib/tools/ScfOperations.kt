@@ -8,7 +8,6 @@ import io.reactivex.SingleTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.SingleLiveEvent
-import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.ScfAccountInfo
