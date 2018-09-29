@@ -204,7 +204,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
             }
             Chain.publicEthChain -> {
                 val contractAddress = dc.contractAddress!!
-                Erc20Agent(dc, publicRpc, EthsTxAgent.Companion.by(ethplorerApi, contractAddress))
+                Erc20Agent(dc, publicRpc, EthsTxAgent.by(ethplorerApi, contractAddress))
             }
             else -> throw IllegalArgumentException()
         }

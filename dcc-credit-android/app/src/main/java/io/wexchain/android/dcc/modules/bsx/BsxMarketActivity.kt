@@ -37,6 +37,7 @@ class BsxMarketActivity : BindActivity<ActivityBsxMarketBinding>(), ItemViewClic
     @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
+
         App.get().scfApi.getHoldingSum(App.get().passportRepository.currPassport.value!!.address)
                 .checkonMain()
                 .withLoading()

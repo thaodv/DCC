@@ -70,7 +70,8 @@ data class EpTransactions(
                     decimals = this.decimals,
                     description = this.name,
                     icon = null,
-                    contractAddress = this.address
+                    contractAddress = this.address,
+                    sort = 10000
             )
         }
     }

@@ -25,7 +25,9 @@ data class CurrencyMeta(
         @ColumnInfo(name = COLUMN_ICON_URL)
         val iconUrl: String?,
         @ColumnInfo(name = COLUMN_SELECTED)
-        val selected: Boolean
+        val selected: Boolean,
+        @ColumnInfo(name = COLUMN_SORT)
+        val sort: Int
 ) {
     companion object {
         const val TABLE_NAME = "currencies"
@@ -36,12 +38,13 @@ data class CurrencyMeta(
         const val COLUMN_DECIMALS = "decimals"
         const val COLUMN_ICON_URL = "icon_url"
         const val COLUMN_SELECTED = "selected"
+        const val COLUMN_SORT = "sort"
         fun from(dc: DigitalCurrency, sel: Boolean = true): CurrencyMeta {
-            return CurrencyMeta(dc.chain, dc.contractAddress!!, dc.decimals, dc.symbol, dc.description, dc.icon, sel)
+            return CurrencyMeta(dc.chain, dc.contractAddress!!, dc.decimals, dc.symbol, dc.description, dc.icon, sel, dc.sort)
         }
     }
 
     fun toDigitalCurrency(): DigitalCurrency {
-        return DigitalCurrency(this.symbol, Chain.publicEthChain, this.decimals, this.description, this.iconUrl, this.contractAddress)
+        return DigitalCurrency(this.symbol, Chain.publicEthChain, this.decimals, this.description, this.iconUrl, this.contractAddress, this.sort)
     }
 }

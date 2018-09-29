@@ -212,16 +212,19 @@ static NSInteger const kMaxTimes = 7;
                 NSString *txHash = [NSString stringWithFormat:@"%@",response];
                 [self savePendingTransferModelWithTxhash:txHash];
                 [self getResultRequestWithTXHash:txHash complete:^(BOOL result) {
-                    if (result) {
-                        [WeXPorgressHUD hideLoading];
-                        [WeXPorgressHUD showText:@"购买成功" onView:self.view];
-                        [self buySuccessEvent];
-                        WEXNSLOG(@"购买成功");
-                    } else {
-                        [WeXPorgressHUD hideLoading];
-                        [WeXPorgressHUD showText:@"购买失败,请稍后再试" onView:self.view];
-                        WEXNSLOG(@"购买失败");
-                    }
+                    [WeXPorgressHUD hideLoading];
+                    [WeXPorgressHUD showText:@"转账提交成功" onView:self.view];
+                    WEXNSLOG(@"购买成功");
+//                    if (result) {
+//                        [WeXPorgressHUD hideLoading];
+//                        [WeXPorgressHUD showText:@"购买成功" onView:self.view];
+//                        [self buySuccessEvent];
+//                        WEXNSLOG(@"购买成功");
+//                    } else {
+//                        [WeXPorgressHUD hideLoading];
+//                        [WeXPorgressHUD showText:@"购买失败,请稍后再试" onView:self.view];
+//                        WEXNSLOG(@"购买失败");
+//                    }
                 }];
             }
         }];
@@ -263,7 +266,6 @@ static NSInteger const kMaxTimes = 7;
                         });
                     } else {
                         _requestCount = 0;
-                        
                         !complte ? : complte (false);
                         return ;
                     }
@@ -490,9 +492,9 @@ static NSInteger const kMaxTimes = 7;
                     NSString *placeHolder = [NSString stringWithFormat:@"%@%@%@",@"最小认购额度",self.minBuyAmount,_productModel.assetCode];
                     [cell setLeftTitle:nil rightText:_productModel.assetCode placeHolder:placeHolder type:WeXCPCompoundTypeTextFiledAndLabel];
                 }
-                if ([self.amount length] > 0) {
-                    [cell setLeftTextFiled:self.amount];
-                }
+//                if ([self.amount length] > 0) {
+//                    [cell setLeftTextFiled:self.amount];
+//                }
                 cell.DidInputText = ^(NSString *text) {
                     self.amount = text;
                     WEXNSLOG(@"%@",text);

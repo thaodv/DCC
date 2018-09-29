@@ -19,7 +19,8 @@ data class DigitalCurrency(
          * non-null for ERC20 tokens
          * null for block chain currencies
          */
-        @JvmField val contractAddress: String?
+        @JvmField val contractAddress: String?,
+        @JvmField val sort: Int
 ) : Serializable {
     fun toIntExact(value: BigDecimal): BigInteger {
         return value.scaleByPowerOfTen(decimals).toBigIntegerExact()

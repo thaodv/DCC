@@ -6,16 +6,19 @@ import com.wexmarket.android.network.Networking
 import io.reactivex.Single
 import io.wexchain.android.common.UrlManage
 import io.wexchain.android.common.kotlin.weak
-import worhavah.regloginlib.ScfTokenManager
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
-import io.wexchain.digitalwallet.api.*
+import io.wexchain.digitalwallet.api.EthJsonRpcApi
+import io.wexchain.digitalwallet.api.EtherScanApi
+import io.wexchain.digitalwallet.api.EthplorerApi
+import io.wexchain.digitalwallet.api.getPrepared
 import io.wexchain.digitalwallet.proxy.*
 import worhavah.regloginlib.AssetsRepository
 import worhavah.regloginlib.Net.beans.PrivateChainApi
 import worhavah.regloginlib.PassportRepository
+import worhavah.regloginlib.ScfTokenManager
 import java.io.File
 import java.math.BigInteger
 
@@ -24,14 +27,13 @@ import java.math.BigInteger
  */
 object Networkutils {
 
-    var  context: Context? by weak()
+    var context: Context? by weak()
     lateinit var chainGateway: ChainGateway
-    lateinit var networking :Networking
+    lateinit var networking: Networking
     lateinit var passportRepository: PassportRepository
     lateinit var scfApi: ScfApi
     lateinit var scfTokenManager: ScfTokenManager
     lateinit var assetsRepository: AssetsRepository
-    lateinit var chainFrontEndApi: ChainFrontEndApi
     lateinit var publicRpc: EthsRpcAgent
     lateinit var customPublicJsonRpc: EthJsonRpcApi
     lateinit var etherScanApi: EtherScanApi
@@ -44,14 +46,14 @@ object Networkutils {
 
     //init
     @Synchronized
-    fun  letinit(context: Application): Networkutils {
-        if(null == Networkutils.context){
-            Networkutils.context =context
-            networking =  Networking(context, true)
+    fun letinit(context: Application): Networkutils {
+        if (null == Networkutils.context) {
+            Networkutils.context = context
+            networking = Networking(context, true)
             initServices(context)
-            filesDir=context.filesDir
+            filesDir = context.filesDir
             PassportRepository.letinit(context)
-        //   JuzixData.init(context)
+            //   JuzixData.init(context)
         }
         return Networkutils
     }
@@ -60,12 +62,10 @@ object Networkutils {
     private fun initServices(app: Context) {
 
 
-
         passportRepository = PassportRepository.letinit(app)
         passportRepository.load()
         chainGateway = networking.createApi(ChainGateway::class.java, UrlManage.GATEWAY_BASE_URL)
-        chainFrontEndApi = networking.createApi(ChainFrontEndApi::class.java, UrlManage.CHAIN_FRONTEND_URL)
-        scfApi = networking.createApi(ScfApi::class.java,UrlManage.BaseRnsUrl)
+        scfApi = networking.createApi(ScfApi::class.java, UrlManage.BaseRnsUrl)
         customPublicJsonRpc = networking.createApi(EthJsonRpcApi::class.java, cc.sisel.ewallet.BuildConfig.PUBLIC_CHAIN_RPC).getPrepared()
         publicRpc = EthsRpcAgent.by(customPublicJsonRpc)
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))
@@ -73,7 +73,6 @@ object Networkutils {
         privateChainApi = networking.createApi(PrivateChainApi::class.java, UrlManage.CHAIN_EXPLORER_URL)
         ethplorerApi = networking.createApi(EthplorerApi::class.java, EthplorerApi.API_URL)
         assetsRepository = AssetsRepository(
-                chainFrontEndApi,
                 EthereumAgent(publicRpc, EthsTxAgent.by(etherScanApi)),
                 { buildAgent(it) }
         )
@@ -84,7 +83,7 @@ object Networkutils {
         return when (dc.chain) {
             Chain.JUZIX_PRIVATE -> {
                 dc.contractAddress!!
-                val privateRpc = networking.createApi(EthJsonRpcApi::class.java, EthJsonRpcApi.juzixErc20RpcUrl(UrlManage.GATEWAY_BASE_URL,dc.symbol))
+                val privateRpc = networking.createApi(EthJsonRpcApi::class.java, EthJsonRpcApi.juzixErc20RpcUrl(UrlManage.GATEWAY_BASE_URL, dc.symbol))
                         .getPrepared()
                 JuzixErc20Agent(dc, EthsRpcAgent.by(privateRpc), txAgentBy(privateChainApi, dc))
             }
@@ -95,6 +94,7 @@ object Networkutils {
             else -> throw IllegalArgumentException()
         }
     }
+
     private fun txAgentBy(privateChainApi: PrivateChainApi, dc: DigitalCurrency) = object : EthsTxAgent {
         override fun listTransactionsOf(address: String, start: Long, end: Long): Single<List<EthsTransaction>> {
             val contractAddress = dc.contractAddress!!
@@ -115,7 +115,7 @@ object Networkutils {
                                     gasPrice = BigInteger.ZERO,
                                     gasUsed = BigInteger.ZERO,
                                     status = EthsTransaction.Status.MINED,
-                                nonce = BigInteger.ZERO
+                                    nonce = BigInteger.ZERO
                             )
                         }
                     }

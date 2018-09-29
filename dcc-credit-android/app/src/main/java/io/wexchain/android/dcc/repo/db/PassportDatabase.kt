@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteDatabase
 import io.wexchain.android.dcc.repo.AssetsRepository
 
 @Database(entities = [CaAuthRecord::class, AuthKeyChangeRecord::class, CurrencyMeta::class, BeneficiaryAddress::class, AddressBook::class, TransRecord::class],
-        version = PassportDatabase.VERSION_5
+        version = PassportDatabase.VERSION_6
 )
 @TypeConverters(Converters::class)
 abstract class PassportDatabase : RoomDatabase() {
@@ -26,6 +26,7 @@ abstract class PassportDatabase : RoomDatabase() {
         const val VERSION_3 = 3
         const val VERSION_4 = 4
         const val VERSION_5 = 5
+        const val VERSION_6 = 6
 
         private val migration_1_2 = object : Migration(VERSION_1, VERSION_2) {
             override fun migrate(database: SupportSQLiteDatabase) {
@@ -55,11 +56,30 @@ abstract class PassportDatabase : RoomDatabase() {
                 database.execSQL("update currencies set symbol= 'DTA' where description='DATA'")
             }
         }
+        private val migration_5_6 = object : Migration(VERSION_5, VERSION_6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE currencies ADD COLUMN 'sort' INTEGER")
+                database.execSQL("INSERT OR REPLACE INTO `currencies`(`chain`,`contract_address`,`decimals`,`symbol`,`description`,`icon_url`,`selected`) VALUES (Chain.publicEthChain,'0x056fd409e1d7a124bd7017459dfea2f387b6d5cd',2,'GUSD','Gemini dollar','https://open.dcc.finance/images/token_icon/Gemini_dollar@2x.png',1)")
+                database.execSQL("update currencies set sort= 10000")
+                database.execSQL("update currencies set sort= 5 where description='DATA'")
+                database.execSQL("update currencies set sort= 10 where description='TrueUSD'")
+                database.execSQL("update currencies set sort= 15 where description='Gemini dollar'")
+                database.execSQL("update currencies set sort= 20 where description='BNB'")
+                database.execSQL("update currencies set sort= 25 where description='HuobiToken'")
+                database.execSQL("update currencies set sort= 30 where description='EOS'")
+                database.execSQL("update currencies set sort= 35 where description='TRON'")
+                database.execSQL("update currencies set sort= 40 where description='RUFF'")
+                database.execSQL("update currencies set sort= 45 where description='AI Doctor'")
+                database.execSQL("update currencies set sort= 50 where description='VenChain'")
+                database.execSQL("update currencies set sort= 55 where description='OmiseGO'")
+                database.execSQL("update currencies set sort= 60 where description='ZRX'")
+            }
+        }
 
         fun createDatabase(context: Context): PassportDatabase {
 
             return Room.databaseBuilder(context, PassportDatabase::class.java, DATABASE_NAME)
-                    .addMigrations(migration_1_2, migration_2_3, migration_3_4,migration_4_5)
+                    .addMigrations(migration_1_2, migration_2_3, migration_3_4, migration_4_5, migration_5_6)
                     .addCallback(object : RoomDatabase.Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
@@ -73,13 +93,8 @@ abstract class PassportDatabase : RoomDatabase() {
         fun putPresetCurrencies(db: SupportSQLiteDatabase) {
             val preset = AssetsRepository.preset
 
-            val datas = ArrayList<CurrencyMeta>()
-
             val contentValues = ContentValues()
             preset.forEach {
-
-                //datas.add(CurrencyMeta.from(it))
-
 
                 contentValues.clear()
                 contentValues.put(CurrencyMeta.COLUMN_CHAIN, it.chain.name)
@@ -93,6 +108,7 @@ abstract class PassportDatabase : RoomDatabase() {
                     contentValues.put(CurrencyMeta.COLUMN_ICON_URL, it.icon)
                 }
                 contentValues.put(CurrencyMeta.COLUMN_SELECTED, true)
+                contentValues.put(CurrencyMeta.COLUMN_SORT, it.sort)
                 db.insert(CurrencyMeta.TABLE_NAME, SQLiteDatabase.CONFLICT_REPLACE, contentValues)
             }
             /*RoomHelper.onRoomIoThread {

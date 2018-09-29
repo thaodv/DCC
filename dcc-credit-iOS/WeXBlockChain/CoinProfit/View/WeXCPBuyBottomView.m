@@ -24,7 +24,7 @@
 
 static NSString * const kPrivateText = @"• 币生息只能使用私链上的DCC；\n• 通过跨链交易将公链上的DCC转移到私链上，即可购买币生息产品。公链转到私链 >";
 static NSString * const kPrivateHighText = @"公链转到私链 >";
-static NSString * const kPublicText = @"• 认购成功后不可撤销。";
+static NSString * const kPublicText = @"• 认购成功后不可撤销。\n• 转账提交成功后可在ETH资产页详情查看交易状态";
 
 
 + (instancetype)createBuyBottomView:(CGRect)frame

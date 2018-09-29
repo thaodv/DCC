@@ -1,11 +1,7 @@
 package io.wexchain.digitalwallet.proxy
 
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
-import io.wexchain.digitalwallet.Currencies
-import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.EthsTransactionScratch
-import io.wexchain.digitalwallet.api.*
 import io.wexchain.digitalwallet.api.domain.EthJsonTxScratch
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.TransactionEncoder
@@ -37,7 +33,7 @@ class EthereumAgent(
                 from = ethsTransactionScratch.from,
                 to = ethsTransactionScratch.to,
                 value = Numeric.toHexStringWithPrefix(txAmount),
-                data = Numeric.toHexString((ethsTransactionScratch.remarks ?: "").toByteArray())
+                data = ethsTransactionScratch.remarks
         ))
     }
 

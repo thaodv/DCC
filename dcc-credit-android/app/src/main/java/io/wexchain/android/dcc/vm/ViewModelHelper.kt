@@ -14,7 +14,6 @@ import io.wexchain.android.common.versionInfo
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 import io.wexchain.android.dcc.tools.getString
-import io.wexchain.android.dcc.vm.ViewModelHelper.getCertTypeIcon
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
@@ -633,6 +632,7 @@ object ViewModelHelper {
     @JvmStatic
     fun Context.showBsxTopBgStatus(status: String): Drawable? {
         return when (status) {
+            "3" -> ContextCompat.getDrawable(this, R.drawable.bg_bsx_market_item_top2)
             "4" -> ContextCompat.getDrawable(this, R.drawable.bg_bsx_market_item_top2)
             else -> {
                 ContextCompat.getDrawable(this, R.drawable.bg_bsx_market_item_top)
@@ -643,6 +643,7 @@ object ViewModelHelper {
     @JvmStatic
     fun Context.showBsxBodyBgStatus(status: String): Drawable? {
         return when (status) {
+            "3" -> ContextCompat.getDrawable(this, R.drawable.bg_bsx_market_item_body2)
             "4" -> ContextCompat.getDrawable(this, R.drawable.bg_bsx_market_item_body2)
             else -> {
                 ContextCompat.getDrawable(this, R.drawable.bg_bsx_market_item_body)

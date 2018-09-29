@@ -18,6 +18,7 @@ import io.wexchain.digitalwallet.*
 import io.wexchain.digitalwallet.proxy.JuzixErc20Agent
 import io.wexchain.digitalwallet.util.*
 import io.wexchain.ipfs.utils.doMain
+import org.web3j.abi.FunctionEncoder
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -141,6 +142,8 @@ class BsxEthBuyVm {
                 })
     }
 
+    val r = FunctionEncoder.encode(Erc20Helper.investEthBsx())
+
     fun updateGasLimit(focus: Boolean) {
         if (focus) {
             val to = toAddress.get()!!
@@ -149,17 +152,19 @@ class BsxEthBuyVm {
 //                inputNotSatisfiedEvent.value = "amount not valid"
                 return
             }
-            val r = remarks.get()
+
             val app = App.get()
             val from = app.passportRepository.getCurrentPassport()!!.address
             val dc = currency
             val gasPrice = BigDecimal(gasPrice.get())
+            LogUtils.i("updateGasLimit-gasPrice", gasPrice.toPlainString())
+            LogUtils.i("updateGasLimit-value", value.toPlainString())
             val scratch = EthsTransactionScratch(
                     currency = dc,
                     from = from,
                     to = to,
                     amount = value,
-                    gasPrice = BigDecimal(gweiTowei(gasPrice)),
+                    gasPrice = BigDecimal.ZERO,
                     gasLimit = BigInteger.ZERO,
                     remarks = r
             )
@@ -170,7 +175,7 @@ class BsxEthBuyVm {
                     }
                     .subscribe({
                         if (currency == dc && gasLimit.get().isNullOrEmpty()) {
-                            LogUtils.i("gas-res:",it.toString())
+                            LogUtils.i("gas-res:", it.toString())
                             gasLimit.set(it.toString())
                             dataInvalidatedEvent.call()
                         }
@@ -220,7 +225,7 @@ class BsxEthBuyVm {
                     value,
                     JuzixErc20Agent.GAS_PRICE.toBigDecimal().scaleByPowerOfTen(-9),
                     limit,
-                    remarks.get(),
+                    r,
                     feeRate
             )
         } else {
@@ -236,7 +241,7 @@ class BsxEthBuyVm {
                     value,
                     price,
                     limit,
-                    remarks.get()
+                    r
             )
         }
         agent.getGasLimit(scratch)

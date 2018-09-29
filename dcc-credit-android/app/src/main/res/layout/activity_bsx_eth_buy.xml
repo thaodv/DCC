@@ -336,8 +336,9 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/iv_warning"
                         android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
                         android:layout_marginTop="8dp"
-                        android:text="•认购成功后不可撤销。"
+                        android:text="•认购成功后不可撤销。\n•转账提交成功后在ETH资产详情页查看交易状态。"
                         android:textColor="#4A4A4A"
                         android:textSize="14sp"/>
 

@@ -229,7 +229,12 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
                     var mystatu = BytesUtils.encodeStringstatu(it.result)
 
                     if (mystatu != 1) {
-                        statu = "已结束"
+
+                        if (3 == mystatu) {
+                            statu = "已售罄"
+                        } else if (4 == mystatu) {
+                            statu = "已结束"
+                        }
                         canBuy = false
                     } else if (BigDecimal(minAmountPerHand).compareTo(BigDecimal(totalAmount).subtract(BigDecimal(lastAmount))) == 1) {
                         statu = "已售罄"
