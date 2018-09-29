@@ -21,7 +21,8 @@ data class TokenMetaInfo(
                 decimals = this.decimals,
                 description = this.name,
                 icon = this.iconUrl,
-                contractAddress = this.contractAddress
+                contractAddress = this.contractAddress,
+                sort = 10000
         )
     }
 }
