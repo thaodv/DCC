@@ -51,10 +51,10 @@ class BsxHoldingDetailActivity : BindActivity<ActivityBsxHoldingDetailBinding>()
 
             if ("1" == bsxHoldingBean.status) {
                 statusText = "认购中"
-            } else if ("2" == bsxHoldingBean.status) {
+            } else if ("2" == bsxHoldingBean.status || "3" == bsxHoldingBean.status) {
                 statusText = "收益中"
-            } else if ("3" == bsxHoldingBean.status) {
-                statusText = "已售罄"
+            } else {
+                statusText = "已结束"
             }
             binding.tvRaisedata.text = statusText
         }
