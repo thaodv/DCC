@@ -22,7 +22,7 @@ class EthereumAgent(
     }
 
     override fun encodeTransfer(nonce: BigInteger, from: Credentials, to: String, amount: BigInteger, gasPrice: BigInteger, gasLimit: BigInteger, remarks: String?): String {
-        val remarksHex = if (remarks == null) "" else Numeric.toHexString(remarks.toByteArray(Charsets.UTF_8))
+        val remarksHex = if (remarks == null) "" else remarks
         val gas = if (remarks == null || gasLimit < EthereumAgent.ethTransferGasLimit) EthereumAgent.ethTransferGasLimit else gasLimit
         return Numeric.toHexString(TransactionEncoder.signMessage(RawTransaction.createTransaction(nonce, gasPrice, gas, to, amount, remarksHex), from))!!
     }
