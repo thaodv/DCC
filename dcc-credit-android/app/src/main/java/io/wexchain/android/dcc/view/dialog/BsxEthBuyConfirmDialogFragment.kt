@@ -7,19 +7,19 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.*
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.ActivityCollector
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.modules.bsx.BsxDccBuyActivity
 import io.wexchain.android.dcc.modules.bsx.BsxDetailActivity
-import io.wexchain.android.dcc.modules.bsx.BsxEthBuyActivity
 import io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity
 import io.wexchain.android.dcc.modules.repay.LoanRepayActivity
 import io.wexchain.android.dcc.modules.repay.RePaymentErrorActivity
 import io.wexchain.android.dcc.modules.repay.RepayingActivity
 import io.wexchain.android.dcc.tools.LogUtils
-import io.wexchain.android.dcc.tools.RetryWithDelay
+import io.wexchain.android.dcc.tools.TransHelper
 import io.wexchain.android.dcc.vm.TransactionConfirmVm
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
@@ -28,11 +28,8 @@ import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.digitalwallet.EthsTransactionScratch
 import io.wexchain.digitalwallet.util.gweiTowei
-import io.wexchain.ipfs.utils.doMain
+import io.wexchain.ipfs.utils.io_main
 import org.web3j.abi.FunctionEncoder
-import org.web3j.crypto.TransactionEncoder
-import org.web3j.protocol.core.methods.request.RawTransaction
-import org.web3j.utils.Numeric
 import java.math.BigDecimal
 
 /**
@@ -42,12 +39,14 @@ class BsxEthBuyConfirmDialogFragment : DialogFragment() {
 
     private lateinit var binding: DialogConfirmBuyEthInvestmentBinding
 
+    lateinit var vm: TransactionConfirmVm
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_confirm_buy_eth_investment, container, false)
         val scratch = getScratch()
         val app = App.get()
         val passport = app.passportRepository.getCurrentPassport()!!
-        val vm = TransactionConfirmVm(scratch, passport, app.assetsRepository)
+        vm = TransactionConfirmVm(scratch, passport, app.assetsRepository)
         vm.syncProtect(this)
         vm.txSentEvent.observe(this, Observer {
             it?.let {
@@ -107,12 +106,47 @@ class BsxEthBuyConfirmDialogFragment : DialogFragment() {
         //val approve = Erc20Helper.investBsx(binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger())
         val approve = Erc20Helper.investEthBsx()
 
-        LogUtils.i("approve-1",FunctionEncoder.encode(approve))
+        LogUtils.i("approve-1", FunctionEncoder.encode(approve))
 
         LogUtils.i("approve-2", binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger().toString())
 
         agent.getNonce(p.address)
-                .doMain()
+                .flatMap {
+                    agent.sendTransferTransaction(
+                            p.credential,
+                            getContractAddress(),
+                            binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger(),
+                            gweiTowei(binding.vm!!.tx.gasPrice),
+                            binding.vm!!.tx.gasLimit,
+                            FunctionEncoder.encode(approve))
+                }
+                .io_main()
+                .subscribeBy({
+                    toast("交易失败")
+                    dismiss()
+                }, {
+                    getScratch().nonce = it.first
+                    vm.txSentEvent.value = getScratch() to it.second
+
+                    getScratch().to = getContractAddress()
+                    getScratch().amount = binding.vm!!.tx.amount.scaleByPowerOfTen(18)
+                    getScratch().gasPrice = binding.vm!!.tx.gasPrice
+                    getScratch().gasLimit = binding.vm!!.tx.gasLimit
+                    getScratch().remarks = FunctionEncoder.encode(approve)
+
+                    TransHelper.afterTransSuc(getScratch(), it.second)
+                    toast("认购成功")
+                    hideLoadingDialog()
+                    dismiss()
+                    navigateTo(BsxHoldingActivity::class.java)
+                    ActivityCollector.finishActivity(BsxDccBuyActivity::class.java)
+                    ActivityCollector.finishActivity(BsxDetailActivity::class.java)
+                    activity!!.finish()
+                })
+
+
+        /*agent.getNonce(p.address)
+                .io_main()
                 .flatMap {
                     LogUtils.i("invest-nonce", it.toString())
                     val rawTransaction = RawTransaction.createTransaction(
@@ -127,8 +161,7 @@ class BsxEthBuyConfirmDialogFragment : DialogFragment() {
                     agent.sendRawTransaction(signed)
                             .doMain()
                 }
-                .flatMap {
-                    txHash ->
+                .flatMap { txHash ->
                     agent.transactionReceipt(txHash)
                             .retryWhen(
                                     RetryWithDelay.createSimple(
@@ -159,7 +192,7 @@ class BsxEthBuyConfirmDialogFragment : DialogFragment() {
                     stackTrace(it)
                     toast("交易失败")
                     dismiss()
-                })
+                })*/
 
 
     }

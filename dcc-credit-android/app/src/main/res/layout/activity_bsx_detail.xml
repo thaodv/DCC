@@ -529,7 +529,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:text="本服务由【Token Plus】提供"
+                    android:text="本服务由【Tokenplus】提供"
                     android:textColor="#FF4A4A4A"
                     android:textSize="14sp"/>
 
