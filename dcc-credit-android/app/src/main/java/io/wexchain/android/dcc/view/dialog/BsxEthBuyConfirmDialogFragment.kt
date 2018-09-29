@@ -126,10 +126,9 @@ class BsxEthBuyConfirmDialogFragment : DialogFragment() {
                     dismiss()
                 }, {
                     getScratch().nonce = it.first
-                    vm.txSentEvent.value = getScratch() to it.second
 
                     getScratch().to = getContractAddress()
-                    getScratch().amount = binding.vm!!.tx.amount.scaleByPowerOfTen(18)
+                    getScratch().amount = binding.vm!!.tx.amount
                     getScratch().gasPrice = binding.vm!!.tx.gasPrice
                     getScratch().gasLimit = binding.vm!!.tx.gasLimit
                     getScratch().remarks = FunctionEncoder.encode(approve)

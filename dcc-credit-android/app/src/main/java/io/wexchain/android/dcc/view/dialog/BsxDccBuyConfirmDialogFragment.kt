@@ -2,24 +2,18 @@ package io.wexchain.android.dcc.view.dialog
 
 import android.app.Dialog
 import android.arch.lifecycle.Observer
-import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.*
-import com.wexmarket.android.passport.ResultCodes
 import io.wexchain.android.common.base.ActivityCollector
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.BsxOperations
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.bsx.BsxDccBuyActivity
 import io.wexchain.android.dcc.modules.bsx.BsxDetailActivity
 import io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity
-import io.wexchain.android.dcc.modules.repay.LoanRepayActivity
-import io.wexchain.android.dcc.modules.repay.RePaymentErrorActivity
-import io.wexchain.android.dcc.modules.repay.RepayingActivity
 import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.android.dcc.vm.TransactionConfirmVm
@@ -50,37 +44,6 @@ class BsxDccBuyConfirmDialogFragment : DialogFragment() {
         val passport = app.passportRepository.getCurrentPassport()!!
         val vm = TransactionConfirmVm(scratch, passport, app.assetsRepository, isEdit)
         vm.syncProtect(this)
-        vm.txSentEvent.observe(this, Observer {
-            it?.let {
-                if (isRepayment == 0) {
-                    toast("转账申请提交成功")
-                    activity?.setResult(ResultCodes.RESULT_OK, Intent().apply {
-                        putExtra(Extras.EXTRA_DIGITAL_TRANSACTION_SCRATCH, it.first)
-                        putExtra(Extras.EXTRA_DIGITAL_TRANSACTION_ID, it.second)
-                    })
-                    activity?.finish()
-                } else {
-                    startActivity(Intent(App.get(), RepayingActivity::class.java))
-                    ActivityCollector.finishActivity(LoanRepayActivity::class.java)
-                    activity?.finish()
-                }
-
-            }
-        })
-        vm.txSendFailEvent.observe(this, Observer {
-            it?.let {
-                if (isRepayment == 0) {
-
-                    toast("转账提交失败")
-                    if (isEdit) activity?.finish()
-                } else {
-                    startActivity(Intent(App.get(), RePaymentErrorActivity::class.java))
-                    ActivityCollector.finishActivity(LoanRepayActivity::class.java)
-                }
-            }
-
-
-        })
         vm.busySendingEvent.observe(this, Observer {
             it?.let {
                 if (it) {
