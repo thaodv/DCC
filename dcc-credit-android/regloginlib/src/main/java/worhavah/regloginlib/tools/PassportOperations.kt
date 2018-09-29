@@ -9,6 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.Pop
 import io.wexchain.android.common.getAndroidKeyStoreLoaded
 import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.common.toast
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.Result
 import org.web3j.crypto.Credentials
@@ -58,6 +59,7 @@ object PassportOperations {
             .subscribe({
                 action()
             }, {
+                activity.toast("您当前使用的统一登录秘钥与链上不一致,请前往首页更新密钥")
                 CustomDialog(activity).apply {
                     this.setTitle("提示")
                     textContent = it.message

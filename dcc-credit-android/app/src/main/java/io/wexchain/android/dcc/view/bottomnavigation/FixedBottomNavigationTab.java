@@ -10,14 +10,6 @@ import android.view.View;
 import io.wexchain.dcc.R;
 
 
-/**
- * Class description
- *
- * @author ashokvarma
- * @version 1.0
- * @see com.ashokvarma.bottomnavigation.BottomNavigationTab
- * @since 19 Mar 2016
- */
 class FixedBottomNavigationTab extends BottomNavigationTab {
 
     float labelScale;
@@ -52,7 +44,7 @@ class FixedBottomNavigationTab extends BottomNavigationTab {
         iconContainerView = view.findViewById(R.id.fixed_bottom_navigation_icon_container);
         badgeView = view.findViewById(R.id.fixed_bottom_navigation_badge);
 
-        labelScale = getResources().getDimension(com.ashokvarma.bottomnavigation.R.dimen.fixed_label_inactive) / getResources().getDimension(com.ashokvarma.bottomnavigation.R.dimen.fixed_label_active);
+        labelScale = getResources().getDimension(R.dimen.fixed_label_inactive) / getResources().getDimension(R.dimen.fixed_label_active);
 
         super.init();
     }

@@ -1,7 +1,10 @@
 package worhavah.tongniucertmodule
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
+import android.view.View
+import com.githang.statusbar.StatusBarCompat
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.Pop
@@ -68,9 +71,18 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tndefault_fragment_container2)
+        StatusBarCompat.setStatusBarColor(this,resources.getColor(R.color.white))
         initToolbar()
         checkPreconditions()
+
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertID.get().apply {
+            if(TextUtils.isEmpty(this)){
+
+            }
+        }
     }
+
+
 
     override fun goBack(): Boolean {
         val curr = supportFragmentManager.findFragmentById(R.id.fl_container)

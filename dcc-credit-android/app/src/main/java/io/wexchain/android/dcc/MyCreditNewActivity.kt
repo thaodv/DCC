@@ -38,6 +38,7 @@ import org.web3j.abi.datatypes.DynamicBytes
 import worhavah.certs.bean.TNcertReport
 import worhavah.certs.tools.CertOperations.onTNLogSuccessGot
 import worhavah.certs.tools.CertOperations.saveTnLogCertExpired
+import worhavah.regloginlib.Net.Networkutils
 import worhavah.tongniucertmodule.SubmitTNLogActivity
 import worhavah.tongniucertmodule.TnLogCertificationActivity
 import java.math.BigDecimal
@@ -56,9 +57,15 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
         super.onCreate(savedInstanceState)
 //        setWindowExtended()
         initToolbarS()
+
         countDownProgress = findViewById<View>(R.id.countdownProgress) as CountDownProgress
         countDownProgress.setCountdownTime(900)
         setVM()
+
+        val passport = Networkutils.passportRepository.getCurrentPassport()
+        if (passport == null) {
+            Networkutils.passportRepository.load()
+        }
     }
     val totalCerts  =4
     var certDoneNum=0

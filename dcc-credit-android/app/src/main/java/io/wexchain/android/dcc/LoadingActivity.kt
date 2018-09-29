@@ -7,10 +7,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.atLeastCreated
-import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.onClick
-import io.wexchain.android.common.setWindowExtended
+import io.wexchain.android.common.*
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.modules.home.HomeActivity
 import io.wexchain.android.dcc.tools.PermissionHelper
@@ -25,7 +22,7 @@ class LoadingActivity : BaseCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setWindowExtended()
+        noStatusBar()
         setContentView(R.layout.activity_loading)
         permission()
     }

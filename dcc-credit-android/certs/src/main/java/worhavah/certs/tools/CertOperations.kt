@@ -490,6 +490,7 @@ i
         val certTNLogPassword = StringPref("certTNLogPassword")
         val certTNLogData = StringPref("certTNLogData")
         val certTNLogExpired = LongPref("certCmLogExpired", -1L)
+        val certTNcertID = StringPref("certTNcertID")//认证id
 
         //手机邮箱
         val certPhoneNum= StringPref("certPhoneNum")

@@ -80,8 +80,6 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
     override fun onCreate() {
         super.onCreate()
-
-
         instance = WeakReference(this)
         initcerts()
 
@@ -95,8 +93,6 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         }
         initLibraries(this)
 
-
-
         initNode()
         ShareUtils.init(this)
 
@@ -106,7 +102,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
     }
 
-    public fun initcerts() {
+    fun initcerts() {
         Networkutils.letinit(this)
         worhavah.certs.tools.CertOperations.init(this)
     }

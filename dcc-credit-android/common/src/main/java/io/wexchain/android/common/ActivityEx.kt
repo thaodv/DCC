@@ -21,6 +21,8 @@ import android.support.v4.content.FileProvider
 import android.support.v4.util.Pair
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import java.io.File
 
 /**
@@ -73,6 +75,12 @@ fun FragmentActivity.replaceFragment(
 
 fun Activity.setWindowExtended() {
     window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+}
+fun Activity.noStatusBar(){
+    window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
+}
+fun Activity.noTitleBar(){
+    requestWindowFeature(Window.FEATURE_NO_TITLE)
 }
 
 inline fun <reified T : ViewModel> FragmentActivity.getViewModel(key: String? = null): T {
