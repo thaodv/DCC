@@ -43,8 +43,8 @@ object UrlManage {
 
     const val CHAIN_FUNC_URL2 = "http://10.65.178.12:9101/passport-logic/"
 
-    const val TN_URL="http://func.wexchain.io/passport-logic/"
-
+  //  const val TN_URL="http://func.wexchain.io/passport-logic/"
+    const val TN_URL="http://10.65.178.12:9101/passport-logic/"
 
 
 

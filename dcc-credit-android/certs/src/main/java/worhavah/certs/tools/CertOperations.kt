@@ -445,6 +445,15 @@ i
         eventMsg.msg = "finishApp"
         RxBus.getInstance().post(eventMsg)
     }
+    fun clearTNCertCache(){
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertaddress.set("" )
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertID.set(-1L )
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertuserName.set("" )
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertcertNo.set("" )
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set("" )
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertpassword.set("" )
+        worhavah.certs.tools.CertOperations.certPrefs.ertTNcertsignature.set("" )
+    }
 
 
     fun getCmCertOrderId(): Long {
@@ -490,7 +499,21 @@ i
         val certTNLogPassword = StringPref("certTNLogPassword")
         val certTNLogData = StringPref("certTNLogData")
         val certTNLogExpired = LongPref("certCmLogExpired", -1L)
-        val certTNcertID = StringPref("certTNcertID")//认证id
+
+        val certTNcertID = LongPref("certTNcertID",-1L)//认证id
+        val certTNcertaddress = StringPref("certTNcertaddress")//认证id
+        val certTNcertuserName = StringPref("certTNcertuserName")//认证id
+        val certTNcertcertNo = StringPref("certTNcertcertNo")//认证id
+        val certTNcertphoneNo = StringPref("certTNcertphoneNo")//认证id
+        val certTNcertpassword = StringPref("certTNcertpassword")//认证id
+        val ertTNcertsignature= StringPref("ertTNcertsignature")//认证id
+
+
+
+
+
+
+
 
         //手机邮箱
         val certPhoneNum= StringPref("certPhoneNum")
@@ -986,6 +1009,7 @@ i
         certPrefs.certTNLogState.set(UserCertStatus.INCOMPLETE.name)
         certPrefs.certTNLogPhoneNo.set(phoneNo)
         certPrefs.certTNLogPassword.set(password)
+        clearTNCertCache()
     }
     fun isBankCertPassed(): Boolean {
         if (certPrefs.certBankOrderId.get() == INVALID_CERT_ORDER_ID) {

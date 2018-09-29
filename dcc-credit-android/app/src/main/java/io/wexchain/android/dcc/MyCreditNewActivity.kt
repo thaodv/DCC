@@ -9,9 +9,7 @@ import android.text.TextUtils
 import android.view.View
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
-import io.wexchain.android.common.Pop
-import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.onClick
+import io.wexchain.android.common.*
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
@@ -35,7 +33,10 @@ import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.ipfs.utils.io_main
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
+import worhavah.certs.bean.TNcert1new
+import worhavah.certs.bean.TNcert1newreport
 import worhavah.certs.bean.TNcertReport
+import worhavah.certs.tools.CertOperations.clearTNCertCache
 import worhavah.certs.tools.CertOperations.onTNLogSuccessGot
 import worhavah.certs.tools.CertOperations.saveTnLogCertExpired
 import worhavah.regloginlib.Net.Networkutils
@@ -80,12 +81,15 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
         binding.asLoanVm = obtainAuthStatus(CertificationType.LOANREPORT)
 
         var per=BigDecimal(certDoneNum*100/totalCerts).toBigInteger().toInt()
-        if(per!=lastper){
-            lastper=per
-            countDownProgress.setPercent(per)
-            countDownProgress.startCountDownTime(  CountDownProgress.OnCountdownFinishListener  {
-            })
+        runOnMainThread {
+            if(per!=lastper){
+                lastper=per
+                countDownProgress.setPercent(per)
+                countDownProgress.startCountDownTime(  CountDownProgress.OnCountdownFinishListener  {
+                })
+            }
         }
+
 
     }
 
@@ -234,12 +238,20 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
 
                         if(null!=it){
                             //Log.e("getTNLogReport",it.reportData.toString())
-                            if(it.isComplete.equals("Y")){
-                                android.util.Log.e("it.reportData ", it.reportData.toString() )
-                                onTNLogSuccessGot(it.reportData.toString() )
+                            if(it.endorserOrder.status.contains("COMPELETED")){
+                                android.util.Log.e("it.reportData ", it.tongniuData.toString() )
+                                onTNLogSuccessGot(it.tongniuData.toString() )
                                 worhavah.certs.tools.CertOperations.certed()
+                                clearTNCertCache()
                                 setVM()
                                // getTNrealdata()
+                            }else if(it.endorserOrder.status.contains("INVALID")){
+                                toast("获取报告失败")
+                                worhavah.certs.tools.CertOperations.certPrefs.certTNLogState.set(
+                                    worhavah.certs.tools.UserCertStatus.NONE.name)
+                                clearTNCertCache()
+                                aa=0
+                                setVM()
                             }
                         }
                         App.get().chainGateway.getCertData(passport.address, ChainGateway.TN_COMMUNICATION_LOG).check()
@@ -285,7 +297,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
         )
     }
 
-    fun getTNLogReport(passport: Passport): Single<TNcertReport> {
+    fun getTNLogReport(passport: Passport): Single<TNcert1newreport> {
         require(passport.authKey != null)
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
@@ -442,6 +454,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                     }
                     UserCertStatus.INCOMPLETE -> {
                         // get report processing
+                        startActivity(Intent(this, SubmitTNLogActivity::class.java))
                     }
                 }
 

@@ -17,9 +17,11 @@ import io.wexchain.dccchainservice.domain.CertProcess
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import worhavah.certs.bean.TNcert1
+import worhavah.certs.bean.TNcert1new
 import worhavah.certs.bean.TNcertAdvance
 import worhavah.certs.bean.TNcertResent
 import worhavah.certs.tools.CertOperations
+import worhavah.certs.tools.CertOperations.clearTNCertCache
 import worhavah.mobilecertmodule.R
 import worhavah.regloginlib.Net.Networkutils
 import worhavah.regloginlib.Passport
@@ -29,7 +31,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
     override fun reCode( ):Single<String> {
 
        return  sentCode( ).map {
-             it.auth_code
+             it.tongniuData.authCode
          }
             /* .observeOn(AndroidSchedulers.mainThread())
              .doOnSubscribe {
@@ -74,10 +76,10 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
         StatusBarCompat.setStatusBarColor(this,resources.getColor(R.color.white))
         initToolbar(true,true)
         checkPreconditions()
-
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertID.get().apply {
-            if(TextUtils.isEmpty(this)){
-
+            if(this==-1L){
+            }else{
+                checkCreat()
             }
         }
     }
@@ -95,40 +97,135 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
     }
 
     override fun onSubmitPhoneInfo(phoneNo: String, password: String) {
-        this.submitPhoneNo = phoneNo
-        this.submitServicePassword = password
         CertOperations.confirmCertFee({ supportFragmentManager }, ChainGateway.TN_COMMUNICATION_LOG) {
             val passport = passport
-            obtainNewOrderId(passport)
-                    .flatMap {
-                        //CertProcess
-                        // CertOperations.requestCommunicationLog(passport, it, realName, realId, phoneNo, password)
-                        requestTNLog(passport, it, realName, realId, phoneNo, password)
+            val privateKey = passport.authKey!!.getPrivateKey()
+            val address = passport.address
+            var name=realName
+            var id=realId
+            this.submitPhoneNo = phoneNo
+            this.submitServicePassword = password
+            //var orderiiid=  obtainNewOrderId(passport).blockingGet()
+             obtainNewOrderId(passport).subscribeOn(AndroidSchedulers.mainThread())  .doOnSubscribe {
+                 showLoadingDialog()
+             }
+                 .doFinally {
+                 }
+                 .subscribe(
+                     {
+                         val signature = ParamSignatureUtil.sign(
+                             privateKey, mapOf(
+                                 "address" to address,
+                                 "orderId" to it.toString(),
+                                 "userName" to name,
+                                 "certNo" to id,
+                                 "phoneNo" to phoneNo,
+                                 "password" to password
+                             )
+                         )
+                         worhavah.certs.tools.CertOperations.certPrefs.certTNcertaddress.set(address )
+                         worhavah.certs.tools.CertOperations.certPrefs.certTNcertID.set(it )
+                         worhavah.certs.tools.CertOperations.certPrefs.certTNcertuserName.set(name )
+                         worhavah.certs.tools.CertOperations.certPrefs.certTNcertcertNo.set(id )
+                         worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set(phoneNo )
+                         worhavah.certs.tools.CertOperations.certPrefs.certTNcertpassword.set(password )
+                         worhavah.certs.tools.CertOperations.certPrefs.ertTNcertsignature.set(signature )
+                         checkCreat()
+                     },{
+                         toast(it.message.toString())
+                         hideLoadingDialog()
 
-                    }
-                    .doOnSubscribe {
-                        showLoadingDialog()
-                    }
-                    .doFinally {
-                        hideLoadingDialog()
-                    }
-                    .subscribe ({ process ->
-                       // handleCertProcess(process)
-                        taskStage=process.data.next_stage
-                        if(process.status.subCode.contains("105")){
+                     }
+                 )
+        }
+    }
 
-                            verifyViaSms()
-                        }else if(process.status.subCode.contains("101")){
-                            img=process.data.auth_code.toString()
-                            verifyViaImg()
-                        }else if(process.status.subCode.contains("137")||process.status.subCode.contains("2007")){
-                            Pop.toast("认证申请提交成功",this)
-                            CertOperations.onTNLogRequestSuccess(submitOrderId!!,submitPhoneNo!!,submitServicePassword!!)
+    fun checkCreat() {
+        requestTNLog2(
+            worhavah.certs.tools.CertOperations.certPrefs.certTNcertaddress.get()!!,
+            worhavah.certs.tools.CertOperations.certPrefs.certTNcertID.get(),
+            worhavah.certs.tools.CertOperations.certPrefs.certTNcertuserName.get()!!,
+            worhavah.certs.tools.CertOperations.certPrefs.certTNcertcertNo.get()!!,
+            worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.get()!!,
+            worhavah.certs.tools.CertOperations.certPrefs.certTNcertpassword.get()!!,
+            worhavah.certs.tools.CertOperations.certPrefs.ertTNcertsignature.get()!!
+        ) .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                showLoadingDialog()
+            }
+            .doFinally {
+               // hideLoadingDialog()
+            }
+            .subscribe({ process ->
+                // handleCertProcess(process)
+                val statuss=process.endorserOrder.status
+                taskStage = process.tongniuData.nextStage
+                if(statuss.contains("CREATED")&&(null==taskStage) ){
+                    checkCreat()
+                }else{
+                    hideLoadingDialog()
+
+                    if(statuss.contains("INVALID")){
+                        toast("认证失败")
+                        clearTNCertCache()
+                    }else{
+                        if (process.tongniuData.subCode.contains("137") || process.tongniuData.subCode.contains(
+                                "2007"
+                            )
+                        ) {
+                            Pop.toast("认证申请提交成功", this)
+                            CertOperations.onTNLogRequestSuccess(
+                                submitOrderId!!,
+                                submitPhoneNo!!,
+                                submitServicePassword!!
+                            )
+
                             finish()
                         }
-                    },{toast(it.message.toString())})
+                        if(!TextUtils.isEmpty(taskStage)){
+                            if (process.tongniuData.subCode.contains("105")) {
+                                verifyViaSms()
+                                toast("请输入短信验证码")
+                            } else if (process.tongniuData.subCode.contains("101")) {
+                                img = process.tongniuData.authCode.toString()
+                                verifyViaImg()
+                                toast("请输入图形验证码")
+                            }
+                        }
+                    }
+                }
+            }, {
+                hideLoadingDialog()
+                toast(it.message.toString())
+                clearTNCertCache()
+            })
     }
+
+
+    fun requestTNLog2(
+        address: String,
+        orderId: Long,
+        name: String,
+        id: String,
+        phoneNo: String,
+        password: String,
+        signature: String
+    ): Single<TNcert1new> {
+        submitOrderId=orderId
+
+        Log.e("orderId",orderId.toString())
+        return  CertOperations.tnCertApi.requestCommunicationLogData(
+            address = address,
+            orderId = orderId,
+            userName = name,
+            certNo = id,
+            phoneNo = phoneNo,
+            password = password,
+            signature =signature
+        ).compose(Result.checked())
     }
+
     fun requestTNLog(
         passport: Passport,
         orderId: Long,
@@ -136,7 +233,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
         id: String,
         phoneNo: String,
         password: String
-    ): Single<TNcert1> {
+    ): Single<TNcert1new> {
        // require(passport.authKey != null)
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
@@ -160,7 +257,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
             )
         ).compose(Result.checked())
     }
-    fun pushAdvance(authCode:String?,smsCode:String?): Single<TNcertAdvance>{
+    fun pushAdvance(authCode:String?,smsCode:String?): Single<TNcert1new>{
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
         return  CertOperations.tnCertApi.TNAdvance(
@@ -188,14 +285,38 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
             .doFinally {
                 hideLoadingDialog()
             }
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
+
             .subscribe ({ process ->
                 // handleCertProcess(process)
-                if(process.status.subCode.contains("137")||process.status.subCode.contains("2007")){
+                val statuss=process.endorserOrder.status
+                taskStage = process.tongniuData.nextStage
+                if(statuss.contains("STARTED") ){
                     Pop.toast("认证申请提交成功",this)
                     CertOperations.onTNLogRequestSuccess(submitOrderId!!,submitPhoneNo!!,submitServicePassword!!)
                     finish()
+                }else if(statuss.contains("CREATED")&&(null==taskStage)){
+                        checkCreat()
+                }else {
+                    if (process.tongniuData.subCode.contains("105")) {
+                        verifyViaSms()
+                        toast("请再次输入短信验证码")
+                    } else if (process.tongniuData.subCode.contains("101")) {
+                        img = process.tongniuData.authCode.toString()
+                        verifyViaImg()
+                        toast("请再次输入图形验证码")
+                    }
                 }
-            },{toast(it.message.toString())})
+
+                /*if(process.tongniuData.subCode.contains("137")||process.tongniuData.subCode.contains("2007")){
+                    Pop.toast("认证申请提交成功",this)
+                    CertOperations.onTNLogRequestSuccess(submitOrderId!!,submitPhoneNo!!,submitServicePassword!!)
+                    finish()
+                }*/
+            },{
+                clearTNCertCache()
+                toast(it.message.toString())})
         /*val process = currentProcess
         if(process != null){
             when(process.wrapCode()){
@@ -207,7 +328,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
             }
         }*/
     }
-    fun sentCode( ):Single<TNcertResent> {
+    fun sentCode( ):Single<TNcert1new> {
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
       return  CertOperations.tnCertApi.TNGetcode(
