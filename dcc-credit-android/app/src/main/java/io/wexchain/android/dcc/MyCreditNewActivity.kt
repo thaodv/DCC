@@ -276,7 +276,13 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                             }*/
                         },
                         onError = {
-                            Pop.toast(it.message ?: "系统错误", this)
+                            toast("获取报告失败")
+                            worhavah.certs.tools.CertOperations.certPrefs.certTNLogState.set(
+                                worhavah.certs.tools.UserCertStatus.NONE.name)
+                            clearTNCertCache()
+                            aa=0
+                            setVM()
+                           // Pop.toast(it.message ?: "系统错误", this)
                         })
 
             }
