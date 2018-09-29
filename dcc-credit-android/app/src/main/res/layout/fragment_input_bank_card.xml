@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="vm"
-            type="io.wexchain.android.dcc.vm.InputBankCardInfoVm"/>
+            type="io.wexchain.android.dcc.vm.InputBankCardInfoVm" />
     </data>
-    <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/tv_cert_org"
@@ -19,90 +20,85 @@
             android:layout_height="40dp"
             android:gravity="center_vertical"
             android:text="@string/authenticator"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccProviderHeadline"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:textAppearance="@style/TextAppearance.AppCompat.DccProviderHeadline"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-                android:id="@+id/input_bank"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="100dp"
-                android:minHeight="40dp"
-                android:drawableRight="@drawable/arrow_right_bm"
-                android:gravity="center_vertical|right"
-                app:layout_constraintTop_toBottomOf="@id/tv_cert_org"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:text="@{vm.bank.bankName??@string/please_select}"
-                tools:text="@string/please_select"
-                android:drawablePadding="16dp"
-                android:paddingRight="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                android:textColor="@color/text_blue_magenta"
-                />
+            android:id="@+id/input_bank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:drawablePadding="16dp"
+            android:drawableRight="@drawable/arrow_right_bm"
+            android:gravity="center_vertical|right"
+            android:minHeight="40dp"
+            android:minWidth="100dp"
+            android:paddingRight="8dp"
+            android:text="@{vm.bank.bankName??@string/please_select}"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+            android:textColor="@color/text_blue_magenta"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_cert_org"
+            tools:text="@string/please_select" />
 
         <TextView
-                android:id="@+id/input_bank_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextAppearance.AppCompat.DccSubTitle"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBaseline_toBaselineOf="@id/input_bank"
-                android:text="@string/bank"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
-                />
+            android:id="@+id/input_bank_label"
+            style="@style/TextAppearance.AppCompat.DccSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:text="@string/bank"
+            app:layout_constraintBaseline_toBaselineOf="@id/input_bank"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
 
-        <include layout="@layout/certs_include_input_text"
+        <include
             android:id="@+id/input_bank_card_no"
+            layout="@layout/certs_include_input_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginRight="@dimen/content_padding_horizontal"
-            app:layout_constraintTop_toBottomOf="@id/input_bank"
-            app:title="@{@string/bank_card_no}"
             app:hint="@{@string/please_input_bank_card_no}"
+            app:layout_constraintTop_toBottomOf="@id/input_bank"
             app:text="@={vm.bankCardNo}"
-            />
+            app:title="@{@string/bank_card_no}" />
 
-        <include layout="@layout/certs_include_input_text"
+        <include
             android:id="@+id/input_bank_phone_num"
+            layout="@layout/certs_include_input_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginRight="@dimen/content_padding_horizontal"
-            app:layout_constraintTop_toBottomOf="@id/input_bank_card_no"
-            app:title="@{@string/bank_registered_phone_num}"
             app:hint="@{@string/please_input_phone_num}"
+            app:layout_constraintTop_toBottomOf="@id/input_bank_card_no"
             app:text="@={vm.phoneNum}"
-            />
+            app:title="@{@string/bank_registered_phone_num}" />
 
         <TextView
-                android:id="@+id/tv_cert_fee"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{vm.certFee}"
-                android:layout_marginTop="48dp"
-                app:layout_constraintTop_toBottomOf="@id/input_bank_phone_num"
-                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                />
+            android:id="@+id/tv_cert_fee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="@{vm.certFee}"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_bank_phone_num" />
 
         <Button
             android:id="@+id/bt_next"
+            style="@style/Widget.AppCompat.Button.Dcc.Full"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Dcc.Full"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginRight="@dimen/content_padding_horizontal"
             android:layout_marginTop="8dp"
             android:text="@string/next"
-            app:layout_constraintTop_toBottomOf="@id/tv_cert_fee"
-            />
+            app:layout_constraintTop_toBottomOf="@id/tv_cert_fee" />
 
 
     </android.support.constraint.ConstraintLayout>

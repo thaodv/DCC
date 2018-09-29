@@ -18,7 +18,7 @@ class TNCertDataActivity : BaseCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tncm_cert_data)
         StatusBarCompat.setStatusBarColor(this,resources.getColor(R.color.white))
-        initToolbar()
+        initToolbar(true,true)
         showCmCertData()
     }
 

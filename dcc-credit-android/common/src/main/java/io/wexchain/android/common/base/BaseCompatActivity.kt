@@ -25,11 +25,13 @@ abstract class BaseCompatActivity : AppCompatActivity() {
     protected val currentActivity: Activity
         get() = ActivityCollector.currentActivity
 
-    fun initToolbar(showHomeAsUp: Boolean = true): Toolbar? {
+    fun initToolbar(showHomeAsUp: Boolean = true,isWhite: Boolean = false): Toolbar? {
         toolbar = findViewById(R.id.toolbar)
         val tb = toolbar
         if (tb != null) {
-            tb.setBackgroundColor(Color.parseColor("#FFFFFF"))
+            if(isWhite){
+                tb.setBackgroundColor(Color.parseColor("#FFFFFF"))
+            }
             setSupportActionBar(toolbar)
             toolbarTitle = tb.findViewById(R.id.toolbar_title)
             intendedTitle?.let { title = it }

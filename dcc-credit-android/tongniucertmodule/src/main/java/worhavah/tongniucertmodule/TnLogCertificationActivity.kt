@@ -20,7 +20,7 @@ class TnLogCertificationActivity : BindActivity<ActivityTncertificationDataCmBin
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initToolbar()
+        initToolbar(true,true)
         StatusBarCompat.setStatusBarColor(this,resources.getColor(R.color.white))
         val data = CertOperations.getCertIdData()!!
         val phoneNo = CertOperations.getTnLogPhoneNo()!!

@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.DialogFragment
@@ -11,10 +12,12 @@ import android.support.v4.view.ViewCompat
 import android.view.*
 import android.view.animation.AnimationUtils
 import com.tbruyelle.rxpermissions2.RxPermissions
+import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
+import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.*
 import io.wexchain.android.dcc.chain.IpfsOperations
@@ -142,6 +145,26 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                 }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            RequestCodes.CAPTURE_IMAGE -> {
+                if (resultCode == ResultCodes.RESULT_OK) {
+                    val bitmap = data?.extras?.get("data") as? Bitmap
+                    bitmap?.let {
+                        App.get().passportRepository.saveAvatar(it)
+                                .withLoading()
+                                .subscribe({
+                                    toast("头像修改成功")
+                                }, {
+                                    stackTrace(it)
+                                })
+                    }
+                }
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
 
 
     class ChooseImageFromDialog : DialogFragment() {
@@ -173,6 +196,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
         }
 
         private var host: MineFragment? = null
+
 
         companion object {
             fun create(activity: MineFragment): ChooseImageFromDialog {

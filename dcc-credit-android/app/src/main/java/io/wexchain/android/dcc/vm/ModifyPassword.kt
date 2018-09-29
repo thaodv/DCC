@@ -63,8 +63,6 @@ class ModifyPassword(application: Application) : AndroidViewModel(application), 
                             .observeOn(AndroidSchedulers.mainThread())
                             .doOnSubscribe {
                                 loadingEvent.value = true
-                                inputCurrentPassword.password.set("")
-                                inputNewPassword.password.set("")
                             }
                             .doFinally {
                                 loadingEvent.value = false
