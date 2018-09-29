@@ -11,7 +11,6 @@ import io.wexchain.android.common.Pop
 import io.wexchain.android.common.getAndroidKeyStoreLoaded
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.AuthManageActivity
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.PassportActivity
 import io.wexchain.android.dcc.chain.EthsFunctions.deleteKey
@@ -27,7 +26,6 @@ import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.TicketResponse
 import org.web3j.crypto.Credentials
-import worhavah.regloginlib.PassportRepository
 import java.util.*
 
 /**
@@ -215,8 +213,6 @@ object PassportOperations {
                 .doOnSuccess {
                     App.get().passportRepository.updateAuthKey(passport, it)
                     App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(passport.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.UPDATE))
-                   // PassportRepository.updateAuthKey(switchPass(passport), switchAuthkey(it))
-
                 }
     }
 

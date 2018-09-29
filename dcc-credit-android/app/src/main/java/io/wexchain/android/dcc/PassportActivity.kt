@@ -6,8 +6,8 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
-import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.repo.db.CaAuthRecord
 import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter
@@ -108,8 +108,11 @@ class PassportActivity : BindActivity<ActivityPassportBinding>(),
                 }
             }
         })
-        authManage.successEvent.observe(this,Observer{
+        authManage.successEvent.observe(this, Observer {
             toast("更新密钥成功")
+        })
+        authManage.errorEvent.observe(this, Observer {
+            toast(it?.message ?: "出现异常")
         })
         VerifyProtectFragment.serve(authManage, this, { this.supportFragmentManager })
         binding.authManage = authManage
