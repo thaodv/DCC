@@ -57,10 +57,15 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
         super.onCreate(savedInstanceState)
 //        setWindowExtended()
         initToolbarS()
-        Networkutils.passportRepository.load()
+
         countDownProgress = findViewById<View>(R.id.countdownProgress) as CountDownProgress
         countDownProgress.setCountdownTime(900)
         setVM()
+
+        val passport = Networkutils.passportRepository.getCurrentPassport()
+        if (passport == null) {
+            Networkutils.passportRepository.load()
+        }
     }
     val totalCerts  =4
     var certDoneNum=0
