@@ -471,13 +471,10 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
     }
 
     private fun checkPreconditions() {
-      /*  if (!Networkutils.passportRepository.passportEnabled) {
-            runOnMainThread {
-                Pop.toast(R.string.ca_not_enabled, this)
-                finish()
-            }
-            return
-        }*/
+        if (!Networkutils.passportRepository.passportEnabled) {
+            Networkutils.passportRepository.load()
+            passport =Networkutils.passportRepository.getCurrentPassport()!!
+        }
         val certId = CertOperations.getCertId()
         if (certId == null) {
             runOnMainThread {
