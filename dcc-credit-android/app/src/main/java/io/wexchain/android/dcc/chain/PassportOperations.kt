@@ -214,8 +214,9 @@ object PassportOperations {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess {
                     App.get().passportRepository.updateAuthKey(passport, it)
-                    PassportRepository.updateAuthKey(switchPass(passport), switchAuthkey(it))
                     App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(passport.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.UPDATE))
+                   // PassportRepository.updateAuthKey(switchPass(passport), switchAuthkey(it))
+
                 }
     }
 
