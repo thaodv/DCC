@@ -1,4 +1,4 @@
-package worhavah.regloginlib.tools
+package io.wexchain.android.dcc.tools
 
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
@@ -22,10 +22,10 @@ object MultiChainHelper {
     }
 
     fun getDccPrivate(): DigitalCurrency {
-        return dispatch(Currencies.DCC).first { it.chain == Chain.JUZIX_PRIVATE }
+        return MultiChainHelper.dispatch(Currencies.DCC).first { it.chain == Chain.JUZIX_PRIVATE }
     }
     fun getDccPublic(): DigitalCurrency {
-        return dispatch(Currencies.DCC).first { it.chain == Chain.publicEthChain }
+        return MultiChainHelper.dispatch(Currencies.DCC).first { it.chain == Chain.publicEthChain }
     }
 
 }
