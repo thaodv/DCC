@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import io.wexchain.android.common.SingleLiveEvent
 import worhavah.regloginlib.tools.ScfOperations
+import java.math.RoundingMode
 
 class CertFeeConfirmVm :ViewModel(){
 
@@ -20,7 +21,7 @@ class CertFeeConfirmVm :ViewModel(){
     fun loadHolding(){
         ScfOperations.loadHolding()
             .subscribe ({ value ->
-                holding.set("${value.toPlainString()} DCC")
+                holding.set("${value.setScale(4, RoundingMode.DOWN).toPlainString()} DCC")
             },{
                 it.printStackTrace()
             })
