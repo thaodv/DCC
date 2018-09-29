@@ -104,7 +104,7 @@
                         android:inputType="numberDecimal"
                         android:minWidth="200dp"
                         android:text="@={tx.amount}"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         tools:hint="最小认购额度100"/>
 
                     <TextView
@@ -207,6 +207,7 @@
                         android:paddingLeft="60dp"
                         android:paddingRight="60dp"
                         android:text="@={tx.gasPrice}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         tools:text="50"/>
 
                     <TextView
@@ -255,6 +256,7 @@
                         android:paddingLeft="60dp"
                         android:paddingRight="60dp"
                         android:text="@={tx.gasLimit}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/text_dark"
                         tools:text="50"/>
 
@@ -294,6 +296,7 @@
                         android:paddingLeft="60dp"
                         android:paddingRight="60dp"
                         android:text="@={tx.maxTransactionFeeText}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:textColor="@color/text_dark"
                         tools:text="50"/>
 

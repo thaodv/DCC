@@ -242,8 +242,7 @@ class AssetsRepository(
                 DigitalCurrency("CVC", Chain.publicEthChain, 18, "CVC", "http://open.dcc.finance/images/token_icon/CVC@2x.png", "0x5f08b925b2c5bcbfba0febef9ab43f6f84310bdf",70),
                 DigitalCurrency("ELF", Chain.publicEthChain, 18, "ELF", "http://open.dcc.finance/images/token_icon/ELF@2x.png", "0xbf2179859fc6d5bee9bf9158632dc51678a4100e",70),
                 DigitalCurrency("ENG", Chain.publicEthChain, 18, "Enigma", "http://open.dcc.finance/images/token_icon/ENG@2x.png", "0xf0ee6b27b759c9893ce4f094b49ad28fd15a23e4",70),
-                DigitalCurrency("GNT", Chain.publicEthChain, 18, "Golem", "http://open.dcc.finance/images/token_icon/GNT@2x.png", "0xa74476443119A942dE498590Fe1f2454d7D4aC0d",70),
-                DigitalCurrency("GUSD", Chain.publicEthChain, 2, "Gemini dollar", "https://open.dcc.finance/images/token_icon/Gemini_dollar@2x.png", "0x056fd409e1d7a124bd7017459dfea2f387b6d5cd",15)
+                DigitalCurrency("GNT", Chain.publicEthChain, 18, "Golem", "http://open.dcc.finance/images/token_icon/GNT@2x.png", "0xa74476443119A942dE498590Fe1f2454d7D4aC0d",70)
 
         )
     }
