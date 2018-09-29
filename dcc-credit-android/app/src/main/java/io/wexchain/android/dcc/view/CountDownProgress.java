@@ -249,8 +249,11 @@ public class CountDownProgress extends View {
         float hudu = (float) Math.abs(Math.PI * currentDegreeFlag / 180);//Math.abs：绝对值 ，Math.PI：表示π ， 弧度 = 度*π / 180
         smallCircleX = (float) Math.abs(Math.sin(hudu) * defaultCircleRadius + defaultCircleRadius);
         smallCircleY = (float) Math.abs(defaultCircleRadius - Math.cos(hudu) * defaultCircleRadius);
-        canvas.drawCircle(smallCircleX, smallCircleY, smallCircleRadius, smallCirclePaint);
-        canvas.drawCircle(smallCircleX, smallCircleY,   smallCircleStrokeWidth, smallCircleSolidePaint);//画小圆的实心
+
+            canvas.drawCircle(smallCircleX, smallCircleY, smallCircleRadius, smallCirclePaint);
+            canvas.drawCircle(smallCircleX, smallCircleY,   smallCircleStrokeWidth, smallCircleSolidePaint);//画小圆的实心
+
+
 
         canvas.restore();
 
@@ -366,8 +369,11 @@ public class CountDownProgress extends View {
                 //textDesc = 0 + "″";
                // textDesc = "时间到";
                 //同时隐藏小球
-               /* smallCirclePaint.setColor(getResources().getColor(android.R.color.transparent));
-                smallCircleSolidePaint.setColor(getResources().getColor(android.R.color.transparent));*/
+                  if(textDesc.equals("100%")){
+                      smallCirclePaint.setColor(getResources().getColor(android.R.color.transparent));
+                      smallCircleSolidePaint.setColor(getResources().getColor(android.R.color.transparent));
+                  }
+
                 //刷新view
                 invalidate();
             }
