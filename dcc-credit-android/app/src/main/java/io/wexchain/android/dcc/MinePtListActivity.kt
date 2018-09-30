@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import io.reactivex.Single
 import io.wexchain.android.common.getViewModel
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.android.dcc.vm.PagedVm

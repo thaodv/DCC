@@ -50,6 +50,7 @@ abstract class BaseCompatActivity : AppCompatActivity() {
 
     protected fun finishAllActivity() = ActivityCollector.finishAll()
 
+
     protected fun finishActivity(vararg tClass: Class<*>) {
         ActivityCollector.finishActivitys(*tClass)
     }
@@ -120,3 +121,5 @@ abstract class BaseCompatActivity : AppCompatActivity() {
                 }
     }
 }
+
+

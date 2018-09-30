@@ -12,7 +12,7 @@ import com.tencent.mm.opensdk.utils.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity
@@ -21,7 +21,7 @@ import io.wexchain.android.dcc.tools.SharedPreferenceUtil
 import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.TransactionRecordAdapter
-import io.wexchain.android.dcc.view.dialog.CustomDialog
+import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.view.dialog.WaitTransDialog
 import io.wexchain.android.dcc.vm.BottomMoreVm
 import io.wexchain.android.dcc.vm.DigitalCurrencyVm
@@ -118,16 +118,19 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
         })
         vm.confirmEvent.observe(this, Observer {
             it ?: return@Observer
-            CustomDialog(this)
-                    .apply {
-                        textContent = it.first
-                        withPositiveButton {
-                            it.second(true)
-                            true
-                        }
-                        withNegativeButton()
-                    }
-                    .assembleAndShow()
+            val dialog = DeleteAddressBookDialog(this)
+            dialog.setTvText(it.first.toString())
+            dialog.setBtnText("确认", "取消")
+            dialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
+                override fun cancel() {
+                    dialog.dismiss()
+                }
+                override fun sure() {
+                    dialog.dismiss()
+                    it.second(true)
+                }
+            })
+            dialog.show()
         })
         vm.selectedChangedEvent.observe(this, Observer {
             it?.let {

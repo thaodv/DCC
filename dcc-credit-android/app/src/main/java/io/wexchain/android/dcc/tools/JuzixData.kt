@@ -26,8 +26,12 @@ object JuzixData {
                 Chain.publicEthChain to cc.sisel.ewallet.BuildConfig.DCC_PUBLIC_ADDRESS,
                 Chain.JUZIX_PRIVATE to juzixPrefs.dccContractAddress.get()!!
         ))
+        worhavah.regloginlib.tools. MultiChainHelper.putMultiDc(Currencies.DCC, listOf(
+            Chain.publicEthChain to cc.sisel.ewallet.BuildConfig.DCC_PUBLIC_ADDRESS,
+            Chain.JUZIX_PRIVATE to juzixPrefs.dccContractAddress.get()!!
+        ))
         updateDccJuzixAddress(app).subscribe()
-        updateBsxAddress(app).subscribe()
+        //updateBsxAddress(app).subscribe()
     }
 
     private fun updateDccJuzixAddress(app: App): Single<String> {
@@ -51,6 +55,10 @@ object JuzixData {
         MultiChainHelper.putMultiDc(Currencies.DCC, listOf(
                 Chain.publicEthChain to cc.sisel.ewallet.BuildConfig.DCC_PUBLIC_ADDRESS,
                 Chain.JUZIX_PRIVATE to juzixPrefs.dccContractAddress.get()!!
+        ))
+        worhavah.regloginlib.tools. MultiChainHelper.putMultiDc(Currencies.DCC, listOf(
+            Chain.publicEthChain to cc.sisel.ewallet.BuildConfig.DCC_PUBLIC_ADDRESS,
+            Chain.JUZIX_PRIVATE to juzixPrefs.dccContractAddress.get()!!
         ))
 //        val ftc = Currencies.FTC.copy(contractAddress = juzixPrefs.ftcContractAddress.get()!!)
         App.get().assetsRepository.setPinnedList( listOf(

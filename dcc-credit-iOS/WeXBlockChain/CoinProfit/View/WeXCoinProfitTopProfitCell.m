@@ -8,6 +8,7 @@
 
 #import "WeXCoinProfitTopProfitCell.h"
 #import "WeXCPSaleInfoResModel.h"
+#import "WeXCPActivityMainResModel.h"
 
 @interface WeXCoinProfitTopProfitCell ()
 @property (nonatomic, weak) UIImageView *topBackView;
@@ -150,13 +151,13 @@ static CGFloat const kRatio = 375 / 129.0;
     [self.periodTitleLab setText:@"管理期限"];
     [self.periodLab setText:@"28天"];
 }
-- (void)setStatusLabelType:(WexCPStatusLabelType)type {
+- (void)setStatusLabelType:(WexCPStatusLabelType)type assetCode:(NSString *)assetCode{
     switch (type) {
         case WexCPStatusLabelTypeStart: {
-            [self.yearProfitLab setText:@"在投资本金(DCC)"];
+            [self.yearProfitLab setText:[NSString stringWithFormat:@"在投资本金 (%@)",assetCode]];
             [self.statusLab setText:@"募集中"];
-            [self.buyNumTitleLab setText:@"待收收益 (DCC)"];
-            [self.periodTitleLab setText:@"待收本息合计 (DCC)"];
+            [self.buyNumTitleLab setText:[NSString stringWithFormat:@"待收收益 (%@)",assetCode]];
+            [self.periodTitleLab setText:[NSString stringWithFormat:@"待收本息合计 (%@)",assetCode]];
             [self.statusLab setHidden:NO];
             self.statusLab.layer.borderColor = ColorWithHex(0xFFFFFF).CGColor;
             self.statusLab.layer.borderWidth = 1.0;
@@ -165,20 +166,20 @@ static CGFloat const kRatio = 375 / 129.0;
             
             break;
         case WexCPStatusLabelTypeComplete: {
-            [self.yearProfitLab setText:@"投资本金(DCC)"];
+            [self.yearProfitLab setText:[NSString stringWithFormat:@"在投资本金 (%@)",assetCode]];
             [self.statusLab setText:@"已结束"];
-            [self.periodTitleLab setText:@"待收本息合计 (DCC)"];
-            [self.buyNumTitleLab setText:@"收益 (DCC)"];
+            [self.periodTitleLab setText:[NSString stringWithFormat:@"待收本息合计 (%@)",assetCode]];
+            [self.buyNumTitleLab setText:[NSString stringWithFormat:@"收益 (%@)",assetCode]];
             [self.statusLab setHidden:NO];
             self.statusLab.layer.borderWidth = 0;
             [self.statusLab setBackgroundColor:ColorWithRGBA(1, 1, 1, 0.1)];
         }
             break;
         case WexCPStatusLabelTypeClose: {
-            [self.yearProfitLab setText:@"在投资本金(DCC)"];
+            [self.yearProfitLab setText:[NSString stringWithFormat:@"在投资本金(%@)",assetCode]];
             [self.statusLab setText:@"收益中"];
-            [self.buyNumTitleLab setText:@"待收收益 (DCC)"];
-            [self.periodTitleLab setText:@"待收本息合计 (DCC)"];
+            [self.buyNumTitleLab setText:[NSString stringWithFormat:@"待收收益 (%@)",assetCode]];
+            [self.periodTitleLab setText:[NSString stringWithFormat:@"待收本息合计 (%@)",assetCode]];
             [self.statusLab setHidden:NO];
             self.statusLab.layer.borderWidth = 0;
             [self.statusLab setBackgroundColor:ColorWithRGBA(1, 1, 1, 0.1)];
@@ -214,9 +215,10 @@ static CGFloat const kRatio = 375 / 129.0;
 
 - (void)setSaleInfoModel:(WeXCPSaleInfoResModel *)resModel
                     type:(WexCPStatusLabelType)type
-             totalAmount:(NSString *)totalAmount {
+             totalAmount:(NSString *)totalAmount
+               assetCode:(NSString *)assetCode {
     [self.verticalLine setHidden:false];
-    [self setStatusLabelType:type];
+    [self setStatusLabelType:type assetCode:assetCode];
     [self.yearProfitLab setText:totalAmount];
     NSString *profit = [WexCommonFunc saveTwoDigitalDecimal:[totalAmount integerValue] * 0.761];
     [self.buyNumLab setText:[NSString stringWithFormat:@"+%@",profit]];
@@ -233,20 +235,30 @@ static CGFloat const kRatio = 375 / 129.0;
  */
 - (void)setSaleInfoModel:(WeXCPSaleInfoResModel *)resModel
             statusString:(NSString *)status
-             totalAmount:(NSString *)amount {
+             totalAmount:(NSString *)amount
+               assetCode:(NSString *)assetCode{
     [self.verticalLine setHidden:false];
     if ([status isEqualToString:@"1"]) { //募集
-        [self setStatusLabelType:WexCPStatusLabelTypeStart];
+        [self setStatusLabelType:WexCPStatusLabelTypeStart assetCode:assetCode];
     } else if ([status isEqualToString:@"2"] || [status isEqualToString:@"3"]) { //收益
-        [self setStatusLabelType:WexCPStatusLabelTypeClose];
+        [self setStatusLabelType:WexCPStatusLabelTypeClose assetCode:assetCode];
     } else { //结束
-        [self setStatusLabelType:WexCPStatusLabelTypeComplete];
+        [self setStatusLabelType:WexCPStatusLabelTypeComplete assetCode:assetCode];
     }
     [self.yearProfitNumLab setText:amount];
-    NSString *profit = [WexCommonFunc getCPProfitWithPrincipal:amount];
+    NSString *profit = nil;
+    if ([assetCode isEqualToString:@"DCC"]) {
+        profit = [WexCommonFunc getCPProfitWithPrincipal:amount period:resModel.period annualRate:resModel.annualRate scale:2];
+    } else {
+        profit = [WexCommonFunc getCPProfitWithPrincipal:amount period:resModel.period annualRate:resModel.annualRate scale:5];
+    }
     [self.buyNumLab setText:[NSString stringWithFormat:@"+%@",profit]];
-    NSString *total = [WexCommonFunc downDoubleValue:[profit doubleValue] + [amount doubleValue] decimals:2];
-
+    NSString *total = nil;
+    if ([assetCode isEqualToString:@"DCC"]) {
+        total = [WexCommonFunc downDoubleValue:[profit doubleValue] + [amount doubleValue] decimals:2];
+    } else {
+        total = [WexCommonFunc downDoubleValue:[profit doubleValue] + [amount doubleValue] decimals:5];
+    }
     [self.periodLab setText:total];
 }
 
@@ -259,12 +271,24 @@ static CGFloat const kRatio = 375 / 129.0;
     [self.periodLab setText:[NSString stringWithFormat:@"%@%@",resModel.period,@"天"]];
 }
 
-- (void)setMinBuyAmount:(NSString *)minAmount {
+- (void)setMinBuyAmount:(NSString *)minAmount assetCode:(NSString *)assetCode {
     [self.buyNumTitleLab setText:@"起购数量"];
     [self.verticalLine setHidden:false];
     if ([minAmount length] > 0) {
-        [self.buyNumLab setText:[NSString stringWithFormat:@"%@%@",minAmount,@"DCC"]];
+        [self.buyNumLab setText:[NSString stringWithFormat:@"%@%@",minAmount,assetCode]];
     }
+}
+// MARK: - 新版币生息详情
+- (void)setNewCoinProfitDetailWithProductModel:(WeXCPActivityListModel *)model {
+    [self.verticalLine setHidden:false];
+    [self.yearProfitLab setText:@"预期年化收益"];
+    [self.yearProfitNumLab setText:[NSString stringWithFormat:@"%@%@",model.saleInfo.annualRate,@"%"]];
+    [self.periodTitleLab setText:@"管理期限"];
+    [self.periodLab setText:[NSString stringWithFormat:@"%@%@",model.saleInfo.period,@"天"]];
+    [self.buyNumTitleLab setText:@"起购数量"];
+    [self.verticalLine setHidden:false];
+    NSString *minBuyAmount = [NSString stringWithFormat:@"%@%@",model.minPerHand,model.assetCode];
+    [self.buyNumLab setText:minBuyAmount];
 }
 
 - (void)awakeFromNib {

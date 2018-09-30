@@ -14,7 +14,7 @@
         <item name="android:windowAnimationStyle">@style/AnimationDcc</item>
         <item name="android:windowBackground">@color/white</item>
 
-        <item name="navigationIcon">@drawable/arrow_left</item>
+        <item name="navigationIcon">@drawable/toolbar_cancel_bsx</item>
 
         <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
         <item name="cardViewStyle">@style/CardView.Light.Dcc</item>
@@ -28,7 +28,7 @@
         <item name="dialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert.Dcc</item>
 
         <!--app attr-->
-        <item name="customToastLayout">@layout/toast_custom</item>
+        <item name="customToastLayout">@layout/common_toast_custom</item>
     </style>
 
     <style name="DccLightTheme.App">
@@ -39,7 +39,7 @@
         <item name="colorPrimaryDark">@android:color/transparent</item>
     </style>
     <style name="DccLightTheme.App.Transparent.Loading">
-        <item name="android:windowBackground">@color/blue_magenta_loading</item>
+        <item name="android:windowBackground">@drawable/splash_window_bg</item>
     </style>
     <style name="DccLightTheme.App.Transparent.Aff">
         <item name="android:windowBackground">@color/blue_magenta_loading</item>
@@ -55,6 +55,12 @@
         <item name="android:windowMinWidthMajor">100%</item>
         <item name="android:windowMinWidthMinor">100%</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="FullWidthWhiteDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
 

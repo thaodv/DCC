@@ -5,9 +5,9 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.PassportSettingsActivity
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.IpfsOperations
-import io.wexchain.android.dcc.tools.isPasswordValid
+import worhavah.regloginlib.tools.isPasswordValid
 import io.wexchain.android.dcc.view.dialog.CloudstorageDialog
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.dcc.R

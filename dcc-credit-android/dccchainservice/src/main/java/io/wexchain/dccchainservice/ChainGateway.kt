@@ -58,6 +58,9 @@ interface ChainGateway {
     @GET("dcc/cert/1/getAbi")
     fun getContractAbi(@Query("business") business: String): Single<Result<String>>
 
+    /**
+     * 获取合约地址
+     */
     @GET("dcc/cert/1/getContractAddress")
     fun getCertContractAddress(@Query("business") business: String): Single<Result<String>>
 
@@ -132,9 +135,11 @@ interface ChainGateway {
         @Query("txHash") txHash: String
     ): Single<Result<List<LoanChainOrder>>>
 
+
     companion object {
         const val BUSINESS_ID = "ID"
         const val BUSINESS_BANK_CARD = "BANK_CARD"
         const val BUSINESS_COMMUNICATION_LOG = "COMMUNICATION_LOG"
+        const val TN_COMMUNICATION_LOG = "TN_COMMUNICATION_LOG"
     }
 }

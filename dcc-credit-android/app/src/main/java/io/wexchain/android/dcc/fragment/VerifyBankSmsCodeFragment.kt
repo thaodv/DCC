@@ -2,7 +2,7 @@ package io.wexchain.android.dcc.fragment
 
 import android.os.Bundle
 import android.view.View
-import io.wexchain.android.dcc.base.BindFragment
+import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.vm.VerifyBankCardSmsCodeVm

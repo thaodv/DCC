@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>接入指南-DCC开放平台</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="keywords" content="DCC,Distributed Credit,Distributed Bank,Blockchain,分布式银行,DCC开放平台" />
+  <meta name="description" content="开放平台主要提供数据、服务市场功能，该交易市场服务于数据机构、AI风控算法服务商、信贷结构等机构合作者，机构合作者在使用链上服务的同时通过该平台可以查看、筛选、接洽自己需要的其他合作机构，利用DCC达成合作"/>
+  <link rel="shortcut icon" href="../../favicon.ico">
+
+  <link href="../../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/common.css">
+  <link rel="stylesheet" href="../../css/sdk.css">
+  <link rel="stylesheet" href="../../css/guide.css">
+  <link rel="stylesheet" href="../../lib/mCustomScrollbar/jquery.mCustomScrollbar.css">
+  <script src="https://cdn.bootcss.com/bignumber.js/7.2.1/bignumber.js"></script>
+  <script src="../../lib/jquery-3.3.1.min.js"></script>
+  <script src="../../lib/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="../../lib/template-web.js"></script>
+  <script src="../../lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="./sdk.js"></script>
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7ebdd6ce1e64ddfc4c27b2eaca23a85d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+
+  </script>
+</head>
+<body class="guideH5">
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="./index.html">
+          <img alt="Brand" src="../../images/logo-cn.svg">
+        </a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="../index.html" >首页</a>
+        </li>
+        <li>
+          <a href="../introduction/index.html" >业务说明</a>
+        </li>
+        <li>
+          <a href="../about_us/index.html" >关于我们</a>
+        </li>
+        <li>
+          <a href="../reward/index.html" >生态奖励</a>
+        </li>
+        <li>
+          <a href="../sdk/index.html" class="active">SDK服务</a>
+        </li>
+        <li>
+          <a href="http://explorer.dcc.finance" target="_blank">区块链浏览器</a>
+        </li>
+        <li>
+          <a href="../coming_soon/index.html"  class="ctm-btn">立即加入</a>
+        </li>
+        <li class="li-i18n">
+          <div>
+            <a href="../../reward/index.html">English</a>&nbsp;/&nbsp;<a href="./index.html">中文</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <section class='container-fluid guideSdk sdk'>
+     <aside>
+       <h4>接入指南</h4>
+       <h5 class="sdk-fw">&nbsp;认证服务</h5>
+        <ul>
+          <li ><a href="./guide.html">多项数据认证iOS SDK</a></li>
+       </ul>
+       <h5 class="sdk-cz">&nbsp;数据存储服务</h5>
+        <ul>
+          <li class="sdk-act"><a href="./ipfs.html">IPFS节点搭建说明</a></li>
+      </ul>
+     </aside>
+     <main>
+        <section class="d-none m-sdk ">
+            <h4>接入指南</h4>
+            <h5 class="sdk-fw">&nbsp;认证服务</h5>
+             <ul>
+               <li ><a href="./guide.html">多项数据认证iOS SDK</a></li>
+            </ul>
+            <h5 class="sdk-cz">&nbsp;数据存储服务</h5>
+             <ul>
+               <li class="sdk-act"><a href="./ipfs.html">IPFS节点搭建说明</a></li>
+           </ul>
+          </section>
+          <div class="ipfs">
+          <br>
+          <h4 class="g-con">1. IPFS简介</h4>
+            <p>IPFS用基于内容的寻址替代传统的基于域名的寻址，用户不需要关心服务器的位置，不用考虑文件存储的名字和路径。我们将一个文件放到IPFS节点中，将会得到基于其内容计算出的唯一加密哈希值。哈希值直接反映文件的内容，哪怕只修改1比特，哈希值也会完全不同。当IPFS被请求一个文件哈希时，它会使用一个分布式哈希表找到文件所在的节点，取回文件并验证文件数据。</p>
+            <p>IPFS是通用目的的基础架构，基本没有存储上的限制。大文件会被切分成小的分块，下载的时候可以从多个服务器同时获取。IPFS的网络是不固定的、细粒度的、分布式的网络，可以很好的适应内容分发网络的要求。</p>
+
+          <h4  class="g-con">2.下载IPFS </h4>
+          <p>通过官网地址 <a href="https://dist.ipfs.io/#go-ipfs" target="_blank">https://dist.ipfs.io/#go-ipfs</a> 可以下载最新版本压缩包，官方提供多平台版本。</p>
+          <span>注：访问IPFS官方网站需要科学上网。</span>
+
+          <img style="width:800px;" src="../../images/fwjs/go-ipfs.png" alt="">
+
+          <h4 class="g-con">3.安装IPFS</h4>
+            <p>下载后，解压缩归档文件，然后使用install.sh脚本将ipfs二进制文件移动到可执行文件$ PATH中的某个位置：</p>
+            <div class="s-fragement">
+              <code>tar xfz go-ipfs_v0.4.13_linux-amd64.tar.gz
+              <br><br>
+              <code> cd go-ipfs </code>
+              <br><br>
+              ./install.sh
+              </code>
+            </div>
+            <p>IPFS就装好了，运行ipfs help检验是否可以正确运行</p>
+            <div class="s-fragement"><code># ipfs help</code></div>
+            <h4>初始化一个工作区</h4>
+            <div class="s-fragement"><code ># ipfs init</code></div>
+
+            <h4>添加文件到IPFS</h4>
+            <div class="s-fragement"><code># echo "Hello world"  > my.txt</code>
+              <br><br>
+            <code># ipfs add my.txt</code> 
+            <p>added QmePw8gVcBMb8x6kAep6aMBAX23hCSk6iZW3i9VKkiFhu1 my.txt</p>
+            </div>
+
+            <h4>修改配置</h4>
+            <div class="s-fragement">
+              <code>#export EDITOR=vim</code>
+              <br/><br/>
+              <code>#ipfs config edit</code>
+              <p>得到的内容中，将</p>
+              <code>"API": "/ip4/127.0.0.1/tcp/5001"</code>修改为
+              <br/><br/>
+              <code>"API": "/ip4/0.0.0.0/tcp/5001"</code>，然后 :wq退出
+            </div>
+
+            <h4>启动Daemon服务</h4>
+            <div class="s-fragement"><code> # ipfs daemon</code></div>
+
+            <p>启动之后，就可以通过HTTP访问文件内容，比如刚才的文件</p>
+            <div class="s-fragement">
+              <code># ipfs cat QmePw8gVcBMb8x6kAep6aMBAX23hCSk6iZW3i9VKkiFhu1</code>
+              <p>Hello world</p>
+            </div>
+            
+
+            <h4>4.使用自定义节点 </h4>
+            <p>创建自己的节点后，在BitExpress APP上可以使用自己的节点作为自定义节点。但为了保证您的节点与BitExpress官方节点的之间的数据同步速度，还需要把官方的两个节点和自己的节点都加入到网络</p>
+
+            <h4>官方节点</h4>
+            <p>/ip4/47.100.242.139/tcp/4001/ipfs/QmVHMddQWm18m485N6caFfYrzDnDyLRvQaVvubiAPHbeUY</p>
+            <p>/ip4/47.100.238.10/tcp/4001/ipfs/QmQhAn5FmJ8cWVffzLAowE8ao4K5BXeakaZ54R4P9esaKV</p>
+            <h4>查看自己的节点 </h4>
+            <div class="s-fragement"><code># ipfs id</code></div>
+
+            <h4>添加和删除</h4>
+            <div class="s-fragement">
+              <code>#ipfs bootstrap add 上面展示的节点</code> 添加启动节点
+              <p>added /ip4/47.100.238.10/tcp/4001/ipfs/QmQhAn5FmJ8cWVffzLAowE8ao4K5BXeakaZ54R4P9esaKV</p>
+              <code>ipfs bootstrap rm  删除启动节点</code>
+            </div>
+
+            <h4>查看自己的节点</h4>
+            <div class="s-fragement"><code># ipfs bootstrap list</code>
+            <p>可以看到刚才添加的节点</p>
+            </div>
+          </div>
+            <a class="d-none g-back" id="goToTop">返回 顶部</a>
+          </main>
+      </section>
+        
+</body>
+</html>

@@ -5,12 +5,12 @@ import android.text.InputType
 import android.view.View
 import android.widget.Button
 import io.reactivex.rxkotlin.subscribeBy
+import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.base.BindFragment
 import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.tools.checkonMain
-import io.wexchain.android.dcc.tools.isPhoneNumValid
+import worhavah.regloginlib.tools.isPhoneNumValid
 import io.wexchain.android.dcc.vm.InputPhoneInfoVm
 import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.dcc.R

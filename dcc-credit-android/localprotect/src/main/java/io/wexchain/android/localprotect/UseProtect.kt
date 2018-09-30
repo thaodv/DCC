@@ -4,8 +4,6 @@ import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.databinding.ObservableField
 import io.wexchain.android.common.SingleLiveEvent
-import io.wexchain.android.localprotect.LocalProtect
-import io.wexchain.android.localprotect.LocalProtectType
 
 /**
  * Created by lulingzhi on 2017/12/4.

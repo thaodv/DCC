@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="worhavah.certs.vm.CertificationDataVm" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/include_toolbar" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_cert_data"
+                style="@style/CardView.Light.Dcc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/tv_cert_org"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/authenticator"
+                        android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="20dp"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:src="@drawable/cert_badge"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/divider_0"
+                        style="@style/DividerHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_stroke_width"
+                        app:layout_constraintTop_toBottomOf="@id/tv_cert_org" />
+
+                    <TextView
+                        android:id="@+id/tv_name_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:text="@{vm.title1}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                        app:layout_constraintTop_toBottomOf="@id/divider_0"
+                        tools:text="title1" />
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.value1}"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tv_name_label"
+                        app:layout_constraintRight_toRightOf="parent"
+                         />
+
+                    <View
+                        android:id="@+id/divider_h1"
+                        style="@style/DividerHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_stroke_width"
+                        app:layout_constraintTop_toBottomOf="@id/tv_name_label" />
+
+                    <TextView
+                        android:id="@+id/tv_id_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:text="@{vm.title2}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                        app:layout_constraintTop_toBottomOf="@id/divider_h1"
+                        tools:text="title2" />
+
+                    <TextView
+                        android:id="@+id/tv_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.value2}"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tv_id_label"
+                        app:layout_constraintRight_toRightOf="parent"
+                         />
+
+                    <View
+                        android:id="@+id/divider_h2"
+                        style="@style/DividerHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/divider_stroke_width"
+                        app:layout_constraintTop_toBottomOf="@id/tv_id_label" />
+
+                    <TextView
+                        android:id="@+id/tv_expired_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:text="@{vm.title3}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                        app:layout_constraintTop_toBottomOf="@id/divider_h2"
+                        tools:text="title3" />
+
+                    <TextView
+                        android:id="@+id/tv_expired"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.value3}"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tv_expired_label"
+                        app:layout_constraintRight_toRightOf="parent"
+                        />
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/include_id_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/tv_expired_label">
+
+                        <View
+                            android:id="@+id/divider_h3"
+                            style="@style/DividerHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/divider_stroke_width" />
+
+                        <TextView
+                            android:id="@+id/tv_idfront"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/user_id_front"
+                            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                            app:layout_constraintTop_toBottomOf="@+id/divider_h3" />
+
+                        <ImageButton
+                            android:id="@+id/ib_id_front"
+                            errorRes="@{@drawable/cn_id_front}"
+                            imageRawBytes="@{vm.imgFront}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerInside"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_idfront"
+                            tools:src="@drawable/id_card_front" />
+
+                        <View
+                            android:id="@+id/divider_h4"
+                            style="@style/DividerHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/divider_stroke_width"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            app:layout_constraintTop_toBottomOf="@id/ib_id_front" />
+
+                        <TextView
+                            android:id="@+id/tv_idback"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/user_id_back"
+                            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                            app:layout_constraintTop_toBottomOf="@+id/divider_h4" />
+
+                        <ImageButton
+                            android:id="@+id/ib_id_back"
+                            errorRes="@{@drawable/id_card_back}"
+                            imageRawBytes="@{vm.imgBack}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerInside"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_idback"
+                            tools:src="@drawable/id_card_back" />
+
+                        <View
+                            android:id="@+id/divider_h5"
+                            style="@style/DividerHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/divider_stroke_width"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            app:layout_constraintTop_toBottomOf="@id/ib_id_back" />
+
+                        <TextView
+                            android:id="@+id/tv_photo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/user_activity_photo"
+                            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                            app:layout_constraintTop_toBottomOf="@+id/divider_h5" />
+
+                        <ImageButton
+                            android:id="@+id/ib_activity_photo"
+                            errorRes="@{@drawable/user_activity_photo}"
+                            imageRawBytes="@{vm.imgPhoto}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerInside"
+                            app:layout_constraintTop_toBottomOf="@id/tv_photo"
+                            tools:src="@drawable/user_activity_photo" />
+                    </android.support.constraint.ConstraintLayout>
+
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/btn_update_cert"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:onClick="@{(v)->vm.renew()}"
+                android:text="更新"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_cert_data"
+                app:layout_constraintVertical_bias="0.7" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+
+</layout>

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.*
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.fragment.InputBankCardInfoFragment
@@ -147,6 +147,7 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
         if (certOrder.status.isPassed()) {
             toast("认证成功")
             CertOperations.saveBankCertData(certOrder,bankCardInfo)
+            worhavah.certs.tools.CertOperations.certed()
             finish()
         } else {
             toast(getString(R.string.verification_failed))

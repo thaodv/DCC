@@ -69,6 +69,14 @@ static NSString *const kFifthReuseIdentifier = @"kFifthReuseIdentifier";
     [self createQueryInfoRequest];
     [self getGasPrice];
 }
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self addNotification];
+}
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self removeNotification];
+}
 
 - (void)getGasPrice{
     
@@ -237,11 +245,11 @@ static NSString *const kFifthReuseIdentifier = @"kFifthReuseIdentifier";
         make.leading.bottom.trailing.equalTo(self.view);
     }];
     
-    [_tableView registerClass:[WeXDCCPublicToPrivateChainFirstCell class] forCellReuseIdentifier:kFirstReuseIdentifier];
+    [_tableView registerClass:[WeXDCCPublicToPrivateChainFirstCell  class] forCellReuseIdentifier:kFirstReuseIdentifier];
     [_tableView registerClass:[WeXDCCPublicToPrivateChainSecondCell class] forCellReuseIdentifier:kSecondReuseIdentifier];
-     [_tableView registerClass:[WeXDCCPublicToPrivateChainThirdCell class] forCellReuseIdentifier:kThirdReuseIdentifier];
-     [_tableView registerClass:[WeXDCCPublicToPrivateChainFourthCell class] forCellReuseIdentifier:kFourthReuseIdentifier];
-     [_tableView registerClass:[WeXDCCPublicToPrivateChainFifthCell class] forCellReuseIdentifier:kFifthReuseIdentifier];
+    [_tableView registerClass:[WeXDCCPublicToPrivateChainThirdCell  class] forCellReuseIdentifier:kThirdReuseIdentifier];
+    [_tableView registerClass:[WeXDCCPublicToPrivateChainFourthCell class] forCellReuseIdentifier:kFourthReuseIdentifier];
+    [_tableView registerClass:[WeXDCCPublicToPrivateChainFifthCell  class] forCellReuseIdentifier:kFifthReuseIdentifier];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick)];
     [_tableView addGestureRecognizer:tap];
@@ -252,16 +260,14 @@ static NSString *const kFifthReuseIdentifier = @"kFifthReuseIdentifier";
     [self.view endEditing:YES];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 6;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
-        WeXDCCPublicToPrivateChainFirstCell *cell =[[WeXDCCPublicToPrivateChainFirstCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        WeXDCCPublicToPrivateChainFirstCell *cell =[tableView dequeueReusableCellWithIdentifier:kFirstReuseIdentifier forIndexPath:indexPath];
         _privateBalanceLabel = cell.privateBalanceLabel;
         _publicBalanceLabel1 = cell.publicBalanceLabel;
         return cell;
@@ -282,7 +288,7 @@ static NSString *const kFifthReuseIdentifier = @"kFifthReuseIdentifier";
     else if (indexPath.row == 2) {
         WeXDCCPublicToPrivateChainThirdCell *cell =[tableView dequeueReusableCellWithIdentifier:kThirdReuseIdentifier forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.titleLabel.text = @"Gas Price";
+        cell.titleLabel.text  = @"Gas Price";
         cell.symbolLabel.text = @"Gwei";
         _gasPriceTextField = cell.valueTextField;
         _gasPriceTextField.delegate = self;
@@ -529,6 +535,24 @@ static NSString *const kFifthReuseIdentifier = @"kFifthReuseIdentifier";
     }
 }
 
+- (void)addNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)removeNotification {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+- (void)keyboardWillHide:(NSNotification *)noti {
+    if (_valueTextField.isFirstResponder) {
+        if ([_valueTextField.text floatValue] >[_publicBalance floatValue]) {
+            WEXNSLOG(@"当前输入的数量大于钱包余额了");
+        }
+    }
+    WEXNSLOG(@"---acd%@--%@",noti.object,@(_valueTextField.isFirstResponder));
+}
+- (void)dealloc {
+    WEXNSLOG(@"%@,%s",self,__func__);
+}
 
 
 @end

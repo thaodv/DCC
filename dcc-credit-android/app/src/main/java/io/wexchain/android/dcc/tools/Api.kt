@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.tools
 
 import android.app.ActivityManager
 import android.content.Context
+import android.view.Window
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.ipfs.net.Networking
@@ -84,3 +85,11 @@ fun Context.getProcessName(): String? {
 fun String.hexToTen(): BigInteger {
     return BigInteger(this.substring(2), 16)
 }
+
+fun Window.backgroundAlpha(bgAlpha: Float) {
+    val lp = this.attributes
+    lp.alpha = bgAlpha
+    this.attributes = lp
+}
+
+

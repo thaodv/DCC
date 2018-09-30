@@ -3,7 +3,9 @@ package io.wexchain.android.common
 import android.annotation.SuppressLint
 import android.content.Context
 import android.support.annotation.StringRes
+import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import java.lang.ref.WeakReference
@@ -45,19 +47,34 @@ object Pop {
 
     @SuppressLint("ShowToast")
     private fun buildToast(context: Context, text: CharSequence, duration: Int): Toast {
-        val attrId = context.getAttrId(R.attr.customToastLayout)
-        return if (attrId > 0){
-            val view = LayoutInflater.from(context).inflate(attrId, null)
+
+            val view = LayoutInflater.from(context).inflate(R.layout.common_toast_custom, null)
             val toast = Toast(context)
             toast.duration = duration
             toast.view = view
+            toast.setGravity(Gravity.CENTER,0,0)
+            view.findViewById<TextView>(android.R.id.message).text = text
+         return   toast
+
+    }
+
+
+    /* @SuppressLint("ShowToast")
+    private fun buildToast(context: Context, text: CharSequence, duration: Int): Toast {
+        val attrId = context.getAttrId(R.attr.customToastLayout)
+        return if (attrId > 0){
+            val view = LayoutInflater.from(context).inflate(R.layout.toast_custom, null)
+            val toast = Toast(context)
+            toast.duration = duration
+            toast.view = view
+            toast.setGravity(Gravity.CENTER,0,0)
             view.findViewById<TextView>(android.R.id.message).text = text
             toast
         }else {
             Toast.makeText(context, text, duration)
         }
     }
-
+*/
     fun cancelToast() {
         val p = prevToast?.get()
         if (p != null && p.view.windowToken != null) {

@@ -22,6 +22,7 @@ import io.wexchain.ipfs.core.IpfsCore
 import io.wexchain.ipfs.entity.BankInfo
 import io.wexchain.ipfs.entity.IdInfo
 import io.wexchain.ipfs.entity.PhoneInfo
+import io.wexchain.ipfs.entity.TNPhoneInfo
 import io.wexchain.ipfs.utils.*
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
@@ -39,6 +40,7 @@ class IpfsService : Service() {
     private var ID_NONCE = BigInteger("0")
     private var BANK_NONCE = BigInteger("0")
     private var CM_NONCE = BigInteger("0")
+    private var TN_NONCE = BigInteger("0")
 
     private val rootpath by lazy {
         App.get().filesDir.absolutePath + File.separator + "cert" + File.separator + "id"
@@ -101,14 +103,34 @@ class IpfsService : Service() {
         val cmLogCertExpired = CertOperations.getCmLogCertExpired()
 
         val phoneInfo = PhoneInfo(
-                mobileAuthenStatus = status,
-                mobileAuthenOrderid = cmCertOrderId.toInt(),
-                mobileAuthenNumber = cmLogPhoneNo!!,
-                mobileAuthenCmData = json.base64(),
-                mobileAuthenExpired = cmLogCertExpired)
+            mobileAuthenStatus = status,
+            mobileAuthenOrderid = cmCertOrderId.toInt(),
+            mobileAuthenNumber = cmLogPhoneNo!!,
+            mobileAuthenCmData = json.base64(),
+            mobileAuthenExpired = cmLogCertExpired)
 
         val data = phoneInfo.toJson()
         val size = getDataFromSize(data.toByteArray(), MyCloudActivity.PHONE_OPERATOR, CM_NONCE)
+        onSize.invoke(size)
+    }
+
+    fun createTnData(onSize: (String) -> Unit) {
+        TN_NONCE = IpfsOperations.getNonce().blockingGet()
+        val cmCertOrderId = worhavah.certs.tools.CertOperations.getTNCertOrderId()
+        val cmLogPhoneNo = worhavah.certs.tools.CertOperations.getTnLogPhoneNo()
+        val status = worhavah.certs.tools.CertOperations.getTNLogUserStatus().name
+       // val json = worhavah.certs.tools.CertOperations.getTNLogData(cmCertOrderId).blockingGet()
+        val cmLogCertExpired = worhavah.certs.tools.CertOperations.getTNLogCertExpired()
+val js2= worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.get()!!.toByteArray()
+        val phoneInfo = TNPhoneInfo(
+            sameCowMobileAuthenStatus = status,
+            sameCowMobileAuthenOrderid = cmCertOrderId.toString(),
+            sameCowMobileAuthenNumber = cmLogPhoneNo!!,
+            sameCowMobileAuthenCmData = js2.base64(),
+            sameCowMobileAuthenExpired = cmLogCertExpired.toString())
+
+        val data = phoneInfo.toJson()
+        val size = getDataFromSize(data.toByteArray(), MyCloudActivity.TNDATA, TN_NONCE)
         onSize.invoke(size)
     }
 
@@ -162,6 +184,10 @@ class IpfsService : Service() {
                         ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
                             val idDigest = CertOperations.getLocalCmDigest()
                             IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, CM_NONCE, ipfsKeyHash)
+                        }
+                        ChainGateway.TN_COMMUNICATION_LOG -> {
+                            val idDigest = worhavah.certs.tools.CertOperations.getLocalTnDigest()
+                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, TN_NONCE, ipfsKeyHash)
                         }
                         else -> {
                             Single.error(Throwable())
@@ -236,6 +262,10 @@ class IpfsService : Service() {
                             val phoneInfo = it.toBean(PhoneInfo::class.java)
                             CertOperations.saveIpfsCmData(phoneInfo)
                         }
+                        ChainGateway.TN_COMMUNICATION_LOG -> {
+                            val phoneInfo = it.replace("\n","").toBean(TNPhoneInfo::class.java)
+                            CertOperations.saveIpfsTNData(phoneInfo)
+                        }
                         else -> {
                         }
                     }
@@ -265,13 +295,13 @@ class IpfsService : Service() {
         }
     }
 
-    fun <T> Single<T>.doProgress(business: String, progress: Int, onProgress: (String, Int) -> Unit): Single<T> {
-        return this.doMain()
-                .map {
-                    onProgress.invoke(business, progress)
-                    it
-                }
-                .doBack()
-    }
+}
 
+fun <T> Single<T>.doProgress(business: String, progress: Int, onProgress: (String, Int) -> Unit): Single<T> {
+    return this.doMain()
+        .map {
+            onProgress.invoke(business, progress)
+            it
+        }
+        .doBack()
 }

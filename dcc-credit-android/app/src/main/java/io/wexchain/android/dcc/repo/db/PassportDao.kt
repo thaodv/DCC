@@ -35,7 +35,7 @@ abstract class PassportDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun addOrReplaceCurrencyMeta(currencyMeta: List<CurrencyMeta>)
 
-    @Query("SELECT * FROM ${CurrencyMeta.TABLE_NAME} WHERE ${CurrencyMeta.COLUMN_SELECTED} = :selected")
+    @Query("SELECT * FROM ${CurrencyMeta.TABLE_NAME} WHERE ${CurrencyMeta.COLUMN_SELECTED} = :selected order by ${CurrencyMeta.COLUMN_SORT}")
     abstract fun listCurrencyMeta(selected: Boolean): LiveData<List<CurrencyMeta>>
 
     @Query("SELECT * FROM ${CurrencyMeta.TABLE_NAME} WHERE ${CurrencyMeta.COLUMN_SYMBOL} = :symbol")

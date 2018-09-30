@@ -23,7 +23,7 @@
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
     [button setTitleColor:COLOR_THEME_ALL forState:UIControlStateHighlighted];
-    [button setBackgroundImage:[WexCommonFunc imageWithColor:COLOR_THEME_ALL] forState:UIControlStateNormal];
+    [button setBackgroundImage:[WexCommonFunc imageWithColor:ColorWithHex(0x7B40FF)] forState:UIControlStateNormal];
     [button setBackgroundImage:[WexCommonFunc imageWithColor:[UIColor clearColor]] forState:UIControlStateHighlighted];
     [button setBackgroundImage:[WexCommonFunc imageWithColor:[UIColor grayColor]] forState:UIControlStateDisabled];
     button.titleLabel.font = [UIFont systemFontOfSize:15];

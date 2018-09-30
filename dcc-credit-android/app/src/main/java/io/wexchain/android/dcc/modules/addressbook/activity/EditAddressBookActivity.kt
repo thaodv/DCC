@@ -21,14 +21,14 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.ChooseCutImageActivity
 import io.wexchain.android.dcc.QrScannerActivity
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.repo.db.AddressBook
 import io.wexchain.android.dcc.repo.db.TransRecord
 import io.wexchain.android.dcc.tools.CommonUtils
 import io.wexchain.android.dcc.tools.LogUtils
-import io.wexchain.android.dcc.tools.isAddressShortNameValid
+import worhavah.regloginlib.tools.isAddressShortNameValid
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityEditAddressBookBinding
 import io.wexchain.digitalwallet.util.isEthAddress

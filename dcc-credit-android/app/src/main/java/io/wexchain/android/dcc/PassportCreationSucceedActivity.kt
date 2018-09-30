@@ -2,9 +2,11 @@ package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.home.HomeActivity
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.fragment.CreateProtectFragment
 import io.wexchain.dcc.R
@@ -20,6 +22,7 @@ class PassportCreationSucceedActivity: BindActivity<ActivityPassportCreationSucc
         }
         binding.btnSkip.setOnClickListener { skip() }
         setupData()
+        App.get().initcerts()
     }
 
 
@@ -43,6 +46,7 @@ class PassportCreationSucceedActivity: BindActivity<ActivityPassportCreationSucc
     }
 
     private fun createProtectDone(type: LocalProtectType?) {
+        navigateTo(HomeActivity::class.java)
         finish()
     }
 

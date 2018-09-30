@@ -9,7 +9,7 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.modules.trans.vm.AcrossTransRecordsVm
 import io.wexchain.android.dcc.tools.StringUtils

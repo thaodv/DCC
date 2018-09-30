@@ -28,17 +28,16 @@
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:webURL]]];
 }
 
--(void)webViewDidStartLoad:(UIWebView *)webView
-{
+-(void)webViewDidStartLoad:(UIWebView *)webView {
     [WeXPorgressHUD showLoadingAddedTo:self.view];
     NSLog(@"start");
 }
 
--(void)webViewDidFinishLoad:(UIWebView *)webView
-{
+-(void)webViewDidFinishLoad:(UIWebView *)webView {
     [WeXPorgressHUD hideLoading];
     NSLog(@"Finish");
 }
+
 
 
 @end

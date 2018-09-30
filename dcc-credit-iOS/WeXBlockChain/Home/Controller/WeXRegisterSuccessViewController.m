@@ -14,13 +14,14 @@
 
 #import "WeXPassportViewController.h"
 #import "WeXReceiveAddressManager.h"
+#import "AppDelegate.h"
 
 
 
 
 #define kSafeViewHeight 400
 
-static const CGFloat kCardHeightWidthRatio = 179.0/350.0;
+static const CGFloat kCardHeightWidthRatio = 203.0/347.0;
 
 
 @interface WeXRegisterSuccessViewController ()<WeXHomeSafetyViewDelegate>
@@ -42,14 +43,9 @@ static const CGFloat kCardHeightWidthRatio = 179.0/350.0;
     [self setupSubViews];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:WEX_CHANGE_ADDRESS_NOTIFY object:nil userInfo:nil];
-    
     WeXReceiveAddressManager *manager = [WeXReceiveAddressManager shareManager];
     [manager initDefaultAddress];
-        
 }
-
-
-
 
 - (void)commonInit{
     _model = [WexCommonFunc getPassport];
@@ -68,7 +64,7 @@ static const CGFloat kCardHeightWidthRatio = 179.0/350.0;
         make.trailing.equalTo(self.view).offset(-15);
         make.height.equalTo(cardBackView.mas_width).multipliedBy(kCardHeightWidthRatio);
     }];
-    
+//    digital_card
     UIImageView *cardImageView = [[UIImageView alloc] init];
     cardImageView.image = [UIImage imageNamed:@"digital_card"];
     cardImageView.layer.magnificationFilter = kCAFilterNearest;
@@ -77,24 +73,24 @@ static const CGFloat kCardHeightWidthRatio = 179.0/350.0;
         make.edges.equalTo(cardBackView);
     }];
     
-    UIImageView *headImageView = [[UIImageView alloc] init];
-    UIImage *headImage = [IYFileManager cacheImageFileWithKey:WEX_FILE_USER_FACE];
-    if (headImage == nil) {
-        headImageView.image = [UIImage imageNamed:@"digital_head"];
-    }
-    else
-    {
-        headImageView.image = headImage;
-    }
-    headImageView.layer.cornerRadius = 40;
-    headImageView.layer.masksToBounds = YES;
-    [cardBackView addSubview:headImageView];
-    [headImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(cardBackView);
-        make.centerY.equalTo(cardBackView);
-        make.width.equalTo(@80);
-        make.height.equalTo(@80);
-    }];
+//    UIImageView *headImageView = [[UIImageView alloc] init];
+//    UIImage *headImage = [IYFileManager cacheImageFileWithKey:WEX_FILE_USER_FACE];
+//    if (headImage == nil) {
+//        headImageView.image = [UIImage imageNamed:@"digital_head"];
+//    }
+//    else
+//    {
+//        headImageView.image = headImage;
+//    }
+//    headImageView.layer.cornerRadius = 40;
+//    headImageView.layer.masksToBounds = YES;
+//    [cardBackView addSubview:headImageView];
+//    [headImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerX.equalTo(cardBackView);
+//        make.centerY.equalTo(cardBackView);
+//        make.width.equalTo(@80);
+//        make.height.equalTo(@80);
+//    }];
     
     UILabel *addressLabel = [[UILabel alloc] init];
     NSString *address = [WexCommonFunc getFromAddress];
@@ -123,7 +119,7 @@ static const CGFloat kCardHeightWidthRatio = 179.0/350.0;
         make.bottom.equalTo(addressLabel.mas_top).offset(-10);
         make.leading.equalTo(addressLabel);
         make.height.equalTo(@20);
-        make.trailing.equalTo(headImageView.mas_leading);
+        make.trailing.equalTo(addressLabel.mas_trailing);
     }];
     
     
@@ -219,8 +215,14 @@ static const CGFloat kCardHeightWidthRatio = 179.0/350.0;
         make.trailing.equalTo(tableBackView).offset(-15);
     }];
  
-    WeXCustomButton *skipBtn = [WeXCustomButton button];
+    UIButton *skipBtn = [[UIButton alloc]init];
     [skipBtn setTitle:WeXLocalizedString(@"跳过") forState:UIControlStateNormal];
+    [skipBtn setBackgroundColor:[UIColor whiteColor]];
+    [skipBtn setTitleColor:ColorWithHex(0x7B40FF) forState:UIControlStateNormal];
+    [skipBtn setImage:[UIImage imageNamed:@"jian2"] forState:UIControlStateNormal];
+    [skipBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, - skipBtn.imageView.image.size.width, 0, skipBtn.imageView.image.size.width)];
+    [skipBtn setImageEdgeInsets:UIEdgeInsetsMake(0, skipBtn.titleLabel.bounds.size.width+40, 0, -skipBtn.titleLabel.bounds.size.width)];
+
     [skipBtn addTarget:self action:@selector(skipBtnClick) forControlEvents:UIControlEventTouchUpInside];
     skipBtn.titleLabel.font = [UIFont systemFontOfSize:15];
     [self.view addSubview:skipBtn];
@@ -271,21 +273,19 @@ static const CGFloat kCardHeightWidthRatio = 179.0/350.0;
 
 - (void)skipBtnClick{
     [self configJumpController];
-   
 }
 
 - (void)safetyViewDidSetPassword{
     [self configJumpController];
- 
 }
 
-- (void)configJumpController
-{
-    for (UIViewController *ctrl in self.navigationController.viewControllers) {
-        if ([ctrl isKindOfClass:[WeXPassportViewController class]]) {
-            [self.navigationController popToViewController:ctrl animated:YES];
-        }
-    }
+- (void)configJumpController {
+//    for (UIViewController *ctrl in self.navigationController.viewControllers) {
+//        if ([ctrl isKindOfClass:[WeXPassportViewController class]]) {
+//            [self.navigationController popToViewController:ctrl animated:YES];
+//        }
+//    }
+    [(AppDelegate *)[UIApplication sharedApplication].delegate resetRootWindowController];
     
     
 //    if (self.isFromAuthorize) {

@@ -13,7 +13,7 @@ import android.widget.LinearLayout
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.CreateTransactionActivity
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.addressbook.vm.QueryBookAddressVm
 import io.wexchain.android.dcc.repo.db.AddressBook

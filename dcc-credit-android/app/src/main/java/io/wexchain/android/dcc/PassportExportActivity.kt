@@ -7,7 +7,7 @@ import io.wexchain.android.dcc.fragment.ExportPrivateKeyFragment
 import io.wexchain.android.common.findOrCreateFragment
 import io.wexchain.android.common.replaceFragment
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.fragment.ExportKeystoreFragment
 import io.wexchain.android.dcc.tools.getPrivateKey

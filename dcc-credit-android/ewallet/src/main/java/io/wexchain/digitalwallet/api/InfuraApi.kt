@@ -76,7 +76,7 @@ interface InfuraApi {
     ): Single<EthJsonRpcResponse<String>>
 
     companion object {
-          const val InfuraApiToken = BuildConfig.INFURA_API_KEY
+        const val InfuraApiToken = BuildConfig.INFURA_API_KEY
 
         private const val postUrl = "https://${BuildConfig.ETH_INFURA_NETWORK}.infura.io/$InfuraApiToken"
 
@@ -136,4 +136,58 @@ fun InfuraApi.getErc20Balance(contractAddress: String, address: String, tag: Str
             params = listOf(call, tag),
             id = InfuraApi.idAtomic.incrementAndGet()
     )).map { if (it.result.equals("0x", true)) BigInteger.ZERO else Numeric.toBigInt(it.result!!) }
+}
+
+fun InfuraApi.getBsxStatus(contractAddress: String, tag: String = "latest"): Single<EthJsonRpcResponse<String>> {
+    val call = Erc20Helper.getBsxStatus(contractAddress)
+    return this.postCall(EthJsonRpcRequestBody(
+            method = "eth_call",
+            params = listOf(call, tag),
+            id = InfuraApi.idAtomic.incrementAndGet()
+    ))
+}
+
+fun InfuraApi.getBsxSaleInfo(contractAddress: String, tag: String = "latest"): Single<EthJsonRpcResponse<String>> {
+    val call = Erc20Helper.getBsxSaleInfo(contractAddress)
+    return this.postCall(EthJsonRpcRequestBody(
+            method = "eth_call",
+            params = listOf(call, tag),
+            id = InfuraApi.idAtomic.incrementAndGet()
+    ))
+}
+
+fun InfuraApi.getBsxMinAmountPerHand(contractAddress: String, tag: String = "latest"): Single<EthJsonRpcResponse<String>> {
+    val call = Erc20Helper.getBsxMinAmountPerHand(contractAddress)
+    return this.postCall(EthJsonRpcRequestBody(
+            method = "eth_call",
+            params = listOf(call, tag),
+            id = InfuraApi.idAtomic.incrementAndGet()
+    ))
+}
+
+fun InfuraApi.getBsxInvestCeilAmount(contractAddress: String, tag: String = "latest"): Single<EthJsonRpcResponse<String>> {
+    val call = Erc20Helper.getBsxInvestCeilAmount(contractAddress)
+    return this.postCall(EthJsonRpcRequestBody(
+            method = "eth_call",
+            params = listOf(call, tag),
+            id = InfuraApi.idAtomic.incrementAndGet()
+    ))
+}
+
+fun InfuraApi.investedBsxTotalAmount(contractAddress: String, tag: String = "latest"): Single<EthJsonRpcResponse<String>> {
+    val call = Erc20Helper.investedBsxTotalAmount(contractAddress)
+    return this.postCall(EthJsonRpcRequestBody(
+            method = "eth_call",
+            params = listOf(call, tag),
+            id = InfuraApi.idAtomic.incrementAndGet()
+    ))
+}
+
+fun InfuraApi.investedBsxAmountMapping(contractAddress: String, address: String, tag: String = "latest"): Single<EthJsonRpcResponse<String>> {
+    val call = Erc20Helper.investedBsxAmountMapping(contractAddress, address)
+    return this.postCall(EthJsonRpcRequestBody(
+            method = "eth_call",
+            params = listOf(call, tag),
+            id = InfuraApi.idAtomic.incrementAndGet()
+    ))
 }

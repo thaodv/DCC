@@ -18,4 +18,11 @@
 
 @property (nonatomic,strong)NSString *allPraceStr;
 
+
+/**
+ 用来区分是否是Tab页面
+ */
+@property (nonatomic, assign) BOOL isTab;
+
+
 @end

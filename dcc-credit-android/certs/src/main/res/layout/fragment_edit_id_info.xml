@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        >
+
+    <data>
+
+        <variable
+                name="vm"
+                type="worhavah.certs.vm.EditIdCardInfoVm"
+                />
+    </data>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="beforeDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            android:paddingLeft="@dimen/content_padding_horizontal"
+            android:paddingRight="@dimen/content_padding_horizontal">
+
+            <TextView
+                style="@style/NoticeTextLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/fill_info_warning" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="认证方:云金融"
+                android:textColor="@color/text_blue_magenta" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="请拍摄身份证照片,系统自动识别" />
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/ib_id_front"
+                    errorRes="@{@drawable/cn_id_front}"
+                    imageRawBytes="@{vm.imgFront}"
+                    android:layout_width="0dp"
+                    android:layout_height="105dp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/ib_id_back"
+                    tools:src="@drawable/cn_id_front" />
+
+
+                <ImageButton
+                    android:id="@+id/ib_id_back"
+                    errorRes="@{@drawable/cn_id_back}"
+                    imageRawBytes="@{vm.imgBack}"
+                    android:layout_width="0dp"
+                    android:layout_height="105dp"
+                    android:layout_marginLeft="24dp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintLeft_toRightOf="@id/ib_id_front"
+                    app:layout_constraintRight_toRightOf="parent"
+                    tools:src="@drawable/cn_id_back" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="姓名" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="@string/please_try_ocr"
+                android:maxLength="50"
+                android:singleLine="true"
+                android:text="@={vm.name}"
+                android:textSize="@dimen/text_size_sub_title" />
+
+            <View style="@style/DividerHorizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="性别" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="@string/please_try_ocr"
+                android:maxLength="1"
+                android:singleLine="true"
+                android:text="@={vm.sex}"
+                android:textSize="@dimen/text_size_sub_title" />
+
+            <View style="@style/DividerHorizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="民族" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="@string/please_try_ocr"
+                android:maxLength="20"
+                android:singleLine="true"
+                android:text="@={vm.race}"
+                android:textSize="@dimen/text_size_sub_title" />
+
+            <View style="@style/DividerHorizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="身份证号" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="@null"
+                android:digits="0123456789xX"
+                android:gravity="center_vertical"
+                android:hint="@string/please_try_ocr"
+                android:inputType="text"
+                android:maxLength="18"
+                android:singleLine="true"
+                android:text="@={vm.idNo}"
+                android:textSize="@dimen/text_size_sub_title" />
+
+            <View style="@style/DividerHorizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="住址" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="@string/please_try_ocr"
+                android:maxLength="50"
+                android:singleLine="true"
+                android:text="@={vm.address}"
+                android:textSize="@dimen/text_size_sub_title" />
+
+            <View style="@style/DividerHorizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="签发机构" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="@string/please_try_ocr"
+                android:inputType="text"
+                android:maxLength="20"
+                android:singleLine="true"
+                android:text="@={vm.authority}"
+                android:textSize="@dimen/text_size_sub_title" />
+
+            <View style="@style/DividerHorizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="有效期限" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="请点击上方按钮拍照识别 例:20180101-20380101"
+                android:maxLength="50"
+                android:singleLine="true"
+                android:text="@={vm.timeLimit}"
+                android:textSize="@dimen/text_size_sub_title" />
+
+            <View style="@style/DividerHorizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="请仔细核对一下信息是否与证件上的一致,若发现识别有误,请手动修改,通过认证后,无法修改信息"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bgbtblue"
+                android:onClick="@{(v)->vm.confirmToNext()}"
+                android:text="下一步"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </ScrollView>
+
+</layout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <data>
+        <variable
+            name="title"
+            type="String"/>
+        <variable
+            name="hint"
+            type="String"/>
+        <variable
+            name="text"
+            type="String"/>
+    </data>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+
+        <TextView
+            android:id="@+id/tv_input_title"
+            android:layout_width="wrap_content"
+            android:minWidth="110dp"
+            android:layout_height="wrap_content"
+            android:text="@{title}"
+            android:textSize="16sp"
+            tools:text="InputTitle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/et_input_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
+            android:gravity="center_vertical"
+            android:hint="@{hint}"
+            tools:hint="请输入"
+            android:text="@={text}"
+            android:textSize="16sp"
+            android:background="@null"
+            app:layout_constraintLeft_toRightOf="@id/tv_input_title"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <View
+            style="@style/DividerHorizontal"
+            app:layout_constraintTop_toBottomOf="@id/et_input_text"
+            />
+    </android.support.constraint.ConstraintLayout>
+</layout>

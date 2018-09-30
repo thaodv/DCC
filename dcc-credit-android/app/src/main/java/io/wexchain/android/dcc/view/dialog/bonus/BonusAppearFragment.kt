@@ -2,7 +2,7 @@ package io.wexchain.android.dcc.view.dialog.bonus
 
 import android.os.Bundle
 import android.view.View
-import io.wexchain.android.dcc.base.BindFragment
+import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.dcc.vm.RedeemBonusVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentBonusAppearBinding

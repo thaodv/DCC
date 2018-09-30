@@ -23,6 +23,7 @@ import io.wexchain.android.dcc.tools.*
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.dcc.BuildConfig
+import io.wexchain.dcc.R
 import io.wexchain.dcc.WxApiManager
 import io.wexchain.dccchainservice.*
 import io.wexchain.dccchainservice.domain.Result
@@ -32,6 +33,7 @@ import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.api.*
 import io.wexchain.digitalwallet.proxy.*
 import io.wexchain.ipfs.core.IpfsCore
+import worhavah.regloginlib.Net.Networkutils
 import zlc.season.rxdownload3.core.DownloadConfig
 import java.lang.ref.WeakReference
 import java.math.BigInteger
@@ -79,7 +81,9 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
     override fun onCreate() {
         super.onCreate()
         instance = WeakReference(this)
-        val themeWrapper = ContextThemeWrapper(this, io.wexchain.dcc.R.style.DccLightTheme_App)
+        initcerts()
+
+        val themeWrapper = ContextThemeWrapper(this, R.style.DccLightTheme_App)
         RxJavaPlugins.setErrorHandler {
             val ex = it.cause ?: it
             if (ex is DccChainServiceException && !ex.message.isNullOrBlank()) {
@@ -95,6 +99,12 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         initServices(this)
         initData(this)
         initIpfs()
+
+    }
+
+    fun initcerts() {
+        Networkutils.letinit(this)
+        worhavah.certs.tools.CertOperations.init(this)
     }
 
     private fun initIpfs() {
@@ -194,7 +204,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
             }
             Chain.publicEthChain -> {
                 val contractAddress = dc.contractAddress!!
-                Erc20Agent(dc, publicRpc, EthsTxAgent.Companion.by(ethplorerApi, contractAddress))
+                Erc20Agent(dc, publicRpc, EthsTxAgent.by(ethplorerApi, contractAddress))
             }
             else -> throw IllegalArgumentException()
         }

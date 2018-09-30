@@ -7,13 +7,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import io.wexchain.android.dcc.constant.RequestCodes
-import io.wexchain.android.dcc.base.BindFragment
+import io.wexchain.android.common.base.BindFragment
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.dcc.QrScannerActivity
-import io.wexchain.android.dcc.tools.isEcPrivateKeyValid
-import io.wexchain.android.dcc.tools.isPasswordValid
+import worhavah.regloginlib.tools.isEcPrivateKeyValid
+import worhavah.regloginlib.tools.isPasswordValid
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentPastePrivateKeyBinding

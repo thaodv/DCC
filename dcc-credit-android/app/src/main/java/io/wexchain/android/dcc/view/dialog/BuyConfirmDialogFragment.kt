@@ -10,18 +10,20 @@ import android.util.Log
 import android.view.*
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.base.ActivityCollector
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.MyInterestDetailActivity
-import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.chain.JuzixConstants
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.repay.LoanRepayActivity
 import io.wexchain.android.dcc.modules.repay.RePaymentErrorActivity
 import io.wexchain.android.dcc.modules.repay.RepayingActivity
-import io.wexchain.android.dcc.tools.*
+import io.wexchain.android.dcc.tools.BintApi
+import io.wexchain.android.dcc.tools.MultiChainHelper
+import io.wexchain.android.dcc.tools.RetryWithDelay
+import io.wexchain.android.dcc.tools.sendRawTransaction
 import io.wexchain.android.dcc.vm.TransactionConfirmVm
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
@@ -32,7 +34,6 @@ import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.digitalwallet.EthsTransactionScratch
-import io.wexchain.digitalwallet.api.transactionReceipt
 import org.web3j.abi.FunctionEncoder
 import org.web3j.crypto.TransactionEncoder
 import org.web3j.protocol.core.methods.request.RawTransaction
@@ -50,7 +51,7 @@ class BuyConfirmDialogFragment : DialogFragment() {
     private lateinit var binding: DialogConfirmBuyinvestmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_confirm_buyinvestment , container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_confirm_buyinvestment, container, false)
         val scratch = getScratch()
         val app = App.get()
         val passport = app.passportRepository.getCurrentPassport()!!
@@ -79,7 +80,7 @@ class BuyConfirmDialogFragment : DialogFragment() {
 
                     toast("转账提交失败")
                     if (isEdit) activity?.finish()
-                }else{
+                } else {
                     startActivity(Intent(App.get(), RePaymentErrorActivity::class.java))
                     ActivityCollector.finishActivity(LoanRepayActivity::class.java)
                 }
@@ -107,9 +108,9 @@ class BuyConfirmDialogFragment : DialogFragment() {
             dismiss()
         }
         binding.btnConfirm.setOnClickListener {
-            if(BigDecimal(vm.currentBanance)<binding.vm!!.tx.amount){
+            if (BigDecimal(vm.currentBanance) < binding.vm!!.tx.amount) {
                 toast("持有量不足")
-            }else{
+            } else {
                 Invest()
             }
         }
@@ -118,119 +119,73 @@ class BuyConfirmDialogFragment : DialogFragment() {
 
     val dccJuzix = MultiChainHelper.dispatch(Currencies.DCC).first { it.chain == Chain.JUZIX_PRIVATE }
     val p = App.get().passportRepository.getCurrentPassport()!!
-   /* fun  Invest(){
-        val approve = Erc20Helper.invest(   binding.vm!!.tx.amount .scaleByPowerOfTen(18).toBigInteger() )
-        var agent = App.get().assetsRepository.getDigitalCurrencyAgent(dccJuzix)
-        agent.getNonce(p.address) .observeOn(AndroidSchedulers.mainThread()).subscribe(
-            {
-                val rawTransaction = RawTransaction.createTransaction(
-                    it,
-                    JuzixConstants.GAS_PRICE,
-                    JuzixConstants.GAS_LIMIT,
-                    BintApi.contract,
-                    BigInteger.ZERO,
-                    FunctionEncoder.encode(approve)
-                )
-                val signed = Numeric.toHexString(TransactionEncoder.signMessage(rawTransaction, App.get().passportRepository.getCurrentPassport()!!.credential))
-                 App.get().bintApi.sendRawTransaction(signed)
-                     .observeOn(AndroidSchedulers.mainThread()) .doOnSubscribe {
-                         showLoadingDialog()
-                     }
-                     .doFinally {
-                         hideLoadingDialog()
-                         dismiss()
-
-                     }.subscribe({
-                         Log.e("txHashtxHash",it)
-                         println("sent approve tx")
-                         val response = App.get().bintApi.transactionReceipt(it)
-                             //    .retryWhen(RetryWithDelay.createGrowth(8, 1000))
-                             .blockingGet()
-                         println("receipt got: approve tx")
-                         Log.e("responseresponse",response.toString())
-                         toast("交易成功")
-                         activity!!.finish()
-                     },{
-                         stackTrace(it)
-                         toast("交易失败")
-                     })
-
-
-            }, { stackTrace(it) }
-        )
-    }*/
-   var agent = App.get().assetsRepository.getDigitalCurrencyAgent(dccJuzix)
+    var agent = App.get().assetsRepository.getDigitalCurrencyAgent(dccJuzix)
 
     fun Invest() {
-       val approve = Erc20Helper.invest(binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger())
-       agent.getNonce(p.address).observeOn(AndroidSchedulers.mainThread()).flatMap {
-           val rawTransaction = RawTransaction.createTransaction(
-               it,
-               JuzixConstants.GAS_PRICE,
-               JuzixConstants.GAS_LIMIT,
-               BintApi.contract,
-               BigInteger.ZERO,
-               FunctionEncoder.encode(approve)
-           )
-           val signed = Numeric.toHexString(
-               TransactionEncoder.signMessage(
-                   rawTransaction,
-                   App.get().passportRepository.getCurrentPassport()!!.credential
-               )
-           )
-           App.get().bintApi.sendRawTransaction(signed)
+        val approve = Erc20Helper.investBsx(binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger())
+        agent.getNonce(p.address)
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap {
+                    val rawTransaction = RawTransaction.createTransaction(
+                            it,
+                            JuzixConstants.GAS_PRICE,
+                            JuzixConstants.GAS_LIMIT,
+                            BintApi.contract,
+                            BigInteger.ZERO,
+                            FunctionEncoder.encode(approve)
+                    )
+                    val signed = Numeric.toHexString(
+                            TransactionEncoder.signMessage(
+                                    rawTransaction,
+                                    App.get().passportRepository.getCurrentPassport()!!.credential
+                            )
+                    )
+                    App.get().bintApi.sendRawTransaction(signed)
 
-       }
-          /* .flatMap {
-           Log.e("Invest",""+ it )
+                }.flatMap { txHash ->
+                    App.get().chainGateway.getReceiptResult(txHash)
+                            .compose(Result.checked())
+                            .map {
+                                if (!it.hasReceipt) {
+                                    throw DccChainServiceException("no receipt yet")
+                                }
+                                it
+                            }
+                            .retryWhen(RetryWithDelay.createSimple(6, 5000L))
+                            .map {
+                                if (!it.approximatelySuccess) {
+                                    throw DccChainServiceException()
+                                }
+                                txHash
+                            }
+                }
+                .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
+                    showLoadingDialog()
+                }
+                /*  .doFinally {
+                      hideLoadingDialog()
+                      dismiss()
+                  }*/
+                .subscribe({
+                    // Log.e("Invest",""+ it.blockHash)
+                    toast("交易成功")
+                    hideLoadingDialog()
+                    dismiss()
+                    startActivity(Intent(activity, MyInterestDetailActivity::class.java))
+                    activity!!.finish()
 
-           agent.transactionReceipt(it)
-               .retryWhen(RetryWithDelay.createGrowth(8, 1000)). observeOn(AndroidSchedulers.mainThread())
+                }, {
+                    Log.e("Invest", "失败" + it.printStackTrace())
+                    stackTrace(it)
+                    toast("交易失败")
+                    hideLoadingDialog()
+                    dismiss()
+                })
+    }
 
-       }*/
-           .flatMap {txHash ->
-               App.get().chainGateway.getReceiptResult(txHash)
-                   .compose(Result.checked())
-                   .map {
-                       if (!it.hasReceipt) {
-                           throw DccChainServiceException("no receipt yet")
-                       }
-                       it
-                   }
-                   .retryWhen(RetryWithDelay.createSimple(6, 5000L))
-                   .map {
-                       if (!it.approximatelySuccess) {
-                           throw DccChainServiceException()
-                       }
-                       txHash
-                   }
-           }
-           .observeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
-           showLoadingDialog()
-       }
-         /*  .doFinally {
-               hideLoadingDialog()
-               dismiss()
-           }*/
-           .subscribe({
-              // Log.e("Invest",""+ it.blockHash)
-                       toast("交易成功")
-                       hideLoadingDialog()
-                          dismiss()
-               startActivity(Intent(activity,MyInterestDetailActivity::class.java))
-               activity!!.finish()
-
-           }, {
-               Log.e("Invest","失败"+ it.printStackTrace())
-               stackTrace(it)
-               toast("交易失败")
-               hideLoadingDialog()
-               dismiss()
-           })
-   }
     override fun onResume() {
         super.onResume()
-         binding.vm!!.loadHoldings()
+        binding.vm!!.loadHoldings()
     }
 
 

@@ -90,6 +90,9 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
 @end
 
 @implementation WeXImportViewController
+//查询最大次数
+static NSInteger const kMaxCount = 6;
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -323,7 +326,8 @@ typedef NS_ENUM(NSInteger,WeXImportPassportType) {
             else
             {
                 //超过四次查询没有成功，调到钱包页面。设置状态为不可用
-                if (_requestCount > 4) {
+                if (_requestCount > kMaxCount) {
+                    _requestCount = 0;
                     [WeXPorgressHUD hideLoading];
                     [self savePassport:NO];
                     [WeXPorgressHUD showText:WeXLocalizedString(@"导入失败!") onView:self.view];

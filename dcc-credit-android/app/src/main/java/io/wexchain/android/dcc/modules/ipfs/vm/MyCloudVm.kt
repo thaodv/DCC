@@ -34,6 +34,15 @@ class MyCloudVm : ViewModel() {
     val cmAddressEvent = SingleLiveEvent<Void>()
 
 
+    val tnsize = ObservableField<Boolean>()
+    val tnselected = ObservableField<Boolean>()
+    val tnaddress = ObservableField<Boolean>()
+    val tnstatus = ObservableField<String>()
+    val tnsizetxt = ObservableField<String>()
+    val tntag = ObservableField<Int>()
+    val tnAddressEvent = SingleLiveEvent<Void>()
+
+
     fun idAddressCall() {
         idAddressEvent.call()
     }
@@ -44,6 +53,10 @@ class MyCloudVm : ViewModel() {
 
     fun cmAddressCall() {
         cmAddressEvent.call()
+    }
+
+    fun tnAddressCall() {
+        tnAddressEvent.call()
     }
 
 }

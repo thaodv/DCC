@@ -1,23 +1,21 @@
 package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
-import android.content.Intent
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import io.wexchain.android.dcc.base.BindActivity
-import io.wexchain.android.common.withTransitionEnabled
-import io.wexchain.android.dcc.constant.Transitions
+import android.view.*
+import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.repo.db.CaAuthRecord
 import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
+import io.wexchain.android.dcc.vm.AuthManage
 import io.wexchain.android.dcc.vm.BottomMoreVm
+import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.BR
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportBinding
@@ -39,31 +37,33 @@ class PassportActivity : BindActivity<ActivityPassportBinding>(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        toolbarTitle = findViewById<TextView>(R.id.toolbar_title).apply {
-            text = title
-        }
+        initToolbar()
         setupData()
-        setupBtn()
-        setupTransitions()
-        supportPostponeEnterTransition()
+        initData()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.menu_passport_auth, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.action_passport_auth -> {
+                navigateTo(AuthManageActivity::class.java)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onResourceLoaded(id: Int) {
         super.onResourceLoaded(id)
-        when(id){
-            R.id.iv_avatar->{
+        when (id) {
+            R.id.iv_avatar -> {
                 supportStartPostponedEnterTransition()
             }
-        }
-    }
-
-    private fun setupTransitions() {
-        withTransitionEnabled {
-            // avoid leaks
-            ViewCompat.setTransitionName(findViewById(R.id.card_passport), Transitions.CARD_PASSPORT)
-            ViewCompat.setTransitionName(findViewById(R.id.iv_avatar), Transitions.CARD_PASSPORT_AVATAR)
         }
     }
 
@@ -80,7 +80,6 @@ class PassportActivity : BindActivity<ActivityPassportBinding>(),
         binding.rvAuthRecords.layoutManager = llm
         bm = BottomMoreVm().apply {
             noMoreHint.set(getText(R.string.no_more_records))
-//            hasMoreIcon.set(ContextCompat.getDrawable(this@PassportActivity, R.drawable.more_items))
         }
         val bmAdapter = BottomMoreItemsAdapter(adapter, bottomViewProvider(bm))
         binding.rvAuthRecords.adapter = bmAdapter
@@ -94,6 +93,29 @@ class PassportActivity : BindActivity<ActivityPassportBinding>(),
                         bm.hasMore.set(false)
                     }
                 })
+
+    }
+
+    private fun initData() {
+        val authManage = ViewModelProviders.of(this).get(AuthManage::class.java)
+        authManage.sync(this)
+        authManage.loadingEvent.observe(this, Observer { loading ->
+            loading?.let {
+                if (it) {
+                    showLoadingDialog()
+                } else {
+                    hideLoadingDialog()
+                }
+            }
+        })
+        authManage.successEvent.observe(this, Observer {
+            toast("更新密钥成功")
+        })
+        authManage.errorEvent.observe(this, Observer {
+            toast(it?.message ?: "出现异常")
+        })
+        VerifyProtectFragment.serve(authManage, this, { this.supportFragmentManager })
+        binding.authManage = authManage
     }
 
     private fun bottomViewProvider(bm: BottomMoreVm): BottomMoreItemsAdapter.BottomViewProvider {
@@ -117,17 +139,6 @@ class PassportActivity : BindActivity<ActivityPassportBinding>(),
         }
     }
 
-    private fun setupBtn() {
-        binding.ibClose.setOnClickListener {
-            goFinish()
-        }
-        binding.btnToManageAuth.setOnClickListener {
-            startActivity(Intent(this, AuthManageActivity::class.java))
-        }
-        binding.cardPassport!!.tvPassportAddress.setOnClickListener {
-            startActivity(Intent(this, PassportAddressActivity::class.java))
-        }
-    }
 
     override fun onItemClick(item: CaAuthRecord?, position: Int, viewId: Int) {
         if (bm.hasMore.get()) {

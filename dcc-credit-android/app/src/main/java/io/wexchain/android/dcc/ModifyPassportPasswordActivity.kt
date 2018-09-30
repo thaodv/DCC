@@ -6,8 +6,8 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BaseCompatActivity
-import io.wexchain.android.dcc.view.dialog.CustomDialog
+import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.vm.ModifyPassword
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.R
@@ -52,17 +52,21 @@ class ModifyPassportPasswordActivity : BaseCompatActivity() {
     }
 
     private fun showSucceedBackupDialog() {
-        CustomDialog(this)
-                .apply {
-                    setTitle("修改成功")
-                    textContent = "钱包密码修改成功,KEYSTORE信息变更,建议您立即重新备份钱包."
-                    withNegativeButton("暂不备份")
-                    withPositiveButton("备份钱包") {
-                        toExport()
-                        true
-                    }
-                }
-                .assembleAndShow()
+        val dialog = DeleteAddressBookDialog(this)
+        dialog.setTips("修改成功")
+        dialog.setTvText("钱包密码修改成功,KEYSTORE信息变更,建议您立即重新备份钱包.")
+        dialog.setBtnText("暂不备份", "备份钱包")
+        dialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
+            override fun cancel() {
+                dialog.dismiss()
+                toExport()
+            }
+
+            override fun sure() {
+                dialog.dismiss()
+            }
+        })
+        dialog.show()
     }
 
     private fun toExport() {

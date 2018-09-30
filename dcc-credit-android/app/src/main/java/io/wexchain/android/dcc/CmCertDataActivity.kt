@@ -5,7 +5,7 @@ import android.widget.TextView
 import io.wexchain.android.common.atLeastCreated
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.dcc.R

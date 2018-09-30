@@ -420,8 +420,6 @@
         make.height.equalTo(@20);
     }];
     
-    
-    
     UIImageView *backImageView2 = [[UIImageView alloc] init];
     backImageView2.image = [UIImage imageNamed:@"dcc_token_background_card"];
     backImageView2.userInteractionEnabled = YES;
@@ -619,8 +617,6 @@
         [self.navigationController pushViewController:ctrl animated:YES];
         
     }
-    
-  
 }
 
 //2018.8.10 点击私链
@@ -641,6 +637,9 @@
     [self.navigationController pushViewController:ctrl animated:YES];
 }
 
+- (void)dealloc {
+    WEXNSLOG(@"%@,%s",self,__func__);
+}
 
 
 

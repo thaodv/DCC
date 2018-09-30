@@ -45,6 +45,8 @@
 @implementation WeXDCCPrivateToPublicChainController
 
 static NSString *const kWeXDCCPrivateToPublicChainSecondCellID = @"WeXDCCPrivateToPublicChainSecondCellID";
+static NSString *const kWeXDCCPrivateToPublicChainFirstCellID = @"WeXDCCPrivateToPublicChainFirstCellID";
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -177,6 +179,7 @@ static NSString *const kWeXDCCPrivateToPublicChainSecondCellID = @"WeXDCCPrivate
         make.leading.bottom.trailing.equalTo(self.view);
     }];
     [_tableView registerClass:[WeXDCCPrivateToPublicChainSecondCell class] forCellReuseIdentifier:kWeXDCCPrivateToPublicChainSecondCellID];
+    [_tableView registerClass:[WeXDCCPrivateToPublicChainFirstCell class] forCellReuseIdentifier:kWeXDCCPrivateToPublicChainFirstCellID];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick)];
     [_tableView addGestureRecognizer:tap];
@@ -195,7 +198,7 @@ static NSString *const kWeXDCCPrivateToPublicChainSecondCellID = @"WeXDCCPrivate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
-        WeXDCCPrivateToPublicChainFirstCell *cell =[[WeXDCCPrivateToPublicChainFirstCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        WeXDCCPrivateToPublicChainFirstCell *cell = [tableView dequeueReusableCellWithIdentifier:kWeXDCCPrivateToPublicChainFirstCellID forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         _privateBalanceLabel1 = cell.privateBalanceLabel;
         _publicBalanceLabel = cell.publicBalanceLabel;

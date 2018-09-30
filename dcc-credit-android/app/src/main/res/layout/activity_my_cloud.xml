@@ -356,6 +356,111 @@
             style="@style/DividerHorizontal"
             app:layout_constraintTop_toBottomOf="@id/cloud_item_cm" />
 
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cloud_item_tn"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:layout_constraintTop_toBottomOf="@id/cloud_bottom_tag">
+
+            <ImageButton
+                android:id="@+id/cloud_tn_tag"
+                imageRes="@{vm.tntag}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:src="@drawable/cloud_item"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/cloud_tn_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="同牛运营商通讯记录 "
+                android:textColor="@color/FF4A4A4A"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toRightOf="@id/cloud_tn_tag"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/cloud_tn_size"
+                visibleOrInvisible="@{vm.tnsize}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="130dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@{vm.tnsizetxt}"
+                android:textColor="@color/text_min"
+                android:textSize="16sp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="0B" />
+
+            <TextView
+                android:id="@+id/cloud_tn_selected"
+                visibleOrInvisible="@{vm.tnselected}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="未选中"
+                android:textColor="@color/text_min"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/cloud_tn_progress"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="60dp"
+                android:layout_height="5dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cloud_tn_selected" />
+
+            <Button
+                android:id="@+id/cloud_tn_address"
+                style="@style/Widget.AppCompat.Button.Dcc.Small"
+                visibleOrInvisible="@{vm.tnaddress}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/round_rect_border"
+                android:onClick="@{(v)->vm.tnAddressCall()}"
+                android:padding="5dp"
+                android:text="云端地址"
+                android:textColor="@color/blue_magenta"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/cloud_tn_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="5dp"
+                android:text="@{vm.tnstatus}"
+                android:textColor="@color/text_min"
+                android:textSize="14sp"
+                app:layout_constraintLeft_toRightOf="@id/cloud_tn_tag"
+                app:layout_constraintTop_toBottomOf="@id/cloud_tn_name"
+                tools:text="可上传" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <View
+            android:id="@+id/cloud_bottom2_tag"
+            style="@style/DividerHorizontal"
+            app:layout_constraintTop_toBottomOf="@id/cloud_item_tn" />
+
         <Button
             android:id="@+id/cloud_sync"
             style="@style/Widget.AppCompat.Button.Dcc.Full"
@@ -367,7 +472,7 @@
             android:enabled="false"
             android:text="开始同步"
             android:textSize="15sp"
-            app:layout_constraintTop_toBottomOf="@id/cloud_bottom_tag" />
+            app:layout_constraintTop_toBottomOf="@id/cloud_bottom2_tag" />
 
         <TextView
             android:id="@+id/cloud_update"

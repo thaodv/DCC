@@ -13,7 +13,7 @@ import com.xxy.maple.tllibrary.activity.TlBrowserActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.base.StaticHtmlActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.ScfOperations
@@ -28,7 +28,6 @@ import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityHomeBinding
-import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
 import io.wexchain.dccchainservice.domain.ScfAccountInfo
@@ -52,16 +51,13 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         checkScfAccount()
         checkUpgrade()
         initPhototTask()
-
-
-        // tipsDialog.show()
     }
 
     private fun initPhototTask() {
         doAsync {
             val certIdPics = CertOperations.getTmpIdIdPics()
             certIdPics?.let {
-                if (it!!.first.exists()) {
+                if (it.first.exists()) {
                     it.first.reName("positivePhoto.jpg")
                 }
                 if (it.second.exists()) {
@@ -99,12 +95,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
                                     showUpgradeDialog(it)
                                 }
                             }
-                        },
-                        onError = {
-                            if (it is DccChainServiceException) {
-                                toast("当前已是最新版本")
-                            }
-                        })
+                        }, onError = {})
     }
 
     private fun showUpgradeDialog(it: CheckUpgrade) {
@@ -214,7 +205,8 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
         }
         findViewById<View>(R.id.tv_credit).setOnClickListener {
             if (App.get().passportRepository.passportEnabled) {
-                navigateTo(MyCreditActivity::class.java)
+              //  navigateTo(MyCreditActivity::class.java)
+                navigateTo(MyCreditNewActivity::class.java)
             } else {
                 if (!App.get().passportRepository.passportExists) {
                     showIntroWalletDialog()

@@ -1,14 +1,11 @@
 package io.wexchain.android.dcc.modules.repay
 
-import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.dcc.LoanActivity
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
@@ -68,9 +65,10 @@ class LoanRecordsActivity : BindActivity<ActivityLoanRecordsBinding>(), ItemView
     }
 
     private fun finishAndGotoLoan() {
-        ActivityCompat.finishAfterTransition(this)
+        finish()
+       /* ActivityCompat.finishAfterTransition(this)
         navigateTo(LoanActivity::class.java) {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        }
+        }*/
     }
 }

@@ -24,7 +24,7 @@ import android.widget.TextView;
 import io.wexchain.android.dcc.App;
 import io.wexchain.android.dcc.QrScannerActivity;
 import io.wexchain.android.dcc.constant.Extras;
-import io.wexchain.android.dcc.constant.RequestCodes;
+import io.wexchain.android.common.constant.RequestCodes;
 import io.wexchain.android.dcc.tools.LogUtils;
 import io.wexchain.dcc.R;
 

@@ -4,5 +4,7 @@ enum class CertificationType {
     ID,
     PERSONAL,
     BANK,
-    MOBILE
+    MOBILE,
+    TONGNIU,
+    LOANREPORT
 }

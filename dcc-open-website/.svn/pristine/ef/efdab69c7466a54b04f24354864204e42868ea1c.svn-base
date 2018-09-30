@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>邀请好友</title>
+  <style>
+    body{
+      padding:0 10px;
+    }
+  </style>
+</head>
+<body>
+  <h4>Rules for invitation rewards</h4>
+  <p>1.When a user you invited finishes ID verification, you’ll earn 10 contribution points. Please be noted that each ID can only be verified once, but each invitation code can be used unlimited times.</p>
+  <p>2.When your invited user applies for a loan, you will earn 50% of the DCC spent during the application process.</p>
+  <p>3.Every new user who has entered an invitation code and completed the ID verification can earn a random amount (between 1-1,000) of DCC tokens, while supplies last.</p>
+</body>
+</html>

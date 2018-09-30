@@ -103,7 +103,7 @@
     <string name="set_local_security">开启本地安全保护</string>
     <string name="code_for_more_reward">输入邀请码可以获得更多奖励</string>
     <string name="confirm">确定</string>
-    <string name="WeXCreatePassportViewController_description3">成功创建数字钱包后,请即时在设置->备份数字钱包 中进行备份,以防数字资产丢失</string>
+    <string name="WeXCreatePassportViewController_description3">成功创建数字钱包后,请即时在我的->备份钱包 中进行备份,以防数字资产丢失</string>
     <string name="wallet_password_guide">不少于8位字符，建议混合大小写字母、数字、特殊符号</string>
     <string name="please_paste_keystore">请粘贴KEYSTORE信息</string>
     <string name="please_set_passport_password">设置数字钱包密码</string>
@@ -141,8 +141,8 @@
     <string name="remove_passport_description">删除钱包后，您只能通过导入钱包恢复当前钱包的使用。如果您未备份钱包，则无法继续使用当前钱包，如果未开启云存储功能，本地数据不会自动恢复。强烈建议您在删除钱包之前备份钱包，将数据备份到云。</string>
     <string name="title_remove_passport">删除钱包</string>
     <string name="back_up_wallet">备份钱包</string>
-    <string name="please_input_current_passport_password">请输入原钱包密码:</string>
-    <string name="please_input_new_passport_password">请输入新钱包密码:</string>
+    <string name="please_input_current_passport_password">原钱包密码:</string>
+    <string name="please_input_new_passport_password">新钱包密码:</string>
     <string name="export_keystore_description">二维码显示的是KeyStore信息,KEYSTORE是私钥的签名保护文件,通过钱包密码对KEYSTORE文件签名.单独拥有KEYSTORE文件或者钱包密码都无法使用钱包.而同时拥有KEYSTORE文件和钱包密码则可以再任何设备使用钱包.强烈建议您在使用钱包前做好备份</string>
     <string name="confirm2">确认</string>
     <string name="loan_contract">借币合同</string>
@@ -162,9 +162,9 @@
     <string name="based_loan">信用借币</string>
     <string name="more">更多</string>
     <string name="digital_assets">数字资产</string>
-    <string name="status_enabled">统一登录状态:可用</string>
-    <string name="status_disabled">统一登录状态:不可用</string>
-    <string name="oauth_login_history">统一登录使用记录</string>
+    <string name="status_enabled">状态</string>
+    <string name="status_disabled">状态</string>
+    <string name="oauth_login_history">统一登录记录</string>
     <string name="no_more_records">没有更多记录了</string>
     <string name="auth_management">统一登录管理</string>
     <string name="auth_key_change_log">统一登录变更记录</string>
@@ -173,13 +173,14 @@
     <string name="update_key">更新密钥</string>
     <string name="bitexpress_member">Hi,BitEXPRESS会员</string>
     <string name="default_nickname">BitExpress会员</string>
-    <string name="candy_release_notice">&#x3000;&#x3000;我们会在这里不定期的发放免费糖果，建议您打开系统通知，我们将在第一时间提醒您领取新活动的糖果。</string>
+    <string name="candy_release_notice">&#x3000;&#x3000;神秘花园和知识问答PK即将上线。届时您可以通过知识问答PK获得阳光（可看做挖矿值），并根据阳光值的多少领取神秘花园的奖励。您还可以去其他小伙伴的神秘花园收取奖励哦~~</string>
     <string name="mining_rewardss">挖矿奖励</string>
     <string name="mining_contribution">挖矿贡献值 </string>
     <string name="mine_faster">加速挖矿</string>
     <string name="details">查看 >></string>
     <string name="rewardss_available">可领取奖励</string>
     <string name="rules">活动规则</string>
+    <string name="rules1"><font color="#C009FF">活动规则</font></string>
     <string name="basic_rewards">基础奖励</string>
     <string name="loan_application_rewards">借币奖励</string>
     <string name="repayment_rewards">还币奖励</string>
@@ -425,6 +426,7 @@
     <string name="across_trans_count">转移数量</string>
     <string name="across_trans_private_count">私链数量:</string>
     <string name="across_trans_public_count">公链数量:</string>
+    <string name="across_trans_public_tip"><font color="#ED190F">数量已超过私链数量</font></string>
     <string name="across_trans_poundage">手续费</string>
     <string name="across_trans_toaccount_num">到账数量</string>
     <string name="all">全部</string>
@@ -460,14 +462,23 @@
     <string name="user_id_back">身份证反面照</string>
     <string name="user_activity_photo">人像照片</string>
 
-    <string name="select_node">选择节点</string>
+    <string name="select_node">选择以太坊节点</string>
     <string name="select_node_green"><font color='#9B9B9B'>已连接（网络质量好）</font></string>
     <string name="select_node_yellow"><font color='#9B9B9B'>（网络质量一般）</font></string>
     <string name="select_node_red"><font color='#9B9B9B'>（网络质量差）</font></string>
     <string name="title_open_cloud">开启云存储</string>
     <string name="ipfs_select_node_tip">说明：\n
 云端数据默认存储在Bit Express提供的节点，您也可以自己搭建节点，选择把数据存储在自建节点上。
-        搭建节点教程可以访问 <u>https://open.dcc.finance</u></string>
+        搭建节点教程可以访问 <u>https://open.dcc.finance/cn/sdk/ipfs.html</u></string>
+    <string name="service_bsx_title">多币种预计年化 <font color='#ff0000'>10%-40%</font></string>
 
+    <string name="bsx_buy_again">想再买点？去<font color='#7B40FF'>币生息</font>市场看看 ></string>
+    <string name="passport_auth"><font color='#C009FF'>变更记录</font></string>
+    <string name="asset_auth"><font color='#C009FF'>资产授权</font></string>
+    <string name="asset_delete"><font color='#C009FF'>一键删除</font></string>
+    <string name="skip_creat"><font color='#C009FF'>跳过</font></string>
+    <string name="from_gallery"><font color='#C009FF'>相册</font></string>
+
+    <string name="tokenplus_tips">基于Linux环境搭建的量化交易系统，速度提升不止3倍\n无需自行购买服务器和配置交易软件，仅需注册账户，即可轻松套利\n每个用户独立服务器和IP，四重加密全面保障你的账户key安全\n遍布全球的服务器网络节点，优选离交易所最近节点，力争不错过每一次交易机会\n目前已支持国内前11大交易所，并持续增加中。</string>
 
 </resources>

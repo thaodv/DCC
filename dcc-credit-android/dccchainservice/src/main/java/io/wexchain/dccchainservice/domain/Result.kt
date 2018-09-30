@@ -3,6 +3,7 @@ package io.wexchain.dccchainservice.domain
 import com.google.gson.annotations.SerializedName
 import io.reactivex.Single
 import io.reactivex.SingleTransformer
+import io.reactivex.schedulers.Schedulers
 import io.wexchain.dccchainservice.DccChainServiceException
 
 /**

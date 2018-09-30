@@ -3,7 +3,7 @@ package io.wexchain.android.dcc
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import com.google.gson.JsonSyntaxException
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.fragment.PasteKeystoreFragment
 import io.wexchain.android.dcc.fragment.PastePrivateKeyFragment
 import io.reactivex.Single
@@ -78,14 +78,8 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
         toast("导入成功")
         ScfOperations.getScfAccountInfo()
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe {
-                showLoadingDialog()
-            }
-            .doFinally {
-                hideLoadingDialog()
-            }
+            .withLoading()
             .subscribe({acc->
-                finish()
                 if(acc === ScfAccountInfo.ABSENT){
                     navigateTo(CreateScfAccountActivity::class.java){
                         putExtra(Extras.FROM_IMPORT,true)
@@ -95,6 +89,8 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
                         putExtra(Extras.FROM_IMPORT,true)
                     }
                 }
+                finishActivity(LoadingActivity::class.java)
+                finish()
             })
     }
 

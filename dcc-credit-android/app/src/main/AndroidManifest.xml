@@ -25,9 +25,8 @@
         tools:replace="android:allowBackup,android:icon,android:label,android:theme,android:supportsRtl">
         <activity
             android:name="io.wexchain.android.dcc.LoadingActivity"
-            android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/DccLightTheme.App.Transparent.Loading">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -39,6 +38,11 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.MyCreditActivity"
+            android:label="@string/my_credit"
+            android:screenOrientation="portrait"
+            android:theme="@style/DccLightTheme.App.Immerse"/>
+        <activity
+            android:name="io.wexchain.android.dcc.MyCreditNewActivity"
             android:label="@string/my_credit"
             android:screenOrientation="portrait"
             android:theme="@style/DccLightTheme.App.Immerse"/>
@@ -63,7 +67,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.DigitalAssetsActivity"
-            android:label="@string/digital_assets"
+            android:label="数字钱包"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.DccExchangeActivity"
@@ -146,6 +150,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.PassportActivity"
+            android:label="统一登录"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.WebPageActivity"
@@ -158,6 +163,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.AuthManageActivity"
+            android:label="统一登录变更记录"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.AboutActivity"
@@ -404,43 +410,78 @@
         <activity
             android:name="io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity"
             android:label="@string/select_node"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.base.StaticHtmlActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.RepayingActivity"
             android:label="还币"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.DoRepayActivity"
             android:label="还币"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.RePaymentErrorActivity"
             android:label="还币"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.MyInterestActivity"
             android:label="DCC私链币生息1期"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.MyInterestDetailActivity"
             android:label="币生息详情"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.BuyInterestActivity"
             android:label="认购额度"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.home.HomeActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.bsx.BsxMarketActivity"
+            android:label="币生息"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity"
+            android:label="币生息持仓"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.mine.SettingActivity"
+            android:label="更多"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.home.TokenPlusActivity"
+            android:label="Tokenplus介绍"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.bsx.BsxDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.bsx.BsxHoldingDetailActivity"
+            android:label="持仓详情"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.home.LoanActivity"
+            android:label="信用借币"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.home.GardenActivity"
+            android:label="神秘花园"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.bsx.BsxDccBuyActivity"
+            android:label="认购额度"
             android:screenOrientation="portrait">
         </activity>
-
+        <activity
+            android:name="io.wexchain.android.dcc.modules.bsx.BsxEthBuyActivity"
+            android:label="认购额度"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

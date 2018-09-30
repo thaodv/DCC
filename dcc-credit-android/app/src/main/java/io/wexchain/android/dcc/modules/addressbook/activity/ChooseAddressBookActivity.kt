@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import io.wexchain.android.common.resultOk
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.repo.db.AddressBook
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener

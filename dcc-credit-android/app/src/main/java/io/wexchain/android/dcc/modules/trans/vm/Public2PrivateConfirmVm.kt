@@ -7,9 +7,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.SingleLiveEvent
+import io.wexchain.android.common.base.ActivityCollector
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity
@@ -169,13 +169,6 @@ class Public2PrivateConfirmVm(
                                                         scratch.remarks
                                                 )
                                             } else {
-                                                /* val waitTransDialog = WaitTransDialog(App.get())
-                                                 waitTransDialog.mTvText.text = "请待「待上链」交易变为「已上链」后再提交新的交易。"
-                                                 waitTransDialog.show()
-                                                 Single.error<Pair<BigInteger, String>>(
-                                                         IllegalStateException("")
-                                                 )
- */
                                                 agent.sendTransferTransaction(
                                                         cre,
                                                         scratch.to,

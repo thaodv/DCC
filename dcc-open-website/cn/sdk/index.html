@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SDK服务-DCC开放平台</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="keywords" content="DCC,Distributed Credit,Distributed Bank,Blockchain,分布式银行,DCC开放平台" />
+  <meta name="description" content="开放平台主要提供数据、服务市场功能，该交易市场服务于数据机构、AI风控算法服务商、信贷结构等机构合作者，机构合作者在使用链上服务的同时通过该平台可以查看、筛选、接洽自己需要的其他合作机构，利用DCC达成合作"/>
+  <link rel="shortcut icon" href="../../favicon.ico">
+
+  <link href="../../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/common.css">
+  <link rel="stylesheet" href="../../css/sdk.css">
+  <link rel="stylesheet" href="../../lib/mCustomScrollbar/jquery.mCustomScrollbar.css">
+  <script src="https://cdn.bootcss.com/bignumber.js/7.2.1/bignumber.js"></script>
+  <script src="../../lib/jquery-3.3.1.min.js"></script>
+  <script src="../../lib/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="../../lib/template-web.js"></script>
+  <script src="../../lib/bootstrap/js/bootstrap.min.js"></script>
+
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7ebdd6ce1e64ddfc4c27b2eaca23a85d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+</head>
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="./index.html">
+          <img alt="Brand" src="../../images/logo-cn.svg">
+        </a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="../index.html" >首页</a>
+        </li>
+        <li>
+          <a href="../introduction/index.html" >业务说明</a>
+        </li>
+        <li>
+          <a href="../about_us/index.html" >关于我们</a>
+        </li>
+        <li>
+          <a href="../reward/index.html" >生态奖励</a>
+        </li>
+        <li>
+          <a href="../sdk/index.html" class="active">SDK服务</a>
+        </li>
+        <li>
+          <a href="http://explorer.dcc.finance" target="_blank">区块链浏览器</a>
+        </li>
+        <li>
+          <a href="../coming_soon/index.html"  class="ctm-btn">立即加入</a>
+        </li>
+        <li class="li-i18n">
+          <div>
+            <a href="./index.html">English</a>&nbsp;/&nbsp;<a href="./index.html">中文</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <section class='container-fluid sdk'>
+     <aside>
+       <h4>开发者服务列表</h4>
+       <h5 class="sdk-fw">&nbsp;认证服务</h5>
+           <ul>
+              <li class="sdk-act"><a href="./index.html">多项数据认证</a></li>
+          </ul>
+     </aside>
+     <main class="clearfix">
+        <div class="panel panel-default hd">
+            <div class="panel-body">
+              <div class="fl hd-l">
+                <h3>多项数据认证</h3>
+                <p>包含实名认证、银行卡认证、运营通讯记录认证等三项认证服务，可以使用其中一项或多项认证服务，但实名认证服务为基础必选。</p>
+                <span>服务提供方</span>&nbsp;&nbsp;<a href="http://www.bitexpress.co/" target="_blank" alt="BitExpress">BitExpress</a>
+              </div>
+              <div class="fr hd-r">
+                <div class="fl hd-down">
+                  <span>敬请期待</span>
+                  <a href="javascript:;" class="hd-btn hd-btn-android">安卓SDK下载</a>
+                </div>
+                <div class="fr hd-down">
+                    <span>2018-08-09更新 </span>
+                    <a href="./AIAuthenSDK.zip" class="hd-btn hd-btn-ios">iOS SDK下载</a>
+                    <div class="hd-z">
+                        <!-- <a href="./AIAuthenSDK.zip" class="iosDemo demo">Demo</a> -->
+                        <a href="./guide.html" class="guide">接入指南</a></div> 
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <ul class="tab">
+          <li class="active">基本功能</li>
+          <li >功能说明</li>
+          <li class="tab-last">接入说明</li>
+        </ul>
+        <section>
+            <div class="basic part clearfix">
+                <div class="basic-mg">
+                  <h4>填写身份信息</h4>
+                  <img src="../../images/fwjs/sdk1.jpg" alt="">
+                  <p>填写个人的姓名、身份证号</p>
+                </div>
+                <div class="basic-mg">
+                  <h4>人脸采集</h4>
+                  <img src="../../images/fwjs/sdk2.jpg" alt="">
+                  <p>采集当前用户的人脸,并将所有信息提前交给认证方进行认证</p>
+                </div>
+                <div class="basic-mg">
+                  <h4>认证成功</h4>
+                  <img src="../../images/fwjs/sdk3.jpg" alt="">
+                  <p>不同商户需要用户实名信息时,用户无需反复实名认证,只需授权把明文信息发给商户,商户用明文加密后和链上的密文比对一致即可确认实名信息正确。</p>
+                </div>
+                <div class="basic-mg">
+                    <h4>填写银行卡信息</h4>
+                    <img src="../../images/fwjs/bank1.jpg" alt="">
+                    <p>填写个人银行卡卡号、预留手机号</p>
+                  </div>
+                  <div class="basic-mg">
+                    <h4>手机号验证</h4>
+                    <img src="../../images/fwjs/bank2.jpg" alt="">
+                    <p>确认银行卡为用户本人持有,并将所有信息提交给认证方进行认证</p>
+                  </div>
+                  <div class="basic-mg">
+                    <h4>认证成功</h4>
+                    <img src="../../images/fwjs/bank3.jpg" alt="">
+                    <p>不同商户需要用银行卡信息时,用户无需反复填写信息,只需授权把明文信息发给商户,商户用明文加密后和链上的密文比对一致即可确认银行卡信息正确。</p>
+                  </div>
+                  <div class="basic-mg">
+                      <h4>填写运营商信息</h4>
+                      <img src="../../images/fwjs/airtel1.jpg" alt="">
+                      <p>填写个人手机号、服务密码</p>
+                    </div>
+                    <div class="basic-mg">
+                      <h4>手机号验证</h4>
+                      <img src="../../images/fwjs/airtel2.jpg" alt="">
+                      <p>确认手机号为用户本人持有，并将所有信息提交给认证方进行认证</p>
+                    </div>
+                    <div class="basic-mg">
+                      <h4>认证成功</h4>
+                      <img src="../../images/fwjs/airtel3.jpg" alt="">
+                      <p>不同商户需要用户运营商通讯记录时，用户无需反复填写信息，只需授权把明文信息发给商户，商户用明文加密后和链上的密文比对一致即可确认运营商通讯记录是用户本人数据。</p>
+                    </div>
+              </div>
+              <div class="func part">
+                <div>
+                  <p> 1.实名认证主要功能是什么?</p>
+                  <p>用户填写姓名、身份证号、进行人脸识别以确认身份信息，认证通过后把实名信息的明文存在手机本地，把加密后摘要上链。该项认证服务使用数据源为国政通的姓名身份证号验证接口，Ping++的人脸识别接口，由BitExpress提供接口封装服务。 </p>
+                </div>
+                <div>
+                  <p> 2.银行卡认证主要功能是什么?</p>
+                  <p> 用户填写银行卡号、所属银行、银行预留手机号以确认银行卡为用户持有，认证通过后把银行卡的明文存在手机本地，把加密后摘要上链。该项认证服务使用数据源为银联银行卡认证接口，由BitExpress提供接口封装服务。</p>
+                </div>
+                <div>
+                  <p> 3. 运营商通讯记录认证主要功能是什么?</p>
+                  <p> 用户填写手机号码、手机号运营商密码、手机验证码以获取最近通讯记录，认证通过后把通讯记录的明文存在手机本地，把加密后摘要上链。该项认证服务使用数据源直接来源于运营商数据，由BitExpress提供接口封装服务。</p>
+                </div>
+                <div>
+                  <p> 4.使用该认证服务SDK有什么用处?</p>
+                  <p>传统模式下，不同商户需要用户实名信息时，用户需要反复填写信息并进行认证，已认证过的信息无法通用, 这显然是低效且浪费成本的。使用实名认证SDK，不同商户需要用户实名信息时，用户无需反复实名认证，只需授权把明文信息发给商户，商户用明文加密后和链上的密文比对一致即可确认实名信息正确。 银行卡认证、运营商通讯记录认证服务同理。</p>
+                </div>
+              </div>
+              <div class="access part">
+               <h4>下载SDK</h4>
+               <p>SDK下载后即可使用,无须注册平台账号</p>
+
+               <h4>集成SDK</h4>
+               <p>您可以查看<a href="./guide.html">接入指南</a></p>
+
+               <h4>使用SDK</h4>
+               <p>SDK中包含了实名认证、银行卡认证、运营通讯记录认证等三项认证服务，但不代表每一项都必须使用，可以使用其中一项或多项认证服务，但实名认证服务为基础必选，即不使用实名认证服务，其他的认证服务无法使用，但可以仅使用实名认证服务。</p>
+              </div>
+        </section>
+        
+     </main>
+  </section>
+        
+</body>
+<script>
+  $(document).ready(function () {
+    $('.tab li').click(function (i,val) {
+      var i = $(this).index();
+      $('.tab li').siblings().removeClass('active')
+      $(this).addClass('active')
+      $('.part').eq(i).show().siblings().hide();
+    })
+  })
+</script>
+</html>

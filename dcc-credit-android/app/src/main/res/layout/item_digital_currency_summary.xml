@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -11,39 +9,34 @@
 
         <variable
             name="dc"
-            type="io.wexchain.digitalwallet.DigitalCurrency"
-            />
+            type="io.wexchain.digitalwallet.DigitalCurrency" />
 
         <variable
             name="holdingMap"
-            type="android.databinding.ObservableMap&lt;io.wexchain.digitalwallet.DigitalCurrency, java.math.BigInteger&gt;"
-            />
+            type="android.databinding.ObservableMap&lt;io.wexchain.digitalwallet.DigitalCurrency, java.math.BigInteger&gt;" />
 
         <variable
             name="quoteMap"
-            type="android.databinding.ObservableMap&lt;String, io.wexchain.digitalwallet.api.domain.front.CoinDetail&gt;"
-            />
+            type="android.databinding.ObservableMap&lt;String, io.wexchain.digitalwallet.api.domain.front.CoinDetail&gt;" />
 
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <TextView
-                android:id="@+id/tv_currency_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical|right"
-                android:textColor="#6766cc"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="4dp"
-                android:text="@{ViewModelHelper.getBalanceStr(dc,holdingMap[dc])}"
-                tools:text="4371538.38"
-                android:background="@drawable/background_holding"
-                />
+            android:id="@+id/tv_currency_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/background_holding"
+            android:gravity="center_vertical|right"
+            android:text="@{ViewModelHelper.getBalanceStr(dc,holdingMap[dc])}"
+            android:textColor="#6766cc"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="4371538.38" />
 
         <TextView
             android:id="@+id/tv_currency_symbol"
@@ -51,33 +44,32 @@
             android:layout_height="wrap_content"
             android:text="@{dc.symbol}"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-            app:layout_constraintLeft_toRightOf="@id/iv_currency_logo"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_currency_amount"
+            app:layout_constraintLeft_toRightOf="@id/iv_currency_logo"
             app:layout_constraintVertical_chainStyle="spread"
-            tools:text="ETH"
-            />
+            tools:text="ETH" />
+
         <ImageView
-                android:id="@+id/iv_currency_logo"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:padding="6dp"
-                app:imageUrl="@{dc.icon}"
-                app:errorRes="@{@drawable/ethereum}"
-                app:layout_constraintTop_toTopOf="@id/tv_currency_amount"
-                tools:src="@drawable/ethereum"
-                />
+            android:id="@+id/iv_currency_logo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="6dp"
+            android:src="@drawable/ethereum"
+            app:errorRes="@{@drawable/ethereum}"
+            app:imageUrl="@{dc.icon}"
+            app:layout_constraintTop_toTopOf="@id/tv_currency_amount"
+            tools:src="@drawable/ethereum" />
 
         <TextView
             android:id="@+id/tv_currency_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_currency_approx"
             android:text="@{dc.description}"
             android:textColor="@color/text_dark_alpha"
-            tools:text="Ethereum Foundation"
-            />
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_currency_approx"
+            app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol"
+            tools:text="Ethereum Foundation" />
 
 
         <TextView
@@ -85,11 +77,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
+            android:text="@{ViewModelHelper.getApproxValueStr(dc,holdingMap[dc],quoteMap[dc.symbol])}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_currency_amount"
-            android:text="@{ViewModelHelper.getApproxValueStr(dc,holdingMap[dc],quoteMap[dc.symbol])}"
-            tools:text="~$4371538.38"
-            />
+            tools:text="~$4371538.38" />
 
         <View
             style="@style/DividerHorizontal"
@@ -97,8 +88,7 @@
             android:layout_marginTop="4dp"
             app:layout_constraintLeft_toRightOf="@id/iv_currency_logo"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_currency_approx"
-            />
+            app:layout_constraintTop_toBottomOf="@id/tv_currency_approx" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

@@ -2,34 +2,42 @@ package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.Pop
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.domain.CertificationType
+import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
-import io.wexchain.android.dcc.tools.check
+import worhavah.regloginlib.tools.check
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityMyCreditBinding
 import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import io.wexchain.digitalwallet.Erc20Helper
-import io.wexchain.ipfs.utils.doMain
+import io.wexchain.ipfs.utils.io_main
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
+import worhavah.certs.bean.TNcert1newreport
+import worhavah.certs.bean.TNcertReport
+import worhavah.tongniucertmodule.SubmitTNLogActivity
+import worhavah.tongniucertmodule.TnLogCertificationActivity
 import java.util.*
+
 
 class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
 
@@ -47,13 +55,13 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
         binding.asBankVm = obtainAuthStatus(CertificationType.BANK)
         binding.asMobileVm = obtainAuthStatus(CertificationType.MOBILE)
         binding.asPersonalVm = obtainAuthStatus(CertificationType.PERSONAL)
+        binding.asTongniuVm = obtainAuthStatus(CertificationType.TONGNIU)
     }
 
     private fun getCloudToken() {
         IpfsOperations.getIpfsKey()
                 .checkKey()
-                .subscribeOn(Schedulers.io())
-                .doMain()
+                .io_main()
                 .subscribeBy {
                     val ipfsKeyHash = passport.getIpfsKeyHash()
                     binding.creditIpfsCloud.onClick {
@@ -153,8 +161,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                             }
                             App.get().chainGateway.getCertData(passport.address, ChainGateway.BUSINESS_COMMUNICATION_LOG).check()
                         }
-                        .subscribeOn(Schedulers.io())
-                        .doMain()
+                        .io_main()
                         .doFinally {
                             refreshCertStatus()
                         }
@@ -170,6 +177,46 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                                 })
             }
         }
+
+        binding.asTongniuVm?.let {
+            if (it.status.get() == UserCertStatus.INCOMPLETE) {
+                //get report
+                val passport = App.get().passportRepository.getCurrentPassport()!!
+                getTNLogReport(passport) .doFinally {
+                    refreshCertStatus()
+                }
+                    .subscribeBy(
+                        onSuccess = {
+                            if(null!=it){
+                               // Log.e("getTNLogReport",it)
+                            }
+                        },
+                        onError = {
+                            Pop.toast(it.message ?: "系统错误", this)
+                        })
+
+            }
+        }
+    }
+
+    fun getTNLogReport(passport: Passport): Single<TNcert1newreport> {
+        require(passport.authKey != null)
+        val address = passport.address
+        val privateKey = passport.authKey!!.getPrivateKey()
+        val orderId =worhavah.certs.tools.CertOperations.certPrefs.certCmLogOrderId.get()
+
+           return  worhavah.certs.tools.CertOperations.tnCertApi.TNgetReport(
+            address = address,
+            orderId = orderId,
+
+            signature = ParamSignatureUtil.sign(
+                privateKey, mapOf(
+                    "address" to address,
+                    "orderId" to orderId.toString()
+                )
+            )
+        ).compose(Result.checked())
+               //.compose(Result.checked())
     }
 
     private fun getDescription(certificationType: CertificationType): String {
@@ -178,6 +225,8 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
             CertificationType.PERSONAL -> getString(R.string.safer_assessment)
             CertificationType.BANK -> getString(R.string.for_quick_approvalto_improve)
             CertificationType.MOBILE -> getString(R.string.to_improve_the_approval)
+            CertificationType.TONGNIU -> getString(R.string.to_improve_the_approval)
+            CertificationType.LOANREPORT -> "借贷记录全整合"
         }
     }
 
@@ -187,6 +236,8 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
             CertificationType.PERSONAL -> getString(R.string.verify_your_legal_documentation)
             CertificationType.BANK -> getString(R.string.bank_account_verification)
             CertificationType.MOBILE -> getString(R.string.carrier_verification)
+            CertificationType.TONGNIU -> getString(R.string.to_improve_the_approval)
+            CertificationType.LOANREPORT -> "借贷记录全整合"
         }
     }
 
@@ -229,8 +280,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                 } else {
                     PassportOperations.ensureCaValidity(this) {
                         checkIpfsAndChainDigest(ChainGateway.BUSINESS_ID)
-                                .subscribeOn(Schedulers.io())
-                                .doMain()
+                                .io_main()
                                 .withLoading()
                                 .filter {
                                     if (!it) navigateTo(SubmitIdActivity::class.java)
@@ -272,6 +322,27 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                     }
                 }
             }
+            CertificationType.TONGNIU -> {
+
+                when (status) {
+                    UserCertStatus.DONE, UserCertStatus.TIMEOUT -> {
+                       // navigateTo(TnLogCertificationActivity::class.java)
+                        startActivity(Intent(this, TnLogCertificationActivity::class.java))
+                    }
+                    UserCertStatus.NONE -> {
+                        PassportOperations.ensureCaValidity(this) {
+                            //  navigateTo(worhavah.tongniucertmodule.TNCertDataActivity::class.java)
+                            //     startActivity(Intent(this, TnLogCertificationActivity::class.java))
+                            startActivity(Intent(this, SubmitTNLogActivity::class.java))
+                        }
+                    }
+                    UserCertStatus.INCOMPLETE -> {
+                        // get report processing
+                    }
+                }
+
+                }
+
         }
     }
 

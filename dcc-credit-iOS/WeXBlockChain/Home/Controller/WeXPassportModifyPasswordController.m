@@ -10,7 +10,7 @@
 #import "WeXPassportBackupViewController.h"
 
 #import "WeXPasswordModifySuccessFloatView.h"
-
+#import "WeXPromptAddressView.h"
 
 @interface WeXPassportModifyPasswordController ()<WeXPasswordManagerDelegate,WeXPasswordModifySuccessFloatViewDelegate>
 {
@@ -24,6 +24,9 @@
 @property (nonatomic,strong)UITextField *oldPsdTextField;
 
 @property (nonatomic,strong)UITextField *newestPsdTextField;
+
+@property(nonatomic,strong)WeXPromptAddressView *promptView;
+@property(nonatomic,strong)UIView *blackView;
 
 @end
 
@@ -63,7 +66,7 @@
     _oldPsdTextField.borderStyle = UITextBorderStyleNone;
     _oldPsdTextField.secureTextEntry = YES;
     UILabel *leftLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,170,45)];
-    leftLabel1.text = WeXLocalizedString(@"请输入原钱包密码:");
+    leftLabel1.text = WeXLocalizedString(@"原钱包密码:");
     leftLabel1.font = [UIFont systemFontOfSize:17];
     leftLabel1.textColor = COLOR_LABEL_DESCRIPTION;
     _oldPsdTextField.backgroundColor = [UIColor clearColor];
@@ -109,7 +112,7 @@
     _newestPsdTextField.borderStyle = UITextBorderStyleNone;
     _newestPsdTextField.secureTextEntry = YES;
     UILabel *leftLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(0,0,170,45)];
-    leftLabel2.text = WeXLocalizedString(@"请输入新钱包密码:");
+    leftLabel2.text = WeXLocalizedString(@"新钱包密码:");
     leftLabel2.font = [UIFont systemFontOfSize:17];
     leftLabel2.textColor = COLOR_LABEL_DESCRIPTION;
     leftLabel2.backgroundColor = [UIColor clearColor];
@@ -238,9 +241,10 @@
                 _model.passportPassword = self.newestPsdTextField.text;
                 [WexCommonFunc savePassport:_model];
                 
-                _successView = [[WeXPasswordModifySuccessFloatView alloc] initWithFrame:self.view.bounds];
-                _successView.delegate = self;
-                [self.view addSubview:_successView];
+//                _successView = [[WeXPasswordModifySuccessFloatView alloc] initWithFrame:self.view.bounds];
+//                _successView.delegate = self;
+//                [self.view addSubview:_successView];
+                [self addPromptView];
                 
                 _oldPsdTextField.text = @"";
                 _newestPsdTextField.text = @"";
@@ -292,6 +296,42 @@
 }
 
 
+//弹框提示
+- (void)addPromptView{
+    if (_blackView) {
+        return ;
+    }
+    UIView *backT = [[UIView alloc]init];
+    //  backT.backgroundColor = [UIColor blackColor];
+    backT.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+    backT.frame =  CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+    self.blackView = backT;
+    [self.view addSubview:backT];
+    
+    _promptView = [[WeXPromptAddressView alloc]init];
+    [self.blackView addSubview:_promptView];
+    _promptView.titleStr = WeXLocalizedString(@"修改成功");
+    _promptView.contentStr = WeXLocalizedString(@"钱包密码修改成功,KEYSTORE信息变更,建议您立即重新备份钱包。");
+    _promptView.cancelBtnStr = WeXLocalizedString(@"暂不备份");
+    _promptView.sureBtnStr = WeXLocalizedString(@"备份钱包");
+    __weak __typeof(self)weakSelf = self;
+    _promptView.cancelBtnBlock = ^{
+        [weakSelf removePromptView];
+    };
+    _promptView.sureBtnBlock = ^{
+        [weakSelf removePromptView];
+        [weakSelf passwordModifySuccessFloatViewDidBackup];
+        
+    };
+    _promptView.frame = CGRectMake(52, (kScreenHeight-180)/2, kScreenWidth-104, 180);
+    
+}
+
+//移除弹框提示
+- (void)removePromptView{
+    [self.blackView removeFromSuperview];
+    self.blackView = nil;
+}
 
 
 

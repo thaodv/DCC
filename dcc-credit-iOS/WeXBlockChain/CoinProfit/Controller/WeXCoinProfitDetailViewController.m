@@ -17,6 +17,10 @@
 #import "WeXCPHeader.h"
 #import "WeXCPGetContractAddressAdapter.h"
 #import "NSString+WexTool.h"
+#import "WeXCPBuyInETHViewController.h"
+#import "WeXHomePushService.h"
+#import "WeXCPPotListViewController.h"
+#import "WeXCPActivityMainResModel.h"
 
 @interface WeXCoinProfitDetailViewController ()
 
@@ -35,7 +39,8 @@
 @property (nonatomic, copy) NSString *cpMinBuyAmount;
 //状态
 @property (nonatomic, copy) NSString *cpStatus;
-
+//区分是否是ETH
+@property (nonatomic, assign) BOOL isETH;
 
 @end
 
@@ -50,6 +55,7 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSAssert(_productModel, @"productModel参数为空");
     _titles = @[@"认购币种",@"收益方式",@"产品额度",@"时间限制",@"剩余额度"];
     self.title = WeXLocalizedString(@"币生息");
     [self configureNavigaionBar];
@@ -62,14 +68,21 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
 }
 - (void)wex_autoRefresh {
     [WeXPorgressHUD showLoadingAddedTo:self.view];
-    [self getCPContractAddress];
+    [self p_configureContractAddressModel];
+    [self setIsETH:[_productModel.assetCode isEqualToString:@"ETH"]];
+    [self requestSaleInfo];
 }
-- (void)wex_refreshAction {
-    if ([self.responseModel.result length] > 0) {
-        [self requestSaleInfo];
-    } else {
-        [self getCPContractAddress];
+// MARK: - 配置合约地址Model
+- (void)p_configureContractAddressModel {
+    if ([self.responseModel.result length] < 1) {
+        self.responseModel = [WeXCPGetContractAddressResModel new];
+        self.responseModel.result = _productModel.contractAddress;
     }
+}
+
+- (void)wex_refreshAction {
+    [self p_configureContractAddressModel];
+    [self requestSaleInfo];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -82,12 +95,12 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
 - (void)configureNavigaionBar {
     [self setNavigationNomalBackButtonType];
     [self.tableView setBackgroundColor:ColorWithHex(0xF8F8FF)];
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"持仓" style:UIBarButtonItemStyleDone target:self action:@selector(positionEvent:)];
-    self.navigationItem.rightBarButtonItem = rightButton;
-    NSDictionary *attributes = @{NSFontAttributeName:WexFont(15),
-                                 NSForegroundColorAttributeName:ColorWithHex(0x5756B3)
-                                 };
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:attributes forState:UIControlStateNormal];
+//    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"持仓" style:UIBarButtonItemStyleDone target:self action:@selector(positionEvent:)];
+//    self.navigationItem.rightBarButtonItem = rightButton;
+//    NSDictionary *attributes = @{NSFontAttributeName:WexFont(15),
+//                                 NSForegroundColorAttributeName:ColorWithHex(0x5756B3)
+//                                 };
+//    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:attributes forState:UIControlStateNormal];
 }
 
 - (void)wexRegisterTableViewCell:(UITableView *)tableView {
@@ -210,11 +223,12 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
     switch (indexPath.section) {
         case 0: {
             WeXCoinProfitTopProfitCell *cell = (WeXCoinProfitTopProfitCell *)currentCell;
+//            [cell setNewCoinProfitDetailWithProductModel:_productModel];
             if (self.infoResModel) {
                 [cell setSaleInfoModel:self.infoResModel];
             }
             if ([self.cpMinBuyAmount length] > 0) {
-                [cell setMinBuyAmount:self.cpMinBuyAmount];
+                [cell setMinBuyAmount:self.cpMinBuyAmount assetCode:_productModel.assetCode];
             }
         }
             break;
@@ -223,12 +237,12 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
             NSString *title = _titles[indexPath.row];
             NSString *subTitle = nil;
             if (indexPath.row == 0) {
-                subTitle = @"DCC";
+                subTitle = _productModel.assetCode;
             } else if (indexPath.row == 1) {
                 subTitle = self.infoResModel.profitMethod;
             } else if (indexPath.row == 2) {
                 if ([self.cpTotalAmount length] > 0) {
-                    subTitle = [NSString stringWithFormat:@"%@DCC",self.cpTotalAmount];
+                    subTitle = [NSString stringWithFormat:@"%@%@",self.cpTotalAmount,_productModel.assetCode];
                 }
             } else if (indexPath.row == 3) {
                 if ([self.infoResModel.endTime length] > 0) {
@@ -238,7 +252,7 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
             } else {
                 if ([self.cpRemainAmout length] > 0) {
                     NSString *rate = [NSString stringWithFormat:@"%.1f",[self.cpRemainAmout floatValue] * 100 / [self.cpTotalAmount floatValue]];
-                    subTitle = [NSString stringWithFormat:@"%@ DCC (%@%@)",self.cpRemainAmout,rate,@"%"];
+                    subTitle = [NSString stringWithFormat:@"%@ %@ (%@%@)",self.cpRemainAmout,_productModel.assetCode,rate,@"%"];
                 }
             }
             if (indexPath.row == _titles.count - 1) {
@@ -299,31 +313,47 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
 // MARK: - 持仓
 - (void)positionEvent:(UIBarButtonItem *)buttonItem {
     WEXNSLOG(@"持仓");
-    WeXCPPotDetailViewController *potDetailVC = [WeXCPPotDetailViewController new];
-    [self.navigationController pushViewController:potDetailVC animated:YES];
+//    WeXCPPotDetailViewController *potDetailVC = [WeXCPPotDetailViewController new];
+//    [self.navigationController pushViewController:potDetailVC animated:YES];
+    [WeXHomePushService pushFromVC:self toVC:[WeXCPPotListViewController new]];
 }
 
 // MARK: - 认购
 - (void)buyInEvent {
-    WeXCPBuyAmoutViewController *buyAmountVC = [WeXCPBuyAmoutViewController new];
     [WeXPorgressHUD hideLoading];
-    [self.navigationController pushViewController:buyAmountVC animated:YES];
+    if ([_productModel.assetCode isEqualToString:@"DCC"]) {
+        WeXCPBuyAmoutViewController *buyDCCVC = [WeXCPBuyAmoutViewController new];
+        buyDCCVC.productModel = _productModel;
+        [WeXHomePushService pushFromVC:self toVC:buyDCCVC];
+    } else {
+        WeXCPBuyInETHViewController *buyETHVC = [WeXCPBuyInETHViewController new];
+        buyETHVC.productModel = _productModel;
+        [WeXHomePushService pushFromVC:self toVC:buyETHVC];
+    }
+//    WeXCPBuyAmoutViewController *buyAmountVC = [WeXCPBuyAmoutViewController new];
+//
+//    [self.navigationController pushViewController:buyAmountVC animated:YES];
     WEXNSLOG(@"呵呵呵哒");
 }
 
 - (void)requestSaleInfo {
     NSString *params = @"[]";
     //总额度
-    NSString *totalAmountJson = WEXCP_InvestCeilAmount_ABI_BALANCE;
+    NSString *totalAmountJson    = _isETH ? WEXCP_ETH_InvestCeilAmount_ABI : WEXCP_InvestCeilAmount_ABI_BALANCE;
     //已认购额度
-    NSString *haveBuyAmountJson = WEXCP_InvestedTotalAmount_ABI_BALANCE;
+    NSString *haveBuyAmountJson  = _isETH ? WEXCP_ETH_InvestedTotalAmount_ABI: WEXCP_InvestedTotalAmount_ABI_BALANCE;
     //产品起购额度
-    NSString *minAmountJson   = WEXCP_MinAmountPerHand_ABI_BALANCE;
+    NSString *minAmountJson      = _isETH ? WEXCP_ETH_MinAmountPerHand_ABI : WEXCP_MinAmountPerHand_ABI_BALANCE;
     //活动状态
-    NSString *statusJson = WEXCP_STATUS_ABI_BALANCE;
+    NSString *statusJson         = _isETH ? WEXCP_ETH_Status_ABI : WEXCP_STATUS_ABI_BALANCE;
+    //规则信息
+    NSString *salInfoJson = _isETH ? WEXCP_ETH_SaleInfo_ABI : WEXCP_SaleInfo_ABI_BALANCE;
+    //根据不同期数来获取对应的URL
+    NSString *DCCURL = [WEXCP_INVEST_V_URL stringByAppendingString:[_productModel.name formatInputString]];
+    NSString *webURL = _isETH ? YTF_DEVELOP_INFURA_SERVER : DCCURL;
     
     [[WXPassHelper instance] initPassHelperBlock:^(id response) {
-        [[WXPassHelper instance] initProvider:WEXCP_INVEST_URL responseBlock:^(id response) {
+        [[WXPassHelper instance] initProvider:webURL responseBlock:^(id response) {
             //产品起购额度
             [[WXPassHelper instance] encodeFunCallAbiInterface:minAmountJson params:params responseBlock:^(id response) {
                 [[WXPassHelper instance] callContractAddress:self.responseModel.result data:response responseBlock:^(id response) {
@@ -374,7 +404,7 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
                 }];
             }];
             //规则信息
-            [[WXPassHelper instance] encodeFunCallAbiInterface:WEXCP_SaleInfo_ABI_BALANCE params:params responseBlock:^(id response) {
+            [[WXPassHelper instance] encodeFunCallAbiInterface:salInfoJson params:params responseBlock:^(id response) {
                 [[WXPassHelper instance] call3ContractAddress:self.responseModel.result data:response responseBlock:^(id response) {
                     NSDictionary *responseDict = response;
                     NSString * originBalance   = [responseDict objectForKey:@"result"];
@@ -412,7 +442,11 @@ static NSString *const kCPBuyInCellID = @"WeXBuyInTableViewCellID";
 
 - (void)refreshRemainAmount {
     if ([self.cpTotalAmount length] > 0 && [self.cpHaveSaleAmout length] > 0) {
-        self.cpRemainAmout = [@([self.cpTotalAmount integerValue] - [self.cpHaveSaleAmout integerValue]) stringValue];
+        if ([_productModel.assetCode isEqualToString:@"DCC"]) {
+            self.cpRemainAmout = [@([self.cpTotalAmount integerValue] - [self.cpHaveSaleAmout integerValue]) stringValue];
+        } else {
+            self.cpRemainAmout = [@([self.cpTotalAmount floatValue] - [self.cpHaveSaleAmout floatValue]) stringValue];
+        }
 //        [self reloadCellWithRow:4 section:1];
         [self.tableView reloadData];
     }

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.support.annotation.WorkerThread
 import android.support.v4.app.FragmentManager
 import android.util.Base64
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Single
@@ -17,8 +18,8 @@ import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.tools.RetryWithDelay
-import io.wexchain.android.dcc.tools.check
-import io.wexchain.android.dcc.tools.pair
+import worhavah.regloginlib.tools.check
+import worhavah.regloginlib.tools.pair
 import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.android.dcc.view.dialog.CertFeeConfirmDialog
 import io.wexchain.android.dcc.vm.ViewModelHelper
@@ -35,7 +36,11 @@ import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import io.wexchain.ipfs.entity.BankInfo
 import io.wexchain.ipfs.entity.IdInfo
 import io.wexchain.ipfs.entity.PhoneInfo
+import io.wexchain.ipfs.entity.TNPhoneInfo
 import io.wexchain.ipfs.utils.base64
+import worhavah.certs.tools.CertOperations
+import worhavah.certs.tools.CertOperations.getTNLogUserStatus
+import worhavah.certs.tools.CertOperations.saveTnLogCertExpired
 import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -66,7 +71,7 @@ object CertOperations {
                     val fee = it.toLong()
                     CertFeeConfirmDialog.create(fee, proceedAction).show(context(), "confirm_cert_fee")
 //                    if (fee > 0){
-//                        CertFeeConfirmDialog.create(proceedAction).show(context(),"confirm_cert_fee")
+//                        CertsCertFeeConfirmDialog.create(proceedAction).show(context(),"confirm_cert_fee")
 //                    }else{
 //                        proceedAction()
 //                    }
@@ -81,8 +86,14 @@ object CertOperations {
                 .check()
                 .map {
                     val content = it.content
-                    val de1 = Base64.decode(content.digest1, Base64.DEFAULT)
+                    var de1 = Base64.decode(content.digest1, Base64.DEFAULT)
                     val de2 = Base64.decode(content.digest2, Base64.DEFAULT)
+                   /* if(business.equals(ChainGateway.TN_COMMUNICATION_LOG)){
+                        de1 = MessageDigest.getInstance("SHA256").digest(Base64.decode(content.digest1, Base64.DEFAULT))
+                    }*/
+                   /* val d3=Base64.encode(de1, Base64.DEFAULT)
+                    Log.e("d3=  ", String(d3))*/
+                   // Log.e("d3=d3=",dig264String)
                     Pair(de1, de2)
                 }
     }
@@ -93,10 +104,17 @@ object CertOperations {
                     ChainGateway.BUSINESS_ID -> getLocalIdDigest()
                     ChainGateway.BUSINESS_BANK_CARD -> getLocalBankDigest()
                     ChainGateway.BUSINESS_COMMUNICATION_LOG -> getLocalCmDigest()
+                    ChainGateway.TN_COMMUNICATION_LOG-> worhavah.certs.tools.CertOperations.getLocalTnDigest()
                     else -> null
                 }
         return getChainDigest(business)
                 .map {
+                  /*  if(business.equals(ChainGateway.TN_COMMUNICATION_LOG)){
+                        Log.e("it.first",String(it.first))
+                        Log.e("localDigest!!.first",String(localDigest!!.first))
+                        Log.e("it.first  decode",String(Base64.encode(it.first, Base64.DEFAULT)))
+                        Log.e("localDigest!!.decode",String(Base64.encode(localDigest!!.first, Base64.DEFAULT)) )
+                    }*/
                     Arrays.equals(it.first, localDigest!!.first) && Arrays.equals(it.second, localDigest.second)
                 }
     }
@@ -160,12 +178,12 @@ object CertOperations {
                     Single.zip(
                             api.getCertContractAddress(business).compose(Result.checked()),
                             api.getTicket().compose(Result.checked()),
-                            pair()
-                    ).flatMap { (contractAddress, ticket) ->
-                        val tx = applyCall.txSigned(credentials, contractAddress, nonce)
-                        api.certApply(ticket.ticket, tx, null, business)
-                                .compose(Result.checked())
-                    }
+                            pair())
+                            .flatMap { (contractAddress, ticket) ->
+                                val tx = applyCall.txSigned(credentials, contractAddress, nonce)
+                                api.certApply(ticket.ticket, tx, null, business)
+                                        .compose(Result.checked())
+                            }
                 }
                 .certOrderByTx(api, business)
                 .flatMap {
@@ -198,14 +216,14 @@ object CertOperations {
         val data = certBankCardData!!.bankCardNo.toByteArray(Charsets.UTF_8) + certBankCardData.phoneNo.toByteArray(Charsets.UTF_8)
         val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
         val digest2 = byteArrayOf()
-        return Pair(digest1, digest2)
+        return digest1 to digest2
     }
 
     fun getLocalCmDigest(): Pair<ByteArray, ByteArray> {
         val cmCertOrderId = getCmCertOrderId()
         val data = getCmLogData(cmCertOrderId).blockingGet()
         val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
-        return Pair(digest1, byteArrayOf())
+        return digest1 to byteArrayOf()
     }
 
     fun getLocalIdDigest(): Pair<ByteArray, ByteArray> {
@@ -220,7 +238,7 @@ object CertOperations {
             update(MessageDigest.getInstance(DIGEST).digest(idPics.second))
             digest(MessageDigest.getInstance(DIGEST).digest(idPics.third))
         }
-        return Pair(digest1, digest2)
+        return digest1 to digest2
     }
 
     fun submitBankCardCert(
@@ -422,6 +440,8 @@ object CertOperations {
         ).compose(Result.checked())
 
     }
+
+
 
     fun getCommunicationLogReport(passport: Passport): Single<CmLogReportData> {
         require(passport.authKey != null)
@@ -644,6 +664,18 @@ object CertOperations {
             CertificationType.MOBILE -> {
                 getCmLogUserStatus()
             }
+            CertificationType.TONGNIU -> {
+               val i= getTNLogUserStatus()
+                when (i){
+                    worhavah.certs.tools . UserCertStatus.DONE -> UserCertStatus.DONE
+                    worhavah.certs.tools .  UserCertStatus.NONE -> UserCertStatus.NONE
+                    worhavah.certs.tools .  UserCertStatus.INCOMPLETE -> UserCertStatus.INCOMPLETE
+                }
+
+            }
+            CertificationType.LOANREPORT -> {
+                UserCertStatus.LOANREPORT
+            }
             else -> UserCertStatus.NONE
         }
     }
@@ -658,6 +690,20 @@ object CertOperations {
                     ensureNewFile()
                     writeBytes(phoneInfo.mobileAuthenCmData.base64())
                 }
+    }
+
+    fun saveIpfsTNData(phoneInfo: TNPhoneInfo) {
+        saveTnLogCertExpired(java.lang.Long.parseLong(phoneInfo.sameCowMobileAuthenExpired) )
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.set(phoneInfo.sameCowMobileAuthenOrderid.toLong())
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogState.set(phoneInfo.sameCowMobileAuthenStatus)
+        worhavah.certs.tools.CertOperations. certPrefs.certTNLogPhoneNo.set(phoneInfo.sameCowMobileAuthenNumber)
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(String(phoneInfo.sameCowMobileAuthenCmData.base64()) )
+       // worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(String(Base64.encode(phoneInfo.sameCowMobileAuthenCmData.toByteArray(),Base64.NO_WRAP)  ))
+       /* File(App.get().filesDir, certCmLogReportFileName(phoneInfo.mobileAuthenOrderid.toLong()))
+            .apply {
+                ensureNewFile()
+                writeBytes(phoneInfo.mobileAuthenCmData.base64())
+            }*/
     }
 
     fun saveIpfsBankData(bankInfo: BankInfo) {

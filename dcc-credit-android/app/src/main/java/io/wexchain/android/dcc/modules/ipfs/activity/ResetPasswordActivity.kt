@@ -2,19 +2,18 @@ package io.wexchain.android.dcc.modules.ipfs.activity
 
 import android.os.Bundle
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
+import io.wexchain.android.common.base.ActivityCollector
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.base.ActivityCollector
-import io.wexchain.android.dcc.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
 import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
 import io.wexchain.ipfs.core.IpfsCore
-import io.wexchain.ipfs.utils.doMain
+import io.wexchain.ipfs.utils.io_main
 import kotlinx.android.synthetic.main.activity_resetpsw.*
 
 /**
@@ -48,13 +47,12 @@ class ResetPasswordActivity : BaseCompatActivity() {
 
     private fun performPassportDelete() {
         IpfsOperations.delectedIpfsKey()
-                .subscribeOn(Schedulers.io())
                 .doOnSuccess {
                     IpfsCore.init(BuildConfig.IPFS_ADDRESS)
                     passport.setIpfsHostStatus(true)
                     passport.setIpfsUrlConfig("", "")
                 }
-                .doMain()
+                .io_main()
                 .withLoading()
                 .subscribeBy {
                     finish()

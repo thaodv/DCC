@@ -9,7 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.network.GlideApp
@@ -100,7 +100,7 @@ class MarketingScenariosActivity : BaseCompatActivity(), ItemViewClickListener<M
                 }
                 else -> {
                     // cert undone
-                    navigateTo(MyCreditActivity::class.java)
+                    navigateTo(MyCreditNewActivity::class.java)
                 }
             }
         }

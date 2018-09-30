@@ -11,8 +11,8 @@ import io.wexchain.android.common.Pop
 import io.wexchain.android.common.getAndroidKeyStoreLoaded
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.AuthManageActivity
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.dcc.PassportActivity
 import io.wexchain.android.dcc.chain.EthsFunctions.deleteKey
 import io.wexchain.android.dcc.chain.EthsHelper.ANDROID_RSA_PREFIX
 import io.wexchain.android.dcc.chain.EthsHelper.createAndroidRSAKeyPair
@@ -32,50 +32,6 @@ import java.util.*
  * Created by lulingzhi on 2017/11/24.
  */
 object PassportOperations {
-
-    fun ensureCaValidity(activity: BaseCompatActivity, action: () -> Unit) {
-        val app = App.get()
-        val passport = app.passportRepository.getCurrentPassport()
-        if (passport == null) {
-            Pop.toast("钱包不存在", activity)
-            return
-        }
-        val authKey = passport.authKey
-        if (authKey == null) {
-            Single.error<AuthKey>(IllegalStateException("未启用统一登录"))
-        } else {
-            app.chainGateway.getPubKey(passport.address)
-                    .compose(Result.checked())
-                    .flatMap {
-                        val decodedPubKey = Base64.decode(it, Base64.DEFAULT)
-                        if (Arrays.equals(decodedPubKey, authKey.publicKeyEncoded)) {
-                            Single.just(authKey)
-                        } else {
-                            Single.error<AuthKey>(IllegalStateException("您当前使用的统一登录秘钥与链上不一致,将影响部分功能的正常使用"))
-                        }
-                    }
-        }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
-                    activity.showLoadingDialog()
-                }
-                .doFinally {
-                    activity.hideLoadingDialog()
-                }
-                .subscribe({
-                    action()
-                }, {
-                    CustomDialog(activity).apply {
-                        this.setTitle(io.wexchain.android.dcc.tools.getString(R.string.tips))
-                        textContent = it.message
-                        withPositiveButton(io.wexchain.android.dcc.tools.getString(R.string.update)) {
-                            activity.navigateTo(AuthManageActivity::class.java)
-                            true
-                        }
-                        withNegativeButton()
-                    }.assembleAndShow()
-                })
-    }
 
     fun createNewAndEnablePassport(password: String): Single<Pair<Credentials, AuthKey>> {
         require(password.isNotBlank())
@@ -103,6 +59,50 @@ object PassportOperations {
                     App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(it.first.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.ENABLE))
                 }
                 .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun ensureCaValidity(activity: BaseCompatActivity, action: () -> Unit) {
+        val app = App.get()
+        val passport = app.passportRepository.getCurrentPassport()
+        if (passport == null) {
+            Pop.toast("钱包不存在", activity)
+            return
+        }
+        val authKey = passport.authKey
+        if (authKey == null) {
+            Single.error<AuthKey>(IllegalStateException("未启用统一登录"))
+        } else {
+            app.chainGateway.getPubKey(passport.address)
+                .compose(Result.checked())
+                .flatMap {
+                    val decodedPubKey = Base64.decode(it, Base64.DEFAULT)
+                    if (Arrays.equals(decodedPubKey, authKey.publicKeyEncoded)) {
+                        Single.just(authKey)
+                    } else {
+                        Single.error<AuthKey>(IllegalStateException("您当前使用的统一登录秘钥与链上不一致,将影响部分功能的正常使用"))
+                    }
+                }
+        }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                activity.showLoadingDialog()
+            }
+            .doFinally {
+                activity.hideLoadingDialog()
+            }
+            .subscribe({
+                action()
+            }, {
+                CustomDialog(activity).apply {
+                    this.setTitle(io.wexchain.android.dcc.tools.getString(R.string.tips))
+                    textContent = it.message
+                    withPositiveButton(io.wexchain.android.dcc.tools.getString(R.string.update)) {
+                        activity.navigateTo(PassportActivity::class.java)
+                        true
+                    }
+                    withNegativeButton()
+                }.assembleAndShow()
+            })
     }
 
     fun enablePassport(credentials: Credentials, password: String): Single<Pair<Credentials, AuthKey>>? {
@@ -214,6 +214,13 @@ object PassportOperations {
                     App.get().passportRepository.updateAuthKey(passport, it)
                     App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(passport.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.UPDATE))
                 }
+    }
+
+    fun switchAuthkey(it:AuthKey): worhavah.regloginlib.AuthKey {
+        return worhavah.regloginlib.AuthKey(it.keyAlias,it.publicKeyEncoded)
+    }
+    fun switchPass(it: Passport): worhavah.regloginlib.Passport {
+        return worhavah.regloginlib.Passport(it.credential,switchAuthkey(it.authKey!!),it.nickname,it.avatarUri)
     }
 
     fun deletePubKeyAndUploadChecked(passport: Passport, ticket: String, code: String?): Single<Passport> {

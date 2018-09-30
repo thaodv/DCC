@@ -1,0 +1,148 @@
+<resources>
+
+    <style name="CardView.Light.Dcc">
+        <item name="cardCornerRadius">12dp</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="contentPadding">8dp</item>
+        <item name="cardElevation">4dp</item>
+    </style>
+
+    <style name="AnimationDcc">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_right_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_left_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_left_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_right_exit</item>
+    </style>
+
+    <style name="AnimationDccSlideBottom">
+        <item name="android:windowEnterAnimation">@anim/slide_bottom_enter</item>
+        <item name="android:windowExitAnimation">@anim/slide_bottom_exit</item>
+    </style>
+
+    <style name="Widget.AppCompat.Button.Dcc" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/text_color_button</item>
+        <item name="android:background">@drawable/background_button</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+    </style>
+
+    <style name="Widget.AppCompat.Button.Dcc.Small">
+        <item name="android:minHeight">23dp</item>
+        <item name="android:textSize">@dimen/text_size_supplementary</item>
+    </style>
+
+    <style name="Widget.AppCompat.Button.Dcc.Medium">
+        <item name="android:minHeight">30dp</item>
+        <item name="android:textSize">@dimen/text_size_sub_title</item>
+    </style>
+
+    <style name="Widget.AppCompat.Button.Dcc.Full">
+        <item name="android:minHeight">37dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="Widget.AppCompat.ImageButton.Dcc">
+        <item name="android:padding">0dp</item>
+        <item name="android:background">@null</item>
+    </style>
+
+
+    <style name="Widget.AppCompat.TextView.SpinnerItem.Dcc">
+        <item name="android:textColor">@color/text_color_spinner</item>
+    </style>
+
+    <style name="Widget.AppCompat.Light.DropDownItem.Spinner.Dcc">
+        <item name="android:textColor">@color/text_color_spinner</item>
+    </style>
+
+    <style name="NoticeTextLabel">
+        <item name="android:padding">4dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginLeft">@dimen/content_padding_horizontal</item>
+        <item name="android:layout_marginRight">@dimen/content_padding_horizontal</item>
+        <item name="android:background">@color/light_blue_magenta</item>
+        <item name="android:textSize">@dimen/text_size_sub_title</item>
+    </style>
+
+    <style name="Widget.AppCompat.EditText.Input">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_marginRight">@dimen/content_padding_horizontal</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+
+    <style name="TextAppearance.AppCompat.DccTitle">
+        <item name="android:textSize">@dimen/text_size_title</item>
+        <item name="android:textColor">@color/text_dark</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.DccSubTitle">
+        <item name="android:textSize">@dimen/text_size_sub_title</item>
+        <item name="android:textColor">@color/text_dark</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.DccMainTitle">
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">@color/text_dark</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.DccSupplementary">
+        <item name="android:textSize">@dimen/text_size_supplementary</item>
+        <item name="android:textColor">@color/text_gray</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.DccProviderHeadline">
+        <item name="android:textColor">@color/text_blue_magenta</item>
+        <item name="android:textSize">@dimen/text_size_title</item>
+    </style>
+
+    <style name="DividerHorizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/divider_stroke_width</item>
+        <item name="android:background">@color/light_gray_alpha</item>
+    </style>
+
+    <style name="DividerVertical">
+        <item name="android:layout_width">@dimen/divider_stroke_width</item>
+        <item name="android:background">@color/light_gray_alpha</item>
+    </style>
+
+    <style name="TextActionLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginTop">1dp</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:paddingLeft">@dimen/content_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/content_padding_horizontal</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:drawableRight">@drawable/arrow_right</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="Widget.AppCompat.CompoundButton.RadioButton.Dcc">
+        <item name="android:gravity">center</item>
+    </style>
+
+
+
+    <style name="deleteAddressBookDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
+</resources>

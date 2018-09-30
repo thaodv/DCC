@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="io.wexchain.android.dcc.MyCreditActivity">
+
+    <data>
+
+        <variable
+            name="asIdVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm" />
+
+        <variable
+            name="asPersonalVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm" />
+
+        <variable
+            name="asBankVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm" />
+
+        <variable
+            name="asMobileVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm" />
+
+        <variable
+            name="asTongniuVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm" />
+
+        <variable
+            name="asLoanVm"
+            type="io.wexchain.android.dcc.vm.AuthenticationStatusVm" />
+    </data>
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <include layout="@layout/include_toolbar"
+            android:id="@+id/toolbar"
+
+            />
+        <ScrollView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFF5F5FD">
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:orientation="vertical">
+
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:text="信用认证"
+                    android:textColor="#FF000000"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="260dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_round_rect_noframe_white"
+                    >
+
+                    <io.wexchain.android.dcc.view.CountDownProgress
+                        android:layout_gravity="center"
+
+                        android:id="@+id/countdownProgress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        />
+                    <TextView
+
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-80dp"
+                        android:text="认证完成度"
+                        android:textColor="#FF9B9B9B"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_showtime"
+                        android:layout_marginTop="43dp"
+                        android:layout_gravity="center"
+                        android:layout_width="163dp"
+                        android:layout_height="21dp"
+                        android:text="更新时间：2018-09-09"
+                        android:textColor="#FFBAC0C5"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="9dp"
+                        />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:text="认证信息"
+                    android:textColor="#FF000000"
+                    android:textSize="17sp" />
+                <LinearLayout
+                    android:layout_marginTop="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="0dp">
+
+                    <include
+                        android:id="@+id/card_as_id"
+                        layout="@layout/include_newcard_auth_status"
+                        app:vm="@{asIdVm}" />
+
+                    <include
+                        android:id="@+id/card_as_personal"
+                        layout="@layout/include_newcard_auth_status"
+                        android:visibility="gone"
+                        app:vm="@{asPersonalVm}" />
+
+                    <include
+                        android:id="@+id/card_as_bank"
+                        layout="@layout/include_newcard_auth_status"
+                        app:vm="@{asBankVm}" />
+
+                    <include
+                        android:id="@+id/card_as_mobile"
+                        layout="@layout/include_newcard_auth_status"
+                        app:vm="@{asMobileVm}" />
+
+                    <include
+                        android:id="@+id/card_as_tongniu"
+                        layout="@layout/include_newcard_auth_status"
+                        app:vm="@{asTongniuVm}" />
+
+                    <include
+                        android:id="@+id/card_as_loanreport"
+                        layout="@layout/include_newcard_auth_status"
+                        app:vm="@{asLoanVm}" />
+
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="── 信用认证由DCC提供技术支持 ──"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="60dp"
+                    android:textColor="#FFBAC0C5"
+                    android:textSize="11sp"
+                    />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/credit_ipfs_cloud"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="30dp"
+        android:background="@color/white"
+      android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+       >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/credit_ipfs_cloud" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="认证数据云存储 >"
+            android:textColor="@color/blue_magenta" />
+
+    </LinearLayout>
+</RelativeLayout>
+
+
+
+</layout>

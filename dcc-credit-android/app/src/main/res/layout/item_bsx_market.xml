@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
+        <variable
+            name="bsxMarketBean"
+            type="io.wexchain.dccchainservice.domain.BsxMarketBean"
+            />
+
+    </data>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/trans"
+        android:baselineAligned="false"
+        android:paddingBottom="10dp"
+        tools:ignore="HardcodedText,NestedWeights,RelativeOverlap">
+
+        <RelativeLayout
+            android:id="@+id/rl_top"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@{ViewModelHelper.showBsxTopBgStatus(context,bsxMarketBean.status)}"
+            tools:background="@drawable/bg_bsx_market_item_top">
+
+            <ImageView
+                android:id="@+id/iv_logo"
+                errorRes="@{@drawable/ethereum}"
+                imageUrl="@{bsxMarketBean.logo}"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                tools:src="@drawable/dcc_logo"/>
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/iv_logo"
+                android:text="@{bsxMarketBean.saleInfo.name}"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                tools:text="ETH币生息1期"/>
+
+            <TextView
+                android:id="@+id/tv_rate1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="@{ViewModelHelper.showBsxRate(bsxMarketBean.saleInfo.annualRate)}"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                tools:text="+10.00%"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/rl_top"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@{ViewModelHelper.showBsxBodyBgStatus(context,bsxMarketBean.status)}"
+            android:baselineAligned="false"
+            android:orientation="vertical"
+            tools:background="@drawable/bg_bsx_market_item_body">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="币种"
+                        android:textColor="#FFBAC0C5"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{bsxMarketBean.assetCode}"
+                        android:textColor="#FF4A4A4A"
+                        android:textSize="16sp"
+                        tools:text="DCC"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="预期年化收益"
+                        android:textColor="#FFBAC0C5"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/rv_rate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{ViewModelHelper.showBsxRate(bsxMarketBean.saleInfo.annualRate)}"
+                        android:textColor="#FFED190F"
+                        android:textSize="16sp"
+                        tools:text="+10.00%"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="管理期限"
+                        android:textColor="#FFBAC0C5"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_period"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{ViewModelHelper.showBsPeriod(bsxMarketBean.saleInfo.period)}"
+                        android:textColor="#FFED190F"
+                        android:textSize="16sp"
+                        tools:text="28天"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="起购数量"
+                        android:textColor="#FFBAC0C5"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_min_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{ViewModelHelper.showBsxMinCount(bsxMarketBean.minPerHand,bsxMarketBean.assetCode)}"
+                        android:textColor="#FF4A4A4A"
+                        android:textSize="16sp"
+                        tools:text="100DCC"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/rl_top"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="-10dp"
+            android:background="@{ViewModelHelper.showBsxStatus(context,bsxMarketBean.status)}"
+            tools:src="@drawable/img_bsx_status_1"/>
+
+    </RelativeLayout>
+</layout>

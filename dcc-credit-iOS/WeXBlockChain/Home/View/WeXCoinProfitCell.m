@@ -101,8 +101,10 @@ static CGFloat   const kCellHeight = 75;
 - (void)setIsAllowAppear:(BOOL)isAppear {
     [self.contentView.subviews enumerateObjectsUsingBlock:^( UIView *  obj, NSUInteger idx, BOOL *  stop) {
         if ([obj isKindOfClass:[WeXCoinProfitView class]] && obj.tag >= kStartTag) {
+            //非审核状态
             [obj setHidden:!isAppear];
         } else if ([obj isKindOfClass:[WeXLeftIconRightLabelView class]] && obj.tag >= kStartTag) {
+            //审核状态
             [obj setHidden:isAppear];
         }
     }];

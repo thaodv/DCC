@@ -5,15 +5,15 @@
 
         <variable
             name="inputPw"
-            type="io.wexchain.android.dcc.vm.InputPasswordVm" />
+            type="io.wexchain.android.dcc.vm.InputPasswordVm"/>
     </data>
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent">
 
-        <include layout="@layout/include_toolbar" />
+        <include layout="@layout/include_toolbar"/>
 
         <TextView
             android:id="@+id/iv_describe"
@@ -27,12 +27,12 @@
             android:text="您需要设置云存储密码以开启数据备份功能。云存储密码丢失后无法找回，请妥善保管。"
             android:textColor="@color/FF4A4A4A"
             android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar"/>
 
         <View
             android:id="@+id/v_lin1"
             style="@style/DividerHorizontal"
-            app:layout_constraintTop_toBottomOf="@id/iv_describe" />
+            app:layout_constraintTop_toBottomOf="@id/iv_describe"/>
 
         <LinearLayout
             android:id="@+id/ll_tag1"
@@ -47,7 +47,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:text="云存储密码"
-                android:textColor="@color/FF333333" />
+                android:textColor="@color/FF333333"/>
 
             <EditText
                 android:id="@+id/et_content"
@@ -57,30 +57,30 @@
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="@{inputPw.passwordHint}"
-                android:text="@={inputPw.password}"
                 android:inputType="textPassword"
                 android:maxLength="20"
-                android:paddingLeft="10dp"
-                android:textColor="@color/FF333333"
-                app:passwordSecure="@{inputPw.secure}"
                 android:onFocusChange="@{(v,hasFocus)->inputPw.checkPassword(hasFocus)}"
-                android:textSize="14sp" />
+                android:paddingLeft="10dp"
+                android:text="@={inputPw.password}"
+                android:textColor="@color/FF333333"
+                android:textSize="14sp"
+                app:passwordSecure="@{inputPw.secure}"/>
 
             <ImageView
                 android:id="@+id/iv_isshow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{(v)->inputPw.changeSecure()}"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:src="@{inputPw.secure?@drawable/secure_view_off:@drawable/secure_view}" />
+                android:onClick="@{(v)->inputPw.changeSecure()}"
+                android:src="@{inputPw.secure?@drawable/secure_view_off:@drawable/secure_view}"/>
 
         </LinearLayout>
 
         <View
             android:id="@+id/v_lin2"
             style="@style/DividerHorizontal"
-            app:layout_constraintTop_toBottomOf="@id/ll_tag1" />
+            app:layout_constraintTop_toBottomOf="@id/ll_tag1"/>
 
         <TextView
             android:id="@+id/tv_load_more"
@@ -91,7 +91,7 @@
             android:text="了解更多"
             android:textColor="@color/blue_magenta"
             android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/v_lin2" />
+            app:layout_constraintTop_toBottomOf="@id/v_lin2"/>
 
         <Button
             android:id="@+id/btn_create_passport"
@@ -102,7 +102,7 @@
             android:layout_marginRight="@dimen/content_padding_horizontal"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:text="确定"
-            app:layout_constraintTop_toBottomOf="@id/tv_load_more" />
+            app:layout_constraintTop_toBottomOf="@id/tv_load_more"/>
 
 
     </android.support.constraint.ConstraintLayout>

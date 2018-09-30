@@ -18,7 +18,7 @@ data class EthsTransactionScratch(
         var amount: BigDecimal,
         var gasPrice: BigDecimal,
         var gasLimit: BigInteger,
-        val remarks: String? = null,
+        var remarks: String? = null,
         val transferFeeRate: BigDecimal? = null,
         var nonce: BigInteger=BigInteger("1"),
 

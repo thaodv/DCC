@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/service_toot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F5F5FD"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical"
+        tools:context="io.wexchain.android.dcc.modules.home.LoanActivity">
+
+        <include layout="@layout/include_toolbar" />
+
+        <com.jcodecraeer.xrecyclerview.XRecyclerView
+            android:id="@+id/rv_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            tools:listitem="@layout/item_loan_product" />
+
+    </LinearLayout>
+
+</layout>
+
+

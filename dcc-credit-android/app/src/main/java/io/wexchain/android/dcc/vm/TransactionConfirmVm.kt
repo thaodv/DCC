@@ -7,9 +7,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.SingleLiveEvent
+import io.wexchain.android.common.base.ActivityCollector
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.base.ActivityCollector
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity
@@ -56,7 +56,7 @@ class TransactionConfirmVm(
     val notEnoughFundsEvent = SingleLiveEvent<Void>()
     val busySendingEvent = SingleLiveEvent<Boolean>()
 
-    var currentBanance=""
+    var currentBanance = ""
 
     fun loadHoldings() {
         val scratch = tx
@@ -91,7 +91,7 @@ class TransactionConfirmVm(
                         } else {
                             checkErc20JuzixFunds(amount)
                         }
-                        currentBanance=amount.currencyToDisplayStr()
+                        currentBanance = amount.currencyToDisplayStr()
                         "${amount.currencyToDisplayStr()}${dc.symbol}"
                     }
         }.observeOn(AndroidSchedulers.mainThread())

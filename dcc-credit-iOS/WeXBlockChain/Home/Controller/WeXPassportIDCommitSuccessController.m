@@ -21,9 +21,6 @@
     [self setupSubViews];
 }
 
-
-
-
 //初始化滚动视图
 -(void)setupSubViews{
     

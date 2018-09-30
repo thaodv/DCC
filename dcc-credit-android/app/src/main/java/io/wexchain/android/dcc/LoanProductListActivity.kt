@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.dcc.base.BaseCompatActivity
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.*
@@ -21,6 +21,7 @@ import io.wexchain.dccchainservice.domain.LoanProduct
 
 class LoanProductListActivity : BaseCompatActivity(), ItemViewClickListener<LoanProduct>,
         BottomMoreItemsAdapter.BottomViewProvider {
+
     override fun inflateBottomView(parent: ViewGroup): View {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_business_contact_2, parent, false)
         view.setOnClickListener {
@@ -41,6 +42,7 @@ class LoanProductListActivity : BaseCompatActivity(), ItemViewClickListener<Loan
     }
 
     private val adapter = Adapter(this::onItemClick)
+
     private val insertFixItemAdapter = InsertFixItemAdapter(
             adapter,
             object : InsertFixItemAdapter.InsertFixViewProvider {

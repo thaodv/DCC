@@ -11,14 +11,16 @@
 typedef NS_ENUM(NSInteger,WeXCreditIDAuthenStatusType) {
     WeXCreditIDAuthenStatusTypeNone,//未认证
     WeXCreditIDAuthenStatusTypeAuthening,//进行中
-    WeXCreditIDAuthenStatusTypeSuccess//已完成
+    WeXCreditIDAuthenStatusTypeSuccess,//已完成
+    WeXCreditIDAuthenStatusTypeInvalid//已过期
 };
 
 //银行卡认证状态
 typedef NS_ENUM(NSInteger,WeXCreditBankAuthenStatusType) {
     WeXCreditBankAuthenStatusTypeNone,//未认证
     WeXCreditBankAuthenStatusTypeAuthening,//进行中
-    WeXCreditBankAuthenStatusTypeSuccess//已完成
+    WeXCreditBankAuthenStatusTypeSuccess,//已完成
+    WeXCreditBankAuthenStatusTypeInvalid //已过期
 };
 
 //手机运营商证状态
@@ -27,6 +29,14 @@ typedef NS_ENUM(NSInteger,WeXCreditMobileOperatorAuthenStatusType) {
     WeXCreditMobileOperatorAuthenStatusTypeAuthening,//进行中
     WeXCreditMobileOperatorAuthenStatusTypeSuccess,//已完成
     WeXCreditMobileOperatorAuthenStatusTypeInvalid //已过期
+};
+
+//同牛手机运营商证状态
+typedef NS_ENUM(NSInteger,WeXSameCowMobileOperatorAuthenStatusType) {
+    WeXSameCowMobileOperatorAuthenStatusTypeNone,//未认证
+    WeXSameCowMobileOperatorAuthenStatusTypeAuthening,//进行中
+    WeXSameCowMobileOperatorAuthenStatusTypeSuccess,//已完成
+    WeXSameCowMobileOperatorAuthenStatusTypeInvalid //已过期
 };
 
 typedef NS_ENUM(NSInteger,WeXPasswordType) {
@@ -115,6 +125,9 @@ typedef NS_ENUM(NSInteger,WeXPasswordType) {
 
 @property (nonatomic,copy)NSString *bankAuthenMobile;
 
+//过期时间
+@property (nonatomic,copy)NSString *bankTimeLimit;
+
 #pragma mark - 用户认证相关 --手机运营商认证
 
 //手机运营商认证状态
@@ -128,7 +141,24 @@ typedef NS_ENUM(NSInteger,WeXPasswordType) {
 
 //手机号码
 @property (nonatomic,copy)NSString *mobileAuthenNumber;
+//过期时间
+@property (nonatomic,copy)NSString *phoneTimeLimit;
 
+#pragma mark - 用户认证相关 --同牛手机运营商认证
+
+//同牛手机运营商认证状态
+@property (nonatomic,assign)WeXSameCowMobileOperatorAuthenStatusType sameCowMobileAuthenStatus;
+//同牛手机运营商认证Nonce
+@property (nonatomic,copy)NSString *sameCowMobileAuthenNonce;
+//同牛手机运营商认证OrderId
+@property (nonatomic,copy)NSString *sameCowMobileAuthenOrderId;
+//同牛手机运营商认证txhash
+@property (nonatomic,copy)NSString *sameCowMobileAuthenTxHash;
+
+//同牛手机号码
+@property (nonatomic,copy)NSString *sameCowMobileAuthenNumber;
+//同牛过期时间
+@property (nonatomic,copy)NSString *sameCowMobileAuthenLimit;
 
 + (instancetype)sharedInstance;
 

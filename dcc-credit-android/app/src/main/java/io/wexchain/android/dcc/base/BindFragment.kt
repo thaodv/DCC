@@ -7,23 +7,24 @@ import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.wexchain.android.common.base.BaseCompatFragment
 
 /**
  * Created by lulingzhi on 2017/11/24.
  */
 abstract class BindFragment<T : ViewDataBinding> : BaseCompatFragment() {
-    protected lateinit var binding:T
+    protected lateinit var binding: T
 
     @get:LayoutRes
-    abstract val contentLayoutId :Int
+    abstract val contentLayoutId: Int
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, contentLayoutId,container,false)
+        binding = DataBindingUtil.inflate(inflater, contentLayoutId, container, false)
         binding.setLifecycleOwner(this)
         return binding.root
     }
 
-    val isBindingInitialized:Boolean
+    val isBindingInitialized: Boolean
         get() {
             return this::binding.isInitialized
         }

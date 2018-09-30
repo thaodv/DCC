@@ -6,6 +6,8 @@ import io.wexchain.ipfs.entity.IpfsVersion
 import io.wexchain.ipfs.net.IpfsApi
 import io.wexchain.ipfs.net.Networking
 import io.wexchain.ipfs.utils.doMain
+import io.wexchain.ipfs.utils.io_main
+import io.wexchain.ipfs.utils.subscribeOnIo
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -37,7 +39,7 @@ object IpfsCore {
                 .map {
                     it.bytes()
                 }
-                .subscribeOn(Schedulers.io())
+                .subscribeOnIo()
     }
 
     fun upload(file: File): Single<String> {
@@ -47,14 +49,13 @@ object IpfsCore {
                 .map {
                     it.Hash
                 }
-                .subscribeOn(Schedulers.io())
+                .subscribeOnIo()
     }
 
     fun checkVersion(host: String, port: String): Single<IpfsVersion> {
         val url = creatUrl(host, port) + "version?number=false&commit=false&repo=false&all=false"
         return api.getVersion(url)
-                .subscribeOn(Schedulers.io())
-                .doMain()
+                .io_main()
     }
 
     private fun creatBody(file: File): MultipartBody {

@@ -325,7 +325,7 @@ class PassportRepository(
     fun getIpfsUrlConfig(): Pair<String?, String?> {
         val host = passportPrefs.ipfsUrlHost.get()
         val port = passportPrefs.ipfsUrlPort.get()
-        return Pair(host, port)
+        return host to port
     }
 
     fun getIpfsHostStatus(): Boolean {

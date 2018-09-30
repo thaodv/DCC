@@ -8,7 +8,7 @@ import android.widget.SeekBar
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.*
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
@@ -26,7 +26,6 @@ import io.wexchain.dccchainservice.domain.LoanChainOrder
 import io.wexchain.dccchainservice.domain.LoanProduct
 import io.wexchain.dccchainservice.domain.LoanStatus
 import io.wexchain.ipfs.utils.doMain
-import org.jetbrains.anko.toast
 
 class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
     override val contentLayoutId: Int

@@ -8,7 +8,13 @@
 
 #import "WeXBaseReuseTableViewController.h"
 
+@class WeXCPActivityListModel;
+
 @interface WeXCoinProfitDetailViewController : WeXBaseReuseTableViewController
+//代币
+//@property (nonatomic, copy) NSString *assetCode;
+@property (nonatomic, strong) WeXCPActivityListModel *productModel;
+
 
 - (void)wex_refreshContent;
 

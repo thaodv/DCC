@@ -46,11 +46,10 @@ object IpfsOperations {
     fun putIpfsKey(psw: String): Single<EthJsonTxReceipt> {
         val sha265Key = passport.createIpfsKey(psw)
         val aesKey = passport.createIpfsAESKey(psw).toHex()
-        val address = getIpfsAddress(IpfsApi.IPFS_KEY_HASH).blockingGet()
-        return getNonce()
+        return Singles.zip(getNonce(), getIpfsAddress(IpfsApi.IPFS_KEY_HASH))
                 .map {
                     val ipfsKey = Erc20Helper.putIpfsKey(sha265Key)
-                    ipfsKey.txSigned(passport.getCurrentPassport()!!.credential, address, it)
+                    ipfsKey.txSigned(passport.getCurrentPassport()!!.credential, it.second, it.first)
                 }
                 .sendRawTransaction(IpfsApi.IPFS_KEY_HASH)
                 .transactionReceipt(IpfsApi.IPFS_KEY_HASH)
@@ -123,9 +122,8 @@ object IpfsOperations {
 
     fun Single<String>.getIpfsKeyApi(): Single<EthJsonRpcResponse<String>> {
         return this.map {
-                    Erc20Helper.getIpfsKey(it, passport.getCurrentPassport()!!.address)
-                }
-                .postData(IpfsApi.IPFS_KEY_HASH)
+            Erc20Helper.getIpfsKey(it, passport.getCurrentPassport()!!.address)
+        }.postData(IpfsApi.IPFS_KEY_HASH)
     }
 
     fun Single<String>.sendRawTransaction(business: String): Single<String> {
@@ -160,6 +158,9 @@ object IpfsOperations {
         return agent.getNonce(passport.getCurrentPassport()!!.address)
     }
 
+    /**
+     * 获取合约地址
+     */
     fun getIpfsAddress(business: String): Single<String> {
         return App.get().contractApi.getIpfsContractAddress(business).check()
     }

@@ -65,7 +65,7 @@ object Erc20Helper {
         )
     }
 
-    fun getStatus(contractAddress: String, owner: String, splender: String): EthJsonTxScratch {
+    fun getBsxStatus(contractAddress: String): EthJsonTxScratch {
         return EthJsonTxScratch(
                 to = contractAddress,
                 data = FunctionEncoder.encode(
@@ -78,7 +78,7 @@ object Erc20Helper {
         )
     }
 
-    fun getSaleInfo(contractAddress: String, owner: String, splender: String): EthJsonTxScratch {
+    fun getBsxSaleInfo(contractAddress: String): EthJsonTxScratch {
         return EthJsonTxScratch(
                 to = contractAddress,
                 data = FunctionEncoder.encode(
@@ -91,7 +91,7 @@ object Erc20Helper {
         )
     }
 
-    fun getMinAmountPerHando(contractAddress: String, owner: String, splender: String): EthJsonTxScratch {
+    fun getBsxMinAmountPerHand(contractAddress: String): EthJsonTxScratch {
         return EthJsonTxScratch(
                 to = contractAddress,
                 data = FunctionEncoder.encode(
@@ -104,7 +104,7 @@ object Erc20Helper {
         )
     }
 
-    fun getInvestCeilAmount(contractAddress: String, owner: String, splender: String): EthJsonTxScratch {
+    fun getBsxInvestCeilAmount(contractAddress: String): EthJsonTxScratch {
         return EthJsonTxScratch(
                 to = contractAddress,
                 data = FunctionEncoder.encode(
@@ -117,7 +117,7 @@ object Erc20Helper {
         )
     }
 
-    fun investedTotalAmount(contractAddress: String, owner: String, splender: String): EthJsonTxScratch {
+    fun investedBsxTotalAmount(contractAddress: String): EthJsonTxScratch {
         return EthJsonTxScratch(
                 to = contractAddress,
                 data = FunctionEncoder.encode(
@@ -130,12 +130,12 @@ object Erc20Helper {
         )
     }
 
-    fun investedAmountMapping(contractAddress: String, userAddress: String): EthJsonTxScratch {
+    fun investedBsxAmountMapping(contractAddress: String, userAddress: String): EthJsonTxScratch {
         return EthJsonTxScratch(
                 to = contractAddress,
                 data = FunctionEncoder.encode(
                         Function(
-                                "investedAmountMapping",
+                                "investedBsxAmountMapping",
                                 Arrays.asList<Type<*>>(Address(userAddress)),
                                 Arrays.asList<TypeReference<*>>()
                         )
@@ -143,12 +143,20 @@ object Erc20Helper {
         )
     }
 
-    @JvmStatic
-    fun invest(amount: BigInteger): Function = Function(
-            "invest",
-            Arrays.asList<Type<*>>(Uint256(amount)),
-            Arrays.asList<TypeReference<*>>()
-    )
+    fun investBsx(amount: BigInteger): Function {
+        return Function(
+                "invest",
+                Arrays.asList<Type<*>>(Uint256(amount)),
+                Arrays.asList<TypeReference<*>>()
+        )
+    }
+    fun investEthBsx( ): Function {
+        return Function(
+                "invest",
+                Arrays.asList<Type<*>>(),
+                Arrays.asList<TypeReference<*>>()
+        )
+    }
 
     fun getIpfsKey(it: String, address: String): EthJsonTxScratch {
         return EthJsonTxScratch(
@@ -203,8 +211,6 @@ object Erc20Helper {
                 Arrays.asList<TypeReference<*>>())
     }
 
-
-    @JvmStatic
     fun approve(splender: String, value: BigInteger): Function = Function(
             "approve",
             Arrays.asList<Type<*>>(Address(splender), Uint256(value)),

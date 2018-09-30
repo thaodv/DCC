@@ -8,10 +8,10 @@ import io.wexchain.android.common.onClick
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.LoanAgreementActivity
-import io.wexchain.android.dcc.LoanProductListActivity
-import io.wexchain.android.dcc.base.BindActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.home.LoanActivity
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityLoanRecordDetailBinding
 import io.wexchain.dccchainservice.domain.LoanRecord
@@ -78,7 +78,7 @@ class LoanRecordDetailActivity : BindActivity<ActivityLoanRecordDetailBinding>()
     }
 
     private fun applyAgain() {
-        navigateTo(LoanProductListActivity::class.java)
+        navigateTo(LoanActivity::class.java)
     }
 
     private fun initData() {
