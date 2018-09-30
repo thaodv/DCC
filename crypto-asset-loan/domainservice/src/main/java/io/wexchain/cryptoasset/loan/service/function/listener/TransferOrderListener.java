@@ -27,7 +27,7 @@ public class TransferOrderListener {
 			logger.info("Receive transfer order message:{}" ,objectMapper.writeValueAsString(transferOrder));
 			cryptoAssetLoanService.handleTransferOrder(transferOrder);
 		} catch (Exception e) {
-			logger.error("Handle message fail", e);
+			logger.warn("Handle message fail", e);
 		}
 
 	}

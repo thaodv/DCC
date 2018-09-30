@@ -1,17 +1,19 @@
 package io.wexchain.dcc.marketing.domainservice.processor.activity.advancer;
 
+import java.math.BigInteger;
+
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.godmonth.status.advancer.impl.AbstractAdvancer;
 import com.godmonth.status.advancer.intf.AdvancedResult;
 import com.godmonth.status.transitor.tx.intf.TriggerBehavior;
+
 import io.wexchain.dcc.marketing.api.constant.ActivityStatus;
 import io.wexchain.dcc.marketing.domain.Activity;
 import io.wexchain.dcc.marketing.domainservice.function.web3.AllowanceAmountReader;
 import io.wexchain.dcc.marketing.domainservice.processor.activity.ActivityInstruction;
 import io.wexchain.dcc.marketing.domainservice.processor.activity.ActivityTrigger;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.math.BigInteger;
 
 
 public class SwitchAdvancer extends AbstractAdvancer<Activity, ActivityInstruction, ActivityTrigger> {

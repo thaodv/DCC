@@ -1,17 +1,16 @@
 package io.wexchain.dcc.marketing.domainservice.function.listener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.wexchain.dcc.marketing.domainservice.function.miningevent.MiningEventHandler;
 import io.wexchain.dcc.marketing.domainservice.function.miningevent.MiningEventHandlers;
 import io.wexchain.notify.domain.dcc.OrderUpdatedEvent;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class UpdatedEventListener {

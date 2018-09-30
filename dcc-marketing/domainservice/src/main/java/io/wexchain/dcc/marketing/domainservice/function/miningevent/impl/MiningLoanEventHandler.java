@@ -1,6 +1,13 @@
 package io.wexchain.dcc.marketing.domainservice.function.miningevent.impl;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.godmonth.status.executor.intf.OrderExecutor;
+
 import io.wexchain.dcc.marketing.common.constant.MiningActionRecordStatus;
 import io.wexchain.dcc.marketing.domain.EcoRewardRule;
 import io.wexchain.dcc.marketing.domain.MiningRewardRecord;
@@ -9,10 +16,6 @@ import io.wexchain.dcc.marketing.domainservice.function.miningevent.MiningEventH
 import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.MiningRewardRecordInstruction;
 import io.wexchain.dcc.marketing.repository.MiningRewardRecordRepository;
 import io.wexchain.notify.domain.dcc.OrderUpdatedEvent;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * MiningEventHandlerImpl

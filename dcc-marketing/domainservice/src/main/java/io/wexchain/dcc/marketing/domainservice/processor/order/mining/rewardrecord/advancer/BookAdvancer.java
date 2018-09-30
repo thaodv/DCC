@@ -1,5 +1,10 @@
 package io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.advancer;
 
+import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.godmonth.status.advancer.impl.AbstractAdvancer;
 import com.godmonth.status.advancer.intf.AdvancedResult;
 import com.godmonth.status.transitor.tx.intf.TriggerBehavior;
@@ -17,11 +22,6 @@ import io.wexchain.dcc.marketing.domainservice.function.command.RetryableCommand
 import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.MiningRewardRecordInstruction;
 import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.MiningRewardRecordTrigger;
 import io.wexchain.dcc.marketing.repository.MiningRewardRecordRepository;
-
-import org.apache.commons.lang3.Validate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class BookAdvancer extends AbstractAdvancer<MiningRewardRecord, MiningRewardRecordInstruction, MiningRewardRecordTrigger> {
 

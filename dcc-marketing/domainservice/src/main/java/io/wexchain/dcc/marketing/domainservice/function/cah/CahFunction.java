@@ -1,9 +1,9 @@
 package io.wexchain.dcc.marketing.domainservice.function.cah;
 
+import java.math.BigInteger;
+
 import io.wexchain.cryptoasset.hosting.frontier.model.TransferOrder;
 import io.wexchain.cryptoasset.hosting.model.CryptoWallet;
-
-import java.math.BigInteger;
 
 /**
  * CahFunction
@@ -21,6 +21,9 @@ public interface CahFunction {
 	CryptoWallet prepareEthWallet(String address, String privateKey);
 
 	TransferOrder redeem(String requestNo, BigInteger amount, String payerAddress, String receiverAddress);
+
+	TransferOrder transfer(String requestNo, BigInteger amount, String payerAddress,
+						   String receiverAddress, String assetCode);
 
 	BigInteger getGasPrice(String assetsCode);
 

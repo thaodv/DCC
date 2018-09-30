@@ -1,9 +1,19 @@
 package io.wexchain.dcc.marketing.domainservice.processor.order.rewardround.advancer;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Future;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.godmonth.status.advancer.impl.AbstractAdvancer;
 import com.godmonth.status.advancer.intf.AdvancedResult;
 import com.godmonth.status.executor.intf.OrderExecutor;
 import com.godmonth.status.transitor.tx.intf.TriggerBehavior;
+
 import io.wexchain.dcc.marketing.api.constant.RewardDeliveryStatus;
 import io.wexchain.dcc.marketing.api.constant.RewardRoundStatus;
 import io.wexchain.dcc.marketing.domain.RewardDelivery;
@@ -12,13 +22,6 @@ import io.wexchain.dcc.marketing.domainservice.processor.order.rewarddelivery.Re
 import io.wexchain.dcc.marketing.domainservice.processor.order.rewardround.RewardRoundInstruction;
 import io.wexchain.dcc.marketing.domainservice.processor.order.rewardround.RewardRoundTrigger;
 import io.wexchain.dcc.marketing.repository.RewardDeliveryRepository;
-import org.apache.commons.lang3.exception.ContextedRuntimeException;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Future;
 
 
 public class DeliverAdvancer extends AbstractAdvancer<RewardRound, RewardRoundInstruction, RewardRoundTrigger> {

@@ -1,8 +1,20 @@
 package io.wexchain.dcc.marketing.domainservice.processor.order.rewardround.advancer;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
 import com.godmonth.status.advancer.impl.AbstractAdvancer;
 import com.godmonth.status.advancer.intf.AdvancedResult;
 import com.godmonth.status.transitor.tx.intf.TriggerBehavior;
+
 import io.wexchain.dcc.marketing.api.constant.RewardDeliveryStatus;
 import io.wexchain.dcc.marketing.api.constant.RewardRoundStatus;
 import io.wexchain.dcc.marketing.domain.RewardDelivery;
@@ -11,16 +23,6 @@ import io.wexchain.dcc.marketing.domainservice.processor.order.rewardround.Rewar
 import io.wexchain.dcc.marketing.domainservice.processor.order.rewardround.RewardRoundTrigger;
 import io.wexchain.dcc.marketing.repository.RewardActionRecordRepository;
 import io.wexchain.dcc.marketing.repository.RewardDeliveryRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 
 public class AnalyzeAdvancer extends AbstractAdvancer<RewardRound, RewardRoundInstruction, RewardRoundTrigger> {

@@ -1,26 +1,14 @@
 package io.wexchain.dcc.marketing.domainservice.impl;
 
-import com.godmonth.status.executor.intf.OrderExecutor;
-import com.wexmarket.topia.commons.basic.exception.ErrorCodeException;
-import com.wexmarket.topia.commons.data.page.PageUtils;
-import io.wexchain.cryptoasset.account.api.constant.ExecutionResult;
-import io.wexchain.cryptoasset.account.api.model.Account;
-import io.wexchain.cryptoasset.account.api.model.AccountTransaction;
-import io.wexchain.dcc.marketing.api.constant.MarketingErrorCode;
-import io.wexchain.dcc.marketing.api.facade.AddMiningScoreRequest;
-import io.wexchain.dcc.marketing.api.model.request.QueryMiningRewardRecordPageRequest;
-import io.wexchain.dcc.marketing.api.model.request.QueryRewardRuleRequest;
-import io.wexchain.dcc.marketing.common.constant.GeneralCommandStatus;
-import io.wexchain.dcc.marketing.common.constant.IdentityType;
-import io.wexchain.dcc.marketing.common.constant.MiningActionRecordStatus;
-import io.wexchain.dcc.marketing.domain.*;
-import io.wexchain.dcc.marketing.domainservice.*;
-import io.wexchain.dcc.marketing.domainservice.function.booking.BookingService;
-import io.wexchain.dcc.marketing.domainservice.function.chain.ChainOrderService;
-import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.MiningRewardRecordInstruction;
-import io.wexchain.dcc.marketing.repository.CoolDownRestrictionRepository;
-import io.wexchain.dcc.marketing.repository.EcoRewardRuleRepository;
-import io.wexchain.dcc.marketing.repository.MiningRewardRecordRepository;
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -31,13 +19,35 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.annotation.Resource;
-import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import com.godmonth.status.executor.intf.OrderExecutor;
+import com.wexmarket.topia.commons.basic.exception.ErrorCodeException;
+import com.wexmarket.topia.commons.data.page.PageUtils;
+
+import io.wexchain.cryptoasset.account.api.constant.ExecutionResult;
+import io.wexchain.cryptoasset.account.api.model.Account;
+import io.wexchain.cryptoasset.account.api.model.AccountTransaction;
+import io.wexchain.dcc.marketing.api.constant.MarketingErrorCode;
+import io.wexchain.dcc.marketing.api.facade.AddMiningScoreRequest;
+import io.wexchain.dcc.marketing.api.model.request.QueryMiningRewardRecordPageRequest;
+import io.wexchain.dcc.marketing.api.model.request.QueryRewardRuleRequest;
+import io.wexchain.dcc.marketing.common.constant.IdentityType;
+import io.wexchain.dcc.marketing.common.constant.MiningActionRecordStatus;
+import io.wexchain.dcc.marketing.domain.CoolDownConfig;
+import io.wexchain.dcc.marketing.domain.CoolDownRestriction;
+import io.wexchain.dcc.marketing.domain.EcoRewardRule;
+import io.wexchain.dcc.marketing.domain.MiningRewardRecord;
+import io.wexchain.dcc.marketing.domain.Scenario;
+import io.wexchain.dcc.marketing.domainservice.CoolDownConfigService;
+import io.wexchain.dcc.marketing.domainservice.EcoRewardRuleService;
+import io.wexchain.dcc.marketing.domainservice.MiningRewardRecordService;
+import io.wexchain.dcc.marketing.domainservice.Patroller;
+import io.wexchain.dcc.marketing.domainservice.ScenarioService;
+import io.wexchain.dcc.marketing.domainservice.function.booking.BookingService;
+import io.wexchain.dcc.marketing.domainservice.function.chain.ChainOrderService;
+import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrecord.MiningRewardRecordInstruction;
+import io.wexchain.dcc.marketing.repository.CoolDownRestrictionRepository;
+import io.wexchain.dcc.marketing.repository.EcoRewardRuleRepository;
+import io.wexchain.dcc.marketing.repository.MiningRewardRecordRepository;
 
 /**
  * MiningRewardRecordServiceImpl
@@ -106,13 +116,16 @@ public class MiningRewardRecordServiceImpl implements MiningRewardRecordService,
 	public BigDecimal getYesterdayMiningScore() {
 		Date from = DateTime.now().minusDays(1).withTimeAtStartOfDay().toDate();
 		Date to = DateTime.now().withTimeAtStartOfDay().minusMillis(1).toDate();
-		return miningRewardRecordRepository.sumScore(from,to);
+		BigDecimal bigDecimal = miningRewardRecordRepository.sumScore(from, to);
+		if(bigDecimal == null){
+			return BigDecimal.ZERO;
+		}
+		return bigDecimal;
 	}
 
     @Override
     public void signIn(String address) {
 		Date activeTime = new Date();
-		// TODO 修改错误代码
 		String idHash = chainOrderService.getIdHash(address).orElseThrow(() ->
 				new ErrorCodeException(MarketingErrorCode.ACTIVITY_IS_ENDED.name(), "用户未实名"));
 		Scenario scenario = scenarioService.getScenarioByCode(SIGN_IN_SCENARIO_CODE);

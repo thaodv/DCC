@@ -452,6 +452,7 @@ public class CryptoAssetLoanServiceImpl implements CryptoAssetLoanService {
     public void handleTransferOrder(TransferOrder transferOrder) {
 		Optional<RetryableCommand> commandOpt =
 				retryableCommandRepository.findById(Long.valueOf(transferOrder.getRequestIdentity().getRequestNo()));
+
 		if (!commandOpt.isPresent()) {
 			logger.info("Not found command of transfer order message, id:{}, request no:{}",
 					transferOrder.getId(), transferOrder.getRequestIdentity().getRequestNo());

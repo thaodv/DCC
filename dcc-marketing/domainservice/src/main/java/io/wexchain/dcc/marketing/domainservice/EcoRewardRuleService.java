@@ -1,9 +1,9 @@
 package io.wexchain.dcc.marketing.domainservice;
 
+import java.util.List;
+
 import io.wexchain.dcc.marketing.api.model.QueryEcoRewardRuleRequest;
 import io.wexchain.dcc.marketing.domain.EcoRewardRule;
-
-import java.util.List;
 
 public interface EcoRewardRuleService {
 
