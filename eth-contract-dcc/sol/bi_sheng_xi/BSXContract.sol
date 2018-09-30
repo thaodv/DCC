@@ -2,7 +2,7 @@ pragma solidity ^0.4.2;
 
 import "../ownership/HasToken.sol";
 import "../math/SafeMath.sol";
-//
+
 contract BSXContract is HasToken {
 
     using SafeMath for uint256;

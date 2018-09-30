@@ -74,6 +74,9 @@ contract BSXETHContract is HasETH {
         invested(investor,weiAmount);
     }
 
+    function deposit() public payable onlyOwner {
+        require(msg.value > 0);
+    }
 
     function batchRepay(uint256 start, uint256 end) public onlyOwner {
         require(checkStatus(status, Status.ENDED));
