@@ -1,10 +1,15 @@
 package io.wexchain.dcc.marketing.domainservice.function.validator;
 
-import com.wexmarket.topia.commons.basic.exception.ErrorCodeException;
-import com.wexmarket.topia.commons.rpc.*;
+import java.util.List;
+
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 
-import java.util.List;
+import com.wexmarket.topia.commons.basic.exception.ErrorCodeException;
+import com.wexmarket.topia.commons.rpc.BaseResponse;
+import com.wexmarket.topia.commons.rpc.BusinessCode;
+import com.wexmarket.topia.commons.rpc.ListResultResponse;
+import com.wexmarket.topia.commons.rpc.ResultResponse;
+import com.wexmarket.topia.commons.rpc.SystemCode;
 
 public class Code2Exception {
 

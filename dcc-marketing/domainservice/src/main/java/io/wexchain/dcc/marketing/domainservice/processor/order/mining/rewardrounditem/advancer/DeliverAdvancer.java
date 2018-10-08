@@ -1,8 +1,17 @@
 package io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrounditem.advancer;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
 import com.godmonth.status.advancer.impl.AbstractAdvancer;
 import com.godmonth.status.advancer.intf.AdvancedResult;
 import com.godmonth.status.transitor.tx.intf.TriggerBehavior;
+
 import io.wexchain.dcc.marketing.api.constant.CandyStatus;
 import io.wexchain.dcc.marketing.common.constant.MiningRewardRoundItemStatus;
 import io.wexchain.dcc.marketing.domain.Activity;
@@ -12,13 +21,6 @@ import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardroun
 import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrounditem.MiningRewardRoundItemTrigger;
 import io.wexchain.dcc.marketing.repository.CandyRepository;
 import io.wexchain.dcc.marketing.repository.MiningRewardRoundItemRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 public class DeliverAdvancer extends AbstractAdvancer<
 		MiningRewardRoundItem, MiningRewardRoundItemInstruction, MiningRewardRoundItemTrigger> {

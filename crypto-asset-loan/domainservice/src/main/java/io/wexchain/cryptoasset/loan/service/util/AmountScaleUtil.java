@@ -12,7 +12,8 @@ import java.util.Optional;
 public class AmountScaleUtil {
 
     private static final BigDecimal WEXYUN_SCALE = new BigDecimal("100");
-    private static final BigDecimal CAH_SCALE = new BigDecimal("10").pow(18);
+    public static final BigDecimal CAH_SCALE = new BigDecimal("10").pow(18);
+    private static final BigDecimal WEXYUN_CAH_SCALE = new BigDecimal("10").pow(16);
 
     public static BigDecimal cal2Wexyun(BigDecimal source) {
         if (source == null) {
@@ -26,6 +27,13 @@ public class AmountScaleUtil {
             return BigDecimal.ZERO;
         }
         return source.divide(WEXYUN_SCALE, 4, BigDecimal.ROUND_HALF_UP);
+    }
+
+    public static BigInteger wexyun2Cah(BigDecimal source) {
+        if (source == null) {
+            return BigInteger.ZERO;
+        }
+        return source.multiply(WEXYUN_CAH_SCALE).toBigInteger();
     }
 
     public static BigInteger cal2Cah(BigDecimal source) {

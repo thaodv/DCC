@@ -1,8 +1,12 @@
 package io.wexchain.dcc.marketing.domainservice.processor.order.rewarddelivery.advancer;
 
+import org.apache.commons.lang3.Validate;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.godmonth.status.advancer.impl.AbstractAdvancer;
 import com.godmonth.status.advancer.intf.AdvancedResult;
 import com.godmonth.status.transitor.tx.intf.TriggerBehavior;
+
 import io.wexchain.cryptoasset.hosting.constant.TransferOrderStatus;
 import io.wexchain.cryptoasset.hosting.frontier.model.TransferOrder;
 import io.wexchain.dcc.marketing.api.constant.RewardDeliveryStatus;
@@ -19,8 +23,6 @@ import io.wexchain.dcc.marketing.domainservice.processor.order.rewarddelivery.Re
 import io.wexchain.dcc.marketing.domainservice.processor.order.rewarddelivery.RewardDeliveryTrigger;
 import io.wexchain.dcc.marketing.repository.RewardDeliveryRepository;
 import io.wexchain.dcc.marketing.repository.RewardLogRepository;
-import org.apache.commons.lang3.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class DeliverAdvancer extends AbstractAdvancer<RewardDelivery, RewardDeliveryInstruction, RewardDeliveryTrigger> {

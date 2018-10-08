@@ -1,21 +1,28 @@
 package io.wexchain.dcc.marketing.domainservice.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import io.wexchain.dcc.marketing.domain.MiningRewardRecord;
+import io.wexchain.dcc.marketing.domain.MiningRewardRoundItem;
+import io.wexchain.dcc.marketing.repository.*;
+import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
 import com.wexmarket.topia.commons.basic.exception.ErrorCodeValidate;
+
 import io.wexchain.dcc.marketing.api.constant.ActivityStatus;
 import io.wexchain.dcc.marketing.api.constant.MarketingErrorCode;
 import io.wexchain.dcc.marketing.api.model.request.QueryActivityRequest;
 import io.wexchain.dcc.marketing.domain.Activity;
 import io.wexchain.dcc.marketing.domainservice.ActivityService;
-import io.wexchain.dcc.marketing.repository.ActivityRepository;
 import io.wexchain.dcc.marketing.repository.query.ActivityQueryBuilder;
-import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * ActivityServiceImpl
@@ -25,8 +32,28 @@ import java.util.List;
 @Service
 public class ActivityServiceImpl implements ActivityService {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private ActivityRepository activityRepository;
+
+    @Autowired
+    private TransactionTemplate transactionTemplate;
+
+    @Autowired
+    private CandyRepository candyRepository;
+
+    @Autowired
+    private MiningRewardRecordRepository miningRewardRecordRepository;
+
+    @Autowired
+    private MiningRewardRoundItemRepository miningRewardRoundItemRepository;
+
+    @Autowired
+    private RedeemTokenRepository redeemTokenRepository;
+
+    @Autowired
+    private RewardLogRepository rewardLogRepository;
 
     @Override
     public Activity getActivityById(Long id) {
@@ -73,5 +100,28 @@ public class ActivityServiceImpl implements ActivityService {
         result.addAll(shelvedList);
         result.addAll(endedList);
         return result;
+    }
+
+    @Override
+    public void fixData(String oldAddress, String newAddress) {
+        logger.info("===== Start fix dcc marketing data, old address:{} to new address:{}", oldAddress, newAddress);
+        transactionTemplate.execute(transactionStatus -> {
+           Integer candy = candyRepository.updateCandy(newAddress, oldAddress);
+           logger.info("===== Update candy data, {} -> {}, num:{}", oldAddress, newAddress, candy);
+
+            Integer mrr = miningRewardRecordRepository.updateMiningRewardRecord(newAddress, oldAddress);
+            logger.info("===== Update mining reward record data, {} -> {}, num:{}", oldAddress, newAddress, mrr);
+
+            Integer mrri = miningRewardRoundItemRepository.updateMiningRewardRoundItem(newAddress, oldAddress);
+            logger.info("===== Update reward round item data, {} -> {}, num:{}", oldAddress, newAddress, mrri);
+
+            Integer redeemToken = redeemTokenRepository.updateRedeemToken(newAddress, oldAddress);
+            logger.info("===== Update redeem token data, {} -> {}, num:{}", oldAddress, newAddress, redeemToken);
+
+            Integer rewardLog = rewardLogRepository.updateRewardLog(newAddress, oldAddress);
+            logger.info("===== Update reward log data, {} -> {}, num:{}", oldAddress, newAddress, rewardLog);
+
+            return null;
+        });
     }
 }

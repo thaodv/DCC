@@ -1,15 +1,16 @@
 package io.wexchain.dcc.marketing.domainservice.impl;
 
-import com.wexmarket.topia.commons.rpc.ResultResponse;
-import io.wexchain.cryptoasset.account.api.model.Account;
-import io.wexchain.cryptoasset.account.api.model.AccountIndex;
-import io.wexchain.cryptoasset.account.proxy.utils.MonoAccoutingProxy;
-import io.wexchain.dcc.marketing.domainservice.MiningContributionScoreService;
+import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+import com.wexmarket.topia.commons.rpc.ResultResponse;
+
+import io.wexchain.cryptoasset.account.api.model.Account;
+import io.wexchain.cryptoasset.account.api.model.AccountIndex;
+import io.wexchain.cryptoasset.account.proxy.utils.MonoAccoutingProxy;
+import io.wexchain.dcc.marketing.domainservice.MiningContributionScoreService;
 
 @Service
 public class MiningContributionScoreServiceImpl implements MiningContributionScoreService {

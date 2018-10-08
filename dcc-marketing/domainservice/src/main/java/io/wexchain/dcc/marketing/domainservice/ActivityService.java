@@ -1,10 +1,9 @@
 package io.wexchain.dcc.marketing.domainservice;
 
+import java.util.List;
+
 import io.wexchain.dcc.marketing.api.model.request.QueryActivityRequest;
 import io.wexchain.dcc.marketing.domain.Activity;
-
-import javax.validation.constraints.NotNull;
-import java.util.List;
 
 public interface ActivityService {
 
@@ -13,4 +12,6 @@ public interface ActivityService {
     Activity getActivityByCode(String code);
 
     List<Activity> queryActivity(QueryActivityRequest request);
+
+    void fixData(String oldAddress, String newAddress);
 }

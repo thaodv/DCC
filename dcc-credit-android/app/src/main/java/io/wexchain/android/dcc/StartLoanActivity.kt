@@ -26,7 +26,6 @@ import io.wexchain.dccchainservice.domain.LoanChainOrder
 import io.wexchain.dccchainservice.domain.LoanProduct
 import io.wexchain.dccchainservice.domain.LoanStatus
 import io.wexchain.ipfs.utils.doMain
-import org.jetbrains.anko.toast
 
 class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
     override val contentLayoutId: Int

@@ -1,6 +1,15 @@
 package io.wexchain.dcc.marketing.domainservice.function.miningevent.impl;
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.support.TransactionTemplate;
+
 import com.godmonth.status.executor.intf.OrderExecutor;
+
 import io.wexchain.dcc.marketing.api.constant.RestrictionType;
 import io.wexchain.dcc.marketing.common.constant.MiningActionRecordStatus;
 import io.wexchain.dcc.marketing.domain.EcoRewardRule;
@@ -13,12 +22,6 @@ import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardreco
 import io.wexchain.dcc.marketing.repository.IdRestrictionRepository;
 import io.wexchain.dcc.marketing.repository.MiningRewardRecordRepository;
 import io.wexchain.notify.domain.dcc.VerifiedEvent;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.support.TransactionTemplate;
-
-import javax.annotation.Resource;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * MiningEventHandlerImpl
@@ -63,7 +66,7 @@ public class MiningCertEventHandler implements MiningEventHandler {
     @Override
     public boolean canHandle(Object obj) {
         return obj instanceof VerifiedEvent && status.equalsIgnoreCase(((VerifiedEvent) obj).getStatus().name())
-                && certType.equalsIgnoreCase(((VerifiedEvent) obj).getCertType().name());
+                && certType.equalsIgnoreCase(((VerifiedEvent) obj).getCertType());
     }
 
     @Override

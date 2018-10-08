@@ -1,14 +1,15 @@
 package io.wexchain.dcc.marketing.domainservice;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
 import io.wexchain.dcc.marketing.api.facade.AddMiningScoreRequest;
 import io.wexchain.dcc.marketing.api.model.request.QueryMiningRewardRecordPageRequest;
 import io.wexchain.dcc.marketing.api.model.request.QueryRewardRuleRequest;
 import io.wexchain.dcc.marketing.domain.EcoRewardRule;
 import io.wexchain.dcc.marketing.domain.MiningRewardRecord;
-import org.springframework.data.domain.Page;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * MiningRewardRecordService

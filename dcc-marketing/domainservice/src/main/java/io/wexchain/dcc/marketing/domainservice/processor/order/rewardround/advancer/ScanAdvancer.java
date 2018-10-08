@@ -1,8 +1,23 @@
 package io.wexchain.dcc.marketing.domainservice.processor.order.rewardround.advancer;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.support.TransactionTemplate;
+import org.web3j.protocol.core.methods.response.Log;
+
 import com.godmonth.status.advancer.impl.AbstractAdvancer;
 import com.godmonth.status.advancer.intf.AdvancedResult;
 import com.godmonth.status.transitor.tx.intf.TriggerBehavior;
+
 import io.wexchain.dcc.marketing.api.constant.ParticipatorRole;
 import io.wexchain.dcc.marketing.api.constant.RestrictionType;
 import io.wexchain.dcc.marketing.api.constant.RewardActionRecordStatus;
@@ -15,16 +30,6 @@ import io.wexchain.dcc.marketing.domainservice.function.web3.Web3Function;
 import io.wexchain.dcc.marketing.domainservice.processor.order.rewardround.RewardRoundInstruction;
 import io.wexchain.dcc.marketing.domainservice.processor.order.rewardround.RewardRoundTrigger;
 import io.wexchain.dcc.marketing.repository.RewardActionRecordRepository;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.exception.ContextedRuntimeException;
-import org.apache.commons.lang3.tuple.Pair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.web3j.protocol.core.methods.response.Log;
-import sun.security.krb5.internal.PAData;
-
-import java.util.*;
 
 
 public class ScanAdvancer extends AbstractAdvancer<RewardRound, RewardRoundInstruction, RewardRoundTrigger> {
@@ -46,11 +51,16 @@ public class ScanAdvancer extends AbstractAdvancer<RewardRound, RewardRoundInstr
 	@Autowired
 	private RewardActionRecordRepository rewardActionRecordRepository;
 
-	private static final Integer BLOCK_SACN_PAGE_SIZE = 5;
+	@Autowired
+	private TransactionTemplate transactionTemplate;
+
+	private static final Integer BLOCK_SACN_PAGE_SIZE = 500;
 
 	@Override
 	public AdvancedResult<RewardRound, RewardRoundTrigger> advance(
 			RewardRound rewardRound, RewardRoundInstruction instruction, Object message) {
+
+		beforeScan(rewardRound);
 
 		List<Pair<Long, Long>> blockScanList = calcBlockScanList(
 				rewardRound.getStartBlock(), rewardRound.getEndBlock());
@@ -80,6 +90,16 @@ public class ScanAdvancer extends AbstractAdvancer<RewardRound, RewardRoundInstr
 		}
 
 		return new AdvancedResult<>(new TriggerBehavior<>(RewardRoundTrigger.SCAN));
+	}
+
+	private void beforeScan(RewardRound rewardRound) {
+		Long count = rewardActionRecordRepository.countByRewardRoundId(rewardRound.getId());
+		logger.info("Before scan block, reward round id:{}, action record count:{}", rewardRound.getId(), count);
+		if (count != null && count > 0) {
+			Long deleted = transactionTemplate.execute(
+					status -> rewardActionRecordRepository.deleteByRewardRoundId(rewardRound.getId()));
+			logger.info("Before scan block, reward round id:{}, delete record count:{}", rewardRound.getId(), deleted);
+		}
 	}
 
 	private List<Pair<Long, Long>> calcBlockScanList(long startBlock, long endBlock) {

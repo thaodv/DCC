@@ -1,10 +1,12 @@
 package io.wexchain.dcc.marketing.domainservice.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.Range;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.godmonth.status.executor.intf.OrderExecutor;
 import com.wexmarket.topia.commons.basic.exception.ErrorCodeValidate;
+import com.wexmarket.topia.commons.basic.replenishment.ReplenishmentRange;
 
 import io.wexchain.dcc.marketing.api.constant.CandyStatus;
 import io.wexchain.dcc.marketing.api.constant.MarketingErrorCode;
@@ -50,10 +53,11 @@ public class CandyServiceImpl implements CandyService, Patroller {
 
 	@Override
 	public void patrol() {
-		List<Candy> findTop1000ByStatusOrderByIdAsc = candyRepository
-				.findTop1000ByStatusOrderByIdAsc(CandyStatus.PICKED);
-		logger.info("patrol candy size :{}", findTop1000ByStatusOrderByIdAsc.size());
-		for (Candy candy : findTop1000ByStatusOrderByIdAsc) {
+		Range<Date> range = new ReplenishmentRange().getRange();
+		List<Candy> list = candyRepository.findTop1000ByLastUpdatedTimeBetweenAndStatusOrderByIdAsc(range.getMinimum(),
+				range.getMaximum(), CandyStatus.PICKED);
+		logger.info("patrol candy size :{}", list.size());
+		for (Candy candy : list) {
 			candyExecutor.executeAsync(candy, null, null);
 		}
 	}

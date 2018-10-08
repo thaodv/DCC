@@ -1,6 +1,22 @@
 package io.wexchain.dcc.marketing.domainservice.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Resource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionTemplate;
+
 import com.godmonth.status.executor.intf.OrderExecutor;
+
 import io.wexchain.dcc.marketing.api.constant.MiningRewardRoundStatus;
 import io.wexchain.dcc.marketing.common.constant.MiningRewardRoundItemStatus;
 import io.wexchain.dcc.marketing.domain.Activity;
@@ -13,19 +29,6 @@ import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardroun
 import io.wexchain.dcc.marketing.repository.LastLoginTimeRepository;
 import io.wexchain.dcc.marketing.repository.MiningRewardRoundItemRepository;
 import io.wexchain.dcc.marketing.repository.MiningRewardRoundRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.support.TransactionTemplate;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * MiningRewardRoundServiceImpl

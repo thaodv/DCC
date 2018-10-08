@@ -1,9 +1,12 @@
 package io.wexchain.dcc.marketing.domainservice.function.miningevent.impl;
 
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.support.TransactionTemplate;
+
 import com.godmonth.status.executor.intf.OrderExecutor;
-import io.wexchain.dcc.marketing.common.constant.MiningActionRecordStatus;
-import io.wexchain.dcc.marketing.domain.EcoRewardRule;
-import io.wexchain.dcc.marketing.domain.IdRestriction;
+
 import io.wexchain.dcc.marketing.domain.LastLoginTime;
 import io.wexchain.dcc.marketing.domain.MiningRewardRecord;
 import io.wexchain.dcc.marketing.domainservice.EcoRewardRuleService;
@@ -15,13 +18,6 @@ import io.wexchain.dcc.marketing.repository.IdRestrictionRepository;
 import io.wexchain.dcc.marketing.repository.LastLoginTimeRepository;
 import io.wexchain.dcc.marketing.repository.MiningRewardRecordRepository;
 import io.wexchain.notify.domain.dcc.LoginEvent;
-import org.apache.commons.lang3.Validate;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.support.TransactionTemplate;
-
-import javax.annotation.Resource;
-import java.util.Optional;
 
 /**
  * MiningLoginEventHandler

@@ -1,8 +1,13 @@
 package io.wexchain.dcc.marketing.domainservice.processor.order.redeemtoken.advancer;
 
+import org.apache.commons.lang3.Validate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
 import com.godmonth.status.advancer.impl.AbstractAdvancer;
 import com.godmonth.status.advancer.intf.AdvancedResult;
 import com.godmonth.status.transitor.tx.intf.TriggerBehavior;
+
 import io.wexchain.cryptoasset.hosting.constant.TransferOrderStatus;
 import io.wexchain.cryptoasset.hosting.frontier.model.TransferOrder;
 import io.wexchain.dcc.marketing.api.constant.RedeemTokenStatus;
@@ -18,9 +23,6 @@ import io.wexchain.dcc.marketing.domainservice.processor.order.redeemtoken.Redee
 import io.wexchain.dcc.marketing.domainservice.processor.order.redeemtoken.RedeemTokenTrigger;
 import io.wexchain.dcc.marketing.repository.RedeemTokenRepository;
 import io.wexchain.dcc.marketing.repository.RewardLogRepository;
-import org.apache.commons.lang3.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 
 public class RedeemAdvancer extends AbstractAdvancer<RedeemToken, RedeemTokenInstruction, RedeemTokenTrigger> {
@@ -62,11 +64,11 @@ public class RedeemAdvancer extends AbstractAdvancer<RedeemToken, RedeemTokenIns
 			ci -> Validate.notNull(redeemTokenRepository.lockById(ci.getParentId())), null,
 			command -> {
 				if (RetryableCommandHelper.isCreated(command)) {
-					TransferOrder transferOrder = cahFunction.redeem(
+					TransferOrder transferOrder = cahFunction.transfer(
 							String.valueOf(command.getId()),
 							redeemToken.getAmount().toBigInteger(),
 							redeemToken.getScenario().getActivity().getSupplierAddress(),
-							redeemToken.getReceiverAddress());
+							redeemToken.getReceiverAddress(), redeemToken.getScenario().getActivity().getAssetCode());
 					if (transferOrder.getStatus() == TransferOrderStatus.SUCCESS) {
 						command.setMemo(transferOrder.getAmount() + "");
 						return GeneralCommandStatus.SUCCESS.name();

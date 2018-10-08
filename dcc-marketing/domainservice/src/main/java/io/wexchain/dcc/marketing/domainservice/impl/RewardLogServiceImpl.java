@@ -1,6 +1,26 @@
 package io.wexchain.dcc.marketing.domainservice.impl;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import io.wexchain.dcc.marketing.api.constant.RewardDeliveryStatus;
+import io.wexchain.dcc.marketing.domain.RewardRound;
+import io.wexchain.dcc.marketing.domainservice.RewardRoundService;
+import io.wexchain.dcc.marketing.repository.RewardDeliveryRepository;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
 import com.wexmarket.topia.commons.data.page.PageUtils;
+
 import io.wexchain.dcc.marketing.api.model.RewardLogStatisticsInfo;
 import io.wexchain.dcc.marketing.api.model.RewardStatistics;
 import io.wexchain.dcc.marketing.api.model.request.GetTotalRewardAmountRequest;
@@ -9,22 +29,9 @@ import io.wexchain.dcc.marketing.domain.Activity;
 import io.wexchain.dcc.marketing.domain.RewardLog;
 import io.wexchain.dcc.marketing.domainservice.ActivityService;
 import io.wexchain.dcc.marketing.domainservice.RewardLogService;
-import io.wexchain.dcc.marketing.domainservice.RewardRoundService;
 import io.wexchain.dcc.marketing.domainservice.ScenarioService;
-import io.wexchain.dcc.marketing.repository.RewardActionRecordRepository;
 import io.wexchain.dcc.marketing.repository.RewardLogRepository;
 import io.wexchain.dcc.marketing.repository.query.RewardLogQueryBuilder;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.util.*;
 
 /**
  * RewardLogServiceImpl
@@ -42,6 +49,12 @@ public class RewardLogServiceImpl implements RewardLogService {
 
     @Autowired
     private ScenarioService scenarioService;
+
+    @Autowired
+    private RewardDeliveryRepository rewardDeliveryRepository;
+
+    @Autowired
+    private RewardRoundService rewardRoundService;
 
     @Override
     public Page<RewardLog> queryRewardLogPage(QueryRewardLogPageRequest request) {
@@ -71,15 +84,29 @@ public class RewardLogServiceImpl implements RewardLogService {
         Activity activity = activityService.getActivityByCode(activityCode);
         DateTime from = DateTime.now().minusDays(1).withTimeAtStartOfDay();
         DateTime to = DateTime.now().withTimeAtStartOfDay().minusMillis(1);
+
+
+
         RewardLogStatisticsInfo info = new RewardLogStatisticsInfo();
         info.setActivityCode(activity.getCode());
         info.setTotalAmount(Optional.ofNullable(
                 rewardLogRepository.findTotalAmount(activity.getId())).orElse(BigDecimal.ZERO));
-        info.setYesterdayAmount(Optional.ofNullable(
-                rewardLogRepository.findTotalAmountBetweenDate(
-                        activity.getId(), from.toDate(), to.toDate())).orElse(BigDecimal.ZERO));
-        info.setYesterdayPersonNumber(rewardLogRepository.countByActivityIdAndCreatedTimeBetween(
-                activity.getId(), from.toDate(), to.toDate()));
+
+        if (activity.getCode().equals("10003")) {
+            DateTime bonusDay = DateTime.now().minusDays(2).withTimeAtStartOfDay();
+            RewardRound rewardRound = rewardRoundService.findRewardRoundByBonusDay(bonusDay.toDate()).get();
+            BigDecimal total = rewardDeliveryRepository.sumAmountByRoundId(rewardRound.getId(), RewardDeliveryStatus.SUCCESS);
+            int number = rewardDeliveryRepository.countByRewardRoundIdAndStatus(rewardRound.getId(), RewardDeliveryStatus.SUCCESS);
+            info.setYesterdayAmount(Optional.ofNullable(total).orElse(BigDecimal.ZERO));
+            info.setYesterdayPersonNumber(number);
+        } else {
+            info.setYesterdayAmount(Optional.ofNullable(
+                    rewardLogRepository.findTotalAmountBetweenDate(
+                            activity.getId(), from.toDate(), to.toDate())).orElse(BigDecimal.ZERO));
+            info.setYesterdayPersonNumber(rewardLogRepository.countByActivityIdAndCreatedTimeBetween(
+                    activity.getId(), from.toDate(), to.toDate()));
+        }
+
         return info;
     }
 
