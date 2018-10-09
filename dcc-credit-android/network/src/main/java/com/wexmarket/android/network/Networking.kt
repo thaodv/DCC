@@ -69,7 +69,7 @@ class Networking {
                     .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
                     .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                     .apply {
-                        if (true) {
+                        if (debug) {
                             addInterceptor(HttpLoggingInterceptor {
                                 Logutil.d(LOG_TAG_OKHTTP, it)
                             }.setLevel(HttpLoggingInterceptor.Level.BODY))
