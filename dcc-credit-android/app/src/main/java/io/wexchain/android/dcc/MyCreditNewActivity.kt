@@ -239,7 +239,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                         if(null!=it){
                             //Log.e("getTNLogReport",it.reportData.toString())
                             if(it.endorserOrder.status.contains("COMPELETED")){
-                                android.util.Log.e("it.reportData ", it.tongniuData.toString() )
+                              //  android.util.Log.e("it.reportData ", it.tongniuData.toString() )
                                 onTNLogSuccessGot(it.tongniuData.toString() )
                                 worhavah.certs.tools.CertOperations.certed()
                                 clearTNCertCache()
@@ -291,10 +291,10 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
     fun getTNrealdata(){
         getTNLogReport2(App.get().passportRepository.getCurrentPassport()!!) .subscribeBy(
             onSuccess = {
-                android.util.Log.e(" getTNLogReport2 ", it  )
+               // android.util.Log.e(" getTNLogReport2 ", it  )
                 val ss=it
                 var dd=ss.substring(it.indexOf("\"reportData\":\"")+14,it.length-2)
-                android.util.Log.e(" getTNLogReport2 dddddd", dd  )
+               // android.util.Log.e(" getTNLogReport2 dddddd", dd  )
                 onTNLogSuccessGot(dd )
                 setVM()
 

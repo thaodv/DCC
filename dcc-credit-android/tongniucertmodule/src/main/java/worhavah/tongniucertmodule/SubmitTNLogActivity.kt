@@ -214,7 +214,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
     ): Single<TNcert1new> {
         submitOrderId=orderId
 
-        Log.e("orderId",orderId.toString())
+     //   Log.e("orderId",orderId.toString())
         return  CertOperations.tnCertApi.requestCommunicationLogData(
             address = address,
             orderId = orderId,
@@ -237,7 +237,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
        // require(passport.authKey != null)
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
-        Log.e("orderId",orderId.toString())
+      //  Log.e("orderId",orderId.toString())
         return  CertOperations.tnCertApi.requestCommunicationLogData(
             address = address,
             orderId = orderId,

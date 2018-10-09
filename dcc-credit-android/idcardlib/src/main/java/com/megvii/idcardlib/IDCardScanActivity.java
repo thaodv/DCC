@@ -397,7 +397,7 @@ public class IDCardScanActivity extends Activity implements TextureView.SurfaceT
         }
 
         private void handleSuccess(IDCardQualityResult result) {
-            Log.e("IDCardScanActivity", "handleSuccess1(ms): " + System.currentTimeMillis());
+         //   Log.e("IDCardScanActivity", "handleSuccess1(ms): " + System.currentTimeMillis());
             long start = System.currentTimeMillis();
             Intent intent = new Intent();
             intent.putExtra("side", mSide == IDCardAttr.IDCardSide.IDCARD_SIDE_FRONT ? 0 : 1);
@@ -407,7 +407,7 @@ public class IDCardScanActivity extends Activity implements TextureView.SurfaceT
             }
             setResult(RESULT_OK, intent);
             Util.cancleToast(IDCardScanActivity.this);
-            Log.e("IDCardScanActivity", "handleSuccess2(ms): " + System.currentTimeMillis());
+        //    Log.e("IDCardScanActivity", "handleSuccess2(ms): " + System.currentTimeMillis());
             finish();
         }
     }

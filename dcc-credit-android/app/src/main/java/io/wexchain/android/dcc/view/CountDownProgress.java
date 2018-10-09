@@ -364,7 +364,7 @@ public class CountDownProgress extends View {
                 countdownTime = countdownTime-1000;
              //   textDesc = countdownTime/1000 + "″";
                 //countdownTime = countdownTime-1000;
-                Log.e("time",countdownTime+"");
+               // Log.e("time",countdownTime+"");
                 //刷新view
                 invalidate();
             }

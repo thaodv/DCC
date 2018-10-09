@@ -174,7 +174,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
         })
         binding.sectionTransactions!!.rvTransactions.adapter = bottomMoreItemsAdapter
         txListVm.list.observe(this, Observer {
-            Log.e("sssssssssssssss", "txListVm " + it?.size)
+          //  Log.e("sssssssssssssss", "txListVm " + it?.size)
             val list3 = it?.subList(0, minOf(it.size, 3)) ?: emptyList()
             adapter.setList(list3)
             txListVm.empty.set(list3.isEmpty())

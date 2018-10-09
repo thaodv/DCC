@@ -141,7 +141,7 @@ object ScfOperations {
                             if (isTokenFailILL(it.cause ?: it)) {
                                // loginWithPassport(address, privateKey)
 
-                                Log.e("isTokenFailILL", "isTokenFailILLisTokenFailILLisTokenFailILLisTokenFailILLisTokenFailILLisTokenFailILLisTokenFailILLisTokenFailILL")
+                       //         Log.e("isTokenFailILL", "isTokenFailILLisTokenFailILLisTokenFailILLisTokenFailILLisTokenFailILLisTokenFailILLisTokenFailILLisTokenFailILL")
                                 Single.error<T>(it)
                             }else{
                                 Single.error<T>(it)
@@ -217,7 +217,7 @@ object ScfOperations {
                                 } else {
 
                                     if (body.businessCode.equals("ILLEGAL_SIGN")||body.businessCode.equals("SIGN_MESSAGE_INVALID")){
-                                        Log.e("body", "bodybodybodybody")
+                                //        Log.e("body", "bodybodybodybody")
                                         Networkutils.context!!.startActivity(Intent(Networkutils.context,ReLoginActivity::class.java) )
                                         /*AlertDialog(Networkutils.context!!).builder().setTitle("重新登陆")
                                             .setMsg("该钱包地址已在其他设备上登陆，请更新密钥以在本设备重新登陆")
