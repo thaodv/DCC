@@ -107,7 +107,7 @@ class LiveDataBus {
                 objectWrapper = (objectWrapperEntry).value
             }
             if (objectWrapper == null) {
-                throw NullPointerException("Wrapper can not be bull!")
+                throw NullPointerException("Wrapper can not be null!")
             }
             val classObserverWrapper = objectWrapper.javaClass.superclass
             val fieldLastVersion = classObserverWrapper.getDeclaredField("mLastVersion")

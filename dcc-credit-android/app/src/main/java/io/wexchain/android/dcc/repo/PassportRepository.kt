@@ -19,10 +19,7 @@ import io.wexchain.android.dcc.chain.EthsHelper
 import io.wexchain.android.dcc.domain.AuthKey
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.repo.db.*
-import io.wexchain.android.dcc.tools.RoomHelper
-import io.wexchain.android.dcc.tools.doRoom
-import io.wexchain.android.dcc.tools.getPrivateKey
-import io.wexchain.android.dcc.tools.toSha256
+import io.wexchain.android.dcc.tools.*
 import io.wexchain.ipfs.utils.doMain
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.Wallet

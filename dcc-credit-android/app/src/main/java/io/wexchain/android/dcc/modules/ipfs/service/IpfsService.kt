@@ -103,11 +103,11 @@ class IpfsService : Service() {
         val cmLogCertExpired = CertOperations.getCmLogCertExpired()
 
         val phoneInfo = PhoneInfo(
-            mobileAuthenStatus = status,
-            mobileAuthenOrderid = cmCertOrderId.toInt(),
-            mobileAuthenNumber = cmLogPhoneNo!!,
-            mobileAuthenCmData = json.base64(),
-            mobileAuthenExpired = cmLogCertExpired)
+                mobileAuthenStatus = status,
+                mobileAuthenOrderid = cmCertOrderId.toInt(),
+                mobileAuthenNumber = cmLogPhoneNo!!,
+                mobileAuthenCmData = json.base64(),
+                mobileAuthenExpired = cmLogCertExpired)
 
         val data = phoneInfo.toJson()
         val size = getDataFromSize(data.toByteArray(), MyCloudActivity.PHONE_OPERATOR, CM_NONCE)
@@ -119,15 +119,15 @@ class IpfsService : Service() {
         val cmCertOrderId = worhavah.certs.tools.CertOperations.getTNCertOrderId()
         val cmLogPhoneNo = worhavah.certs.tools.CertOperations.getTnLogPhoneNo()
         val status = worhavah.certs.tools.CertOperations.getTNLogUserStatus().name
-       // val json = worhavah.certs.tools.CertOperations.getTNLogData(cmCertOrderId).blockingGet()
+        // val json = worhavah.certs.tools.CertOperations.getTNLogData(cmCertOrderId).blockingGet()
         val cmLogCertExpired = worhavah.certs.tools.CertOperations.getTNLogCertExpired()
-val js2= worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.get()!!.toByteArray()
+        val js2 = worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.get()!!.toByteArray()
         val phoneInfo = TNPhoneInfo(
-            sameCowMobileAuthenStatus = status,
-            sameCowMobileAuthenOrderid = cmCertOrderId.toString(),
-            sameCowMobileAuthenNumber = cmLogPhoneNo!!,
-            sameCowMobileAuthenCmData = js2.base64(),
-            sameCowMobileAuthenExpired = cmLogCertExpired.toString())
+                sameCowMobileAuthenStatus = status,
+                sameCowMobileAuthenOrderid = cmCertOrderId.toString(),
+                sameCowMobileAuthenNumber = cmLogPhoneNo!!,
+                sameCowMobileAuthenCmData = js2.base64(),
+                sameCowMobileAuthenExpired = cmLogCertExpired.toString())
 
         val data = phoneInfo.toJson()
         val size = getDataFromSize(data.toByteArray(), MyCloudActivity.TNDATA, TN_NONCE)
@@ -178,16 +178,16 @@ val js2= worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.get()!!.toB
                             IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, ID_NONCE, ipfsKeyHash)
                         }
                         ChainGateway.BUSINESS_BANK_CARD -> {
-                            val idDigest = CertOperations.getLocalBankDigest()
-                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, BANK_NONCE, ipfsKeyHash)
+                            val bankDigest = CertOperations.getLocalBankDigest()
+                            IpfsOperations.putIpfsToken(business, it, bankDigest.first, bankDigest.second, BANK_NONCE, ipfsKeyHash)
                         }
                         ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
-                            val idDigest = CertOperations.getLocalCmDigest()
-                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, CM_NONCE, ipfsKeyHash)
+                            val cmDigest = CertOperations.getLocalCmDigest()
+                            IpfsOperations.putIpfsToken(business, it, cmDigest.first, cmDigest.second, CM_NONCE, ipfsKeyHash)
                         }
                         ChainGateway.TN_COMMUNICATION_LOG -> {
-                            val idDigest = worhavah.certs.tools.CertOperations.getLocalTnDigest()
-                            IpfsOperations.putIpfsToken(business, it, idDigest.first, idDigest.second, TN_NONCE, ipfsKeyHash)
+                            val tnDigest = worhavah.certs.tools.CertOperations.getLocalTnDigest()
+                            IpfsOperations.putIpfsToken(business, it, tnDigest.first, tnDigest.second, TN_NONCE, ipfsKeyHash)
                         }
                         else -> {
                             Single.error(Throwable())
@@ -198,8 +198,8 @@ val js2= worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.get()!!.toB
                 .doOnSubscribe(business, status, "正在上传", onProgress)
                 .subscribeBy(
                         onSuccess = {
-                            successful.invoke(business)
                             onProgress.invoke(business, 100)
+                            successful.invoke(business)
                         },
                         onError = {
                             onError.invoke(business, it)
@@ -263,7 +263,7 @@ val js2= worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.get()!!.toB
                             CertOperations.saveIpfsCmData(phoneInfo)
                         }
                         ChainGateway.TN_COMMUNICATION_LOG -> {
-                            val phoneInfo = it.replace("\n","").toBean(TNPhoneInfo::class.java)
+                            val phoneInfo = it.replace("\n", "").toBean(TNPhoneInfo::class.java)
                             CertOperations.saveIpfsTNData(phoneInfo)
                         }
                         else -> {
@@ -275,8 +275,8 @@ val js2= worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.get()!!.toB
                 .doOnSubscribe(business, status, "正在下载", onProgress)
                 .subscribeBy(
                         onSuccess = {
-                            successful.invoke(business)
                             onProgress.invoke(business, 100)
+                            successful.invoke(business)
                         },
                         onError = {
                             onError.invoke(it)
@@ -299,9 +299,9 @@ val js2= worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.get()!!.toB
 
 fun <T> Single<T>.doProgress(business: String, progress: Int, onProgress: (String, Int) -> Unit): Single<T> {
     return this.doMain()
-        .map {
-            onProgress.invoke(business, progress)
-            it
-        }
-        .doBack()
+            .map {
+                onProgress.invoke(business, progress)
+                it
+            }
+            .doBack()
 }
