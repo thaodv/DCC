@@ -53,7 +53,7 @@ class MyInterestDetailActivity : BindActivity<ActivityMyInterestdetailBinding>()
 
                     val df = DecimalFormat("###,###")
                     //开始格式化
-                    Log.e("lastAmount", "" + BytesUtils.encodeStringsimple(it.result))
+                 //   Log.e("lastAmount", "" + BytesUtils.encodeStringsimple(it.result))
 
                     binding.totalamountDCC = df.format(lastAmount)
                     exPro = (pRate * BigDecimal(lastAmount)).setScale(2, BigDecimal.ROUND_DOWN)//*BigDecimal(saleInfo.period)
@@ -79,7 +79,7 @@ class MyInterestDetailActivity : BindActivity<ActivityMyInterestdetailBinding>()
                 {
                     mystatu = BytesUtils.encodeStringstatu(it.result)
 
-                    Log.e("getbiStatues", "" + mystatu)
+               //     Log.e("getbiStatues", "" + mystatu)
                     setUI()
                 },
                 {

@@ -15,10 +15,13 @@ import io.wexchain.android.dcc.network.IpfsApi
 import io.wexchain.android.dcc.tools.BytesUtils
 import io.wexchain.android.dcc.tools.BytesUtils.encodeStringsimple
 import io.wexchain.android.dcc.tools.BytesUtils.encodeStringsimple2
+import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityBsxDetailBinding
+import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.api.domain.EthJsonRpcResponse
 import io.wexchain.ipfs.utils.doMain
+import io.wexchain.ipfs.utils.subscribeOnIo
 import java.math.BigDecimal
 
 class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
@@ -49,6 +52,8 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
     var canBuy: Boolean = false
 
     lateinit var sstvBuyit: ColorDrawable
+
+    val agent = App.get().assetsRepository.getDigitalCurrencyAgent(Currencies.Ethereum)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,10 +102,10 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
         if ("DCC" == assetCode) {
             ss = BsxOperations.getBsxSaleInfo(bussiness)
         } else {
-            ss = App.get().publicRpc.getBsxSaleInfo(contractAddress)
+            ss = agent.getBsxSaleInfo(contractAddress)
         }
 
-        ss.doMain()
+        ss.subscribeOnIo().doMain()
                 .doOnSubscribe {
                     showLoadingDialog()
                 }.doFinally {
@@ -122,10 +127,10 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
         if ("DCC" == assetCode) {
             ss = BsxOperations.getBsxMinAmountPerHand(bussiness)
         } else {
-            ss = App.get().publicRpc.getBsxMinAmountPerHand(contractAddress)
+            ss = agent.getBsxMinAmountPerHand(contractAddress)
         }
 
-        ss.doMain()
+        ss.subscribeOnIo().doMain()
                 .doOnSubscribe {
                     showLoadingDialog()
                 }.doFinally {
@@ -144,7 +149,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
 
                     getBsxInvestCeilAmount()
                 }, {
-
+                    LogUtils.i(it.message)
                 })
     }
 
@@ -155,20 +160,26 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
         if ("DCC" == assetCode) {
             ss = BsxOperations.getBsxInvestCeilAmount(bussiness)
         } else {
-            ss = App.get().publicRpc.getBsxInvestCeilAmount(contractAddress)
+            ss = agent.getBsxInvestCeilAmount(contractAddress)
         }
 
-        ss.doMain()
+        ss.subscribeOnIo().doMain()
                 .doOnSubscribe {
                     showLoadingDialog()
                 }.doFinally {
                     hideLoadingDialog()
                 }.subscribe({
-                    totalAmount = encodeStringsimple(it.result).toString()
-                    binding.totalamountDCC = ("" + totalAmount + assetCode)
+
+                    if ("DCC" == assetCode) {
+                        totalAmount = encodeStringsimple(it.result).toString()
+                    }else{
+                        totalAmount = encodeStringsimple2(it.result).toString()
+                    }
+
+                    binding.tvProductlimit.text = ("" + totalAmount + assetCode)
                     getbiInvestedTotalAmount()
                 }, {
-                    it.printStackTrace()
+                    LogUtils.i(it.message)
                 })
     }
 
@@ -179,10 +190,10 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
         if ("DCC" == assetCode) {
             ss = BsxOperations.investedBsxTotalAmount(bussiness)
         } else {
-            ss = App.get().publicRpc.investedBsxTotalAmount(contractAddress)
+            ss = agent.investedBsxTotalAmount(contractAddress)
         }
 
-        ss.doMain()
+        ss.subscribeOnIo().doMain()
                 .doOnSubscribe {
                     showLoadingDialog()
                 }.doFinally {
@@ -203,10 +214,10 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
                     } else {
                         res = BigDecimal(totalAmount).subtract(BigDecimal(lastAmount)).setScale(4).toPlainString()
                     }
-                    binding.lastamountDCC = ("$res$assetCode ($per%）")
+                    binding.tvLostlimit.text = ("$res$assetCode ($per%）")
                     getBsxStatus()
                 }, {
-                    it.printStackTrace()
+                    LogUtils.i(it.message)
                 })
     }
 
@@ -217,10 +228,10 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
         if ("DCC" == assetCode) {
             ss = BsxOperations.getBsxStatus(bussiness)
         } else {
-            ss = App.get().publicRpc.getBsxStatus(contractAddress)
+            ss = agent.getBsxStatus(contractAddress)
         }
 
-        ss.doMain()
+        ss.subscribeOnIo().doMain()
                 .doOnSubscribe {
                     showLoadingDialog()
                 }.doFinally {
@@ -234,11 +245,9 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
                     } else if (BigDecimal(minAmountPerHand).compareTo(BigDecimal(totalAmount).subtract(BigDecimal(lastAmount))) == 1) {
                         statu = "已售罄"
                         canBuy = false
-                        //   binding.tvBuyit.setBackgroundResource(R.color.B2484848)
                     } else {
                         statu = "认购"
                         canBuy = true
-                        // binding.tvBuyit.setBackgroundResource(R.color.FF6766CC)
                     }
                     LASTAM = BigDecimal(totalAmount).subtract(BigDecimal(lastAmount)).toPlainString()
                     ONAME = saleInfo.name
@@ -246,7 +255,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
                         setButton()
                     }
                 }, {
-
+                    LogUtils.i(it.message)
                 })
     }
 

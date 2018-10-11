@@ -51,7 +51,7 @@ object BsxOperations {
         return getBsxAddress(business).investedBsxAmountMappingApi(business)
     }
 
-    fun investBsx(business: String, amount: BigInteger, chain: Chain): Single<EthJsonTxReceipt> {
+    fun investBsx(business: String, amount: BigInteger, chain: Chain): Single<String> {
         return Singles.zip(
                 getNonce(chain),
                 getBsxAddress(business))
@@ -60,7 +60,6 @@ object BsxOperations {
                     ipfsKey.txSigned(passport.getCurrentPassport()!!.credential, it.second, it.first)
                 }
                 .sendRawTransaction(business)
-                .transactionReceipt(business)
     }
 
     private fun Single<String>.getBsxStatusApi(business: String): Single<EthJsonRpcResponse<String>> {

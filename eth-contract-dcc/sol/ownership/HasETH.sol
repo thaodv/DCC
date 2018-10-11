@@ -6,6 +6,7 @@ contract HasETH is HasWallet {
 
     function withdrawETH2Wallet(uint256 weiAmount) public onlyOwner {
         require(weiAmount > 0);
+        require(wallet!=0);
         wallet.transfer(weiAmount);
     }
 }

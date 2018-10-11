@@ -23,6 +23,7 @@ import org.springframework.util.Base64Utils;
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -47,7 +48,7 @@ public class ChainOrderServiceImpl implements ChainOrderService {
     @Autowired
     private AgreementService agreementService;
 
-    @Autowired
+    @Resource(name = "idCertService")
     private CertService certService;
 
     @Autowired

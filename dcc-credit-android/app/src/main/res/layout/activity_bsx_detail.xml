@@ -20,11 +20,6 @@
             />
 
         <variable
-            name="lastamountDCC"
-            type="String"
-            />
-
-        <variable
             name="canbuy"
             type="boolean"
             />
@@ -238,7 +233,6 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
-                        android:text="@{totalamountDCC}"
                         android:textColor="@color/upgrade_title_color"
                         android:textSize="14sp"/>
 
@@ -308,7 +302,6 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
-                        android:text="@{lastamountDCC}"
                         android:textColor="@color/FFED190F"
                         android:textSize="14sp"/>
 
@@ -438,7 +431,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="4dp"
-                            android:text="今日"
+                            android:text="@{saleInfo.showStartTime()}"
                             android:textColor="@color/FF4A4A4A"
                             android:textSize="14sp"/>
 
@@ -536,7 +529,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:text="本服务由【Token Plus】提供"
+                    android:text="本服务由【Tokenplus】提供"
                     android:textColor="#FF4A4A4A"
                     android:textSize="14sp"/>
 

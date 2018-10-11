@@ -1,20 +1,22 @@
 package io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrounditem.advancer;
 
+import java.math.BigDecimal;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.godmonth.status.advancer.impl.AbstractAdvancer;
 import com.godmonth.status.advancer.intf.AdvancedResult;
 import com.godmonth.status.advancer.intf.NextOperation;
 import com.godmonth.status.transitor.tx.intf.TriggerBehavior;
+
 import io.wexchain.cryptoasset.account.api.model.Account;
 import io.wexchain.dcc.marketing.common.constant.MiningRewardRoundItemStatus;
 import io.wexchain.dcc.marketing.domain.MiningRewardRoundItem;
 import io.wexchain.dcc.marketing.domainservice.function.booking.BookingService;
 import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrounditem.MiningRewardRoundItemInstruction;
 import io.wexchain.dcc.marketing.domainservice.processor.order.mining.rewardrounditem.MiningRewardRoundItemTrigger;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.math.BigDecimal;
 
 public class SnapshotAdvancer extends AbstractAdvancer<MiningRewardRoundItem,
 		MiningRewardRoundItemInstruction, MiningRewardRoundItemTrigger> {

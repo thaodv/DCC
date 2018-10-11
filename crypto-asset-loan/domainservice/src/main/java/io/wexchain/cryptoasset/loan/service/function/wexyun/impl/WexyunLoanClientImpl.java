@@ -15,10 +15,7 @@ import com.wexyun.open.api.domain.member.Member;
 import com.wexyun.open.api.domain.regular.agreement.DebtAgreement;
 import com.wexyun.open.api.domain.regular.loan.RegularPrepaymentBill;
 import com.wexyun.open.api.domain.regular.loan.RepaymentPlan;
-import com.wexyun.open.api.enums.AuthVerifyStatus;
-import com.wexyun.open.api.enums.RepaymentType;
-import com.wexyun.open.api.enums.UploadFileType;
-import com.wexyun.open.api.enums.YN;
+import com.wexyun.open.api.enums.*;
 import com.wexyun.open.api.enums.credit2.MemberIdType;
 import com.wexyun.open.api.exception.WexyunClientException;
 import com.wexyun.open.api.request.BaseFileDownLoadRequest;
@@ -27,6 +24,8 @@ import com.wexyun.open.api.request.loan.RegularAgreementVerifyRequest;
 import com.wexyun.open.api.request.loan.RegularPrepaymentBillGetRequest;
 import com.wexyun.open.api.request.loan.RegularRepaymentPlanListRequest;
 import com.wexyun.open.api.request.member.MemberInfoGetByIdRequest;
+import com.wexyun.open.api.request.member.MemberInfoGetByIdentityRequest;
+import com.wexyun.open.api.request.member.inner.InnerPersonalMemberInfoAddRequest;
 import com.wexyun.open.api.request.trade.TradeRePaymentAddRequest;
 import com.wexyun.open.api.response.*;
 import io.wexchain.cryptoasset.loan.common.exception.RpcException;
@@ -39,6 +38,7 @@ import io.wexchain.cryptoasset.loan.service.function.wexyun.model.Credit2ApplyGe
 import io.wexchain.cryptoasset.loan.service.function.wexyun.model.DebtAgreementInfo;
 import io.wexchain.cryptoasset.loan.service.util.AmountScaleUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,6 +82,9 @@ public class WexyunLoanClientImpl implements WexyunLoanClient {
     @Value("${wexyun.contract.templateId:1}")
     private String contractTemplateId;
 
+    //@Value("${default.member.pwd}")
+    private String defaultMemberPwd;
+
     private static final String BORROW_USE = "数字资产借贷";
 
     @Override
@@ -107,6 +110,26 @@ public class WexyunLoanClientImpl implements WexyunLoanClient {
             } else {
                 throw new ErrorCodeException(response.getResponseCode(), response.getResponseMessage());
             }
+        } catch (WexyunClientException e) {
+            throw new RpcException(e);
+        }
+    }
+
+    @Override
+    public Member register(String loginName) {
+        InnerPersonalMemberInfoAddRequest memberInfoAddRequest = new InnerPersonalMemberInfoAddRequest();
+        memberInfoAddRequest.setLoginName(loginName);
+        memberInfoAddRequest.setLoginNameType(LoginNameType.CHARACTER);
+        memberInfoAddRequest.setLoginPwd(defaultMemberPwd);
+        try {
+            QueryResponse4Single<CreateMemberResponse> response =  wexyunApiClient.call(memberInfoAddRequest);
+            if (response.isSuccess()) {
+                String memberId = response.getContent().getMemberId();
+                if(memberId != null){
+                    return getMemberInfoById(memberId);
+                }
+            }
+            throw new ErrorCodeException(response.getResponseCode(), response.getResponseMessage());
         } catch (WexyunClientException e) {
             throw new RpcException(e);
         }
@@ -331,7 +354,31 @@ public class WexyunLoanClientImpl implements WexyunLoanClient {
     }
 
     @Override
-    public void verifyAgreement(String applyId, String loanType) {
+    public String uploadFile(File file, UploadFileType fileType) {
+        try {
+            CommonFileUploadRequest request = new CommonFileUploadRequest();
+            request.setFileName(file.getName());
+            request.setFileType(fileType);
+            Map<String, UploadFileInfo> files = new HashMap<>();
+            UploadFileInfo f = new UploadFileInfo();
+            f.setFile(file);
+            f.setFileName(file.getName());
+            f.setMime(Mime.fromExtension(file.getName().substring(file.getName().lastIndexOf("."))).name());
+            files.put("file_content", f);
+            request.setFiles(files);
+            QueryResponse4Single<CommonFileUploadResponse> response = wexyunApiClient.call(request);
+            if (!response.isSuccess()) {
+                throw new ErrorCodeException(response.getResponseCode(), response.getResponseMessage());
+            }
+            logger.info("Upload result: {}", JSON.toJSONString(response));
+            return response.getContent().getFilePath();
+        } catch (WexyunClientException e) {
+            throw new RpcException(e);
+        }
+    }
+
+    @Override
+    public BaseResponse verifyAgreement(String applyId, String loanType) {
         try {
             RegularAgreementVerifyRequest request = new RegularAgreementVerifyRequest();
             request.setVerifyStatus(AuthVerifyStatus.PASS);
@@ -341,14 +388,27 @@ public class WexyunLoanClientImpl implements WexyunLoanClient {
             extension.put("LOAN_TYPE", loanType);
             request.setExtension(JSON.toJSONString(extension));
             logger.info("loan type:{}", loanType);
-            BaseResponse response = wexyunApiClient.call(request);
-            if (!response.isSuccess()) {
-                throw new ErrorCodeException(response.getResponseCode(), response.getResponseMessage());
-            }
-            logger.info("Verify agreement result: {}", JSON.toJSONString(response));
+            return wexyunApiClient.call(request);
         } catch (WexyunClientException e) {
             throw new RpcException(e);
         }
 
     }
+
+    @Override
+    public Member getMemberByIdentity(String identity) {
+        MemberInfoGetByIdentityRequest request = new MemberInfoGetByIdentityRequest();
+        request.setIdentity(identity);
+        try {
+            QueryResponse4Single<Member> response = wexyunApiClient.call(request);
+            if (response.isSuccess()) {
+                return response.getContent();
+            } else {
+                throw new ErrorCodeException(response.getResponseCode(), response.getResponseMessage());
+            }
+        } catch (WexyunClientException e) {
+            throw new ContextedRuntimeException(e);
+        }
+    }
+
 }

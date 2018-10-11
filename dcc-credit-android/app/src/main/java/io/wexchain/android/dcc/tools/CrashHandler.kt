@@ -60,6 +60,6 @@ class CrashHandler : Thread.UncaughtExceptionHandler {
 
     companion object {
         private const val FILE_NAME = "crash"
-        private const val FILE_NAME_SUFFIX = ".trace"
+        private const val FILE_NAME_SUFFIX = ".txt"
     }
 }

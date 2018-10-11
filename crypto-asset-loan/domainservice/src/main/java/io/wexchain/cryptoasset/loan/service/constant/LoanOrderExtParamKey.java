@@ -27,18 +27,24 @@ public class LoanOrderExtParamKey {
     public static final String EXPECT_LOAN_INTEREST = "EXPECT_LOAN_INTEREST";
     public static final String AGREEMENT_PATH = "AGREEMENT_PATH";
 
-    public static final String BORROW_NAME = "BORROW_NAME";
-    public static final String ID_NO = "ID_NO";
+    public static final String BORROWER_NAME = "BORROWER_NAME";
+    public static final String ID_CARD_NO = "ID_CARD_NO";
+    public static final String ID_CARD_FRONT_PIC_UFS_PATH = "ID_CARD_FRONT_PIC_UFS_PATH";
+    public static final String ID_CARD_BACK_PIC_UFS_PATH = "ID_CARD_BACK_PIC_UFS_PATH";
+    public static final String FACE_PIC_UFS_PATH = "FACE_PIC_UFS_PATH";
+
+
+
     public static final String BANK_CARD_NO = "BANK_CARD_NO";
+    public static final String BANK_CARD_MOBILE = "BANK_CARD_MOBILE";
 
 
     public static final String MOBILE = "MOBILE";
-    public static final String AGREEMENT_ID = "AGREEMENT_ID";
-    public static final String BANK_MOBILE = "BANK_MOBILE";
+    public static final String COMMUNICATION_LOG = "COMMUNICATION_LOG";
 
-    public static final String CERT_FRONT = "CERT_FRONT";
-    public static final String CERT_BACK = "CERT_BACK";
-    public static final String FACE_FRONT = "FACE_FRONT";
+
+    public static final String AGREEMENT_ID = "AGREEMENT_ID";
+
 
 
 }

@@ -1,10 +1,18 @@
 package io.wexchain.dcc.marketing.domainservice.processor.order.redeemtoken.advancer;
 
+import java.util.List;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.RandomUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+
 import com.godmonth.status.advancer.impl.AbstractAdvancer;
 import com.godmonth.status.advancer.intf.AdvancedResult;
 import com.godmonth.status.advancer.intf.NextOperation;
 import com.godmonth.status.transitor.tx.intf.TriggerBehavior;
 import com.wexmarket.topia.commons.basic.exception.ErrorCodeValidate;
+
 import io.wexchain.dcc.marketing.api.constant.MarketingErrorCode;
 import io.wexchain.dcc.marketing.api.constant.RedeemTokenStatus;
 import io.wexchain.dcc.marketing.domain.BonusSlot;
@@ -13,12 +21,6 @@ import io.wexchain.dcc.marketing.domainservice.processor.order.redeemtoken.Redee
 import io.wexchain.dcc.marketing.domainservice.processor.order.redeemtoken.RedeemTokenTrigger;
 import io.wexchain.dcc.marketing.repository.BonusSlotRepository;
 import io.wexchain.dcc.marketing.repository.query.BonusSlotQueryBuilder;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.RandomUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-
-import java.util.List;
 
 
 public class DecideAmountAdvancer extends AbstractAdvancer<RedeemToken, RedeemTokenInstruction, RedeemTokenTrigger> {

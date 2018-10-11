@@ -44,6 +44,8 @@ public class CahFunctionImpl implements CahFunction {
 	private BalanceFacade balanceFacade;
 
 	private final static String DCC_JUZIX_ASSET_CODE = "DCC_JUZIX";
+	private final static int QUERY_TIMES = 10;
+	private final static long WAIT_TIME = 1000L;
 
 	@Override
 	public CryptoWallet createEthWallet() {
@@ -98,6 +100,19 @@ public class CahFunctionImpl implements CahFunction {
 	}
 
 	@Override
+	public TransferOrder transfer(String requestNo, BigInteger amount, String payerAddress,
+								  String receiverAddress, String assetCode) {
+
+		TransferRequest transferRequest = new TransferRequest();
+		transferRequest.setRequestIdentity(new RequestIdentity("DCC-MARKETING", requestNo));
+		transferRequest.setPayerAddress(payerAddress);
+		transferRequest.setAssetCode(assetCode);
+		transferRequest.setReceiverAddress(receiverAddress);
+		transferRequest.setAmount(amount);
+		return transfer(transferRequest);
+	}
+
+	@Override
 	public BigInteger getGasPrice(String assetsCode) {
 		return Code2Exception.handleResultResponse(transferFacade.getTransferFee(assetsCode));
 	}
@@ -110,14 +125,14 @@ public class CahFunctionImpl implements CahFunction {
 	}
 
 	private TransferOrder loopQueryTransferResult(RequestIdentity requestIdentity) {
-		for (int i = 0; i < 6000; i++) {
+		for (int i = 0; i < QUERY_TIMES; i++) {
 			try {
 				ResultResponse<TransferOrder> getOrdeResult = transferFacade.getTransferOrder(requestIdentity);
 				TransferOrder transferOrder = Code2Exception.handleResultResponse(getOrdeResult);
 				if (transferOrder.getStatus() != TransferOrderStatus.CREATED) {
 					return transferOrder;
 				}
-				Thread.sleep(10000L);
+				Thread.sleep(WAIT_TIME);
 			} catch (Exception e) {
 				logger.warn("Loop query transfer result fail", e);
 			}

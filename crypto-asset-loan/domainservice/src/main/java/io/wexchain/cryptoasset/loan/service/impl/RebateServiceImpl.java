@@ -2,6 +2,7 @@ package io.wexchain.cryptoasset.loan.service.impl;
 
 import com.godmonth.status.executor.intf.OrderExecutor;
 import com.wexmarket.topia.commons.basic.exception.ErrorCodeValidate;
+import com.wexmarket.topia.commons.basic.patroller.Patroller;
 import com.wexyun.open.api.domain.member.Member;
 import io.wexchain.cryptoasset.loan.api.constant.CalErrorCode;
 import io.wexchain.cryptoasset.loan.api.constant.RebateOrderStatus;
@@ -31,7 +32,7 @@ import java.math.RoundingMode;
 import java.util.*;
 
 @Service
-public class RebateServiceImpl implements RebateService {
+public class RebateServiceImpl implements RebateService, Patroller {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -66,7 +67,7 @@ public class RebateServiceImpl implements RebateService {
 	private TransactionTemplate transactionTemplate;
 
 	@Override
-	public void rejectOrDeliverFail(Long id) {
+	public RebateOrder rejectOrDeliverFail(Long id) {
 		LoanOrder loanOrder = loanOrderRepository.findById(id).get();
 		// 查询链上订单
 		io.wexchain.dcc.loan.sdk.contract.LoanOrder chainLoanOrder = chainOrderService
@@ -103,11 +104,13 @@ public class RebateServiceImpl implements RebateService {
 
 		});
 
-		rebateOrderExecutor.execute(rebateOrder, null, null).getModel();
+		rebateOrderExecutor.executeAsync(rebateOrder, null, null);
+
+		return rebateOrder;
 	}
 
 	@Override
-	public void deliverSuccess(Long id) {
+	public RebateOrder deliverSuccess(Long id) {
 		LoanOrder loanOrder = loanOrderRepository.findById(id).get();
 		// 查询链上订单
 		io.wexchain.dcc.loan.sdk.contract.LoanOrder chainLoanOrder = chainOrderService
@@ -154,7 +157,8 @@ public class RebateServiceImpl implements RebateService {
 
 		});
 		logger.debug("rebateOrder:{}", rebateOrder.getId());
-		rebateOrderExecutor.execute(rebateOrder, null, null).getModel();
+		rebateOrderExecutor.executeAsync(rebateOrder, null, null);
+		return rebateOrder;
 	}
 
 	@Override
@@ -185,5 +189,10 @@ public class RebateServiceImpl implements RebateService {
 			}
 		});
 		return result;
+	}
+
+	@Override
+	public void patrol() {
+
 	}
 }

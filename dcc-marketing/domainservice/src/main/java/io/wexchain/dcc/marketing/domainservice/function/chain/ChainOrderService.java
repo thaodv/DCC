@@ -1,8 +1,6 @@
 package io.wexchain.dcc.marketing.domainservice.function.chain;
 
 
-import io.wexchain.dcc.cert.sdk.contract.CertData;
-
 import java.util.Optional;
 
 /**

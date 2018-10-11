@@ -169,13 +169,6 @@ class Public2PrivateConfirmVm(
                                                         scratch.remarks
                                                 )
                                             } else {
-                                                /* val waitTransDialog = WaitTransDialog(App.get())
-                                                 waitTransDialog.mTvText.text = "请待「待上链」交易变为「已上链」后再提交新的交易。"
-                                                 waitTransDialog.show()
-                                                 Single.error<Pair<BigInteger, String>>(
-                                                         IllegalStateException("")
-                                                 )
- */
                                                 agent.sendTransferTransaction(
                                                         cre,
                                                         scratch.to,

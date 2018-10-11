@@ -445,6 +445,15 @@ i
         eventMsg.msg = "finishApp"
         RxBus.getInstance().post(eventMsg)
     }
+    fun clearTNCertCache(){
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertaddress.set("" )
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertID.set(-1L )
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertuserName.set("" )
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertcertNo.set("" )
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set("" )
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertpassword.set("" )
+        worhavah.certs.tools.CertOperations.certPrefs.ertTNcertsignature.set("" )
+    }
 
 
     fun getCmCertOrderId(): Long {
@@ -490,7 +499,21 @@ i
         val certTNLogPassword = StringPref("certTNLogPassword")
         val certTNLogData = StringPref("certTNLogData")
         val certTNLogExpired = LongPref("certCmLogExpired", -1L)
-        val certTNcertID = StringPref("certTNcertID")//认证id
+
+        val certTNcertID = LongPref("certTNcertID",-1L)//认证id
+        val certTNcertaddress = StringPref("certTNcertaddress")//认证id
+        val certTNcertuserName = StringPref("certTNcertuserName")//认证id
+        val certTNcertcertNo = StringPref("certTNcertcertNo")//认证id
+        val certTNcertphoneNo = StringPref("certTNcertphoneNo")//认证id
+        val certTNcertpassword = StringPref("certTNcertpassword")//认证id
+        val ertTNcertsignature= StringPref("ertTNcertsignature")//认证id
+
+
+
+
+
+
+
 
         //手机邮箱
         val certPhoneNum= StringPref("certPhoneNum")
@@ -518,21 +541,21 @@ i
         var data=Base64.encodeToString(sssss.toByteArray(), Base64.DEFAULT)
         val digest1 = MessageDigest.getInstance(DIGEST).digest(data.toByteArray())
         val digest11 = MessageDigest.getInstance(DIGEST).digest(sssss.toByteArray())
-        Log.e("t get64digest",data)
+       // Log.e("t get64digest",data)
         val dig264String= String (Base64.encode(digest1,Base64.DEFAULT) )
-        Log.e("t dig264String",dig264String)
+      //  Log.e("t dig264String",dig264String)
         val dig264String222= String (Base64.encode(digest11,Base64.DEFAULT) )
-        Log.e("t dig264String222",dig264String222)
+      //  Log.e("t dig264String222",dig264String222)
         val dig264String2= String(digest1)
-        Log.e("t dig264String2",dig264String2)
+    //    Log.e("t dig264String2",dig264String2)
         var dd=Base64.decode(sssss.toByteArray(), Base64.DEFAULT)
       //  var dd2=Base64.decode(sssss.toByteArray(), Base64.DEFAULT)
-        Log.e("t get64digest 1",String(dd))
+      //  Log.e("t get64digest 1",String(dd))
         val digest2 = MessageDigest.getInstance(DIGEST).digest(dd)
         val dig264String22= String (Base64.encode(digest2,Base64.DEFAULT) )
-        Log.e("t dig264String22",dig264String22)
+     //   Log.e("t dig264String22",dig264String22)
         val dig264String23= String(digest2)
-        Log.e("t dig264String23",dig264String23)
+      //  Log.e("t dig264String23",dig264String23)
     }
     fun saveTnLogCertExpired(expired: Long) {
         certPrefs.certTNLogExpired.set(expired)
@@ -986,6 +1009,7 @@ i
         certPrefs.certTNLogState.set(UserCertStatus.INCOMPLETE.name)
         certPrefs.certTNLogPhoneNo.set(phoneNo)
         certPrefs.certTNLogPassword.set(password)
+        clearTNCertCache()
     }
     fun isBankCertPassed(): Boolean {
         if (certPrefs.certBankOrderId.get() == INVALID_CERT_ORDER_ID) {

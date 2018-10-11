@@ -9,6 +9,4 @@ contract HasWallet is Ownable {
         require(walletAddress != address(0));
         wallet = walletAddress;
     }
-
-
 }

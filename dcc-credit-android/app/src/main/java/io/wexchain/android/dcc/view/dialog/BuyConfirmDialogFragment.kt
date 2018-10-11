@@ -175,7 +175,7 @@ class BuyConfirmDialogFragment : DialogFragment() {
                     activity!!.finish()
 
                 }, {
-                    Log.e("Invest", "失败" + it.printStackTrace())
+                  //  Log.e("Invest", "失败" + it.printStackTrace())
                     stackTrace(it)
                     toast("交易失败")
                     hideLoadingDialog()

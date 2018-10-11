@@ -300,7 +300,11 @@ public class CountDownProgress extends View {
         setClickable(false);
         ValueAnimator animator = ValueAnimator.ofFloat(0, 1.0f);
         //动画时长，让进度条在CountDown时间内正好从0-360走完，这里由于用的是CountDownTimer定时器，倒计时要想减到0则总时长需要多加1000毫秒，所以这里时间也跟着+1000ms
-        animator.setDuration(countdownTime+1000);
+        long durationtime=countdownTime+1000;
+        if(durationtime<1000){
+            durationtime=1000;
+        }
+        animator.setDuration(durationtime);
         animator.setInterpolator(new LinearInterpolator());//匀速
         animator.setRepeatCount(0);//表示不循环，-1表示无限循环
         //值从0-1.0F 的动画，动画时长为countdownTime，ValueAnimator没有跟任何的控件相关联，那也正好说明ValueAnimator只是对值做动画运算，而不是针对控件的，我们需要监听ValueAnimator的动画过程来自己对控件做操作
@@ -360,7 +364,7 @@ public class CountDownProgress extends View {
                 countdownTime = countdownTime-1000;
              //   textDesc = countdownTime/1000 + "″";
                 //countdownTime = countdownTime-1000;
-                Log.e("time",countdownTime+"");
+               // Log.e("time",countdownTime+"");
                 //刷新view
                 invalidate();
             }

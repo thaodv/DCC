@@ -19,7 +19,7 @@ android {
         minSdkVersion min_sdk
         targetSdkVersion target_sdk
         versionCode 22
-        versionName "2.1.2"
+        versionName "3.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -86,6 +86,9 @@ android {
             buildConfigField 'java.lang.String', 'IPFS_ADDRESS', '"http://ipfs.dcc.finance:8000/api/v0/"'
         }
         staging {
+
+            signingConfig signingConfigs.wexchain
+
             initWith debug
             buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.209.12:9201/passport-logic/"'
             //mock
@@ -164,6 +167,6 @@ dependencies {
     implementation project(':idcardlib')
     implementation project(':ipfslib')
     implementation project(':certs')
-    implementation project(':regloginlib')
+     implementation project(':regloginlib')
     implementation project(':tongniucertmodule')
 }

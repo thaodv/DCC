@@ -32,6 +32,7 @@ import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.ipfs.utils.io_main
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
+import worhavah.certs.bean.TNcert1newreport
 import worhavah.certs.bean.TNcertReport
 import worhavah.tongniucertmodule.SubmitTNLogActivity
 import worhavah.tongniucertmodule.TnLogCertificationActivity
@@ -198,7 +199,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
         }
     }
 
-    fun getTNLogReport(passport: Passport): Single<TNcertReport> {
+    fun getTNLogReport(passport: Passport): Single<TNcert1newreport> {
         require(passport.authKey != null)
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()

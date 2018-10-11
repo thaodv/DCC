@@ -28,7 +28,7 @@
         <item name="dialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert.Dcc</item>
 
         <!--app attr-->
-        <item name="customToastLayout">@layout/toast_custom</item>
+        <item name="customToastLayout">@layout/common_toast_custom</item>
     </style>
 
     <style name="DccLightTheme.App">

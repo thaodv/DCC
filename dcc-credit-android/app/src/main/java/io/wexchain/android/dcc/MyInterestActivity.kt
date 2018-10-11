@@ -88,14 +88,14 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
 
                     binding.saleInfo = saleInfo
                     //binding.tvProfit.setText(saleInfo.annualRateP())
-                    Log.e("getbiSaleInfo", saleInfo.name)
+               //     Log.e("getbiSaleInfo", saleInfo.name)
                     getbiminAmountPerHand()
                 },
                 {
                     it.printStackTrace()
                 }
         )
-        Log.e("getbiSaleInfo", "getbiSaleInfo")
+     //   Log.e("getbiSaleInfo", "getbiSaleInfo")
 
     }
 
@@ -113,7 +113,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
                     MINBUYAMOUNT = minAmountPerHand
                     //  saleInfo.minAmountPerHand=minAmountPerHand
                     binding.minAmountPerHandDCC = ("" + minAmountPerHand + " DCC")
-                    Log.e("encodeStringsimple", "" + encodeStringsimple(it.result))
+              //      Log.e("encodeStringsimple", "" + encodeStringsimple(it.result))
                     getbiInvestCeilAmount()
                 },
                 {
@@ -134,7 +134,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
                 {
                     totalAmount = encodeStringsimple(it.result)
                     binding.totalamountDCC = ("" + totalAmount + " DCC")
-                    Log.e("totalamountDCC", "" + encodeStringsimple(it.result))
+                //    Log.e("totalamountDCC", "" + encodeStringsimple(it.result))
                     getbiInvestedTotalAmount()
 
                 },
@@ -179,7 +179,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
                 {
                     var mystatu = BytesUtils.encodeStringstatu(it.result)
 
-                    Log.e("getbiStatues", "" + mystatu)
+                 //   Log.e("getbiStatues", "" + mystatu)
                     if (mystatu != 1) {
                         statu = "已结束"
                         canBuy = false

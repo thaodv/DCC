@@ -61,7 +61,7 @@ public class RetryableCommandFunction {
 
 	public RetryableCommand updateStatus(String commandId, String status) {
 		return transactionTemplate.execute(status1 -> {
-			RetryableCommand retryableCommand = retryableCommandRepository.findById(commandId).orElse(null);
+			RetryableCommand retryableCommand = retryableCommandRepository.findById(Long.valueOf(commandId)).orElse(null);
 			Validate.notNull(retryableCommand, "retryableCommand is null");
 			retryableCommand.setStatus(status);
 			return retryableCommandRepository.save(retryableCommand);
