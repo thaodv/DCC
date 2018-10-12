@@ -3,9 +3,9 @@ package worhavah.tongniucertmodule
 import android.os.Bundle
 import android.widget.TextView
 import com.githang.statusbar.StatusBarCompat
-import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.constant.Extras2
+import io.wexchain.android.common.postOnMainThread
 import worhavah.certs.tools.CertOperations
 import worhavah.mobilecertmodule.R
 
@@ -17,8 +17,8 @@ class TNCertDataActivity : BaseCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tncm_cert_data)
-        StatusBarCompat.setStatusBarColor(this,resources.getColor(R.color.white))
-        initToolbar(true,true)
+        StatusBarCompat.setStatusBarColor(this, resources.getColor(R.color.white))
+        initToolbar(true, true)
         showCmCertData()
     }
 
@@ -29,30 +29,12 @@ class TNCertDataActivity : BaseCompatActivity() {
                 finish()
             }
         } else {
-
-            setCertData( CertOperations.certPrefs.certTNLogData.get( ))
-          /*  CertOperations.getTNLogData(id)
-                .map {
-                    it.toString(Charsets.UTF_8)
-                }
-                .subscribe({
-                    atLeastCreated {
-                        setCertData(it)
-                    }
-                }, {
-                    atLeastCreated {
-                        toast("读取认证报告错误$id")
-                        finish()
-                    }
-                })*/
+            setCertData(CertOperations.certPrefs.certTNLogData.get())
         }
     }
 
     private fun setCertData(data: String?) {
         findViewById<TextView>(R.id.tv_data).text = data
     }
-
-
-
 
 }
