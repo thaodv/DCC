@@ -3,15 +3,14 @@ package org.web3j.crypto
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
-import org.web3j.crypto.WalletFile
 import java.lang.reflect.Type
 
 /**
  * Created by lulingzhi on 2017/11/13.
  */
-class WalletFileDeserializer:JsonDeserializer<WalletFile> {
+class WalletFileDeserializer : JsonDeserializer<WalletFile> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext): WalletFile? {
-        json?:return null
+        json ?: return null
         return WalletFile().apply {
             val root = json.asJsonObject
             this.address = root["address"].asString
@@ -25,12 +24,12 @@ class WalletFileDeserializer:JsonDeserializer<WalletFile> {
                 this.kdf = crypto["kdf"].asString
                 this.kdfparams = when (kdf.trim().toLowerCase()) {
                     "scrypt" -> context.deserialize<WalletFile.ScryptKdfParams>(
-                        crypto["kdfparams"],
-                        WalletFile.ScryptKdfParams::class.java
+                            crypto["kdfparams"],
+                            WalletFile.ScryptKdfParams::class.java
                     )
                     "pbkdf2" -> context.deserialize<WalletFile.Aes128CtrKdfParams>(
-                        crypto["kdfparams"],
-                        WalletFile.Aes128CtrKdfParams::class.java
+                            crypto["kdfparams"],
+                            WalletFile.Aes128CtrKdfParams::class.java
                     )
                     else -> throw IllegalArgumentException("kdf not supported")
                 }

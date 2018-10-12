@@ -167,6 +167,6 @@ dependencies {
     implementation project(':idcardlib')
     implementation project(':ipfslib')
     implementation project(':certs')
-     implementation project(':regloginlib')
+    implementation project(':regloginlib')
     implementation project(':tongniucertmodule')
 }
