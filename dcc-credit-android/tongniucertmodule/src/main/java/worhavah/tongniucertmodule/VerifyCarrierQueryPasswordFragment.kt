@@ -6,7 +6,8 @@ import io.wexchain.android.common.base.BindFragment
 import worhavah.mobilecertmodule.R
 import worhavah.mobilecertmodule.databinding.FragmentTnverifyCarrierQueryPasswordBinding
 
-class VerifyCarrierQueryPasswordFragment: BindFragment<FragmentTnverifyCarrierQueryPasswordBinding>() {
+class VerifyCarrierQueryPasswordFragment : BindFragment<FragmentTnverifyCarrierQueryPasswordBinding>() {
+
     override val contentLayoutId: Int = R.layout.fragment_tnverify_carrier_query_password
 
     private var listener: Listener? = null
@@ -21,8 +22,8 @@ class VerifyCarrierQueryPasswordFragment: BindFragment<FragmentTnverifyCarrierQu
         }
     }
 
-    interface Listener{
-        fun onSubmitQueryPwd(code:String)
+    interface Listener {
+        fun onSubmitQueryPwd(code: String)
     }
 
     companion object {

@@ -1,31 +1,26 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="worhavah.mobilecertmodule"  >
-
+<manifest package="worhavah.mobilecertmodule"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
-        android:label="mobilecertmodule"
-
-        >
+        android:label="mobilecertmodule">
 
         <activity
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name="worhavah.tongniucertmodule.SubmitTNLogActivity"
             android:label="同牛手机运营商认证"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <activity
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name="worhavah.tongniucertmodule.TnLogCertificationActivity"
             android:label="同牛手机运营商信息"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name="worhavah.tongniucertmodule.TNCertDataActivity"
             android:label="报告原文"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
-
-
 
 </manifest>

@@ -1,9 +1,7 @@
 package com.xxy.maple.tllibrary.app;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebView;
 
 import com.xxy.maple.tllibrary.utils.LogUtils;
 import com.xxy.maple.tllibrary.widget.TlX5WebView;
@@ -45,7 +43,7 @@ public abstract class TlSampleJavascript {
 
     @JavascriptInterface
     public void close() {
-        mActivity.setResult(mActivity.RESULT_OK);
+        mActivity.setResult(Activity.RESULT_OK);
         mActivity.finish();
     }
 
