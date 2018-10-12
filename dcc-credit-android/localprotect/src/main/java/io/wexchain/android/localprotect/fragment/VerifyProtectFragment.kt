@@ -95,10 +95,10 @@ class VerifyProtectFragment : DialogFragment(), GesturePasswordFragment.Listener
         AlertDialog.Builder(activity)
                 .setTitle("开启本地安全保护")
                 .setMessage("指纹密码已被关闭,请您重新开启本地安全保护")
-                .setPositiveButton("开启",DialogInterface.OnClickListener { _, _ ->
+                .setPositiveButton("开启", DialogInterface.OnClickListener { _, _ ->
                     showCreateProtect(activity)
                 })
-                .setNegativeButton(R.string.cancel,null)
+                .setNegativeButton(R.string.cancel, null)
                 .show()
     }
 
@@ -181,12 +181,8 @@ class VerifyProtectFragment : DialogFragment(), GesturePasswordFragment.Listener
             })
         }
 
-        fun serve(useProtect: UseProtect, activity: Any) {
-            if (activity is AppCompatActivity){
-                serve(useProtect, activity, { activity.supportFragmentManager })
-            }else if (activity is Fragment){
-                serve(useProtect, activity, { activity.childFragmentManager })
-            }
+        fun serve(useProtect: UseProtect, activity: AppCompatActivity) {
+            serve(useProtect, activity, { activity.supportFragmentManager })
         }
     }
 }
