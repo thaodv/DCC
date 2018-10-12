@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.modules.selectnode
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -9,6 +10,7 @@ import android.text.style.ForegroundColorSpan
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.wexmarket.android.network.Networking
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.constant.Extras
@@ -17,16 +19,19 @@ import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.dcc.R
 import io.wexchain.digitalwallet.api.EthJsonRpcApiWithAuth
 import io.wexchain.digitalwallet.proxy.EthsRpcAgent
-import io.wexchain.ipfs.utils.doMain
+import io.wexchain.ipfs.utils.io_main
 
 class SelectNodeActivity : BaseCompatActivity() {
-
 
     lateinit var grContent: RadioGroup
     lateinit var cb1: RadioButton
     lateinit var cb2: RadioButton
     lateinit var cb3: RadioButton
     lateinit var cb4: RadioButton
+
+    private lateinit var green: Drawable
+    private lateinit var yellow: Drawable
+    private lateinit var red: Drawable
 
     @SuppressLint("ResourceType", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +58,7 @@ class SelectNodeActivity : BaseCompatActivity() {
         val base3 = nodeList[2].url
         val base4 = nodeList[3].url
 
-        var base = ShareUtils.getString(Extras.SP_SELECTED_NODE, base1)
+        val base = ShareUtils.getString(Extras.SP_SELECTED_NODE, base1)
 
         var index = 1
 
@@ -70,141 +75,84 @@ class SelectNodeActivity : BaseCompatActivity() {
             4 -> cb4.isChecked = true
         }
 
-        var green = resources.getDrawable(R.drawable.icon_node_green)
-        green.setBounds(0, 0, green.minimumWidth, green.minimumHeight)
-        var yellow = resources.getDrawable(R.drawable.icon_node_yellow)
-        yellow.setBounds(0, 0, yellow.minimumWidth, yellow.minimumHeight)
-        var red = resources.getDrawable(R.drawable.icon_node_red)
-        red.setBounds(0, 0, red.minimumWidth, red.minimumHeight)
+        initColor()
 
         val createApi1 = Networking(App.get()).createApi(EthJsonRpcApiWithAuth::class.java, base1)
         val agent1 = EthsRpcAgent.by(createApi1)
 
         val startTime1 = System.currentTimeMillis()
         LogUtils.i("SelectNodeActivity-base1-time-start", startTime1)
-        agent1.checkNode().doMain().subscribe({
-            LogUtils.i("SelectNodeActivity", it)
-            LogUtils.i("SelectNodeActivity-base1-time-end", System.currentTimeMillis())
-
-            var res: String
-            if (System.currentTimeMillis() - startTime1 <= 300) {
-                cb1.setCompoundDrawables(null, null, green, null)
-                res = resources.getString(R.string.select_node_green)
-            } else if (System.currentTimeMillis() - startTime1 <= 1000) {
-                cb1.setCompoundDrawables(null, null, yellow, null)
-                res = resources.getString(R.string.select_node_yellow)
-            } else {
-                cb1.setCompoundDrawables(null, null, red, null)
-                res = resources.getString(R.string.select_node_red)
-            }
-
-            cb1.text = spannableString(nodeList[0].name, res)
-        }, {
-            LogUtils.e(it)
-            cb1.setCompoundDrawables(null, null, red, null)
-            cb1.text = spannableString(nodeList[0].name, resources.getString(R.string.select_node_red))
-        })
+        agent1.checkNode()
+                .io_main()
+                .subscribeBy(
+                        onSuccess = {
+                            cb1.setStatus(startTime1, nodeList[0])
+                        },
+                        onError = {
+                            cb1.setCompoundDrawables(null, null, red, null)
+                            cb1.text = spannableString(nodeList[0].name, resources.getString(R.string.select_node_red))
+                        })
 
         val createApi2 = Networking(App.get()).createApi(EthJsonRpcApiWithAuth::class.java, base2)
         val agent2 = EthsRpcAgent.by(createApi2)
 
         val startTime2 = System.currentTimeMillis()
         LogUtils.i("SelectNodeActivity-base2-time-start", startTime2)
-        agent2.checkNode().doMain().subscribe({
-            LogUtils.i("SelectNodeActivity", it)
-            LogUtils.i("SelectNodeActivity-base2-time-end", System.currentTimeMillis())
-
-            var res: String
-            if (System.currentTimeMillis() - startTime2 <= 300) {
-                cb2.setCompoundDrawables(null, null, green, null)
-                res = resources.getString(R.string.select_node_green)
-            } else if (System.currentTimeMillis() - startTime2 <= 1000) {
-                cb2.setCompoundDrawables(null, null, yellow, null)
-                res = resources.getString(R.string.select_node_yellow)
-            } else {
-                cb2.setCompoundDrawables(null, null, red, null)
-                res = resources.getString(R.string.select_node_red)
-            }
-
-            cb2.text = spannableString(nodeList[1].name, res)
-
-        }, {
-            LogUtils.e(it)
-            cb2.setCompoundDrawables(null, null, red, null)
-            cb2.text = spannableString(nodeList[1].name, resources.getString(R.string.select_node_red))
-        })
+        agent2.checkNode()
+                .io_main()
+                .subscribeBy(
+                        onSuccess = {
+                            cb2.setStatus(startTime2, nodeList[1])
+                        },
+                        onError = {
+                            cb2.setCompoundDrawables(null, null, red, null)
+                            cb2.text = spannableString(nodeList[1].name, resources.getString(R.string.select_node_red))
+                        })
         val createApi3 = Networking(App.get()).createApi(EthJsonRpcApiWithAuth::class.java, base3)
         val agent3 = EthsRpcAgent.by(createApi3)
 
         val startTime3 = System.currentTimeMillis()
         LogUtils.i("SelectNodeActivity-base3-time-start", startTime3)
-        agent3.checkNode().doMain().subscribe({
-            LogUtils.i("SelectNodeActivity", it)
-            LogUtils.i("SelectNodeActivity-base3-time-end", System.currentTimeMillis())
 
-            var res: String
-            if (System.currentTimeMillis() - startTime3 <= 300) {
-                cb3.setCompoundDrawables(null, null, green, null)
-                res = resources.getString(R.string.select_node_green)
-            } else if (System.currentTimeMillis() - startTime3 <= 1000) {
-                cb3.setCompoundDrawables(null, null, yellow, null)
-                res = resources.getString(R.string.select_node_yellow)
-            } else {
-                cb3.setCompoundDrawables(null, null, red, null)
-                res = resources.getString(R.string.select_node_red)
-            }
-            cb2.text = spannableString(nodeList[2].name, res)
-        }, {
-            LogUtils.e(it)
-            cb3.setCompoundDrawables(null, null, red, null)
-            cb3.text = spannableString(nodeList[2].name, resources.getString(R.string.select_node_red))
-        })
+        agent3.checkNode()
+                .io_main()
+                .subscribeBy(
+                        onSuccess = {
+                            cb3.setStatus(startTime3, nodeList[2])
+                        },
+                        onError = {
+                            cb3.setCompoundDrawables(null, null, red, null)
+                            cb3.text = spannableString(nodeList[2].name, resources.getString(R.string.select_node_red))
+                        })
+
         val createApi4 = Networking(App.get()).createApi(EthJsonRpcApiWithAuth::class.java, base4)
         val agent4 = EthsRpcAgent.by(createApi4)
 
         val startTime4 = System.currentTimeMillis()
         LogUtils.i("SelectNodeActivity-base4-time-start", startTime4)
-        agent4.checkNode().doMain().subscribe({
-            LogUtils.i("SelectNodeActivity", it)
-            LogUtils.i("SelectNodeActivity-base4-time-end", System.currentTimeMillis())
 
-            var res: String
-            if (System.currentTimeMillis() - startTime4 <= 300) {
-                cb4.setCompoundDrawables(null, null, green, null)
-                res = resources.getString(R.string.select_node_green)
-            } else if (System.currentTimeMillis() - startTime4 <= 1000) {
-                cb4.setCompoundDrawables(null, null, yellow, null)
-                res = resources.getString(R.string.select_node_yellow)
-            } else {
-                cb4.setCompoundDrawables(null, null, red, null)
-                res = resources.getString(R.string.select_node_red)
-            }
-            cb4.text = spannableString(nodeList[3].name, res)
-        }, {
-            LogUtils.e(it)
-            cb4.setCompoundDrawables(null, null, red, null)
-            cb4.text = spannableString(nodeList[3].name, resources.getString(R.string.select_node_red))
-        })
+        agent4.checkNode()
+                .io_main()
+                .subscribeBy(
+                        onSuccess = {
+                            cb4.setStatus(startTime4, nodeList[3])
+                        },
+                        onError = {
+                            cb4.setCompoundDrawables(null, null, red, null)
+                            cb4.text = spannableString(nodeList[3].name, resources.getString(R.string.select_node_red))
+                        })
 
-        cb1.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                grContent.check(-1)
-            }
+        cb1.setCheckClick {
+            grContent.check(-1)
         }
-        cb2.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                grContent.check(-1)
-            }
+        cb2.setCheckClick {
+            grContent.check(-1)
         }
-        cb3.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                grContent.check(-1)
-            }
+        cb3.setCheckClick {
+            grContent.check(-1)
         }
-        cb4.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                grContent.check(-1)
-            }
+        cb4.setCheckClick {
+            grContent.check(-1)
         }
 
         grContent.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
@@ -216,6 +164,39 @@ class SelectNodeActivity : BaseCompatActivity() {
             }
         })
 
+    }
+
+    private fun RadioButton.setCheckClick(action: () -> Unit) {
+        this.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                action()
+            }
+        }
+    }
+
+    private fun initColor() {
+        green = resources.getDrawable(R.drawable.icon_node_green)
+        green.setBounds(0, 0, green.minimumWidth, green.minimumHeight)
+        yellow = resources.getDrawable(R.drawable.icon_node_yellow)
+        yellow.setBounds(0, 0, yellow.minimumWidth, yellow.minimumHeight)
+        red = resources.getDrawable(R.drawable.icon_node_red)
+        red.setBounds(0, 0, red.minimumWidth, red.minimumHeight)
+    }
+
+    private fun RadioButton.setStatus(startTime1: Long, nodeBean: NodeBean) {
+        val res: String
+        if (System.currentTimeMillis() - startTime1 <= 300) {
+            this.setCompoundDrawables(null, null, green, null)
+            res = resources.getString(R.string.select_node_green)
+        } else if (System.currentTimeMillis() - startTime1 <= 1000) {
+            this.setCompoundDrawables(null, null, yellow, null)
+            res = resources.getString(R.string.select_node_yellow)
+        } else {
+            this.setCompoundDrawables(null, null, red, null)
+            res = resources.getString(R.string.select_node_red)
+        }
+
+        this.text = spannableString(nodeBean.name, res)
     }
 
     private fun spannableString(name: String, res: String): SpannableString {

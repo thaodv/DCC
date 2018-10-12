@@ -83,14 +83,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         instance = WeakReference(this)
         initcerts()
 
-        val themeWrapper = ContextThemeWrapper(this, R.style.DccLightTheme_App)
-        RxJavaPlugins.setErrorHandler {
-            val ex = it.cause ?: it
-            if (ex is DccChainServiceException && !ex.message.isNullOrBlank()) {
-                Pop.toast(it.message!!, themeWrapper)
-            }
-            if (BuildConfig.DEBUG) it.printStackTrace()
-        }
+        initRxJavaPlugins()
         initLibraries(this)
 
         initNode()
@@ -99,7 +92,17 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         initServices(this)
         initData(this)
         initIpfs()
+    }
 
+    private fun initRxJavaPlugins() {
+        val themeWrapper = ContextThemeWrapper(this, R.style.DccLightTheme_App)
+        RxJavaPlugins.setErrorHandler {
+            val ex = it.cause ?: it
+            if (ex is DccChainServiceException && !ex.message.isNullOrBlank()) {
+                Pop.toast(it.message!!, themeWrapper)
+            }
+            if (BuildConfig.DEBUG) it.printStackTrace()
+        }
     }
 
     fun initcerts() {

@@ -3,23 +3,22 @@ package io.wexchain.android.dcc.modules.bsx
 import android.arch.lifecycle.Observer
 import android.graphics.Color
 import android.os.Bundle
-import android.text.Editable
 import android.text.Spannable
 import android.text.SpannableString
-import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindActivity
-import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.tools.fixPrice
 import io.wexchain.android.dcc.view.dialog.BsxEthBuyConfirmDialogFragment
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityBsxEthBuyBinding
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.EthsTransactionScratch
+import io.wexchain.ipfs.utils.io_main
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -39,22 +38,13 @@ class BsxEthBuyActivity : BindActivity<ActivityBsxEthBuyBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar(true)
-        toolbarTitle!!.text = "认购额度"
-        binding.etBuyamount.hint = "最小认购额度" + BsxDetailActivity.MINBUYAMOUNT
-
-        var sp = BsxDetailActivity.ONAME + "（剩余额度 " + BsxDetailActivity.LASTAM + " ETH）"
-        val spannableString = SpannableString(sp)
-        val colorSpan = ForegroundColorSpan(Color.parseColor("#ED190F"))
-        spannableString.setSpan(colorSpan, sp.length - 5 - BsxDetailActivity.LASTAM.length, sp.length - 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
-        binding.tvOrdername.text = spannableString
-
-        txVm.toAddress.set(contractAddress)
-
-        txVm.poundge.set(BsxDetailActivity.MINBUYAMOUNT.toBigDecimal().toPlainString())
-
+        initView()
         checkBalance()
         initclick()
+        initVm()
+    }
 
+    private fun initVm() {
         txVm.updateGasPrice()
         val observer = Observer<EthsTransactionScratch> {
             it?.let {
@@ -89,65 +79,35 @@ class BsxEthBuyActivity : BindActivity<ActivityBsxEthBuyBinding>() {
                 binding.passport = it
             }
         })
+    }
 
+    private fun initView() {
+        toolbarTitle!!.text = "认购额度"
+        binding.etBuyamount.hint = "最小认购额度" + BsxDetailActivity.MINBUYAMOUNT
+
+        val sp = BsxDetailActivity.ONAME + "（剩余额度 " + BsxDetailActivity.LASTAM + " ETH）"
+        val spannableString = SpannableString(sp)
+        val colorSpan = ForegroundColorSpan(Color.parseColor("#ED190F"))
+        spannableString.setSpan(colorSpan, sp.length - 5 - BsxDetailActivity.LASTAM.length, sp.length - 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
+        binding.tvOrdername.text = spannableString
+
+        txVm.toAddress.set(contractAddress)
+
+        txVm.poundge.set(BsxDetailActivity.MINBUYAMOUNT.toBigDecimal().toPlainString())
     }
 
     private fun initclick() {
         binding.tvTotal.setOnClickListener {
-            // binding.buyamount = "" + myBalance
             binding.etBuyamount.setText(binding.tvCanuselable.text)
             binding.etBuyamount.setSelection(binding.tvCanuselable.text.length)
-
         }
 
-        binding.etBuyamount.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (null != s) {
-
-                    var res = s
-
-                    if (res.toString().contains(".")) {
-                        if (res.length - 1 - res.toString().indexOf(".") > 2) {
-                            res = res.toString().subSequence(0, res.toString().indexOf(".") + 3)
-                            binding.etBuyamount.setText(res)
-                            binding.etBuyamount.setSelection(res.length)
-                        }
-                    }
-
-                    //如果.在起始位置,则起始位置自动补0
-                    if (res.toString().trim().substring(0) == ".") {
-                        res = "0$res";
-                        binding.etBuyamount.setText(res)
-                        binding.etBuyamount.setSelection(2)
-                    }
-
-                    //如果起始位置为0并且第二位跟的不是".",则无法后续输入
-                    if (res.toString().startsWith("0") && res.toString().trim().length > 1) {
-                        if (res.toString().substring(1, 2) != ".") {
-                            binding.etBuyamount.setText(res.subSequence(0, 1))
-                            binding.etBuyamount.setSelection(1)
-                            return
-                        }
-                    }
-                }
-            }
-        })
-
+        binding.etBuyamount.fixPrice()
     }
 
     private fun checkBuy(): Boolean {
-
         if (binding.etBuyamount.text.toString() != "") {
-
-            var a = BigDecimal(binding.etBuyamount.text.toString())
+            val a = BigDecimal(binding.etBuyamount.text.toString())
             if (a < BsxDetailActivity.MINBUYAMOUNT.toBigDecimal()) {
                 toast("最低买入" + BsxDetailActivity.MINBUYAMOUNT + "ETH")
                 return false
@@ -164,17 +124,13 @@ class BsxEthBuyActivity : BindActivity<ActivityBsxEthBuyBinding>() {
     }
 
     private fun checkBalance() {
-
-        var agent = App.get().assetsRepository.getDigitalCurrencyAgent(Currencies.Ethereum)
-        agent.getBalanceOf(p.address).observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+        App.get().assetsRepository.getDigitalCurrencyAgent(Currencies.Ethereum)
+                .getBalanceOf(p.address)
+                .io_main()
+                .subscribeBy {
                     myBalance = it.toBigDecimal().scaleByPowerOfTen(-18).setScale(4, RoundingMode.DOWN).toDouble()
-
                     binding.tvCanuselable.text = it.toBigDecimal().scaleByPowerOfTen(-18).setScale(4, RoundingMode.DOWN).toPlainString()
-
-                }, {
-                    stackTrace(it)
-                })
+                }
     }
 
     private fun showConfirmDialog(ethsTransactionScratch: EthsTransactionScratch, contractAddress: String) {

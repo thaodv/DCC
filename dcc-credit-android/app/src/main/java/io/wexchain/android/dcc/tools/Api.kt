@@ -2,7 +2,10 @@ package io.wexchain.android.dcc.tools
 
 import android.app.ActivityManager
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Window
+import android.widget.EditText
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.ipfs.net.Networking
@@ -90,6 +93,49 @@ fun Window.backgroundAlpha(bgAlpha: Float) {
     val lp = this.attributes
     lp.alpha = bgAlpha
     this.attributes = lp
+}
+
+fun EditText.fixPrice() {
+    val view = this
+    view.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            s?.toString()?.let {
+                var res = it
+                if (res.contains(".")) {
+                    if (res.length - 1 - res.indexOf(".") > 2) {
+                        res = res.substring(0, res.indexOf(".") + 3)
+                        view.setText(res)
+                        view.setSelection(res.length)
+                    }
+                }
+
+                //如果.在起始位置,则起始位置自动补0
+                if (res.trim().substring(0) == ".") {
+                    res = "0$res";
+                    view.setText(res)
+                    view.setSelection(2)
+                }
+
+                //如果起始位置为0并且第二位跟的不是".",则无法后续输入
+                if (res.startsWith("0") && res.trim().length > 1) {
+                    if (res.substring(1, 2) != ".") {
+                        view.setText(res.subSequence(0, 1))
+                        view.setSelection(1)
+                        return
+                    }
+                }
+            }
+        }
+    })
+
 }
 
 
