@@ -482,6 +482,12 @@
             android:label="认购额度"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.cashloan.CashLoanActivity"
+            android:label="法币借贷"
+            android:screenOrientation="portrait"/>
+        <activity android:name="io.wexchain.android.dcc.modules.cashloan.CashCertificationActivity"
+            android:label="额度申请"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

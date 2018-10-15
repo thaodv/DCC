@@ -14,11 +14,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginBottom="10dp"
-
-        android:layout_height="wrap_content">
-
-
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -27,7 +24,6 @@
             android:background="@drawable/bg_round_rect_noframe_white"
             android:minHeight="80dp"
             android:onClick="@{(v)->vm.performOperation()}">
-
 
             <TextView
                 android:id="@+id/tv_as_title"
@@ -38,16 +34,16 @@
                 android:textColor="@color/text_dark"
                 android:textSize="17sp"
                 app:layout_constraintBottom_toTopOf="@id/tv_as_detail"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed"
                 tools:text="真实信息认证" />
 
             <TextView
                 android:id="@+id/tv_as_detail"
-                android:layout_marginLeft="50dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="2dp"
                 android:singleLine="false"
@@ -60,21 +56,17 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_as_title"
                 tools:text="更全面的认证" />
 
-
-
-
-
             <TextView
                 android:id="@+id/tv_as_status"
                 android:layout_width="70dp"
                 android:layout_height="25dp"
                 android:layout_marginRight="16dp"
                 android:width="80dp"
+                android:background="@{ViewModelHelper.getCertStatusShape( context,ViewModelHelper.getCertStatusOpText(context,vm.status))}"
                 android:gravity="center"
                 android:text="@{ViewModelHelper.getCertStatusOpText(context,vm.status)}"
                 android:textColor="#FFFFFFFF"
                 android:textSize="14sp"
-                android:background="@{ViewModelHelper.getCertStatusShape( context,ViewModelHelper.getCertStatusOpText(context,vm.status))}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -98,8 +90,7 @@
             android:layout_centerVertical="true"
             android:maxWidth="60dp"
             android:src="@{ViewModelHelper.getCertTypeIcon(context,vm.certificationType)}"
-            tools:src="@drawable/shape_bank_card"
+            tools:src="@drawable/shape_bank_card" />
 
-            />
     </RelativeLayout>
 </layout>

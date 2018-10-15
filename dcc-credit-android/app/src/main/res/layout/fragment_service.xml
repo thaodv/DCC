@@ -176,6 +176,78 @@
                     android:background="#F8F8FF">
 
                     <TextView
+                        android:id="@+id/home_cash_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="#fff"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingTop="5dp"
+                        android:text="信用借贷"
+                        android:textColor="#000"
+                        android:textSize="17sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <RelativeLayout
+                        android:id="@+id/home_cash"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#fff"
+                        android:minHeight="60dp"
+                        android:paddingTop="5dp"
+                        app:layout_constraintTop_toBottomOf="@id/home_cash_title">
+
+                        <ImageView
+                            android:id="@+id/home_credit_img0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:src="@drawable/service_cash" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:layout_toRightOf="@id/home_credit_img0"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/service_cash_title"
+                                android:textColor="@color/FF4A4A4A"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="用DCC支付手续费更享超高利息折扣"
+                                android:textColor="#BAC0C5"
+                                android:textSize="12sp" />
+
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btn_cash"
+                            style="@style/Widget.AppCompat.Button.Dcc.Violet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/activity_horizontal_margin"
+                            android:paddingBottom="5dp"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:paddingTop="5dp"
+                            android:text="去贷款"
+                            android:textColor="#fff" />
+                    </RelativeLayout>
+
+                    <TextView
                         android:id="@+id/home_bsx_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -187,7 +259,7 @@
                         android:textColor="#000"
                         android:textSize="17sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@id/home_cash" />
 
                     <RelativeLayout
                         android:id="@+id/home_bsx"

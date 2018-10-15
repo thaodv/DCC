@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/include_toolbar" />
+
+        <ImageView
+            android:id="@+id/cash_loan_img1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cash_loan_img1"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/cash_loan_img2"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/cash_loan_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="45dp"
+            android:text="最高可借"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <TextView
+            android:id="@+id/cash_loan_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥3000"
+            android:textColor="#fff"
+            android:textSize="36sp"
+            app:layout_constraintLeft_toLeftOf="@id/cash_loan_max"
+            app:layout_constraintTop_toBottomOf="@id/cash_loan_max" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="65dp"
+            android:text="简单易贷，随借随还"
+            android:textColor="#D3A9FF"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@id/cash_loan_num"
+            app:layout_constraintTop_toBottomOf="@id/cash_loan_num" />
+
+        <TextView
+            android:id="@+id/cash_loan_apply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/background_cash_gradient"
+            android:paddingBottom="8dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp"
+            android:text="申请额度"
+            android:textColor="#fff"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cash_loan_img1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/cash_loan_tips"
+            android:textColor="#7B40FF"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="@id/cash_loan_apply"
+            app:layout_constraintTop_toBottomOf="@id/cash_loan_apply" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
