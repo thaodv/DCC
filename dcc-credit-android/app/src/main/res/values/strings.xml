@@ -463,7 +463,7 @@
     <string name="user_activity_photo">人像照片</string>
 
     <string name="select_node">选择以太坊节点</string>
-    <string name="select_node_green"><font color='#9B9B9B'>已连接（网络质量好）</font></string>
+    <string name="select_node_green"><font color='#9B9B9B'>（网络质量好）</font></string>
     <string name="select_node_yellow"><font color='#9B9B9B'>（网络质量一般）</font></string>
     <string name="select_node_red"><font color='#9B9B9B'>（网络质量差）</font></string>
     <string name="title_open_cloud">开启云存储</string>

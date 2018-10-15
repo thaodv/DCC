@@ -33,6 +33,24 @@ class SelectNodeActivity : BaseCompatActivity() {
     private lateinit var yellow: Drawable
     private lateinit var red: Drawable
 
+    private val nodeList: List<NodeBean>
+        get() {
+            val nodeList = App.get().nodeList
+            return nodeList
+        }
+
+    var index: Int = 1
+
+    lateinit var base1: String
+    lateinit var base2: String
+    lateinit var base3: String
+    lateinit var base4: String
+
+    var text1 = ""
+    var text2 = ""
+    var text3 = ""
+    var text4 = ""
+
     @SuppressLint("ResourceType", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,17 +68,50 @@ class SelectNodeActivity : BaseCompatActivity() {
         cb3.id = 2
         cb4.id = 3
 
+        base1 = nodeList[0].url
+        base2 = nodeList[1].url
+        base3 = nodeList[2].url
+        base4 = nodeList[3].url
 
-        val nodeList = App.get().nodeList
+        initColor()
 
-        val base1 = nodeList[0].url
-        val base2 = nodeList[1].url
-        val base3 = nodeList[2].url
-        val base4 = nodeList[3].url
+        connect()
+
+
+        cb1.setOnClickListener {
+            cb1.isChecked = true
+            grContent.check(-1)
+            connect()
+        }
+        cb2.setOnClickListener {
+            cb2.isChecked = true
+            grContent.check(-1)
+            connect()
+        }
+        cb3.setOnClickListener {
+            cb3.isChecked = true
+            grContent.check(-1)
+            connect()
+        }
+        cb4.setOnClickListener {
+            cb4.isChecked = true
+            grContent.check(-1)
+            connect()
+        }
+
+        grContent.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
+            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+                LogUtils.i("SelectNodeActivity-checkedId", checkedId)
+                if (-1 == checkedId) run { return } else {
+                    ShareUtils.setString(Extras.SP_SELECTED_NODE, nodeList[checkedId].url)
+                }
+            }
+        })
+    }
+
+    private fun connect() {
 
         val base = ShareUtils.getString(Extras.SP_SELECTED_NODE, base1)
-
-        var index = 1
 
         for (item in nodeList) {
             if (item.url == base) {
@@ -75,7 +126,27 @@ class SelectNodeActivity : BaseCompatActivity() {
             4 -> cb4.isChecked = true
         }
 
-        initColor()
+        if (cb1.isChecked) {
+            text1 = "已连接"
+            text2 = ""
+            text3 = ""
+            text4 = ""
+        } else if (cb2.isChecked) {
+            text1 = ""
+            text2 = "已连接"
+            text3 = ""
+            text4 = ""
+        } else if (cb3.isChecked) {
+            text1 = ""
+            text2 = ""
+            text3 = "已连接"
+            text4 = ""
+        } else if (cb4.isChecked) {
+            text1 = ""
+            text2 = ""
+            text3 = ""
+            text4 = "已连接"
+        }
 
         val createApi1 = Networking(App.get()).createApi(EthJsonRpcApiWithAuth::class.java, base1)
         val agent1 = EthsRpcAgent.by(createApi1)
@@ -86,7 +157,21 @@ class SelectNodeActivity : BaseCompatActivity() {
                 .io_main()
                 .subscribeBy(
                         onSuccess = {
-                            cb1.setStatus(startTime1, nodeList[0])
+                            var res: String
+                            if (System.currentTimeMillis() - startTime1 <= 300) {
+                                cb1.setCompoundDrawables(null, null, green, null)
+                                res = resources.getString(R.string.select_node_green)
+                            } else if (System.currentTimeMillis() - startTime1 <= 1000) {
+                                cb1.setCompoundDrawables(null, null, yellow, null)
+                                res = resources.getString(R.string.select_node_yellow)
+                            } else {
+                                cb1.setCompoundDrawables(null, null, red, null)
+                                res = resources.getString(R.string.select_node_red)
+                            }
+                            res = text1 + res
+
+                            cb1.text = spannableString(nodeList[0].name, res)
+
                         },
                         onError = {
                             cb1.setCompoundDrawables(null, null, red, null)
@@ -102,7 +187,20 @@ class SelectNodeActivity : BaseCompatActivity() {
                 .io_main()
                 .subscribeBy(
                         onSuccess = {
-                            cb2.setStatus(startTime2, nodeList[1])
+                            var res: String
+                            if (System.currentTimeMillis() - startTime2 <= 300) {
+                                cb2.setCompoundDrawables(null, null, green, null)
+                                res = resources.getString(R.string.select_node_green)
+                            } else if (System.currentTimeMillis() - startTime2 <= 1000) {
+                                cb2.setCompoundDrawables(null, null, yellow, null)
+                                res = resources.getString(R.string.select_node_yellow)
+                            } else {
+                                cb2.setCompoundDrawables(null, null, red, null)
+                                res = resources.getString(R.string.select_node_red)
+                            }
+                            res = text2 + res
+
+                            cb2.text = spannableString(nodeList[1].name, res)
                         },
                         onError = {
                             cb2.setCompoundDrawables(null, null, red, null)
@@ -118,7 +216,20 @@ class SelectNodeActivity : BaseCompatActivity() {
                 .io_main()
                 .subscribeBy(
                         onSuccess = {
-                            cb3.setStatus(startTime3, nodeList[2])
+                            var res: String
+                            if (System.currentTimeMillis() - startTime3 <= 300) {
+                                cb3.setCompoundDrawables(null, null, green, null)
+                                res = resources.getString(R.string.select_node_green)
+                            } else if (System.currentTimeMillis() - startTime3 <= 1000) {
+                                cb3.setCompoundDrawables(null, null, yellow, null)
+                                res = resources.getString(R.string.select_node_yellow)
+                            } else {
+                                cb3.setCompoundDrawables(null, null, red, null)
+                                res = resources.getString(R.string.select_node_red)
+                            }
+                            res = text3 + res
+
+                            cb3.text = spannableString(nodeList[2].name, res)
                         },
                         onError = {
                             cb3.setCompoundDrawables(null, null, red, null)
@@ -135,43 +246,25 @@ class SelectNodeActivity : BaseCompatActivity() {
                 .io_main()
                 .subscribeBy(
                         onSuccess = {
-                            cb4.setStatus(startTime4, nodeList[3])
+                            var res: String
+                            if (System.currentTimeMillis() - startTime4 <= 300) {
+                                cb4.setCompoundDrawables(null, null, green, null)
+                                res = resources.getString(R.string.select_node_green)
+                            } else if (System.currentTimeMillis() - startTime4 <= 1000) {
+                                cb4.setCompoundDrawables(null, null, yellow, null)
+                                res = resources.getString(R.string.select_node_yellow)
+                            } else {
+                                cb4.setCompoundDrawables(null, null, red, null)
+                                res = resources.getString(R.string.select_node_red)
+                            }
+                            res = text4 + res
+
+                            cb4.text = spannableString(nodeList[3].name, res)
                         },
                         onError = {
                             cb4.setCompoundDrawables(null, null, red, null)
                             cb4.text = spannableString(nodeList[3].name, resources.getString(R.string.select_node_red))
                         })
-
-        cb1.setCheckClick {
-            grContent.check(-1)
-        }
-        cb2.setCheckClick {
-            grContent.check(-1)
-        }
-        cb3.setCheckClick {
-            grContent.check(-1)
-        }
-        cb4.setCheckClick {
-            grContent.check(-1)
-        }
-
-        grContent.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
-            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-                LogUtils.i("SelectNodeActivity-checkedId", checkedId)
-                if (-1 == checkedId) run { return } else {
-                    ShareUtils.setString(Extras.SP_SELECTED_NODE, nodeList[checkedId].url)
-                }
-            }
-        })
-
-    }
-
-    private fun RadioButton.setCheckClick(action: () -> Unit) {
-        this.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                action()
-            }
-        }
     }
 
     private fun initColor() {
@@ -181,22 +274,6 @@ class SelectNodeActivity : BaseCompatActivity() {
         yellow.setBounds(0, 0, yellow.minimumWidth, yellow.minimumHeight)
         red = resources.getDrawable(R.drawable.icon_node_red)
         red.setBounds(0, 0, red.minimumWidth, red.minimumHeight)
-    }
-
-    private fun RadioButton.setStatus(startTime1: Long, nodeBean: NodeBean) {
-        val res: String
-        if (System.currentTimeMillis() - startTime1 <= 300) {
-            this.setCompoundDrawables(null, null, green, null)
-            res = resources.getString(R.string.select_node_green)
-        } else if (System.currentTimeMillis() - startTime1 <= 1000) {
-            this.setCompoundDrawables(null, null, yellow, null)
-            res = resources.getString(R.string.select_node_yellow)
-        } else {
-            this.setCompoundDrawables(null, null, red, null)
-            res = resources.getString(R.string.select_node_red)
-        }
-
-        this.text = spannableString(nodeBean.name, res)
     }
 
     private fun spannableString(name: String, res: String): SpannableString {
