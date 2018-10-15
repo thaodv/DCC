@@ -272,7 +272,7 @@ object PassportRepository {
         fun parseWalletFile(wallet: String?) = gson.fromJson(wallet, WalletFile::class.java)
 
 
-    private class PassportPrefs(sp: SharedPreferences) : Prefs(sp) {
+    public class PassportPrefs(sp: SharedPreferences) : Prefs(sp) {
         val wallet = StringPref(PASSPORT_WALLET_FILE)
         val password = StringPref(PASSPORT_WALLET_PASSWORD)
         val avatar = StringPref(USER_AVATAR_URI)

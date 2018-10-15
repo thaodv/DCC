@@ -634,10 +634,15 @@ object CertOperations {
             } else {
                 if (UserCertStatus.DONE.name == state) {
                     if (getCmLogCertExpired() < System.currentTimeMillis()) {
-                        UserCertStatus.TIMEOUT
+                        if(getCmLogCertExpired() ==-1L){
+                            UserCertStatus.INCOMPLETE
+                        }else{
+                            UserCertStatus.TIMEOUT
+                        }
                     } else {
                         UserCertStatus.DONE
                     }
+
                 } else {
                     UserCertStatus.valueOf(state)
                 }

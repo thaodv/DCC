@@ -16,7 +16,6 @@ import io.wexchain.android.dcc.PassportActivity
 import io.wexchain.android.dcc.chain.EthsFunctions.deleteKey
 import io.wexchain.android.dcc.chain.EthsHelper.ANDROID_RSA_PREFIX
 import io.wexchain.android.dcc.chain.EthsHelper.createAndroidRSAKeyPair
-import io.wexchain.android.dcc.domain.AuthKey
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.repo.db.AuthKeyChangeRecord
 import io.wexchain.android.dcc.tools.RetryWithDelay
@@ -27,7 +26,7 @@ import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.TicketResponse
 import org.web3j.crypto.Credentials
 import java.util.*
-
+import io.wexchain.android.dcc.domain.AuthKey
 /**
  * Created by lulingzhi on 2017/11/24.
  */
@@ -42,6 +41,7 @@ object PassportOperations {
                 }
                 .map {
                     val authKey = EthsHelper.createAndroidRSAKeyPair().let {
+                       worhavah.regloginlib .AuthKey(it.second, it.first.public.encoded)
                         AuthKey(it.second, it.first.public.encoded)
                     }
                     it to authKey
@@ -111,6 +111,7 @@ object PassportOperations {
                 .observeOn(Schedulers.computation())
                 .map {
                     val authKey = EthsHelper.createAndroidRSAKeyPair().let {
+                        worhavah.regloginlib .AuthKey(it.second, it.first.public.encoded)
                         AuthKey(it.second, it.first.public.encoded)
                     }
                     it to authKey
@@ -200,7 +201,9 @@ object PassportOperations {
 
     private fun createPubKey(): Single<AuthKey> {
         return Single.fromCallable { createAndroidRSAKeyPair() }
-                .map { AuthKey(it.second, it.first.public.encoded) }
+                .map {
+                    worhavah.regloginlib .AuthKey(it.second, it.first.public.encoded)
+                    AuthKey(it.second, it.first.public.encoded) }
                 .subscribeOn(Schedulers.computation())
     }
 

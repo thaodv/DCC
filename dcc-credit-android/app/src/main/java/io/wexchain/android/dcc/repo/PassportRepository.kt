@@ -16,7 +16,6 @@ import io.wexchain.android.common.*
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.ChooseCutImageActivity
 import io.wexchain.android.dcc.chain.EthsHelper
-import io.wexchain.android.dcc.domain.AuthKey
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.repo.db.*
 import io.wexchain.android.dcc.tools.*
@@ -26,6 +25,7 @@ import org.web3j.crypto.Wallet
 import org.web3j.crypto.WalletFile
 import org.web3j.crypto.WalletFileDeserializer
 import org.web3j.utils.Numeric
+import io.wexchain.android.dcc.domain.AuthKey
 import java.io.File
 
 /**
@@ -37,7 +37,7 @@ class PassportRepository(
 ) {
 
     private val passportPrefs = PassportPrefs(context.getSharedPreferences(PASSPORT_SP_NAME, Context.MODE_PRIVATE))
-
+    private val passportPrefs2 = worhavah.regloginlib.PassportRepository.PassportPrefs(context.getSharedPreferences(PASSPORT_SP_NAME, Context.MODE_PRIVATE))
     val currPassport = MutableLiveData<Passport>()
 
     val currAddress = currPassport.map { it?.address }.distinct()
@@ -223,8 +223,17 @@ class PassportRepository(
             it.avatar.clear()
             it.nickname.clear()
         }
+        passportPrefs2.let {
+            it.wallet.set(gson.toJson(walletFile))
+            it.password.set(password)
+            it.saveAuthKey(switchAuthkey(authKey))
+            it.avatar.clear()
+            it.nickname.clear()
+        }
     }
-
+    fun switchAuthkey(it:AuthKey?): worhavah.regloginlib.AuthKey {
+        return worhavah.regloginlib.AuthKey(it!!.keyAlias,it.publicKeyEncoded)
+    }
     fun removeEntirePassportInformation() {
         currPassport.value = null
         passportPrefs.clearAll()
@@ -353,6 +362,7 @@ class PassportRepository(
     fun updateAuthKey(passport: Passport, authKey: AuthKey?) {
         if (getCurrentPassport()?.address == passport.address) {
             passportPrefs.saveAuthKey(authKey)
+            passportPrefs2.saveAuthKey(switchAuthkey(authKey))
             val copy = passport.copy(authKey = authKey)
             currPassport.value = copy
         }
@@ -424,7 +434,7 @@ class PassportRepository(
     private class PassportPrefs(sp: SharedPreferences) : Prefs(sp) {
         val wallet = StringPref(PASSPORT_WALLET_FILE)
         val password = StringPref(PASSPORT_WALLET_PASSWORD)
-        val avatar = StringPref(USER_AVATAR_URI)
+        val avatar = StringPref(USER_AVATAR_URI) 
         val nickname = StringPref(USER_NICKNAME)
         val authKeyAlias = StringPref(AUTH_KEY_ALIAS)
         val authKeyPublicKey = StringPref(AUTH_KEY_PUB)

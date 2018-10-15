@@ -43,6 +43,7 @@ import worhavah.certs.CertListner
 import worhavah.certs.beans.BankCardInfo
 import worhavah.regloginlib.AuthKey
 import worhavah.regloginlib.EthsHelper
+import worhavah.regloginlib.Net.beans.CertOrderUpdatedEvent
 import worhavah.regloginlib.PassportRepository
 import worhavah.regloginlib.tools.*
 import java.text.SimpleDateFormat
@@ -79,6 +80,11 @@ object CertOperations {
                 }
         })
         idVerifyHelper = IdVerifyHelper(context)
+        setFreeData()// 初始化数据 打开限制
+    }
+
+    private fun setFreeData() {
+        certPrefs.makeStringprf("Cert"+ChainGateway.TN_COMMUNICATION_LOG+"txhashcode").set("")
     }
 
     fun submitBankCardCert(
@@ -276,7 +282,20 @@ object CertOperations {
                     .compose(Result.checked())
         }.certOrderByTx(api, business)
     }
-
+    fun obtainNewCmLogUpdateOrderId(passport: Passport): Single<CertOrderUpdatedEvent> {
+        val business = ChainGateway.TN_COMMUNICATION_LOG
+        val api = Networkutils.chainGateway
+        val nonce = privateChainNonce(passport.address)
+        return Single.zip(
+            api.getCertContractAddress(business).compose(Result.checked()),
+            api.getTicket().compose(Result.checked()),
+            pair()
+        ).flatMap { (contractAddress, ticket) ->
+            val tx = cmLogApply.txSigned(passport.credential, contractAddress, nonce)
+            api.certApply(ticket.ticket, tx, null, business)
+                .compose(Result.checked())
+        }.certUpdateOrderByTx(api, business)
+    }
 
     fun getCompletedCerts(): List<String> {
         return ArrayList<String>().apply {
@@ -306,6 +325,51 @@ object CertOperations {
         }
             .flatMap {
                 api.getOrdersByTx(it, business)
+                    .compose(Result.checked())
+                    .map {
+                        it.first()
+                    }
+            }
+    }
+
+    var txHashTime=0
+    fun Single<String>.certUpdateOrderByTx(api: ChainGateway, business: String): Single<CertOrderUpdatedEvent> {
+        return this.flatMap { rtxHash ->
+            var txHash=rtxHash
+            /*if(android.text.TextUtils.isEmpty(  certPrefs.makeStringprf("Cert"+business+"txhashcode").get())){
+                certPrefs.makeStringprf("Cert"+business+"txhashcode").set(rtxHash)
+            }else{
+                txHash= certPrefs.makeStringprf("Cert"+business+"txhashcode").get()!!
+            }*/
+            /*api.hasReceipt(txHash)
+                .compose(Result.checked())
+                .doOnError {  certPrefs.makeStringprf("Cert"+business+"txhashcode").set("") }
+                .map {
+                    if (!it) {
+                        throw DccChainServiceException("no receipt yet")
+                    }
+                    txHash
+                }*/
+            api.getReceiptResult(txHash)
+                .compose(Result.checked())
+              //  .doOnError {  certPrefs.makeStringprf("Cert"+business+"txhashcode").set("") }
+                .map {
+                    if (!it.hasReceipt) {
+                        throw DccChainServiceException("订单已超时,同牛运营商认证失败")
+                    }
+                    it
+                }
+                .retryWhen(RetryWithDelay.createSimple(10, 3000L))
+                .map {
+                    if (!it.approximatelySuccess) {
+                        throw DccChainServiceException()
+                    }
+                    txHash
+                }
+        }
+            .flatMap {
+                certPrefs.makeStringprf("Cert"+business+"txhashcode").set("")
+                api.getOrderUpdatedEventsByTx(it, business)
                     .compose(Result.checked())
                     .map {
                         it.first()
@@ -514,7 +578,6 @@ i
 
 
 
-
         //手机邮箱
         val certPhoneNum= StringPref("certPhoneNum")
         val certPhoneData = StringPref("certPhoneData")
@@ -526,6 +589,11 @@ i
         val certHALine2= StringPref("certHALine2")
 
         val certLasttime= StringPref("certLasttime")
+
+
+        fun makeStringprf(ss:String):StringPref{
+            return StringPref(ss)
+        }
     }
 
     fun getTNLogCertExpired(): Long {
