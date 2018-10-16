@@ -15,11 +15,11 @@ import android.widget.TextView
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
-import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.modules.ipfs.service.IpfsBinder
@@ -40,9 +40,8 @@ import org.jetbrains.anko.uiThread
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
 import org.web3j.abi.datatypes.Utf8String
-import java.util.*
-import io.reactivex.functions.Function;
 import worhavah.certs.tools.CertOperations.certed
+import java.util.*
 
 
 /**
@@ -115,44 +114,40 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
             }
         }
     }
-    val jobs = mutableListOf<Single<Int>>()
-    val listMerger = Function<Array<Any>, List<Int>> {
-        it.flatMap { it as List<Int> } }
+
     private fun initData() {
-
-
         val idCertPassed = CertOperations.isIdCertPassed()
         val bankCertPassed = CertOperations.isBankCertPassed()
         val status = CertOperations.getCmLogUserStatus()
+        val cmStatus = status == UserCertStatus.DONE || status == UserCertStatus.TIMEOUT
+        val tnstatus = worhavah.certs.tools.CertOperations.getTNLogUserStatus()
+
         Singles.zip(
-                Single.just(!idCertPassed).checkStatus(ChainGateway.BUSINESS_ID),
-                Single.just(!bankCertPassed).checkStatus(ChainGateway.BUSINESS_BANK_CARD),
-                Single.just(status != UserCertStatus.DONE).checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG)
-        )
+                s1 = Single.just(!idCertPassed).checkStatus(ChainGateway.BUSINESS_ID),
+                s2 = Single.just(!bankCertPassed).checkStatus(ChainGateway.BUSINESS_BANK_CARD),
+                s3 = Single.just(!cmStatus).checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG),
+                s4 = Single.just(tnstatus != worhavah.certs.tools.UserCertStatus.DONE).checkStatus(ChainGateway.TN_COMMUNICATION_LOG),
+                zipper = { f1, f2, f3, f4 ->
+                    Function4(f1, f2, f3, f4)
+                })
                 .io_main()
                 .withLoading()
                 .subscribeBy {
                     updateUI(it)
                 }
-
-
     }
 
-    private fun updateUI(it: Triple<Int, Int, Int>) {
-        IDStatus = it.first
-        BankStatus = it.second
-        CmStatus = it.third
+    data class Function4<out T1, out T2, out T3, out T4>(val data1: T1, val data2: T2, val data3: T3, val data4: T4)
+
+    private fun updateUI(it: Function4<Int, Int, Int, Int>) {
+        IDStatus = it.data1
+        BankStatus = it.data2
+        CmStatus = it.data3
+        TnStatus = it.data4
         updateIdItem()
         updateBankItem()
         updateCmItem()
-
-        val tnstatus =worhavah.certs.tools. CertOperations.getTNLogUserStatus()
-        Single.just(tnstatus != worhavah.certs.tools.UserCertStatus.DONE).checkStatus(ChainGateway.TN_COMMUNICATION_LOG) .io_main()
-            .withLoading()
-            .subscribeBy {
-                TnStatus= it
-                updateTnItem()
-            }
+        updateTnItem()
     }
 
     fun Single<Boolean>.checkStatus(business: String): Single<Int> {
@@ -167,8 +162,8 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                         .blockingGet()
             } else {//本地有数据
                 val checkChainData = CertOperations.checkLocalIdAndChainData(business).blockingGet()
-                if (checkChainData ) {//true 本地数据和链上最新一致
-                 //if (checkChainData||business.equals(ChainGateway.TN_COMMUNICATION_LOG)) {//true 本地数据和链上最新一致
+                if (checkChainData) {//true 本地数据和链上最新一致
+                    //if (checkChainData||business.equals(ChainGateway.TN_COMMUNICATION_LOG)) {//true 本地数据和链上最新一致
                     checkIpfsAndChainDigest(business)
                             .map {
                                 //true ipfs数据和链上最新一致
@@ -425,12 +420,12 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 isEnabled.remove(TNDATA)
                 val status = worhavah.certs.tools.CertOperations.getTNLogUserStatus()
                 Single.just(status != UserCertStatus.DONE)
-                    .checkStatus(ChainGateway.TN_COMMUNICATION_LOG)
-                    .io_main()
-                    .subscribeBy {
-                        TnStatus = 4
-                        updateTnItem()
-                    }
+                        .checkStatus(ChainGateway.TN_COMMUNICATION_LOG)
+                        .io_main()
+                        .subscribeBy {
+                            TnStatus = 4
+                            updateTnItem()
+                        }
             }
         }
     }
