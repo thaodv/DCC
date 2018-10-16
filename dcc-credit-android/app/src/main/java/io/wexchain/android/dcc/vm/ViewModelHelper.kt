@@ -74,6 +74,7 @@ object ViewModelHelper {
             CertificationType.MOBILE -> R.drawable.shape_newmobile
             CertificationType.TONGNIU -> R.drawable.shape_newmobile
             CertificationType.LOANREPORT -> R.drawable.shape_newloanreport
+            CertificationType.USERINFO -> R.drawable.shape_newloanreport
         }
         return ContextCompat.getDrawable(this, drawableId)
     }

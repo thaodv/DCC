@@ -6,5 +6,6 @@ enum class CertificationType {
     BANK,
     MOBILE,
     TONGNIU,
-    LOANREPORT
+    LOANREPORT,
+    USERINFO
 }

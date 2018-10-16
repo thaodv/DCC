@@ -37,7 +37,7 @@ class CashCertificationActivity : BindActivity<ActivityCashCertificationBinding>
         binding.asIdVm = obtainAuthStatus(CertificationType.ID)
         binding.asBankVm = obtainAuthStatus(CertificationType.BANK)
         binding.asTongniuVm = obtainAuthStatus(CertificationType.TONGNIU)
-
+        binding.asUserinfoVm = obtainAuthStatus(CertificationType.USERINFO)
     }
 
     private fun obtainAuthStatus(certificationType: CertificationType): AuthenticationStatusVm? {
@@ -65,6 +65,7 @@ class CashCertificationActivity : BindActivity<ActivityCashCertificationBinding>
             CertificationType.ID -> getString(R.string.id_verification)
             CertificationType.BANK -> getString(R.string.bank_account_verification)
             CertificationType.TONGNIU -> "同牛运营商认证"
+            CertificationType.USERINFO -> "信息完善"
             else -> ""
         }
     }
