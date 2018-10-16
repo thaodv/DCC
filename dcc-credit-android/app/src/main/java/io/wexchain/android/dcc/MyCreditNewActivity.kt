@@ -20,7 +20,6 @@ import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.view.CountDownProgress
-import worhavah.regloginlib.tools.check
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
@@ -33,13 +32,12 @@ import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.ipfs.utils.io_main
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
-import worhavah.certs.bean.TNcert1new
 import worhavah.certs.bean.TNcert1newreport
-import worhavah.certs.bean.TNcertReport
 import worhavah.certs.tools.CertOperations.clearTNCertCache
 import worhavah.certs.tools.CertOperations.onTNLogSuccessGot
 import worhavah.certs.tools.CertOperations.saveTnLogCertExpired
 import worhavah.regloginlib.Net.Networkutils
+import worhavah.regloginlib.tools.check
 import worhavah.tongniucertmodule.SubmitTNLogActivity
 import worhavah.tongniucertmodule.TnLogCertificationActivity
 import java.math.BigDecimal

@@ -45,7 +45,7 @@ class CashLoanActivity : BindActivity<ActivityCashloanBinding>() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.action_my_cash_loan -> {
-                //TODO 我的借贷
+                navigateTo(MyLoanActivity::class.java)
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -25,8 +25,7 @@
         tools:replace="android:allowBackup,android:icon,android:label,android:theme,android:supportsRtl">
         <activity
             android:name="io.wexchain.android.dcc.LoadingActivity"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -482,12 +481,24 @@
             android:label="认购额度"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name="io.wexchain.android.dcc.modules.cashloan.CashLoanActivity"
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.CashLoanActivity"
             android:label="法币借贷"
             android:screenOrientation="portrait"/>
-        <activity android:name="io.wexchain.android.dcc.modules.cashloan.CashCertificationActivity"
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.CashCertificationActivity"
             android:label="额度申请"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.LoanInfoActivity"
+            android:label="我的借款"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.MyLoanActivity"
+            android:label="我的借款"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
