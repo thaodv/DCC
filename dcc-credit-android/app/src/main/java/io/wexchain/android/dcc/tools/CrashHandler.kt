@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Environment
 import android.os.Process
 import android.os.SystemClock
+import io.wexchain.dcc.BuildConfig
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -31,6 +32,9 @@ class CrashHandler : Thread.UncaughtExceptionHandler {
     }
 
     private fun dumpExceptionToSDCard(ex: Throwable) {
+        if (!BuildConfig.DEBUG){
+            return
+        }
         if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
             return
         }
