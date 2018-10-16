@@ -58,6 +58,21 @@ contract CertRepo is OperatorPermission {
         expiredIntegrity = _expiredIntegrity;
     }
 
+    function revoke(address applicant) external onlyOperator {
+        require(applicant != address(0));
+
+        Checkpoint memory cp = getCheckpointAt(applicant);
+
+        //表示有有效的验证信息
+        require(cp.content.digest1.length > 0 || cp.content.digest2.length>0 || cp.content.expired>0);
+
+        uint256 len=checkpoints[applicant].length;
+        Checkpoint storage checkpoint=checkpoints[applicant][len-1];
+        checkpoint.content.digest1="";
+        checkpoint.content.digest2="";
+        checkpoint.content.expired=0;
+
+    }
 
     function appendElement(Checkpoint[] storage checkpointList, uint256 dataVersion, Content memory icd) internal returns (uint256) {
         uint256 length = checkpointList.push(Checkpoint(block.number, dataVersion, icd));
@@ -116,5 +131,4 @@ contract CertRepo is OperatorPermission {
     function getOwner() view public returns (string _ret) {
         return "";
     }
-
 }
