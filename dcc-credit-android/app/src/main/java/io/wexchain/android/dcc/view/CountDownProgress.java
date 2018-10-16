@@ -12,9 +12,9 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.SweepGradient;
 import android.os.CountDownTimer;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -32,7 +32,7 @@ public class CountDownProgress extends View {
     private static final int DEFAULT_CIRCLE_SOLIDE_COLOR = Color.parseColor("#FFFFFF");
     private static final int DEFAULT_CIRCLE_STROKE_COLOR = Color.parseColor("#D1D1D1");
     private static final int DEFAULT_CIRCLE_STROKE_WIDTH = 12;
-    private static final int DEFAULT_CIRCLE_RADIUS =100;
+    private static final int DEFAULT_CIRCLE_RADIUS = 100;
 
     private static final int PROGRESS_COLOR = Color.parseColor("#F76E6B");
     private static final int PROGRESS_WIDTH = 12;
@@ -45,6 +45,7 @@ public class CountDownProgress extends View {
     private static final int TEXT_COLOR = Color.parseColor("#777B40FF");
     private static final int TEXT_SIZE = 70;
 
+    private Boolean isDrawText = true;
 
     //默认圆
     private int defaultCircleSolideColor = DEFAULT_CIRCLE_SOLIDE_COLOR;
@@ -89,11 +90,11 @@ public class CountDownProgress extends View {
 
 
     public CountDownProgress(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public CountDownProgress(Context context, AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public CountDownProgress(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -101,9 +102,12 @@ public class CountDownProgress extends View {
         //获取自定义属性
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CountDownProgress);
         int indexCount = typedArray.getIndexCount();
-        for(int i=0;i<indexCount;i++){
+        for (int i = 0; i < indexCount; i++) {
             int attr = typedArray.getIndex(i);
-            switch (attr){
+            switch (attr) {
+                case R.styleable.CountDownProgress_is_draw_text:
+                    isDrawText = typedArray.getBoolean(attr, true);
+                    break;
                 case R.styleable.CountDownProgress_default_circle_solide_color:
                     defaultCircleSolideColor = typedArray.getColor(attr, defaultCircleSolideColor);
                     break;
@@ -159,6 +163,7 @@ public class CountDownProgress extends View {
         defaultCriclePaint.setStyle(Paint.Style.STROKE);
         defaultCriclePaint.setStrokeWidth(defaultCircleStrokeWidth);
         defaultCriclePaint.setColor(defaultCircleStrokeColor);//这里先画边框的颜色，后续再添加画笔画实心的颜色
+
         //默认圆上面的进度弧度
         progressPaint = new Paint();
         progressPaint.setAntiAlias(true);
@@ -166,8 +171,6 @@ public class CountDownProgress extends View {
         progressPaint.setStyle(Paint.Style.STROKE);
         progressPaint.setStrokeWidth(progressWidth);
         progressPaint.setColor(progressColor);
-
-
 
         progressPaint.setStrokeCap(Paint.Cap.ROUND);//设置画笔笔刷样式
         //进度上面的小圆
@@ -177,7 +180,7 @@ public class CountDownProgress extends View {
         smallCirclePaint.setStyle(Paint.Style.FILL);
         smallCirclePaint.setStrokeWidth(smallCircleStrokeWidth);
         smallCirclePaint.setColor(smallCircleStrokeColor);
-           //画进度上面的小圆的实心画笔（主要是将小圆的实心颜色设置成白色）
+        //画进度上面的小圆的实心画笔（主要是将小圆的实心颜色设置成白色）
         smallCircleSolidePaint = new Paint();
         smallCircleSolidePaint.setAntiAlias(true);
         smallCircleSolidePaint.setDither(true);
@@ -195,6 +198,7 @@ public class CountDownProgress extends View {
 
     /**
      * 如果该View布局的宽高开发者没有精确的告诉，则需要进行测量，如果给出了精确的宽高则我们就不管了
+     *
      * @param widthMeasureSpec
      * @param heightMeasureSpec
      */
@@ -205,54 +209,57 @@ public class CountDownProgress extends View {
         int widthSize;
         int heightSize;
         int strokeWidth = Math.max(defaultCircleStrokeWidth, progressWidth);
-        if(widthMode != MeasureSpec.EXACTLY){
-            widthSize = getPaddingLeft() + defaultCircleRadius*2 + strokeWidth + getPaddingRight();
+        if (widthMode != MeasureSpec.EXACTLY) {
+            widthSize = getPaddingLeft() + defaultCircleRadius * 2 + strokeWidth + getPaddingRight();
             widthMeasureSpec = MeasureSpec.makeMeasureSpec(widthSize, MeasureSpec.EXACTLY);
         }
-        if(heightMode != MeasureSpec.EXACTLY){
-            heightSize = getPaddingTop() + defaultCircleRadius*2 + strokeWidth + getPaddingBottom();
+        if (heightMode != MeasureSpec.EXACTLY) {
+            heightSize = getPaddingTop() + defaultCircleRadius * 2 + strokeWidth + getPaddingBottom();
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(heightSize, MeasureSpec.EXACTLY);
         }
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
+
     //private int[] RATE_COLORS = {0xFFbb59ff,0xFF44dcfc};
-    private int[] RATE_COLORS = {0xFFB274FF,0xFF7B40FF};
+    private int[] RATE_COLORS = {0xFFB274FF, 0xFF7B40FF};
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         mWidth = this.getMeasuredWidth();
         mHeight = this.getMeasuredHeight();
-        LinearGradient gradient = new LinearGradient(mWidth /2,0, mWidth /2, mHeight,RATE_COLORS,null, Shader.TileMode.MIRROR);
+        LinearGradient gradient = new LinearGradient(mWidth / 2, 0, mWidth / 2, mHeight, RATE_COLORS, null, Shader.TileMode.MIRROR);
         progressPaint.setShader(gradient);
         progressPaint.setMaskFilter(new BlurMaskFilter(50, BlurMaskFilter.Blur.SOLID));
 
         canvas.save();
         canvas.translate(getPaddingLeft(), getPaddingTop());
         //画默认圆
-        canvas.drawCircle(defaultCircleRadius,defaultCircleRadius,defaultCircleRadius,defaultCriclePaint);
+        canvas.drawCircle(defaultCircleRadius, defaultCircleRadius, defaultCircleRadius, defaultCriclePaint);
 
         //画进度圆弧
         //currentAngle = getProgress()*1.0f/getMax()*360;
-        canvas.drawArc(new RectF(0,0,defaultCircleRadius*2,defaultCircleRadius*2),mStartSweepValue, mPercent*currentAngle,false,progressPaint);
+        canvas.drawArc(new RectF(0, 0, defaultCircleRadius * 2, defaultCircleRadius * 2), mStartSweepValue, mPercent * currentAngle, false, progressPaint);
         //画中间文字
         // String text = getProgress()+"%";
         //获取文字的长度的方法
-        float textWidth = textPaint.measureText(textDesc);
-        float textHeight = (textPaint.descent() + textPaint.ascent()) / 2;
-        canvas.drawText(textDesc, defaultCircleRadius-textWidth/2, defaultCircleRadius-textHeight, textPaint);
+        if (isDrawText) {
+            float textWidth = textPaint.measureText(textDesc);
+            float textHeight = (textPaint.descent() + textPaint.ascent()) / 2;
+            canvas.drawText(textDesc, defaultCircleRadius - textWidth / 2, defaultCircleRadius - textHeight, textPaint);
+        }
 
         //画小圆
-        float currentDegreeFlag = mPercent*currentAngle + extraDistance;
-        float smallCircleX = 0,smallCircleY = 0;
+        float currentDegreeFlag = mPercent * currentAngle + extraDistance;
+        float smallCircleX = 0, smallCircleY = 0;
         float hudu = (float) Math.abs(Math.PI * currentDegreeFlag / 180);//Math.abs：绝对值 ，Math.PI：表示π ， 弧度 = 度*π / 180
         smallCircleX = (float) Math.abs(Math.sin(hudu) * defaultCircleRadius + defaultCircleRadius);
         smallCircleY = (float) Math.abs(defaultCircleRadius - Math.cos(hudu) * defaultCircleRadius);
 
-            canvas.drawCircle(smallCircleX, smallCircleY, smallCircleRadius, smallCirclePaint);
-            canvas.drawCircle(smallCircleX, smallCircleY,   smallCircleStrokeWidth, smallCircleSolidePaint);//画小圆的实心
-
+        canvas.drawCircle(smallCircleX, smallCircleY, smallCircleRadius, smallCirclePaint);
+        canvas.drawCircle(smallCircleX, smallCircleY, smallCircleStrokeWidth, smallCircleSolidePaint);//画小圆的实心
 
 
         canvas.restore();
@@ -264,8 +271,7 @@ public class CountDownProgress extends View {
      *
      * @param dpVal
      */
-    protected int dp2px(int dpVal)
-    {
+    protected int dp2px(int dpVal) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 dpVal, getResources().getDisplayMetrics());
     }
@@ -276,33 +282,33 @@ public class CountDownProgress extends View {
      * @param spVal
      * @return
      */
-    protected int sp2px(int spVal)
-    {
+    protected int sp2px(int spVal) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
                 spVal, getResources().getDisplayMetrics());
 
     }
 
     //提供一个外界可以设置的倒计时数值
-    public void setCountdownTime(long countdownTime){
+    public void setCountdownTime(long countdownTime) {
         this.countdownTime = countdownTime;
-      //  textDesc = countdownTime / 1000 + "″";
+        //  textDesc = countdownTime / 1000 + "″";
     }
-    public void setPercent(int i){
 
-        mPercent= new BigDecimal(i).multiply(new BigDecimal("3.6")).toBigInteger().intValue();
-        textDesc=""+i+"%";
+    public void setPercent(int i) {
+
+        mPercent = new BigDecimal(i).multiply(new BigDecimal("3.6")).toBigInteger().intValue();
+        textDesc = "" + i + "%";
     }
 
 
     //属性动画
-    public void startCountDownTime(final OnCountdownFinishListener countdownFinishListener){
+    public void startCountDownTime(final OnCountdownFinishListener countdownFinishListener) {
         setClickable(false);
         ValueAnimator animator = ValueAnimator.ofFloat(0, 1.0f);
         //动画时长，让进度条在CountDown时间内正好从0-360走完，这里由于用的是CountDownTimer定时器，倒计时要想减到0则总时长需要多加1000毫秒，所以这里时间也跟着+1000ms
-        long durationtime=countdownTime+1000;
-        if(durationtime<1000){
-            durationtime=1000;
+        long durationtime = countdownTime + 1000;
+        if (durationtime < 1000) {
+            durationtime = 1000;
         }
         animator.setDuration(durationtime);
         animator.setInterpolator(new LinearInterpolator());//匀速
@@ -318,7 +324,7 @@ public class CountDownProgress extends View {
                  * 因此，当我们的区间值变为1.0的时候弧度刚好转了360度
                  */
                 currentAngle = (float) animation.getAnimatedValue();
-         //       Log.e("currentAngle",currentAngle+"");
+                //       Log.e("currentAngle",currentAngle+"");
                 invalidate();//实时刷新view，这样我们的进度条弧度就动起来了
             }
         });
@@ -333,12 +339,12 @@ public class CountDownProgress extends View {
             @Override
             public void onAnimationEnd(Animator animation) {
                 //倒计时结束的时候，需要通过自定义接口通知UI去处理其他业务逻辑
-                if(countdownFinishListener != null){
+                if (countdownFinishListener != null) {
                     countdownFinishListener.countdownFinished();
                 }
-                if(countdownTime > 0){
+                if (countdownTime > 0) {
                     setClickable(true);
-                }else{
+                } else {
                     setClickable(false);
                 }
             }
@@ -356,27 +362,28 @@ public class CountDownProgress extends View {
     }
 
     //倒计时的方法
-    private void countdownMethod(){
-        new CountDownTimer(countdownTime+1000, 1000) {
+    private void countdownMethod() {
+        new CountDownTimer(countdownTime + 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-       //         Log.e("time",countdownTime+"");
-                countdownTime = countdownTime-1000;
-             //   textDesc = countdownTime/1000 + "″";
+                //         Log.e("time",countdownTime+"");
+                countdownTime = countdownTime - 1000;
+                //   textDesc = countdownTime/1000 + "″";
                 //countdownTime = countdownTime-1000;
-               // Log.e("time",countdownTime+"");
+                // Log.e("time",countdownTime+"");
                 //刷新view
                 invalidate();
             }
+
             @Override
             public void onFinish() {
                 //textDesc = 0 + "″";
-               // textDesc = "时间到";
+                // textDesc = "时间到";
                 //同时隐藏小球
-                  if(textDesc.equals("100%")){
-                      smallCirclePaint.setColor(getResources().getColor(android.R.color.transparent));
-                      smallCircleSolidePaint.setColor(getResources().getColor(android.R.color.transparent));
-                  }
+                if (textDesc.equals("100%")) {
+                    smallCirclePaint.setColor(getResources().getColor(android.R.color.transparent));
+                    smallCircleSolidePaint.setColor(getResources().getColor(android.R.color.transparent));
+                }
 
                 //刷新view
                 invalidate();
@@ -385,7 +392,7 @@ public class CountDownProgress extends View {
     }
 
     //通过自定义接口通知UI去处理其他业务逻辑
-    public interface OnCountdownFinishListener{
+    public interface OnCountdownFinishListener {
         void countdownFinished();
     }
 

@@ -85,8 +85,9 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
             if(per!=lastper){
                 lastper=per
                 countDownProgress.setPercent(per)
-                countDownProgress.startCountDownTime(  CountDownProgress.OnCountdownFinishListener  {
-                })
+                countDownProgress.startCountDownTime{
+
+                }
             }
         }
 

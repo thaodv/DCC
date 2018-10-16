@@ -11,7 +11,10 @@
         <attr name="letterSpacingExtra" format="float" />
     </declare-styleable>
 
+
     <declare-styleable name="CountDownProgress">
+
+        <attr name = "is_draw_text" format = "boolean" />
 
         <!-- 默认圆实心的颜色 -->
         <attr name="default_circle_solide_color" format="color"/>
