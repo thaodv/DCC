@@ -466,6 +466,7 @@
     <string name="select_node_green"><font color='#9B9B9B'>（网络质量好）</font></string>
     <string name="select_node_yellow"><font color='#9B9B9B'>（网络质量一般）</font></string>
     <string name="select_node_red"><font color='#9B9B9B'>（网络质量差）</font></string>
+    <string name="select_node_timeout"><font color='#9B9B9B'>[连接失败]</font></string>
     <string name="title_open_cloud">开启云存储</string>
     <string name="ipfs_select_node_tip">说明：\n
 云端数据默认存储在Bit Express提供的节点，您也可以自己搭建节点，选择把数据存储在自建节点上。

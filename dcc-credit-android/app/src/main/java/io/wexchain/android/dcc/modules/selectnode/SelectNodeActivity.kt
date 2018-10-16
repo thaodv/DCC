@@ -175,7 +175,7 @@ class SelectNodeActivity : BaseCompatActivity() {
                         },
                         onError = {
                             cb1.setCompoundDrawables(null, null, red, null)
-                            cb1.text = spannableString(nodeList[0].name, resources.getString(R.string.select_node_red))
+                            cb1.text = spannableString(nodeList[0].name, resources.getString(R.string.select_node_timeout))
                         })
 
         val createApi2 = Networking(App.get()).createApi(EthJsonRpcApiWithAuth::class.java, base2)
@@ -204,7 +204,7 @@ class SelectNodeActivity : BaseCompatActivity() {
                         },
                         onError = {
                             cb2.setCompoundDrawables(null, null, red, null)
-                            cb2.text = spannableString(nodeList[1].name, resources.getString(R.string.select_node_red))
+                            cb2.text = spannableString(nodeList[1].name, resources.getString(R.string.select_node_timeout))
                         })
         val createApi3 = Networking(App.get()).createApi(EthJsonRpcApiWithAuth::class.java, base3)
         val agent3 = EthsRpcAgent.by(createApi3)
@@ -233,7 +233,7 @@ class SelectNodeActivity : BaseCompatActivity() {
                         },
                         onError = {
                             cb3.setCompoundDrawables(null, null, red, null)
-                            cb3.text = spannableString(nodeList[2].name, resources.getString(R.string.select_node_red))
+                            cb3.text = spannableString(nodeList[2].name, resources.getString(R.string.select_node_timeout))
                         })
 
         val createApi4 = Networking(App.get()).createApi(EthJsonRpcApiWithAuth::class.java, base4)
@@ -263,7 +263,7 @@ class SelectNodeActivity : BaseCompatActivity() {
                         },
                         onError = {
                             cb4.setCompoundDrawables(null, null, red, null)
-                            cb4.text = spannableString(nodeList[3].name, resources.getString(R.string.select_node_red))
+                            cb4.text = spannableString(nodeList[3].name, resources.getString(R.string.select_node_timeout))
                         })
     }
 
