@@ -27,6 +27,10 @@ contract CertService4Impl is CertService4, CertRepo{
 
     CertServiceFeeModule public certServiceFeeModule;
 
+    function setCertServiceFeeModuleAddress(address certServiceFeeModuleAddress) public  onlyOwner{
+        certServiceFeeModule=CertServiceFeeModule(certServiceFeeModuleAddress);
+    }
+
 
     function CertService4Impl(bytes _name, DigestIntegrity _digest1Integrity, DigestIntegrity _digest2Integrity,
         DigestIntegrity _expiredIntegrity) public CertRepo(_name,_digest1Integrity,_digest2Integrity,_expiredIntegrity){
@@ -47,7 +51,7 @@ contract CertService4Impl is CertService4, CertRepo{
         if(len>0){
             //uint256 lastOrderId=applicantIndex[msg.sender][len-1];
             //Status lastOrderStatus=certOrders[lastOrderId].status;
-            CertOrder memory lastCertOrder=InnerGetLastCertOrder(msg.sender);
+            CertOrder memory lastCertOrder=innerGetLastCertOrder(msg.sender);
             //require(lastOrderStatus==Status.PASSED ||lastOrderStatus==Status.REJECTED || lastOrderStatus==Status.REVOKED);
             require(lastCertOrder.status==Status.PASSED ||lastCertOrder.status==Status.REJECTED || lastCertOrder.status==Status.REVOKED);
         }
@@ -152,7 +156,9 @@ contract CertService4Impl is CertService4, CertRepo{
     function getCertOrder(address applicant,uint256 index) view public returns (uint256 _orderId,address _applicant, uint8 status, bytes digest1, bytes digest2, uint256 expired,uint256 feeDcc) {
         require(applicant!=0);
         uint256[] memory applicantList=applicantIndex[applicant];
-        require(index<applicantList.length && applicantList.length>0);
+        if(!(index<applicantList.length && applicantList.length>0)){
+            return (0,0,0,"","",0,0);
+        }
         CertOrder memory order= certOrders[applicantList[index]];
         return (order.orderId,order.applicant, uint8(order.status), order.content.digest1, order.content.digest2, order.content.expired,order.fee);
     }
@@ -160,14 +166,15 @@ contract CertService4Impl is CertService4, CertRepo{
     function getLastCertOrder(address applicant)view public returns (uint256 _orderId,address _applicant, uint8 status, bytes digest1, bytes digest2, uint256 expired,uint256 feeDcc) {
         require(applicant!=0);
         uint256[] memory applicantList=applicantIndex[applicant];
-        require(applicantList.length>0);
+        if(!(applicantList.length>0)){
+            return (0,0,0,"","",0,0);
+        }
         return getCertOrder(applicant,applicantList.length-1);
     }
 
-    function InnerGetLastCertOrder(address applicant)view internal returns(CertOrder certOrder) {
+    function innerGetLastCertOrder(address applicant)view internal returns(CertOrder certOrder) {
         require(applicant!=0);
         uint256[] memory applicantList=applicantIndex[applicant];
-        require(applicantList.length>0);
         return certOrders[applicantList[applicantList.length-1]];
     }
 

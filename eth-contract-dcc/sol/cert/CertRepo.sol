@@ -127,8 +127,4 @@ contract CertRepo is OperatorPermission {
     function getData() view public returns (bytes digest1, bytes digest2, uint256 expired, uint256 dataVersion) {
         return getData(msg.sender);
     }
-
-    function getOwner() view public returns (string _ret) {
-        return "";
-    }
 }
