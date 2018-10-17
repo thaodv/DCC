@@ -74,7 +74,7 @@ class TnLogCertificationActivity : BindActivity<ActivityTncertificationDataCmBin
         return expiredFormat.format(expired)
     }
 
-   /* override fun onResume() {
+    override fun onResume() {
         super.onResume()
         Networkutils.chainGateway.getCertData(Networkutils.passportRepository.currPassport.value!!.address, ChainGateway.TN_COMMUNICATION_LOG)
             .checkonMain()
@@ -88,5 +88,5 @@ class TnLogCertificationActivity : BindActivity<ActivityTncertificationDataCmBin
                 }
                 vm.value3.set(expiredText(worhavah.certs.tools.CertOperations.getTNLogCertExpired()))
             }, {})
-    }*/
+    }
 }
