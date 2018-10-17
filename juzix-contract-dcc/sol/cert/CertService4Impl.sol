@@ -30,6 +30,7 @@ contract CertService4Impl is CertService4, CertRepo{
 
     function CertService4Impl(bytes _name, DigestIntegrity _digest1Integrity, DigestIntegrity _digest2Integrity,
         DigestIntegrity _expiredIntegrity) public CertRepo(_name,_digest1Integrity,_digest2Integrity,_expiredIntegrity){
+        register("CertService4ImplModule", "0.0.1.0", "CertService4Impl", "0.0.1.0");
         insertOrder(address(0), Status.INVALID, Content("", "", 0),0);
     }
 
@@ -97,7 +98,8 @@ contract CertService4Impl is CertService4, CertRepo{
         return insertOrder(msg.sender, Status.APPLIED, Content(digest1,digest2,expired),fee);
     }
 
-    function accept(uint256 orderId) external onlyOperator{
+    function accept(uint256 orderId) public{
+        onlyOperator();
         if(!(orderId < certOrders.length)){
             log("!(orderId < certOrders.length)");
             throw;
@@ -111,7 +113,8 @@ contract CertService4Impl is CertService4, CertRepo{
     }
 
 
-    function pass(uint256 orderId,bytes digest1, bytes digest2,uint256 expired) external onlyOperator{
+    function pass(uint256 orderId,bytes digest1, bytes digest2,uint256 expired) public{
+        onlyOperator();
         CertOrder storage order = certOrders[orderId];
         Content storage content=order.content;
 
@@ -157,7 +160,8 @@ contract CertService4Impl is CertService4, CertRepo{
     }
 
 
-    function reject(uint256 orderId) external onlyOperator{
+    function reject(uint256 orderId) public{
+        onlyOperator();
         audit(orderId, Status.REJECTED);
     }
 
