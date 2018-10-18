@@ -47,7 +47,7 @@ dependencies {
     api project(':idverify')
     api project(':livenesslib')
 
-    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
+    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
     //kapt "com.android.databinding:compiler:$android_gradle_plugin_version"
     api "io.reactivex.rxjava2:rxjava:$rxjava_version"
     api "com.android.support:cardview-v7:$support_lib_version"

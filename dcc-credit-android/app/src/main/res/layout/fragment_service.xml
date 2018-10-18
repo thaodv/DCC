@@ -139,7 +139,6 @@
                                     android:textColor="#BAC0C5"
                                     android:textSize="12sp" />
 
-
                             </LinearLayout>
 
                             <Button
