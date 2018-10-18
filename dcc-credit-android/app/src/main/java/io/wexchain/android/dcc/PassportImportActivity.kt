@@ -3,17 +3,18 @@ package io.wexchain.android.dcc
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import com.google.gson.JsonSyntaxException
-import io.wexchain.android.common.base.BindActivity
-import io.wexchain.android.dcc.fragment.PasteKeystoreFragment
-import io.wexchain.android.dcc.fragment.PastePrivateKeyFragment
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.*
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.fragment.PasteKeystoreFragment
+import io.wexchain.android.dcc.fragment.PastePrivateKeyFragment
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportImportBinding
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.ScfAccountInfo
 import kotlinx.android.synthetic.main.activity_passport_import.*
 import org.web3j.crypto.CipherException
@@ -51,7 +52,7 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
     }
 
     private fun ensurePassportIsAbsent() {
-        if (App.get().passportRepository.passportExists){
+        if (App.get().passportRepository.passportExists) {
             // post action to complete onCreate() and postpone finish
             postOnMainThread {
                 toast("已存在钱包")
@@ -63,7 +64,7 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
     private fun tryImport() {
         tryReadPassport()
                 .flatMap {
-                    PassportOperations.enablePassport(it.first,it.second)
+                    PassportOperations.enablePassport(it.first, it.second)
                 }
                 .doOnSubscribe {
                     showLoadingDialog()
@@ -77,21 +78,21 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
     private fun onImportSuccess() {
         toast("导入成功")
         ScfOperations.getScfAccountInfo()
-            .observeOn(AndroidSchedulers.mainThread())
-            .withLoading()
-            .subscribe({acc->
-                if(acc === ScfAccountInfo.ABSENT){
-                    navigateTo(CreateScfAccountActivity::class.java){
-                        putExtra(Extras.FROM_IMPORT,true)
+                .observeOn(AndroidSchedulers.mainThread())
+                .withLoading()
+                .subscribe({ acc ->
+                    if (acc === ScfAccountInfo.ABSENT) {
+                        navigateTo(CreateScfAccountActivity::class.java) {
+                            putExtra(Extras.FROM_IMPORT, true)
+                        }
+                    } else {
+                        navigateTo(PassportCreationSucceedActivity::class.java) {
+                            putExtra(Extras.FROM_IMPORT, true)
+                        }
                     }
-                }else{
-                    navigateTo(PassportCreationSucceedActivity::class.java){
-                        putExtra(Extras.FROM_IMPORT,true)
-                    }
-                }
-                finishActivity(LoadingActivity::class.java)
-                finish()
-            })
+                    finishActivity(LoadingActivity::class.java)
+                    finish()
+                })
     }
 
     private fun showError(e: Throwable) {
@@ -101,7 +102,10 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
                 toast(getString(R.string.keystore_or_wallet_password))
             }
             is JsonSyntaxException -> {
-                    toast(getString(R.string.keystore_or_wallet_password))
+                toast(getString(R.string.keystore_or_wallet_password))
+            }
+            is DccChainServiceException -> {
+                toast(e.message ?: "导入失败")
             }
             else -> {
                 toast(getString(R.string.importing_failure))
@@ -109,7 +113,7 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
         }
     }
 
-    private fun tryReadPassport(): Single<Pair<Credentials,String>> {
+    private fun tryReadPassport(): Single<Pair<Credentials, String>> {
         return when (tabs_import.selectedTabPosition) {
             0 -> {
                 val fragment = supportFragmentManager.findFragmentByTag(TAG_PASTE_KEYSTORE)

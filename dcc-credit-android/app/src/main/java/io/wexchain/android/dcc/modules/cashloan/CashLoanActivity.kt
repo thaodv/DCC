@@ -8,7 +8,6 @@ import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityCashloanBinding
-import kotlinx.android.synthetic.main.activity_cashloan.*
 
 /**
  *Created by liuyang on 2018/10/15.
@@ -21,14 +20,14 @@ class CashLoanActivity : BindActivity<ActivityCashloanBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-        initView()
+//        initView()
         initClick()
     }
 
     private fun initView() {
-        countdownProgress.setCountdownTime(900)
-        countdownProgress.setPercent(80)
-        countdownProgress.startCountDownTime {  }
+        binding.countdownProgress.setCountdownTime(900)
+        binding.countdownProgress.setPercent(80)
+        binding.countdownProgress.startCountDownTime {  }
     }
 
     private fun initClick() {

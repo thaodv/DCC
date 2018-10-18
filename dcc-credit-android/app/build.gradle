@@ -18,8 +18,8 @@ android {
         applicationId "io.wexchain.dcc"
         minSdkVersion min_sdk
         targetSdkVersion target_sdk
-        versionCode 22
-        versionName "3.0.0"
+        versionCode 23
+        versionName "3.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {

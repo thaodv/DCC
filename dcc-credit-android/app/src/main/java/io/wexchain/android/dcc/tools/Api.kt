@@ -135,7 +135,22 @@ fun EditText.fixPrice() {
             }
         }
     })
-
 }
 
+fun isRoot(): Boolean {
+    val file1 = File("/system/bin/su")
+    val file2 = File("/system/xbin/su")
+    return file1.exists() || file2.exists()
+}
+
+fun checkXPosed(): Boolean {
+    return try {
+        val localObject = ClassLoader.getSystemClassLoader().loadClass("de.robv.android.xposed.XposedHelpers").newInstance()
+        // 如果加载类失败 则表示当前环境没有xposed
+        true
+    } catch (localThrowable: Throwable) {
+        false
+    }
+
+}
 

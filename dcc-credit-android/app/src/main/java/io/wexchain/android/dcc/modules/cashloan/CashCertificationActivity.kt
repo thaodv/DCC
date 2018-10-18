@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.BankCardCertificationActivity
 import io.wexchain.android.dcc.IdCertificationActivity
 import io.wexchain.android.dcc.SubmitBankCardActivity
@@ -37,6 +38,9 @@ class CashCertificationActivity : BindActivity<ActivityCashCertificationBinding>
         binding.asIdVm = obtainAuthStatus(CertificationType.ID)
         binding.asBankVm = obtainAuthStatus(CertificationType.BANK)
         binding.asTongniuVm = obtainAuthStatus(CertificationType.TONGNIU)
+        binding.cardAsUserinfo.onClick {
+            navigateTo(UserInfoCertificationActivity::class.java)
+        }
     }
 
     private fun obtainAuthStatus(certificationType: CertificationType): AuthenticationStatusVm? {
