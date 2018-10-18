@@ -14,11 +14,16 @@ fun isKeyStoreValid(ks: String?): Boolean {
 }
 
 fun isEcPrivateKeyValid(key: String?): Boolean {
-    return key != null
+    return (key != null && ((key.length == 64 && key.checkIsHex()) || (key.length == 66 && key.toLowerCase().substring(0, 2) == "0x" && key.substring(2, key.length).checkIsHex())))
 }
 
-fun isPhoneNumValid(phoneNum:String?):Boolean{
-    return phoneNum!=null && phoneNum.length == 11
+fun String.checkIsHex(): Boolean {
+    val regex = Regex("^[A-Fa-f0-9]+$")
+    return this.matches(regex)
+}
+
+fun isPhoneNumValid(phoneNum: String?): Boolean {
+    return phoneNum != null && phoneNum.length == 11
 }
 
 fun isAddressShortNameValid(inputShortName: String): Boolean {
