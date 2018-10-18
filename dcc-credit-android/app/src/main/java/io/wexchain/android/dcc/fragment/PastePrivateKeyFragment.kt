@@ -60,7 +60,7 @@ class PastePrivateKeyFragment : BindFragment<FragmentPastePrivateKeyBinding>() {
         val key = binding.key
         val pw = binding.inputPassword!!.password.get()
         return if (!isEcPrivateKeyValid(key)){
-            Single.error(DccChainServiceException("私钥明文不符合规则，导入失败"))
+            Single.error(DccChainServiceException("私钥明文格式不对，请核对后重新输入！"))
         }else if (!isPasswordValid(pw)) {
             Single.error(DccChainServiceException("密码不符合规则"))
         }else{
