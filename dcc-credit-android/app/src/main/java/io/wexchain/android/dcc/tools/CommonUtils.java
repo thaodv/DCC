@@ -9,7 +9,8 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.sql.Struct;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 
 import io.wexchain.android.dcc.App;
 import io.wexchain.dcc.R;
@@ -98,9 +99,84 @@ public class CommonUtils {
             return "已添加";
         }
     }
-
-    public static String rePay(String arg1,String arg2){
-        return App.get().getResources().getString(R.string.please_transfer,arg1,arg2);
+    
+    public static String rePay(String arg1, String arg2) {
+        return App.get().getResources().getString(R.string.please_transfer, arg1, arg2);
+    }
+    
+    /**
+     * 获取mac地址
+     *
+     * @return
+     */
+    public String getMacAddress() {
+        String macAddress = "";
+        StringBuffer buf = new StringBuffer();
+        NetworkInterface networkInterface = null;
+        try {
+            networkInterface = NetworkInterface.getByName("eth1");
+            if (networkInterface == null) {
+                networkInterface = NetworkInterface.getByName("wlan0");
+            }
+            if (networkInterface == null) {
+                return "02:00:00:00:00:02";
+            }
+            byte[] addr = networkInterface.getHardwareAddress();
+            for (byte b : addr) {
+                buf.append(String.format("%02X:", b));
+            }
+            if (buf.length() > 0) {
+                buf.deleteCharAt(buf.length() - 1);
+            }
+            macAddress = buf.toString();
+        } catch (SocketException e) {
+            e.printStackTrace();
+            return "02:00:00:00:00:02";
+        }
+        return macAddress;
+    }
+    
+    public static String checkPassword(String passwordStr) {
+        String regexZ = "\\d*";
+        String regexS = "[a-zA-Z]+";
+        String regexT = "\\W+$";
+        String regexZT = "\\D*";
+        String regexST = "[\\d\\W]*";
+        String regexZS = "\\w*";
+        String regexZST = "[\\w\\W]*";
+        
+        if (passwordStr.matches(regexZ)) {
+            return "弱";
+        }
+        if (passwordStr.matches(regexS)) {
+            return "弱";
+        }
+        if (passwordStr.matches(regexT)) {
+            return "弱";
+        }
+        if (passwordStr.matches(regexZT)) {
+            return "中";
+        }
+        if (passwordStr.matches(regexST)) {
+            return "中";
+        }
+        if (passwordStr.matches(regexZS)) {
+            return "中";
+        }
+        if (passwordStr.matches(regexZST)) {
+            return "强";
+        }
+        return passwordStr;
+        
+    }
+    
+    /**
+     * 获取packageName
+     *
+     * @return
+     */
+    public static String getPackageName() {
+        return App.get().getApplicationInfo().packageName;
     }
     
 }
