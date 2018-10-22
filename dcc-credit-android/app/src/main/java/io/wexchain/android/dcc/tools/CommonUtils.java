@@ -11,6 +11,8 @@ import android.util.Log;
 
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.wexchain.android.dcc.App;
 import io.wexchain.dcc.R;
@@ -136,38 +138,17 @@ public class CommonUtils {
         return macAddress;
     }
     
-    public static String checkPassword(String passwordStr) {
-        String regexZ = "\\d*";
-        String regexS = "[a-zA-Z]+";
-        String regexT = "\\W+$";
-        String regexZT = "\\D*";
-        String regexST = "[\\d\\W]*";
-        String regexZS = "\\w*";
-        String regexZST = "[\\w\\W]*";
-        
-        if (passwordStr.matches(regexZ)) {
-            return "弱";
-        }
-        if (passwordStr.matches(regexS)) {
-            return "弱";
-        }
-        if (passwordStr.matches(regexT)) {
-            return "弱";
-        }
-        if (passwordStr.matches(regexZT)) {
-            return "中";
-        }
-        if (passwordStr.matches(regexST)) {
-            return "中";
-        }
-        if (passwordStr.matches(regexZS)) {
-            return "中";
-        }
-        if (passwordStr.matches(regexZST)) {
-            return "强";
-        }
-        return passwordStr;
-        
+    /**
+     * 校验密码 （字母数字特殊符号至少2种混合）
+     *
+     * @param password
+     * @return
+     */
+    public static boolean checkPassword(String password) {
+        String criteriaPassword = "^(?![\\d]+$)(?![a-zA-Z]+$)(?![^\\da-zA-Z]+$).{6,16}$";
+        Pattern pattern = Pattern.compile(criteriaPassword);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
     
     /**
