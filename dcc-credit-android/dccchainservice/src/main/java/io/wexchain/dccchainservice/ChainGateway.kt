@@ -140,6 +140,6 @@ interface ChainGateway {
         const val BUSINESS_ID = "ID"
         const val BUSINESS_BANK_CARD = "BANK_CARD"
         const val BUSINESS_COMMUNICATION_LOG = "COMMUNICATION_LOG"
-        const val TN_COMMUNICATION_LOG = "TN_COMMUNICATION_LOG"
+        const val TN_COMMUNICATION_LOG = "TN_COMMUNICATION_LOG2"
     }
 }
