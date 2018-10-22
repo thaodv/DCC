@@ -67,6 +67,14 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
         if (passport == null) {
             Networkutils.passportRepository.load()
         }
+        if (!Networkutils.passportRepository.passportEnabled) {
+            Networkutils.passportRepository.load()
+             Networkutils.passportRepository.getCurrentPassport()!!
+        }
+        if(null==getAndroidKeyStoreLoaded().getEntry(passport!!.authKey!!.keyAlias, null)){
+            Networkutils.passportRepository.load()
+             Networkutils.passportRepository.getCurrentPassport()!!
+        }
     }
     val totalCerts  =4
     var certDoneNum=0

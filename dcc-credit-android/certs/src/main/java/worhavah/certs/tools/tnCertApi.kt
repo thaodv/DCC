@@ -18,7 +18,7 @@ import worhavah.certs.beans.Beancitys
  */
 interface tnCertApi {
 
-    @POST("dcc/endorsement/tongniu/communicationLog/create/task")
+    @POST("dcc/endorsement/tongniu/communicationLog2/create/task")
     @Multipart
     fun requestCommunicationLogData(
         @Part("address") address:String,
@@ -27,11 +27,12 @@ interface tnCertApi {
         @Part("certNo") certNo: String,
         @Part("phoneNo") phoneNo: String,
         @Part("password") password: String,
+        @Part("nonce") nonce: String,
         @Part("signature") signature:String
     ):Single<Result<TNcert1new>>
 
 
-    @POST("dcc/endorsement/tongniu/communicationLog/advance")
+    @POST("dcc/endorsement/tongniu/communicationLog2/advance")
     @Multipart
     fun TNAdvance(
         @Part("address") address:String,
@@ -42,7 +43,7 @@ interface tnCertApi {
         @Part("signature") signature:String
         ):Single<Result<TNcert1new>>
 
-    @POST("dcc/endorsement/tongniu/communicationLog/resend/code")
+    @POST("dcc/endorsement/tongniu/communicationLog2/resend/code")
     @Multipart
     fun TNGetcode(
         @Part("address") address:String,
@@ -51,7 +52,7 @@ interface tnCertApi {
         @Part("signature") signature:String
     ):Single<Result<TNcert1new>>
 
-    @POST("dcc/endorsement/tongniu/communicationLog/getReport")
+    @POST("dcc/endorsement/tongniu/communicationLog2/getReport")
     @Multipart
     fun TNgetReport(
         @Part("address") address:String,
@@ -60,7 +61,7 @@ interface tnCertApi {
         @Part("signature") signature:String
     ):Single<Result<TNcert1newreport>>
 
-    @POST("dcc/endorsement/tongniu/communicationLog/getReport")
+    @POST("dcc/endorsement/tongniu/communicationLog2/getReport")
     @Multipart
     fun TNgetReport2(
         @Part("address") address:String,

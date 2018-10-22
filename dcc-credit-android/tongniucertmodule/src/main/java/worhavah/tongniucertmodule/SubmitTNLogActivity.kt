@@ -105,7 +105,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
              submitPhoneNo = phoneNo
              submitServicePassword = password
             //var orderiiid=  obtainNewOrderId(passport).blockingGet()
-             obtainNewOrderId(passport).subscribeOn(AndroidSchedulers.mainThread())  .doOnSubscribe {
+             obtainNewOrderId(passport,phoneNo).subscribeOn(AndroidSchedulers.mainThread())  .doOnSubscribe {
                  showLoadingDialog()
              }
                  .doFinally {
@@ -119,7 +119,8 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
                                  "userName" to name,
                                  "certNo" to id,
                                  "phoneNo" to phoneNo,
-                                 "password" to password
+                                 "password" to password,
+                                 "nonce" to    CertOperations.TNnonce
                              )
                          )
                          worhavah.certs.tools.CertOperations.certPrefs.certTNcertaddress.set(address )
@@ -128,6 +129,9 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
                          worhavah.certs.tools.CertOperations.certPrefs.certTNcertcertNo.set(id )
                          worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set(phoneNo )
                          worhavah.certs.tools.CertOperations.certPrefs.certTNcertpassword.set(password )
+                         worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.set(
+                             CertOperations.TNnonce
+                         )
                          worhavah.certs.tools.CertOperations.certPrefs.ertTNcertsignature.set(signature )
                          checkCreat()
                      },{
@@ -147,6 +151,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
             worhavah.certs.tools.CertOperations.certPrefs.certTNcertcertNo.get()!!,
             worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.get()!!,
             worhavah.certs.tools.CertOperations.certPrefs.certTNcertpassword.get()!!,
+            worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.get()!!,
             worhavah.certs.tools.CertOperations.certPrefs.ertTNcertsignature.get()!!
         ) .subscribeOn(AndroidSchedulers.mainThread())
             .observeOn(AndroidSchedulers.mainThread())
@@ -238,6 +243,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
         id: String,
         phoneNo: String,
         password: String,
+        nonce:String,
         signature: String
     ): Single<TNcert1new> {
         submitOrderId=orderId
@@ -250,11 +256,12 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
             certNo = id,
             phoneNo = phoneNo,
             password = password,
+            nonce=nonce,
             signature =signature
         ).compose(Result.checked())
     }
 
-    fun requestTNLog(
+   /* fun requestTNLog(
         passport: Passport,
         orderId: Long,
         name: String,
@@ -284,7 +291,7 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
                 )
             )
         ).compose(Result.checked())
-    }
+    }*/
     fun pushAdvance(authCode:String?,smsCode:String?): Single<TNcert1new>{
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
@@ -502,9 +509,9 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
         setResult(666)
         finish()
     }
-    private fun obtainNewOrderId(passport: Passport): Single<Long> {
+    private fun obtainNewOrderId(passport: Passport,pn:String): Single<Long> {
         val orderId = submitOrderId
-         return   CertOperations.obtainNewCmLogUpdateOrderId(passport)
+         return   CertOperations.obtainNewCmLogUpdateOrderId(passport,pn)
                 .map { it.orderId }
                 .doOnSuccess {
                     this.submitOrderId = it

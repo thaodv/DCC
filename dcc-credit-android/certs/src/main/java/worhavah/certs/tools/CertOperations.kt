@@ -282,16 +282,21 @@ object CertOperations {
                     .compose(Result.checked())
         }.certOrderByTx(api, business)
     }
-    fun obtainNewCmLogUpdateOrderId(passport: Passport): Single<CertOrderUpdatedEvent> {
+    var TNnonce=""
+    fun obtainNewCmLogUpdateOrderId(passport: Passport,pn:String): Single<CertOrderUpdatedEvent> {
         val business = ChainGateway.TN_COMMUNICATION_LOG
         val api = Networkutils.chainGateway
         val nonce = privateChainNonce(passport.address)
+        TNnonce=nonce.toString()
         return Single.zip(
             api.getCertContractAddress(business).compose(Result.checked()),
             api.getTicket().compose(Result.checked()),
             pair()
         ).flatMap { (contractAddress, ticket) ->
-            val tx = cmLogApply.txSigned(passport.credential, contractAddress, nonce)
+            val data = pn.toByteArray(Charsets.UTF_8) + nonce.toString().toByteArray(Charsets.UTF_8)
+            val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
+            val ccApply=EthsFunctions.apply(byteArrayOf(), digest1, BigInteger.ZERO)
+            val tx = ccApply.txSigned(passport.credential, contractAddress, nonce)
             api.certApply(ticket.ticket, tx, null, business)
                 .compose(Result.checked())
         }.certUpdateOrderByTx(api, business)
@@ -570,6 +575,7 @@ i
         val certTNcertcertNo = StringPref("certTNcertcertNo")//认证id
         val certTNcertphoneNo = StringPref("certTNcertphoneNo")//认证id
         val certTNcertpassword = StringPref("certTNcertpassword")//认证id
+        val certTNcertnonce = StringPref("certTNcertnonce")//认证id
         val ertTNcertsignature= StringPref("ertTNcertsignature")//认证id
 
 
