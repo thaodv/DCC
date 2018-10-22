@@ -499,6 +499,11 @@
             android:name="io.wexchain.android.dcc.modules.cashloan.UserInfoCertificationActivity"
             android:label="真实信息"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.WithDrawActivity"
+            android:label="提现"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
