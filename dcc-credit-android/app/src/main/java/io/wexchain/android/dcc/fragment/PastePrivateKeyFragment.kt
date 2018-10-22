@@ -68,13 +68,13 @@ class PastePrivateKeyFragment : BindFragment<FragmentPastePrivateKeyBinding>() {
                     .observeOn(Schedulers.computation())
                     .map {
                         val privateKey: String
-                        val tmp = it.first
-                        privateKey = if (tmp.substring(0, 2).toLowerCase() == "0x") {
+                        val tmp = it.first.toLowerCase()
+                        privateKey = if (tmp.substring(0, 2) == "0x") {
                             tmp.substring(2)
                         } else {
                             tmp
                         }
-                        val credentials = Credentials.create(privateKey.toLowerCase())
+                        val credentials = Credentials.create(privateKey)
                         credentials to it.second
                     }
                     .observeOn(AndroidSchedulers.mainThread())
