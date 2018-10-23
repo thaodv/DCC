@@ -88,7 +88,7 @@ object PassportOperations {
      * 2. hasReceipt
      * 3. get pub key
      */
-    private fun uploadPubKeyChecked(
+      fun uploadPubKeyChecked(
         authKey: AuthKey,
         credentials: Credentials,
         ticket: String,

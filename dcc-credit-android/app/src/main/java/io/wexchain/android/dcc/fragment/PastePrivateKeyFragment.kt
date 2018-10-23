@@ -17,6 +17,7 @@ import worhavah.regloginlib.tools.isPasswordValid
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentPastePrivateKeyBinding
+import io.wexchain.dccchainservice.DccChainServiceException
 import org.web3j.crypto.Credentials
 
 /**
@@ -59,14 +60,21 @@ class PastePrivateKeyFragment : BindFragment<FragmentPastePrivateKeyBinding>() {
         val key = binding.key
         val pw = binding.inputPassword!!.password.get()
         return if (!isEcPrivateKeyValid(key)){
-            Single.error(IllegalArgumentException("私钥明文不符合规则，导入失败"))
+            Single.error(DccChainServiceException("私钥明文格式不对，请核对后重新输入！"))
         }else if (!isPasswordValid(pw)) {
-            Single.error(IllegalArgumentException("密码不符合规则"))
+            Single.error(DccChainServiceException("密码不符合规则"))
         }else{
             Single.just(Pair(key!!,pw!!))
                     .observeOn(Schedulers.computation())
                     .map {
-                        val credentials = Credentials.create(it.first)
+                        val privateKey: String
+                        val tmp = it.first.toLowerCase()
+                        privateKey = if (tmp.substring(0, 2) == "0x") {
+                            tmp.substring(2)
+                        } else {
+                            tmp
+                        }
+                        val credentials = Credentials.create(privateKey)
                         credentials to it.second
                     }
                     .observeOn(AndroidSchedulers.mainThread())

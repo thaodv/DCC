@@ -27,6 +27,8 @@ import io.wexchain.dccchainservice.domain.TicketResponse
 import org.web3j.crypto.Credentials
 import java.util.*
 import io.wexchain.android.dcc.domain.AuthKey
+import worhavah.regloginlib.Net.Networkutils
+
 /**
  * Created by lulingzhi on 2017/11/24.
  */
@@ -56,6 +58,7 @@ object PassportOperations {
                 }
                 .doOnSuccess {
                     App.get().passportRepository.saveNewPassport(it.first, password, it.second)
+                    Networkutils.passportRepository.saveNewPassport(it.first, password,  worhavah.regloginlib.AuthKey(it.second.keyAlias,it.second.publicKeyEncoded))
                     App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(it.first.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.ENABLE))
                 }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -126,6 +129,7 @@ object PassportOperations {
                 }
                 .doOnSuccess {
                     App.get().passportRepository.saveNewPassport(it.first, password, it.second)
+                    Networkutils.passportRepository.saveNewPassport(it.first, password,  worhavah.regloginlib.AuthKey(it.second.keyAlias,it.second.publicKeyEncoded))
                     App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(it.first.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.ENABLE))
                 }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -195,6 +199,7 @@ object PassportOperations {
             code: String?
     ): Single<Pair<Credentials, AuthKey>> {
         val credentials = pair.first
+        worhavah.regloginlib.tools.PassportOperations.uploadPubKeyChecked( worhavah.regloginlib.AuthKey(pair.second.keyAlias,pair.second.publicKeyEncoded), credentials, ticket, code)
         return uploadPubKeyChecked(pair.second, credentials, ticket, code)
                 .map { pair }
     }

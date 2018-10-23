@@ -1,6 +1,6 @@
 pragma solidity ^0.4.11;
 
-import "../ownership/OperatorPermission.sol";
+import "../permission/OperatorPermission.sol";
 
 contract CertRepo is OperatorPermission {
 
@@ -38,15 +38,18 @@ contract CertRepo is OperatorPermission {
     bytes public name;
 
 
-    function setDigest1Integrity(DigestIntegrity _digest1Integrity) public onlyOwner {
+    function setDigest1Integrity(DigestIntegrity _digest1Integrity) public {
+        onlyOwner();
         digest1Integrity = _digest1Integrity;
     }
 
-    function setDigest2Integrity(DigestIntegrity _digest2Integrity) public onlyOwner {
+    function setDigest2Integrity(DigestIntegrity _digest2Integrity) public {
+        onlyOwner();
         digest2Integrity = _digest2Integrity;
     }
 
-    function setExpiredIntegrity(DigestIntegrity _expiredIntegrity) public onlyOwner {
+    function setExpiredIntegrity(DigestIntegrity _expiredIntegrity) public {
+        onlyOwner();
         expiredIntegrity = _expiredIntegrity;
     }
 
@@ -58,13 +61,20 @@ contract CertRepo is OperatorPermission {
         expiredIntegrity = _expiredIntegrity;
     }
 
-    function revoke(address applicant) external onlyOperator {
-        require(applicant != address(0));
+    function revoke(address applicant) public {
+        onlyOperator();
+        if(!(applicant != address(0))){
+            log("!(applicant != address(0))");
+            throw;
+        }
 
         Checkpoint memory cp = getCheckpointAt(applicant);
 
         //表示有有效的验证信息
-        require(cp.content.digest1.length > 0 || cp.content.digest2.length>0 || cp.content.expired>0);
+        if(!(cp.content.digest1.length > 0 || cp.content.digest2.length>0 || cp.content.expired>0)){
+            log("!(cp.content.digest1.length > 0 || cp.content.digest2.length>0 || cp.content.expired>0)");
+            throw;
+        }
 
         uint256 len=checkpoints[applicant].length;
         Checkpoint storage checkpoint=checkpoints[applicant][len-1];
@@ -85,7 +95,7 @@ contract CertRepo is OperatorPermission {
     /// @param checkpointList The history of values being queried
     /// @param _block The block number to retrieve the value at
     /// @return The number of tokens being queried
-    function getCheckpointAt(Checkpoint[] storage checkpointList, uint _block) internal view returns (Checkpoint) {
+    function getCheckpointAt(Checkpoint[] storage checkpointList, uint _block) internal constant returns (Checkpoint) {
         if (checkpointList.length == 0) {
             return Checkpoint(0, 0, Content("", "", 0));
         }
@@ -111,20 +121,24 @@ contract CertRepo is OperatorPermission {
         return checkpointList[min];
     }
 
-    function getCheckpointAt(address _owner) internal view returns (Checkpoint){
+    function getCheckpointAt(address _owner) internal constant returns (Checkpoint){
         return getCheckpointAt(checkpoints[_owner], block.number);
     }
 
-    function getDataAt(address _owner, uint256 _atBlock) view public returns (bytes digest1, bytes digest2, uint256 expired, uint256 dataVersion) {
+    function getDataAt(address _owner, uint256 _atBlock) constant public returns (bytes digest1, bytes digest2, uint256 expired, uint256 dataVersion) {
         Checkpoint memory cp = getCheckpointAt(checkpoints[_owner], _atBlock);
         return (cp.content.digest1, cp.content.digest2, cp.content.expired, cp.dataVersion);
     }
 
-    function getData(address _owner) view public returns (bytes digest1, bytes digest2, uint256 expired, uint256 dataVersion) {
+    function getData(address _owner) constant public returns (bytes digest1, bytes digest2, uint256 expired, uint256 dataVersion) {
         return getDataAt(_owner, block.number);
     }
 
-    function getData() view public returns (bytes digest1, bytes digest2, uint256 expired, uint256 dataVersion) {
+    function getData() constant public returns (bytes digest1, bytes digest2, uint256 expired, uint256 dataVersion) {
         return getData(msg.sender);
+    }
+
+    function getOwner() constant public returns (string _ret) {
+        return "";
     }
 }

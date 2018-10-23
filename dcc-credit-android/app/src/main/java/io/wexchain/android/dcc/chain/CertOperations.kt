@@ -39,6 +39,7 @@ import io.wexchain.ipfs.entity.PhoneInfo
 import io.wexchain.ipfs.entity.TNPhoneInfo
 import io.wexchain.ipfs.utils.base64
 import worhavah.certs.tools.CertOperations
+import worhavah.certs.tools.CertOperations.getTNLogCertExpired
 import worhavah.certs.tools.CertOperations.getTNLogUserStatus
 import worhavah.certs.tools.CertOperations.saveTnLogCertExpired
 import java.io.File
@@ -671,11 +672,23 @@ object CertOperations {
             }
             CertificationType.TONGNIU -> {
                val i= getTNLogUserStatus()
-                when (i){
+              var ll=  when (i){
                     worhavah.certs.tools . UserCertStatus.DONE -> UserCertStatus.DONE
                     worhavah.certs.tools .  UserCertStatus.NONE -> UserCertStatus.NONE
                     worhavah.certs.tools .  UserCertStatus.INCOMPLETE -> UserCertStatus.INCOMPLETE
                 }
+                if(UserCertStatus.DONE.name == ll.name){
+                    if (getTNLogCertExpired()  < System.currentTimeMillis()) {
+                        if(getCmLogCertExpired() ==-1L){
+                            ll=   UserCertStatus.INCOMPLETE
+                        }else{
+                            ll=   UserCertStatus.TIMEOUT
+                        }
+                    } else {
+                        ll=     UserCertStatus.DONE
+                    }
+                }
+                return  ll
 
             }
             CertificationType.LOANREPORT -> {

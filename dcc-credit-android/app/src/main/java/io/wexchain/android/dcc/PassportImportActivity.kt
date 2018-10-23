@@ -14,6 +14,7 @@ import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportImportBinding
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.ScfAccountInfo
 import kotlinx.android.synthetic.main.activity_passport_import.*
 import org.web3j.crypto.CipherException
@@ -102,6 +103,9 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
             }
             is JsonSyntaxException -> {
                     toast(getString(R.string.keystore_or_wallet_password))
+            }
+            is DccChainServiceException -> {
+                toast(e.message ?: "导入失败")
             }
             else -> {
                 toast(getString(R.string.importing_failure))

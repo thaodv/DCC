@@ -26,6 +26,7 @@ import org.web3j.crypto.WalletFile
 import org.web3j.crypto.WalletFileDeserializer
 import org.web3j.utils.Numeric
 import io.wexchain.android.dcc.domain.AuthKey
+import worhavah.regloginlib.Net.Networkutils
 import java.io.File
 
 /**
@@ -365,6 +366,7 @@ class PassportRepository(
             passportPrefs2.saveAuthKey(switchAuthkey(authKey))
             val copy = passport.copy(authKey = authKey)
             currPassport.value = copy
+            Networkutils.passportRepository.currPassport.value=Networkutils.passportRepository.currPassport.value!!.copy(authKey =switchAuthkey(authKey) )
         }
     }
 
