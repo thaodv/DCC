@@ -148,7 +148,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
         if (ShareUtils.getBoolean("has_encrypt", true)) {
 
-            if (App.get().passportRepository.passportExists) {
+            if (!App.get().passportRepository.getOldWallet().isNullOrEmpty()) {
 
                 val aesKey = passportRepository.getIpfsAESKey(false)
                 val keyHash = passportRepository.getIpfsKeyHash(false)

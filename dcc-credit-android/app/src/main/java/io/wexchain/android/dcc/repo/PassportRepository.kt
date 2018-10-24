@@ -393,6 +393,9 @@ class PassportRepository(
     fun getWallet(): String {
         return passportPrefs.wallet.get()!!
     }
+    fun getOldWallet(): String? {
+        return passportPrefs.wallet.get()
+    }
 
     fun getDecryptWallet(): String {
         return AESSign.decryptPsw(passportPrefs.wallet.get()!!, CommonUtils.getMacAddress())
