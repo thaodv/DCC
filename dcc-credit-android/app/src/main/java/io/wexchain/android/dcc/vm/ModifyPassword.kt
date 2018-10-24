@@ -23,8 +23,6 @@ class ModifyPassword(application: Application) : AndroidViewModel(application), 
 
     private val passportRepo = App.get().passportRepository
 
-    private val oldPasswd = passportRepo.getPassword()
-
     val inputCurrentPassword = InputPasswordVm(application).apply {
         this.passwordValidator = { isOldPasswordValid(it) }
         this.passwordHint.set(application.getString(R.string.please_input_current_passport_password))
@@ -50,7 +48,7 @@ class ModifyPassword(application: Application) : AndroidViewModel(application), 
         if (isOldPasswordValid(inputPw)) {
 
             if (CommonUtils.checkPassword(inputNewPw)) {
-                if (passportRepo.getPassword() == inputPw) {
+                if (passportRepo.getDecryptPasswd() == inputPw) {
                     verifyProtect {
                         val passport = passportRepo.getCurrentPassport()
                         if (passport == null) {

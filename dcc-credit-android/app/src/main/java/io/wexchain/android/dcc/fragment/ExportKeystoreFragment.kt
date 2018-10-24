@@ -10,11 +10,11 @@ import android.text.style.AlignmentSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.wexchain.android.common.base.BaseCompatFragment
 import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.setInterceptScroll
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.common.base.BaseCompatFragment
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.view.dialog.FullScreenDialog
@@ -28,18 +28,18 @@ import io.wexchain.dcc.databinding.FragmentExportKeystoreBinding
  */
 class ExportKeystoreFragment : BaseCompatFragment() {
 
-    private lateinit var binding :FragmentExportKeystoreBinding
+    private lateinit var binding: FragmentExportKeystoreBinding
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_export_keystore,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_export_keystore, container, false)
         initViewModel()
         binding.tvKeystore.setInterceptScroll()
         return binding.root
     }
 
     private fun initViewModel() {
-        binding.wallet = App.get().passportRepository.getWallet()
+        binding.wallet = App.get().passportRepository.getDecryptWallet()
         binding.btnCopy.setOnClickListener {
             val data = binding.wallet
             data?.let {
@@ -56,7 +56,7 @@ class ExportKeystoreFragment : BaseCompatFragment() {
     }
 
     private fun showQrInFullScreen(content: String?) {
-        content?:return
+        content ?: return
         FullScreenDialog.createQr(context!!, content).show()
     }
 
@@ -68,7 +68,7 @@ class ExportKeystoreFragment : BaseCompatFragment() {
             }
 
             override fun onVerifySuccess() {
-                val password = App.get().passportRepository.getPassword()
+                val password = App.get().passportRepository.getDecryptPasswd()
                 val context = context!!
                 CustomDialog(context)
                         .apply {
@@ -78,12 +78,12 @@ class ExportKeystoreFragment : BaseCompatFragment() {
                         }
                         .assembleAndShow()
             }
-        }).show(childFragmentManager,null)
+        }).show(childFragmentManager, null)
     }
 
     companion object {
         const val ARG_PASSPORT = "passport"
-        fun create(passport:Passport): ExportKeystoreFragment {
+        fun create(passport: Passport): ExportKeystoreFragment {
             val fragment = ExportKeystoreFragment()
             return fragment
         }

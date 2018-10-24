@@ -12,10 +12,15 @@ import android.support.annotation.WorkerThread
 import com.google.gson.GsonBuilder
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.*
+import io.wexchain.android.common.Prefs
+import io.wexchain.android.common.distinct
+import io.wexchain.android.common.map
+import io.wexchain.android.common.switchMap
+import io.wexchain.android.common.tools.AESSign
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.ChooseCutImageActivity
 import io.wexchain.android.dcc.chain.EthsHelper
+import io.wexchain.android.dcc.domain.AuthKey
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.repo.db.*
 import io.wexchain.android.dcc.tools.*
@@ -25,7 +30,6 @@ import org.web3j.crypto.Wallet
 import org.web3j.crypto.WalletFile
 import org.web3j.crypto.WalletFileDeserializer
 import org.web3j.utils.Numeric
-import io.wexchain.android.dcc.domain.AuthKey
 import worhavah.regloginlib.Net.Networkutils
 import java.io.File
 
@@ -179,8 +183,8 @@ class PassportRepository(
     }
 
     fun load() {
-        val wallet = passportPrefs.wallet.get()
-        val password = passportPrefs.password.get()
+        val wallet = AESSign.decryptPsw(passportPrefs.wallet.get(), CommonUtils.getMacAddress())
+        val password = AESSign.decryptPsw(passportPrefs.password.get(), CommonUtils.getMacAddress())
         val credential = try {
             Wallet.decrypt(password, parseWalletFile(wallet))
         } catch (e: Exception) {
@@ -218,23 +222,26 @@ class PassportRepository(
         )
         currPassport.postValue(passport)
         passportPrefs.let {
-            it.wallet.set(gson.toJson(walletFile))
-            it.password.set(password)
+            it.wallet.set(AESSign.encryptPsw(gson.toJson(walletFile), CommonUtils.getMacAddress()))
+            it.wallet.set(AESSign.encryptPsw(gson.toJson(walletFile), CommonUtils.getMacAddress()))
+            it.password.set(AESSign.encryptPsw(password, CommonUtils.getMacAddress()))
             it.saveAuthKey(authKey)
             it.avatar.clear()
             it.nickname.clear()
         }
         passportPrefs2.let {
-            it.wallet.set(gson.toJson(walletFile))
-            it.password.set(password)
+            it.wallet.set(AESSign.encryptPsw(gson.toJson(walletFile), CommonUtils.getMacAddress()))
+            it.password.set(AESSign.encryptPsw(password, CommonUtils.getMacAddress()))
             it.saveAuthKey(switchAuthkey(authKey))
             it.avatar.clear()
             it.nickname.clear()
         }
     }
-    fun switchAuthkey(it:AuthKey?): worhavah.regloginlib.AuthKey {
-        return worhavah.regloginlib.AuthKey(it!!.keyAlias,it.publicKeyEncoded)
+
+    fun switchAuthkey(it: AuthKey?): worhavah.regloginlib.AuthKey {
+        return worhavah.regloginlib.AuthKey(it!!.keyAlias, it.publicKeyEncoded)
     }
+
     fun removeEntirePassportInformation() {
         currPassport.value = null
         passportPrefs.clearAll()
@@ -347,15 +354,31 @@ class PassportRepository(
         return passportPrefs.password.get()!!
     }
 
+    fun getDecryptPasswd(): String {
+        return AESSign.decryptPsw(passportPrefs.password.get()!!, CommonUtils.getMacAddress())
+    }
+
     fun getWallet(): String {
         return passportPrefs.wallet.get()!!
+    }
+
+    fun getDecryptWallet(): String {
+        return AESSign.decryptPsw(passportPrefs.wallet.get()!!, CommonUtils.getMacAddress())
+    }
+
+    fun setPassword(password: String) {
+        return passportPrefs.password.set(AESSign.encryptPsw(password, CommonUtils.getMacAddress()))
+    }
+
+    fun setWallet(wallet: String) {
+        return passportPrefs.wallet.set(AESSign.encryptPsw(wallet, CommonUtils.getMacAddress()))
     }
 
     @WorkerThread
     fun changePassword(passport: Passport, newPassword: String): Boolean {
         val walletFile = EthsHelper.makeWalletFile(newPassword, passport.credential.ecKeyPair)
-        passportPrefs.wallet.set(gson.toJson(walletFile))
-        passportPrefs.password.set(newPassword)
+        passportPrefs.wallet.set(AESSign.encryptPsw(gson.toJson(walletFile), CommonUtils.getMacAddress()))
+        passportPrefs.password.set(AESSign.encryptPsw(newPassword, CommonUtils.getMacAddress()))
         return true
     }
 
@@ -366,7 +389,7 @@ class PassportRepository(
             passportPrefs2.saveAuthKey(switchAuthkey(authKey))
             val copy = passport.copy(authKey = authKey)
             currPassport.value = copy
-            Networkutils.passportRepository.currPassport.value=Networkutils.passportRepository.currPassport.value!!.copy(authKey =switchAuthkey(authKey) )
+            Networkutils.passportRepository.currPassport.value = Networkutils.passportRepository.currPassport.value!!.copy(authKey = switchAuthkey(authKey))
         }
     }
 
@@ -436,7 +459,7 @@ class PassportRepository(
     private class PassportPrefs(sp: SharedPreferences) : Prefs(sp) {
         val wallet = StringPref(PASSPORT_WALLET_FILE)
         val password = StringPref(PASSPORT_WALLET_PASSWORD)
-        val avatar = StringPref(USER_AVATAR_URI) 
+        val avatar = StringPref(USER_AVATAR_URI)
         val nickname = StringPref(USER_NICKNAME)
         val authKeyAlias = StringPref(AUTH_KEY_ALIAS)
         val authKeyPublicKey = StringPref(AUTH_KEY_PUB)

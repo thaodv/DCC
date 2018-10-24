@@ -111,7 +111,7 @@ public class CommonUtils {
      *
      * @return
      */
-    public String getMacAddress() {
+    public static String getMacAddress() {
         String macAddress = "";
         StringBuffer buf = new StringBuffer();
         NetworkInterface networkInterface = null;

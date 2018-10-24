@@ -140,6 +140,20 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         val dao = PassportDatabase.createDatabase(this).dao
 
         passportRepository = PassportRepository(app, dao)
+
+        if (ShareUtils.getBoolean("has_encrypt", true)) {
+
+            var password = App.get().passportRepository.getPassword()
+
+            var wallet = App.get().passportRepository.getWallet()
+
+            App.get().passportRepository.setPassword(password)
+            App.get().passportRepository.setWallet(wallet)
+
+            ShareUtils.setBoolean("has_encrypt", false)
+        }
+
+
         passportRepository.load()
         assetsRepository = AssetsRepository(
                 dao,
