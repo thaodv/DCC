@@ -183,8 +183,23 @@ class PassportRepository(
     }
 
     fun load() {
-        val wallet = AESSign.decryptPsw(passportPrefs.wallet.get(), CommonUtils.getMacAddress())
-        val password = AESSign.decryptPsw(passportPrefs.password.get(), CommonUtils.getMacAddress())
+        var wallet = passportPrefs.wallet.get()
+
+        wallet = if (null == wallet) {
+            ""
+        } else {
+            AESSign.decryptPsw(wallet, CommonUtils.getMacAddress())
+        }
+
+
+        var password = passportPrefs.password.get()
+
+        password = if (null == password) {
+            ""
+        } else {
+            AESSign.decryptPsw(password, CommonUtils.getMacAddress())
+        }
+
         val credential = try {
             Wallet.decrypt(password, parseWalletFile(wallet))
         } catch (e: Exception) {
@@ -222,7 +237,6 @@ class PassportRepository(
         )
         currPassport.postValue(passport)
         passportPrefs.let {
-            it.wallet.set(AESSign.encryptPsw(gson.toJson(walletFile), CommonUtils.getMacAddress()))
             it.wallet.set(AESSign.encryptPsw(gson.toJson(walletFile), CommonUtils.getMacAddress()))
             it.password.set(AESSign.encryptPsw(password, CommonUtils.getMacAddress()))
             it.saveAuthKey(authKey)

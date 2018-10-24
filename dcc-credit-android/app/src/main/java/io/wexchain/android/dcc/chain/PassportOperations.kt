@@ -8,14 +8,15 @@ import io.reactivex.SingleTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.Pop
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.getAndroidKeyStoreLoaded
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.App
-import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.PassportActivity
 import io.wexchain.android.dcc.chain.EthsFunctions.deleteKey
 import io.wexchain.android.dcc.chain.EthsHelper.ANDROID_RSA_PREFIX
 import io.wexchain.android.dcc.chain.EthsHelper.createAndroidRSAKeyPair
+import io.wexchain.android.dcc.domain.AuthKey
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.repo.db.AuthKeyChangeRecord
 import io.wexchain.android.dcc.tools.RetryWithDelay
@@ -26,8 +27,6 @@ import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.TicketResponse
 import org.web3j.crypto.Credentials
 import java.util.*
-import io.wexchain.android.dcc.domain.AuthKey
-import worhavah.regloginlib.Net.Networkutils
 
 /**
  * Created by lulingzhi on 2017/11/24.
@@ -58,7 +57,6 @@ object PassportOperations {
                 }
                 .doOnSuccess {
                     App.get().passportRepository.saveNewPassport(it.first, password, it.second)
-                    Networkutils.passportRepository.saveNewPassport(it.first, password,  worhavah.regloginlib.AuthKey(it.second.keyAlias,it.second.publicKeyEncoded))
                     App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(it.first.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.ENABLE))
                 }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -129,7 +127,6 @@ object PassportOperations {
                 }
                 .doOnSuccess {
                     App.get().passportRepository.saveNewPassport(it.first, password, it.second)
-                    Networkutils.passportRepository.saveNewPassport(it.first, password,  worhavah.regloginlib.AuthKey(it.second.keyAlias,it.second.publicKeyEncoded))
                     App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(it.first.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.ENABLE))
                 }
                 .observeOn(AndroidSchedulers.mainThread())

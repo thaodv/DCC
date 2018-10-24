@@ -6,10 +6,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.support.annotation.MainThread
-import android.support.annotation.WorkerThread
 import com.google.gson.GsonBuilder
 import io.wexchain.android.common.Prefs
 import io.wexchain.android.common.kotlin.weak
+import io.wexchain.android.common.tools.AESSign
+import io.wexchain.android.common.tools.CommonUtils
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.Wallet
 import org.web3j.crypto.WalletFile
@@ -56,8 +57,23 @@ object PassportRepository {
     private val selectedBeneficiaryAddress = MutableLiveData<String>()
 
     fun load() {
-        val wallet = passportPrefs.wallet.get()
-        val password = passportPrefs.password.get()
+        var wallet = passportPrefs.wallet.get()
+
+        if (null == wallet) {
+            wallet = ""
+        } else {
+            wallet = AESSign.decryptPsw(wallet, CommonUtils.getMacAddress())
+        }
+
+
+        var password = passportPrefs.password.get()
+
+        if (null == password) {
+            password = ""
+        } else {
+            password = AESSign.decryptPsw(password, CommonUtils.getMacAddress())
+        }
+
         val credential = try {
             Wallet.decrypt(password, parseWalletFile(wallet))
         } catch (e: Exception) {
@@ -80,46 +96,6 @@ object PassportRepository {
 
     val passportEnabled
         get() = currPassport.value?.authKey != null
-
-    @WorkerThread
-    fun saveNewPassport(credential: Credentials, password: String, authKey: AuthKey?): Passport {
-        val walletFile = EthsHelper.makeWalletFile(password, credential.ecKeyPair)
-        val passport = Passport(
-                credential = credential,
-                authKey = authKey,
-                avatarUri = null,
-                nickname = null
-        )
-        currPassport.postValue(passport)
-        passportPrefs.let {
-            it.wallet.set(gson.toJson(walletFile))
-            it.password.set(password)
-            it.saveAuthKey(authKey)
-            it.avatar.clear()
-            it.nickname.clear()
-        }
-        return passport
-    }
-
-    @WorkerThread
-    fun saveNewPassR(credential: Credentials, authKey: AuthKey?): Passport {
-        //  val walletFile = EthsHelper.makeWalletFile(password, credential.ecKeyPair)
-        val passport = Passport(
-                credential = credential,
-                authKey = authKey,
-                avatarUri = null,
-                nickname = null
-        )
-        currPassport.postValue(passport)
-        passportPrefs.let {
-            //  it.wallet.set(gson.toJson(walletFile))
-            //  it.password.set(password)
-            it.saveAuthKey(authKey)
-            it.avatar.clear()
-            it.nickname.clear()
-        }
-        return passport
-    }
 
     @MainThread
     fun updateAuthKey(passport: Passport, authKey: AuthKey?) {
