@@ -720,6 +720,7 @@ object CertOperations {
         worhavah.certs.tools.CertOperations. certPrefs.certTNLogPhoneNo.set(phoneInfo.sameCowMobileAuthenNumber)
         worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(String(phoneInfo.sameCowMobileAuthenCmData.base64()) )
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.set( phoneInfo.sameCowMobileAuthenNonce)
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set( phoneInfo.sameCowMobileAuthenNumber)
        // worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(String(Base64.encode(phoneInfo.sameCowMobileAuthenCmData.toByteArray(),Base64.NO_WRAP)  ))
        /* File(App.get().filesDir, certCmLogReportFileName(phoneInfo.mobileAuthenOrderid.toLong()))
             .apply {
