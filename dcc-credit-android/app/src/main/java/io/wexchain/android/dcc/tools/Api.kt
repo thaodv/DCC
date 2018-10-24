@@ -1,13 +1,24 @@
 package io.wexchain.android.dcc.tools
 
-import android.app.ActivityManager
+import android.R
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Environment
+import android.provider.MediaStore
+import android.view.View
 import android.view.Window
+import io.reactivex.Single
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.domain.Passport
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.ipfs.net.Networking
+import io.wexchain.ipfs.utils.io_main
 import org.web3j.utils.Numeric
 import java.io.File
+import java.io.FileOutputStream
 import java.math.BigInteger
 import java.security.MessageDigest
 
@@ -74,14 +85,6 @@ fun Passport.getPrivateKey(): String {
     return Numeric.toHexStringNoPrefix(this.credential.ecKeyPair.privateKey).fixLengthBins()
 }
 
-fun Context.getProcessName(): String? {
-    val am = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-    val runningApps = am.runningAppProcesses ?: return null
-    return runningApps
-            .firstOrNull { it.pid == android.os.Process.myPid() && it.processName != null }
-            ?.processName
-}
-
 fun String.hexToTen(): BigInteger {
     return BigInteger(this.substring(2), 16)
 }
@@ -90,6 +93,46 @@ fun Window.backgroundAlpha(bgAlpha: Float) {
     val lp = this.attributes
     lp.alpha = bgAlpha
     this.attributes = lp
+}
+
+fun Bitmap.saveImageToGallery(context: Context): Single<String> {
+    return Single.create<String> {
+        if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
+            it.onError(DccChainServiceException("SD card is not available."))
+        }
+        try {
+            val appDir = File(Environment.getExternalStorageDirectory().absolutePath + File.separator + "BitExpress" + File.separator + "Img")
+            if (!appDir.exists()) {
+                appDir.mkdir()
+            }
+            val fileName = System.currentTimeMillis().toString() + ".jpg"
+            val file = File(appDir, fileName)
+            val fos = FileOutputStream(file)
+            this.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+            fos.flush()
+            fos.close()
+
+            MediaStore.Images.Media.insertImage(context.contentResolver, file.absolutePath, fileName, null)
+            context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + R.attr.path)))
+            it.onSuccess(file.absolutePath)
+        } catch (e: Exception) {
+            it.onError(e)
+        }
+    }
+}
+
+fun View.onLongSaveImageToGallery(onError: (Throwable) -> Unit, onSuccess: (String) -> Unit) {
+    this.setOnLongClickListener { view ->
+        view.isDrawingCacheEnabled = true
+        view.buildDrawingCache()
+        view.drawingCache.saveImageToGallery(context)
+                .io_main()
+                .doFinally {
+                    view.destroyDrawingCache()
+                }
+                .subscribeBy(onError, onSuccess)
+        true
+    }
 }
 
 
