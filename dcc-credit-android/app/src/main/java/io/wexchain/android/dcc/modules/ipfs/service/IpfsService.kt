@@ -127,7 +127,8 @@ class IpfsService : Service() {
                 sameCowMobileAuthenOrderid = cmCertOrderId.toString(),
                 sameCowMobileAuthenNumber = cmLogPhoneNo!!,
                 sameCowMobileAuthenCmData = js2.base64(),
-                sameCowMobileAuthenExpired = cmLogCertExpired.toString())
+                sameCowMobileAuthenExpired = cmLogCertExpired.toString(),
+                sameCowMobileAuthenNonce=worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.get().toString())
 
         val data = phoneInfo.toJson()
         val size = getDataFromSize(data.toByteArray(), MyCloudActivity.TNDATA, TN_NONCE)

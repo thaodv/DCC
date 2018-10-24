@@ -295,6 +295,9 @@ object CertOperations {
         ).flatMap { (contractAddress, ticket) ->
             val data = pn.toByteArray(Charsets.UTF_8) + nonce.toString().toByteArray(Charsets.UTF_8)
             val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
+          /*  Log.e("PRO 2222.decode",pn.toString() )
+            Log.e("PRO 2222.decode",nonce.toString() )
+            Log.e("PRO 2222.decode",String(Base64.encode(digest1, Base64.DEFAULT)) )*/
             val ccApply=EthsFunctions.apply(byteArrayOf(), digest1, BigInteger.ZERO)
             val tx = ccApply.txSigned(passport.credential, contractAddress, nonce)
             api.certApply(ticket.ticket, tx, null, business)
@@ -519,7 +522,7 @@ i
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertID.set(-1L )
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertuserName.set("" )
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertcertNo.set("" )
-        worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set("" )
+        //worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set("" )
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertpassword.set("" )
         worhavah.certs.tools.CertOperations.certPrefs.ertTNcertsignature.set("" )
     }
@@ -607,7 +610,13 @@ i
     }
     fun getLocalTnDigest(): Pair<ByteArray, ByteArray> {
         val digest1 = MessageDigest.getInstance(DIGEST).digest(CertOperations.certPrefs.certTNLogData.get()!!.toByteArray())
-        return digest1 to byteArrayOf()
+       // val digest2 =MessageDigest.getInstance(DIGEST).digest(CertOperations.certPrefs.certTNLogData.get()!!.toByteArray())
+        val data = worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.get().toString().toByteArray(Charsets.UTF_8) + worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.get().toString().toByteArray(Charsets.UTF_8)
+
+       /* Log.e("local 2222phoneNo",worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.get().toString() )
+        Log.e("local 2222 nonce",worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.get().toString() )*/
+        val digest2 = MessageDigest.getInstance(DIGEST).digest(data)
+        return digest1 to digest2
     }
 
     fun String264(){
