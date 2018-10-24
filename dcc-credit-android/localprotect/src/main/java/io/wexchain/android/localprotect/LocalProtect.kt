@@ -27,18 +27,22 @@ object LocalProtect {
         val sp = context.getSharedPreferences(PROTECT_SP_NAME, Context.MODE_PRIVATE)
         protectStore = SharedPreferencesKVStore(sp)
 //        sp.registerOnSharedPreferenceChangeListener { sharedPreferences, key -> reloadProtect() }
-        reloadProtect()
+        //reloadProtect()
     }
 
     fun init(context: Context, encFunc: (String) -> String, decFunc: (String) -> String) {
         val sp = context.getSharedPreferences(PROTECT_SP_NAME, Context.MODE_PRIVATE)
         protectStore = ValueTransformStoreAgent(SharedPreferencesKVStore(sp), decFunc, encFunc)
 //        sp.registerOnSharedPreferenceChangeListener { sharedPreferences, key -> reloadProtect() }
-        reloadProtect()
+        //reloadProtect()
     }
 
-    private fun reloadProtect() {
+    fun reloadProtect() {
         currentProtect.value = loadProtect()
+    }
+
+    fun reloadOldProtect() {
+        currentProtect.value = loadOldProtect()
     }
 
     fun setProtect(type: LocalProtectType, param: String) {
@@ -63,8 +67,13 @@ object LocalProtect {
             } else {
                 Pair(type, AESSign.decryptPsw(store.get(PARAM).toString(), CommonUtils.getMacAddress()))
             }
+        }
+    }
 
-
+    fun loadOldProtect(): Pair<LocalProtectType, String?>? {
+        val store = this.protectStore
+        return store.get(TYPE)?.let {
+            Pair(LocalProtectType.valueOf(it), store.get(PARAM))
         }
     }
 

@@ -83,7 +83,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
     override fun onCreate() {
         super.onCreate()
         instance = WeakReference(this)
-        initcerts()
+
 
         val themeWrapper = ContextThemeWrapper(this, R.style.DccLightTheme_App)
         RxJavaPlugins.setErrorHandler {
@@ -101,6 +101,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         initServices(this)
         initData(this)
         initIpfs()
+        initcerts()
 
     }
 
@@ -145,8 +146,9 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
         LocalProtect.init(app)
 
-        if (App.get().passportRepository.passportExists) {
-            if (ShareUtils.getBoolean("has_encrypt", true)) {
+        if (ShareUtils.getBoolean("has_encrypt", true)) {
+
+            if (App.get().passportRepository.passportExists) {
 
                 val aesKey = passportRepository.getIpfsAESKey(false)
                 val keyHash = passportRepository.getIpfsKeyHash(false)
@@ -162,8 +164,8 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
                 App.get().passportRepository.setPassword(password)
                 App.get().passportRepository.setWallet(wallet)
 
+                LocalProtect.reloadOldProtect()
                 val protect = LocalProtect.currentProtect.value
-
 
                 if (null != protect) {
                     val first = protect.first!!
@@ -173,10 +175,13 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
                         LocalProtect.setProtect(first, AESSign.encryptPsw(second, CommonUtils.getMacAddress()))
                     }
                 }
-
-                ShareUtils.setBoolean("has_encrypt", false)
-            }
+                //ShareUtils.setBoolean("has_encrypt", false)
+            } /*else {
+                LocalProtect.reloadProtect()
+            }*/
+            ShareUtils.setBoolean("has_encrypt", false)
         }
+
         passportRepository.load()
         assetsRepository = AssetsRepository(
                 dao,
