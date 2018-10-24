@@ -329,20 +329,38 @@ class PassportRepository(
         return (privateKey + psw).toByteArray().toSha256()
     }
 
-    fun getIpfsKeyHash(): String? {
-        return passportPrefs.ipfsKeyHash.get()
+    fun getIpfsKeyHash(isdecrypt: Boolean = true): String? {
+        val key = passportPrefs.ipfsKeyHash.get()
+        return if (!key.isNullOrEmpty() && isdecrypt) {
+            AESSign.decryptPsw(key!!, getEncryptKey())
+        } else {
+            key
+        }
     }
 
-    fun getIpfsAESKey(): String? {
-        return passportPrefs.ipfsAesKey.get()
+    fun getIpfsAESKey(isdecrypt: Boolean = true): String? {
+        val key = passportPrefs.ipfsAesKey.get()
+        return if (!key.isNullOrEmpty() && isdecrypt) {
+            AESSign.decryptPsw(key!!, getEncryptKey())
+        } else {
+            key
+        }
     }
 
     fun setIpfsKeyHash(key: String) {
-        passportPrefs.ipfsKeyHash.set(key)
+        val encryptKey = AESSign.encryptPsw(key, getEncryptKey())
+        passportPrefs.ipfsKeyHash.set(encryptKey)
     }
 
     fun setIpfsAESKey(key: String) {
-        passportPrefs.ipfsAesKey.set(key)
+        val encryptKey = AESSign.encryptPsw(key, getEncryptKey())
+        passportPrefs.ipfsAesKey.set(encryptKey)
+    }
+
+    fun getEncryptKey(): String {
+        val packageName = CommonUtils.getPackageName()
+        val macaddress = CommonUtils.getMacAddress()
+        return packageName + macaddress
     }
 
     fun setIpfsUrlConfig(host: String, port: String) {
