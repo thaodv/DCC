@@ -5,8 +5,8 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import io.wexchain.android.common.toast
 import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.vm.ModifyPassword
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
@@ -32,6 +32,9 @@ class ModifyPassportPasswordActivity : BaseCompatActivity() {
         })
         modifyPassword.passwordCheckInvalidEvent.observe(this, Observer {
             toast(R.string.password_length_invalid)
+        })
+        modifyPassword.newPasswdErrorEvent.observe(this, Observer {
+            toast("新密码不少于8位字符，字母数字特殊符号至少2种混合")
         })
         modifyPassword.oldpasswordErrorEvent.observe(this, Observer {
             toast("原密码错误")

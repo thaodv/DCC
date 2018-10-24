@@ -3,15 +3,15 @@ package io.wexchain.android.dcc
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import com.google.gson.JsonSyntaxException
-import io.wexchain.android.common.base.BindActivity
-import io.wexchain.android.dcc.fragment.PasteKeystoreFragment
-import io.wexchain.android.dcc.fragment.PastePrivateKeyFragment
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.*
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.fragment.PasteKeystoreFragment
+import io.wexchain.android.dcc.fragment.PastePrivateKeyFragment
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportImportBinding
 import io.wexchain.dccchainservice.DccChainServiceException
@@ -80,7 +80,7 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
         ScfOperations.getScfAccountInfo()
             .observeOn(AndroidSchedulers.mainThread())
             .withLoading()
-            .subscribe({acc->
+            .subscribe { acc->
                 if(acc === ScfAccountInfo.ABSENT){
                     navigateTo(CreateScfAccountActivity::class.java){
                         putExtra(Extras.FROM_IMPORT,true)
@@ -92,7 +92,7 @@ class PassportImportActivity : BindActivity<ActivityPassportImportBinding>(), Ta
                 }
                 finishActivity(LoadingActivity::class.java)
                 finish()
-            })
+            }
     }
 
     private fun showError(e: Throwable) {

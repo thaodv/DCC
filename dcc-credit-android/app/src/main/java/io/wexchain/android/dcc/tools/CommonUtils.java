@@ -145,7 +145,7 @@ public class CommonUtils {
      * @return
      */
     public static boolean checkPassword(String password) {
-        String criteriaPassword = "^(?![\\d]+$)(?![a-zA-Z]+$)(?![^\\da-zA-Z]+$).{6,16}$";
+        String criteriaPassword = "^(?![\\d]+$)(?![a-zA-Z]+$)(?![^\\da-zA-Z]+$).{8,20}$";
         Pattern pattern = Pattern.compile(criteriaPassword);
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
