@@ -6,6 +6,8 @@ import android.support.v4.util.Pair
 import io.wexchain.android.common.persist.KVStore
 import io.wexchain.android.common.persist.SharedPreferencesKVStore
 import io.wexchain.android.common.persist.ValueTransformStoreAgent
+import io.wexchain.android.common.tools.AESSign
+import io.wexchain.android.common.tools.CommonUtils
 
 /**
  * Created by lulingzhi on 2017/11/22.
@@ -19,7 +21,7 @@ object LocalProtect {
 
     val currentProtect = MutableLiveData<Pair<LocalProtectType, String?>?>()
 
-    private lateinit var protectStore: KVStore<String,String>
+    private lateinit var protectStore: KVStore<String, String>
 
     fun init(context: Context) {
         val sp = context.getSharedPreferences(PROTECT_SP_NAME, Context.MODE_PRIVATE)
@@ -28,9 +30,9 @@ object LocalProtect {
         reloadProtect()
     }
 
-    fun init(context: Context,encFunc:(String)->String,decFunc:(String)->String){
+    fun init(context: Context, encFunc: (String) -> String, decFunc: (String) -> String) {
         val sp = context.getSharedPreferences(PROTECT_SP_NAME, Context.MODE_PRIVATE)
-        protectStore = ValueTransformStoreAgent(SharedPreferencesKVStore(sp),decFunc,encFunc)
+        protectStore = ValueTransformStoreAgent(SharedPreferencesKVStore(sp), decFunc, encFunc)
 //        sp.registerOnSharedPreferenceChangeListener { sharedPreferences, key -> reloadProtect() }
         reloadProtect()
     }
@@ -54,7 +56,15 @@ object LocalProtect {
     fun loadProtect(): Pair<LocalProtectType, String?>? {
         val store = this.protectStore
         return store.get(TYPE)?.let {
-            Pair(LocalProtectType.valueOf(it), store.get(PARAM))
+
+            val type = LocalProtectType.valueOf(it)
+            if (LocalProtectType.FINGER_PRINT == type) {
+                Pair(type, store.get(PARAM))
+            } else {
+                Pair(type, AESSign.decryptPsw(store.get(PARAM).toString(), CommonUtils.getMacAddress()))
+            }
+
+
         }
     }
 
@@ -64,8 +74,8 @@ object LocalProtect {
             store.removeAll(listOf(TYPE, PARAM))
         } else {
             param!!
-            store.put(TYPE,type.name)
-            store.put(PARAM,param)
+            store.put(TYPE, type.name)
+            store.put(PARAM, param)
         }
     }
 }
