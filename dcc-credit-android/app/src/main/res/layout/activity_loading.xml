@@ -37,6 +37,57 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_logo" />
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/safe_check"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_note">
+
+        <TextView
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:id="@+id/safe_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="您的手机已被root，这将导致手机运行环境不安全。"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/safe_tag">
+
+            <Button
+                android:id="@+id/safe_ignore"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
+                android:height="40dp"
+                android:text="忽略" />
+
+            <Button
+                android:id="@+id/safe_close"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_weight="1"
+                android:height="40dp"
+                android:text="关闭" />
+
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
 
     <Button
         android:id="@+id/btn_create"
