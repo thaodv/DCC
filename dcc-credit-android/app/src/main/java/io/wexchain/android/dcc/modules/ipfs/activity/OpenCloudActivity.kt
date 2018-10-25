@@ -3,11 +3,12 @@ package io.wexchain.android.dcc.modules.ipfs.activity
 import android.os.Bundle
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.PassportSettingsActivity
-import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.IpfsOperations
-import worhavah.regloginlib.tools.isPasswordValid
+import io.wexchain.android.dcc.tools.CommonUtils
+import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.dcc.view.dialog.CloudstorageDialog
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.dcc.R
@@ -59,11 +60,21 @@ class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
         binding.btnCreatePassport.setOnClickListener {
             val pw = binding.inputPw!!.password.get()
             pw ?: return@setOnClickListener
-            if (isPasswordValid(pw)) {
-                createCloudPsw(pw)
+
+            if (TYPE == PassportSettingsActivity.NOT_OPEN_CLOUD) {
+                if (CommonUtils.checkPassword(pw)) {
+                    createCloudPsw(pw)
+                } else {
+                    toast("输入云存储密码不符合要求,请检查")
+                }
             } else {
-                toast("输入云存储密码不符合要求,请检查")
+                if (isPasswordValid(pw)) {
+                    createCloudPsw(pw)
+                } else {
+                    toast("输入云存储密码不符合要求,请检查")
+                }
             }
+
         }
     }
 
