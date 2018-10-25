@@ -63,10 +63,12 @@ class ModifyPassportPasswordActivity : BaseCompatActivity() {
             override fun cancel() {
                 dialog.dismiss()
                 toExport()
+                finish()
             }
 
             override fun sure() {
                 dialog.dismiss()
+                finish()
             }
         })
         dialog.show()
