@@ -9,6 +9,8 @@ import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.view.*
+import io.wexchain.android.common.tools.AESSign
+import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.localprotect.FingerPrintHelper.generateProtectKeyPair
 import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.android.localprotect.LocalProtectType
@@ -60,7 +62,16 @@ class CreateProtectFragment : DialogFragment(),
 
     private fun onProtectSuccessfullySet(type: LocalProtectType, param: String) {
         dismiss()
-        LocalProtect.setProtect(type, param)
+
+        var second: String
+
+        if (LocalProtectType.FINGER_PRINT == type) {
+            second = param
+        } else {
+            second = AESSign.encryptPsw(param, CommonUtils.getMacAddress())
+        }
+
+        LocalProtect.setProtect(type, second)
         finishListener?.onCreateProtectFinish(type)
     }
 

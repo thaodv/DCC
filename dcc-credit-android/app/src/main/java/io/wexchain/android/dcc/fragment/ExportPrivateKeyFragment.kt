@@ -6,13 +6,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.wexchain.android.common.base.BaseCompatFragment
 import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.setInterceptScroll
 import io.wexchain.android.common.toast
-import io.wexchain.android.common.base.BaseCompatFragment
+import io.wexchain.android.dcc.tools.onLongSaveImageToGallery
 import io.wexchain.android.dcc.view.dialog.FullScreenDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentExportPrivateKeyBinding
+import io.wexchain.dccchainservice.DccChainServiceException
 
 /**
  * Created by lulingzhi on 2017/11/17.
@@ -35,6 +37,15 @@ class ExportPrivateKeyFragment : BaseCompatFragment() {
         binding.ivQrCode.setOnClickListener {
             showQrInFullScreen(binding.privateKey)
         }
+        binding.ivQrCode.onLongSaveImageToGallery(
+                onError = {
+                    toast(if (it is DccChainServiceException)
+                        it.message!!
+                    else "二维码保存失败")
+                },
+                onSuccess = {
+                    toast("二维码已保存至: $it")
+                })
         binding.tvPrivateKey.setInterceptScroll()
         return binding.root
     }
@@ -50,7 +61,7 @@ class ExportPrivateKeyFragment : BaseCompatFragment() {
         fun create(privateKey: String): ExportPrivateKeyFragment {
             val fragment = ExportPrivateKeyFragment()
             fragment.arguments = Bundle().apply {
-                putString(ARG_PRIVATE_KEY,privateKey)
+                putString(ARG_PRIVATE_KEY, privateKey)
             }
             return fragment
         }

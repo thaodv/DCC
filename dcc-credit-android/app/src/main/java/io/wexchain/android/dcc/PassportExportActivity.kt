@@ -3,6 +3,7 @@ package io.wexchain.android.dcc
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.design.widget.TabLayout
+import android.view.WindowManager
 import io.wexchain.android.dcc.fragment.ExportPrivateKeyFragment
 import io.wexchain.android.common.findOrCreateFragment
 import io.wexchain.android.common.replaceFragment
@@ -38,6 +39,7 @@ class PassportExportActivity : BaseCompatActivity(), TabLayout.OnTabSelectedList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         setContentView(R.layout.activity_passport_export)
         initToolbar(true)
         val p = App.get().passportRepository.getCurrentPassport()

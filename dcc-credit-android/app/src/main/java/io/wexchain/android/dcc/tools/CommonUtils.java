@@ -9,7 +9,10 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.sql.Struct;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.wexchain.android.dcc.App;
 import io.wexchain.dcc.R;
@@ -98,9 +101,63 @@ public class CommonUtils {
             return "已添加";
         }
     }
-
-    public static String rePay(String arg1,String arg2){
-        return App.get().getResources().getString(R.string.please_transfer,arg1,arg2);
+    
+    public static String rePay(String arg1, String arg2) {
+        return App.get().getResources().getString(R.string.please_transfer, arg1, arg2);
+    }
+    
+    /**
+     * 获取mac地址
+     *
+     * @return
+     */
+    public static String getMacAddress() {
+        String macAddress = "";
+        StringBuffer buf = new StringBuffer();
+        NetworkInterface networkInterface = null;
+        try {
+            networkInterface = NetworkInterface.getByName("eth1");
+            if (networkInterface == null) {
+                networkInterface = NetworkInterface.getByName("wlan0");
+            }
+            if (networkInterface == null) {
+                return "02:00:00:00:00:02";
+            }
+            byte[] addr = networkInterface.getHardwareAddress();
+            for (byte b : addr) {
+                buf.append(String.format("%02X:", b));
+            }
+            if (buf.length() > 0) {
+                buf.deleteCharAt(buf.length() - 1);
+            }
+            macAddress = buf.toString();
+        } catch (SocketException e) {
+            e.printStackTrace();
+            return "02:00:00:00:00:02";
+        }
+        return macAddress;
+    }
+    
+    /**
+     * 校验密码 （字母数字特殊符号至少2种混合）
+     *
+     * @param password
+     * @return
+     */
+    public static boolean checkPassword(String password) {
+        String criteriaPassword = "^(?![\\d]+$)(?![a-zA-Z]+$)(?![^\\da-zA-Z]+$).{8,20}$";
+        Pattern pattern = Pattern.compile(criteriaPassword);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+    
+    /**
+     * 获取packageName
+     *
+     * @return
+     */
+    public static String getPackageName() {
+        return App.get().getApplicationInfo().packageName;
     }
     
 }

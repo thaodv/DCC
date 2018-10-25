@@ -9,8 +9,10 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import worhavah.regloginlib.setQrContentSrc
+import io.wexchain.android.common.Pop
+import io.wexchain.android.dcc.tools.onLongSaveImageToGallery
 import io.wexchain.dcc.R
+import worhavah.regloginlib.setQrContentSrc
 
 
 /**
@@ -27,11 +29,22 @@ class FullScreenDialog(context: Context, @StyleRes theme: Int = R.style.FullWidt
                     dialog.dismiss()
                 }
             }
+            setQrEvent(imageView, context)
             setQrContentSrc(imageView, content)
             dialog.makeWindowFullscreenAndTransparent()
             dialog.setCanceledOnTouchOutside(true)
             dialog.setCancelable(true)
             return dialog
+        }
+
+        private fun setQrEvent(imageView: ImageView, context: Context) {
+            imageView.onLongSaveImageToGallery(
+                    onError = {
+                        Pop.toast("二维码保存失败", context)
+                    },
+                    onSuccess = {
+                        Pop.toast("二维码已保存至: $it", context)
+                    })
         }
 
         fun createLoading(context: Context): FullScreenDialog {
@@ -54,7 +67,7 @@ class FullScreenDialog(context: Context, @StyleRes theme: Int = R.style.FullWidt
             return dialog
         }
 
-        fun Dialog.makeWindowFullscreenAndTransparent(onShowExtra:(()->Unit)?=null){
+        fun Dialog.makeWindowFullscreenAndTransparent(onShowExtra: (() -> Unit)? = null) {
             setOnShowListener {
                 val window = this.window
                 window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)

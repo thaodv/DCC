@@ -10,6 +10,7 @@ import io.reactivex.Single
 import io.reactivex.plugins.RxJavaPlugins
 import io.wexchain.android.common.BaseApplication
 import io.wexchain.android.common.Pop
+import io.wexchain.android.common.tools.AESSign
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.selectnode.NodeBean
@@ -22,6 +23,7 @@ import io.wexchain.android.dcc.repo.db.PassportDatabase
 import io.wexchain.android.dcc.tools.*
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.android.localprotect.LocalProtect
+import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
 import io.wexchain.dcc.WxApiManager
@@ -81,7 +83,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
     override fun onCreate() {
         super.onCreate()
         instance = WeakReference(this)
-        initcerts()
+
 
         val themeWrapper = ContextThemeWrapper(this, R.style.DccLightTheme_App)
         RxJavaPlugins.setErrorHandler {
@@ -99,6 +101,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         initServices(this)
         initData(this)
         initIpfs()
+        initcerts()
 
     }
 
@@ -140,6 +143,45 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         val dao = PassportDatabase.createDatabase(this).dao
 
         passportRepository = PassportRepository(app, dao)
+
+        LocalProtect.init(app)
+
+        if (ShareUtils.getBoolean("has_encrypt", true)) {
+
+            if (!App.get().passportRepository.getOldWallet().isNullOrEmpty()) {
+
+                val aesKey = passportRepository.getIpfsAESKey(false)
+                val keyHash = passportRepository.getIpfsKeyHash(false)
+                aesKey?.let {
+                    passportRepository.setIpfsAESKey(it)
+                }
+                keyHash?.let {
+                    passportRepository.setIpfsKeyHash(it)
+                }
+                var password = App.get().passportRepository.getPassword()
+                var wallet = App.get().passportRepository.getWallet()
+
+                App.get().passportRepository.setPassword(password)
+                App.get().passportRepository.setWallet(wallet)
+
+                LocalProtect.reloadOldProtect()
+                val protect = LocalProtect.currentProtect.value
+
+                if (null != protect) {
+                    val first = protect.first!!
+                    val second = protect.second!!
+
+                    if (LocalProtectType.FINGER_PRINT != protect.first) {
+                        LocalProtect.setProtect(first, AESSign.encryptPsw(second, CommonUtils.getMacAddress()))
+                    }
+                }
+                //ShareUtils.setBoolean("has_encrypt", false)
+            } /*else {
+                LocalProtect.reloadProtect()
+            }*/
+            ShareUtils.setBoolean("has_encrypt", false)
+        }
+
         passportRepository.load()
         assetsRepository = AssetsRepository(
                 dao,
@@ -151,7 +193,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         scfTokenManager = ScfTokenManager(app)
         CertOperations.init(app)
         JuzixData.init(app)
-        LocalProtect.init(app)
+
     }
 
     fun initServices(app: App) {
