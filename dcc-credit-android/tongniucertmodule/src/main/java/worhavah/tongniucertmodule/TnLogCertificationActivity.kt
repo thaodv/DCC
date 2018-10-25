@@ -68,7 +68,7 @@ class TnLogCertificationActivity : BindActivity<ActivityTncertificationDataCmBin
 
     private val expiredFormat = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
     fun expiredText(expired: Long?): String {
-        if (expired == null || expired <= 0) {
+        if (expired == null || expired < 0) {
             return ""
         }
         return expiredFormat.format(expired)
@@ -82,12 +82,12 @@ class TnLogCertificationActivity : BindActivity<ActivityTncertificationDataCmBin
                 it.content.let {
                     it.let {
                         saveTnLogCertExpired(it!!.expired)
+                        vm.value3.set(expiredText(it!!.expired))
 
                         if (0L != it!!.expired) {
                         }
                     }
                 }
-                vm.value3.set(expiredText(worhavah.certs.tools.CertOperations.getTNLogCertExpired()))
             }, {})
     }
 }

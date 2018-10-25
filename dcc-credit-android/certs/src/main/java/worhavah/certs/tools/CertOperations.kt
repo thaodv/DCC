@@ -570,7 +570,7 @@ i
         val certTNLogPhoneNo = StringPref("certTNLogPhoneNo")
         val certTNLogPassword = StringPref("certTNLogPassword")
         val certTNLogData = StringPref("certTNLogData")
-        val certTNLogExpired = LongPref("certCmLogExpired", -1L)
+        val certTNLogExpired = LongPref("certTnLogExpired", -1L)
 
         val certTNcertID = LongPref("certTNcertID",-1L)//认证id
         val certTNcertaddress = StringPref("certTNcertaddress")//认证id

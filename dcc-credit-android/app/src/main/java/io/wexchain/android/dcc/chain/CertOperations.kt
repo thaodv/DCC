@@ -42,6 +42,7 @@ import worhavah.certs.tools.CertOperations
 import worhavah.certs.tools.CertOperations.getTNLogCertExpired
 import worhavah.certs.tools.CertOperations.getTNLogUserStatus
 import worhavah.certs.tools.CertOperations.saveTnLogCertExpired
+import worhavah.regloginlib.Net.Networkutils
 import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -681,15 +682,19 @@ object CertOperations {
                     worhavah.certs.tools .  UserCertStatus.INCOMPLETE -> UserCertStatus.INCOMPLETE
                 }
                 if(UserCertStatus.DONE.name == ll.name){
-                    if (getTNLogCertExpired()  < System.currentTimeMillis()) {
-                        if(getCmLogCertExpired() ==-1L){
-                            ll=   UserCertStatus.INCOMPLETE
-                        }else{
-                            ll=   UserCertStatus.TIMEOUT
+                    Networkutils.chainGateway.getCertData(Networkutils.passportRepository.currPassport.value!!.address, ChainGateway.TN_COMMUNICATION_LOG).blockingGet().result.apply {
+                        saveTnLogCertExpired(this!!.content!!.expired)
+                        if (getTNLogCertExpired()  < System.currentTimeMillis()) {
+                            if(getTNLogCertExpired() ==-1L){
+                                ll=   UserCertStatus.INCOMPLETE
+                            }else{
+                                ll=   UserCertStatus.TIMEOUT
+                            }
+                        } else {
+                            ll=     UserCertStatus.DONE
                         }
-                    } else {
-                        ll=     UserCertStatus.DONE
                     }
+
                 }
                 return  ll
 
