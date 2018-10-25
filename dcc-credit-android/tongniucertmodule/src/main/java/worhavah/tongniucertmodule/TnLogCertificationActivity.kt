@@ -81,8 +81,9 @@ class TnLogCertificationActivity : BindActivity<ActivityTncertificationDataCmBin
             .subscribe({
                 it.content.let {
                     it.let {
+                        saveTnLogCertExpired(it!!.expired)
+
                         if (0L != it!!.expired) {
-                            saveTnLogCertExpired(it!!.expired)
                         }
                     }
                 }
