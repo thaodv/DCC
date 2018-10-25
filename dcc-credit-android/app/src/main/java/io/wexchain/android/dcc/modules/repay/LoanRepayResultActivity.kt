@@ -18,8 +18,8 @@ class LoanRepayResultActivity : BaseCompatActivity() {
         findViewById<View>(R.id.btn_to_records).setOnClickListener {
             finishActivity(ReviewRepayActivity::class.java)
             finishActivity(LoanRecordDetailActivity::class.java)
-            finishActivity(LoanRecordsActivity::class.java)
-            navigateTo(LoanActivity::class.java)
+            /*finishActivity(LoanRecordsActivity::class.java)
+            navigateTo(LoanActivity::class.java)*/
         }
     }
 }

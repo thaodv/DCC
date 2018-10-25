@@ -136,9 +136,32 @@ fun View.onLongSaveImageToGallery(onError: (Throwable) -> Unit, onSuccess: (Stri
 }
 
 fun isRoot(): Boolean {
-    val file1 = File("/system/bin/su")
-    val file2 = File("/system/xbin/su")
-    return file1.exists() || file2.exists()
+    return  isRootSystem() || checkSuperuserApk()||CommonUtils.isRooted()
+}
+
+fun isRootSystem(): Boolean {
+    var f: File? = null
+    val kSuSearchPaths = arrayOf("/system/bin/", "/system/xbin/", "/system/sbin/", "/sbin/", "/vendor/bin/")
+    try {
+        for ((i, j) in kSuSearchPaths.withIndex()) {
+            f = File(j + "su")
+            if (f.exists()) {
+                return true
+            }
+        }
+    } catch (e: Exception) {
+    }
+    return false
+}
+
+fun checkSuperuserApk():Boolean{
+    try {
+        val file =  File("/system/app/SuperSU/SuperSU.apk")
+        if (file.exists()) {
+            return true
+        }
+    } catch (e:Exception ) { }
+    return false
 }
 
 fun checkXPosed(): Boolean {

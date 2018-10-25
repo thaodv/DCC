@@ -17,9 +17,7 @@ import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.noStatusBar
 import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.modules.home.HomeActivity
-import io.wexchain.android.dcc.tools.PermissionHelper
-import io.wexchain.android.dcc.tools.checkXPosed
-import io.wexchain.android.dcc.tools.isRoot
+import io.wexchain.android.dcc.tools.*
 import io.wexchain.dcc.R
 import kotlinx.android.synthetic.main.activity_loading.*
 import java.util.concurrent.TimeUnit
