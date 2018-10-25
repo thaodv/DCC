@@ -183,6 +183,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         }
 
         passportRepository.load()
+        LocalProtect.reloadProtect()
         assetsRepository = AssetsRepository(
                 dao,
                 chainFrontEndApi, coinMarketCapApi,

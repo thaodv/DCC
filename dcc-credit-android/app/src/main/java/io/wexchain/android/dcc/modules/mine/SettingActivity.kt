@@ -8,9 +8,12 @@ import android.os.Environment
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
-import io.wexchain.android.dcc.*
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.dcc.AboutActivity
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.PassportRemovalActivity
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
+import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.android.dcc.vm.Protect
@@ -63,6 +66,9 @@ class SettingActivity : BindActivity<ActivitySettingBinding>() {
         })
         VerifyProtectFragment.serve(protect, this)
         binding.protect = protect
+
+        LogUtils.e("SettingActivity", protect.type.get())
+
 
     }
 

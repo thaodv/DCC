@@ -1,7 +1,5 @@
 package io.wexchain.android.dcc.chain
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.util.Base64
 import io.reactivex.Single
 import io.reactivex.SingleTransformer
@@ -24,7 +22,6 @@ import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.Result
-import io.wexchain.dccchainservice.domain.TicketResponse
 import org.web3j.crypto.Credentials
 import java.util.*
 
@@ -42,7 +39,7 @@ object PassportOperations {
                 }
                 .map {
                     val authKey = EthsHelper.createAndroidRSAKeyPair().let {
-                       worhavah.regloginlib .AuthKey(it.second, it.first.public.encoded)
+                        worhavah.regloginlib.AuthKey(it.second, it.first.public.encoded)
                         AuthKey(it.second, it.first.public.encoded)
                     }
                     it to authKey
@@ -74,36 +71,36 @@ object PassportOperations {
             Single.error<AuthKey>(IllegalStateException("未启用统一登录"))
         } else {
             app.chainGateway.getPubKey(passport.address)
-                .compose(Result.checked())
-                .flatMap {
-                    val decodedPubKey = Base64.decode(it, Base64.DEFAULT)
-                    if (Arrays.equals(decodedPubKey, authKey.publicKeyEncoded)) {
-                        Single.just(authKey)
-                    } else {
-                        Single.error<AuthKey>(IllegalStateException("您当前使用的统一登录秘钥与链上不一致,将影响部分功能的正常使用"))
+                    .compose(Result.checked())
+                    .flatMap {
+                        val decodedPubKey = Base64.decode(it, Base64.DEFAULT)
+                        if (Arrays.equals(decodedPubKey, authKey.publicKeyEncoded)) {
+                            Single.just(authKey)
+                        } else {
+                            Single.error<AuthKey>(IllegalStateException("您当前使用的统一登录秘钥与链上不一致,将影响部分功能的正常使用"))
+                        }
                     }
-                }
         }
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe {
-                activity.showLoadingDialog()
-            }
-            .doFinally {
-                activity.hideLoadingDialog()
-            }
-            .subscribe({
-                action()
-            }, {
-                CustomDialog(activity).apply {
-                    this.setTitle(io.wexchain.android.dcc.tools.getString(R.string.tips))
-                    textContent = it.message
-                    withPositiveButton(io.wexchain.android.dcc.tools.getString(R.string.update)) {
-                        activity.navigateTo(PassportActivity::class.java)
-                        true
-                    }
-                    withNegativeButton()
-                }.assembleAndShow()
-            })
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    activity.showLoadingDialog()
+                }
+                .doFinally {
+                    activity.hideLoadingDialog()
+                }
+                .subscribe({
+                    action()
+                }, {
+                    CustomDialog(activity).apply {
+                        this.setTitle(io.wexchain.android.dcc.tools.getString(R.string.tips))
+                        textContent = it.message
+                        withPositiveButton(io.wexchain.android.dcc.tools.getString(R.string.update)) {
+                            activity.navigateTo(PassportActivity::class.java)
+                            true
+                        }
+                        withNegativeButton()
+                    }.assembleAndShow()
+                })
     }
 
     fun enablePassport(credentials: Credentials, password: String): Single<Pair<Credentials, AuthKey>>? {
@@ -112,7 +109,7 @@ object PassportOperations {
                 .observeOn(Schedulers.computation())
                 .map {
                     val authKey = EthsHelper.createAndroidRSAKeyPair().let {
-                        worhavah.regloginlib .AuthKey(it.second, it.first.public.encoded)
+                        worhavah.regloginlib.AuthKey(it.second, it.first.public.encoded)
                         AuthKey(it.second, it.first.public.encoded)
                     }
                     it to authKey
@@ -196,7 +193,7 @@ object PassportOperations {
             code: String?
     ): Single<Pair<Credentials, AuthKey>> {
         val credentials = pair.first
-        worhavah.regloginlib.tools.PassportOperations.uploadPubKeyChecked( worhavah.regloginlib.AuthKey(pair.second.keyAlias,pair.second.publicKeyEncoded), credentials, ticket, code)
+        worhavah.regloginlib.tools.PassportOperations.uploadPubKeyChecked(worhavah.regloginlib.AuthKey(pair.second.keyAlias, pair.second.publicKeyEncoded), credentials, ticket, code)
         return uploadPubKeyChecked(pair.second, credentials, ticket, code)
                 .map { pair }
     }
@@ -204,8 +201,9 @@ object PassportOperations {
     private fun createPubKey(): Single<AuthKey> {
         return Single.fromCallable { createAndroidRSAKeyPair() }
                 .map {
-                    worhavah.regloginlib .AuthKey(it.second, it.first.public.encoded)
-                    AuthKey(it.second, it.first.public.encoded) }
+                    worhavah.regloginlib.AuthKey(it.second, it.first.public.encoded)
+                    AuthKey(it.second, it.first.public.encoded)
+                }
                 .subscribeOn(Schedulers.computation())
     }
 
@@ -219,13 +217,6 @@ object PassportOperations {
                     App.get().passportRepository.updateAuthKey(passport, it)
                     App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(passport.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.UPDATE))
                 }
-    }
-
-    fun switchAuthkey(it:AuthKey): worhavah.regloginlib.AuthKey {
-        return worhavah.regloginlib.AuthKey(it.keyAlias,it.publicKeyEncoded)
-    }
-    fun switchPass(it: Passport): worhavah.regloginlib.Passport {
-        return worhavah.regloginlib.Passport(it.credential,switchAuthkey(it.authKey!!),it.nickname,it.avatarUri)
     }
 
     fun deletePubKeyAndUploadChecked(passport: Passport, ticket: String, code: String?): Single<Passport> {
@@ -253,23 +244,6 @@ object PassportOperations {
                     App.get().passportRepository.updateAuthKey(passport, null)
                     App.get().passportRepository.addAuthKeyChangedRecord(AuthKeyChangeRecord(passport.address, System.currentTimeMillis(), AuthKeyChangeRecord.UpdateType.DISABLE))
                 }
-    }
-
-    /**
-     * from ca api
-     */
-    fun loadTicketDecoded(): Single<Pair<TicketResponse, Bitmap?>> {
-        return App.get().chainGateway.getTicket()
-                .compose(Result.checked())
-                .observeOn(Schedulers.computation())
-                .map { Pair(it, it.decodePng()) }
-                .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    private fun TicketResponse.decodePng(): Bitmap? {
-        image ?: return null
-        val decode = Base64.decode(image, Base64.DEFAULT)
-        return BitmapFactory.decodeByteArray(decode, 0, decode.size)
     }
 
     fun deleteAllLocalAndroidRSAKeys() {
