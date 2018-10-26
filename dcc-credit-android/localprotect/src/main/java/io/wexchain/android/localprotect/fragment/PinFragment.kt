@@ -43,6 +43,11 @@ class PinFragment : Fragment() {
         binding.btnCancel.setOnClickListener {
             listener?.onPinCancel(currentMode)
         }
+        binding.pin!!.clearHit = {
+            if (!binding.tvErrorHint.text.isNullOrEmpty()){
+                binding.tvErrorHint.text = null
+            }
+        }
     }
 
     fun String.checkWeak(): Boolean {

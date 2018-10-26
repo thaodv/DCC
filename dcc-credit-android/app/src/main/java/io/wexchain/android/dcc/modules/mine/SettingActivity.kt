@@ -66,10 +66,6 @@ class SettingActivity : BindActivity<ActivitySettingBinding>() {
         })
         VerifyProtectFragment.serve(protect, this)
         binding.protect = protect
-
-        LogUtils.e("SettingActivity", protect.type.get())
-
-
     }
 
     private fun initClick() {

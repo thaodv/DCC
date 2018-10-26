@@ -13,11 +13,16 @@ class PinVm(application: Application) : AndroidViewModel(application) {
     val pin = ObservableField<String>()
     val pinCompleteEvent = SingleLiveEvent<String>()
 
+    var clearHit: (() -> Unit)? = null
+
     fun isPresent(pin: String?, index: Int): Boolean {
         return pin != null && pin.length > index
     }
 
     fun emit(p: Int) {
+        if (pin.get()?.length ?: 0 < 6) {
+            clearHit?.invoke()
+        }
         if (p in 0..9) {
             val newValue = pin.get() + p.toString()
             val length = newValue.length
@@ -31,6 +36,7 @@ class PinVm(application: Application) : AndroidViewModel(application) {
     }
 
     fun cancel() {
+        clearHit?.invoke()
         val pinValue = pin.get()
         if (pinValue != null && pinValue.isNotEmpty()) {
             pin.set(pinValue.substring(0, pinValue.length - 1))
