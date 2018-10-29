@@ -4,9 +4,11 @@ import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.wexchain.android.common.installApk
+import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.tools.getString
 import io.wexchain.dcc.R
 import kotlinx.android.synthetic.main.dialog_check_update.*
@@ -57,10 +59,36 @@ class UpgradeDialog(context: Context) : Dialog(context) {
         return this
     }
 
+    fun removePassportDialog(): UpgradeDialog {
+        this.setCancelable(false)
+        val inflater = LayoutInflater.from(context)
+        val view = inflater.inflate(R.layout.dialog_remove_passport, null)
+        setContentView(view)
+        val dialogWindow = window
+        val lp = dialogWindow!!.attributes
+        val d = context.resources.displayMetrics
+        lp.width = (d.widthPixels * 0.7).toInt()
+        dialogWindow.attributes = lp
+        window.setBackgroundDrawableResource(R.drawable.background_holding)
+
+        view.findViewById<TextView>(R.id.dialog_cancle).setOnClickListener {
+            onCancleStub.invoke()
+        }
+
+        view.findViewById<TextView>(R.id.dialog_confirm).setOnClickListener {
+            onConfirmStub.invoke()
+        }
+        view.findViewById<TextView>(R.id.dialog_dismiss).onClick {
+            dismiss()
+        }
+        show()
+        return this
+    }
+
     private var onCancleStub: () -> Unit = {}
     private var onConfirmStub: () -> Unit = {}
 
-    fun onClick(onCancle: () -> Unit = onCancleStub , onConfirm: () -> Unit ) {
+    fun onClick(onCancle: () -> Unit = onCancleStub, onConfirm: () -> Unit) {
         onCancleStub = onCancle
         onConfirmStub = onConfirm
     }
