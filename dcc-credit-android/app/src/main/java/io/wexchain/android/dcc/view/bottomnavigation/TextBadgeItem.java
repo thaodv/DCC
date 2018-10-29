@@ -17,7 +17,6 @@ import io.wexchain.dcc.R;
  *
  * @author ashokvarma
  * @version 1.0
- * @see com.ashokvarma.bottomnavigation.BadgeItem
  * @since 23 Jun 2017
  */
 public class TextBadgeItem extends BadgeItem<TextBadgeItem> {

@@ -19,7 +19,6 @@ import io.wexchain.android.dcc.view.bottomnavigation.BottomNavigationBar;
  *
  * @author ashokvarma
  * @version 1.0
- * @see com.ashokvarma.bottomnavigation.behaviour.VerticalScrollingBehavior
  * @since 25 Mar 2016
  */
 public class BottomVerticalScrollBehavior<V extends View> extends VerticalScrollingBehavior<V> {
