@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.fixPrice
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
@@ -99,48 +100,7 @@ class BsxEthBuyActivity : BindActivity<ActivityBsxEthBuyBinding>() {
             binding.etBuyamount.setSelection(binding.tvCanuselable.text.length)
 
         }
-
-        binding.etBuyamount.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (null != s) {
-
-                    var res = s
-
-                    if (res.toString().contains(".")) {
-                        if (res.length - 1 - res.toString().indexOf(".") > 2) {
-                            res = res.toString().subSequence(0, res.toString().indexOf(".") + 3)
-                            binding.etBuyamount.setText(res)
-                            binding.etBuyamount.setSelection(res.length)
-                        }
-                    }
-
-                    //如果.在起始位置,则起始位置自动补0
-                    if (res.toString().trim().substring(0) == ".") {
-                        res = "0$res";
-                        binding.etBuyamount.setText(res)
-                        binding.etBuyamount.setSelection(2)
-                    }
-
-                    //如果起始位置为0并且第二位跟的不是".",则无法后续输入
-                    if (res.toString().startsWith("0") && res.toString().trim().length > 1) {
-                        if (res.toString().substring(1, 2) != ".") {
-                            binding.etBuyamount.setText(res.subSequence(0, 1))
-                            binding.etBuyamount.setSelection(1)
-                            return
-                        }
-                    }
-                }
-            }
-        })
-
+        binding.etBuyamount.fixPrice()
     }
 
     private fun checkBuy(): Boolean {

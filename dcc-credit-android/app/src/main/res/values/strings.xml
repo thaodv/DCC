@@ -104,7 +104,7 @@
     <string name="code_for_more_reward">输入邀请码可以获得更多奖励</string>
     <string name="confirm">确定</string>
     <string name="WeXCreatePassportViewController_description3">成功创建数字钱包后,请即时在我的->备份钱包 中进行备份,以防数字资产丢失</string>
-    <string name="wallet_password_guide">不少于8位字符，建议混合大小写字母、数字、特殊符号</string>
+    <string name="wallet_password_guide">不少于8位字符，字母数字特殊符号至少2种混合</string>
     <string name="please_paste_keystore">请粘贴KEYSTORE信息</string>
     <string name="please_set_passport_password">设置数字钱包密码</string>
     <string name="please_input_passport_password">验证数字钱包密码</string>
@@ -424,9 +424,12 @@
     <string name="across_trans_tip_1">表示DCC从私链转移至公链；</string>
     <string name="across_trans_tip_2">表示DCC从公链转移至私链；</string>
     <string name="across_trans_count">转移数量</string>
+    <string name="across_trans_count1">可用数量:</string>
     <string name="across_trans_private_count">私链数量:</string>
     <string name="across_trans_public_count">公链数量:</string>
-    <string name="across_trans_public_tip"><font color="#ED190F">数量已超过私链数量</font></string>
+    <string name="across_trans_private_tip"><font color="#ED190F">数量已超过私链数量</font></string>
+    <string name="across_trans_public_tip"><font color="#ED190F">数量已超过公链数量</font></string>
+    <string name="across_trans_tip1"><font color="#ED190F">数量已超过可用数量</font></string>
     <string name="across_trans_poundage">手续费</string>
     <string name="across_trans_toaccount_num">到账数量</string>
     <string name="all">全部</string>

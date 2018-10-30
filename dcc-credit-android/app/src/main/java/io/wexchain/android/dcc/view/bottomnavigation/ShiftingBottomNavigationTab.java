@@ -17,7 +17,6 @@ import io.wexchain.dcc.R;
  *
  * @author ashokvarma
  * @version 1.0
- * @see com.ashokvarma.bottomnavigation.BottomNavigationTab
  * @since 19 Mar 2016
  */
 class ShiftingBottomNavigationTab extends BottomNavigationTab {

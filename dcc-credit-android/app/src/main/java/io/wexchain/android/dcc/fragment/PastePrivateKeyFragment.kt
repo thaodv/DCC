@@ -6,19 +6,19 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import io.wexchain.android.dcc.constant.RequestCodes
-import io.wexchain.android.common.base.BindFragment
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.dcc.QrScannerActivity
-import worhavah.regloginlib.tools.isEcPrivateKeyValid
-import worhavah.regloginlib.tools.isPasswordValid
+import io.wexchain.android.dcc.constant.RequestCodes
+import io.wexchain.android.dcc.tools.CommonUtils
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentPastePrivateKeyBinding
 import io.wexchain.dccchainservice.DccChainServiceException
 import org.web3j.crypto.Credentials
+import worhavah.regloginlib.tools.isEcPrivateKeyValid
 
 /**
  * Created by lulingzhi on 2017/11/17.
@@ -45,9 +45,9 @@ class PastePrivateKeyFragment : BindFragment<FragmentPastePrivateKeyBinding>() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when(requestCode){
-            RequestCodes.SCAN->{
-                if(resultCode == Activity.RESULT_OK && data!=null){
+        when (requestCode) {
+            RequestCodes.SCAN -> {
+                if (resultCode == Activity.RESULT_OK && data != null) {
                     val result = data.getStringExtra(QrScannerActivity.EXTRA_SCAN_RESULT)
                     binding.key = result.toLowerCase()
                 }
@@ -56,15 +56,15 @@ class PastePrivateKeyFragment : BindFragment<FragmentPastePrivateKeyBinding>() {
         }
     }
 
-    fun parsePassport():Single<Pair<Credentials,String>>{
+    fun parsePassport(): Single<Pair<Credentials, String>> {
         val key = binding.key
         val pw = binding.inputPassword!!.password.get()
-        return if (!isEcPrivateKeyValid(key)){
+        return if (!isEcPrivateKeyValid(key)) {
             Single.error(DccChainServiceException("私钥明文格式不对，请核对后重新输入！"))
-        }else if (!isPasswordValid(pw)) {
+        } else if (!CommonUtils.checkPassword(pw)) {
             Single.error(DccChainServiceException("密码不符合规则"))
-        }else{
-            Single.just(Pair(key!!,pw!!))
+        } else {
+            Single.just(Pair(key!!, pw!!))
                     .observeOn(Schedulers.computation())
                     .map {
                         val privateKey: String

@@ -127,9 +127,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 s2 = Single.just(!bankCertPassed).checkStatus(ChainGateway.BUSINESS_BANK_CARD),
                 s3 = Single.just(!cmStatus).checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG),
                 s4 = Single.just(tnstatus != worhavah.certs.tools.UserCertStatus.DONE).checkStatus(ChainGateway.TN_COMMUNICATION_LOG),
-                zipper = { f1, f2, f3, f4 ->
-                    Function4(f1, f2, f3, f4)
-                })
+                zipper = ::Function4)
                 .io_main()
                 .withLoading()
                 .subscribeBy {

@@ -120,7 +120,7 @@ class VerifyProtectFragment : DialogFragment(), GesturePasswordFragment.Listener
     }
 
     private fun showVerifyChallengeOrEmitSuccess() {
-        val protect = LocalProtect.currentProtect.value
+        val protect = LocalProtect.loadProtect()
         if (protect == null) {
             dismissAndEmitSuccess()
         } else {

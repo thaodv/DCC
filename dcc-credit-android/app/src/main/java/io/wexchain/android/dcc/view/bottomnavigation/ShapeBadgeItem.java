@@ -24,7 +24,6 @@ import io.wexchain.android.dcc.view.bottomnavigation.utils.Utils;
  *
  * @author ashokvarma
  * @version 1.0
- * @see com.ashokvarma.bottomnavigation.BadgeItem
  * @since 23 Jun 2017
  */
 public class ShapeBadgeItem extends BadgeItem<ShapeBadgeItem> {

@@ -18,12 +18,12 @@ import io.wexchain.android.localprotect.vm.PinVm
  */
 class PinFragment : Fragment() {
 
-    private lateinit var binding:FragmentPinBinding
+    private lateinit var binding: FragmentPinBinding
 
     val contentLayoutId: Int = R.layout.fragment_pin
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater,contentLayoutId,container,false)
+        binding = DataBindingUtil.inflate(inflater, contentLayoutId, container, false)
         return binding.root
     }
 
@@ -43,14 +43,94 @@ class PinFragment : Fragment() {
         binding.btnCancel.setOnClickListener {
             listener?.onPinCancel(currentMode)
         }
+        binding.pin!!.clearHit = {
+            if (!binding.tvErrorHint.text.isNullOrEmpty()){
+                binding.tvErrorHint.text = null
+            }
+        }
     }
+
+    fun String.checkWeak(): Boolean {
+        return equalStr() || isOrderNumeric() || isOrderNumeric_()
+    }
+
+    fun String.equalStr(): Boolean {
+        var flag = true
+        val str = this[0]
+        for (i in 0 until this.length) {
+            if (str != this[i]) {
+                flag = false
+                break
+            }
+        }
+        return flag
+    }
+
+    fun String.isOrderNumeric(): Boolean {
+        var flag = true//如果全是连续数字返回true
+        var isNumeric = true//如果全是数字返回true
+        for (i in 0 until this.length) {
+            if (!Character.isDigit(this[i])) {
+                isNumeric = false
+                break
+            }
+        }
+        if (isNumeric) {//如果全是数字则执行是否连续数字判断
+            for (i in 0 until this.length) {
+                if (i > 0) {//判断如123456
+                    val num = Integer.parseInt(this[i] + "")
+                    val num_ = Integer.parseInt(this[i - 1] + "") + 1
+                    if (num != num_) {
+                        flag = false
+                        break
+                    }
+                }
+            }
+        } else {
+            flag = false
+        }
+        return flag
+    }
+
+    //不能是连续的数字--递减（如：987654、876543）连续数字返回true
+    fun String.isOrderNumeric_(): Boolean {
+        var flag = true//如果全是连续数字返回true
+        var isNumeric = true//如果全是数字返回true
+        for (i in 0 until this.length) {
+            if (!Character.isDigit(this[i])) {
+                isNumeric = false
+                break
+            }
+        }
+        if (isNumeric) {//如果全是数字则执行是否连续数字判断
+            for (i in 0 until this.length) {
+                if (i > 0) {//判断如654321
+                    val num = Integer.parseInt(this[i] + "")
+                    val num_ = Integer.parseInt(this[i - 1] + "") - 1
+                    if (num != num_) {
+                        flag = false
+                        break
+                    }
+                }
+            }
+        } else {
+            flag = false
+        }
+        return flag
+    }
+
 
     private fun checkPin(input: String) {
         when (currentMode) {
             VerifyMode.INPUT_NEW -> {
                 if (input.length == 6) {
-                    binding.tvErrorHint.text = null
-                    listener?.onPinSuccess(input, currentMode)
+                    if (input.checkWeak()) {
+                        binding.pin?.pin?.set("")
+                        binding.tvErrorHint.text = "输入密码过于简单,请重新输入"
+                    } else {
+                        binding.tvErrorHint.text = null
+                        listener?.onPinSuccess(input, currentMode)
+                    }
                 }
             }
             VerifyMode.INPUT_REPEAT -> {
@@ -58,7 +138,7 @@ class PinFragment : Fragment() {
                 if (v != null && v == input) {
                     binding.tvErrorHint.text = null
                     listener?.onPinSuccess(input, currentMode)
-                }else{
+                } else {
                     binding.tvErrorHint.setText(R.string.pin_repeat_not_match)
                 }
             }
@@ -66,7 +146,7 @@ class PinFragment : Fragment() {
                 val v = verifyPin
                 if (v != null && v == input) {
                     listener?.onPinSuccess(input, currentMode)
-                }else{
+                } else {
                     binding.tvErrorHint.setText(R.string.pin_incorrect_please_retry)
                 }
             }

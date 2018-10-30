@@ -7,7 +7,6 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.support.annotation.WorkerThread
 import io.wexchain.android.common.getAndroidKeyStoreLoaded
-import org.web3j.crypto.*
 import worhavah.regloginlib.Net.Networkutils
 import java.math.BigInteger
 import java.security.KeyPair
@@ -22,21 +21,6 @@ object EthsHelper{
     const val AUTH_SIGN_ALGORITHM = "SHA256withRSA"
     const val AUTH_KEY_SIZE = 2048
     const val ANDROID_RSA_PREFIX = "temp_rsa_"
-
-    @JvmStatic
-    @WorkerThread
-    fun createNewCredential(): Credentials {
-        return Credentials.create(Keys.createEcKeyPair())
-    }
-
-    @JvmStatic
-    @WorkerThread
-    fun createNewCredentialbyPrivateKey ( privateKey:String): Credentials {
-        return Credentials.create(privateKey)
-    }
-    fun makeWalletFile(password: String, ecKeyPair: ECKeyPair?): WalletFile {
-        return Wallet.create(password, ecKeyPair, 65536, 1)
-    }
 
     @WorkerThread
     fun createAndroidRSAKeyPair(keySize: Int = AUTH_KEY_SIZE,context:Context= Networkutils.context!!): Pair<KeyPair, String> {

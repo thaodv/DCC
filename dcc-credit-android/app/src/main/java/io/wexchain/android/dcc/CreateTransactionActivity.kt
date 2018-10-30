@@ -2,11 +2,17 @@ package io.wexchain.android.dcc
 
 import android.arch.lifecycle.Observer
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.wexmarket.android.passport.ResultCodes
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.onClick
+import io.wexchain.android.common.transTips
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
@@ -15,6 +21,7 @@ import io.wexchain.android.dcc.repo.db.TransRecord
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.view.dialog.TransactionConfirmDialogFragment
 import io.wexchain.android.dcc.vm.TransactionVm
+import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityCreateTransactionBinding
@@ -53,8 +60,23 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
            txVm.gasPrice.set(tx.digitalCurrency.toDecimalAmount(tx.gasPrice).currencyToDisplayStr())*/
             binding.etInputGasLimit.setText("" + tx.gas)
             txVm.gasLimit.set("" + tx.gas)
+
         }
-        title = ("${dc!!.symbol} " + getString(R.string.transfer))
+        binding.tvTransSymbol.text = dc!!.symbol
+        App.get().assetsRepository.getBalance(dc, App.get().passportRepository.currPassport.value!!.address)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy {
+                    binding.btAll.isClickable = true
+                    binding.etInputAmount.isEnabled = true
+                    val balance = ViewModelHelper.getBalanceStr(dc, it)
+
+                    binding.tvTransCount.text = if (balance == "--") "0.0000" else balance
+                    binding.etInputAmount.transTips(binding.tvTransCount,
+                            showTips = ::showTips,
+                            hidTips = ::hidTips)
+                }
+
+        title = ("${dc.symbol} " + getString(R.string.transfer))
         setupEvents(dc, feeRate)
         setupButtons()
 
@@ -103,6 +125,26 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
                     RequestCodes.CHOOSE_BENEFICIARY_ADDRESS
             )
         }
+        binding.btAll.onClick {
+            binding.etInputAmount.setText(binding.tvTransCount.text)
+            binding.etInputAmount.setSelection(binding.tvTransCount.text.length)
+        }
+
+    }
+
+
+    private fun showTips() {
+        binding.tvTransCount.visibility = View.INVISIBLE
+        binding.tvTransSymbol.visibility = View.INVISIBLE
+        binding.tvTransTips.text = getString(R.string.across_trans_tip1)
+        binding.tvTransTips.setTextColor(Color.parseColor("#ED190F"))
+    }
+
+    private fun hidTips() {
+        binding.tvTransCount.visibility = View.VISIBLE
+        binding.tvTransSymbol.visibility = View.VISIBLE
+        binding.tvTransTips.text = getString(R.string.across_trans_count1)
+        binding.tvTransTips.setTextColor(Color.parseColor("#404040"))
     }
 
     private fun setupEvents(dc: DigitalCurrency, feeRate: String?) {

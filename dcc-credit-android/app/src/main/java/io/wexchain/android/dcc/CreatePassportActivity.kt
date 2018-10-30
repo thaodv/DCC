@@ -11,7 +11,8 @@ import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.chain.PassportOperations
-import worhavah.regloginlib.tools.isPasswordValid
+import io.wexchain.android.dcc.tools.CommonUtils
+import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityCreatePassportBinding
@@ -32,7 +33,7 @@ class CreatePassportActivity : BindActivity<ActivityCreatePassportBinding>() {
         binding.btnCreatePassport.setOnClickListener {
             val pw = binding.inputPw!!.password.get()
             pw ?: return@setOnClickListener
-            if (isPasswordValid(pw)) {
+            if (CommonUtils.checkPassword(pw)) {
                 doCreatePassport(pw)
             } else {
                 toast("设置钱包密码不符合要求,请重试")
@@ -58,6 +59,7 @@ class CreatePassportActivity : BindActivity<ActivityCreatePassportBinding>() {
 
     private fun onCreateSuccess() {
         toast("创建成功")
+        ShareUtils.setBoolean("has_encrypt", false)
         navigateTo(CreateScfAccountActivity::class.java)
         finish()
     }

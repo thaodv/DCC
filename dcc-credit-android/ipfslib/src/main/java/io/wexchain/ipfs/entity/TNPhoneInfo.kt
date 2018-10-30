@@ -14,7 +14,8 @@ data class TNPhoneInfo(
         val sameCowMobileAuthenOrderid: String,//订单ID
         val sameCowMobileAuthenNumber: String,//预留手机号
         val sameCowMobileAuthenCmData: String,//报告原文json
-        val sameCowMobileAuthenExpired: String//过期时间
+        val sameCowMobileAuthenExpired: String,//过期时间
+        val sameCowMobileAuthenNonce: String//Nonce
 
 
 ) : Serializable

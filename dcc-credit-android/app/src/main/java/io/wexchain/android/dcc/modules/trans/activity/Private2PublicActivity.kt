@@ -3,25 +3,24 @@ package io.wexchain.android.dcc.modules.trans.activity
 import android.arch.lifecycle.Observer
 import android.graphics.Color
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.getViewModel
-import io.wexchain.android.dcc.App
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.getViewModel
+import io.wexchain.android.common.transTips
+import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.trans.vm.Private2PublicVm
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.view.dialog.Private2PublicConfirmDialogFragment
+import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPrivate2PublicBinding
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransactionScratch
 import io.wexchain.digitalwallet.util.computeTransCount
 import io.wexchain.digitalwallet.util.computeTransCountKeep2Number
-import java.math.BigDecimal
 
 class Private2PublicActivity : BindActivity<ActivityPrivate2PublicBinding>() {
 
@@ -32,7 +31,6 @@ class Private2PublicActivity : BindActivity<ActivityPrivate2PublicBinding>() {
     private var poundge: String = ""
 
     val txVm = Private2PublicVm()
-    private var transcount = BigDecimal(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,41 +61,18 @@ class Private2PublicActivity : BindActivity<ActivityPrivate2PublicBinding>() {
             binding.etTransCount.setSelection(binding.tvPrivateCount.text.length)
         }
 
-        binding.etTransCount.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
+        binding.etTransCount.transTips(binding.tvPrivateCount,
+                showTips = ::showTips,
+                hidTips = ::hidTips)
 
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val txt = s?.toString()
-                if (txt == ".") {
-                    binding.etTransCount.setText("0.")
-                    binding.etTransCount.setSelection(2)
-                    return
-                }
-                if (!txt.isNullOrEmpty()) {
-                    val publicCount = binding.tvPrivateCount.text.toString()
-                    val maxinp = BigDecimal(publicCount)
-                    val inp = BigDecimal(txt)
-                    val result = inp.compareTo(maxinp)
-                    if (result == 1) {
-                        binding.tvPrivateCount.visibility = View.INVISIBLE
-                        binding.tvPrivateTips.text = getString(R.string.across_trans_public_tip)
-                        binding.tvPrivateTips.setTextColor(Color.parseColor("#ED190F"))
-                    } else {
-                        hidTips()
-                    }
-                } else {
-                    hidTips()
-                }
-            }
-        })
 
         setupEvents(dc, feeRate)
+    }
+
+    private fun showTips() {
+        binding.tvPrivateCount.visibility = View.INVISIBLE
+        binding.tvPrivateTips.text = getString(R.string.across_trans_private_tip)
+        binding.tvPrivateTips.setTextColor(Color.parseColor("#ED190F"))
     }
 
     private fun hidTips() {

@@ -20,7 +20,6 @@ import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.view.CountDownProgress
-import worhavah.regloginlib.tools.check
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
@@ -33,13 +32,12 @@ import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.ipfs.utils.io_main
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
-import worhavah.certs.bean.TNcert1new
 import worhavah.certs.bean.TNcert1newreport
-import worhavah.certs.bean.TNcertReport
 import worhavah.certs.tools.CertOperations.clearTNCertCache
 import worhavah.certs.tools.CertOperations.onTNLogSuccessGot
 import worhavah.certs.tools.CertOperations.saveTnLogCertExpired
 import worhavah.regloginlib.Net.Networkutils
+import worhavah.regloginlib.tools.check
 import worhavah.tongniucertmodule.SubmitTNLogActivity
 import worhavah.tongniucertmodule.TnLogCertificationActivity
 import java.math.BigDecimal
@@ -67,20 +65,21 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
         if (passport == null) {
             Networkutils.passportRepository.load()
         }
-        if (!Networkutils.passportRepository.passportEnabled) {
+        /*if (!Networkutils.passportRepository.passportEnabled) {
             Networkutils.passportRepository.load()
-             Networkutils.passportRepository.getCurrentPassport()!!
+            Networkutils.passportRepository.getCurrentPassport()!!
         }
-        if(null==getAndroidKeyStoreLoaded().getEntry(passport!!.authKey!!.keyAlias, null)){
+        if (null == getAndroidKeyStoreLoaded().getEntry(passport!!.authKey!!.keyAlias, null)) {
             Networkutils.passportRepository.load()
-             Networkutils.passportRepository.getCurrentPassport()!!
-        }
+            Networkutils.passportRepository.getCurrentPassport()!!
+        }*/
     }
-    val totalCerts  =4
-    var certDoneNum=0
-    var lastper=-1
-    fun setVM(){
-        certDoneNum=0
+
+    val totalCerts = 4
+    var certDoneNum = 0
+    var lastper = -1
+    fun setVM() {
+        certDoneNum = 0
         binding.asIdVm = obtainAuthStatus(CertificationType.ID)
         binding.asBankVm = obtainAuthStatus(CertificationType.BANK)
         binding.asMobileVm = obtainAuthStatus(CertificationType.MOBILE)
@@ -88,12 +87,12 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
         binding.asTongniuVm = obtainAuthStatus(CertificationType.TONGNIU)
         binding.asLoanVm = obtainAuthStatus(CertificationType.LOANREPORT)
 
-        var per=BigDecimal(certDoneNum*100/totalCerts).toBigInteger().toInt()
+        var per = BigDecimal(certDoneNum * 100 / totalCerts).toBigInteger().toInt()
         runOnMainThread {
-            if(per!=lastper){
-                lastper=per
+            if (per != lastper) {
+                lastper = per
                 countDownProgress.setPercent(per)
-                countDownProgress.startCountDownTime(  CountDownProgress.OnCountdownFinishListener  {
+                countDownProgress.startCountDownTime(CountDownProgress.OnCountdownFinishListener {
                 })
             }
         }
@@ -158,8 +157,8 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                     title.set(getCertTypeTitle(certificationType))
                     authDetail.set(getDescription(certificationType))
                     this.status.set(CertOperations.getCertStatus(certificationType))
-                    if(CertOperations.getCertStatus(certificationType)==UserCertStatus.DONE){
-                        certDoneNum+=1
+                    if (CertOperations.getCertStatus(certificationType) == UserCertStatus.DONE) {
+                        certDoneNum += 1
                     }
                     this.certificationType.set(certificationType)
                     this.performOperationEvent.observe(this@MyCreditNewActivity, Observer {
@@ -176,20 +175,20 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
 
     override fun onResume() {
         super.onResume()
-         setVM()
+        setVM()
         refreshCertStatus()
         getCloudToken()
         worhavah.certs.tools.CertOperations.certPrefs.certLasttime.get().apply {
-            if(TextUtils.isEmpty(this)){
-                binding.tvShowtime.visibility=View.GONE
-            }else{
-                binding.tvShowtime.visibility=View.VISIBLE
-                binding.tvShowtime.text="更新时间："+this
+            if (TextUtils.isEmpty(this)) {
+                binding.tvShowtime.visibility = View.GONE
+            } else {
+                binding.tvShowtime.visibility = View.VISIBLE
+                binding.tvShowtime.text = "更新时间：" + this
             }
         }
     }
 
-     var aa=15;
+    var aa = 15;
     private fun refreshCertStatus() {
         listOf(binding.asIdVm, binding.asBankVm, binding.asMobileVm, binding.asPersonalVm).forEach {
             it?.let { vm ->
@@ -220,7 +219,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                         }
                         .io_main()
                         .doFinally {
-                                refreshCertStatus()
+                            refreshCertStatus()
                         }
                         .subscribeBy(
                                 onSuccess = {
@@ -242,72 +241,73 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                 //get report
                 val passport = App.get().passportRepository.getCurrentPassport()!!
                 getTNLogReport(passport)
-                    .flatMap {
+                        .flatMap {
 
-                        if(null!=it){
-                            //Log.e("getTNLogReport",it.reportData.toString())
-                            if(it.endorserOrder.status.contains("COMPELETED")){
-                              //  android.util.Log.e("it.reportData ", it.tongniuData.toString() )
-                                onTNLogSuccessGot(it.tongniuData.toString() )
-                                worhavah.certs.tools.CertOperations.certed()
-                                clearTNCertCache()
-                                setVM()
-                               // getTNrealdata()
-                            }else if(it.endorserOrder.status.contains("INVALID")){
-                                toast("获取报告失败")
-                                worhavah.certs.tools.CertOperations.certPrefs.certTNLogState.set(
-                                    worhavah.certs.tools.UserCertStatus.NONE.name)
-                                clearTNCertCache()
-                                aa=0
-                                setVM()
-                            }
-                        }
-                        App.get().chainGateway.getCertData(passport.address, ChainGateway.TN_COMMUNICATION_LOG).check()
-                    }
-                    .doFinally {
-                    aa+=-1
-                    if(aa>0){
-                        refreshCertStatus()
-                    }
-                }
-                    .subscribeBy(
-                        onSuccess = {
-                            val content = it.content
-                            if (0L != content.expired) {
-                                 saveTnLogCertExpired(content.expired)
-                            }
-                           /* if(null!=it){
-                                if(it.isComplete.equals("Y")){
-                                    onTNLogSuccessGot(it.reportData.toString())
+                            if (null != it) {
+                                //Log.e("getTNLogReport",it.reportData.toString())
+                                if (it.endorserOrder.status.contains("COMPELETED")) {
+                                    //  android.util.Log.e("it.reportData ", it.tongniuData.toString() )
+                                    onTNLogSuccessGot(it.tongniuData.toString())
+                                    worhavah.certs.tools.CertOperations.certed()
+                                    clearTNCertCache()
+                                    setVM()
+                                    // getTNrealdata()
+                                } else if (it.endorserOrder.status.contains("INVALID")) {
+                                    toast("获取报告失败")
+                                    worhavah.certs.tools.CertOperations.certPrefs.certTNLogState.set(
+                                            worhavah.certs.tools.UserCertStatus.NONE.name)
+                                    clearTNCertCache()
+                                    aa = 0
                                     setVM()
                                 }
-                            }*/
-                        },
-                        onError = {
-                            toast("获取报告失败")
-                            worhavah.certs.tools.CertOperations.certPrefs.certTNLogState.set(
-                                worhavah.certs.tools.UserCertStatus.NONE.name)
-                            clearTNCertCache()
-                            aa=0
-                            setVM()
-                           // Pop.toast(it.message ?: "系统错误", this)
-                        })
+                            }
+                            App.get().chainGateway.getCertData(passport.address, ChainGateway.TN_COMMUNICATION_LOG).check()
+                        }
+                        .doFinally {
+                            aa += -1
+                            if (aa > 0) {
+                                refreshCertStatus()
+                            }
+                        }
+                        .subscribeBy(
+                                onSuccess = {
+                                    val content = it.content
+                                    if (0L != content.expired) {
+                                        saveTnLogCertExpired(content.expired)
+                                    }
+                                    /* if(null!=it){
+                                         if(it.isComplete.equals("Y")){
+                                             onTNLogSuccessGot(it.reportData.toString())
+                                             setVM()
+                                         }
+                                     }*/
+                                },
+                                onError = {
+                                    toast("获取报告失败")
+                                    worhavah.certs.tools.CertOperations.certPrefs.certTNLogState.set(
+                                            worhavah.certs.tools.UserCertStatus.NONE.name)
+                                    clearTNCertCache()
+                                    aa = 0
+                                    setVM()
+                                    // Pop.toast(it.message ?: "系统错误", this)
+                                })
 
             }
         }
     }
-    fun getTNrealdata(){
-        getTNLogReport2(App.get().passportRepository.getCurrentPassport()!!) .subscribeBy(
-            onSuccess = {
-               // android.util.Log.e(" getTNLogReport2 ", it  )
-                val ss=it
-                var dd=ss.substring(it.indexOf("\"reportData\":\"")+14,it.length-2)
-               // android.util.Log.e(" getTNLogReport2 dddddd", dd  )
-                onTNLogSuccessGot(dd )
-                setVM()
 
-                it
-            }
+    fun getTNrealdata() {
+        getTNLogReport2(App.get().passportRepository.getCurrentPassport()!!).subscribeBy(
+                onSuccess = {
+                    // android.util.Log.e(" getTNLogReport2 ", it  )
+                    val ss = it
+                    var dd = ss.substring(it.indexOf("\"reportData\":\"") + 14, it.length - 2)
+                    // android.util.Log.e(" getTNLogReport2 dddddd", dd  )
+                    onTNLogSuccessGot(dd)
+                    setVM()
+
+                    it
+                }
         )
     }
 
@@ -315,37 +315,38 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
         require(passport.authKey != null)
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
-        val orderId =worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.get()
+        val orderId = worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.get()
 
-           return  worhavah.certs.tools.CertOperations.tnCertApi.TNgetReport(
-            address = address,
-            orderId = orderId,
+        return worhavah.certs.tools.CertOperations.tnCertApi.TNgetReport(
+                address = address,
+                orderId = orderId,
 
-            signature = ParamSignatureUtil.sign(
-                privateKey, mapOf(
-                    "address" to address,
-                    "orderId" to orderId.toString()
+                signature = ParamSignatureUtil.sign(
+                        privateKey, mapOf(
+                        "address" to address,
+                        "orderId" to orderId.toString()
                 )
-            )
+                )
         ).compose(Result.checked())
-               //.compose(Result.checked())
+        //.compose(Result.checked())
     }
+
     fun getTNLogReport2(passport: Passport): Single<String> {
         require(passport.authKey != null)
         val address = passport.address
         val privateKey = passport.authKey!!.getPrivateKey()
-        val orderId =worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.get()
+        val orderId = worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.get()
 
-        return  worhavah.certs.tools.CertOperations.tnCertApi.TNgetReport2(
-            address = address,
-            orderId = orderId,
+        return worhavah.certs.tools.CertOperations.tnCertApi.TNgetReport2(
+                address = address,
+                orderId = orderId,
 
-            signature = ParamSignatureUtil.sign(
-                privateKey, mapOf(
-                    "address" to address,
-                    "orderId" to orderId.toString()
+                signature = ParamSignatureUtil.sign(
+                        privateKey, mapOf(
+                        "address" to address,
+                        "orderId" to orderId.toString()
                 )
-            )
+                )
         )
         //.compose(Result.checked())
     }
@@ -456,7 +457,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
             CertificationType.TONGNIU -> {
                 when (status) {
                     UserCertStatus.DONE, UserCertStatus.TIMEOUT -> {
-                       // navigateTo(TnLogCertificationActivity::class.java)
+                        // navigateTo(TnLogCertificationActivity::class.java)
                         startActivity(Intent(this, TnLogCertificationActivity::class.java))
                     }
                     UserCertStatus.NONE -> {
@@ -468,16 +469,16 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                     }
                     UserCertStatus.INCOMPLETE -> {
                         // get report processing
-                  //      startActivity(Intent(this, SubmitTNLogActivity::class.java))
+                        //      startActivity(Intent(this, SubmitTNLogActivity::class.java))
                     }
                 }
 
-                }
+            }
             CertificationType.LOANREPORT -> {
                 PassportOperations.ensureCaValidity(this) {
                     //  navigateTo(worhavah.tongniucertmodule.TNCertDataActivity::class.java)
                     //     startActivity(Intent(this, TnLogCertificationActivity::class.java))
-                //    startActivity(Intent(this, SubmitTNLogActivity::class.java))
+                    //    startActivity(Intent(this, SubmitTNLogActivity::class.java))
                     navigateTo(LoanReportActivity::class.java)
                 }
             }

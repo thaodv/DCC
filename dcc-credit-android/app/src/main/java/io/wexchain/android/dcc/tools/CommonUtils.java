@@ -9,7 +9,13 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.sql.Struct;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.wexchain.android.dcc.App;
 import io.wexchain.dcc.R;
@@ -19,7 +25,7 @@ import io.wexchain.dcc.R;
  * usage:
  */
 public class CommonUtils {
-    
+
     public static String getRealFilePath(final Context context, final Uri uri) {
         if (null == uri) {
             return null;
@@ -45,7 +51,7 @@ public class CommonUtils {
         }
         return data;
     }
-    
+
     private static Uri getUri(Context context, String path) {
         Uri uri = null;
         if (path != null) {
@@ -75,7 +81,7 @@ public class CommonUtils {
         }
         return uri;
     }
-    
+
     public static Uri str2Uri(String str) {
         if (TextUtils.isEmpty(str) || str == "null") {
             return getUriFromDrawableRes(App.get(), R.drawable.icon_default_avatar);
@@ -83,14 +89,14 @@ public class CommonUtils {
             return Uri.parse(str);
         }
     }
-    
+
     private static Uri getUriFromDrawableRes(Context context, int id) {
         Resources resources = context.getResources();
         String path = ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + resources.getResourcePackageName
                 (id) + "/" + resources.getResourceTypeName(id) + "/" + resources.getResourceEntryName(id);
         return Uri.parse(path);
     }
-    
+
     public static String setStatusName(int code) {
         if (0 == code) {
             return "添加";
@@ -99,8 +105,103 @@ public class CommonUtils {
         }
     }
 
-    public static String rePay(String arg1,String arg2){
-        return App.get().getResources().getString(R.string.please_transfer,arg1,arg2);
+    public static String rePay(String arg1, String arg2) {
+        return App.get().getResources().getString(R.string.please_transfer, arg1, arg2);
     }
-    
+
+    /**
+     * 获取mac地址
+     *
+     * @return
+     */
+    public static String getMacAddress() {
+        String macAddress = "";
+        StringBuffer buf = new StringBuffer();
+        NetworkInterface networkInterface = null;
+        try {
+            networkInterface = NetworkInterface.getByName("eth1");
+            if (networkInterface == null) {
+                networkInterface = NetworkInterface.getByName("wlan0");
+            }
+            if (networkInterface == null) {
+                return "02:00:00:00:00:02";
+            }
+            byte[] addr = networkInterface.getHardwareAddress();
+            for (byte b : addr) {
+                buf.append(String.format("%02X:", b));
+            }
+            if (buf.length() > 0) {
+                buf.deleteCharAt(buf.length() - 1);
+            }
+            macAddress = buf.toString();
+        } catch (SocketException e) {
+            e.printStackTrace();
+            return "02:00:00:00:00:02";
+        }
+        return macAddress;
+    }
+
+    /**
+     * 校验密码 （字母数字特殊符号至少2种混合）
+     *
+     * @param password
+     * @return
+     */
+    public static boolean checkPassword(String password) {
+        String criteriaPassword = "^(?![\\d]+$)(?![a-zA-Z]+$)(?![^\\da-zA-Z]+$).{8,20}$";
+        Pattern pattern = Pattern.compile(criteriaPassword);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
+    /**
+     * 获取packageName
+     *
+     * @return
+     */
+    public static String getPackageName() {
+        return App.get().getApplicationInfo().packageName;
+    }
+
+
+    public static boolean isRooted() {
+        // nexus 5x "/su/bin/"
+        String[] paths = {"/system/xbin/", "/system/bin/", "/system/sbin/", "/sbin/", "/vendor/bin/", "/su/bin/"};
+        try {
+            for (int i = 0; i < paths.length; i++) {
+                String path = paths[i] + "su";
+                if (new File(path).exists()) {
+                    String execResult = exec(new String[]{"ls", "-l", path});
+                    Log.d("cyb", "isRooted=" + execResult);
+                    if (TextUtils.isEmpty(execResult) || execResult.indexOf("root") == execResult.lastIndexOf("root")) {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private static String exec(String[] exec) {
+        String ret = "";
+        ProcessBuilder processBuilder = new ProcessBuilder(exec);
+        try {
+            Process process = processBuilder.start();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                ret += line;
+            }
+            process.getInputStream().close();
+            process.destroy();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+
 }

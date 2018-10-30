@@ -8,7 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
-import worhavah.regloginlib.tools.isPasswordValid
+import io.wexchain.android.dcc.tools.CommonUtils
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.UseProtect
 import io.wexchain.dcc.R
@@ -23,8 +23,6 @@ class ModifyPassword(application: Application) : AndroidViewModel(application), 
 
     private val passportRepo = App.get().passportRepository
 
-    private val oldPasswd = passportRepo.getPassword()
-
     val inputCurrentPassword = InputPasswordVm(application).apply {
         this.passwordValidator = { isOldPasswordValid(it) }
         this.passwordHint.set(application.getString(R.string.please_input_current_passport_password))
@@ -38,6 +36,7 @@ class ModifyPassword(application: Application) : AndroidViewModel(application), 
     val passwordCheckInvalidEvent = SingleLiveEvent<Void>()
     val modifyPasswordFailEvent = SingleLiveEvent<String>()
     val oldpasswordErrorEvent = SingleLiveEvent<String>()
+    val newPasswdErrorEvent = SingleLiveEvent<String>()
 
 
     fun clickModify() {
@@ -45,36 +44,41 @@ class ModifyPassword(application: Application) : AndroidViewModel(application), 
         val inputNewPw = inputNewPassword.password.get()
         inputPw ?: return
         inputNewPw ?: return
-        if (isOldPasswordValid(inputPw) && isPasswordValid(inputNewPw)) {
 
-            if (passportRepo.getPassword() == inputPw) {
-                verifyProtect {
-                    val passport = passportRepo.getCurrentPassport()
-                    if (passport == null) {
-                        //todo
-                        return@verifyProtect
+        if (isOldPasswordValid(inputPw)) {
+
+            if (CommonUtils.checkPassword(inputNewPw)) {
+                if (passportRepo.getDecryptPasswd() == inputPw) {
+                    verifyProtect {
+                        val passport = passportRepo.getCurrentPassport()
+                        if (passport == null) {
+                            //todo
+                            return@verifyProtect
+                        }
+
+                        Single.just(inputNewPw)
+                                .observeOn(Schedulers.io())
+                                .map {
+                                    passportRepo.changePassword(passport, inputNewPw)
+                                }
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .doOnSubscribe {
+                                    loadingEvent.value = true
+                                }
+                                .doFinally {
+                                    loadingEvent.value = false
+                                }
+                                .subscribe({
+                                    modifyPasswordSuccessEvent.call()
+                                }, {
+                                    modifyPasswordFailEvent.call()
+                                })
                     }
-
-                    Single.just(inputNewPw)
-                            .observeOn(Schedulers.io())
-                            .map {
-                                passportRepo.changePassword(passport, inputNewPw)
-                            }
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .doOnSubscribe {
-                                loadingEvent.value = true
-                            }
-                            .doFinally {
-                                loadingEvent.value = false
-                            }
-                            .subscribe({
-                                modifyPasswordSuccessEvent.call()
-                            }, {
-                                modifyPasswordFailEvent.call()
-                            })
+                } else {
+                    oldpasswordErrorEvent.call()
                 }
             } else {
-                oldpasswordErrorEvent.call()
+                newPasswdErrorEvent.call()
             }
         } else {
             passwordCheckInvalidEvent.call()

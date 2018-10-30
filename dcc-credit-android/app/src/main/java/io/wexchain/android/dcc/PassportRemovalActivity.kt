@@ -3,13 +3,12 @@ package io.wexchain.android.dcc
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.view.View
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
-import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
@@ -18,7 +17,7 @@ import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.tools.SharedPreferenceUtil
-import io.wexchain.android.dcc.view.dialog.CustomDialog
+import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
@@ -96,7 +95,20 @@ class PassportRemovalActivity : BaseCompatActivity() {
     }
 
     private fun showConfirmDeleteDialog() {
-        val view = layoutInflater.inflate(R.layout.dialog_notice_remove_passport, null)
+        val dialog = UpgradeDialog(this)
+        dialog.removePassportDialog()
+                .onClick(
+                        onCancle = {
+                            dialog.dismiss()
+                            toBackup()
+                        },
+                        onConfirm = {
+                            dialog.dismiss()
+                            performPassportDelete()
+                        })
+
+
+        /*val view = layoutInflater.inflate(R.layout.dialog_notice_remove_passport, null)
         view.findViewById<View>(R.id.tv_passport_backup).setOnClickListener {
             toBackup()
         }
@@ -110,7 +122,7 @@ class PassportRemovalActivity : BaseCompatActivity() {
                     }
                     withNegativeButton()
                 }
-                .assembleAndShow()
+                .assembleAndShow()*/
     }
 
     private fun performPassportDelete() {
