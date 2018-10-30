@@ -16,4 +16,5 @@
 //是否是私链
 @property (nonatomic,assign)BOOL isPrivateChain;
 
+
 @end

@@ -20,6 +20,7 @@
 #import "WeXWalletTransferResultManager.h"
 #import "WeXSaveAddressBookObject.h"
 #import "WeXWalletAlertWithCancelButtonView.h"
+#import "WeXCPCompoundCell.h"
 
 #define kDccTransDetailViewHeight 350
 #define kEthTransDetailViewHeight 450
@@ -60,8 +61,15 @@
 }
 
 @property (nonatomic,strong)WeXWalletInfuraGetGasPriceAdapter *gasPriceAdapter;
+@property (nonatomic, copy) NSString *walletBalance;
+//是否是私链或者是DCC
+@property (nonatomic, assign) BOOL isPrivateDCC;
+@property (nonatomic, copy) NSString *allWalletValue;
+
 
 @end
+
+static NSString * const kCompoundCellID = @"WeXCPCompoundCellID";
 
 @implementation WeXWalletTransferViewController
 
@@ -81,10 +89,41 @@
         [self getGasPrice];
 //        [self getGasLimitRequest];
     }
+    [self registerCell];
+}
+//获取钱包相应代币的余额
+- (void)getWalletBalance {
+    if ([self.tokenModel.symbol isEqualToString:@"ETH"]) {
+        [[WXPassHelper instance] getETHBalance2WithContractAddress:[WexCommonFunc getFromAddress] type:YTF_DEVELOP_INFURA_SERVER responseBlock:^(id response) {
+            NSString *balace = [WexCommonFunc formatterStringWithContractBalance:response decimals:18];
+            [self setWalletBalance:balace];
+        }];
+    }
+    else if (!([self.tokenModel.symbol isEqualToString:@"DCC"]&&self.isPrivateChain)) {
+        /** 连接以太坊(开发，测试，生产环境地址值不同，建议用宏区分不同开发环境) */
+        [[WXPassHelper instance] initProvider:YTF_DEVELOP_INFURA_SERVER responseBlock:^(id response) {
+            NSString *abiJson = WEX_ERC20_ABI_BALANCE;
+            NSString *pararms = [NSString stringWithFormat:@"[\'%@\']",[WexCommonFunc getFromAddress]];
+            [[WXPassHelper instance] encodeFunCallAbiInterface:abiJson params:pararms responseBlock:^(id response) {
+                [[WXPassHelper instance] callContractAddress:self.tokenModel.contractAddress data:response responseBlock:^(id response) {
+                    NSDictionary *responseDict = response;
+                    NSString * originBalance =[responseDict objectForKey:@"result"];
+                    NSString * ethException =[responseDict objectForKey:@"ethException"];
+                    if (![ethException isEqualToString:@"ethException"]) {
+                        NSString *balace = [WexCommonFunc formatterStringWithContractBalance:originBalance decimals:[self.tokenModel.decimals integerValue]];
+                        [self setWalletBalance:balace];
+                    }
+                }];
+            }];
+        }];
+    }
+}
+- (void)setWalletBalance:(NSString *)walletBalance {
+    _walletBalance = walletBalance;
+    [self->_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (void)commonInit{
-    
     _urserModel = [WexCommonFunc getPassport];
 }
 
@@ -105,17 +144,14 @@
 }
 
 - (void)createGetBalaceRequest{
-    
-    if ([self.tokenModel.symbol isEqualToString:@"ETH"])
-    {
+    if ([self.tokenModel.symbol isEqualToString:@"ETH"]) {
         [[WXPassHelper instance] getETHBalance2WithContractAddress:[WexCommonFunc getFromAddress] type:YTF_DEVELOP_INFURA_SERVER responseBlock:^(id response) {
             NSString *balace = [WexCommonFunc formatterStringWithContractBalance:response decimals:18];
             _ethTransDetailView.balanceLabel.text = [NSString stringWithFormat:@"%@ETH",balace];
             _balace = balace;
         }];
     }
-    else if ([self.tokenModel.symbol isEqualToString:@"DCC"]&&self.isPrivateChain)
-    {
+    else if ([self.tokenModel.symbol isEqualToString:@"DCC"]&&self.isPrivateChain) {
         NSString *abiJson = WEX_ERC20_ABI_BALANCE;
         //参数为需要查询的地址
         NSString *pararms = [NSString stringWithFormat:@"[\'%@\']",[WexCommonFunc getFromAddress]];
@@ -136,8 +172,7 @@
               }];
          }];
     }
-    else
-    {
+    else {
         /** 连接以太坊(开发，测试，生产环境地址值不同，建议用宏区分不同开发环境) */
         [[WXPassHelper instance] initProvider:YTF_DEVELOP_INFURA_SERVER responseBlock:^(id response)
          {
@@ -170,11 +205,9 @@
       
          }];
     }
-    
 }
 
-- (void)getGasLimitRequest
-{
+- (void)getGasLimitRequest {
     if ([self.tokenModel.symbol isEqualToString:@"ETH"])
     {
         [[WXPassHelper instance] initProvider:YTF_DEVELOP_INFURA_SERVER responseBlock:^(id response) {
@@ -340,8 +373,7 @@
 
 
 //资产详情页
-- (void)jumpToAssetDetailController
-{
+- (void)jumpToAssetDetailController {
     if (self.useOriginalAmount) {
         !self.DidTransferAmount ? : self.DidTransferAmount();
     }
@@ -377,7 +409,6 @@
 
 //初始化滚动视图
 -(void)setupSubViews{
-    
     _tableView = [[UITableView alloc] init];
     [self.view addSubview:_tableView];
     _tableView.delegate = self;
@@ -390,9 +421,7 @@
         make.top.equalTo(self.view).offset(kNavgationBarHeight);
         make.leading.bottom.trailing.equalTo(self.view);
     }];
-    if ([self.tokenModel.symbol isEqualToString:@"DCC"]&&self.isPrivateChain)
-    {
-        
+    if ([self.tokenModel.symbol isEqualToString:@"DCC"]&&self.isPrivateChain) {
         UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _tableView.frame.size.width, 100)];
         _tableView.tableFooterView = footerView;
         
@@ -455,15 +484,15 @@
         make.trailing.equalTo(self.view).offset(-15);
         make.height.equalTo(@50);
     }];
-    
-    
 }
 
+// MARK: - //  注册Cell
+- (void)registerCell {
+    [_tableView registerClass:[WeXCPCompoundCell class] forCellReuseIdentifier:kCompoundCellID];
+}
 
 - (void)nextBtnClick{
-    
-     [self.view endEditing:YES];
-    
+    [self.view endEditing:YES];
     if ([self.tokenModel.symbol isEqualToString:@"DCC"]&&self.isPrivateChain)
     {
         if (_toAddressTextField.text.length == 0||[_toAddressTextField.text isEqualToString:@""]) {
@@ -495,9 +524,9 @@
         }
     }
     
-   
+    
     if (self.transferType == WeXWalletTransferTypeEdit) {
-         NSDecimalNumber *gasPrice = [WexCommonFunc stringWithOriginString:self.recordModel.gasPrice dividString:NINE_ZERO];
+        NSDecimalNumber *gasPrice = [WexCommonFunc stringWithOriginString:self.recordModel.gasPrice dividString:NINE_ZERO];
         if ([_gasPriceTextField.text floatValue] <= [gasPrice floatValue]) {
             WeXWalletAlertWithCancelButtonView *alertView = [[WeXWalletAlertWithCancelButtonView alloc] initWithFrame:self.view.bounds];
             NSString *content = [NSString stringWithFormat:WeXLocalizedString(@"Gas Price>%@Gwei(原交易的Gas Price)，才可以提交编辑的交易。"),gasPrice];
@@ -505,87 +534,18 @@
             [self.view addSubview:alertView];
             return;
         }
-        
     }
     
-    if ([self.tokenModel.symbol isEqualToString:@"ETH"])
-    {
-//        [[WXPassHelper instance] initProvider:YTF_DEVELOP_INFURA_SERVER responseBlock:^(id response) {
-//            [[WXPassHelper instance] getGasLimitWithToAddress:_toAddressTextField.text fromAddress:[_urserModel.keyStore objectForKey:@"address"] data:@"0x" responseBlock:^(id response) {
-//                NSLog(@"response=%@",response);
-//                //异常情况
-//                if ([response isKindOfClass:[NSDictionary class]]) {
-//                    [WeXPorgressHUD showText:WeXLocalizedString(@"服务器异常!") onView:self.view];
-//                }
-//                else
-//                {
-//                    NSString *gasLimit1 = _gasLimitTextField.text;
-//                    NSString *gasLimit2 = [NSString stringWithFormat:@"%@",response];
-//                    //用户输入的小于网络获取的
-//                    if ([gasLimit1 floatValue] < [gasLimit2 floatValue]) {
-//                        UIAlertAction *alert = [UIAlertAction actionWithTitle:WeXLocalizedString(@"确定") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//                        }];
-//                        UIAlertController *alertCtrl = [UIAlertController alertControllerWithTitle:WeXLocalizedString(@"提示") message:WeXLocalizedString(@"Gas Limit不足请重新设置") preferredStyle:UIAlertControllerStyleAlert];
-//                        [alertCtrl addAction:alert];
-//                        [self presentViewController:alertCtrl animated:YES completion:nil];
-//                    }
-//                    else
-//                    {
-//                        [self createTransferDetailView];
-//                    }
-//                }
-//
-//            }];
-//        }];
-            [self createTransferDetailView];
-
-    }
-    else if ([self.tokenModel.symbol isEqualToString:@"DCC"]&&self.isPrivateChain)
-    {
+    if ([self.tokenModel.symbol isEqualToString:@"ETH"]) {
         [self createTransferDetailView];
     }
-    else
-    {
-        
+    else if ([self.tokenModel.symbol isEqualToString:@"DCC"]&&self.isPrivateChain) {
         [self createTransferDetailView];
-        
-//        [[WXPassHelper instance] initProvider:YTF_DEVELOP_INFURA_SERVER responseBlock:^(id response) {
-//            NSString *abiJson1 = WEX_ERC20_ABI_TRANSFER;
-//            NSString *value = [[WexCommonFunc stringWithOriginString:_valueTextField.text multiplyString:EIGHTEEN_ZERO] stringValue];
-//            NSString *pararms1 = [NSString stringWithFormat:@"[\'%@\',\'%@\']",_toAddressTextField.text,value];
-//            
-//            [[WXPassHelper instance] encodeFunCallAbiInterface:abiJson1 params:pararms1 responseBlock:^(id response){
-//                [[WXPassHelper instance] getGasLimitWithToAddress:self.tokenModel.contractAddress fromAddress:[WexCommonFunc getFromAddress] data:response responseBlock:^(id response) {
-//                    NSLog(@"response=%@",response);
-//                    //异常情况
-//                    if ([response isKindOfClass:[NSDictionary class]]) {
-//                        [WeXPorgressHUD showText:WeXLocalizedString(@"服务器异常!") onView:self.view];
-//                    }
-//                    else
-//                    {
-//                        NSString *gasLimit1 = _gasLimitTextField.text;
-//                        NSString *gasLimit2 = [NSString stringWithFormat:@"%@",response];
-//                        //用户输入的小于网络获取的
-//                        if ([gasLimit1 floatValue] < [gasLimit2 floatValue]) {
-//                            UIAlertAction *alert = [UIAlertAction actionWithTitle:WeXLocalizedString(@"确定") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//                            }];
-//                            UIAlertController *alertCtrl = [UIAlertController alertControllerWithTitle:WeXLocalizedString(@"提示") message:WeXLocalizedString(@"Gas Limit不足请重新设置") preferredStyle:UIAlertControllerStyleAlert];
-//                            [alertCtrl addAction:alert];
-//                            [self presentViewController:alertCtrl animated:YES completion:nil];
-//                        }
-//                        else
-//                        {
-//                            [self createTransferDetailView];
-//                        }
-//                    }
-//                   
-//                }];
-//                
-//            }];
-//        }];
-//        
     }
-   
+    else {
+        [self createTransferDetailView];
+    }
+    
 }
 
 // MARK: - 转账2018.7.24 (弹出底部页面)
@@ -595,7 +555,6 @@
     _detailCoverView.backgroundColor = [UIColor blackColor];
     _detailCoverView.alpha = COVER_VIEW_ALPHA;
     [self.view addSubview:_detailCoverView];
-    
     
     if([self.tokenModel.symbol isEqualToString:@"ETH"])
     {
@@ -638,9 +597,6 @@
             }
             
             [self configLocalSafetyView];
-            
-          
-            
         };
     }
     else if ([self.tokenModel.symbol isEqualToString:@"DCC"]&&self.isPrivateChain)
@@ -725,147 +681,149 @@
             
         };
     }
-    
     [self createGetBalaceRequest];
-    
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return _isPrivateDCC ? 1 : 2;
+}
 
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    if ([self.tokenModel.symbol isEqualToString:@"DCC"]&&self.isPrivateChain)
-    {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if ([self.tokenModel.symbol isEqualToString:@"DCC"]&&self.isPrivateChain) {
         return 2;
     }
-    return 5;
+    return 3;
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    WeXWalletTransferCell * cell = nil;
-    if (indexPath.row == 0) {
-        WeXWalletTransferWithButtonCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:2];
-        cell.contentTextField.placeholder = WeXLocalizedString(@"收款人钱包地址");
-        if (self.transferType == WeXWalletTransferTypeEdit) {
-            cell.contentTextField.text = self.recordModel.to;
-        }
-        else
-        {
-            if(_addressStr.length>0){
-                cell.contentTextField.text = _addressStr;
-            }
-        }
-        
-        [cell.scanButton addTarget:self action:@selector(goChooseAddressClick) forControlEvents:UIControlEventTouchUpInside];
-        _toAddressTextField = cell.contentTextField;
-        cell.backgroundColor = [UIColor clearColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [_toAddressTextField setValue:COLOR_LABEL_DESCRIPTION forKeyPath:@"_placeholderLabel.textColor"];
-        cell.contentTextField.textColor = COLOR_LABEL_DESCRIPTION;
-        
-        return cell;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell * cell = nil;
+    if (_isPrivateDCC) {
+        cell = [self configurePrivateDCCWithTableView:tableView indexPath:indexPath];
     }
-    else if (indexPath.row == 1)
-    {
-        WeXWalletTransferNormalCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:1];
-        cell.contentTextField.placeholder = WeXLocalizedString(@"转账金额");
-        UILabel *leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,120,50)];
-        leftLabel.text = WeXLocalizedString(@"金额");
-        leftLabel.font = [UIFont systemFontOfSize:17];
-        leftLabel.textColor = COLOR_LABEL_DESCRIPTION;
-        cell.contentTextField.leftViewMode = UITextFieldViewModeAlways;
-        cell.contentTextField.leftView = leftLabel;
-        [cell.contentTextField setValue:COLOR_LABEL_DESCRIPTION forKeyPath:@"_placeholderLabel.textColor"];
-        cell.contentTextField.textColor = COLOR_LABEL_DESCRIPTION;
-        cell.backgroundColor = [UIColor clearColor];
-        _valueTextField = cell.contentTextField;
-        _valueTextField.delegate = self;
-        _valueTextField.keyboardType = UIKeyboardTypeDecimalPad;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        if (self.transferType == WeXWalletTransferTypeEdit) {
-            NSString *valueStr = [WexCommonFunc formatterStringWithContractBalance:self.recordModel.value decimals:18];
-            cell.contentTextField.text = valueStr;
-        } else {
-            //2018.8.7 还款流程修改
-            if (self.useOriginalAmount) {
-                cell.contentTextField.text = self.recordModel.value;
-            }
-        }
-        
-        return cell;
+    else {
+        cell = [self configurePublicTokenCellWithTableView:tableView indexPath:indexPath];
     }
-    else if (indexPath.row == 2)
-    {
-        WeXWalletTransferWithLabelCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:3];
-        cell.contentTextField.placeholder = WeXLocalizedString(@"自定义Gas Price");
-        UILabel *leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,120,50)];
-        leftLabel.text = @"Gas Price";
-        leftLabel.font = [UIFont systemFontOfSize:17];
-        leftLabel.textColor = COLOR_LABEL_DESCRIPTION;
-        cell.contentTextField.leftViewMode = UITextFieldViewModeAlways;
-        cell.contentTextField.leftView = leftLabel;
-        [cell.contentTextField setValue:COLOR_LABEL_DESCRIPTION forKeyPath:@"_placeholderLabel.textColor"];
-        cell.contentTextField.textColor = COLOR_LABEL_DESCRIPTION;
-        
-        cell.backgroundColor = [UIColor clearColor];
-        _gasPriceTextField = cell.contentTextField;
-        _gasPriceTextField.delegate = self;
-        _gasPriceTextField.keyboardType = UIKeyboardTypeDecimalPad;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        if (self.transferType == WeXWalletTransferTypeEdit) {
-            NSDecimalNumber *gasPrice = [WexCommonFunc stringWithOriginString:self.recordModel.gasPrice dividString:NINE_ZERO];
-            cell.contentTextField.text = [gasPrice stringValue];
-        }
-        
-        return cell;
-    }
-    else if (indexPath.row == 3)
-    {
-        WeXWalletTransferNormalCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:1];
-        _gasLimitTextField = cell.contentTextField;
-        _gasLimitTextField.placeholder = WeXLocalizedString(@"自定义Gas Limit");
-        UILabel *leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,120,50)];
-        leftLabel.text = @"Gas Limit";
-        leftLabel.font = [UIFont systemFontOfSize:17];
-        leftLabel.textColor = COLOR_LABEL_DESCRIPTION;
-        cell.contentTextField.leftViewMode = UITextFieldViewModeAlways;
-        cell.contentTextField.leftView = leftLabel;
-        [cell.contentTextField setValue:COLOR_LABEL_DESCRIPTION forKeyPath:@"_placeholderLabel.textColor"];
-        cell.contentTextField.textColor = COLOR_LABEL_DESCRIPTION;
-        
-        _gasLimitTextField.delegate = self;
-        _gasLimitTextField.keyboardType = UIKeyboardTypeDecimalPad;
-        cell.backgroundColor = [UIColor clearColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        if (self.transferType == WeXWalletTransferTypeEdit) {
-            
-            cell.contentTextField.text = self.recordModel.gasLimit;
-        }
-        
-        return cell;
-    }
-    else if (indexPath.row == 4)
-    {
-        WeXWalletTransferWithTwoLabelCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:4];
-        cell.backgroundColor = [UIColor clearColor];
-        _costLabel = cell.costLabel;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.costLabel.textColor = COLOR_LABEL_DESCRIPTION;
-        cell.titleLabel.textColor = COLOR_LABEL_DESCRIPTION;
-        cell.titleLabel.font = [UIFont systemFontOfSize:17];
-        
-        if (self.transferType == WeXWalletTransferTypeEdit) {
-            _cost = [_gasPriceTextField.text floatValue]*[_gasLimitTextField.text floatValue]*powf(10, -9);
-            _costLabel.text = [NSString stringWithFormat:@"%.4fETH",[_gasPriceTextField.text floatValue]*[_gasLimitTextField.text floatValue]*powf(10, -9)];
-        }
-        return cell;
-    }
+//    if (indexPath.row == 0) {
+//        WeXWalletTransferWithButtonCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:2];
+//        cell.contentTextField.placeholder = WeXLocalizedString(@"收款人钱包地址");
+//        if (self.transferType == WeXWalletTransferTypeEdit) {
+//            cell.contentTextField.text = self.recordModel.to;
+//        }
+//        else
+//        {
+//            if(_addressStr.length>0){
+//                cell.contentTextField.text = _addressStr;
+//            }
+//        }
+//
+//        [cell.scanButton addTarget:self action:@selector(goChooseAddressClick) forControlEvents:UIControlEventTouchUpInside];
+//        _toAddressTextField = cell.contentTextField;
+//        cell.backgroundColor = [UIColor clearColor];
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        [_toAddressTextField setValue:COLOR_LABEL_DESCRIPTION forKeyPath:@"_placeholderLabel.textColor"];
+//        cell.contentTextField.textColor = COLOR_LABEL_DESCRIPTION;
+//
+//        return cell;
+//    }
+//    else if (indexPath.row == 1)
+//    {
+//        WeXWalletTransferNormalCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:1];
+//        cell.contentTextField.placeholder = WeXLocalizedString(@"转账金额");
+//        UILabel *leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,120,50)];
+//        leftLabel.text = WeXLocalizedString(@"金额");
+//        leftLabel.font = [UIFont systemFontOfSize:17];
+//        leftLabel.textColor = COLOR_LABEL_DESCRIPTION;
+//        cell.contentTextField.leftViewMode = UITextFieldViewModeAlways;
+//        cell.contentTextField.leftView = leftLabel;
+//        [cell.contentTextField setValue:COLOR_LABEL_DESCRIPTION forKeyPath:@"_placeholderLabel.textColor"];
+//        cell.contentTextField.textColor = COLOR_LABEL_DESCRIPTION;
+//        cell.backgroundColor = [UIColor clearColor];
+//        _valueTextField = cell.contentTextField;
+//        _valueTextField.delegate = self;
+//        _valueTextField.keyboardType = UIKeyboardTypeDecimalPad;
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//
+//        if (self.transferType == WeXWalletTransferTypeEdit) {
+//            NSString *valueStr = [WexCommonFunc formatterStringWithContractBalance:self.recordModel.value decimals:18];
+//            cell.contentTextField.text = valueStr;
+//        } else {
+//            //2018.8.7 还款流程修改
+//            if (self.useOriginalAmount) {
+//                cell.contentTextField.text = self.recordModel.value;
+//            }
+//        }
+//
+//        return cell;
+//    }
+//    else if (indexPath.row == 2)
+//    {
+//        WeXWalletTransferWithLabelCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:3];
+//        cell.contentTextField.placeholder = WeXLocalizedString(@"自定义Gas Price");
+//        UILabel *leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,120,50)];
+//        leftLabel.text = @"Gas Price";
+//        leftLabel.font = [UIFont systemFontOfSize:17];
+//        leftLabel.textColor = COLOR_LABEL_DESCRIPTION;
+//        cell.contentTextField.leftViewMode = UITextFieldViewModeAlways;
+//        cell.contentTextField.leftView = leftLabel;
+//        [cell.contentTextField setValue:COLOR_LABEL_DESCRIPTION forKeyPath:@"_placeholderLabel.textColor"];
+//        cell.contentTextField.textColor = COLOR_LABEL_DESCRIPTION;
+//
+//        cell.backgroundColor = [UIColor clearColor];
+//        _gasPriceTextField = cell.contentTextField;
+//        _gasPriceTextField.delegate = self;
+//        _gasPriceTextField.keyboardType = UIKeyboardTypeDecimalPad;
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        if (self.transferType == WeXWalletTransferTypeEdit) {
+//            NSDecimalNumber *gasPrice = [WexCommonFunc stringWithOriginString:self.recordModel.gasPrice dividString:NINE_ZERO];
+//            cell.contentTextField.text = [gasPrice stringValue];
+//        }
+//
+//        return cell;
+//    }
+//    else if (indexPath.row == 3)
+//    {
+//        WeXWalletTransferNormalCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:1];
+//        _gasLimitTextField = cell.contentTextField;
+//        _gasLimitTextField.placeholder = WeXLocalizedString(@"自定义Gas Limit");
+//        UILabel *leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,120,50)];
+//        leftLabel.text = @"Gas Limit";
+//        leftLabel.font = [UIFont systemFontOfSize:17];
+//        leftLabel.textColor = COLOR_LABEL_DESCRIPTION;
+//        cell.contentTextField.leftViewMode = UITextFieldViewModeAlways;
+//        cell.contentTextField.leftView = leftLabel;
+//        [cell.contentTextField setValue:COLOR_LABEL_DESCRIPTION forKeyPath:@"_placeholderLabel.textColor"];
+//        cell.contentTextField.textColor = COLOR_LABEL_DESCRIPTION;
+//
+//        _gasLimitTextField.delegate = self;
+//        _gasLimitTextField.keyboardType = UIKeyboardTypeDecimalPad;
+//        cell.backgroundColor = [UIColor clearColor];
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//
+//        if (self.transferType == WeXWalletTransferTypeEdit) {
+//
+//            cell.contentTextField.text = self.recordModel.gasLimit;
+//        }
+//
+//        return cell;
+//    }
+//    else if (indexPath.row == 4)
+//    {
+//        WeXWalletTransferWithTwoLabelCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:4];
+//        cell.backgroundColor = [UIColor clearColor];
+//        _costLabel = cell.costLabel;
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        cell.costLabel.textColor = COLOR_LABEL_DESCRIPTION;
+//        cell.titleLabel.textColor = COLOR_LABEL_DESCRIPTION;
+//        cell.titleLabel.font = [UIFont systemFontOfSize:17];
+//
+//        if (self.transferType == WeXWalletTransferTypeEdit) {
+//            _cost = [_gasPriceTextField.text floatValue]*[_gasLimitTextField.text floatValue]*powf(10, -9);
+//            _costLabel.text = [NSString stringWithFormat:@"%.4fETH",[_gasPriceTextField.text floatValue]*[_gasLimitTextField.text floatValue]*powf(10, -9)];
+//        }
+//        return cell;
+//    }
     return cell;
-    
 }
 
 - (void)scanButtonClick{
@@ -880,8 +838,7 @@
 }
 
 
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
     if (textField == _gasLimitTextField) {
         if (_toAddressTextField.text.length>0 &&_valueTextField.text.length>0) {
             [self getGasLimitRequest];
@@ -889,8 +846,7 @@
     }
 }
 
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if(textField == _gasLimitTextField){
         NSString *comment;
         if(range.length == 0)
@@ -969,7 +925,6 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self createTransferRequest];
     });
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -978,17 +933,16 @@
         NSIndexPath *indexPath=[NSIndexPath indexPathForRow:0 inSection:0];
         WeXWalletTransferWithButtonCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
         cell.contentTextField.text = _addressStr;
-        NSLog(@"_toAddressTextField.text%@",_toAddressTextField.text);
-//        [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+        WEXNSLOG(@"_toAddressTextField.text%@",_toAddressTextField.text);
     }
-//    [_tableView reloadSections:0 withRowAnimation:UITableViewRowAnimationNone];
+    if (!_isPrivateDCC) {
+        [self getWalletBalance];
+    }
 }
 
 #pragma mark -- 设置导航栏
 -(void)setNavitem{
-    
     UIButton *scanClickBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 30)];
-    //    [scanClickBtn setBackgroundColor:[UIColor redColor]];
     [scanClickBtn setImage:[UIImage imageNamed:@"Fill 1"] forState:UIControlStateNormal];
     [scanClickBtn setImage:[UIImage imageNamed:@"Fill 1"] forState:UIControlStateSelected];
     [scanClickBtn addTarget:self action:@selector(scanButtonClick) forControlEvents:UIControlEventTouchUpInside];
@@ -997,9 +951,15 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.row == 0){
+    if (_isPrivateDCC) {
         return 96;
-    }else{
+    }
+    else {
+        if (indexPath.section == 0 && (indexPath.row == 0 || indexPath.row == 1)) {
+            return 96;
+        } else if (indexPath.section == 0 && indexPath.row == 2) {
+            return [WeXCPCompoundCell cellHeight];
+        }
         return 44;
     }
 }
@@ -1008,6 +968,184 @@
     WeXAddressBookController *vc = [[WeXAddressBookController alloc]init];
     vc.addressBookType = WeXMainAddressBookTypeChooseTwo;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (BOOL)isPrivateDCC {
+    return (self.isPrivateChain && [_tokenModel.symbol isEqualToString:@"DCC"]);
+}
+
+- (UITableViewCell *)configurePublicTokenCellWithTableView:(UITableView *)tableView
+                                                 indexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *returnCell = nil;
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            returnCell = [self getReceiveAddressCell];
+        } else if (indexPath.row == 1) {
+            returnCell = [self getAmountCell];
+        } else {
+            WeXCPCompoundCell *cell = [tableView dequeueReusableCellWithIdentifier:kCompoundCellID forIndexPath:indexPath];
+            [cell.bottomLine setBackgroundColor:ColorWithHex(0xEFEFEF)];
+            NSString *walletBalance = [_walletBalance length] > 0 ? _walletBalance : @"--";
+            NSString *balance = [NSString stringWithFormat:@"可用数量: %@ %@",walletBalance,_tokenModel.symbol];
+            if ([_valueTextField.text floatValue] <= [walletBalance floatValue]) {
+                [cell setLeftTitle:balance rightText:@"全部" textType:WeXCPCompoundTextDefault type:WeXCPCompoundTypeLabelAndButton];
+            } else {
+                [cell setLeftTitle:@"数量已超过可用数量；" rightText:@"全部" textType:WeXCPCompoundTextWarning type:WeXCPCompoundTypeLabelAndButton];
+            }
+            cell.DidClickAllButton = ^{
+                self.allWalletValue = _walletBalance;
+                [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                WEXNSLOG(@"我点击了全部按钮");
+            };
+            returnCell = cell;
+        }
+    }
+    else if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
+            WeXWalletTransferWithLabelCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:3];
+            cell.contentTextField.placeholder = WeXLocalizedString(@"自定义Gas Price");
+            UILabel *leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,120,50)];
+            leftLabel.text = @"Gas Price";
+            leftLabel.font = [UIFont systemFontOfSize:17];
+            leftLabel.textColor = COLOR_LABEL_DESCRIPTION;
+            cell.contentTextField.leftViewMode = UITextFieldViewModeAlways;
+            cell.contentTextField.leftView = leftLabel;
+            [cell.contentTextField setValue:COLOR_LABEL_DESCRIPTION forKeyPath:@"_placeholderLabel.textColor"];
+            cell.contentTextField.textColor = COLOR_LABEL_DESCRIPTION;
+            
+            cell.backgroundColor = [UIColor clearColor];
+            _gasPriceTextField = cell.contentTextField;
+            _gasPriceTextField.delegate = self;
+            _gasPriceTextField.keyboardType = UIKeyboardTypeDecimalPad;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            if (self.transferType == WeXWalletTransferTypeEdit) {
+                NSDecimalNumber *gasPrice = [WexCommonFunc stringWithOriginString:self.recordModel.gasPrice dividString:NINE_ZERO];
+                cell.contentTextField.text = [gasPrice stringValue];
+            }
+            returnCell = cell;
+        } else if (indexPath.row == 1) {
+            WeXWalletTransferNormalCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:1];
+            _gasLimitTextField = cell.contentTextField;
+            _gasLimitTextField.placeholder = WeXLocalizedString(@"自定义Gas Limit");
+            UILabel *leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,120,50)];
+            leftLabel.text = @"Gas Limit";
+            leftLabel.font = [UIFont systemFontOfSize:17];
+            leftLabel.textColor = COLOR_LABEL_DESCRIPTION;
+            cell.contentTextField.leftViewMode = UITextFieldViewModeAlways;
+            cell.contentTextField.leftView = leftLabel;
+            [cell.contentTextField setValue:COLOR_LABEL_DESCRIPTION forKeyPath:@"_placeholderLabel.textColor"];
+            cell.contentTextField.textColor = COLOR_LABEL_DESCRIPTION;
+            
+            _gasLimitTextField.delegate = self;
+            _gasLimitTextField.keyboardType = UIKeyboardTypeDecimalPad;
+            cell.backgroundColor = [UIColor clearColor];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            if (self.transferType == WeXWalletTransferTypeEdit) {
+                cell.contentTextField.text = self.recordModel.gasLimit;
+            }
+            returnCell =  cell;
+        } else {
+            WeXWalletTransferWithTwoLabelCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:4];
+            cell.backgroundColor = [UIColor clearColor];
+            _costLabel = cell.costLabel;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.costLabel.textColor = COLOR_LABEL_DESCRIPTION;
+            cell.titleLabel.textColor = COLOR_LABEL_DESCRIPTION;
+            cell.titleLabel.font = [UIFont systemFontOfSize:17];
+            
+            if (self.transferType == WeXWalletTransferTypeEdit) {
+                _cost = [_gasPriceTextField.text floatValue]*[_gasLimitTextField.text floatValue]*powf(10, -9);
+                _costLabel.text = [NSString stringWithFormat:@"%.4fETH",[_gasPriceTextField.text floatValue]*[_gasLimitTextField.text floatValue]*powf(10, -9)];
+            }
+            returnCell = cell;
+        }
+    }
+    return returnCell;
+}
+
+
+- (WeXWalletTransferCell *)configurePrivateDCCWithTableView:(UITableView *)tableView
+                                                  indexPath:(NSIndexPath *)indexPath {
+    WeXWalletTransferCell *cell = nil;
+    if (indexPath.row == 0) {
+        cell = [self getReceiveAddressCell];
+    }
+    else {
+        cell = [self getAmountCell];
+    }
+    return cell;
+}
+
+- (WeXWalletTransferWithButtonCell *)getReceiveAddressCell {
+    WeXWalletTransferWithButtonCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:2];
+    cell.contentTextField.placeholder = WeXLocalizedString(@"收款人钱包地址");
+    if (self.transferType == WeXWalletTransferTypeEdit) {
+        cell.contentTextField.text = self.recordModel.to;
+    }
+    else {
+        if(_addressStr.length>0){
+            cell.contentTextField.text = _addressStr;
+        }
+    }
+    [cell.scanButton addTarget:self action:@selector(goChooseAddressClick) forControlEvents:UIControlEventTouchUpInside];
+    _toAddressTextField = cell.contentTextField;
+    cell.backgroundColor = [UIColor clearColor];
+    cell.selectionStyle  = UITableViewCellSelectionStyleNone;
+    [_toAddressTextField setValue:COLOR_LABEL_DESCRIPTION forKeyPath:@"_placeholderLabel.textColor"];
+    cell.contentTextField.textColor = COLOR_LABEL_DESCRIPTION;
+    return cell;
+}
+
+- (WeXWalletTransferWithButtonCell *)getAmountCell {
+    WeXWalletTransferWithButtonCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:2];
+    [cell.titleLab setText:@"转账金额"];
+    cell.contentTextField.placeholder = WeXLocalizedString(@"请输入转账金额");
+    [cell.scanButton setHidden:true];
+    _valueTextField = cell.contentTextField;
+    _valueTextField.delegate = self;
+    _valueTextField.keyboardType = UIKeyboardTypeDecimalPad;
+    [_valueTextField addTarget:self action:@selector(textFiledChanged:) forControlEvents:UIControlEventEditingChanged];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.backgroundColor = [UIColor clearColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [cell.contentTextField setValue:COLOR_LABEL_DESCRIPTION forKeyPath:@"_placeholderLabel.textColor"];
+    cell.contentTextField.textColor = COLOR_LABEL_DESCRIPTION;
+    cell.backgroundColor = [UIColor clearColor];
+//    WeXWalletTransferNormalCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:1];
+//    cell.contentTextField.placeholder = WeXLocalizedString(@"转账金额");
+//    UILabel *leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,120,50)];
+//    leftLabel.text = WeXLocalizedString(@"金额");
+//    leftLabel.font = [UIFont systemFontOfSize:17];
+//    leftLabel.textColor = COLOR_LABEL_DESCRIPTION;
+//    cell.contentTextField.leftViewMode = UITextFieldViewModeAlways;
+//    cell.contentTextField.leftView = leftLabel;
+//    [cell.contentTextField setValue:COLOR_LABEL_DESCRIPTION forKeyPath:@"_placeholderLabel.textColor"];
+//    cell.contentTextField.textColor = COLOR_LABEL_DESCRIPTION;
+//    cell.backgroundColor = [UIColor clearColor];
+//    _valueTextField = cell.contentTextField;
+//    _valueTextField.delegate = self;
+//    _valueTextField.keyboardType = UIKeyboardTypeDecimalPad;
+//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (self.transferType == WeXWalletTransferTypeEdit) {
+        NSString *valueStr = [WexCommonFunc formatterStringWithContractBalance:self.recordModel.value decimals:18];
+        cell.contentTextField.text = valueStr;
+    } else {
+        //2018.8.7 还款流程修改
+        if (self.useOriginalAmount) {
+            cell.contentTextField.text = self.recordModel.value;
+        }
+    }
+//  点击了全部按钮
+    if ([self.allWalletValue length] > 0) {
+        cell.contentTextField.text = self.walletBalance;
+    }
+    return cell;
+}
+
+- (void)textFiledChanged:(UITextField *)textFiled {
+    if (textFiled == _valueTextField) {
+        [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
 @end

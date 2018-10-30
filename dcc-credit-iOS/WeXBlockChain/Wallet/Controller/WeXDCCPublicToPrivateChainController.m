@@ -387,7 +387,7 @@ static NSString *const kFifthReuseIdentifier = @"kFifthReuseIdentifier";
 {
     WeXDCCPublicToPrivateConfirmView *confirmView = [[WeXDCCPublicToPrivateConfirmView alloc] initWithFrame:self.view.bounds];
     confirmView.valueLabel.text = [NSString stringWithFormat:@"%@DCC",_valueTextField.text];
-    confirmView.coastLabel.text = [NSString stringWithFormat:@"%.8fDCC",_cost];
+    confirmView.coastLabel.text = [NSString stringWithFormat:@"%.8fETH",_cost];
     confirmView.balanceLabel.text = [NSString stringWithFormat:@"%@DCC",_publicBalance];
     confirmView.confirmBtnBlock = ^{
         if ([_valueTextField.text floatValue] > [_publicBalance floatValue]|| _cost > [_ethBalance floatValue]) {

@@ -74,9 +74,10 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
         [_tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_assetlabel.mas_bottom).offset(20);
             make.left.right.equalTo(self.view);
-            make.bottom.mas_equalTo(-kTabBarHeight);
+            make.height.mas_equalTo(kScreenHeight - kNavgationBarHeight - 90 -kTabBarHeight);
         }];
     }
+    WEXNSLOG(@"%f",kTabBarHeight);
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -94,8 +95,8 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
     [_networkDelayButton addTarget:self action:@selector(selectNodeEvent:) forControlEvents:UIControlEventTouchUpInside];
     [leftview addSubview:_networkDelayButton];
     UIButton *addClickBtn = [[UIButton alloc]initWithFrame:CGRectMake(40, 5, 35, 30)];
-    [addClickBtn setImage:[UIImage imageNamed:@"5A"] forState:UIControlStateNormal];
-    [addClickBtn setImage:[UIImage imageNamed:@"5A"] forState:UIControlStateSelected];
+    [addClickBtn setImage:[UIImage imageNamed:@"jia"] forState:UIControlStateNormal];
+    [addClickBtn setImage:[UIImage imageNamed:@"jia"] forState:UIControlStateSelected];
     [addClickBtn addTarget:self action:@selector(addBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [leftview addSubview:addClickBtn];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:leftview];
@@ -464,7 +465,6 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
 //初始化滚动视图
 -(void)setupSubViews{
     
-    
     UIView *cardBackView = [[UIView alloc] init];
     cardBackView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:cardBackView];
@@ -472,7 +472,7 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
         make.top.equalTo(self.view).offset(kNavgationBarHeight);
         make.leading.equalTo(self.view).offset(0);
         make.trailing.equalTo(self.view).offset(0);
-        make.bottom.equalTo(self.view);
+        make.height.mas_equalTo(kScreenHeight - kNavgationBarHeight);
     }];
      _cardView = cardBackView;
     
@@ -481,7 +481,7 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
     [cardBackView addSubview:lineView];
     [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(cardBackView).offset(0);
-        make.leading.trailing.equalTo(self.view).offset(00);
+        make.leading.trailing.equalTo(self.view).offset(0);
         make.height.equalTo(@10);
     }];
     
@@ -656,7 +656,7 @@ static NSString * const kNewWalletCellID = @"WeXWalletNewCellID";
     if ([model.symbol isEqualToString:@"DCC"]) {
         WeXTokenDccListViewController *ctrl = [[WeXTokenDccListViewController alloc] init];
         ctrl.tokenModel = model;
-        [WeXHomePushService pushFromVC:ctrl toVC:ctrl];
+        [WeXHomePushService pushFromVC:self toVC:ctrl];
 //        [self.navigationController pushViewController:ctrl animated:YES];
     } else {
         WeXWalletDigitalAssetDetailController *ctrl = [[WeXWalletDigitalAssetDetailController alloc] init];

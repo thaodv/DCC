@@ -258,10 +258,8 @@
              _balancelabel.text= _balance;
              [self configTotalAsset];
          }];
-    
      }];
 }
-
 
 //- (void)createGetQuoteRequest{
 //    _getQuoteAdapter = [[WeXWalletDigitalGetQuoteAdapter alloc] init];
@@ -289,6 +287,7 @@
     _getRecordAdapter.delegate = self;
     WeXWalletEtherscanGetRecordParamModal* paramModal = [[WeXWalletEtherscanGetRecordParamModal alloc] init];
     paramModal.module = @"account";
+    
     paramModal.action = @"txlist";
     paramModal.tag = @"latest";
     paramModal.address = [WexCommonFunc getFromAddress];
@@ -1089,10 +1088,10 @@
     }
     
     if ([self.agentMarketModel.volume_24 floatValue]>100000000) {
-        _dayTransDataLabel.text = [NSString stringWithFormat:@"%ld亿",([self.agentMarketModel.volume_24  integerValue]/100000000)];
-    }else if ([self.agentMarketModel.volume_24 floatValue]>10000){
-         _dayTransDataLabel.text = [NSString stringWithFormat:@"%ld万",([self.agentMarketModel.volume_24  integerValue]/10000)];
-    }else{
+        _dayTransDataLabel.text = [NSString stringWithFormat:@"%.2f亿",([self.agentMarketModel.volume_24  floatValue]/100000000)];
+    } else if ([self.agentMarketModel.volume_24 floatValue]>10000){
+         _dayTransDataLabel.text = [NSString stringWithFormat:@"%.2f万",([self.agentMarketModel.volume_24  floatValue]/10000)];
+    } else {
         _dayTransDataLabel.text = [NSString stringWithFormat:@"%.2f",[self.agentMarketModel.volume_24 floatValue]];
     }
     if ([self.agentMarketModel.percent_change_1h floatValue]>0) {
@@ -1114,7 +1113,6 @@
     NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
 //    NSLog(@"confromTimespStr =  %@",confromTimespStr);
     _volLabel.text = confromTimespStr;
-    
 }
 
 @end

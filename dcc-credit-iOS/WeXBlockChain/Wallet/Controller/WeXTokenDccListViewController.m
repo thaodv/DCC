@@ -23,7 +23,7 @@
 #define kTransferManagerKey self.isPrivateChain?[NSString stringWithFormat:@"%@_private",self.tokenModel.symbol]:self.tokenModel.symbol
 
 
-@interface WeXTokenDccListViewController ()
+@interface WeXTokenDccListViewController ()<UIScrollViewDelegate>
 {
     UILabel *_privateBalanceLabel;
     UILabel *_privateValueLabel;
@@ -49,6 +49,7 @@
 
 //@property (nonatomic,strong)WeXWalletDigitalGetQuoteAdapter *getQuoteAdapter;
 @property (nonatomic,strong)WeXAgentMarketAdapter *getAgentAdapter;
+@property (nonatomic,strong)UIScrollView *mainScrollView;
 
 @end
 
@@ -76,11 +77,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self initTransferPendingManager];
-    
-}
 
+}
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -285,32 +284,49 @@
     
 }
 
-
 //初始化滚动视图
 -(void)setupSubViews{
+    
+    _mainScrollView = [[UIScrollView alloc] init];
+    _mainScrollView.delegate = self;
+    // 隐藏水平滚动条
+    _mainScrollView.showsHorizontalScrollIndicator = NO;
+    _mainScrollView.showsVerticalScrollIndicator = NO;
+    // 去掉弹簧效果
+    _mainScrollView.bounces = NO;
+    [self.view addSubview:_mainScrollView];
+    
+    UILabel *desLabel2 = [[UILabel alloc] init];
+    desLabel2.text = @"表示DCC从公链转移到私链;";
+    desLabel2.font = [UIFont systemFontOfSize:16];
+    desLabel2.textColor = COLOR_LABEL_DESCRIPTION;
+    desLabel2.textAlignment = NSTextAlignmentLeft;
+    [self.mainScrollView addSubview:desLabel2];
+    
+    [_mainScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(UIEdgeInsetsMake(kNavgationBarHeight, 0, 0, 0));
+        make.bottom.equalTo(desLabel2).offset(20);
+    }];
     
     UIImageView *backImageView = [[UIImageView alloc] init];
     backImageView.layer.cornerRadius = 12;
     backImageView.layer.masksToBounds = YES;
     backImageView.userInteractionEnabled = YES;
-    [self.view addSubview:backImageView];
+    [self.mainScrollView addSubview:backImageView];
     [backImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(kNavgationBarHeight+10);
-        make.leading.equalTo(self.view).offset(15);
-        make.trailing.equalTo(self.view).offset(-15);
+        make.top.equalTo(_mainScrollView).offset(10);
+        make.left.equalTo(self.view).offset(15);
+        make.right.equalTo(self.view).offset(-15);
         make.height.equalTo(@180);
     }];
     _firstBackImageView = backImageView;
-    
-    
-    
     UITapGestureRecognizer *privateTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(privateTapClick)];
     [backImageView addGestureRecognizer:privateTap];
     
     
     UIImageView *assetImageView = [[UIImageView alloc] init];
     [assetImageView sd_setImageWithURL:[NSURL URLWithString:self.tokenModel.iconUrl] placeholderImage:[UIImage imageNamed:@"ethereum"]];
-    [self.view addSubview:assetImageView];
+    [self.mainScrollView addSubview:assetImageView];
     [assetImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(backImageView).offset(15);
         make.leading.equalTo(backImageView).offset(10);
@@ -323,7 +339,7 @@
     assetNamelabel.font = [UIFont systemFontOfSize:20];
     assetNamelabel.textColor = [UIColor whiteColor];
     assetNamelabel.textAlignment = NSTextAlignmentLeft;
-    [self.view addSubview:assetNamelabel];
+    [self.mainScrollView addSubview:assetNamelabel];
     [assetNamelabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(assetImageView);
         make.leading.equalTo(assetImageView.mas_trailing).offset(10);
@@ -335,7 +351,7 @@
     assetSymbolLabel.font = [UIFont systemFontOfSize:18];
     assetSymbolLabel.textColor = [UIColor whiteColor];
     assetSymbolLabel.textAlignment = NSTextAlignmentLeft;
-    [self.view addSubview:assetSymbolLabel];
+    [self.mainScrollView addSubview:assetSymbolLabel];
     [assetSymbolLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(assetNamelabel.mas_bottom).offset(10);
         make.leading.equalTo(assetNamelabel);
@@ -346,7 +362,7 @@
     UIView *line1 = [[UIView alloc] init];
     line1.backgroundColor = [UIColor whiteColor];
     line1.alpha = 0.5;
-    [self.view addSubview:line1];
+    [self.mainScrollView addSubview:line1];
     [line1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(backImageView).offset(10);
         make.trailing.equalTo(backImageView).offset(-10);
@@ -360,7 +376,7 @@
     balanceLabel.font = [UIFont systemFontOfSize:25];
     balanceLabel.textColor = [UIColor whiteColor];
     balanceLabel.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:balanceLabel];
+    [self.mainScrollView addSubview:balanceLabel];
     [balanceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(line1.mas_bottom).offset(15);
         make.leading.equalTo(backImageView).offset(10);
@@ -374,7 +390,7 @@
     valuelabel.font = [UIFont systemFontOfSize:16];
     valuelabel.textColor = [UIColor whiteColor];
     valuelabel.textAlignment = NSTextAlignmentLeft;
-    [self.view addSubview:valuelabel];
+    [self.mainScrollView addSubview:valuelabel];
     [valuelabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(balanceLabel.mas_bottom).offset(10);
         make.centerX.equalTo(backImageView).offset(0);
@@ -386,7 +402,7 @@
     UIButton *downBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [downBtn setBackgroundImage:[UIImage imageNamed:@"across_chain_down"] forState:UIControlStateNormal];
     [downBtn addTarget:self action:@selector(downBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:downBtn];
+    [self.mainScrollView addSubview:downBtn];
     [downBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(backImageView.mas_bottom).offset(20);
         make.centerX.equalTo(self.view.mas_trailing).multipliedBy(1.0/4);
@@ -398,7 +414,7 @@
     UIButton *upBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [upBtn setBackgroundImage:[UIImage imageNamed:@"across_chain_up"] forState:UIControlStateNormal];
     [upBtn addTarget:self action:@selector(upBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:upBtn];
+    [self.mainScrollView addSubview:upBtn];
     [upBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(downBtn);
         make.centerX.equalTo(self.view.mas_trailing).multipliedBy(3.0/4);
@@ -412,7 +428,7 @@
     centerLabel.textColor = COLOR_THEME_ALL;
     centerLabel.textAlignment = NSTextAlignmentCenter;
     centerLabel.adjustsFontSizeToFitWidth = YES;
-    [self.view addSubview:centerLabel];
+    [self.mainScrollView addSubview:centerLabel];
     [centerLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(downBtn);
         make.leading.equalTo(downBtn.mas_trailing).offset(5);
@@ -423,7 +439,7 @@
     UIImageView *backImageView2 = [[UIImageView alloc] init];
     backImageView2.image = [UIImage imageNamed:@"dcc_token_background_card"];
     backImageView2.userInteractionEnabled = YES;
-    [self.view addSubview:backImageView2];
+    [self.mainScrollView addSubview:backImageView2];
     [backImageView2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(upBtn.mas_bottom).offset(20);
         make.leading.equalTo(self.view).offset(15);
@@ -438,7 +454,7 @@
     
     UIImageView *assetImageView2 = [[UIImageView alloc] init];
     [assetImageView2 sd_setImageWithURL:[NSURL URLWithString:self.tokenModel.iconUrl] placeholderImage:[UIImage imageNamed:@"ethereum"]];
-    [self.view addSubview:assetImageView2];
+    [self.mainScrollView addSubview:assetImageView2];
     [assetImageView2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(backImageView2).offset(15);
         make.leading.equalTo(backImageView2).offset(10);
@@ -451,7 +467,7 @@
     assetNamelabel2.font = [UIFont systemFontOfSize:20];
     assetNamelabel2.textColor = [UIColor whiteColor];
     assetNamelabel2.textAlignment = NSTextAlignmentLeft;
-    [self.view addSubview:assetNamelabel2];
+    [self.mainScrollView addSubview:assetNamelabel2];
     [assetNamelabel2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(assetImageView2);
         make.leading.equalTo(assetImageView2.mas_trailing).offset(10);
@@ -463,7 +479,7 @@
     assetSymbolLabel2.font = [UIFont systemFontOfSize:18];
     assetSymbolLabel2.textColor = [UIColor whiteColor];
     assetSymbolLabel2.textAlignment = NSTextAlignmentLeft;
-    [self.view addSubview:assetSymbolLabel2];
+    [self.mainScrollView addSubview:assetSymbolLabel2];
     [assetSymbolLabel2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(assetNamelabel2.mas_bottom).offset(10);
         make.leading.equalTo(assetNamelabel2);
@@ -473,7 +489,7 @@
     UIView *line2 = [[UIView alloc] init];
     line2.backgroundColor = [UIColor whiteColor];
     line2.alpha = 0.5;
-    [self.view addSubview:line2];
+    [self.mainScrollView addSubview:line2];
     [line2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(backImageView).offset(10);
         make.trailing.equalTo(backImageView).offset(-10);
@@ -487,7 +503,7 @@
     balanceLabel2.font = [UIFont systemFontOfSize:25];
     balanceLabel2.textColor = [UIColor whiteColor];
     balanceLabel2.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:balanceLabel2];
+    [self.mainScrollView addSubview:balanceLabel2];
     [balanceLabel2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(line2.mas_bottom).offset(15);
         make.leading.equalTo(backImageView).offset(10);
@@ -501,7 +517,7 @@
     valuelabel2.font = [UIFont systemFontOfSize:16];
     valuelabel2.textColor = [UIColor whiteColor];
     valuelabel2.textAlignment = NSTextAlignmentLeft;
-    [self.view addSubview:valuelabel2];
+    [self.mainScrollView addSubview:valuelabel2];
     [valuelabel2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(balanceLabel2.mas_bottom).offset(10);
         make.centerX.equalTo(backImageView2).offset(0);
@@ -514,7 +530,7 @@
     bottomTitleLabel.font = [UIFont systemFontOfSize:16];
     bottomTitleLabel.textColor = COLOR_LABEL_DESCRIPTION;
     bottomTitleLabel.textAlignment = NSTextAlignmentLeft;
-    [self.view addSubview:bottomTitleLabel];
+    [self.mainScrollView addSubview:bottomTitleLabel];
     [bottomTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(backImageView2.mas_bottom).offset(15);
         make.leading.equalTo(backImageView2).offset(0);
@@ -523,10 +539,10 @@
     
     UIImageView *bottomDownImageView = [[UIImageView alloc] init];
     bottomDownImageView.image = [UIImage imageNamed:@"across_chain_small_down"];
-    [self.view addSubview:bottomDownImageView];
+    [self.mainScrollView addSubview:bottomDownImageView];
     [bottomDownImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(bottomTitleLabel.mas_bottom).offset(10);
-        make.leading.equalTo(bottomTitleLabel).offset(0);
+        make.left.equalTo(bottomTitleLabel).offset(0);
     }];
     
     UILabel *desLabel1 = [[UILabel alloc] init];
@@ -534,7 +550,7 @@
     desLabel1.font = [UIFont systemFontOfSize:16];
     desLabel1.textColor = COLOR_LABEL_DESCRIPTION;
     desLabel1.textAlignment = NSTextAlignmentLeft;
-    [self.view addSubview:desLabel1];
+    [self.mainScrollView addSubview:desLabel1];
     [desLabel1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(bottomDownImageView).offset(0);
         make.leading.equalTo(bottomDownImageView.mas_trailing).offset(5);
@@ -543,24 +559,18 @@
     
     UIImageView *bottomUpImageView = [[UIImageView alloc] init];
     bottomUpImageView.image = [UIImage imageNamed:@"across_chain_small_up"];
-    [self.view addSubview:bottomUpImageView];
+    [self.mainScrollView addSubview:bottomUpImageView];
     [bottomUpImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(bottomDownImageView.mas_bottom).offset(5);
         make.leading.equalTo(bottomTitleLabel).offset(0);
     }];
     
-    UILabel *desLabel2 = [[UILabel alloc] init];
-    desLabel2.text = @"表示DCC从公链转移到私链;";
-    desLabel2.font = [UIFont systemFontOfSize:16];
-    desLabel2.textColor = COLOR_LABEL_DESCRIPTION;
-    desLabel2.textAlignment = NSTextAlignmentLeft;
-    [self.view addSubview:desLabel2];
     [desLabel2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(bottomUpImageView).offset(0);
         make.leading.equalTo(bottomUpImageView.mas_trailing).offset(5);
         make.height.equalTo(@20);
     }];
-    
+
 }
 
 - (void)createTransferAlertView

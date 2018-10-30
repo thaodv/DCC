@@ -36,6 +36,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setNavigationNomalBackButtonType];
+    self.navigationItem.title = @"BitExpress";
 //    [self setupNavgationType];
     [self setupSubViews];
     [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
@@ -183,8 +184,10 @@
     [self.view addSubview:commitBtn];
     [commitBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view).offset(-30);
-        make.centerX.equalTo(self.view);
-        make.width.equalTo(@170);
+//        make.centerX.equalTo(self.view);
+//        make.width.equalTo(@170);
+        make.leading.mas_equalTo(20);
+        make.trailing.mas_equalTo(-20);
         make.height.equalTo(@50);
     }];
     _commitBtn = commitBtn;
