@@ -5,8 +5,6 @@
 
     <data>
 
-        <import type="io.wexchain.android.dcc.vm.ViewModelHelper" />
-
         <variable
             name="passport"
             type="io.wexchain.android.dcc.domain.Passport" />

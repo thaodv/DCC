@@ -100,6 +100,13 @@ fun EditText.transTips(transCount: TextView, showTips: () -> Unit, hidTips: () -
                 view.setSelection(2)
                 return
             }
+            if (txt?.startsWith("0") == true && txt.trim().length > 1) {
+                if (txt.substring(1, 2) != ".") {
+                    view.setText(txt.subSequence(0, 1))
+                    view.setSelection(1)
+                    return
+                }
+            }
             if (!txt.isNullOrEmpty()) {
                 val maxinp = BigDecimal(transCount.text.toString())
                 val inp = BigDecimal(txt)
