@@ -15,10 +15,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_marginBottom="10dp"
-
         android:layout_height="wrap_content">
-
-
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -59,10 +56,6 @@
                 app:layout_constraintRight_toLeftOf="@id/tv_as_status"
                 app:layout_constraintTop_toBottomOf="@id/tv_as_title"
                 tools:text="更全面的认证" />
-
-
-
-
 
             <TextView
                 android:id="@+id/tv_as_status"

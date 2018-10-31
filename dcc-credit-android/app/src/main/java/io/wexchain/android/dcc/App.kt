@@ -84,7 +84,6 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         super.onCreate()
         instance = WeakReference(this)
 
-
         val themeWrapper = ContextThemeWrapper(this, R.style.DccLightTheme_App)
         RxJavaPlugins.setErrorHandler {
             val ex = it.cause ?: it
