@@ -159,8 +159,6 @@
             android:id="@+id/v_trans"
             style="@style/DividerHorizontal"
             android:layout_height="10dp"
-            android:layout_marginLeft="@dimen/content_padding_horizontal"
-            android:layout_marginRight="@dimen/content_padding_horizontal"
             app:layout_constraintTop_toBottomOf="@id/ll_trans" />
 
         <!--todo remarks is hidden-->
