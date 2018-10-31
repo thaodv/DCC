@@ -70,6 +70,8 @@
 @end
 
 static NSString * const kCompoundCellID = @"WeXCPCompoundCellID";
+static NSString * const kXibCellID = @"WeXWalletTransferCellID";
+
 
 @implementation WeXWalletTransferViewController
 
@@ -89,7 +91,6 @@ static NSString * const kCompoundCellID = @"WeXCPCompoundCellID";
         [self getGasPrice];
 //        [self getGasLimitRequest];
     }
-    [self registerCell];
 }
 //获取钱包相应代币的余额
 - (void)getWalletBalance {
@@ -116,6 +117,24 @@ static NSString * const kCompoundCellID = @"WeXCPCompoundCellID";
                 }];
             }];
         }];
+    }
+    else if ([self.tokenModel.symbol isEqualToString:@"DCC"]&&self.isPrivateChain) {
+        NSString *abiJson = WEX_ERC20_ABI_BALANCE;
+        //参数为需要查询的地址
+        NSString *pararms = [NSString stringWithFormat:@"[\'%@\']",[WexCommonFunc getFromAddress]];
+        [[WXPassHelper instance] encodeFunCallAbiInterface:abiJson params:pararms responseBlock:^(id response) {
+             [[WXPassHelper instance] call2ContractAddress:[WexCommonFunc getDCCContractAddress] data:response type:WEX_DCC_NODE_SERVER responseBlock:^(id response) {
+                  NSDictionary *responseDict = response;
+                  NSString * originBalance =[responseDict objectForKey:@"result"];
+                  NSString * ethException =[responseDict objectForKey:@"ethException"];
+                  if (![ethException isEqualToString:@"ethException"]) {
+                      NSLog(@"balance=%@",originBalance);
+                      originBalance = [NSString stringWithFormat:@"%@",originBalance];
+                      NSString *balace = [WexCommonFunc formatterStringWithContractBalance:originBalance decimals:[self.tokenModel.decimals integerValue]];
+                     [self setWalletBalance:balace];
+                  }
+              }];
+         }];
     }
 }
 - (void)setWalletBalance:(NSString *)walletBalance {
@@ -484,6 +503,7 @@ static NSString * const kCompoundCellID = @"WeXCPCompoundCellID";
         make.trailing.equalTo(self.view).offset(-15);
         make.height.equalTo(@50);
     }];
+     [self registerCell];
 }
 
 // MARK: - //  注册Cell
@@ -625,7 +645,7 @@ static NSString * const kCompoundCellID = @"WeXCPCompoundCellID";
             [weakTransDetailView dismiss];
         };
         transDetailView.confirmBtnBlock  = ^{
-            if ([_valueTextField.text floatValue] > [_balace floatValue]) {
+            if ([_valueTextField.text doubleValue] > [_balace doubleValue]) {
                 UIAlertAction *alert = [UIAlertAction actionWithTitle:WeXLocalizedString(@"确定") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                 }];
                 UIAlertController *alertCtrl = [UIAlertController alertControllerWithTitle:WeXLocalizedString(@"提示") message:WeXLocalizedString(@"持有量不足,请核对后重新提交!") preferredStyle:UIAlertControllerStyleAlert];
@@ -667,7 +687,7 @@ static NSString * const kCompoundCellID = @"WeXCPCompoundCellID";
         
         //点击创建按钮
         transDetailView.confirmBtnBlock  = ^{
-            if ([_valueTextField.text floatValue] > [_balace floatValue]|| _cost > [_ethBalace floatValue]) {
+            if ([_valueTextField.text doubleValue] > [_balace doubleValue]|| _cost > [_ethBalace floatValue]) {
                 UIAlertAction *alert = [UIAlertAction actionWithTitle:WeXLocalizedString(@"确定") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                 }];
                 UIAlertController *alertCtrl = [UIAlertController alertControllerWithTitle:WeXLocalizedString(@"提示") message:WeXLocalizedString(@"持有量不足,请核对后重新提交!") preferredStyle:UIAlertControllerStyleAlert];
@@ -678,27 +698,40 @@ static NSString * const kCompoundCellID = @"WeXCPCompoundCellID";
             
             [self configLocalSafetyView];
             
-            
         };
     }
     [self createGetBalaceRequest];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.isPrivateDCC) {
+        return indexPath.row < 2 ? 96 : [WeXCPCompoundCell cellHeight];
+    }
+    else {
+        if (indexPath.section == 0 && (indexPath.row == 0 || indexPath.row == 1)) {
+            return 96;
+        } else if (indexPath.section == 0 && indexPath.row == 2) {
+            return [WeXCPCompoundCell cellHeight];
+        }
+        return 44;
+    }
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return _isPrivateDCC ? 1 : 2;
+    return self.isPrivateDCC ? 1 : 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([self.tokenModel.symbol isEqualToString:@"DCC"]&&self.isPrivateChain) {
-        return 2;
-    }
+//    if ([self.tokenModel.symbol isEqualToString:@"DCC"]&&self.isPrivateChain) {
+//        return 2;
+//    }
     return 3;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell * cell = nil;
-    if (_isPrivateDCC) {
+    if (self.isPrivateDCC) {
         cell = [self configurePrivateDCCWithTableView:tableView indexPath:indexPath];
     }
     else {
@@ -935,9 +968,7 @@ static NSString * const kCompoundCellID = @"WeXCPCompoundCellID";
         cell.contentTextField.text = _addressStr;
         WEXNSLOG(@"_toAddressTextField.text%@",_toAddressTextField.text);
     }
-    if (!_isPrivateDCC) {
-        [self getWalletBalance];
-    }
+    [self getWalletBalance];
 }
 
 #pragma mark -- 设置导航栏
@@ -948,20 +979,6 @@ static NSString * const kCompoundCellID = @"WeXCPCompoundCellID";
     [scanClickBtn addTarget:self action:@selector(scanButtonClick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:scanClickBtn];
     self.navigationItem.rightBarButtonItem = rightButton;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (_isPrivateDCC) {
-        return 96;
-    }
-    else {
-        if (indexPath.section == 0 && (indexPath.row == 0 || indexPath.row == 1)) {
-            return 96;
-        } else if (indexPath.section == 0 && indexPath.row == 2) {
-            return [WeXCPCompoundCell cellHeight];
-        }
-        return 44;
-    }
 }
 
 - (void)goChooseAddressClick{
@@ -979,25 +996,11 @@ static NSString * const kCompoundCellID = @"WeXCPCompoundCellID";
     UITableViewCell *returnCell = nil;
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            returnCell = [self getReceiveAddressCell];
+            returnCell = [self getReceiveAddressCellWithTableView:tableView indexPath:indexPath];
         } else if (indexPath.row == 1) {
-            returnCell = [self getAmountCell];
+            returnCell = [self getAmountCellWithTableView:tableView indexPath:indexPath];
         } else {
-            WeXCPCompoundCell *cell = [tableView dequeueReusableCellWithIdentifier:kCompoundCellID forIndexPath:indexPath];
-            [cell.bottomLine setBackgroundColor:ColorWithHex(0xEFEFEF)];
-            NSString *walletBalance = [_walletBalance length] > 0 ? _walletBalance : @"--";
-            NSString *balance = [NSString stringWithFormat:@"可用数量: %@ %@",walletBalance,_tokenModel.symbol];
-            if ([_valueTextField.text floatValue] <= [walletBalance floatValue]) {
-                [cell setLeftTitle:balance rightText:@"全部" textType:WeXCPCompoundTextDefault type:WeXCPCompoundTypeLabelAndButton];
-            } else {
-                [cell setLeftTitle:@"数量已超过可用数量；" rightText:@"全部" textType:WeXCPCompoundTextWarning type:WeXCPCompoundTypeLabelAndButton];
-            }
-            cell.DidClickAllButton = ^{
-                self.allWalletValue = _walletBalance;
-                [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-                WEXNSLOG(@"我点击了全部按钮");
-            };
-            returnCell = cell;
+            returnCell = [self getCompoundCellWithTableView:tableView indexPath:indexPath];
         }
     }
     else if (indexPath.section == 1) {
@@ -1064,19 +1067,23 @@ static NSString * const kCompoundCellID = @"WeXCPCompoundCellID";
 }
 
 
-- (WeXWalletTransferCell *)configurePrivateDCCWithTableView:(UITableView *)tableView
+- (UITableViewCell *)configurePrivateDCCWithTableView:(UITableView *)tableView
                                                   indexPath:(NSIndexPath *)indexPath {
-    WeXWalletTransferCell *cell = nil;
+    UITableViewCell *cell = nil;
     if (indexPath.row == 0) {
-        cell = [self getReceiveAddressCell];
+        cell = [self getReceiveAddressCellWithTableView:tableView indexPath:indexPath];
+    }
+    else  if (indexPath.row == 1) {
+        cell = [self getAmountCellWithTableView:tableView indexPath:indexPath];
     }
     else {
-        cell = [self getAmountCell];
+        cell = [self getCompoundCellWithTableView:tableView indexPath:indexPath];
     }
     return cell;
 }
 
-- (WeXWalletTransferWithButtonCell *)getReceiveAddressCell {
+- (WeXWalletTransferWithButtonCell *)getReceiveAddressCellWithTableView:(UITableView *)tableView
+                                                              indexPath:(NSIndexPath *)indexPath {
     WeXWalletTransferWithButtonCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:2];
     cell.contentTextField.placeholder = WeXLocalizedString(@"收款人钱包地址");
     if (self.transferType == WeXWalletTransferTypeEdit) {
@@ -1096,36 +1103,20 @@ static NSString * const kCompoundCellID = @"WeXCPCompoundCellID";
     return cell;
 }
 
-- (WeXWalletTransferWithButtonCell *)getAmountCell {
+- (WeXWalletTransferWithButtonCell *)getAmountCellWithTableView:(UITableView *)tableView
+                                                      indexPath:(NSIndexPath *)indexPath{
     WeXWalletTransferWithButtonCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:2];
     [cell.titleLab setText:@"转账金额"];
     cell.contentTextField.placeholder = WeXLocalizedString(@"请输入转账金额");
     [cell.scanButton setHidden:true];
-    _valueTextField = cell.contentTextField;
-    _valueTextField.delegate = self;
-    _valueTextField.keyboardType = UIKeyboardTypeDecimalPad;
-    [_valueTextField addTarget:self action:@selector(textFiledChanged:) forControlEvents:UIControlEventEditingChanged];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.backgroundColor = [UIColor clearColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell.contentTextField setValue:COLOR_LABEL_DESCRIPTION forKeyPath:@"_placeholderLabel.textColor"];
     cell.contentTextField.textColor = COLOR_LABEL_DESCRIPTION;
     cell.backgroundColor = [UIColor clearColor];
-//    WeXWalletTransferNormalCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"WeXWalletTransferCell" owner:self options:nil] objectAtIndex:1];
-//    cell.contentTextField.placeholder = WeXLocalizedString(@"转账金额");
-//    UILabel *leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,120,50)];
-//    leftLabel.text = WeXLocalizedString(@"金额");
-//    leftLabel.font = [UIFont systemFontOfSize:17];
-//    leftLabel.textColor = COLOR_LABEL_DESCRIPTION;
-//    cell.contentTextField.leftViewMode = UITextFieldViewModeAlways;
-//    cell.contentTextField.leftView = leftLabel;
-//    [cell.contentTextField setValue:COLOR_LABEL_DESCRIPTION forKeyPath:@"_placeholderLabel.textColor"];
-//    cell.contentTextField.textColor = COLOR_LABEL_DESCRIPTION;
-//    cell.backgroundColor = [UIColor clearColor];
-//    _valueTextField = cell.contentTextField;
-//    _valueTextField.delegate = self;
-//    _valueTextField.keyboardType = UIKeyboardTypeDecimalPad;
-//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    _valueTextField = cell.contentTextField;
+    _valueTextField.delegate = self;
+    _valueTextField.keyboardType = UIKeyboardTypeDecimalPad;
+    [_valueTextField addTarget:self action:@selector(textFiledChanged:) forControlEvents:UIControlEventEditingChanged];
     if (self.transferType == WeXWalletTransferTypeEdit) {
         NSString *valueStr = [WexCommonFunc formatterStringWithContractBalance:self.recordModel.value decimals:18];
         cell.contentTextField.text = valueStr;
@@ -1142,10 +1133,36 @@ static NSString * const kCompoundCellID = @"WeXCPCompoundCellID";
     return cell;
 }
 
+- (WeXCPCompoundCell *)getCompoundCellWithTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+    WeXCPCompoundCell *cell = [tableView dequeueReusableCellWithIdentifier:kCompoundCellID forIndexPath:indexPath];
+    [cell.bottomLine setBackgroundColor:ColorWithHex(0xEFEFEF)];
+    NSString *walletBalance = [_walletBalance length] > 0 ? _walletBalance : @"--";
+    NSString *balance = [NSString stringWithFormat:@"可用数量: %@ %@",walletBalance,_tokenModel.symbol];
+    if ([_valueTextField.text doubleValue] * powf(10, 6) <= [walletBalance doubleValue] * powf(10, 6)) {
+        [cell setLeftTitle:balance rightText:@"全部" textType:WeXCPCompoundTextDefault type:WeXCPCompoundTypeLabelAndButton];
+    } else {
+        [cell setLeftTitle:@"数量已超过可用数量" rightText:@"全部" textType:WeXCPCompoundTextWarning type:WeXCPCompoundTypeLabelAndButton];
+    }
+    cell.DidClickAllButton = ^{
+        self.allWalletValue = _walletBalance;
+        [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        [self reloadAvailableCell];
+        WEXNSLOG(@"我点击了全部按钮");
+    };
+    return cell;
+}
+
 - (void)textFiledChanged:(UITextField *)textFiled {
     if (textFiled == _valueTextField) {
+        [self reloadAvailableCell];
+    }
+}
+
+- (void)reloadAvailableCell {
+    if ([_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]]) {
         [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
+
 
 @end

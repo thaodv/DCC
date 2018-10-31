@@ -278,11 +278,13 @@ static NSString *const kFifthReuseIdentifier = @"kFifthReuseIdentifier";
         cell.allButtonBlock = ^{
             if ([_publicBalance integerValue] > 0) {
                 _valueTextField.text = _publicBalance;
+                [self changeInputText:_valueTextField];
             }
         };
         _publicBalanceLabel2 = cell.publicBalanceLabel;
         _valueTextField = cell.valueTextField;
         _valueTextField.delegate = self;
+        [_valueTextField addTarget:self action:@selector(changeInputText:) forControlEvents:UIControlEventEditingChanged];
         return cell;
     }
     else if (indexPath.row == 2) {
@@ -383,20 +385,17 @@ static NSString *const kFifthReuseIdentifier = @"kFifthReuseIdentifier";
     [self createConfirmView];
 }
 
-- (void)createConfirmView
-{
+- (void)createConfirmView {
     WeXDCCPublicToPrivateConfirmView *confirmView = [[WeXDCCPublicToPrivateConfirmView alloc] initWithFrame:self.view.bounds];
     confirmView.valueLabel.text = [NSString stringWithFormat:@"%@DCC",_valueTextField.text];
     confirmView.coastLabel.text = [NSString stringWithFormat:@"%.8fETH",_cost];
     confirmView.balanceLabel.text = [NSString stringWithFormat:@"%@DCC",_publicBalance];
     confirmView.confirmBtnBlock = ^{
-        if ([_valueTextField.text floatValue] > [_publicBalance floatValue]|| _cost > [_ethBalance floatValue]) {
+        if ([_valueTextField.text doubleValue] > [_publicBalance doubleValue]|| _cost > [_ethBalance floatValue]) {
             [WeXPorgressHUD showText:@"持有量不足,请核对后重新提交!" onView:self.view];
             return;
         }
-     
         [self configLocalSafetyView];
-        
     };
     [self.view addSubview:confirmView];
     _confirmView = confirmView;
@@ -552,6 +551,17 @@ static NSString *const kFifthReuseIdentifier = @"kFifthReuseIdentifier";
 }
 - (void)dealloc {
     WEXNSLOG(@"%@,%s",self,__func__);
+}
+
+// MARK: - 输入转移数量之后更改
+- (void)changeInputText:(UITextField *)textField {
+    if ([textField.text doubleValue] > [_publicBalance doubleValue]) {
+        _publicBalanceLabel2.text = WeXLocalizedString(@"数量已超过可用数量");
+        [_publicBalanceLabel2 setTextColor:ColorWithHex(0XED190F)];
+    } else {
+        _publicBalanceLabel2.text = [NSString stringWithFormat:@"公链数量: %@DCC",_publicBalance];
+        [_publicBalanceLabel2 setTextColor:[UIColor blackColor]];
+    }
 }
 
 

@@ -211,12 +211,13 @@ static NSString *const kWeXDCCPrivateToPublicChainFirstCellID = @"WeXDCCPrivateT
            if ([_privateBalance integerValue] > 0) {
                _valueTextField.text = _privateBalance;
                [self configReceiveValue:_valueTextField.text];
+               [self changeInputText:_valueTextField];
            }
-           
        };
         _privateBalanceLabel2 = cell.privateBalanceLabel;
        _valueTextField = cell.valueTextField;
        _valueTextField.delegate = self;
+       [_valueTextField addTarget:self action:@selector(changeInputText:) forControlEvents:UIControlEventEditingChanged];
         return cell;
     }
    else if (indexPath.row == 2) {
@@ -301,7 +302,7 @@ static NSString *const kWeXDCCPrivateToPublicChainFirstCellID = @"WeXDCCPrivateT
     confirmView.receiveLabel.text = [NSString stringWithFormat:@"%.4fDCC",[_valueTextField.text floatValue]-[_feeStr floatValue]];
     confirmView.balanceLabel.text = [NSString stringWithFormat:@"%@DCC",_privateBalance];
     confirmView.confirmBtnBlock = ^{
-        if ([_valueTextField.text floatValue]  > [_privateBalance floatValue]) {
+        if ([_valueTextField.text doubleValue]  > [_privateBalance doubleValue]) {
             [WeXPorgressHUD showText:@"持有量不足,请核对后重新提交!" onView:self.view];
             return;
         }
@@ -421,8 +422,17 @@ static NSString *const kWeXDCCPrivateToPublicChainFirstCellID = @"WeXDCCPrivateT
     }
 }
 
+// MARK: - 输入转移数量之后更改
+- (void)changeInputText:(UITextField *)textField {
+    if ([textField.text doubleValue] > [_privateBalance doubleValue]) {
+        _privateBalanceLabel2.text = WeXLocalizedString(@"数量已超过可用数量");
+        [_privateBalanceLabel2 setTextColor:ColorWithHex(0XED190F)];
+    } else {
+        _privateBalanceLabel2.text = [NSString stringWithFormat:@"私链数量: %@DCC",_privateBalance];
+        [_privateBalanceLabel2 setTextColor:[UIColor blackColor]];
 
-
+    }
+}
 
 
 
