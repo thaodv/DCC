@@ -123,6 +123,9 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
         binding.tvModifyPassportPassword.onClick {
             navigateTo(ModifyPassportPasswordActivity::class.java)
         }
+        binding.tvUserInvitation.onClick {
+            navigateTo(DccAffiliateActivity::class.java)
+        }
     }
 
     private fun pickImage() {

@@ -51,13 +51,9 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initVm()
         loadData()
         initClick()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        initVm()
     }
 
     private fun getCardVm(type: CardType): ServiceCardVm {
@@ -133,6 +129,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
     }
 
     private fun initVm() {
+        binding.viewCardPassport.passport = passport
         binding.tokenplus = getCardVm(CardType.TOKENPLUS)
         binding.certification = getCardVm(CardType.CERTIFICATION)
         binding.ecology = getCardVm(CardType.ECOLOGY)
@@ -171,7 +168,6 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
             layoutManager = GridLayoutManager(activity, 2)
             isNestedScrollingEnabled = false
         }
-        binding.viewCardPassport.passport = passport
     }
 
     fun onItemClick(position: Int, viewId: Int) {
@@ -190,7 +186,6 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
                 }
     }
 
-
     private class Adapter(val onPosClick: (Int, Int) -> Unit) :
             DataBindAdapter<ItemServiceLoanBinding, LoanProduct>(
                     R.layout.item_service_loan,
@@ -206,6 +201,5 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
             return ClickAwareHolder(binding, onPosClick)
         }
     }
-
 
 }

@@ -32,7 +32,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/mine_title">
+            android:layout_below="@id/mine_title"
+            android:scrollbars="none">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -83,11 +84,41 @@
                     app:layout_constraintRight_toRightOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_user_wechat"
+                    style="@style/TextActionLine"
+                    android:text="绑定微信"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_nickname" />
+
+                <TextView
+                    android:id="@+id/tv_wechat_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dp"
+                    android:text="未绑定"
+                    android:textColor="@color/FF4A4A4A"
+                    android:textSize="17sp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/tv_user_wechat"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_user_invitation"
+                    style="@style/TextActionLine"
+                    android:layout_marginTop="10dp"
+                    android:text="我的邀请码"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_wechat" />
+
+                <TextView
+                    android:id="@+id/tv_address_book"
+                    style="@style/TextActionLine"
+                    android:text="@string/address_book"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_invitation" />
+
+                <TextView
                     android:id="@+id/tv_passport_backup"
                     style="@style/TextActionLine"
                     android:layout_marginTop="10dp"
                     android:text="@string/export_passport"
-                    app:layout_constraintTop_toBottomOf="@id/tv_user_nickname" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_address_book" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -105,10 +136,6 @@
                     app:layout_constraintBaseline_toBaselineOf="@id/tv_passport_backup"
                     app:layout_constraintStart_toStartOf="parent" />
 
-                <View
-                    style="@style/DividerHorizontal"
-                    app:layout_constraintTop_toBottomOf="@id/tv_passport_backup" />
-
                 <TextView
                     android:id="@+id/tv_modify_passport_password"
                     style="@style/TextActionLine"
@@ -119,7 +146,6 @@
                 <TextView
                     android:id="@+id/tv_data_cloud"
                     style="@style/TextActionLine"
-                    android:layout_marginTop="10dp"
                     android:text="@string/data_cloud_storage"
                     app:layout_constraintTop_toBottomOf="@id/tv_modify_passport_password" />
 
@@ -147,18 +173,11 @@
 
 
                 <TextView
-                    android:id="@+id/tv_address_book"
-                    style="@style/TextActionLine"
-                    android:text="@string/address_book"
-                    app:layout_constraintTop_toBottomOf="@id/tv_data_cloud" />
-
-
-                <TextView
                     android:id="@+id/tv_setting"
                     style="@style/TextActionLine"
                     android:layout_marginTop="10dp"
                     android:text="更多"
-                    app:layout_constraintTop_toBottomOf="@id/tv_address_book" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_data_cloud" />
 
             </android.support.constraint.ConstraintLayout>
 
