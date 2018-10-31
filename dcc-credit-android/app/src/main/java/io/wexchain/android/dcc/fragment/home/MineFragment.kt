@@ -12,6 +12,8 @@ import android.support.v4.view.ViewCompat
 import android.view.*
 import android.view.animation.AnimationUtils
 import com.tbruyelle.rxpermissions2.RxPermissions
+import com.tencent.mm.opensdk.modelmsg.SendAuth
+import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindFragment
@@ -27,7 +29,9 @@ import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.modules.mine.SettingActivity
+import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
+import io.wexchain.dcc.WxApiManager
 import io.wexchain.dcc.databinding.FragmentMineBinding
 import io.wexchain.ipfs.utils.io_main
 
@@ -126,6 +130,18 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
         binding.tvUserInvitation.onClick {
             navigateTo(DccAffiliateActivity::class.java)
         }
+        binding.tvUserWechat.onClick {
+            val wxapi = WxApiManager.wxapi.isWXAppInstalled
+            if (!wxapi) {
+                toast("您还未安装微信客户端")
+                return@onClick
+            }
+            val req = SendAuth.Req()
+            req.scope = "snsapi_userinfo"
+            req.openId = BuildConfig.WECHAT_OPEN_APP_ID
+            req.state = "bitexpress_login"
+            WxApiManager.wxapi.sendReq(req)
+        }
     }
 
     private fun pickImage() {
@@ -167,7 +183,6 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
     }
-
 
 
     class ChooseImageFromDialog : DialogFragment() {
