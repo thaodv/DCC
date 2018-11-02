@@ -27,8 +27,8 @@ android {
             }
         }
 
-        buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_ID', '"wxb9733394b8133087"'
-        buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_KEY', '"3e6bb4bcbdee5c1089ca007d0dafe240"'
+        buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_ID', '"wx775da1e970b779e1"'
+        buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_KEY', '"b9b698d6e5f8c3d9276d3f31f925f987"'
     }
     signingConfigs {
         debug {
