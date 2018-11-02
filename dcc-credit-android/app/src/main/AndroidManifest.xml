@@ -493,6 +493,9 @@
             android:label="认购额度"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.garden.GardenTaskActivity"
+            android:label="每日任务"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
