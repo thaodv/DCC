@@ -2,6 +2,7 @@ package io.wexchain.dccchainservice
 
 import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
+import retrofit2.Response
 import retrofit2.http.*
 
 interface MarketingApi {
@@ -41,4 +42,29 @@ interface MarketingApi {
 
     @GET("version/checkUpgrade")
     fun checkUpgrade(@Query("version") version: String, @Query("platform") platform: String = "ANDROID"): Single<Result<CheckUpgrade>>
+
+    @GET("auth/getNonce2")
+    fun getNonce2(): Single<Result<String>>
+
+    @POST("bemember/login")
+    @FormUrlEncoded
+    fun login(
+            @Field("address") address: String,
+            @Field("nonce") nonce: String,
+            @Field("signature") signature: String
+    ): Single<Response<Result<LoginInfo>>>
+
+    @POST("bemember/bound/wechat")
+    @FormUrlEncoded
+    fun bound(
+            @Header(HEADER_TOKEN) token: String?,
+            @Field("address") address: String,
+            @Field("code") code: String
+    ): Single<Result<String>>
+
+
+    companion object {
+        const val HEADER_TOKEN = "x-auth-token"
+    }
+
 }

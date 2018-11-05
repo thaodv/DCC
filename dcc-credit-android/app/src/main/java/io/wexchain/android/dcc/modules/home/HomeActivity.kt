@@ -60,11 +60,6 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
         showRedeem()
     }
 
-    override fun onResume() {
-        super.onResume()
-        signin()
-    }
-
     private fun showRedeem() {
         ScfOperations
                 .withScfTokenInCurrentPassport(emptyList()) {
@@ -82,14 +77,6 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
 
     private fun showRedeemToken(redeemToken: RedeemToken) {
         BonusDialog.create(redeemToken, this).show(supportFragmentManager, "BONUS#${redeemToken.scenarioCode}")
-    }
-
-    private fun signin() {
-        ScfOperations.loginWithCurrentPassport().subscribe()
-
-        ScfOperations.withScfTokenInCurrentPassport {
-            App.get().scfApi.signIn(it)
-        }.subscribeBy(onError = {})
     }
 
     private fun initEvent() {

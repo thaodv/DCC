@@ -3,10 +3,13 @@ package io.wexchain.dcc.wxapi
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
+import io.reactivex.rxkotlin.subscribeBy
+import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.dcc.WxApiManager
 import org.jetbrains.anko.toast
 
@@ -28,12 +31,15 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
         when (resp?.errCode) {
             BaseResp.ErrCode.ERR_AUTH_DENIED, BaseResp.ErrCode.ERR_USER_CANCEL -> finish()
             BaseResp.ErrCode.ERR_OK -> {
-                val code = (resp as? SendAuth.Resp)?.code
-                toast(code + "")
+                val code = (resp as SendAuth.Resp).code
+                GardenOperations.boundWechat(code)
+                        .subscribeBy {
+                            Log.e("memberId", it)
+                            toast(it)
+                        }
             }
         }
-        println("${resp?.errCode} : ${resp?.errStr} from ${resp?.transaction}")
-        finish()
+
     }
 
     override fun onReq(req: BaseReq?) {

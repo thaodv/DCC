@@ -17,6 +17,7 @@ import io.wexchain.android.dcc.modules.selectnode.NodeBean
 import io.wexchain.android.dcc.network.CommonApi
 import io.wexchain.android.dcc.network.IpfsApi
 import io.wexchain.android.dcc.repo.AssetsRepository
+import io.wexchain.android.dcc.repo.GardenTokenManager
 import io.wexchain.android.dcc.repo.PassportRepository
 import io.wexchain.android.dcc.repo.ScfTokenManager
 import io.wexchain.android.dcc.repo.db.PassportDatabase
@@ -72,6 +73,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
     lateinit var passportRepository: PassportRepository
     lateinit var assetsRepository: AssetsRepository
     lateinit var scfTokenManager: ScfTokenManager
+    lateinit var gardenTokenManager: GardenTokenManager
 
     lateinit var nodeList: List<NodeBean>
 
@@ -191,6 +193,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         )
 
         scfTokenManager = ScfTokenManager(app)
+        gardenTokenManager = GardenTokenManager(app)
         CertOperations.init(app)
         JuzixData.init(app)
 
