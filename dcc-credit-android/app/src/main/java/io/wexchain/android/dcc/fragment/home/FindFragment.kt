@@ -33,11 +33,17 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
         login()
     }
 
-    fun login(){
-        GardenOperations.loginWithCurrentPassport().subscribeBy {
-            Log(it.body()!!.result.toString())
-            toast(it.body()!!.result.toString())
-        }
+    fun login() {
+        GardenOperations.loginWithCurrentPassport()
+                .subscribeBy {
+                    val info = it.body()!!.result
+//                    info?.profilePhoto?.let {
+//                        App.get().passportRepository.saveAvatar()
+//                    }
+
+                    Log(info.toString())
+                    toast(info.toString())
+                }
     }
 
 }

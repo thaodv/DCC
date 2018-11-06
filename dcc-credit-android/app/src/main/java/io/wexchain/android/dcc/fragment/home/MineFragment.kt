@@ -61,7 +61,40 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
 
     override fun onResume() {
         super.onResume()
+        checkBoundWechat()
         getCloudToken()
+    }
+
+    private fun checkBoundWechat() {
+        val memberId = passport.getUserMemberId()
+        if (memberId == null){
+            toWechat()
+        }else{
+            existID()
+        }
+    }
+
+    private fun existID() {
+        binding.tvWechatStatus.text = "已绑定"
+        binding.tvUserWechat.onClick {
+            return@onClick
+        }
+    }
+
+    private fun toWechat() {
+        binding.tvWechatStatus.text = "未绑定"
+        binding.tvUserWechat.onClick {
+            val wxapi = WxApiManager.wxapi.isWXAppInstalled
+            if (!wxapi) {
+                toast("您还未安装微信客户端")
+                return@onClick
+            }
+            val req = SendAuth.Req()
+            req.scope = "snsapi_userinfo"
+            req.openId = BuildConfig.WECHAT_OPEN_APP_ID
+            req.state = "bitexpress_login"
+            WxApiManager.wxapi.sendReq(req)
+        }
     }
 
     private fun getCloudToken() {
@@ -130,18 +163,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
         binding.tvUserInvitation.onClick {
             navigateTo(DccAffiliateActivity::class.java)
         }
-        binding.tvUserWechat.onClick {
-            val wxapi = WxApiManager.wxapi.isWXAppInstalled
-            if (!wxapi) {
-                toast("您还未安装微信客户端")
-                return@onClick
-            }
-            val req = SendAuth.Req()
-            req.scope = "snsapi_userinfo"
-            req.openId = BuildConfig.WECHAT_OPEN_APP_ID
-            req.state = "bitexpress_login"
-            WxApiManager.wxapi.sendReq(req)
-        }
+
     }
 
     private fun pickImage() {

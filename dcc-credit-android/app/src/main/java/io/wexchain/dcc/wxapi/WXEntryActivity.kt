@@ -1,23 +1,24 @@
 package io.wexchain.dcc.wxapi
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
 import io.reactivex.rxkotlin.subscribeBy
+import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
+import io.wexchain.dcc.R
 import io.wexchain.dcc.WxApiManager
-import org.jetbrains.anko.toast
 
 
-class WXEntryActivity : Activity(), IWXAPIEventHandler {
+class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.translucent)
         WxApiManager.wxapi.handleIntent(intent, this)
     }
 
@@ -33,16 +34,18 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
             BaseResp.ErrCode.ERR_OK -> {
                 val code = (resp as SendAuth.Resp).code
                 GardenOperations.boundWechat(code)
+                        .withLoading()
                         .subscribeBy {
-                            Log.e("memberId", it)
-                            toast(it)
+                            App.get().passportRepository.setUserMemberId(it)
+                            finish()
                         }
             }
+            else-> finish()
         }
-
     }
 
     override fun onReq(req: BaseReq?) {
         println(req)
+        finish()
     }
 }
