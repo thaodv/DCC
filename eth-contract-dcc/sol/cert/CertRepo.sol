@@ -10,6 +10,7 @@ contract CertRepo is OperatorPermission {
 
     DigestIntegrity public digest1Integrity;
     DigestIntegrity public digest2Integrity;
+    DigestIntegrity public digest3Integrity;
     DigestIntegrity public expiredIntegrity;
 
 
@@ -31,6 +32,8 @@ contract CertRepo is OperatorPermission {
 
         bytes digest2;
 
+        bytes digest3;
+
         uint256 expired;
 
     }
@@ -46,15 +49,20 @@ contract CertRepo is OperatorPermission {
         digest2Integrity = _digest2Integrity;
     }
 
+    function setDigest3Integrity(DigestIntegrity _digest3Integrity) public onlyOwner {
+        digest3Integrity = _digest3Integrity;
+    }
+
     function setExpiredIntegrity(DigestIntegrity _expiredIntegrity) public onlyOwner {
         expiredIntegrity = _expiredIntegrity;
     }
 
 
-    function CertRepo(bytes _name, DigestIntegrity _digest1Integrity, DigestIntegrity _digest2Integrity, DigestIntegrity _expiredIntegrity) public {
+    function CertRepo(bytes _name, DigestIntegrity _digest1Integrity, DigestIntegrity _digest2Integrity,DigestIntegrity _digest3Integrity, DigestIntegrity _expiredIntegrity) public {
         name = _name;
         digest1Integrity = _digest1Integrity;
         digest2Integrity = _digest2Integrity;
+        digest3Integrity = _digest3Integrity;
         expiredIntegrity = _expiredIntegrity;
     }
 
@@ -64,12 +72,13 @@ contract CertRepo is OperatorPermission {
         Checkpoint memory cp = getCheckpointAt(applicant);
 
         //表示有有效的验证信息
-        require(cp.content.digest1.length > 0 || cp.content.digest2.length>0 || cp.content.expired>0);
+        require(cp.content.digest1.length > 0 || cp.content.digest2.length>0 || cp.content.digest3.length>0|| cp.content.expired>0);
 
         uint256 len=checkpoints[applicant].length;
         Checkpoint storage checkpoint=checkpoints[applicant][len-1];
         checkpoint.content.digest1="";
         checkpoint.content.digest2="";
+        checkpoint.content.digest3="";
         checkpoint.content.expired=0;
 
     }
@@ -87,14 +96,14 @@ contract CertRepo is OperatorPermission {
     /// @return The number of tokens being queried
     function getCheckpointAt(Checkpoint[] storage checkpointList, uint _block) internal view returns (Checkpoint) {
         if (checkpointList.length == 0) {
-            return Checkpoint(0, 0, Content("", "", 0));
+            return Checkpoint(0, 0, Content("", "","", 0));
         }
 
         // Shortcut for the actual value
         if (_block >= checkpointList[checkpointList.length - 1].fromBlock)
             return checkpointList[checkpointList.length - 1];
         if (_block < checkpointList[0].fromBlock) {
-            return Checkpoint(0, 0, Content("", "", 0));
+            return Checkpoint(0, 0, Content("","", "", 0));
         }
 
         // Binary search of the value in the array
@@ -115,16 +124,16 @@ contract CertRepo is OperatorPermission {
         return getCheckpointAt(checkpoints[_owner], block.number);
     }
 
-    function getDataAt(address _owner, uint256 _atBlock) view public returns (bytes digest1, bytes digest2, uint256 expired, uint256 dataVersion) {
+    function getDataAt(address _owner, uint256 _atBlock) view public returns (bytes digest1, bytes digest2,bytes digest3, uint256 expired, uint256 dataVersion) {
         Checkpoint memory cp = getCheckpointAt(checkpoints[_owner], _atBlock);
-        return (cp.content.digest1, cp.content.digest2, cp.content.expired, cp.dataVersion);
+        return (cp.content.digest1, cp.content.digest2,cp.content.digest3, cp.content.expired, cp.dataVersion);
     }
 
-    function getData(address _owner) view public returns (bytes digest1, bytes digest2, uint256 expired, uint256 dataVersion) {
+    function getData(address _owner) view public returns (bytes digest1, bytes digest2,bytes digest3, uint256 expired, uint256 dataVersion) {
         return getDataAt(_owner, block.number);
     }
 
-    function getData() view public returns (bytes digest1, bytes digest2, uint256 expired, uint256 dataVersion) {
+    function getData() view public returns (bytes digest1, bytes digest2,bytes digest3, uint256 expired, uint256 dataVersion) {
         return getData(msg.sender);
     }
 }

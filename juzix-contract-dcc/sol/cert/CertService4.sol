@@ -1,9 +1,9 @@
 pragma solidity ^0.4.2;
 
 contract CertService4 {
-    function apply(bytes digest1, bytes digest2, uint256 expired) public returns (uint256 _orderId);
+    function apply(bytes digest1, bytes digest2,bytes digest3, uint256 expired) public returns (uint256 _orderId);
 
-    function pass(uint256 orderId, bytes digest1, bytes digest2, uint256 expired) public;
+    function pass(uint256 orderId, bytes digest1, bytes digest2,bytes digest3, uint256 expired) public;
 
     function reject(uint256 orderId) public;
 
@@ -15,6 +15,7 @@ contract CertService4 {
         uint8 status,
         bytes digest1,
         bytes digest2,
+        bytes digest3,
         uint256 expired,
         uint256 feeDcc
     );
@@ -25,6 +26,7 @@ contract CertService4 {
         uint8 status,
         bytes digest1,
         bytes digest2,
+        bytes digest3,
         uint256 expired,
         uint256 feeDcc
     );
