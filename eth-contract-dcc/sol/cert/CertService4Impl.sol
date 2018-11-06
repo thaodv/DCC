@@ -11,7 +11,7 @@ contract CertService4Impl is CertService4, CertRepo{
 
     event orderUpdated(address indexed applicant, uint256 indexed orderId, Status status);
 
-    enum Status {INVALID, APPLIED,ACCEPTED, PASSED, REJECTED, REVOKED}
+    enum Status {INVALID, APPLIED,ACCEPTED, PASSED, REJECTED}
 
     struct CertOrder{
         uint256 orderId;
@@ -33,8 +33,8 @@ contract CertService4Impl is CertService4, CertRepo{
 
 
     function CertService4Impl(bytes _name, DigestIntegrity _digest1Integrity, DigestIntegrity _digest2Integrity,
-        DigestIntegrity _expiredIntegrity) public CertRepo(_name,_digest1Integrity,_digest2Integrity,_expiredIntegrity){
-        insertOrder(address(0), Status.INVALID, Content("", "", 0),0);
+        DigestIntegrity _digest3Integrity,DigestIntegrity _expiredIntegrity) public CertRepo(_name,_digest1Integrity,_digest2Integrity,_digest3Integrity,_expiredIntegrity){
+        insertOrder(address(0), Status.INVALID, Content("", "","", 0),0);
     }
 
     function insertOrder(address applicant, Status status, Content icc,uint256  fee) internal returns (uint256 orderId){
@@ -45,7 +45,7 @@ contract CertService4Impl is CertService4, CertRepo{
         return orderId;
     }
 
-    function apply(bytes digest1, bytes digest2,uint256 expired) external returns (uint256 _orderId){
+    function apply(bytes digest1, bytes digest2,bytes digest3,uint256 expired) external returns (uint256 _orderId){
 
         uint256 len=applicantIndex[msg.sender].length;
         if(len>0){
@@ -53,7 +53,7 @@ contract CertService4Impl is CertService4, CertRepo{
             //Status lastOrderStatus=certOrders[lastOrderId].status;
             CertOrder memory lastCertOrder=innerGetLastCertOrder(msg.sender);
             //require(lastOrderStatus==Status.PASSED ||lastOrderStatus==Status.REJECTED || lastOrderStatus==Status.REVOKED);
-            require(lastCertOrder.status==Status.PASSED ||lastCertOrder.status==Status.REJECTED || lastCertOrder.status==Status.REVOKED);
+            require(lastCertOrder.status==Status.PASSED ||lastCertOrder.status==Status.REJECTED);
         }
 
         if(digest1Integrity == DigestIntegrity.APPLICANT){
@@ -68,6 +68,12 @@ contract CertService4Impl is CertService4, CertRepo{
             require(digest2.length==0);
         }
 
+        if(digest3Integrity == DigestIntegrity.APPLICANT){
+            require(digest3.length>0 && digest3.length<=100);
+        }else{
+            require(digest3.length==0);
+        }
+
         if(expiredIntegrity == DigestIntegrity.APPLICANT){
             require(expired!=0);
         }else{
@@ -80,7 +86,7 @@ contract CertService4Impl is CertService4, CertRepo{
             fee=certServiceFeeModule.apply();
         }
 
-        return insertOrder(msg.sender, Status.APPLIED, Content(digest1,digest2,expired),fee);
+        return insertOrder(msg.sender, Status.APPLIED, Content(digest1,digest2,digest3,expired),fee);
     }
 
     function accept(uint256 orderId) external onlyOperator{
@@ -91,7 +97,7 @@ contract CertService4Impl is CertService4, CertRepo{
     }
 
 
-    function pass(uint256 orderId,bytes digest1, bytes digest2,uint256 expired) external onlyOperator{
+    function pass(uint256 orderId,bytes digest1, bytes digest2,bytes digest3,uint256 expired) external onlyOperator{
         CertOrder storage order = certOrders[orderId];
         Content storage content=order.content;
 
@@ -107,6 +113,13 @@ contract CertService4Impl is CertService4, CertRepo{
             content.digest2=digest2;
         }else{
             require(digest2.length==0);
+        }
+
+        if(digest3Integrity == DigestIntegrity.VERIFIER){
+            require(digest3.length>0 && digest3.length<=100);
+            content.digest3=digest3;
+        }else{
+            require(digest3.length==0);
         }
 
         if(expiredIntegrity == DigestIntegrity.VERIFIER){
@@ -153,21 +166,21 @@ contract CertService4Impl is CertService4, CertRepo{
     }
 
 
-    function getCertOrder(address applicant,uint256 index) view public returns (uint256 _orderId,address _applicant, uint8 status, bytes digest1, bytes digest2, uint256 expired,uint256 feeDcc) {
+    function getCertOrder(address applicant,uint256 index) view public returns (uint256 _orderId,address _applicant, uint8 status, bytes digest1, bytes digest2,bytes digest3, uint256 expired,uint256 feeDcc) {
         require(applicant!=0);
         uint256[] memory applicantList=applicantIndex[applicant];
         if(!(index<applicantList.length && applicantList.length>0)){
-            return (0,0,0,"","",0,0);
+            return (0,0,0,"","","",0,0);
         }
         CertOrder memory order= certOrders[applicantList[index]];
-        return (order.orderId,order.applicant, uint8(order.status), order.content.digest1, order.content.digest2, order.content.expired,order.fee);
+        return (order.orderId,order.applicant, uint8(order.status), order.content.digest1, order.content.digest2,order.content.digest3, order.content.expired,order.fee);
     }
 
-    function getLastCertOrder(address applicant)view public returns (uint256 _orderId,address _applicant, uint8 status, bytes digest1, bytes digest2, uint256 expired,uint256 feeDcc) {
+    function getLastCertOrder(address applicant)view public returns (uint256 _orderId,address _applicant, uint8 status, bytes digest1, bytes digest2, bytes digest3,uint256 expired,uint256 feeDcc) {
         require(applicant!=0);
         uint256[] memory applicantList=applicantIndex[applicant];
         if(!(applicantList.length>0)){
-            return (0,0,0,"","",0,0);
+            return (0,0,0,"","","",0,0);
         }
         return getCertOrder(applicant,applicantList.length-1);
     }
@@ -200,5 +213,16 @@ contract CertService4Impl is CertService4, CertRepo{
             orderIdList[i.sub(from)] = applicantIndex[applicant][i];
         }
         return orderIdList;
+    }
+
+    function  getExpectedFeeDcc()view  public returns(uint256){
+        if(certServiceFeeModule!=address(0)){
+            return certServiceFeeModule.getFee();
+        }
+    }
+
+    function getCertOrder(uint256 orderId) view public returns (uint256 _orderId, address applicant,Status status, bytes digest1, bytes digest2,bytes digest3, uint256 expired,uint256 fee) {
+        CertOrder memory order = certOrders[orderId];
+        return (orderId,order.applicant,order.status, order.content.digest1, order.content.digest2,order.content.digest3, order.content.expired,order.fee);
     }
 }
