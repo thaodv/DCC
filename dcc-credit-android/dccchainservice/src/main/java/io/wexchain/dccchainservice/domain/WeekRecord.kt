@@ -11,5 +11,6 @@ data class WeekRecord(
     val playerId: Int,
     val time: Long,
     val weekStartTime: Long,
-    val createdTime: Long
+    val createdTime: Long,
+    val balance: String
 )

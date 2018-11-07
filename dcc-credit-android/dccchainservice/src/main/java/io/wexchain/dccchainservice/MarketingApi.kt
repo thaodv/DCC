@@ -67,7 +67,7 @@ interface MarketingApi {
 
     //任务列表
     @POST("bemember/ss/task/taskList")
-    fun getTaskList(@Header(HEADER_TOKEN) token: String?): Single<Result<TaskList>>
+    fun getTaskList(@Header(HEADER_TOKEN) token: String?): Single<Result<List<TaskList>>>
 
     //完成任务
     @POST("bemember/ss/task/completeTask")
@@ -83,15 +83,23 @@ interface MarketingApi {
 
     //查询周签到历史
     @POST("bemember/ss/attendence/currentWeekRecord")
-    fun currentWeekRecord(@Header(HEADER_TOKEN) token: String?): Single<Result<WeekRecord>>
+    fun currentWeekRecord(@Header(HEADER_TOKEN) token: String?): Single<Result<List<WeekRecord>>>
 
     //查询当天签到历史
     @POST("bemember/ss/attendence/queryTodayRecord")
     fun queryTodayRecord(@Header(HEADER_TOKEN) token: String?): Single<Result<WeekRecord>>
 
     // 查询玩家阳光值余额
-    @POST("player/ss/player/balance")
-    fun balance(@Header(HEADER_TOKEN) token: String?): Single<Result<String>>
+    @POST("bemember/ss/player/balance")
+    fun balance(@Header(HEADER_TOKEN) token: String?): Single<Result<WeekRecord>>
+
+    // 查询玩家阳光值变更记录
+    @POST("bemember/ss/changeOrder/query")
+    @FormUrlEncoded
+    fun changeOrder(@Header(HEADER_TOKEN) token: String?,
+                    @Field("number") number: Int,
+                    @Field("size") size: Int): Single<Result<PagedList<ChangeOrder>>>
+
 
 
     companion object {

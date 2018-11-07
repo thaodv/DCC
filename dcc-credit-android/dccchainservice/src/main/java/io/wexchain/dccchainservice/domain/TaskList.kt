@@ -5,10 +5,10 @@ package io.wexchain.dccchainservice.domain
  */
 
 data class TaskList(
+        val taskList: List<Task>,
         val category: String,
         val name: String,
-        val description: String,
-        val taskList: List<Task>
+        val description: String
 ) {
     data class Task(
             val code: String,
@@ -21,3 +21,5 @@ data class TaskList(
             val statusDescription: String
     )
 }
+
+

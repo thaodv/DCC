@@ -68,6 +68,7 @@
                     app:layout_constraintTop_toBottomOf="@id/find_user_avatar">
 
                     <ImageView
+                        android:id="@+id/find_garden_list"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center_horizontal"
@@ -75,6 +76,7 @@
                         android:src="@drawable/garden_img1" />
 
                     <TextView
+                        android:id="@+id/find_garden_list2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -84,6 +86,7 @@
                         android:textSize="18sp" />
 
                     <TextView
+                        android:id="@+id/find_in_garden"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
@@ -144,6 +147,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/find_share"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginTop="5dp"

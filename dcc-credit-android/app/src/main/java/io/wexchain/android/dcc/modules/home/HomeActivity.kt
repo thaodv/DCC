@@ -53,7 +53,7 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home2)
         initView()
-        replaceFragment(ServiceFragment())
+        replaceFragment(FindFragment())
         initEvent()
         initPhototTask()
         checkUpgrade()
@@ -114,6 +114,7 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
             addItem(BottomNavigationItem(R.drawable.tab_activity_find, "发现").setInactiveIconResource(R.drawable.tab_find).setActiveColorResource(R.color.main_tab))
             addItem(BottomNavigationItem(R.drawable.tab_activity_digital, "钱包").setInactiveIconResource(R.drawable.tab_digital).setActiveColorResource(R.color.main_tab))
             addItem(BottomNavigationItem(R.drawable.tab_activity_mine, "我的").setInactiveIconResource(R.drawable.tab_mine).setActiveColorResource(R.color.main_tab))
+            setFirstSelectedPosition(1)
             initialise()
         }
     }
