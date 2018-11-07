@@ -13,6 +13,7 @@ import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import worhavah.certs.bean.TNcert1new
 import worhavah.certs.tools.CertOperations
+import worhavah.certs.tools.CertOperations.certUpdateOrderByTx
 import worhavah.certs.tools.CertOperations.clearTNCertCache
 import worhavah.mobilecertmodule.R
 import worhavah.regloginlib.Net.Networkutils
@@ -69,6 +70,9 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
         StatusBarCompat.setStatusBarColor(this, resources.getColor(R.color.white))
         initToolbar(true, true)
         checkPreconditions()
+        if(checkltx()){
+
+        }
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertID.get().apply {
             if (this == -1L) {
             } else {
@@ -90,53 +94,114 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
         }
     }
 
-    override fun onSubmitPhoneInfo(phoneNo: String, password: String) {
-        CertOperations.confirmCertFee({ supportFragmentManager }, ChainGateway.TN_COMMUNICATION_LOG) {
-            val passport = passport
-            val privateKey = passport.authKey!!.getPrivateKey()
-            val address = passport.address
-            var name = realName
-            var id = realId
-            submitPhoneNo = phoneNo
-            submitServicePassword = password
-            //var orderiiid=  obtainNewOrderId(passport).blockingGet()
-            obtainNewOrderId(passport, phoneNo).subscribeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
-                showLoadingDialog()
+      fun checkltx():Boolean{
+        val ltx= CertOperations.certPrefs.certTNcerttxhashcode.get()
+        if(!TextUtils.isEmpty(ltx)){
+            if(System.currentTimeMillis()-CertOperations.certPrefs.certTNcerttxhashtime.get()<10*60*1000){
+                return true
+            }else{
+                CertOperations.certPrefs.certTNcerttxhashcode.set("")
             }
+        }
+        return false
+    }
+    override fun onSubmitPhoneInfo(phoneNo: String, password: String) {
+        val ltx= CertOperations.certPrefs.certTNcerttxhashcode.get()
+        if(checkltx()){
+                val passport = passport
+                val privateKey = passport.authKey!!.getPrivateKey()
+                val address = passport.address
+                var name = realName
+                var id = realId
+                submitPhoneNo = phoneNo
+                submitServicePassword = password
+                worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set(phoneNo)
+                //var orderiiid=  obtainNewOrderId(passport).blockingGet()
+                Single.just(ltx!!).certUpdateOrderByTx(Networkutils.chainGateway,
+                    worhavah.regloginlib.Net.ChainGateway.TN_COMMUNICATION_LOG).subscribeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
+                    showLoadingDialog()
+                }
                     .doFinally {
                     }
                     .subscribe(
-                            {
-                                val signature = ParamSignatureUtil.sign(
-                                        privateKey, mapOf(
-                                        "address" to address,
-                                        "orderId" to it.toString(),
-                                        "userName" to name,
-                                        "certNo" to id,
-                                        "phoneNo" to phoneNo,
-                                        "password" to password,
-                                        "nonce" to CertOperations.TNnonce
+                        {
+                            val signature = ParamSignatureUtil.sign(
+                                privateKey, mapOf(
+                                    "address" to address,
+                                    "orderId" to it.orderId.toString(),
+                                    "userName" to name,
+                                    "certNo" to id,
+                                    "phoneNo" to phoneNo,
+                                    "password" to password,
+                                    "nonce" to worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.get()
                                 )
-                                )
-                                worhavah.certs.tools.CertOperations.certPrefs.certTNcertaddress.set(address)
-                                worhavah.certs.tools.CertOperations.certPrefs.certTNcertID.set(it)
-                                worhavah.certs.tools.CertOperations.certPrefs.certTNcertuserName.set(name)
-                                worhavah.certs.tools.CertOperations.certPrefs.certTNcertcertNo.set(id)
-                                worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set(phoneNo)
-                                worhavah.certs.tools.CertOperations.certPrefs.certTNcertpassword.set(password)
-                                worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.set(
-                                        CertOperations.TNnonce
-                                )
-                                worhavah.certs.tools.CertOperations.certPrefs.ertTNcertsignature.set(signature)
-                                checkCreat()
-                            }, {
-                        toast(it.message.toString())
-                        hideLoadingDialog()
+                            )
+                            worhavah.certs.tools.CertOperations.certPrefs.certTNcertaddress.set(address)
+                            worhavah.certs.tools.CertOperations.certPrefs.certTNcertID.set(it.orderId)
+                            worhavah.certs.tools.CertOperations.certPrefs.certTNcertuserName.set(name)
+                            worhavah.certs.tools.CertOperations.certPrefs.certTNcertcertNo.set(id)
+                            worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set(phoneNo)
+                            worhavah.certs.tools.CertOperations.certPrefs.certTNcertpassword.set(password)
 
-                    }
+                            worhavah.certs.tools.CertOperations.certPrefs.ertTNcertsignature.set(signature)
+                            checkCreat()
+                        }, {
+                            toast(it.message.toString())
+                            hideLoadingDialog()
+                        }
                     )
+
+        }else{
+            CertOperations.confirmCertFee({ supportFragmentManager }, ChainGateway.TN_COMMUNICATION_LOG) {
+                val passport = passport
+                val privateKey = passport.authKey!!.getPrivateKey()
+                val address = passport.address
+                var name = realName
+                var id = realId
+                submitPhoneNo = phoneNo
+                submitServicePassword = password
+                worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set(phoneNo)
+                //var orderiiid=  obtainNewOrderId(passport).blockingGet()
+                obtainNewOrderId(passport, phoneNo).subscribeOn(AndroidSchedulers.mainThread()).doOnSubscribe {
+                    showLoadingDialog()
+                }
+                    .doFinally {
+                    }
+                    .subscribe(
+                        {
+                            val signature = ParamSignatureUtil.sign(
+                                privateKey, mapOf(
+                                    "address" to address,
+                                    "orderId" to it.toString(),
+                                    "userName" to name,
+                                    "certNo" to id,
+                                    "phoneNo" to phoneNo,
+                                    "password" to password,
+                                    "nonce" to worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.get()
+                                )
+                            )
+                            worhavah.certs.tools.CertOperations.certPrefs.certTNcertaddress.set(address)
+                            worhavah.certs.tools.CertOperations.certPrefs.certTNcertID.set(it)
+                            worhavah.certs.tools.CertOperations.certPrefs.certTNcertuserName.set(name)
+                            worhavah.certs.tools.CertOperations.certPrefs.certTNcertcertNo.set(id)
+                            worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set(phoneNo)
+                            worhavah.certs.tools.CertOperations.certPrefs.certTNcertpassword.set(password)
+
+                            worhavah.certs.tools.CertOperations.certPrefs.ertTNcertsignature.set(signature)
+                            checkCreat()
+                        }, {
+                            toast(it.message.toString())
+                            hideLoadingDialog()
+
+                        }
+                    )
+            }
         }
+
     }
+
+
+
 
     fun checkCreat() {
         requestTNLog2(
