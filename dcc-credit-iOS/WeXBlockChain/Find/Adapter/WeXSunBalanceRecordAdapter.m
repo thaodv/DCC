@@ -1,17 +1,17 @@
 //
-//  WeXTaskListAdapter.m
+//  WeXSunBalanceRecordAdapter.m
 //  WeXBlockChain
 //
-//  Created by 张君君 on 2018/11/6.
+//  Created by 张君君 on 2018/11/7.
 //  Copyright © 2018年 WeX. All rights reserved.
 //
 
-#import "WeXTaskListAdapter.h"
+#import "WeXSunBalanceRecordAdapter.h"
 
-@implementation WeXTaskListAdapter
+@implementation WeXSunBalanceRecordAdapter
 
 - (NSString*)getRequestUrl {
-    return @"bemember/ss/task/taskList";
+    return @"bemember/ss/changeOrder/query";
 }
 
 - (WexBaseUrlType)getBasetUrlType {
@@ -23,16 +23,14 @@
 }
 
 - (Class)getResponseClass {
-    return [WeXTaskListResModel class];
+    return [WeXSunBlanceResModel class];
 }
 
 - (BOOL)isNeedBindWeChatToken {
     return true;
 }
-
 - (BOOL)isNeedSaveWeChatToken {
     return false;
 }
-
 
 @end

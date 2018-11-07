@@ -32,7 +32,7 @@
 
 //需要保存微信相关token
 - (BOOL)isNeedSaveWeChatToken {
-    return true;
+    return false;
 }
 
 @end
