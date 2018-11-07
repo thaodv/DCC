@@ -6,7 +6,7 @@ import io.wexchain.android.common.SingleLiveEvent
 import worhavah.regloginlib.tools.isPhoneNumValid
 
 class InputPhoneInfoVm : ViewModel() {
-    val phoneNo = ObservableField<String>()
+    var phoneNo = ObservableField<String>()
     val servicePassword = ObservableField<String>()
 
     val certFee = ObservableField<String>()
