@@ -22,7 +22,6 @@ import io.wexchain.ipfs.utils.doMain
 
 class BsxHoldingActivity : BindActivity<ActivityBsxHoldingBinding>(), ItemViewClickListener<BsxHoldingBean> {
 
-
     override val contentLayoutId: Int
         get() = R.layout.activity_bsx_holding
 

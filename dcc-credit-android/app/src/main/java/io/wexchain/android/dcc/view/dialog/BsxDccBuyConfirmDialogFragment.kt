@@ -117,7 +117,7 @@ class BsxDccBuyConfirmDialogFragment : DialogFragment() {
                                 }
                                 it
                             }
-                            .retryWhen(RetryWithDelay.createSimple(10, 5000L))
+                            .retryWhen(RetryWithDelay.createSimple(10, 3000))
                             .map {
                                 if (!it.approximatelySuccess) {
                                     throw DccChainServiceException()
@@ -125,6 +125,7 @@ class BsxDccBuyConfirmDialogFragment : DialogFragment() {
                                 txHash
                             }
                 }
+                .doMain()
                 .doOnSubscribe {
                     showLoadingDialog()
                 }.doFinally {

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
-import android.util.Log
 import android.view.*
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -151,7 +150,7 @@ class BuyConfirmDialogFragment : DialogFragment() {
                                 }
                                 it
                             }
-                            .retryWhen(RetryWithDelay.createSimple(6, 5000L))
+                            .retryWhen(RetryWithDelay.createSimple(10, 3000))
                             .map {
                                 if (!it.approximatelySuccess) {
                                     throw DccChainServiceException()
