@@ -134,7 +134,6 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         val builder = DownloadConfig.Builder.create(this)
                 .enableAutoStart(true)
                 .enableDb(true)
-                .enableNotification(true)
 
         DownloadConfig.init(builder)
     }

@@ -7,23 +7,23 @@
 
         <variable
             name="tokenplus"
-            type="io.wexchain.android.dcc.fragment.home.ServiceCardVm" />
+            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />
 
         <variable
             name="searchain"
-            type="io.wexchain.android.dcc.fragment.home.ServiceCardVm" />
+            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />
 
         <variable
             name="ecology"
-            type="io.wexchain.android.dcc.fragment.home.ServiceCardVm" />
+            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />
 
         <variable
             name="certification"
-            type="io.wexchain.android.dcc.fragment.home.ServiceCardVm" />
+            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />
 
         <variable
             name="login"
-            type="io.wexchain.android.dcc.fragment.home.ServiceCardVm" />
+            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />
 
     </data>
 

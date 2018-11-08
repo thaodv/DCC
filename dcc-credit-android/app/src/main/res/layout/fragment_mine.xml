@@ -61,10 +61,11 @@
                     android:scaleType="centerCrop"
                     app:errorRes="@{@drawable/mine_user_avatar}"
                     app:imageUri="@{passport.avatarUri}"
+                    tools:src="@drawable/mine_user_avatar"
                     app:layout_constraintBottom_toBottomOf="@id/tv_user_avatar"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_user_avatar"
-                    tools:src="@drawable/mine_user_avatar" />
+                     />
 
                 <TextView
                     android:id="@+id/tv_user_nickname"

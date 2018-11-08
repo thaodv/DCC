@@ -25,7 +25,7 @@ import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.tools.reName
 import io.wexchain.android.dcc.view.dialog.BonusDialog
-import io.wexchain.android.dcc.view.dialog.UpgradeDialog
+import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityHomeBinding
 import io.wexchain.dccchainservice.domain.CheckUpgrade
@@ -99,7 +99,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
     }
 
     private fun showUpgradeDialog(it: CheckUpgrade) {
-        val dialog = UpgradeDialog(this)
+        val dialog = BaseDialog(this)
         if (it.mandatoryUpgrade) {
             dialog.createHomeDialog(it.version, it.updateLog)
                     .onClick {
@@ -135,7 +135,7 @@ class HomeActivity : BindActivity<ActivityHomeBinding>(), BonusDialog.Listener {
                             installApk(file)
                         } else {
                             val mission = Mission(updateUrl, filename, savepath.absolutePath)
-                            UpgradeDialog(this).crateDownloadDialog(mission)
+                            BaseDialog(this).crateDownloadDialog(mission)
                         }
                     } else {
                         toast("没有读写文件权限,请重新打开App授权")

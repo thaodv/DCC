@@ -22,6 +22,7 @@ import io.wexchain.android.common.onClick
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.*
+import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
 import io.wexchain.android.dcc.constant.RequestCodes
@@ -66,8 +67,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
     }
 
     private fun checkBoundWechat() {
-        val memberId = passport.getUserMemberId()
-        if (memberId == null){
+        if (!GardenOperations.isBound()){
             toWechat()
         }else{
             existID()
@@ -84,16 +84,9 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
     private fun toWechat() {
         binding.tvWechatStatus.text = "未绑定"
         binding.tvUserWechat.onClick {
-            val wxapi = WxApiManager.wxapi.isWXAppInstalled
-            if (!wxapi) {
-                toast("您还未安装微信客户端")
-                return@onClick
+            GardenOperations.wechatLogin{
+                toast(it)
             }
-            val req = SendAuth.Req()
-            req.scope = "snsapi_userinfo"
-            req.openId = BuildConfig.WECHAT_OPEN_APP_ID
-            req.state = "bitexpress_login"
-            WxApiManager.wxapi.sendReq(req)
         }
     }
 

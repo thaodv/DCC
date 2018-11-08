@@ -17,7 +17,7 @@ import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.tools.SharedPreferenceUtil
-import io.wexchain.android.dcc.view.dialog.UpgradeDialog
+import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtect
 import io.wexchain.android.localprotect.fragment.VerifyProtectFragment
@@ -95,7 +95,7 @@ class PassportRemovalActivity : BaseCompatActivity() {
     }
 
     private fun showConfirmDeleteDialog() {
-        val dialog = UpgradeDialog(this)
+        val dialog = BaseDialog(this)
         dialog.removePassportDialog()
                 .onClick(
                         onCancle = {
@@ -136,6 +136,8 @@ class PassportRemovalActivity : BaseCompatActivity() {
             CertOperations.clearAllCertData()
             //clear session token
             App.get().scfTokenManager.scfToken = null
+            App.get().gardenTokenManager.gardenToken = null
+            App.get().isLogin.postValue(false)
             SharedPreferenceUtil.save(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING, null)
         }
                 .doOnSubscribe {

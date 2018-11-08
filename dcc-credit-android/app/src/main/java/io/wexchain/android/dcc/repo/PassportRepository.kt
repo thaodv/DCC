@@ -382,12 +382,12 @@ class PassportRepository(
         passportPrefs.ipfsHostStatus.set(status)
     }
 
-    fun setUserMemberId(memberid :String){
-        passportPrefs.userMemberId.set(memberid)
+    fun setUserInfo(userinfo: String) {
+        passportPrefs.userInfo.set(userinfo)
     }
 
-    fun getUserMemberId(): String? {
-        return  passportPrefs.userMemberId.get()
+    fun getUserInfo(): String? {
+        return passportPrefs.userInfo.get()
     }
 
     fun getPassword(): String {
@@ -401,6 +401,7 @@ class PassportRepository(
     fun getWallet(): String {
         return passportPrefs.wallet.get()!!
     }
+
     fun getOldWallet(): String? {
         return passportPrefs.wallet.get()
     }
@@ -486,7 +487,7 @@ class PassportRepository(
         private const val IPFS_AES_KEY = "ipfs_aes_key"
         private const val IPFS_URL_HOST = "ipfs_url_host"
         private const val IPFS_URL_PORT = "ipfs_url_port"
-        private const val USER_MEMBER_ID = "user_member_id"
+        private const val USER_INFO = "user_info"
         private const val IPFS_DEFAULT_HOST_STATUS = "ipfs_default_host_status"
 
         private const val DEFAULT_BENEFICIARY_ADDRESS = "default_beneficiary_address"
@@ -514,7 +515,7 @@ class PassportRepository(
         val ipfsUrlHost = StringPref(IPFS_URL_HOST)
         val ipfsUrlPort = StringPref(IPFS_URL_PORT)
         val ipfsHostStatus = BoolPref(IPFS_DEFAULT_HOST_STATUS, true)
-        val userMemberId = StringPref(USER_MEMBER_ID)
+        val userInfo = StringPref(USER_INFO)
 
         fun loadAuthKey(): AuthKey? {
             val keyAlias = authKeyAlias.get()

@@ -5,16 +5,16 @@ package io.wexchain.dccchainservice.domain
  */
 data class LoginInfo(
     val member: Member,
-    val player: Player
+    val player: Player?
 )
 
 data class Member(
     val id: Int,
-    val inviteId: Any,
-    val name: String,
-    val profilePhoto: String,
+    val inviteId: String?,
+    val name: String?,
+    val profilePhoto: String?,
     val status: String,
-    val identityList: List<Identity>
+    val identityList: List<Identity>?
 )
 
 data class Identity(
@@ -25,8 +25,8 @@ data class Identity(
 )
 
 data class Player(
-    val id: Int,
-    val nickName: String,
-    val portrait: String,
-    val unionId: String
+    val id: Int?,
+    val nickName: String?,
+    val portrait: String?,
+    val unionId: String?
 )

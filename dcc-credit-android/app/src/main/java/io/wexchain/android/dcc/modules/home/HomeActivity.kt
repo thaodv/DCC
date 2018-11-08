@@ -14,6 +14,7 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.common.versionInfo
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.fragment.home.DigitalAssetsFragment
@@ -25,7 +26,7 @@ import io.wexchain.android.dcc.tools.reName
 import io.wexchain.android.dcc.view.bottomnavigation.BottomNavigationBar
 import io.wexchain.android.dcc.view.bottomnavigation.BottomNavigationItem
 import io.wexchain.android.dcc.view.dialog.BonusDialog
-import io.wexchain.android.dcc.view.dialog.UpgradeDialog
+import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
@@ -58,6 +59,11 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
         initPhototTask()
         checkUpgrade()
         showRedeem()
+        login()
+    }
+
+    fun login() {
+        GardenOperations.loginWithCurrentPassport(this).subscribe()
     }
 
     private fun showRedeem() {
@@ -70,8 +76,8 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
                 }
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribeBy {
-                        val bonus = it.first()
-                        showRedeemToken(bonus)
+                    val bonus = it.first()
+                    showRedeemToken(bonus)
                 }
     }
 
@@ -155,7 +161,7 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
     }
 
     private fun showUpgradeDialog(it: CheckUpgrade) {
-        val dialog = UpgradeDialog(this)
+        val dialog = BaseDialog(this)
         if (it.mandatoryUpgrade) {
             dialog.createHomeDialog(it.version, it.updateLog)
                     .onClick {
@@ -191,7 +197,7 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
                             installApk(file)
                         } else {
                             val mission = Mission(updateUrl, filename, savepath.absolutePath)
-                            UpgradeDialog(this).crateDownloadDialog(mission)
+                            BaseDialog(this).crateDownloadDialog(mission)
                         }
                     } else {
                         toast("没有读写文件权限,请重新打开App授权")

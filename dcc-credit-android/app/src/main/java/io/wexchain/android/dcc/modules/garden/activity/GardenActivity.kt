@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.modules.home
+package io.wexchain.android.dcc.modules.garden.activity
 
 import android.annotation.TargetApi
 import android.graphics.BitmapFactory

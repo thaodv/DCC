@@ -14,12 +14,12 @@ import android.view.View
 import android.view.ViewGroup
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindFragment
-import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.*
 import io.wexchain.android.dcc.base.StaticHtmlActivity
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm
 import io.wexchain.android.dcc.modules.bsx.BsxMarketActivity
 import io.wexchain.android.dcc.modules.home.LoanActivity
 import io.wexchain.android.dcc.modules.home.TokenPlusActivity
@@ -28,7 +28,6 @@ import io.wexchain.android.dcc.view.adapter.BindingViewHolder
 import io.wexchain.android.dcc.view.adapter.ClickAwareHolder
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback
-import io.wexchain.android.dcc.vm.AuthenticationStatusVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentServiceBinding
 import io.wexchain.dcc.databinding.ItemServiceLoanBinding
