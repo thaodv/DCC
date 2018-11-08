@@ -14,6 +14,7 @@ import io.wexchain.android.dcc.chain.BsxOperations
 import io.wexchain.android.dcc.modules.bsx.BsxDccBuyActivity
 import io.wexchain.android.dcc.modules.bsx.BsxDetailActivity
 import io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity
+import io.wexchain.android.dcc.network.IpfsApi
 import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.android.dcc.vm.TransactionConfirmVm
@@ -34,6 +35,7 @@ import java.math.BigDecimal
 class BsxDccBuyConfirmDialogFragment : DialogFragment() {
     var isEdit = false
     var isRepayment = 0
+    lateinit var name: String
 
     private lateinit var binding: DialogConfirmBuyinvestmentBinding
 
@@ -67,7 +69,7 @@ class BsxDccBuyConfirmDialogFragment : DialogFragment() {
             if (BigDecimal(vm.currentBanance) < binding.vm!!.tx.amount) {
                 toast("持有量不足")
             } else {
-                invest()
+                invest(name)
             }
         }
         return binding.root
@@ -77,10 +79,34 @@ class BsxDccBuyConfirmDialogFragment : DialogFragment() {
     val p = App.get().passportRepository.getCurrentPassport()!!
     var agent = App.get().assetsRepository.getDigitalCurrencyAgent(dccJuzix)
 
-    private fun invest() {
+    private fun invest(name: String) {
+
+        var bussiness = ""
+
+        if ("1" == name) {
+            bussiness = IpfsApi.BSX_DCC_01
+        } else if ("2" == name) {
+            bussiness = IpfsApi.BSX_DCC_02
+        } else if ("3" == name) {
+            bussiness = IpfsApi.BSX_DCC_03
+        } else if ("4" == name) {
+            bussiness = IpfsApi.BSX_DCC_04
+        } else if ("5" == name) {
+            bussiness = IpfsApi.BSX_DCC_05
+        } else if ("6" == name) {
+            bussiness = IpfsApi.BSX_DCC_06
+        } else if ("7" == name) {
+            bussiness = IpfsApi.BSX_DCC_07
+        } else if ("8" == name) {
+            bussiness = IpfsApi.BSX_DCC_08
+        } else if ("9" == name) {
+            bussiness = IpfsApi.BSX_DCC_09
+        } else if ("10" == name) {
+            bussiness = IpfsApi.BSX_DCC_10
+        }
 
         BsxOperations
-                .investBsx(io.wexchain.android.dcc.network.IpfsApi.BSX_DCC_02, binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger(), Chain.JUZIX_PRIVATE)
+                .investBsx(bussiness, binding.vm!!.tx.amount.scaleByPowerOfTen(18).toBigInteger(), Chain.JUZIX_PRIVATE)
                 .doMain()
                 .flatMap { txHash ->
                     App.get().chainGateway.getReceiptResult(txHash)
@@ -158,11 +184,12 @@ class BsxDccBuyConfirmDialogFragment : DialogFragment() {
     companion object {
         const val ARG_SCRATCH = "argument_transaction_scratch"
 
-        fun create(ethsTransactionScratch: EthsTransactionScratch, isEdit: Boolean = false, isRepayment: Int = 0): BsxDccBuyConfirmDialogFragment {
+        fun create(ethsTransactionScratch: EthsTransactionScratch, name: String, isEdit: Boolean = false, isRepayment: Int = 0): BsxDccBuyConfirmDialogFragment {
             return BsxDccBuyConfirmDialogFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_SCRATCH, ethsTransactionScratch)
                 }
+                this.name = name
                 this.isEdit = isEdit
                 this.isRepayment = isRepayment
             }

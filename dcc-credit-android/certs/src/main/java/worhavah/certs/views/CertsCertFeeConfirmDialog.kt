@@ -7,12 +7,10 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.*
 import io.wexchain.android.common.getViewModel
-import io.wexchain.android.common.toast
 import io.wexchain.digitalwallet.Currencies
 import worhavah.certs.R
 import worhavah.certs.databinding.CertsDialogCertFeeBinding
 import worhavah.certs.vm.CertFeeConfirmVm
-import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
 
@@ -25,7 +23,6 @@ class CertsCertFeeConfirmDialog : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<CertsDialogCertFeeBinding>(inflater, R.layout.certs_dialog_cert_fee, container, false)
         val vm = getViewModel<CertFeeConfirmVm>().apply {
-            val ss=this.holdtotal
             val feeStr = "${Currencies.DCC.toDecimalAmount(this@CertsCertFeeConfirmDialog.fee).setScale(4, RoundingMode.DOWN).toPlainString()} DCC"
             fee.set(feeStr)
             feec= Currencies.DCC.toDecimalAmount(this@CertsCertFeeConfirmDialog.fee).setScale(4, RoundingMode.DOWN)

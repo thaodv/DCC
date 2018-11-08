@@ -142,5 +142,4 @@ object BsxOperations {
         return App.get().contractApi.getIpfsContractAddress(business).check()
     }
 
-
 }

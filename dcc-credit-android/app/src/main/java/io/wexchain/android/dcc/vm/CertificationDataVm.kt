@@ -2,7 +2,6 @@ package io.wexchain.android.dcc.vm
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import android.graphics.Bitmap
 import io.wexchain.android.common.SingleLiveEvent
 
 class CertificationDataVm : ViewModel() {

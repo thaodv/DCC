@@ -25,6 +25,7 @@ import java.math.BigDecimal
 class BsxDccBuyActivity : BindActivity<ActivityBsxDccBuyBinding>() {
 
     private val contractAddress get() = intent.getStringExtra("contractAddress")
+    private val name get() = intent.getStringExtra("name")
 
     override val contentLayoutId: Int = R.layout.activity_bsx_dcc_buy
 
@@ -58,7 +59,7 @@ class BsxDccBuyActivity : BindActivity<ActivityBsxDccBuyBinding>() {
 
                 BsxDccBuyConfirmDialogFragment.create(
                         EthsTransactionScratch(dccJuzix, p.address, contractAddress, amount, JuzixConstants.GAS_PRICE.toBigDecimal(),
-                                JuzixConstants.GAS_LIMIT)
+                                JuzixConstants.GAS_LIMIT), name
                 ).show(supportFragmentManager, null)
             }
         }

@@ -1,7 +1,6 @@
 package io.wexchain.digitalwallet.api
 
 import android.support.annotation.MainThread
-import cc.sisel.ewallet.BuildConfig
 import io.reactivex.Single
 import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.digitalwallet.api.domain.*
@@ -67,8 +66,6 @@ interface EthJsonRpcApi {
     ): Single<EthJsonRpcResponse<String>>
 
     companion object {
-
-        const val PUBLIC_RPC_URL = BuildConfig.PUBLIC_CHAIN_RPC
 
         fun juzixErc20RpcUrl(gateWayUrl: String, symbol: String): String {
             return "${gateWayUrl}erc20/$symbol/1/web3/"

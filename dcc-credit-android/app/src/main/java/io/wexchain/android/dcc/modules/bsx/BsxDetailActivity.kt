@@ -69,6 +69,22 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
                 bussiness = IpfsApi.BSX_DCC_01
             } else if ("2" == name) {
                 bussiness = IpfsApi.BSX_DCC_02
+            } else if ("3" == name) {
+                bussiness = IpfsApi.BSX_DCC_03
+            } else if ("4" == name) {
+                bussiness = IpfsApi.BSX_DCC_04
+            } else if ("5" == name) {
+                bussiness = IpfsApi.BSX_DCC_05
+            } else if ("6" == name) {
+                bussiness = IpfsApi.BSX_DCC_06
+            } else if ("7" == name) {
+                bussiness = IpfsApi.BSX_DCC_07
+            } else if ("8" == name) {
+                bussiness = IpfsApi.BSX_DCC_08
+            } else if ("9" == name) {
+                bussiness = IpfsApi.BSX_DCC_09
+            } else if ("10" == name) {
+                bussiness = IpfsApi.BSX_DCC_10
             }
         } /*else if ("ETH" == assetCode) {
             bussiness = ""
@@ -79,7 +95,8 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
 
                 if ("DCC" == assetCode) {
                     startActivity(Intent(this, BsxDccBuyActivity::class.java)
-                            .putExtra("contractAddress", contractAddress))
+                            .putExtra("contractAddress", contractAddress)
+                            .putExtra("name", name))
                 } else {
                     startActivity(Intent(this, BsxEthBuyActivity::class.java)
                             .putExtra("contractAddress", contractAddress))
@@ -172,7 +189,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
 
                     if ("DCC" == assetCode) {
                         totalAmount = encodeStringsimple(it.result).toString()
-                    }else{
+                    } else {
                         totalAmount = encodeStringsimple2(it.result).toString()
                     }
 

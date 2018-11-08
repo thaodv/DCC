@@ -48,7 +48,14 @@ interface IpfsApi {
         const val IPFS_METADATA = "ipfs_metadata"
         const val BSX_DCC_01 = "bsx_01"
         const val BSX_DCC_02 = "bsx_02"
-        const val BSX_ETH = "bsx_01"
+        const val BSX_DCC_03 = "bsx_03"
+        const val BSX_DCC_04 = "bsx_04"
+        const val BSX_DCC_05 = "bsx_05"
+        const val BSX_DCC_06 = "bsx_06"
+        const val BSX_DCC_07 = "bsx_07"
+        const val BSX_DCC_08 = "bsx_08"
+        const val BSX_DCC_09 = "bsx_09"
+        const val BSX_DCC_10 = "bsx_10"
 
         internal val idAtomic = AtomicLong(0L)
     }

@@ -10,11 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.base.BaseCompatFragment
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.*
-import io.wexchain.android.common.base.BaseCompatFragment
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.home.GardenActivity
 import io.wexchain.android.dcc.view.adapter.*
