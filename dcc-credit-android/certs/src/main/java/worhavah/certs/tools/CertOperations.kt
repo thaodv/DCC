@@ -179,7 +179,7 @@ object CertOperations {
                       }
                     .map {
                         if (!(it.hasReceipt&&it.approximatelySuccess)) {
-                            throw DccChainServiceException("订单已超时,同牛运营商认证失败")
+                            throw DccChainServiceException("订单已超时,请重新认证")
                         }
                         txHash
                     }
