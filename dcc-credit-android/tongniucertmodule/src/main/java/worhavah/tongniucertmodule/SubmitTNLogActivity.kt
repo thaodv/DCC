@@ -283,6 +283,16 @@ class SubmitTNLogActivity : BaseCompatActivity(), InputPhoneInfoFragment.Listene
                                         img = process.tongniuData.authCode.toString()
                                         verifyViaImg()
                                         toast("请输入图形验证码")
+                                    }else if(process.tongniuData.subCode.contains("124")){
+                                        verifyViaSms()
+                                        toast("请输入短信验证码")
+                                        verifyCarrierSmsCodeFragment.recode()
+                                    }
+                                    else if (process.tongniuData.subCode.contains("122")) {
+                                        img = process.tongniuData.authCode.toString()
+                                        verifyViaImg()
+                                        toast("请输入图形验证码")
+                                        verifyCarrierImgCodeFragment.onRefresh()
                                     }
                                 }
                             }

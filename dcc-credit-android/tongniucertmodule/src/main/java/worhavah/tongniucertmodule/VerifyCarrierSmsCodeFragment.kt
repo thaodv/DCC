@@ -44,13 +44,22 @@ class VerifyCarrierSmsCodeFragment : BindFragment<FragmentTnverifyCarrierSmsCode
         fun onSubmitSmsCode(authCode: String?, smsCode: String?)
         fun reCode(): Single<String>
     }
+    fun recode(){
+        listener?.reCode()!!.observeOn(AndroidSchedulers.mainThread())
 
+            .subscribe({
+                runOnMainThread {
+
+                }
+            }, { })
+    }
     companion object {
         fun create(listener: Listener): VerifyCarrierSmsCodeFragment {
             val fragment = VerifyCarrierSmsCodeFragment()
             fragment.listener = listener
             return fragment
         }
+
     }
 
     var mSubscription: Subscription? = null // Subscription 对象，用于取消订阅关系，防止内存泄露
