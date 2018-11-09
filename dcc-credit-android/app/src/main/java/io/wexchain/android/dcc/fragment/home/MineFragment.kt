@@ -67,22 +67,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
     }
 
     private fun checkBoundWechat() {
-        if (!GardenOperations.isBound()){
-            toWechat()
-        }else{
-            existID()
-        }
-    }
-
-    private fun existID() {
-        binding.tvWechatStatus.text = "已绑定"
-        binding.tvUserWechat.onClick {
-            return@onClick
-        }
-    }
-
-    private fun toWechat() {
-        binding.tvWechatStatus.text = "未绑定"
+        binding.tvWechatStatus.text = if (GardenOperations.isBound()) "已授权" else "未授权"
         binding.tvUserWechat.onClick {
             GardenOperations.wechatLogin{
                 toast(it)
@@ -91,7 +76,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
     }
 
     private fun getCloudToken() {
-        val anim = AnimationUtils.loadAnimation(activity, R.anim.rotate)
+        val anim = AnimationUtils.loadAnimation(activity!!, R.anim.rotate)
         IpfsOperations.getIpfsKey()
                 .checkKey()
                 .io_main()
@@ -135,12 +120,12 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
 
     private fun setupClicks() {
         val binding = binding
-        binding.tvUserAvatar.onClick {
+       /* binding.tvUserAvatar.onClick {
             ChooseImageFromDialog.create(this).show(childFragmentManager, null)
         }
         binding.tvUserNickname.onClick {
             navigateTo(EditNicknameActivity::class.java)
-        }
+        }*/
         binding.tvAddressBook.onClick {
             navigateTo(AddressBookActivity::class.java)
         }
@@ -153,9 +138,9 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
         binding.tvModifyPassportPassword.onClick {
             navigateTo(ModifyPassportPasswordActivity::class.java)
         }
-        binding.tvUserInvitation.onClick {
+        /*binding.tvUserInvitation.onClick {
             navigateTo(DccAffiliateActivity::class.java)
-        }
+        }*/
 
     }
 

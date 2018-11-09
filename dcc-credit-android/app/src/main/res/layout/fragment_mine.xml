@@ -61,11 +61,10 @@
                     android:scaleType="centerCrop"
                     app:errorRes="@{@drawable/mine_user_avatar}"
                     app:imageUri="@{passport.avatarUri}"
-                    tools:src="@drawable/mine_user_avatar"
                     app:layout_constraintBottom_toBottomOf="@id/tv_user_avatar"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_user_avatar"
-                     />
+                    tools:src="@drawable/mine_user_avatar" />
 
                 <TextView
                     android:id="@+id/tv_user_nickname"
@@ -87,7 +86,7 @@
                 <TextView
                     android:id="@+id/tv_user_wechat"
                     style="@style/TextActionLine"
-                    android:text="绑定微信"
+                    android:text="微信授权"
                     app:layout_constraintTop_toBottomOf="@id/tv_user_nickname" />
 
                 <TextView
@@ -95,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="30dp"
-                    android:text="未绑定"
+                    android:text="未授权"
                     android:textColor="@color/FF4A4A4A"
                     android:textSize="17sp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/tv_user_wechat"
@@ -106,11 +105,13 @@
                     style="@style/TextActionLine"
                     android:layout_marginTop="10dp"
                     android:text="我的邀请码"
+                    android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/tv_user_wechat" />
 
                 <TextView
                     android:id="@+id/tv_address_book"
                     style="@style/TextActionLine"
+                    android:layout_marginTop="10dp"
                     android:text="@string/address_book"
                     app:layout_constraintTop_toBottomOf="@id/tv_user_invitation" />
 

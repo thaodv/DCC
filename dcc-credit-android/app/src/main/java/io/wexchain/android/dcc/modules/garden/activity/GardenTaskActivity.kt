@@ -1,10 +1,25 @@
 package io.wexchain.android.dcc.modules.garden.activity
 
+import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
+import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.toast
+import io.wexchain.android.dcc.PassportSettingsActivity
+import io.wexchain.android.dcc.SubmitBankCardActivity
+import io.wexchain.android.dcc.SubmitCommunicationLogActivity
+import io.wexchain.android.dcc.SubmitIdActivity
+import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.chain.GardenOperations
+import io.wexchain.android.dcc.chain.PassportOperations
+import io.wexchain.android.dcc.domain.CertificationType
+import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
+import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityGardentaskBinding
+import worhavah.tongniucertmodule.SubmitTNLogActivity
 
 /**
  *Created by liuyang on 2018/11/2.
@@ -17,11 +32,60 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-        initVm()
+        binding.vm = getViewModel()
+        initEvent()
     }
 
-    private fun initVm() {
-        binding.vm = getViewModel()
+    fun checkCert(type: CertificationType, event: () -> Unit) {
+        val status = CertOperations.getCertStatus(type)
+        if (status == UserCertStatus.NONE) {
+            PassportOperations.ensureCaValidity(this@GardenTaskActivity) {
+                event.invoke()
+            }
+        }
+    }
+
+    private fun initEvent() {
+        binding.vm!!.run {
+            toGardenList.observe(this@GardenTaskActivity, Observer {
+                navigateTo(GardenListActivity::class.java)
+            })
+            shareWechat.observe(this@GardenTaskActivity, Observer {
+                GardenOperations.shareWechat(this@GardenTaskActivity) {
+                    toast(it)
+                }
+            })
+            idCert.observe(this@GardenTaskActivity, Observer {
+                navigateTo(SubmitIdActivity::class.java)
+            })
+            bankCert.observe(this@GardenTaskActivity, Observer {
+                checkCert(CertificationType.BANK) {
+                    navigateTo(SubmitBankCardActivity::class.java)
+                }
+            })
+            cmCert.observe(this@GardenTaskActivity, Observer {
+                checkCert(CertificationType.MOBILE) {
+                    navigateTo(SubmitCommunicationLogActivity::class.java)
+                }
+            })
+            tnCert.observe(this@GardenTaskActivity, Observer {
+                checkCert(CertificationType.TONGNIU) {
+                    navigateTo(SubmitTNLogActivity::class.java)
+                }
+            })
+            backWallet.observe(this@GardenTaskActivity, Observer { })
+            isOpenIpfs.observe(this@GardenTaskActivity, Observer { })
+            syncIpfs.observe(this@GardenTaskActivity, Observer {
+                isOpenIpfs.value?.let {
+                    if (it.first) {
+                        navigateTo(OpenCloudActivity::class.java) {
+                            putExtra("activity_type", PassportSettingsActivity.NOT_OPEN_CLOUD)
+                        }
+                    }
+                }
+            })
+
+        }
     }
 
 }

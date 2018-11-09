@@ -40,6 +40,7 @@
                         android:layout_height="45dp"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:src="@drawable/garden_img1"
+                        android:onClick="@{(v)->vm.toGardenList()}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -50,12 +51,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:text="阳光"
+                        android:onClick="@{(v)->vm.toGardenList()}"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="16sp"
                         app:layout_constraintLeft_toRightOf="@id/task_img1"
                         app:layout_constraintTop_toTopOf="@id/task_img1" />
 
                     <TextView
+                        android:onClick="@{(v)->vm.toGardenList()}"
                         android:id="@+id/garden_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -536,6 +539,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
                 <LinearLayout
+                    android:onClick="@{(v)->vm.shareWechat()}"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal">
@@ -563,6 +567,7 @@
                         android:layout_gravity="center_vertical"
                         android:text="@{vm.taskList[0].taskList[1].bonus}"
                         android:textColor="#7B40FF"
+                        tools:text="+10阳光"
                         android:textSize="14sp" />
 
                     <ImageView
@@ -795,7 +800,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
-                        android:text="绑定微信"
+                        android:text="微信授权"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="17sp" />
 
@@ -928,6 +933,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:onClick="@{(v)->vm.idCert(vm.taskList[2].taskList[0])}"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal">
@@ -969,6 +975,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
                 <LinearLayout
+                    android:onClick="@{(v)->vm.bankCert(vm.taskList[2].taskList[1])}"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal">
@@ -1010,6 +1017,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
                 <LinearLayout
+                    android:onClick="@{(v)->vm.cmCert(vm.taskList[2].taskList[2])}"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal">
@@ -1051,6 +1059,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
                 <LinearLayout
+                    android:onClick="@{(v)->vm.tnCert(vm.taskList[2].taskList[3])}"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal">
@@ -1134,6 +1143,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
+                        android:onClick="@{(v)->vm.syncIpfs(vm.taskList[3].taskList[0])}"
                         android:text="备份实名认证数据 "
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="17sp" />
@@ -1175,6 +1185,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
+                        android:onClick="@{(v)->vm.syncIpfs(vm.taskList[3].taskList[1])}"
                         android:text="备份银行卡认证数据"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="17sp" />
@@ -1216,6 +1227,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
+                        android:onClick="@{(v)->vm.syncIpfs(vm.taskList[3].taskList[2])}"
                         android:text="备份运营商认证数据"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="17sp" />
@@ -1257,6 +1269,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
+                        android:onClick="@{(v)->vm.syncIpfs(vm.taskList[3].taskList[3])}"
                         android:text="备份同牛认证数据"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="17sp" />
@@ -1268,6 +1281,48 @@
                         android:layout_marginRight="@dimen/activity_horizontal_margin"
                         android:text="@{TaskHelper.getStatusTxt(vm.taskList[3].taskList[3])}"
                         android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[3].taskList[3])}"
+                        android:textSize="14sp"
+                        tools:text="已完成"
+                        tools:textColor="#7B40FF" />
+
+
+                </LinearLayout>
+
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:src="@drawable/task_bk_tn" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_weight="1"
+                        android:onClick="@{(v)->vm.backWallet(vm.taskList[3].taskList[4])}"
+                        android:text="备份钱包"
+                        android:textColor="@color/FF4A4A4A"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:text="@{TaskHelper.getStatusTxt(vm.taskList[3].taskList[4])}"
+                        android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[3].taskList[4])}"
                         android:textSize="14sp"
                         tools:text="已完成"
                         tools:textColor="#7B40FF" />

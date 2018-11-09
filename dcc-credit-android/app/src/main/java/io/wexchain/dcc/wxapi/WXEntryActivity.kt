@@ -5,22 +5,19 @@ import android.os.Bundle
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
-import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram
 import com.tencent.mm.opensdk.modelmsg.SendAuth
+import com.tencent.mm.opensdk.modelmsg.ShowMessageFromWX
+import com.tencent.mm.opensdk.modelmsg.WXAppExtendObject
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
 import io.wexchain.android.common.base.BaseCompatActivity
-import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.LoadingActivity
 import io.wexchain.android.dcc.chain.GardenOperations
-import io.wexchain.dcc.R
 import io.wexchain.dcc.WxApiManager
-import io.wexchain.ipfs.utils.doMain
-
 
 class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(R.style.translucent)
         WxApiManager.wxapi.handleIntent(intent, this)
     }
 
@@ -31,32 +28,68 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
     }
 
     override fun onResp(resp: BaseResp?) {
-        if (resp?.type == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM) {
-            val launchMiniProResp = resp as WXLaunchMiniProgram.Resp
-            val extraData = launchMiniProResp.extMsg // 对应JsApi navigateBackApplication中的extraData字段数据
-            //TODO 小程序跳转传参
+        if (resp == null) {
+            finish()
+            return
         }
-
-        when (resp?.errCode) {
-            BaseResp.ErrCode.ERR_AUTH_DENIED, BaseResp.ErrCode.ERR_USER_CANCEL -> finish()
+        when (resp.errCode) {
             BaseResp.ErrCode.ERR_OK -> {
-                val code = (resp as SendAuth.Resp).code
-                GardenOperations.boundWechat(code)
-                        .flatMap {
-                            GardenOperations.loginWithCurrentPassport(this)
-                        }
-                        .withLoading()
-                        .doFinally {
-                            finish()
-                        }
-                        .subscribe()
+                if (resp.type == 1) {
+                    val code = (resp as SendAuth.Resp).code
+                    GardenOperations.boundWechat(code)
+                            .flatMap {
+                                GardenOperations.loginWithCurrentPassport(this)
+                            }
+                            .withLoading()
+                            .doFinally {
+                                finish()
+                            }
+                            .subscribe()
+                } else {
+                    finish()
+                }
             }
+            BaseResp.ErrCode.ERR_USER_CANCEL -> finish()
+            BaseResp.ErrCode.ERR_AUTH_DENIED -> finish()
+            BaseResp.ErrCode.ERR_UNSUPPORT -> finish()
             else -> finish()
         }
     }
 
     override fun onReq(req: BaseReq?) {
-        println(req)
+        when (req?.type) {
+            ConstantsAPI.COMMAND_GETMESSAGE_FROM_WX -> goToGetMsg()
+            ConstantsAPI.COMMAND_SHOWMESSAGE_FROM_WX -> goToShowMsg(req as ShowMessageFromWX.Req)
+            else -> {
+                finish()
+            }
+        }
+    }
+
+    private fun goToGetMsg() {
+        /*val intent = Intent(this, LoadingActivity::class.java)
+        intent.putExtras(getIntent())
+        startActivity(intent)*/
+        finish()
+    }
+
+    private fun goToShowMsg(showReq: ShowMessageFromWX.Req) {
+        val wxMsg = showReq.message
+        val obj = wxMsg.mediaObject as WXAppExtendObject
+
+        val msg = StringBuffer() // 组织一个待显示的消息内容
+        msg.append("description: ")
+        msg.append(wxMsg.description)
+        msg.append("\n")
+        msg.append("extInfo: ")
+        msg.append(obj.extInfo)
+        msg.append("\n")
+        msg.append("filePath: ")
+        msg.append(obj.filePath)
+
+        val intent = Intent(this, LoadingActivity::class.java)
+        intent.putExtra("b", msg.toString())
+        startActivity(intent)
         finish()
     }
 }

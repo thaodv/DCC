@@ -3,7 +3,11 @@ package io.wexchain.android.dcc.modules.garden.vm
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import io.reactivex.rxkotlin.subscribeBy
+import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.chain.IpfsOperations
+import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
+import io.wexchain.android.dcc.modules.garden.type.StatusType
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.dccchainservice.MarketingApi
 import io.wexchain.dccchainservice.domain.TaskList
@@ -22,6 +26,15 @@ class GardenTaskVm : ViewModel() {
     private val token: String by lazy {
         App.get().gardenTokenManager.gardenToken!!
     }
+
+    val backWallet = SingleLiveEvent<Void>()
+    val syncIpfs = SingleLiveEvent<Void>()
+    val toGardenList = SingleLiveEvent<Void>()
+    val shareWechat = SingleLiveEvent<Void>()
+    val idCert = SingleLiveEvent<Void>()
+    val bankCert = SingleLiveEvent<Void>()
+    val cmCert = SingleLiveEvent<Void>()
+    val tnCert = SingleLiveEvent<Void>()
 
     val taskList = MutableLiveData<List<TaskList>>()
             .apply {
@@ -52,6 +65,20 @@ class GardenTaskVm : ViewModel() {
                 getBalance {
                     this.postValue(it)
                 }
+            }
+
+    val isOpenIpfs = MutableLiveData<Pair<Boolean, String?>>()
+            .apply {
+                IpfsOperations.getIpfsKey()
+                        .checkKey()
+                        .io_main()
+                        .subscribeBy {
+                            if (it.isEmpty()) {
+                                this.postValue(false to null)
+                            } else {
+                                this.postValue(true to it)
+                            }
+                        }
             }
 
     fun getBalance(event: (String) -> Unit) {
@@ -99,6 +126,55 @@ class GardenTaskVm : ViewModel() {
                     }
                 }
     }
+
+    fun checkFulfilled(task: TaskList.Task?, event: () -> Unit) {
+        if (task != null && StatusType.valueOf(task.status) == StatusType.UNFULFILLED) {
+            event.invoke()
+        }
+    }
+
+    fun backWallet(task: TaskList.Task?) {
+        checkFulfilled(task) {
+            backWallet.call()
+        }
+    }
+
+    fun syncIpfs(task: TaskList.Task?) {
+        checkFulfilled(task) {
+            syncIpfs.call()
+        }
+    }
+    fun idCert(task: TaskList.Task?){
+        checkFulfilled(task) {
+            idCert.call()
+        }
+    }
+    fun bankCert(task: TaskList.Task?) {
+        checkFulfilled(task) {
+            bankCert.call()
+        }
+    }
+
+    fun cmCert(task: TaskList.Task?) {
+        checkFulfilled(task) {
+            cmCert.call()
+        }
+    }
+    fun tnCert(task: TaskList.Task?) {
+        checkFulfilled(task) {
+            tnCert.call()
+        }
+    }
+
+    fun toGardenList(){
+        toGardenList.call()
+    }
+
+    fun shareWechat(){
+        shareWechat.call()
+    }
+
+
 
 }
 

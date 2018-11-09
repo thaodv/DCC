@@ -314,6 +314,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"
+            android:theme="@style/translucent"
             android:exported="true" />
         <activity
             android:name="io.wexchain.android.dcc.MineRewardsActivity"
