@@ -3,7 +3,6 @@
     <dimen name="button_corner_radius">4dp</dimen>
     <dimen name="button_border_stroke_width">2dp</dimen>
 
-    <dimen name="notice_margin_vertical">10dp</dimen>
     <dimen name="content_padding_horizontal">16dp</dimen>
     <dimen name="margin_content_horizontal">16dp</dimen>
 

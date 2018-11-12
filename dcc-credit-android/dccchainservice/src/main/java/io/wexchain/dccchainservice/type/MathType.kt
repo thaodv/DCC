@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.modules.garden.type
+package io.wexchain.dccchainservice.type
 
 /**
  *Created by liuyang on 2018/11/7.

@@ -16,14 +16,17 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.ChooseCutImageActivity
 import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.tools.toBean
 import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
 import io.wexchain.dcc.WxApiManager
 import io.wexchain.dccchainservice.MarketingApi
+import io.wexchain.dccchainservice.domain.ChangeOrder
 import io.wexchain.dccchainservice.domain.LoginInfo
 import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.dccchainservice.type.TaskCode
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import io.wexchain.ipfs.utils.doMain
 import retrofit2.Response
@@ -41,8 +44,15 @@ object GardenOperations {
         App.get().passportRepository
     }
 
+    private val api: MarketingApi by lazy {
+        App.get().marketingApi
+    }
+
+    private val token: String by lazy {
+        App.get().gardenTokenManager.gardenToken!!
+    }
+
     fun loginWithCurrentPassport(context: Context): Single<Response<Result<LoginInfo>>> {
-        val api = App.get().marketingApi
         val address = passport.currPassport.value?.address
         val privateKey = passport.getCurrentPassport()?.authKey?.getPrivateKey()
         return if (address == null || privateKey == null) {
@@ -169,7 +179,7 @@ object GardenOperations {
         WxApiManager.wxapi.sendReq(req)
     }
 
-     fun shareWechat(context: Context,error: (String) -> Unit) {
+    fun shareWechat(context: Context, error: (String) -> Unit) {
         val wxapi = WxApiManager.wxapi.isWXAppInstalled
         if (!wxapi) {
             error("您还未安装微信客户端")
@@ -211,6 +221,11 @@ object GardenOperations {
 
     private fun buildTransaction(code: String, toCircle: Boolean): String {
         return "share_${code}_${System.currentTimeMillis()}_${if (toCircle) 1 else 0}"
+    }
+
+    fun completeTask(taskCode: TaskCode): Single<ChangeOrder> {
+        return api.completeTask(token, taskCode.name).check()
+
     }
 
 

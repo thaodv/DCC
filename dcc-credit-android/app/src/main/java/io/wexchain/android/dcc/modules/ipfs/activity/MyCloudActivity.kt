@@ -15,12 +15,14 @@ import android.widget.TextView
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.rxkotlin.zipWith
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.modules.ipfs.service.IpfsBinder
 import io.wexchain.android.dcc.modules.ipfs.service.IpfsService
@@ -32,6 +34,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityMyCloudBinding
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
+import io.wexchain.dccchainservice.type.TaskCode
 import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.ipfs.utils.io_main
 import kotlinx.android.synthetic.main.activity_my_cloud.*
@@ -377,9 +380,10 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 val idCertPassed = CertOperations.isIdCertPassed()
                 Single.just(!idCertPassed)
                         .checkStatus(ChainGateway.BUSINESS_ID)
+                        .zipWith(GardenOperations.completeTask(TaskCode.BACKUP_ID))
                         .io_main()
                         .subscribeBy {
-                            IDStatus = it
+                            IDStatus = it.first
                             updateIdItem()
                         }
             }
@@ -391,9 +395,10 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 val bankCertPassed = CertOperations.isBankCertPassed()
                 Single.just(!bankCertPassed)
                         .checkStatus(ChainGateway.BUSINESS_BANK_CARD)
+                        .zipWith(GardenOperations.completeTask(TaskCode.BACKUP_BANK_CARD))
                         .io_main()
                         .subscribeBy {
-                            BankStatus = it
+                            BankStatus = it.first
                             updateBankItem()
                         }
             }
@@ -405,9 +410,10 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 val status = CertOperations.getCmLogUserStatus()
                 Single.just(status != UserCertStatus.DONE)
                         .checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG)
+                        .zipWith(GardenOperations.completeTask(TaskCode.BACKUP_COMMUNICATION_LOG))
                         .io_main()
                         .subscribeBy {
-                            CmStatus = it
+                            CmStatus = it.first
                             updateCmItem()
                         }
             }
@@ -419,9 +425,10 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 val status = worhavah.certs.tools.CertOperations.getTNLogUserStatus()
                 Single.just(status != UserCertStatus.DONE)
                         .checkStatus(ChainGateway.TN_COMMUNICATION_LOG)
+                        .zipWith(GardenOperations.completeTask(TaskCode.BACKUP_TN_COMMUNICATION_LOG))
                         .io_main()
                         .subscribeBy {
-                            TnStatus = 4
+                            TnStatus = it.first
                             updateTnItem()
                         }
             }

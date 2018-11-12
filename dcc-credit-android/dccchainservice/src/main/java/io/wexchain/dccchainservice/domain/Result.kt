@@ -29,6 +29,7 @@ data class Result<out T>(
 
     companion object {
         const val SUCCESS = "SUCCESS"
+        const val WECHAT_HAD_BEEN_BOUND = "WECHAT_HAD_BEEN_BOUND"
 
         fun <T> checkedAllowingNull(whenNull: T): SingleTransformer<Result<T>, T> {
             return SingleTransformer { upstream ->

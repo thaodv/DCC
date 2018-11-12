@@ -1,24 +1,24 @@
 package io.wexchain.android.dcc.modules.garden.activity
 
 import android.arch.lifecycle.Observer
-import android.content.Intent
 import android.os.Bundle
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.PassportSettingsActivity
-import io.wexchain.android.dcc.SubmitBankCardActivity
-import io.wexchain.android.dcc.SubmitCommunicationLogActivity
-import io.wexchain.android.dcc.SubmitIdActivity
+import io.wexchain.android.dcc.*
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.domain.CertificationType
+import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
+import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityGardentaskBinding
+import io.wexchain.dccchainservice.type.TaskCode
 import worhavah.tongniucertmodule.SubmitTNLogActivity
 
 /**
@@ -73,19 +73,62 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
                     navigateTo(SubmitTNLogActivity::class.java)
                 }
             })
-            backWallet.observe(this@GardenTaskActivity, Observer { })
-            isOpenIpfs.observe(this@GardenTaskActivity, Observer { })
+            backWallet.observe(this@GardenTaskActivity, Observer {
+                val dialog = BaseDialog(this@GardenTaskActivity)
+                dialog.removePassportDialog("备份钱包", "点击【去备份钱包】完成备份钱包任务。备份完成，点击【已备份领阳光】，获得50阳光！", "去备份钱包", "已备份领阳光")
+                dialog.onClick(
+                        onCancle = {
+                            dialog.dismiss()
+                            toBackup()
+
+                        },
+                        onConfirm = {
+                            dialog.dismiss()
+                            getReward()
+                        })
+            })
+            openIpfs.observe(this@GardenTaskActivity, Observer {
+                navigateTo(OpenCloudActivity::class.java) {
+                    putExtra("activity_type", PassportSettingsActivity.NOT_OPEN_CLOUD)
+                }
+            })
             syncIpfs.observe(this@GardenTaskActivity, Observer {
                 isOpenIpfs.value?.let {
-                    if (it.first) {
+                    if (!it.first) {
                         navigateTo(OpenCloudActivity::class.java) {
                             putExtra("activity_type", PassportSettingsActivity.NOT_OPEN_CLOUD)
+                        }
+                    }else {
+                        if (it.second.isNullOrEmpty()) {
+                            navigateTo(OpenCloudActivity::class.java) {
+                                putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)
+                            }
+                        } else {
+                            val ipfsKeyHash = App.get().passportRepository.getIpfsKeyHash()
+                            if (ipfsKeyHash == it.second) {
+                                navigateTo(MyCloudActivity::class.java)
+                            } else {
+                                App.get().passportRepository.setIpfsKeyHash("")
+                                navigateTo(OpenCloudActivity::class.java) {
+                                    putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)
+                                }
+                            }
                         }
                     }
                 }
             })
-
         }
+    }
+
+    private fun getReward() {
+        GardenOperations.completeTask(TaskCode.BACKUP_WALLET)
+                .subscribeBy {
+                    binding.vm!!.refreshTaskList()
+                }
+    }
+
+    private fun toBackup() {
+        navigateTo(PassportExportActivity::class.java)
     }
 
 }

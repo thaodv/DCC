@@ -50,6 +50,10 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
 
     }
 
+    private val data by lazy {
+        intent.extras.getString("data")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home2)

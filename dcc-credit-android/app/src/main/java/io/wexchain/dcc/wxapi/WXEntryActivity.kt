@@ -1,7 +1,9 @@
 package io.wexchain.dcc.wxapi
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
@@ -10,13 +12,22 @@ import com.tencent.mm.opensdk.modelmsg.ShowMessageFromWX
 import com.tencent.mm.opensdk.modelmsg.WXAppExtendObject
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
 import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.common.noStatusBar
+import io.wexchain.android.common.noTitleBar
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.LoadingActivity
 import io.wexchain.android.dcc.chain.GardenOperations
+import io.wexchain.dcc.R
 import io.wexchain.dcc.WxApiManager
+import io.wexchain.dccchainservice.DccChainServiceException
+import io.wexchain.dccchainservice.domain.Result
+
 
 class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        noStatusBar()
+        noTitleBar()
         super.onCreate(savedInstanceState)
         WxApiManager.wxapi.handleIntent(intent, this)
     }
@@ -41,6 +52,13 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
                                 GardenOperations.loginWithCurrentPassport(this)
                             }
                             .withLoading()
+                            .doOnError {
+                                if (it is DccChainServiceException) {
+                                    if (it.systemCode == Result.SUCCESS && it.businessCode == Result.WECHAT_HAD_BEEN_BOUND) {
+                                        toast(it.message!!)
+                                    }
+                                }
+                            }
                             .doFinally {
                                 finish()
                             }
@@ -88,7 +106,7 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
         msg.append(obj.filePath)
 
         val intent = Intent(this, LoadingActivity::class.java)
-        intent.putExtra("b", msg.toString())
+        intent.putExtra("data", obj.extInfo.toString())
         startActivity(intent)
         finish()
     }

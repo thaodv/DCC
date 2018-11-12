@@ -75,7 +75,7 @@ interface MarketingApi {
     fun completeTask(
             @Header(HEADER_TOKEN) token: String?,
             @Field("scenarioCode") scenarioCode: String
-    ): Single<Result<String>>
+    ): Single<Result<ChangeOrder>>
 
     //每日签到
     @POST("bemember/ss/attendence/apply")

@@ -502,8 +502,9 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        imageUrl="@{vm.taskList[0].taskList[0].img}"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:src="@drawable/task_sign" />
@@ -545,8 +546,9 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        imageUrl="@{vm.taskList[0].taskList[1].img}"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:src="@drawable/task_invitation" />
@@ -865,6 +867,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
                 <LinearLayout
+                    android:onClick="@{(v)->vm.openIpfs(vm.taskList[1].taskList[2])}"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal">
@@ -1126,6 +1129,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:onClick="@{(v)->vm.syncIpfs(vm.taskList[3].taskList[0])}"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal">
@@ -1143,7 +1147,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
-                        android:onClick="@{(v)->vm.syncIpfs(vm.taskList[3].taskList[0])}"
                         android:text="备份实名认证数据 "
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="17sp" />
@@ -1168,6 +1171,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
                 <LinearLayout
+                    android:onClick="@{(v)->vm.syncIpfs(vm.taskList[3].taskList[1])}"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal">
@@ -1185,7 +1189,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
-                        android:onClick="@{(v)->vm.syncIpfs(vm.taskList[3].taskList[1])}"
                         android:text="备份银行卡认证数据"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="17sp" />
@@ -1210,6 +1213,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
                 <LinearLayout
+                    android:onClick="@{(v)->vm.syncIpfs(vm.taskList[3].taskList[2])}"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal">
@@ -1227,7 +1231,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
-                        android:onClick="@{(v)->vm.syncIpfs(vm.taskList[3].taskList[2])}"
                         android:text="备份运营商认证数据"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="17sp" />
@@ -1252,6 +1255,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
                 <LinearLayout
+                    android:onClick="@{(v)->vm.syncIpfs(vm.taskList[3].taskList[3])}"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal">
@@ -1269,7 +1273,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
-                        android:onClick="@{(v)->vm.syncIpfs(vm.taskList[3].taskList[3])}"
                         android:text="备份同牛认证数据"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="17sp" />
@@ -1294,16 +1297,18 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
                 <LinearLayout
+                    android:onClick="@{(v)->vm.backWallet(vm.taskList[3].taskList[4])}"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        imageUrl="@{vm.taskList[3].taskList[4].img}"
+                        errorRes="@{@drawable/task_bk_tn}"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:src="@drawable/task_bk_tn" />
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -1311,7 +1316,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
-                        android:onClick="@{(v)->vm.backWallet(vm.taskList[3].taskList[4])}"
                         android:text="备份钱包"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="17sp" />

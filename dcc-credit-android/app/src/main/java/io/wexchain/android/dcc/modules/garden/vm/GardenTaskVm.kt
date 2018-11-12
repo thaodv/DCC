@@ -7,11 +7,11 @@ import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
-import io.wexchain.android.dcc.modules.garden.type.StatusType
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.dccchainservice.MarketingApi
 import io.wexchain.dccchainservice.domain.TaskList
 import io.wexchain.dccchainservice.domain.WeekRecord
+import io.wexchain.dccchainservice.type.StatusType
 import io.wexchain.ipfs.utils.io_main
 
 /**
@@ -35,14 +35,13 @@ class GardenTaskVm : ViewModel() {
     val bankCert = SingleLiveEvent<Void>()
     val cmCert = SingleLiveEvent<Void>()
     val tnCert = SingleLiveEvent<Void>()
+    val openIpfs = SingleLiveEvent<Void>()
 
     val taskList = MutableLiveData<List<TaskList>>()
             .apply {
-                api.getTaskList(token)
-                        .checkonMain()
-                        .subscribeBy {
-                            this.postValue(it)
-                        }
+                getTaskList {
+                    this.postValue(it)
+                }
             }
 
     val currentWeekRecord = MutableLiveData<List<WeekRecord>>()
@@ -108,6 +107,20 @@ class GardenTaskVm : ViewModel() {
                 }
     }
 
+    fun getTaskList(event: (List<TaskList>) -> Unit) {
+        api.getTaskList(token)
+                .checkonMain()
+                .subscribeBy {
+                    event.invoke(it)
+                }
+    }
+
+    fun refreshTaskList() {
+        getTaskList {
+            taskList.postValue(it)
+        }
+    }
+
     fun withSign() {
         if (isapply.value!!) {
             return
@@ -128,7 +141,7 @@ class GardenTaskVm : ViewModel() {
     }
 
     fun checkFulfilled(task: TaskList.Task?, event: () -> Unit) {
-        if (task != null && StatusType.valueOf(task.status) == StatusType.UNFULFILLED) {
+        if (task != null && task.status == StatusType.UNFULFILLED) {
             event.invoke()
         }
     }
@@ -144,11 +157,13 @@ class GardenTaskVm : ViewModel() {
             syncIpfs.call()
         }
     }
-    fun idCert(task: TaskList.Task?){
+
+    fun idCert(task: TaskList.Task?) {
         checkFulfilled(task) {
             idCert.call()
         }
     }
+
     fun bankCert(task: TaskList.Task?) {
         checkFulfilled(task) {
             bankCert.call()
@@ -160,20 +175,26 @@ class GardenTaskVm : ViewModel() {
             cmCert.call()
         }
     }
+
     fun tnCert(task: TaskList.Task?) {
         checkFulfilled(task) {
             tnCert.call()
         }
     }
 
-    fun toGardenList(){
+    fun openIpfs(task: TaskList.Task?){
+        checkFulfilled(task) {
+            openIpfs.call()
+        }
+    }
+
+    fun toGardenList() {
         toGardenList.call()
     }
 
-    fun shareWechat(){
+    fun shareWechat() {
         shareWechat.call()
     }
-
 
 
 }

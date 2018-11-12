@@ -123,7 +123,9 @@ class LoadingActivity : BaseCompatActivity() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { _ ->
                         atLeastCreated {
-                            navigateTo(HomeActivity::class.java)
+                            navigateTo(HomeActivity::class.java){
+                                putExtras(intent)
+                            }
                             finish()
                         }
                     }

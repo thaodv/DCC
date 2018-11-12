@@ -4,11 +4,11 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
-import io.wexchain.android.dcc.modules.garden.type.MathType
-import io.wexchain.android.dcc.modules.garden.type.StatusType
+import io.wexchain.dccchainservice.type.MathType
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.domain.TaskList
 import io.wexchain.dccchainservice.domain.WeekRecord
+import io.wexchain.dccchainservice.type.StatusType
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -74,8 +74,8 @@ object TaskHelper {
         return if (task == null) {
             ""
         } else when {
-            StatusType.valueOf(task.status) == StatusType.FULFILLED -> "已完成"
-            StatusType.valueOf(task.status) == StatusType.UNFULFILLED -> task.bonus
+            task.status == StatusType.FULFILLED -> "已完成"
+            task.status == StatusType.UNFULFILLED -> task.bonus
             else -> ""
         }
     }
@@ -86,15 +86,15 @@ object TaskHelper {
         return if (task == null) {
             ContextCompat.getColor(this, R.color.FF7ED321)
         } else when {
-            StatusType.valueOf(task.status) == StatusType.FULFILLED -> ContextCompat.getColor(this, R.color.FF7ED321)
-            StatusType.valueOf(task.status) == StatusType.UNFULFILLED -> ContextCompat.getColor(this, R.color.FF7B40FF)
+            task.status == StatusType.FULFILLED -> ContextCompat.getColor(this, R.color.FF7ED321)
+            task.status == StatusType.UNFULFILLED -> ContextCompat.getColor(this, R.color.FF7B40FF)
             else -> ContextCompat.getColor(this, R.color.FF7ED321)
         }
     }
 
     @JvmStatic
-    fun getItemNum(math: String, num: Int): String {
-        return if (MathType.valueOf(math) == MathType.PLUS) {
+    fun getItemNum(math: MathType, num: Int): String {
+        return if (math == MathType.PLUS) {
             "+$num 阳光"
         } else {
             "-$num 阳光"

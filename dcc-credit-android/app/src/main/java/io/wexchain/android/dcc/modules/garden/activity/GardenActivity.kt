@@ -1,24 +1,24 @@
 package io.wexchain.android.dcc.modules.garden.activity
 
 import android.annotation.TargetApi
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.webkit.*
-import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
-import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
-import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.toast
+import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
+import io.wexchain.android.dcc.tools.toBean
+import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.dcc.R
-import io.wexchain.dcc.WxApiManager
+import io.wexchain.dccchainservice.domain.LoginInfo
 
 
 /**
  *Created by liuyang on 2018/9/21.
  */
 class GardenActivity : BaseCompatActivity() {
+
     private lateinit var webView: WebView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,17 +65,26 @@ class GardenActivity : BaseCompatActivity() {
         }
 
         webView.addJavascriptInterface(object {
+
             @JavascriptInterface
             fun wechatShare() {
-                GardenOperations.shareWechat(this@GardenActivity){
+                GardenOperations.shareWechat(this@GardenActivity) {
                     toast(it)
                 }
             }
+
+            @JavascriptInterface
+            fun pageInit(): String {
+                val userinfo = App.get().passportRepository.getUserInfo()!!
+                val info = userinfo.toBean(LoginInfo::class.java)
+                val map = mapOf("token" to App.get().gardenTokenManager.gardenToken!!, "memberID" to info.member.id.toString())
+                return map.toJson()
+            }
+
         }, "JSTest")
 
         webView.loadUrl("http://10.65.100.69/dcc-open/package/dapp/mysticalGarden/index.html#/Mygarden")
     }
-
 
 
     override fun onBackPressed() {
