@@ -52,16 +52,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             //            debuggable true
 
-            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://gateway.wexpass.cn/passport-logic/"'
+            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"https://gateway.bitphare.com/passport-logic/"'
             buildConfigField 'java.lang.String', 'CHAIN_FRONTEND_URL', '"http://www.icohint.com/chain-frontend/"'
             buildConfigField 'java.lang.String', 'CHAIN_EXPLORER_URL', '"http://wexpass.cn/chain-observer/restful/"'
-            buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://gateway.wexpass.cn/chain-service-frontend/"'
-            buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://gateway.wexpass.cn/passport-gateway/restful/"'
-            buildConfigField 'java.lang.String', 'COIN_MARKET', '"http://gateway.wexpass.cn/chain-service-frontend/"'
+            buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"https://gateway.bitphare.com/chain-service-frontend/"'
+            buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"https://gateway.bitphare.com/passport-gateway/restful/"'
+            buildConfigField 'java.lang.String', 'COIN_MARKET', '"https://gateway.bitphare.com/chain-service-frontend/"'
             buildConfigField 'java.lang.String', 'PRVATE_ACCROSS_DETAIL_URL', '"http://explorer.dcc.finance/index.html#/block/hash/"'
             buildConfigField 'java.lang.String', 'PUBLIC_ACCROSS_DETAIL_URL', '"https://etherscan.io/tx/"'
-            buildConfigField 'java.lang.String', 'ACCROSS_DETAIL', '"http://explorer.dcc.finance/index.html#/block/hash/"'
-            buildConfigField 'java.lang.String', 'CONTRACT_BASE_URL', '"http://gateway.wexpass.cn/passport-gateway/restful/"'
+            buildConfigField 'java.lang.String', 'CONTRACT_BASE_URL', '"https://gateway.bitphare.com/passport-gateway/restful/"'
             buildConfigField 'java.lang.String', 'IPFS_ADDRESS', '"http://ipfs.dcc.finance:8000/api/v0/"'
         }
         debug {
@@ -81,7 +80,6 @@ android {
             buildConfigField 'java.lang.String', 'COIN_MARKET', '"http://10.65.178.50:9310/coin-market/"'
             buildConfigField 'java.lang.String', 'PRVATE_ACCROSS_DETAIL_URL', '"http://funcexplorer.dcc.finance/index.html#/block/hash/"'
             buildConfigField 'java.lang.String', 'PUBLIC_ACCROSS_DETAIL_URL', '"https://rinkeby.etherscan.io/tx/"'
-            buildConfigField 'java.lang.String', 'ACCROSS_DETAIL', '"http://funcexplorer.dcc.finance/index.html#/block/hash/"'
             buildConfigField 'java.lang.String', 'CONTRACT_BASE_URL', '"http://10.65.209.13:9511/passport-gateway/restful/"'
             buildConfigField 'java.lang.String', 'IPFS_ADDRESS', '"http://ipfs.dcc.finance:8000/api/v0/"'
         }
@@ -100,7 +98,6 @@ android {
             buildConfigField 'java.lang.String', 'PRVATE_ACCROSS_DETAIL_URL', '"http://funcexplorer.dcc.finance/index.html#/block/hash/"'
             buildConfigField 'java.lang.String', 'PUBLIC_ACCROSS_DETAIL_URL', '"https://rinkeby.etherscan.io/tx/"'
             buildConfigField 'java.lang.String', 'CONTRACT_BASE_URL', '"http://10.65.209.13:9511/passport-gateway/restful/"'
-            buildConfigField 'java.lang.String', 'ACCROSS_DETAIL', '"http://funcexplorer.dcc.finance/index.html#/block/hash/"'
             matchingFallbacks = ['debug']
         }
 

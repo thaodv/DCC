@@ -157,7 +157,7 @@
     <string name="details">查看 >></string>
     <string name="rewardss_available">可领取奖励</string>
     <string name="rules">活动规则</string>
-    <string name="rules1"></string>
+    <string name="rules1"><font color="#C009FF">活动规则</font></string>
     <string name="basic_rewards">基础奖励</string>
     <string name="loan_application_rewards">借币奖励</string>
     <string name="repayment_rewards">还币奖励</string>
@@ -398,9 +398,9 @@
     <string name="across_trans_count1">可用数量:</string>
     <string name="across_trans_private_count">私链数量:</string>
     <string name="across_trans_public_count">公链数量:</string>
-    <string name="across_trans_private_tip"></string>
-    <string name="across_trans_public_tip"></string>
-    <string name="across_trans_tip1"></string>
+    <string name="across_trans_private_tip"><font color="#ED190F">数量已超过私链数量</font></string>
+    <string name="across_trans_public_tip"><font color="#ED190F">数量已超过公链数量</font></string>
+    <string name="across_trans_tip1"><font color="#ED190F">数量已超过可用数量</font></string>
     <string name="across_trans_poundage">手续费</string>
     <string name="across_trans_toaccount_num">到账数量</string>
     <string name="all">全部</string>
@@ -435,9 +435,9 @@
     <string name="user_activity_photo">人像照片</string>
 
     <string name="select_node">选择以太坊节点</string>
-    <string name="select_node_green"></string>
-    <string name="select_node_yellow"></string>
-    <string name="select_node_red"></string>
+    <string name="select_node_green"><font color='#9B9B9B'>已连接（网络质量好）</font></string>
+    <string name="select_node_yellow"><font color='#9B9B9B'>（网络质量一般）</font></string>
+    <string name="select_node_red"><font color='#9B9B9B'>（网络质量差）</font></string>
     <string name="title_open_cloud">开启云存储</string>
     <string name="ipfs_select_node_tip">说明：\n
 云端数据默认存储在Bit Express提供的节点，您也可以自己搭建节点，选择把数据存储在自建节点上。
@@ -445,8 +445,8 @@
     <string name="service_bsx_title">多币种预计年化 </string>
 
     <string name="bsx_buy_again"><![CDATA[想再买点？去市场看看 >]]></string>
-    <string name="passport_auth"></string>
-    <string name="skip_creat"></string>
-    <string name="from_gallery"></string>
+    <string name="passport_auth"><font color='#C009FF'>变更记录</font></string>
+    <string name="skip_creat"><font color='#C009FF'>跳过</font></string>
+    <string name="from_gallery"><font color='#C009FF'>相册</font></string>
 
 </resources>

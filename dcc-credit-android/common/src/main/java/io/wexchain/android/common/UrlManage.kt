@@ -2,15 +2,15 @@ package io.wexchain.android.common
 
 object UrlManage {
     //release
-    const val CHAIN_FUNC_URL = "http://gateway.wexpass.cn/passport-logic/"
+    const val CHAIN_FUNC_URL = "https://gateway.bitphare.com/passport-logic/"
     const val CHAIN_FRONTEND_URL = "http://www.icohint.com/chain-frontend/"
     const val CHAIN_EXPLORER_URL = "http://wexpass.cn/chain-observer/restful/"
-    const val DCC_MARKETING_API_URL = "http://gateway.wexpass.cn/chain-service-frontend/"
-    const val GATEWAY_BASE_URL = "http://gateway.wexpass.cn/passport-gateway/restful/"
-    const val CHAIN_FUNC_URL2 = "http://gateway.wexpass.cn/passport-logic/"
-    const val TN_URL = "http://gateway.wexpass.cn/passport-logic/"
-    const val BaseRnsUrl = "http://gateway.wexpass.cn/chain-service-frontend/"
-    //const val CHAIN_FUNC_URL ="http://gateway.wexpass.cn/passport-logic/"
+    const val DCC_MARKETING_API_URL = "https://gateway.bitphare.com/chain-service-frontend/"
+    const val GATEWAY_BASE_URL = "https://gateway.bitphare.com/passport-gateway/restful/"
+    const val CHAIN_FUNC_URL2 = "https://gateway.bitphare.com/passport-logic/"
+    const val TN_URL = "https://gateway.bitphare.com/passport-logic/"
+    const val BaseRnsUrl = "https://gateway.bitphare.com/chain-service-frontend/"
+    //const val CHAIN_FUNC_URL ="https://gateway.bitphare.com/passport-logic/"
 
 
     //debug
