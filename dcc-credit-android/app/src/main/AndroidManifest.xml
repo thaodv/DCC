@@ -44,23 +44,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="io.wexchain.android.dcc.HomeActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="io.wexchain.android.dcc.MyCreditActivity"
-            android:label="@string/my_credit"
-            android:screenOrientation="portrait"
-            android:theme="@style/DccLightTheme.App.Immerse" />
-        <activity
             android:name="io.wexchain.android.dcc.MyCreditNewActivity"
             android:label="@string/my_credit"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="io.wexchain.android.dcc.SubmitPersonalInfoActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="io.wexchain.android.dcc.EditContactInfoActivity"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name="io.wexchain.android.dcc.SubmitIdActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
@@ -75,11 +62,7 @@
             android:label="@string/create_new_digital_wallet"
             android:screenOrientation="portrait" />
         <activity
-            android:name="io.wexchain.android.dcc.DigitalAssetsActivity"
-            android:label="数字钱包"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="io.wexchain.android.dcc.DccExchangeActivity"
+            android:name="io.wexchain.android.dcc.modules.trans.activity.DccExchangeActivity"
             android:label="@string/dcc"
             android:screenOrientation="portrait" />
         <activity
@@ -151,10 +134,6 @@
             android:name="io.wexchain.android.dcc.ChooseCutImageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="io.wexchain.android.dcc.MarketingListActivity"
-            android:label="@string/collect_candies"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="io.wexchain.android.dcc.MarketingScenariosActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -179,21 +158,8 @@
             android:label="@string/about_us"
             android:screenOrientation="portrait" />
         <activity
-            android:name="io.wexchain.android.dcc.AffiliateActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/DccLightTheme.App.Transparent" />
-        <activity
-            android:name="io.wexchain.android.dcc.LoanActivity"
-            android:label="@string/based_loan"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/DccLightTheme.App.Transparent" />
-        <activity
             android:name="io.wexchain.android.dcc.AddBeneficiaryAddressActivity"
             android:label="@string/add_annew_collection_address"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="io.wexchain.android.dcc.BeneficiaryAddressesManagementActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddAddressBookActivity"
@@ -201,10 +167,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="io.wexchain.android.dcc.LoanProductListActivity"
-            android:label="@string/apply_for_a_crypto_loan"
             android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.LoanProductDetailActivity"
@@ -220,9 +182,6 @@
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.LoanRecordsActivity"
             android:label="@string/loan_history"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="io.wexchain.android.dcc.EditBeneficiaryAddressActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.EditAddressBookActivity"
@@ -255,10 +214,6 @@
         <activity
             android:name="io.wexchain.android.dcc.RequisiteCertListActivity"
             android:label="@string/required_information"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="io.wexchain.android.dcc.IncentiveProgramActivity"
-            android:label="@string/incentive_program"
             android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.LoanAgreementActivity"
@@ -316,24 +271,8 @@
             android:theme="@style/translucent"
             android:exported="true" />
         <activity
-            android:name="io.wexchain.android.dcc.MineRewardsActivity"
-            android:label="@string/mining_rewardss"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="io.wexchain.android.dcc.DccMineRewardsTermsActivity"
             android:label="@string/rules"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="io.wexchain.android.dcc.MinePtRulesActivity"
-            android:label="@string/mine_faster"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="io.wexchain.android.dcc.MinePtListActivity"
-            android:label="@string/mining_contribution_details"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="io.wexchain.android.dcc.MineRewardRecordsActivity"
-            android:label="@string/rewards_collection_record"
             android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.tl.TlPayActivity"
@@ -445,7 +384,7 @@
             android:label="币生息详情"
             android:screenOrientation="portrait" />
         <activity
-            android:name="io.wexchain.android.dcc.BuyInterestActivity"
+            android:name="io.wexchain.android.dcc.modules.bsx.BuyInterestActivity"
             android:label="认购额度"
             android:screenOrientation="portrait" />
         <activity

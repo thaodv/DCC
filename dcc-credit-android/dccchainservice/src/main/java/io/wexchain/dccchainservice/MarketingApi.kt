@@ -54,7 +54,7 @@ interface MarketingApi {
             @Field("address") address: String,
             @Field("nonce") nonce: String,
             @Field("signature") signature: String
-    ): Single<Response<Result<LoginInfo>>>
+    ): Single<Response<Result<UserInfo>>>
 
     //绑定微信
     @POST("bemember/bound/wechat")

@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc
+package io.wexchain.android.dcc.modules.bsx
 
 import android.graphics.Color
 import android.os.Bundle
@@ -10,6 +10,9 @@ import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.modules.trans.activity.DccExchangeActivity
+import io.wexchain.android.dcc.MyInterestActivity
 import io.wexchain.android.dcc.chain.JuzixConstants.GAS_LIMIT
 import io.wexchain.android.dcc.chain.JuzixConstants.GAS_PRICE
 import io.wexchain.android.dcc.tools.BintApi

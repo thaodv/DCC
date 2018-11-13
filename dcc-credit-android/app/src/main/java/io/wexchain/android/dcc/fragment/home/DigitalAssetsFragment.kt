@@ -1,16 +1,11 @@
 package io.wexchain.android.dcc.fragment.home
 
 import android.arch.lifecycle.Observer
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import io.wexchain.android.common.base.BaseCompatFragment
 import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
-import io.wexchain.android.dcc.DccExchangeActivity
+import io.wexchain.android.dcc.modules.trans.activity.DccExchangeActivity
 import io.wexchain.android.dcc.DigitalCurrencyActivity
 import io.wexchain.android.dcc.SearchDigitalCurrencyActivity
 import io.wexchain.android.dcc.constant.Extras

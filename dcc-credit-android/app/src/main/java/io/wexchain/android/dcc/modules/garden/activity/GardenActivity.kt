@@ -11,7 +11,7 @@ import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.tools.toBean
 import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.dcc.R
-import io.wexchain.dccchainservice.domain.LoginInfo
+import io.wexchain.dccchainservice.domain.UserInfo
 
 
 /**
@@ -76,7 +76,7 @@ class GardenActivity : BaseCompatActivity() {
             @JavascriptInterface
             fun pageInit(): String {
                 val userinfo = App.get().passportRepository.getUserInfo()!!
-                val info = userinfo.toBean(LoginInfo::class.java)
+                val info = userinfo.toBean(UserInfo::class.java)
                 val map = mapOf("token" to App.get().gardenTokenManager.gardenToken!!, "memberID" to info.member.id.toString())
                 return map.toJson()
             }

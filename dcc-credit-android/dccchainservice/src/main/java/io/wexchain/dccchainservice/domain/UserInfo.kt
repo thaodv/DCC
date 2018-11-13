@@ -3,7 +3,7 @@ package io.wexchain.dccchainservice.domain
 /**
  *Created by liuyang on 2018/11/5.
  */
-data class LoginInfo(
+data class UserInfo(
     val member: Member,
     val player: Player?
 )

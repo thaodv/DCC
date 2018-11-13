@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc
+package io.wexchain.android.dcc.modules.trans.activity
 
 import android.app.Dialog
 import android.content.Context
@@ -11,10 +11,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.DigitalCurrencyActivity
 import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.android.dcc.modules.trans.activity.AcrossTransRecordActivity
-import io.wexchain.android.dcc.modules.trans.activity.Private2PublicActivity
-import io.wexchain.android.dcc.modules.trans.activity.Public2PrivateActivity
 import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.tools.SharedPreferenceUtil

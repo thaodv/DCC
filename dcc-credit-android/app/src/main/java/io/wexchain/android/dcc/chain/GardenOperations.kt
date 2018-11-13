@@ -12,11 +12,9 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.ChooseCutImageActivity
 import io.wexchain.android.dcc.tools.check
-import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.tools.toBean
 import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.dcc.BuildConfig
@@ -24,7 +22,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.WxApiManager
 import io.wexchain.dccchainservice.MarketingApi
 import io.wexchain.dccchainservice.domain.ChangeOrder
-import io.wexchain.dccchainservice.domain.LoginInfo
+import io.wexchain.dccchainservice.domain.UserInfo
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.type.TaskCode
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
@@ -52,7 +50,7 @@ object GardenOperations {
         App.get().gardenTokenManager.gardenToken!!
     }
 
-    fun loginWithCurrentPassport(context: Context): Single<Response<Result<LoginInfo>>> {
+    fun loginWithCurrentPassport(context: Context): Single<Response<Result<UserInfo>>> {
         val address = passport.currPassport.value?.address
         val privateKey = passport.getCurrentPassport()?.authKey?.getPrivateKey()
         return if (address == null || privateKey == null) {
@@ -147,7 +145,7 @@ object GardenOperations {
         return if (null == userinfo) {
             false
         } else {
-            val info = userinfo.toBean(LoginInfo::class.java)
+            val info = userinfo.toBean(UserInfo::class.java)
             if (null == info.player) {
                 false
             } else {
@@ -156,68 +154,63 @@ object GardenOperations {
         }
     }
 
-    fun startWechat(error: (String) -> Unit) {
+    fun ((String) -> Unit).check(success: (Int) -> Unit) {
         val wxapi = WxApiManager.wxapi.isWXAppInstalled
         if (!wxapi) {
-            error("您还未安装微信客户端")
+            this("您还未安装微信客户端")
             return
         }
         val info = passport.getUserInfo()
         if (null == info) {
-            error("用户未登录")
+            this("用户未登录")
             return
         }
-        val data = info.toBean(LoginInfo::class.java)
+        val data = info.toBean(UserInfo::class.java)
         if (data.player == null) {
-            error("未绑定微信")
+            this("未绑定微信")
             return
+        } else {
+            success(data.player!!.id!!)
         }
-        val req = WXLaunchMiniProgram.Req()
-        req.userName = "gh_0d13628f5e03"
-        req.path = "/pages/login/login?playid=${data.player!!.id}"
-        req.miniprogramType = WXLaunchMiniProgram.Req.MINIPROGRAM_TYPE_TEST
-        WxApiManager.wxapi.sendReq(req)
+    }
+
+    fun startWechat(error: (String) -> Unit) {
+        error.check {
+            val req = WXLaunchMiniProgram.Req()
+            req.userName = "gh_0d13628f5e03"
+            req.path = "/pages/login/login?playid=$it"
+            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPROGRAM_TYPE_TEST
+            WxApiManager.wxapi.sendReq(req)
+        }
     }
 
     fun shareWechat(context: Context, error: (String) -> Unit) {
-        val wxapi = WxApiManager.wxapi.isWXAppInstalled
-        if (!wxapi) {
-            error("您还未安装微信客户端")
-            return
-        }
-        val info = passport.getUserInfo()
-        if (null == info) {
-            error("用户未登录")
-            return
-        }
-        val data = info.toBean(LoginInfo::class.java)
-        if (data.player == null) {
-            error("未绑定微信")
-            return
-        }
-        val miniProgramObj = WXMiniProgramObject()
-                .apply {
-                    webpageUrl = "http://open.dcc.finance/dapp/invite/index.html" // 兼容低版本的网页链接
-                    miniprogramType = WXMiniProgramObject.MINIPROGRAM_TYPE_TEST// 正式版:0，测试版:1，体验版:2
-                    userName = "gh_0d13628f5e03"
-                    path = "/pages/login/login?playid=${data.player!!.id}"
-                }
+        error.check {
+            val miniProgramObj = WXMiniProgramObject()
+                    .apply {
+                        webpageUrl = "http://open.dcc.finance/dapp/invite/index.html" // 兼容低版本的网页链接
+                        miniprogramType = WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW// 正式版:0，测试版:1，体验版:2
+                        userName = "gh_0d13628f5e03"
+                        path = "/pages/login/login?playid=$it"
+                    }
 
-        val msg = WXMediaMessage(miniProgramObj)
-                .apply {
-                    setThumbImage(BitmapFactory.decodeResource(context.resources, R.drawable.wechat_share))
-                    title = "我发现了一个免费领取Token的好地方，可以一边玩游戏，一边赚奖励哦~~"
-                    description = ""
-                }
+            val msg = WXMediaMessage(miniProgramObj)
+                    .apply {
+                        setThumbImage(BitmapFactory.decodeResource(context.resources, R.drawable.wechat_share))
+                        title = "我发现了一个免费领取Token的好地方，可以一边玩游戏，一边赚奖励哦~~"
+                        description = ""
+                    }
 
-        val req = SendMessageToWX.Req()
-                .apply {
-                    transaction = buildTransaction("webpage", false)
-                    message = msg
-                    scene = SendMessageToWX.Req.WXSceneSession  // 目前支持会话
-                }
-        WxApiManager.wxapi.sendReq(req)
+            val req = SendMessageToWX.Req()
+                    .apply {
+                        transaction = buildTransaction("webpage", false)
+                        message = msg
+                        scene = SendMessageToWX.Req.WXSceneSession  // 目前支持会话
+                    }
+            WxApiManager.wxapi.sendReq(req)
+        }
     }
+
 
     private fun buildTransaction(code: String, toCircle: Boolean): String {
         return "share_${code}_${System.currentTimeMillis()}_${if (toCircle) 1 else 0}"
