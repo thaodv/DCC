@@ -22,8 +22,8 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.WxApiManager
 import io.wexchain.dccchainservice.MarketingApi
 import io.wexchain.dccchainservice.domain.ChangeOrder
-import io.wexchain.dccchainservice.domain.UserInfo
 import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.dccchainservice.domain.UserInfo
 import io.wexchain.dccchainservice.type.TaskCode
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import io.wexchain.ipfs.utils.doMain
@@ -50,7 +50,7 @@ object GardenOperations {
         App.get().gardenTokenManager.gardenToken!!
     }
 
-    fun loginWithCurrentPassport(context: Context): Single<Response<Result<UserInfo>>> {
+    fun loginWithCurrentPassport(): Single<Response<Result<UserInfo>>> {
         val address = passport.currPassport.value?.address
         val privateKey = passport.getCurrentPassport()?.authKey?.getPrivateKey()
         return if (address == null || privateKey == null) {
@@ -81,7 +81,6 @@ object GardenOperations {
                     App.get().gardenTokenManager.gardenToken = it.headers()[MarketingApi.HEADER_TOKEN]!!
                     val info = it.body()!!.result!!
                     passport.setUserInfo(info.toJson())
-                    App.get().isLogin.postValue(true)
 
                     info.member.profilePhoto?.let {
                         val filesDir = App.get().filesDir
@@ -104,13 +103,6 @@ object GardenOperations {
                                         passport.updatePassportUserAvatar(passport.getCurrentPassport()!!, uri)
                                     }
                                 }
-
-
-                        /*GlideApp.with(context).asBitmap().load(it).into(object : SimpleTarget<Bitmap>() {
-                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                passport.saveAvatar(resource)
-                            }
-                        })*/
                     }
 
                     info.member.name?.let {
@@ -142,16 +134,21 @@ object GardenOperations {
 
     fun isBound(): Boolean {
         val userinfo = passport.getUserInfo()
-        return if (null == userinfo) {
+        return if (userinfo.isNullOrEmpty()) {
             false
         } else {
-            val info = userinfo.toBean(UserInfo::class.java)
+            val info = userinfo!!.toBean(UserInfo::class.java)
             if (null == info.player) {
                 false
             } else {
                 info.player?.id != null
             }
         }
+    }
+
+    fun isLogin(): Boolean {
+        val userinfo = passport.getUserInfo()
+        return !userinfo.isNullOrEmpty()
     }
 
     fun ((String) -> Unit).check(success: (Int) -> Unit) {

@@ -9,11 +9,6 @@ import kotlin.properties.Delegates
  */
 open class BaseApplication : Application() {
 
-    val isLogin = MutableLiveData<Boolean>()
-            .apply {
-                postValue(false)
-            }
-
     override fun onCreate() {
         super.onCreate()
         context = this

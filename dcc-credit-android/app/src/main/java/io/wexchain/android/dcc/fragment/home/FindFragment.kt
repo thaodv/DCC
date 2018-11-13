@@ -3,13 +3,13 @@ package io.wexchain.android.dcc.fragment.home
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.DccAffiliateActivity
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.modules.garden.activity.GardenActivity
 import io.wexchain.android.dcc.modules.garden.activity.GardenListActivity
@@ -24,8 +24,24 @@ import io.wexchain.dcc.databinding.FragmentFindBinding
  */
 class FindFragment : BindFragment<FragmentFindBinding>() {
 
+    companion object {
+        private const val MATE_DATA = "mate_data"
+
+        fun getInstance(data: String? = null): FindFragment {
+            val fragment = FindFragment()
+            fragment.arguments = Bundle().apply {
+                putString(MATE_DATA, data)
+            }
+            return fragment
+        }
+    }
+
     private val passport by lazy {
         App.get().passportRepository
+    }
+
+    private val data by lazy {
+        arguments?.getString(MATE_DATA)
     }
 
     private var dialog: BaseDialog? = null
@@ -36,24 +52,39 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initClick()
-        initVm()
+        login()
+    }
+
+    fun login() {
+        GardenOperations.loginWithCurrentPassport()
+                .withLoading()
+                .subscribeBy {
+                    initVm()
+                    if (!data.isNullOrEmpty()) {
+                        val list = data!!.split('/')
+                        val code = list[0]
+                        val playid = list[1]
+                        val unionId = list[2]
+                        val info = it.body()!!.result!!
+                        if (null != info.player) {
+                            if (info.player!!.id.toString() != playid || unionId != info.player!!.unionId) {//不是同一个用户
+                                BaseDialog(activity!!).TipsDialog()
+                            }
+                        }
+                    }
+                }
     }
 
     private fun initVm() {
         passport.currPassport.observe(this, Observer {
             binding.passport = it
         })
-        App.get().isLogin.observe(this, Observer {
-            it?.let {
-                if (it) {
-                    if (!GardenOperations.isBound()) {
-                        showBoundDialog()
-                    } else {
-                        binding.vm = getViewModel()
-                    }
-                }
-            }
-        })
+
+        if (!GardenOperations.isBound()) {
+            showBoundDialog()
+        } else {
+            binding.vm = getViewModel()
+        }
     }
 
     private fun initClick() {
@@ -84,10 +115,15 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
 
     fun View.checkBoundClick(event: () -> Unit) {
         this.onClick {
-            if (GardenOperations.isBound()) {
-                event()
+            if (GardenOperations.isLogin()) {
+                if (GardenOperations.isBound()) {
+                    event()
+                } else {
+                    showBoundDialog()
+                }
             } else {
-                showBoundDialog()
+                toast("用户未登陆")
+                login()
             }
         }
     }
@@ -109,6 +145,5 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                     }
                 })
     }
-
 
 }

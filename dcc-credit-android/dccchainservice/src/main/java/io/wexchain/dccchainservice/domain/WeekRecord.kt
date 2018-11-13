@@ -7,7 +7,7 @@ package io.wexchain.dccchainservice.domain
 data class WeekRecord(
     val id: Int,
     val incrementValue: Int,
-    val orderId: Int,
+    val orderId: String,
     val playerId: Int,
     val time: Long,
     val weekStartTime: Long,

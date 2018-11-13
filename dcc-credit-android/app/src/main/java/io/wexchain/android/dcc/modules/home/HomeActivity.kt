@@ -14,7 +14,6 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.common.versionInfo
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.CertOperations
-import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.fragment.home.DigitalAssetsFragment
@@ -25,8 +24,8 @@ import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.reName
 import io.wexchain.android.dcc.view.bottomnavigation.BottomNavigationBar
 import io.wexchain.android.dcc.view.bottomnavigation.BottomNavigationItem
-import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.android.dcc.view.dialog.BaseDialog
+import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
@@ -40,34 +39,17 @@ import java.io.File
 /**
  *Created by liuyang on 2018/9/18.
  */
-class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
-
-    override fun onSkip() {
-
-    }
-
-    override fun onComplete() {
-
-    }
-
-    private val data by lazy {
-        intent.extras.getString("data")
-    }
+class HomeActivity : BaseCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home2)
         initView()
-        replaceFragment(FindFragment())
+        replaceFragment(FindFragment.getInstance(intent.getStringExtra("data")))
         initEvent()
         initPhototTask()
         checkUpgrade()
         showRedeem()
-        login()
-    }
-
-    fun login() {
-        GardenOperations.loginWithCurrentPassport(this).subscribe()
     }
 
     private fun showRedeem() {
@@ -86,7 +68,15 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
     }
 
     private fun showRedeemToken(redeemToken: RedeemToken) {
-        BonusDialog.create(redeemToken, this).show(supportFragmentManager, "BONUS#${redeemToken.scenarioCode}")
+        BonusDialog.create(redeemToken, object : BonusDialog.Listener {
+            override fun onSkip() {
+
+            }
+
+            override fun onComplete() {
+
+            }
+        }).show(supportFragmentManager, "BONUS#${redeemToken.scenarioCode}")
     }
 
     private fun initEvent() {
@@ -209,5 +199,11 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
                     }
                 }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        App.get().passportRepository.setUserInfo("")
+    }
+
 
 }

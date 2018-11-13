@@ -1304,7 +1304,7 @@
 
                     <ImageView
                         imageUrl="@{vm.taskList[3].taskList[4].img}"
-                        errorRes="@{@drawable/task_bk_tn}"
+                        errorRes="@{@drawable/backup_wallet}"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center_vertical"

@@ -129,6 +129,36 @@ class BaseDialog(context: Context) : Dialog(context) {
         return this
     }
 
+    fun TipsDialog(tiptitle: String? = null, tipmessage: String? = null, tipconfirm: String? = null): BaseDialog {
+        this.setCancelable(false)
+        val inflater = LayoutInflater.from(context)
+        val view = inflater.inflate(R.layout.dialog_tips, null)
+        setContentView(view)
+        val dialogWindow = window
+        val lp = dialogWindow!!.attributes
+        val d = context.resources.displayMetrics
+        lp.width = (d.widthPixels * 0.8).toInt()
+        dialogWindow.attributes = lp
+        window.setBackgroundDrawableResource(R.drawable.background_holding)
+
+        tiptitle?.let {
+            view.findViewById<TextView>(R.id.tips_title).text = it
+        }
+        tipmessage?.let {
+            view.findViewById<TextView>(R.id.tips_message).text = it
+        }
+        val confirm = view.findViewById<Button>(R.id.tips_confirm)
+        tipconfirm?.let {
+            confirm.text = it
+        }
+        confirm.setOnClickListener {
+            onConfirmStub.invoke()
+            dismiss()
+        }
+        show()
+        return this
+    }
+
     private var onCancleStub: () -> Unit = {}
     private var onConfirmStub: () -> Unit = {}
 

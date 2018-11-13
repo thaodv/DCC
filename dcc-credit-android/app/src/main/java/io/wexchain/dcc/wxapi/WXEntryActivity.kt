@@ -1,9 +1,7 @@
 package io.wexchain.dcc.wxapi
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.view.WindowManager
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
@@ -17,7 +15,6 @@ import io.wexchain.android.common.noTitleBar
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.LoadingActivity
 import io.wexchain.android.dcc.chain.GardenOperations
-import io.wexchain.dcc.R
 import io.wexchain.dcc.WxApiManager
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.Result
@@ -49,7 +46,7 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
                     val code = (resp as SendAuth.Resp).code
                     GardenOperations.boundWechat(code)
                             .flatMap {
-                                GardenOperations.loginWithCurrentPassport(this)
+                                GardenOperations.loginWithCurrentPassport()
                             }
                             .withLoading()
                             .doOnError {
@@ -95,18 +92,8 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
         val wxMsg = showReq.message
         val obj = wxMsg.mediaObject as WXAppExtendObject
 
-        val msg = StringBuffer() // 组织一个待显示的消息内容
-        msg.append("description: ")
-        msg.append(wxMsg.description)
-        msg.append("\n")
-        msg.append("extInfo: ")
-        msg.append(obj.extInfo)
-        msg.append("\n")
-        msg.append("filePath: ")
-        msg.append(obj.filePath)
-
         val intent = Intent(this, LoadingActivity::class.java)
-        intent.putExtra("data", obj.extInfo.toString())
+        intent.putExtra("data", obj.extInfo)
         startActivity(intent)
         finish()
     }

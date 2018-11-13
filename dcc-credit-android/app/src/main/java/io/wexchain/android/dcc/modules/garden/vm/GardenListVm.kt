@@ -17,7 +17,7 @@ import io.wexchain.dccchainservice.domain.PagedList
 class GardenListVm : PagedVm<ChangeOrder>() {
 
     override fun loadPage(page: Int): Single<PagedList<ChangeOrder>> {
-        return api.changeOrder(token, page, PAGE_SIZE).check()
+        return api.changeOrder(token, page, PAGE_SIZE).checkonMain()
     }
 
     private val api: MarketingApi by lazy {
