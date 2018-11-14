@@ -4,10 +4,12 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
-import io.wexchain.dccchainservice.type.MathType
+import io.wexchain.android.dcc.tools.getTimeFormatText
 import io.wexchain.dcc.R
+import io.wexchain.dccchainservice.domain.ChangeOrder
 import io.wexchain.dccchainservice.domain.TaskList
 import io.wexchain.dccchainservice.domain.WeekRecord
+import io.wexchain.dccchainservice.type.MathType
 import io.wexchain.dccchainservice.type.StatusType
 import java.text.SimpleDateFormat
 import java.util.*
@@ -93,12 +95,27 @@ object TaskHelper {
     }
 
     @JvmStatic
-    fun getItemNum(math: MathType, num: Int): String {
+    fun getItemNum(math: MathType, num: String): String {
         return if (math == MathType.PLUS) {
             "+$num 阳光"
         } else {
             "-$num 阳光"
         }
+    }
+
+    @JvmStatic
+    fun getZhishimsg(data: ChangeOrder?): String {
+        return "${data?.nickName?:"王思聪"}获胜  +${data?.memo?:"10"}阳光值"
+    }
+
+    @JvmStatic
+    fun getGardenmsg(ismsg: Boolean?): String {
+        return if (ismsg == true)"您有奖励未收取哦" else "您的奖励将于48小时后发放"
+    }
+
+    @JvmStatic
+    fun getZhishiTime(data: ChangeOrder?): String {
+        return data?.lastUpdatedTime?.getTimeFormatText()?:""
     }
 
 }

@@ -51,7 +51,7 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
                 navigateTo(GardenListActivity::class.java)
             })
             shareWechat.observe(this@GardenTaskActivity, Observer {
-                GardenOperations.shareWechat(this@GardenTaskActivity) {
+                GardenOperations.shareWechat {
                     toast(it)
                 }
             })
@@ -98,7 +98,7 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
                         navigateTo(OpenCloudActivity::class.java) {
                             putExtra("activity_type", PassportSettingsActivity.NOT_OPEN_CLOUD)
                         }
-                    }else {
+                    } else {
                         if (it.second.isNullOrEmpty()) {
                             navigateTo(OpenCloudActivity::class.java) {
                                 putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)

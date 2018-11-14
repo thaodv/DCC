@@ -1,6 +1,5 @@
 package io.wexchain.android.dcc.chain
 
-import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram
@@ -80,6 +79,7 @@ object GardenOperations {
                 .doOnSuccess {
                     App.get().gardenTokenManager.gardenToken = it.headers()[MarketingApi.HEADER_TOKEN]!!
                     val info = it.body()!!.result!!
+                    App.get().userInfo = info
                     passport.setUserInfo(info.toJson())
 
                     info.member.profilePhoto?.let {
@@ -133,22 +133,21 @@ object GardenOperations {
     }
 
     fun isBound(): Boolean {
-        val userinfo = passport.getUserInfo()
-        return if (userinfo.isNullOrEmpty()) {
+        val userinfo = App.get().userInfo
+        return if (userinfo == null) {
             false
         } else {
-            val info = userinfo!!.toBean(UserInfo::class.java)
-            if (null == info.player) {
+            if (userinfo.player == null) {
                 false
             } else {
-                info.player?.id != null
+                userinfo.player!!.id != null
             }
         }
     }
 
     fun isLogin(): Boolean {
-        val userinfo = passport.getUserInfo()
-        return !userinfo.isNullOrEmpty()
+        val userinfo = App.get().userInfo
+        return userinfo != null
     }
 
     fun ((String) -> Unit).check(success: (Int) -> Unit) {
@@ -157,17 +156,16 @@ object GardenOperations {
             this("您还未安装微信客户端")
             return
         }
-        val info = passport.getUserInfo()
+        val info = App.get().userInfo
         if (null == info) {
             this("用户未登录")
             return
         }
-        val data = info.toBean(UserInfo::class.java)
-        if (data.player == null) {
+        if (info.player == null) {
             this("未绑定微信")
             return
         } else {
-            success(data.player!!.id!!)
+            success(info.player!!.id!!)
         }
     }
 
@@ -176,12 +174,12 @@ object GardenOperations {
             val req = WXLaunchMiniProgram.Req()
             req.userName = "gh_0d13628f5e03"
             req.path = "/pages/login/login?playid=$it"
-            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPROGRAM_TYPE_TEST
+            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPROGRAM_TYPE_PREVIEW
             WxApiManager.wxapi.sendReq(req)
         }
     }
 
-    fun shareWechat(context: Context, error: (String) -> Unit) {
+    fun shareWechat(error: (String) -> Unit) {
         error.check {
             val miniProgramObj = WXMiniProgramObject()
                     .apply {
@@ -193,7 +191,7 @@ object GardenOperations {
 
             val msg = WXMediaMessage(miniProgramObj)
                     .apply {
-                        setThumbImage(BitmapFactory.decodeResource(context.resources, R.drawable.wechat_share))
+                        setThumbImage(BitmapFactory.decodeResource(App.get().resources, R.drawable.wechat_share))
                         title = "我发现了一个免费领取Token的好地方，可以一边玩游戏，一边赚奖励哦~~"
                         description = ""
                     }

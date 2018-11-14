@@ -7,9 +7,15 @@ import io.wexchain.dccchainservice.type.MathType
  */
 data class ChangeOrder(
     val id: String,
-    val amount: Int,
+    val amount: String,
+    val roundId: Int,
+    val ownerId: Int,
+    val preservedAmount: String,
     val direction: MathType,
     val memo: String,
+    val assetCode: String,
+    val sharedAmount: String,
+    val nickName: String,
     val parentId: String,
     val parentType: String,
     val playerId: String,
@@ -18,5 +24,5 @@ data class ChangeOrder(
     val lastUpdatedTime: Long,
     val taskOrder:TaskOrder
 ){
-    data class TaskOrder(val amount:Int,val direction:String,val memo:String)
+    data class TaskOrder(val amount:String,val direction:String,val memo:String)
 }

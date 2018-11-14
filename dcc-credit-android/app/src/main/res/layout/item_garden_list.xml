@@ -41,8 +41,6 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:text="2018-08-08 08:08:08" />
 
-
-
         <TextView
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

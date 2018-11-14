@@ -8,10 +8,8 @@ import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
-import io.wexchain.android.dcc.tools.toBean
 import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.dcc.R
-import io.wexchain.dccchainservice.domain.UserInfo
 
 
 /**
@@ -68,16 +66,15 @@ class GardenActivity : BaseCompatActivity() {
 
             @JavascriptInterface
             fun wechatShare() {
-                GardenOperations.shareWechat(this@GardenActivity) {
+                GardenOperations.shareWechat {
                     toast(it)
                 }
             }
 
             @JavascriptInterface
             fun pageInit(): String {
-                val userinfo = App.get().passportRepository.getUserInfo()!!
-                val info = userinfo.toBean(UserInfo::class.java)
-                val map = mapOf("token" to App.get().gardenTokenManager.gardenToken!!, "memberID" to info.member.id.toString())
+                val userinfo = App.get().userInfo!!
+                val map = mapOf("token" to App.get().gardenTokenManager.gardenToken!!, "memberID" to userinfo.member.id.toString())
                 return map.toJson()
             }
 

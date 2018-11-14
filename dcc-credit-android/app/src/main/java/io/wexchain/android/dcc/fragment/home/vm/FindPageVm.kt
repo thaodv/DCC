@@ -6,11 +6,13 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.dccchainservice.MarketingApi
+import io.wexchain.dccchainservice.domain.ChangeOrder
+import io.wexchain.ipfs.utils.doMain
 
 /**
  *Created by liuyang on 2018/11/8.
  */
-class FindPageVm:ViewModel() {
+class FindPageVm : ViewModel() {
 
     private val api: MarketingApi by lazy {
         App.get().marketingApi
@@ -22,16 +24,50 @@ class FindPageVm:ViewModel() {
 
     val balance = MutableLiveData<String>()
             .apply {
-                getBalance {
-                    this.postValue(it)
-                }
+                getBalance()
             }
 
-    fun getBalance(event: (String) -> Unit) {
+    val lastDuel = MutableLiveData<ChangeOrder>()
+            .apply {
+                getLastDuel()
+            }
+
+    val queryFlower = MutableLiveData<Boolean>()
+            .apply {
+                queryFlower()
+            }
+
+
+    private fun getBalance() {
         api.balance(token)
                 .checkonMain()
                 .subscribeBy {
-                    event.invoke(it.balance)
+                    balance.postValue(it.balance)
                 }
+    }
+
+    private fun getLastDuel() {
+        api.getLastDuel()
+                .checkonMain()
+                .subscribeBy {
+                    lastDuel.postValue(it)
+                }
+    }
+
+    private fun queryFlower() {
+        api.queryFlower(token, App.get().userInfo!!.member.id)
+                .map {
+                    it.isSuccess && it.result !=null
+                }
+                .doMain()
+                .subscribeBy {
+                    queryFlower.postValue(it)
+                }
+    }
+
+    fun refresh() {
+        getBalance()
+        getLastDuel()
+        queryFlower()
     }
 }

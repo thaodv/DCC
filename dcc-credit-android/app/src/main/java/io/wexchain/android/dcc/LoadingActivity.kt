@@ -33,6 +33,7 @@ class LoadingActivity : BaseCompatActivity() {
         super.onCreate(savedInstanceState)
         noStatusBar()
         setContentView(R.layout.activity_loading)
+        App.get().appInit()
         permission()
     }
 
@@ -123,7 +124,7 @@ class LoadingActivity : BaseCompatActivity() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { _ ->
                         atLeastCreated {
-                            navigateTo(HomeActivity::class.java){
+                            navigateTo(HomeActivity::class.java) {
                                 putExtras(intent)
                             }
                             finish()

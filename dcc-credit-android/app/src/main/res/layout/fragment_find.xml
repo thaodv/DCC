@@ -12,6 +12,8 @@
             name="vm"
             type="io.wexchain.android.dcc.fragment.home.vm.FindPageVm" />
 
+        <import type="io.wexchain.android.dcc.modules.garden.TaskHelper"/>
+
     </data>
 
     <LinearLayout
@@ -283,7 +285,7 @@
                         android:layout_marginTop="10dp"
                         android:drawableLeft="@drawable/find_garden_img4"
                         android:drawablePadding="5dp"
-                        android:text="您有奖励未收取哦"
+                        android:text="@{TaskHelper.getGardenmsg(vm.queryFlower)}"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="11sp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -294,7 +296,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:text="1分钟前"
+                        android:text="2分钟前"
                         android:textColor="#BAC0C5"
                         android:textSize="11sp"
                         app:layout_constraintBaseline_toBaselineOf="@id/garden_card_txt1"
@@ -383,7 +385,7 @@
                         android:layout_marginTop="10dp"
                         android:drawableLeft="@drawable/find_garden_img4"
                         android:drawablePadding="5dp"
-                        android:text="昵称获胜   获得+5阳光"
+                        android:text="@{TaskHelper.getZhishimsg(vm.lastDuel)}"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="11sp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -393,7 +395,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:text="1分钟前"
+                        android:text="@{TaskHelper.getZhishiTime(vm.lastDuel)}"
                         android:textColor="#BAC0C5"
                         android:textSize="11sp"
                         app:layout_constraintBaseline_toBaselineOf="@id/find_zhishi_txt1"

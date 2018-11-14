@@ -100,6 +100,15 @@ interface MarketingApi {
                     @Field("number") number: Int,
                     @Field("size") size: Int): Single<Result<PagedList<ChangeOrder>>>
 
+    // 小程序获取最后一次对战
+    @POST("ss/duel/getLastDuel")
+    fun getLastDuel(): Single<Result<ChangeOrder>>
+
+    // 查询是否有可领取花朵
+    @POST("bemember/ss/flower/queryFlower")
+    @FormUrlEncoded
+    fun queryFlower(@Header(HEADER_TOKEN) token: String?,
+                    @Field("ownerId") ownerId: Int): Single<Result<String>>
 
 
     companion object {

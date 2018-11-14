@@ -87,6 +87,13 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (GardenOperations.isBound()) {
+            binding.vm?.refresh()
+        }
+    }
+
     private fun initClick() {
         binding.gardenTask.checkBoundClick {
             navigateTo(GardenTaskActivity::class.java)
@@ -95,7 +102,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
             navigateTo(GardenActivity::class.java)
         }
         binding.findShare.checkBoundClick {
-            GardenOperations.shareWechat(activity!!) {
+            GardenOperations.shareWechat {
                 toast(it)
             }
         }
@@ -109,7 +116,9 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
             navigateTo(GardenListActivity::class.java)
         }
         binding.findZhishiCard.checkBoundClick {
-
+            GardenOperations.startWechat {
+                toast(it)
+            }
         }
     }
 
