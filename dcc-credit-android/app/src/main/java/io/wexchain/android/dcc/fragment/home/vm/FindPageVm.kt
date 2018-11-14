@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.dccchainservice.MarketingApi
 import io.wexchain.dccchainservice.domain.ChangeOrder
@@ -16,10 +17,6 @@ class FindPageVm : ViewModel() {
 
     private val api: MarketingApi by lazy {
         App.get().marketingApi
-    }
-
-    private val token: String by lazy {
-        App.get().gardenTokenManager.gardenToken!!
     }
 
     val balance = MutableLiveData<String>()
@@ -39,7 +36,10 @@ class FindPageVm : ViewModel() {
 
 
     private fun getBalance() {
-        api.balance(token)
+        GardenOperations
+                .refirshToken {
+                    api.balance(it)
+                }
                 .checkonMain()
                 .subscribeBy {
                     balance.postValue(it.balance)
@@ -55,9 +55,12 @@ class FindPageVm : ViewModel() {
     }
 
     private fun queryFlower() {
-        api.queryFlower(token, App.get().userInfo!!.member.id)
-                .map {
-                    it.isSuccess && it.result !=null
+        GardenOperations
+                .refirshToken {
+                    api.queryFlower(it, App.get().userInfo!!.member.id)
+                            .map {
+                                it.isSuccess && it.result != null
+                            }
                 }
                 .doMain()
                 .subscribeBy {

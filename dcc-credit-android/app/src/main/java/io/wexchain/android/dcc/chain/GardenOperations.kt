@@ -7,6 +7,7 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
 import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
@@ -14,7 +15,6 @@ import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.ChooseCutImageActivity
 import io.wexchain.android.dcc.tools.check
-import io.wexchain.android.dcc.tools.toBean
 import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
@@ -214,6 +214,32 @@ object GardenOperations {
     fun completeTask(taskCode: TaskCode): Single<ChangeOrder> {
         return api.completeTask(token, taskCode.name).check()
 
+    }
+
+    fun <T> refirshToken(data: (String) -> Single<T>): Single<T> {
+        return Single
+                .defer {
+                    Single.fromCallable {
+                        App.get().gardenTokenManager.gardenToken
+                    }
+                }
+                .flatMap {
+                    data(it)
+                }
+                .retryWhen {
+                    var mRetryCount = 0
+                    if (mRetryCount < 3) {
+                        mRetryCount += 1
+                        loginWithCurrentPassport()
+                                .map {
+                                    it.headers()[MarketingApi.HEADER_TOKEN]!!
+                                }
+                                .toFlowable()
+
+                    } else {
+                        Flowable.just(Throwable())
+                    }
+                }
     }
 
 
