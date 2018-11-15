@@ -127,6 +127,11 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
                 }
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.vm?.refreshTaskList()
+    }
+
     private fun toBackup() {
         navigateTo(PassportExportActivity::class.java)
     }

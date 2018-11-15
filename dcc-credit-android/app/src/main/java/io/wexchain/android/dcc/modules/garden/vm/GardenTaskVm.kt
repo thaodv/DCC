@@ -2,16 +2,21 @@ package io.wexchain.android.dcc.modules.garden.vm
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
-import io.wexchain.android.dcc.tools.checkonMain
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.dccchainservice.MarketingApi
 import io.wexchain.dccchainservice.domain.TaskList
 import io.wexchain.dccchainservice.domain.WeekRecord
 import io.wexchain.dccchainservice.type.StatusType
+import io.wexchain.dccchainservice.type.TaskCode
+import io.wexchain.dccchainservice.type.TaskType
+import io.wexchain.ipfs.utils.doMain
 import io.wexchain.ipfs.utils.io_main
 
 /**
@@ -21,10 +26,6 @@ class GardenTaskVm : ViewModel() {
 
     private val api: MarketingApi by lazy {
         App.get().marketingApi
-    }
-
-    private val token: String by lazy {
-        App.get().gardenTokenManager.gardenToken!!
     }
 
     val backWallet = SingleLiveEvent<Void>()
@@ -39,9 +40,7 @@ class GardenTaskVm : ViewModel() {
 
     val taskList = MutableLiveData<List<TaskList>>()
             .apply {
-                getTaskList {
-                    this.postValue(it)
-                }
+                getTaskList()
             }
 
     val currentWeekRecord = MutableLiveData<List<WeekRecord>>()
@@ -81,17 +80,26 @@ class GardenTaskVm : ViewModel() {
             }
 
     fun getBalance(event: (String) -> Unit) {
-        api.balance(token)
-                .checkonMain()
+        GardenOperations
+                .refreshToken {
+                    api.balance(it).check()
+                }
+                .doMain()
                 .subscribeBy {
                     event.invoke(it.balance)
                 }
     }
 
     fun getSignStatus(event: (Boolean) -> Unit) {
-        api.queryTodayRecord(token)
+        GardenOperations
+                .refreshToken {
+                    api.queryTodayRecord(it).check()
+                }
                 .map {
-                    it.isSuccess && it.result != null
+                    true
+                }
+                .onErrorReturn {
+                    false
                 }
                 .io_main()
                 .subscribeBy {
@@ -100,33 +108,69 @@ class GardenTaskVm : ViewModel() {
     }
 
     fun getWeekRecordList(event: (List<WeekRecord>) -> Unit) {
-        api.currentWeekRecord(token)
-                .checkonMain()
+        GardenOperations
+                .refreshToken {
+                    api.currentWeekRecord(it).check()
+                }
+                .doMain()
                 .subscribeBy {
                     event.invoke(it)
                 }
     }
 
-    fun getTaskList(event: (List<TaskList>) -> Unit) {
-        api.getTaskList(token)
-                .checkonMain()
+    fun getTaskList() {
+        GardenOperations
+                .refreshToken {
+                    api.getTaskList(it).check()
+                }
+                .doMain()
                 .subscribeBy {
-                    event.invoke(it)
+                    taskList.postValue(it)
+                    checkOlderUser(it)
+                }
+    }
+
+    private fun checkOlderUser(list: List<TaskList>) {
+        Observable.just(isOpenIpfs.value != null && isOpenIpfs.value!!.first)
+                .filter {
+                    it
+                }
+                .flatMap {
+                    Observable.fromIterable(list)
+                }
+                .filter {
+                    it.category == TaskType.NEWBIE_TASK
+                }
+                .map {
+                    it.taskList
+                }
+                .flatMap {
+                    Observable.fromIterable(it)
+                }
+                .filter {
+                    it.code == TaskCode.OPEN_CLOUD_STORE && it.status == StatusType.UNFULFILLED
+                }
+                .flatMap {
+                    GardenOperations.completeTask(it.code).toObservable()
+                }
+                .subscribeBy {
+                    refreshTaskList()
                 }
     }
 
     fun refreshTaskList() {
-        getTaskList {
-            taskList.postValue(it)
-        }
+        getTaskList()
     }
 
     fun withSign() {
-        if (isapply.value!!) {
+        if (isapply.value != false) {
             return
         }
-        api.apply(token)
-                .checkonMain()
+        GardenOperations
+                .refreshToken {
+                    api.apply(it).check()
+                }
+                .doMain()
                 .subscribeBy {
                     getSignStatus {
                         isapply.postValue(it)
@@ -182,7 +226,7 @@ class GardenTaskVm : ViewModel() {
         }
     }
 
-    fun openIpfs(task: TaskList.Task?){
+    fun openIpfs(task: TaskList.Task?) {
         checkFulfilled(task) {
             openIpfs.call()
         }

@@ -49,7 +49,7 @@ object GardenOperations {
         App.get().gardenTokenManager.gardenToken!!
     }
 
-    fun loginWithCurrentPassport(): Single<Response<Result<UserInfo>>> {
+    fun loginWithCurrentPassport(): Single<Pair<UserInfo, String>> {
         val address = passport.currPassport.value?.address
         val privateKey = passport.getCurrentPassport()?.authKey?.getPrivateKey()
         return if (address == null || privateKey == null) {
@@ -68,7 +68,9 @@ object GardenOperations {
                     val body = it.body()
                     if (it.isSuccessful && body != null) {
                         if (body.isSuccess) {
-                            it
+                            val token = it.headers()[MarketingApi.HEADER_TOKEN]!!
+                            App.get().gardenTokenManager.gardenToken = token
+                            it.body()!!.result!! to token
                         } else {
                             throw body.asError()
                         }
@@ -77,12 +79,11 @@ object GardenOperations {
                     }
                 }
                 .doOnSuccess {
-                    App.get().gardenTokenManager.gardenToken = it.headers()[MarketingApi.HEADER_TOKEN]!!
-                    val info = it.body()!!.result!!
-                    App.get().userInfo = info
-                    passport.setUserInfo(info.toJson())
+                    val userinfo = it.first
+                    App.get().userInfo = userinfo
+                    passport.setUserInfo(it.toJson())
 
-                    info.member.profilePhoto?.let {
+                    userinfo.member.profilePhoto?.let {
                         val filesDir = App.get().filesDir
                         val imgDir = File(filesDir, ChooseCutImageActivity.IMG_DIR)
                         if (!imgDir.exists()) {
@@ -105,7 +106,7 @@ object GardenOperations {
                                 }
                     }
 
-                    info.member.name?.let {
+                    userinfo.member.name?.let {
                         passport.updatePassportNickname(passport.getCurrentPassport()!!, it)
                     }
                 }
@@ -212,11 +213,14 @@ object GardenOperations {
     }
 
     fun completeTask(taskCode: TaskCode): Single<ChangeOrder> {
-        return api.completeTask(token, taskCode.name).check()
+        return GardenOperations
+                .refreshToken {
+                    api.completeTask(token, taskCode.name).check()
+                }
 
     }
 
-    fun <T> refirshToken(data: (String) -> Single<T>): Single<T> {
+    fun <T> refreshToken(data: (String) -> Single<T>): Single<T> {
         return Single
                 .defer {
                     Single.fromCallable {
@@ -232,10 +236,9 @@ object GardenOperations {
                         mRetryCount += 1
                         loginWithCurrentPassport()
                                 .map {
-                                    it.headers()[MarketingApi.HEADER_TOKEN]!!
+                                    it.second
                                 }
                                 .toFlowable()
-
                     } else {
                         Flowable.just(Throwable())
                     }

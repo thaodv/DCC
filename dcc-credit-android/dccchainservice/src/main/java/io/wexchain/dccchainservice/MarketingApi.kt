@@ -108,7 +108,7 @@ interface MarketingApi {
     @POST("bemember/ss/flower/queryFlower")
     @FormUrlEncoded
     fun queryFlower(@Header(HEADER_TOKEN) token: String?,
-                    @Field("ownerId") ownerId: Int): Single<Result<String>>
+                    @Field("ownerId") ownerId: Int): Single<Result<Any>>
 
 
     companion object {

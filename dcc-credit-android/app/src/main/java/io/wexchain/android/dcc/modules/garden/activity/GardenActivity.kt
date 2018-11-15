@@ -78,9 +78,15 @@ class GardenActivity : BaseCompatActivity() {
                 return map.toJson()
             }
 
-        }, "JSTest")
+            @JavascriptInterface
+            fun refreshToken(): String {
+                val token = GardenOperations.loginWithCurrentPassport().blockingGet().second
+                return token
+            }
 
-        webView.loadUrl("http://10.65.100.69/dcc-open/package/dapp/mysticalGarden/index.html#/Mygarden")
+        }, "BitExpress")
+
+        webView.loadUrl("http://10.65.100.69/garden/dist/#/Mygarden?playerID=${App.get().userInfo!!.member.id}&token=${App.get().gardenTokenManager.gardenToken!!}")
     }
 
 

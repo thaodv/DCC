@@ -105,7 +105,7 @@ object TaskHelper {
 
     @JvmStatic
     fun getZhishimsg(data: ChangeOrder?): String {
-        return "${data?.nickName?:"王思聪"}获胜  +${data?.memo?:"10"}阳光值"
+        return "${data?.nickName?:"王思聪"}获胜  +${data?.amount?:"5"}阳光值"
     }
 
     @JvmStatic

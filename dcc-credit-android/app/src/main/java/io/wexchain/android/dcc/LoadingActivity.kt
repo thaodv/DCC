@@ -16,6 +16,7 @@ import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.noStatusBar
 import io.wexchain.android.common.onClick
+import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
 import io.wexchain.android.dcc.modules.home.HomeActivity
 import io.wexchain.android.dcc.tools.PermissionHelper
 import io.wexchain.android.dcc.tools.checkXPosed
@@ -33,7 +34,6 @@ class LoadingActivity : BaseCompatActivity() {
         super.onCreate(savedInstanceState)
         noStatusBar()
         setContentView(R.layout.activity_loading)
-        App.get().appInit()
         permission()
     }
 

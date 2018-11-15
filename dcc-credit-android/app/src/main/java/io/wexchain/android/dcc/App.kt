@@ -97,9 +97,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
             }
             if (BuildConfig.DEBUG) it.printStackTrace()
         }
-    }
 
-    fun appInit() {
         initLibraries(this)
 
         initNode()

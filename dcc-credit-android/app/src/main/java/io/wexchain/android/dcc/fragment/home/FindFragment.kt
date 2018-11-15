@@ -65,7 +65,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                         val code = list[0]
                         val playid = list[1]
                         val unionId = list[2]
-                        val info = it.body()!!.result!!
+                        val info = it.first
                         if (null != info.player) {
                             if (info.player!!.id.toString() != playid || unionId != info.player!!.unionId) {//不是同一个用户
                                 BaseDialog(activity!!).TipsDialog()

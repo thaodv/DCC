@@ -37,7 +37,7 @@ class FindPageVm : ViewModel() {
 
     private fun getBalance() {
         GardenOperations
-                .refirshToken {
+                .refreshToken {
                     api.balance(it)
                 }
                 .checkonMain()
@@ -56,7 +56,7 @@ class FindPageVm : ViewModel() {
 
     private fun queryFlower() {
         GardenOperations
-                .refirshToken {
+                .refreshToken {
                     api.queryFlower(it, App.get().userInfo!!.member.id)
                             .map {
                                 it.isSuccess && it.result != null

@@ -503,11 +503,11 @@
 
                     <ImageView
                         imageUrl="@{vm.taskList[0].taskList[0].img}"
+                        errorRes="@{@drawable/task_sign}"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:src="@drawable/task_sign" />
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -547,11 +547,11 @@
 
                     <ImageView
                         imageUrl="@{vm.taskList[0].taskList[1].img}"
+                        errorRes="@{@drawable/task_invitation}"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:src="@drawable/task_invitation" />
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin" />
 
                     <TextView
                         android:layout_width="0dp"
