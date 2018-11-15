@@ -46,14 +46,14 @@
 
         <View style="@style/DividerHorizontal"/>
 
-        <RadioButton
+        <!--<RadioButton
             android:id="@+id/cb4"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:button="@drawable/selector_select_node"
             android:text="  以太坊节点-美国马萨诸塞州"/>
 
-        <View style="@style/DividerHorizontal"/>
+        <View style="@style/DividerHorizontal"/>-->
 
     </RadioGroup>
 
