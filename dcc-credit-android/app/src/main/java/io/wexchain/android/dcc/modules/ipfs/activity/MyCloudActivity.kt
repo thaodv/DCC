@@ -7,25 +7,23 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.support.constraint.ConstraintLayout
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.TextView
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
+import io.wexchain.android.dcc.modules.ipfs.ActionType
+import io.wexchain.android.dcc.modules.ipfs.EventType
+import io.wexchain.android.dcc.modules.ipfs.IpfsStatus
 import io.wexchain.android.dcc.modules.ipfs.service.IpfsBinder
 import io.wexchain.android.dcc.modules.ipfs.service.IpfsService
-import io.wexchain.android.dcc.modules.ipfs.vm.MyCloudVm
-import io.wexchain.android.dcc.tools.Log
+import io.wexchain.android.dcc.modules.ipfs.vm.CloudItemVm
 import io.wexchain.android.dcc.view.dialog.CloudstorageDialog
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
@@ -34,9 +32,6 @@ import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.ipfs.utils.io_main
-import kotlinx.android.synthetic.main.activity_my_cloud.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
 import org.web3j.abi.datatypes.Utf8String
@@ -52,28 +47,34 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
     override val contentLayoutId: Int
         get() = R.layout.activity_my_cloud
 
-    private var IDStatus = STATUS_DEFAULT
-    private var BankStatus = STATUS_DEFAULT
-    private var CmStatus = STATUS_DEFAULT
-    private var TnStatus = STATUS_DEFAULT
-
     private var ID_Token = ""
     private var Bank_Token = ""
     private var Cm_Token = ""
     private var Tn_Token = ""
 
-    private var isEnabled = mutableListOf<String>()
-    private lateinit var viewMode: MyCloudVm
     private lateinit var mBinder: IpfsBinder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-        initClick()
-        initData()
+        initVm()
         initService()
-        viewMode = getViewModel()
-        binding.vm = viewMode
+        initData()
+        initClick()
+    }
+
+    private fun initVm() {
+        binding.run {
+            vm = getViewModel()
+            asIdVm = getViewModel("ID")
+            asIdVm!!.name.set("实名认证数据")
+            asBankVm = getViewModel("BANK")
+            asBankVm!!.name.set("银行卡认证数据")
+            asCmVm = getViewModel("CM")
+            asCmVm!!.name.set("运营商通讯记录")
+            asCmTnVm = getViewModel("CMTN")
+            asCmTnVm!!.name.set("同牛运营商通讯记录")
+        }
     }
 
     private fun initService() {
@@ -137,25 +138,35 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
 
     data class Function4<out T1, out T2, out T3, out T4>(val data1: T1, val data2: T2, val data3: T3, val data4: T4)
 
-    private fun updateUI(it: Function4<Int, Int, Int, Int>) {
-        IDStatus = it.data1
-        BankStatus = it.data2
-        CmStatus = it.data3
-        TnStatus = it.data4
-        updateIdItem()
-        updateBankItem()
-        updateCmItem()
-        updateTnItem()
+    private fun updateUI(it: Function4<IpfsStatus, IpfsStatus, IpfsStatus, IpfsStatus>) {
+        binding.run {
+            asIdVm!!.setItemData(it.data1, ChainGateway.BUSINESS_ID)
+            asBankVm!!.setItemData(it.data2, ChainGateway.BUSINESS_BANK_CARD)
+            asCmVm!!.setItemData(it.data3, ChainGateway.BUSINESS_COMMUNICATION_LOG)
+            asCmTnVm!!.setItemData(it.data4, ChainGateway.TN_COMMUNICATION_LOG)
+        }
+
     }
 
-    fun Single<Boolean>.checkStatus(business: String): Single<Int> {
+    private fun CloudItemVm.setItemData(status: IpfsStatus, business: String) {
+        state.set(status)
+        if (status == IpfsStatus.STATUS_UPLOAD) {
+            mBinder.createItemData(business)
+                    .io_main()
+                    .subscribeBy {
+                        this.size.set(it)
+                    }
+        }
+    }
+
+    fun Single<Boolean>.checkStatus(business: String): Single<IpfsStatus> {
         return this.map {
             //本地没有数据
             if (it) {
                 checkIpfsAndChainDigest(business)
                         .map {
                             //true ipfs数据和链上最新一致
-                            if (it) STATUS_DOWNLOAD else STATUS_RECERTIFICATION
+                            if (it) IpfsStatus.STATUS_DOWNLOAD else IpfsStatus.STATUS_RECERTIFICATION
                         }
                         .blockingGet()
             } else {//本地有数据
@@ -165,138 +176,15 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                     checkIpfsAndChainDigest(business)
                             .map {
                                 //true ipfs数据和链上最新一致
-                                if (it) STATUS_NEWEST else STATUS_UPLOAD
+                                if (it) IpfsStatus.STATUS_NEWEST else IpfsStatus.STATUS_UPLOAD
                             }
                             .blockingGet()
                 } else {
                     checkIpfsAndChainDigest(business)
                             .map {
                                 //true ipfs数据和链上最新一致
-                                if (it) STATUS_DOWNLOAD else STATUS_RECERTIFICATION
+                                if (it) IpfsStatus.STATUS_DOWNLOAD else IpfsStatus.STATUS_RECERTIFICATION
                             }.blockingGet()
-                }
-            }
-        }
-    }
-
-    private fun checkStatusTxt(status: Int): String {
-        return when (status) {
-            STATUS_DOWNLOAD -> "可下载"
-            STATUS_RECERTIFICATION -> "无可上传下载数据，建议重新认证"
-            STATUS_NEWEST -> "本地和云端数据均为最新数据"
-            STATUS_UPLOAD -> "可上传"
-            else -> "状态错误"
-        }
-    }
-
-    private fun updateIdItem() {
-        cloud_id_progress.visibility = View.INVISIBLE
-        with(viewMode) {
-            idsize.set(IDStatus == STATUS_UPLOAD)
-            idselected.set(IDStatus == STATUS_UPLOAD || IDStatus == STATUS_DOWNLOAD)
-            idaddress.set(IDStatus == STATUS_NEWEST)
-            idtag.set(if (IDStatus == STATUS_UPLOAD || IDStatus == STATUS_DOWNLOAD) R.drawable.my_cloud_tag_selector else R.drawable.cloud_item_noselected)
-            idstatus.set(checkStatusTxt(IDStatus))
-            idAddressEvent.observe(this@MyCloudActivity, Observer {
-                if (IDStatus == STATUS_NEWEST) {
-                    navigateTo(CloudAddressActivity::class.java) {
-                        putExtra("address", ID_Token)
-                    }
-                }
-            })
-        }
-
-        if (IDStatus == STATUS_UPLOAD) {
-            doAsync {
-                mBinder.createIdData { size ->
-                    uiThread {
-                        viewMode.idsizetxt.set(size)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun updateCmItem() {
-        cloud_cm_progress.visibility = View.INVISIBLE
-        with(viewMode) {
-            cmsize.set(CmStatus == STATUS_UPLOAD)
-            cmselected.set(CmStatus == STATUS_UPLOAD || CmStatus == STATUS_DOWNLOAD)
-            cmaddress.set(CmStatus == STATUS_NEWEST)
-            cmtag.set(if (CmStatus == STATUS_UPLOAD || CmStatus == STATUS_DOWNLOAD) R.drawable.my_cloud_tag_selector else R.drawable.cloud_item_noselected)
-            cmstatus.set(checkStatusTxt(CmStatus))
-            cmAddressEvent.observe(this@MyCloudActivity, Observer {
-                if (CmStatus == STATUS_NEWEST) {
-                    navigateTo(CloudAddressActivity::class.java) {
-                        putExtra("address", Cm_Token)
-                    }
-                }
-            })
-        }
-
-        if (CmStatus == STATUS_UPLOAD) {
-            doAsync {
-                mBinder.createCmData { size ->
-                    uiThread {
-                        viewMode.cmsizetxt.set(size)
-                    }
-                }
-            }
-        }
-    }
-
-
-    private fun updateTnItem() {
-        cloud_tn_progress.visibility = View.INVISIBLE
-        with(viewMode) {
-            tnsize.set(TnStatus == STATUS_UPLOAD)
-            tnselected.set(TnStatus == STATUS_UPLOAD || TnStatus == STATUS_DOWNLOAD)
-            tnaddress.set(TnStatus == STATUS_NEWEST)
-            tntag.set(if (TnStatus == STATUS_UPLOAD || TnStatus == STATUS_DOWNLOAD) R.drawable.my_cloud_tag_selector else R.drawable.cloud_item_noselected)
-            tnstatus.set(checkStatusTxt(TnStatus))
-            tnAddressEvent.observe(this@MyCloudActivity, Observer {
-                if (TnStatus == STATUS_NEWEST) {
-                    navigateTo(CloudAddressActivity::class.java) {
-                        putExtra("address", Tn_Token)
-                    }
-                }
-            })
-        }
-
-        if (TnStatus == STATUS_UPLOAD) {
-            doAsync {
-                mBinder.createTnData { size ->
-                    uiThread {
-                        viewMode.tnsizetxt.set(size)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun updateBankItem() {
-        cloud_bank_progress.visibility = View.INVISIBLE
-        with(viewMode) {
-            banksize.set(BankStatus == STATUS_UPLOAD)
-            bankselected.set(BankStatus == STATUS_UPLOAD || BankStatus == STATUS_DOWNLOAD)
-            bankaddress.set(BankStatus == STATUS_NEWEST)
-            banktag.set(if (BankStatus == STATUS_UPLOAD || BankStatus == STATUS_DOWNLOAD) R.drawable.my_cloud_tag_selector else R.drawable.cloud_item_noselected)
-            bankstatus.set(checkStatusTxt(BankStatus))
-            bankAddressEvent.observe(this@MyCloudActivity, Observer {
-                if (BankStatus == STATUS_NEWEST) {
-                    navigateTo(CloudAddressActivity::class.java) {
-                        putExtra("address", Bank_Token)
-                    }
-                }
-            })
-        }
-
-        if (BankStatus == STATUS_UPLOAD) {
-            doAsync {
-                mBinder.createBankData { size ->
-                    uiThread {
-                        viewMode.banksizetxt.set(size)
-                    }
                 }
             }
         }
@@ -349,18 +237,19 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
     }
 
 
-    private fun updateStatus(business: String, status: String) {
+    private fun updateStatus(business: String, status: EventType) {
         when (business) {
             ChainGateway.BUSINESS_ID -> {
-                cloud_id_selected.text = status
+                binding.asIdVm!!.event.set(status)
             }
             ChainGateway.BUSINESS_BANK_CARD -> {
-                cloud_bank_selected.text = status
+                binding.asBankVm!!.event.set(status)
             }
             ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
-                cloud_cm_selected.text = status
+                binding.asCmVm!!.event.set(status)
             }
-            else -> {
+            ChainGateway.TN_COMMUNICATION_LOG -> {
+                binding.asCmTnVm!!.event.set(status)
             }
         }
     }
@@ -369,138 +258,102 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         certed()
         when (business) {
             ChainGateway.BUSINESS_ID -> {
-                cloud_id_selected.text = "已完成"
-                IDStatus = STATUS_DEFAULT
-                cloud_item_id.isClickable = false
-                isEnabled.remove(ID_ENTIFY_DATA)
-
                 val idCertPassed = CertOperations.isIdCertPassed()
                 Single.just(!idCertPassed)
                         .checkStatus(ChainGateway.BUSINESS_ID)
                         .io_main()
                         .subscribeBy {
-                            IDStatus = it
-                            updateIdItem()
+                            binding.asIdVm!!.state.set(it)
+                            binding.asIdVm!!.event.set(EventType.STATUS_COMPLETE)
                         }
             }
             ChainGateway.BUSINESS_BANK_CARD -> {
-                cloud_bank_selected.text = "已完成"
-                cloud_item_bank.isClickable = false
-                BankStatus = STATUS_DEFAULT
-                isEnabled.remove(BANK_CARD_DATA)
                 val bankCertPassed = CertOperations.isBankCertPassed()
                 Single.just(!bankCertPassed)
                         .checkStatus(ChainGateway.BUSINESS_BANK_CARD)
                         .io_main()
                         .subscribeBy {
-                            BankStatus = it
-                            updateBankItem()
+                            binding.asBankVm!!.state.set(it)
+                            binding.asBankVm!!.event.set(EventType.STATUS_COMPLETE)
                         }
             }
             ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
-                cloud_cm_selected.text = "已完成"
-                CmStatus = STATUS_DEFAULT
-                cloud_item_cm.isClickable = false
-                isEnabled.remove(PHONE_OPERATOR)
                 val status = CertOperations.getCmLogUserStatus()
-                Single.just(status != UserCertStatus.DONE)
-                        .checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG)
+                val cmStatus = status == UserCertStatus.DONE || status == UserCertStatus.TIMEOUT
+                Single.just(cmStatus)
+                        .checkStatus(ChainGateway.BUSINESS_BANK_CARD)
                         .io_main()
                         .subscribeBy {
-                            CmStatus = it
-                            updateCmItem()
+                            binding.asCmVm!!.state.set(it)
+                            binding.asCmVm!!.event.set(EventType.STATUS_COMPLETE)
                         }
             }
             ChainGateway.TN_COMMUNICATION_LOG -> {
-                cloud_tn_selected.text = "已完成"
-                TnStatus = STATUS_NEWEST
-                cloud_item_tn.isClickable = false
-                isEnabled.remove(TNDATA)
-                val status = worhavah.certs.tools.CertOperations.getTNLogUserStatus()
-                Single.just(status != UserCertStatus.DONE)
-                        .checkStatus(ChainGateway.TN_COMMUNICATION_LOG)
+                val tnstatus = worhavah.certs.tools.CertOperations.getTNLogUserStatus()
+                Single.just(tnstatus != worhavah.certs.tools.UserCertStatus.DONE)
+                        .checkStatus(ChainGateway.BUSINESS_BANK_CARD)
                         .io_main()
                         .subscribeBy {
-                            TnStatus = 4
-                            updateTnItem()
+                            binding.asCmTnVm!!.state.set(it)
+                            binding.asCmTnVm!!.event.set(EventType.STATUS_COMPLETE)
                         }
             }
         }
     }
 
     private fun initClick() {
-        cloud_question.onClick {
-            CloudstorageDialog(this).createTipsDialog()
-        }
-        cloud_update.onClick {
-            navigateTo(ResetPasswordActivity::class.java)
-        }
-        cloud_sync.onClick {
-            cloud_sync.isEnabled = false
-            if (cloud_item_id.isSelected) {
-                cloud_item_id.isEnabled = false
-                if (IDStatus == STATUS_UPLOAD) {
-                    uploadData(ChainGateway.BUSINESS_ID, ID_ENTIFY_DATA)
-                } else if (IDStatus == STATUS_DOWNLOAD) {
-                    downLoadData(ChainGateway.BUSINESS_ID, ID_ENTIFY_DATA)
+        binding.vm!!.run {
+            tipsCall.observe(this@MyCloudActivity, Observer {
+                CloudstorageDialog(this@MyCloudActivity).createTipsDialog()
+            })
+            resetCall.observe(this@MyCloudActivity, Observer {
+                navigateTo(ResetPasswordActivity::class.java)
+            })
+            syncCall.observe(this@MyCloudActivity, Observer {
+                binding.run {
+                    asIdVm!!.checkAction(ChainGateway.BUSINESS_ID, ID_ENTIFY_DATA)
+                    asBankVm!!.checkAction(ChainGateway.BUSINESS_BANK_CARD, BANK_CARD_DATA)
+                    asCmVm!!.checkAction(ChainGateway.BUSINESS_COMMUNICATION_LOG, PHONE_OPERATOR)
+                    asCmTnVm!!.checkAction(ChainGateway.TN_COMMUNICATION_LOG, TNDATA)
                 }
-            }
+                sync()
+            })
+        }
 
-            if (cloud_item_bank.isSelected) {
-                cloud_item_bank.isEnabled = false
-                if (BankStatus == STATUS_UPLOAD) {
-                    uploadData(ChainGateway.BUSINESS_BANK_CARD, BANK_CARD_DATA)
-                } else if (BankStatus == STATUS_DOWNLOAD) {
-                    downLoadData(ChainGateway.BUSINESS_BANK_CARD, BANK_CARD_DATA)
+        binding.asIdVm!!.setEnent { ID_Token }
+        binding.asBankVm!!.setEnent { Bank_Token }
+        binding.asCmVm!!.setEnent { Cm_Token }
+        binding.asCmTnVm!!.setEnent { Tn_Token }
+    }
+
+    private fun CloudItemVm.setEnent(token: () -> String) {
+        this.run {
+            itemCall.observe(this@MyCloudActivity, Observer { sync() })
+            addressCall.observe(this@MyCloudActivity, Observer {
+                navigateTo(CloudAddressActivity::class.java) {
+                    putExtra("address", token())
                 }
-            }
-
-            if (cloud_item_cm.isSelected) {
-                cloud_item_cm.isEnabled = false
-                if (CmStatus == STATUS_UPLOAD) {
-                    uploadData(ChainGateway.BUSINESS_COMMUNICATION_LOG, PHONE_OPERATOR)
-                } else if (CmStatus == STATUS_DOWNLOAD) {
-                    downLoadData(ChainGateway.BUSINESS_COMMUNICATION_LOG, PHONE_OPERATOR)
-                }
-            }
-            if (cloud_item_tn.isSelected) {
-                cloud_item_tn.isEnabled = false
-                if (TnStatus == STATUS_UPLOAD) {
-                    uploadData(ChainGateway.TN_COMMUNICATION_LOG, TNDATA)
-                } else if (TnStatus == STATUS_DOWNLOAD) {
-                    downLoadData(ChainGateway.TN_COMMUNICATION_LOG, TNDATA)
-                }
-            }
+            })
         }
+    }
 
-        fun clickEvent(layout: ConstraintLayout, txt: TextView, data: String, status: Int) {
-            if (layout.isSelected) {
-                txt.text = "未选中"
-                isEnabled.remove(data)
-            } else if (!layout.isSelected && status == STATUS_UPLOAD) {
-                txt.text = "等待上传"
-                isEnabled.add(data)
-            } else if (!layout.isSelected && status == STATUS_DOWNLOAD) {
-                txt.text = "等待下载"
-                isEnabled.add(data)
-            }
-            layout.isSelected = !layout.isSelected
-            updateSyncStatus()
+    private fun sync() {
+        if (binding.asIdVm!!.checkSync() || binding.asBankVm!!.checkSync() || binding.asCmVm!!.checkSync() || binding.asCmTnVm!!.checkSync()) {
+            binding.vm!!.isEnable.set(true)
+        } else {
+            binding.vm!!.isEnable.set(false)
         }
+    }
 
-        cloud_item_id.onClick {
-            clickEvent(cloud_item_id, cloud_id_selected, ID_ENTIFY_DATA, IDStatus)
-        }
+    private fun CloudItemVm.checkSync(): Boolean {
+        return action.get() == ActionType.STATUS_SELECT && event.get() == EventType.STATUS_DEFAULT
+    }
 
-        cloud_item_bank.onClick {
-            clickEvent(cloud_item_bank, cloud_bank_selected, BANK_CARD_DATA, BankStatus)
-        }
-
-        cloud_item_cm.onClick {
-            clickEvent(cloud_item_cm, cloud_cm_selected, PHONE_OPERATOR, CmStatus)
-        }
-        cloud_item_tn.onClick {
-            clickEvent(cloud_item_tn, cloud_tn_selected, TNDATA, TnStatus)
+    private fun CloudItemVm.checkAction(business: String, filename: String) {
+        if (action.get() == ActionType.STATUS_SELECT && state.get() == IpfsStatus.STATUS_DOWNLOAD) {
+            downLoadData(business, filename)
+        } else if (action.get() == ActionType.STATUS_SELECT && state.get() == IpfsStatus.STATUS_UPLOAD) {
+            uploadData(business, filename)
         }
     }
 
@@ -508,7 +361,9 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         mBinder.upload(business, filename,
                 status = this::updateStatus,
                 successful = this::successful,
-                onProgress = this::setProgress,
+                onProgress = { b, p ->
+                    setProgress(b, p, EventType.STATUS_UPLOADING)
+                },
                 onError = this::errorStatus)
     }
 
@@ -533,9 +388,10 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         mBinder.download(business, filename,
                 status = this::updateStatus,
                 onSuccess = this::successful,
-                onProgress = this::setProgress,
+                onProgress = { b, p ->
+                    setProgress(b, p, EventType.STATUS_DOWNLOADING)
+                },
                 onError = {
-                    Log(it.message)
                     if (it is DccChainServiceException) {
                         toast(it.message!!)
                     } else {
@@ -544,38 +400,37 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 })
     }
 
-    private fun setProgress(business: String, progress: Int) {
+    private fun setProgress(business: String, progress: Int, type: EventType) {
         when (business) {
             ChainGateway.BUSINESS_ID -> {
-                cloud_id_progress.visibility = View.VISIBLE
-                cloud_id_progress.progress = progress
+                binding.asIdVm!!.run {
+                    this.progress.set(progress)
+                    event.set(type)
+                }
             }
             ChainGateway.BUSINESS_BANK_CARD -> {
-                cloud_bank_progress.visibility = View.VISIBLE
-                cloud_bank_progress.progress = progress
+                binding.asBankVm!!.run {
+                    this.progress.set(progress)
+                    event.set(type)
+                }
             }
             ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
-                cloud_cm_progress.visibility = View.VISIBLE
-                cloud_cm_progress.progress = progress
+                binding.asCmVm!!.run {
+                    this.progress.set(progress)
+                    event.set(type)
+                }
             }
             ChainGateway.TN_COMMUNICATION_LOG -> {
-                cloud_tn_progress.visibility = View.VISIBLE
-                cloud_tn_progress.progress = progress
+                binding.asCmTnVm!!.run {
+                    this.progress.set(progress)
+                    event.set(type)
+                }
             }
         }
     }
 
-    private fun updateSyncStatus() {
-        cloud_sync.isEnabled = isEnabled.size > 0
-    }
 
     companion object {
-        private const val STATUS_DEFAULT = 0
-        private const val STATUS_UPLOAD = 1
-        private const val STATUS_RECERTIFICATION = 2
-        private const val STATUS_DOWNLOAD = 3
-        private const val STATUS_NEWEST = 4
-
         const val ID_ENTIFY_DATA = "identifyData"
         const val BANK_CARD_DATA = "bankCardData"
         const val PHONE_OPERATOR = "phoneOperator"
