@@ -396,12 +396,7 @@ object ScfOperations {
                             )
                             .map {
                                 if (it.isSuccessful) {
-                                    val result = it.body()!!
-                                    if (result.isSuccess) {
-                                        val token = it.headers()[ScfApi.HEADER_TOKEN]!!
-                                        App.get().scfTokenManager.scfToken = token
-                                    }
-                                    result
+                                    it.body()!!
                                 } else {
                                     throw HttpException(it)
                                 }
