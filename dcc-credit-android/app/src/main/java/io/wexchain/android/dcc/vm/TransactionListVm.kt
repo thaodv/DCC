@@ -9,13 +9,17 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
+import io.reactivex.internal.operators.single.SingleToFlowable
+import io.reactivex.rxkotlin.toFlowable
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.common.filter
 import io.wexchain.android.common.observing
 import io.wexchain.android.common.zipLiveData
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.tools.AutoLoadLiveData
+import io.wexchain.android.dcc.tools.AutoLoadLiveDatawithError
 import io.wexchain.digitalwallet.Chain
+import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.ipfs.utils.doMain
@@ -52,25 +56,92 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
                     historyfilter()
                  // startFetchPendingList()
              }.subscribe()*/
+       // ethhistory.reload()
+
+      //  FiltPending()
+    }
+
+    private fun FiltPending() {
+        if(dc.chain != Chain.publicEthChain){
+            return
+        }
+        val addr = address
+        assetsRepository.getDigitalCurrencyAgent( Currencies.Ethereum)
+            .listTransactionsOf(addr, 0, 5)
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                if (it != null && !it.isEmpty()) {
+                    for (i in it) {
+                        assetsRepository.removePendingTx(i.txId, i.nonce)
+                    }
+                }
+            },{
+                it.printStackTrace()
+            })
+
+          //  .toFlowable()
     }
 
     private var pv: List<EthsTransaction>? = null
 
     private var hol: List<EthsTransaction>? = null
 
-    private val history = AutoLoadLiveData<List<EthsTransaction>> {
+    private val history = AutoLoadLiveDatawithError<List<EthsTransaction>> {
         val addr = address
+        var hl= emptyList<EthsTransaction>()
+
+
         assetsRepository.getDigitalCurrencyAgent(dc)
                 .listTransactionsOf(addr, 0, Long.MAX_VALUE)
                 .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
+         /*   .subscribe({
+                hol = it
+                pv = pending.value
+                hl=it.toMutableList()
+            },{
+                hol = emptyList()
+                pv = pending.value
+            })*/
                 .doOnSuccess {
                     hol = it
                     pv = pending.value
-                    //Log.e("sssssssssssssss","addr")
-                    //  historyfilter()
-                    // startFetchPendingList()
+                    hl=it
+
                 }
-                .toFlowable()
+            .doOnError {
+                hol = emptyList()
+                pv = pending.value
+                hl= emptyList<EthsTransaction>()
+            }
+
+         /*   .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                hl
+                hl
+
+            }.toFlowable()*/
+                  .toFlowable()
+
+
+
+  //      SingleToFlowable<List<EthsTransaction>>(Single.just(hl))
+    }
+
+
+    private val ethhistory = AutoLoadLiveData<List<EthsTransaction>> {
+        val addr = address
+        assetsRepository.getDigitalCurrencyAgent( Currencies.Ethereum)
+            .listTransactionsOf(addr, 0, 5)
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess {
+                if (it != null && !it.isEmpty()) {
+                    for (i in it) {
+                        assetsRepository.removePendingTx(i.txId, i.nonce)
+                    }
+                }
+            }
+            .toFlowable()
     }
 
 
@@ -229,7 +300,7 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
         //Log.e("sssssssssssssss","list "+h.size+pp.size)
         historyfilter()
 
-        if (h != null && !h.isEmpty()) {
+        if (h != null ) {
             for (i in h) {
                 assetsRepository.removePendingTx(i.txId, i.nonce)
                 pp = pp.filter { !it.txId.equals(i.txId) }.toMutableList()
@@ -237,8 +308,11 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
                      pp.removeAt(0)
                  }*/
             }
+            pp + h
+        }else{
+            pp
         }
-        pp + h
+
     }
 
 

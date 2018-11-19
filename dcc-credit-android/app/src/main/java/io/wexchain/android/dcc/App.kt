@@ -126,7 +126,8 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         val b = NodeBean(2, "https://ethrpc2.wexfin.com:58545/", "  以太坊节点-中国北京")
         val c = NodeBean(3, "https://ethrpc3.wexfin.com:58545/", "  以太坊节点-美国加州")
         val d = NodeBean(4, "https://ethrpc4.wexfin.com:58545/", "  以太坊节点-美国马萨诸塞州")
-        nodeList = listOf(a, b, c, d)
+        //nodeList = listOf(a, b, c, d)
+        nodeList = listOf(a, b, c)
     }
 
     private fun initRxDownload() {
@@ -223,7 +224,11 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 //            val customPublicJsonRpc = networking.createApi(EthJsonRpcApi::class.java, EthJsonRpcApi.PUBLIC_RPC_URL).getPrepared()
 //            publicRpc = EthsRpcAgent.by(customPublicJsonRpc)
 
-            val base = ShareUtils.getString(Extras.SP_SELECTED_NODE, nodeList[0].url)
+            var base = ShareUtils.getString(Extras.SP_SELECTED_NODE, nodeList[0].url)
+
+            if (base == "https://ethrpc4.wexfin.com:58545/") {
+                base = nodeList[0].url
+            }
 
             val wfJsonRpc = networking.createApi(EthJsonRpcApiWithAuth::class.java, base)
             publicRpc = EthsRpcAgent.by(wfJsonRpc)
