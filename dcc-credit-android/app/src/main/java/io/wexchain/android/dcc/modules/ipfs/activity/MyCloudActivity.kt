@@ -258,44 +258,44 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         certed()
         when (business) {
             ChainGateway.BUSINESS_ID -> {
+                binding.asIdVm!!.event.set(EventType.STATUS_COMPLETE)
                 val idCertPassed = CertOperations.isIdCertPassed()
                 Single.just(!idCertPassed)
                         .checkStatus(ChainGateway.BUSINESS_ID)
                         .io_main()
                         .subscribeBy {
                             binding.asIdVm!!.state.set(it)
-                            binding.asIdVm!!.event.set(EventType.STATUS_COMPLETE)
                         }
             }
             ChainGateway.BUSINESS_BANK_CARD -> {
+                binding.asBankVm!!.event.set(EventType.STATUS_COMPLETE)
                 val bankCertPassed = CertOperations.isBankCertPassed()
                 Single.just(!bankCertPassed)
                         .checkStatus(ChainGateway.BUSINESS_BANK_CARD)
                         .io_main()
                         .subscribeBy {
                             binding.asBankVm!!.state.set(it)
-                            binding.asBankVm!!.event.set(EventType.STATUS_COMPLETE)
                         }
             }
             ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
+                binding.asCmVm!!.event.set(EventType.STATUS_COMPLETE)
                 val status = CertOperations.getCmLogUserStatus()
                 val cmStatus = status == UserCertStatus.DONE || status == UserCertStatus.TIMEOUT
                 Single.just(cmStatus)
-                        .checkStatus(ChainGateway.BUSINESS_BANK_CARD)
+                        .checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG)
                         .io_main()
                         .subscribeBy {
                             binding.asCmVm!!.state.set(it)
-                            binding.asCmVm!!.event.set(EventType.STATUS_COMPLETE)
                         }
             }
             ChainGateway.TN_COMMUNICATION_LOG -> {
+                binding.asCmTnVm!!.event.set(EventType.STATUS_COMPLETE)
                 val tnstatus = worhavah.certs.tools.CertOperations.getTNLogUserStatus()
                 Single.just(tnstatus != worhavah.certs.tools.UserCertStatus.DONE)
-                        .checkStatus(ChainGateway.BUSINESS_BANK_CARD)
+                        .checkStatus(ChainGateway.TN_COMMUNICATION_LOG)
                         .io_main()
                         .subscribeBy {
                             binding.asCmTnVm!!.state.set(it)
-                            binding.asCmTnVm!!.event.set(EventType.STATUS_COMPLETE)
                         }
             }
         }
