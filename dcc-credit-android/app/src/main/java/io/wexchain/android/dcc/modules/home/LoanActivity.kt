@@ -28,21 +28,21 @@ import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback
 import io.wexchain.android.dcc.vm.ViewModelHelper.loanPeriodText
 import io.wexchain.android.dcc.vm.ViewModelHelper.loanStatusText
 import io.wexchain.dcc.R
-import io.wexchain.dcc.databinding.ActivityLoan2Binding
+import io.wexchain.dcc.databinding.ActivityLoanBinding
 import io.wexchain.dcc.databinding.ItemLoanProductBinding
 import io.wexchain.dccchainservice.domain.LoanProduct
 import io.wexchain.dccchainservice.domain.LoanRecord
 import io.wexchain.dccchainservice.domain.LoanRecordSummary
 import io.wexchain.ipfs.utils.io_main
-import kotlinx.android.synthetic.main.activity_loan2.*
+import kotlinx.android.synthetic.main.activity_loan.*
 
 /**
  *Created by liuyang on 2018/9/21.
  */
-class LoanActivity : BindActivity<ActivityLoan2Binding>() {
+class LoanActivity : BindActivity<ActivityLoanBinding>() {
 
     override val contentLayoutId: Int
-        get() = R.layout.activity_loan2
+        get() = R.layout.activity_loan
 
     private val adapter = Adapter(this::onItemClick)
 

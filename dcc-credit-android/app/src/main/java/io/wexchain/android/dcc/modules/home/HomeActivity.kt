@@ -29,7 +29,7 @@ import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
-import kotlinx.android.synthetic.main.activity_home2.*
+import kotlinx.android.synthetic.main.activity_home.*
 import org.jetbrains.anko.doAsync
 import worhavah.regloginlib.tools.checkonMain
 import zlc.season.rxdownload3.core.Mission
@@ -43,7 +43,7 @@ class HomeActivity : BaseCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home2)
+        setContentView(R.layout.activity_home)
         initView()
         replaceFragment(FindFragment.getInstance(intent.getStringExtra("data")))
         initEvent()
