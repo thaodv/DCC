@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:paddingTop="10dp"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="io.wexchain.android.dcc.modules.home.vm.LoanHeaderVm" />
+    </data>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cv_header"
+        visibleOrGone="@{vm.isShow}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:background="@drawable/loan_header_bg"
+        android:onClick="@{(v)->vm.orderClick()}"
         android:paddingBottom="10dp"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/tv_title"
@@ -32,6 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:background="@drawable/background_loan"
+            android:onClick="@{(v)->vm.moreOrder()}"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="更多订单"
@@ -67,11 +76,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="1000005421"
+            android:text="@{vm.orderNum}"
             android:textColor="#fff"
             android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="@id/tv_order_id"
-            app:layout_constraintTop_toBottomOf="@id/tv_order_id" />
+            app:layout_constraintTop_toBottomOf="@id/tv_order_id"
+            tools:text="123456" />
 
         <TextView
             android:id="@+id/tv_money_num"
@@ -89,11 +99,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="1000005421"
+            android:text="@{vm.loanNum}"
             android:textColor="#fff"
             android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="@id/tv_money_num"
-            app:layout_constraintTop_toBottomOf="@id/tv_money_num" />
+            app:layout_constraintTop_toBottomOf="@id/tv_money_num"
+            tools:text="123456" />
 
         <TextView
             android:id="@+id/tv_time_stamp"
@@ -111,11 +122,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="1000005421"
+            android:text="@{vm.loanTime}"
             android:textColor="#fff"
             android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="@id/tv_time_stamp"
-            app:layout_constraintTop_toBottomOf="@id/tv_time_stamp" />
+            app:layout_constraintTop_toBottomOf="@id/tv_time_stamp"
+            tools:text="2018" />
 
         <TextView
             android:id="@+id/tv_currency_type"
@@ -135,11 +147,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="DCC"
+            android:text="@{vm.currency}"
             android:textColor="#fff"
             android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="@id/tv_currency_type"
-            app:layout_constraintTop_toBottomOf="@id/tv_currency_type" />
+            app:layout_constraintTop_toBottomOf="@id/tv_currency_type"
+            tools:text="DCC" />
 
         <TextView
             android:id="@+id/tv_repay_num"
@@ -157,11 +170,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="10005Dcc"
+            android:text="@{vm.repay}"
             android:textColor="#fff"
             android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="@id/tv_repay_num"
-            app:layout_constraintTop_toBottomOf="@id/tv_repay_num" />
+            app:layout_constraintTop_toBottomOf="@id/tv_repay_num"
+            tools:text="10005Dcc" />
 
         <TextView
             android:id="@+id/tv_status_is"
@@ -179,26 +193,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="审核中"
+            android:text="@{vm.status}"
             android:textColor="#fff"
             android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="@id/tv_status_is"
-            app:layout_constraintTop_toBottomOf="@id/tv_status_is" />
+            app:layout_constraintTop_toBottomOf="@id/tv_status_is"
+            tools:text="审核中" />
 
     </android.support.constraint.ConstraintLayout>
 
+</layout>
 
-    <TextView
-        android:id="@+id/mine_title"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:text="热门币种"
-        android:textColor="#000"
-        android:textSize="17sp"
-        app:layout_constraintTop_toBottomOf="@id/cv_header" />
-
-
-</android.support.constraint.ConstraintLayout>
 

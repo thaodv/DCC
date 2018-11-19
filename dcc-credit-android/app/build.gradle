@@ -146,6 +146,9 @@ kapt {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
     kapt "com.android.databinding:compiler:$android_gradle_plugin_version"
@@ -181,11 +184,6 @@ dependencies {
     implementation project(':barcode')
     implementation project(':localprotect')
     implementation project(':tllibrary')
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation 'com.alibaba:fastjson:1.2.49'
-    implementation 'com.jcodecraeer:xrecyclerview:1.5.9'
     implementation project(':idcardlib')
     implementation project(':ipfslib')
     implementation project(':certs')
