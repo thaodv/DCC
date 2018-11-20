@@ -103,11 +103,6 @@
         <item name="android:textColor">@color/text_dark</item>
     </style>
 
-    <style name="TextAppearance.AppCompat.DccMainTitle">
-        <item name="android:textSize">@dimen/text_size_large</item>
-        <item name="android:textColor">@color/text_dark</item>
-    </style>
-
     <style name="TextAppearance.AppCompat.DccSupplementary">
         <item name="android:textSize">@dimen/text_size_supplementary</item>
         <item name="android:textColor">@color/text_gray</item>
@@ -122,11 +117,6 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/divider_stroke_width</item>
         <item name="android:background">@color/light_gray_alpha</item>
-    </style>
-
-    <style name="DividerMarginHorizontal" parent="DividerHorizontal">
-        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
-        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
     </style>
 
     <style name="DividerVertical">
@@ -167,10 +157,6 @@
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
 
-    <style name="DccLightTheme.App.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
-    <style name="DccLightTheme.App.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
     <style name="BadgeText" parent="TextAppearance.AppCompat.Body2">
         <item name="android:textSize">@dimen/badge_text_size</item>
         <item name="android:includeFontPadding">false</item>
@@ -181,6 +167,15 @@
         <item name="android:paddingBottom">@dimen/badge_height_padding</item>
         <item name="android:paddingTop">@dimen/badge_height_padding</item>
         <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="translucent">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationDcc</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
     </style>
 
 

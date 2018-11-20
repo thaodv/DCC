@@ -7,17 +7,6 @@
     </style>
 
 
-    <style name="DialogTheme_NoBackground" parent="android:style/Theme.Dialog">
-        <item name="android:background">@color/whitetrans</item>
-        <item name="android:windowBackground">@color/whitetrans</item> <!--背景透明-->
-        <item name="android:windowNoTitle">true</item> <!--无标题-->
-        <item name="android:windowFullscreen">false</item> <!--全屏-->
-        <item name="android:windowContentOverlay">@null</item> <!--定义contentoverlay的背景-->
-        <item name="android:windowIsTranslucent">true</item> <!--半透明-->
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:backgroundDimEnabled">true</item>
-    </style>
-
     <style name="deleteAddressBookDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsTranslucent">true</item>

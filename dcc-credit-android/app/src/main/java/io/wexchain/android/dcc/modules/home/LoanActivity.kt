@@ -1,21 +1,18 @@
 package io.wexchain.android.dcc.modules.home
 
+import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
+import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.LoanProductDetailActivity
-import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.repay.LoanRecordDetailActivity
@@ -28,34 +25,30 @@ import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback
 import io.wexchain.android.dcc.vm.ViewModelHelper.loanPeriodText
 import io.wexchain.android.dcc.vm.ViewModelHelper.loanStatusText
 import io.wexchain.dcc.R
-import io.wexchain.dcc.databinding.ActivityLoan2Binding
+import io.wexchain.dcc.databinding.ActivityLoanBinding
 import io.wexchain.dcc.databinding.ItemLoanProductBinding
 import io.wexchain.dccchainservice.domain.LoanProduct
 import io.wexchain.dccchainservice.domain.LoanRecord
 import io.wexchain.dccchainservice.domain.LoanRecordSummary
 import io.wexchain.ipfs.utils.io_main
-import kotlinx.android.synthetic.main.activity_loan2.*
+import kotlinx.android.synthetic.main.activity_loan.*
 
 /**
  *Created by liuyang on 2018/9/21.
  */
-class LoanActivity : BindActivity<ActivityLoan2Binding>() {
+class LoanActivity : BindActivity<ActivityLoanBinding>() {
 
     override val contentLayoutId: Int
-        get() = R.layout.activity_loan2
+        get() = R.layout.activity_loan
 
     private val adapter = Adapter(this::onItemClick)
 
     private fun onItemClick(i: Int, j: Int) {
-        adapter.getItemOnPos(i - 2).let {
+        adapter.getItemOnPos(i ).let {
             navigateTo(LoanProductDetailActivity::class.java) {
                 putExtra(Extras.EXTRA_LOAN_PRODUCT_ID, it.id)
             }
         }
-    }
-
-    private val header by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-        LayoutInflater.from(this).inflate(R.layout.loan_header, service_toot, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,15 +59,10 @@ class LoanActivity : BindActivity<ActivityLoan2Binding>() {
     }
 
     private fun initView() {
+        binding.header = getViewModel()
         adapter.lifecycleOwner = this
-        binding.rvList.run {
-            adapter = this@LoanActivity.adapter
-            layoutManager = LinearLayoutManager(this@LoanActivity)
-            setPullRefreshEnabled(false)
-            addHeaderView(header)
-        }
+        binding.rvList.adapter = this@LoanActivity.adapter
     }
-
 
     private fun loadData() {
         Singles.zip(
@@ -97,34 +85,36 @@ class LoanActivity : BindActivity<ActivityLoan2Binding>() {
                 .io_main()
                 .subscribeBy {
                     val item = it.first
+                    adapter.setList(it.second)
                     if (item.first != null && item.second != null) {
                         showHeader(item.first!!, item.second!!)
                     }
-                    adapter.setList(it.second)
                 }
     }
 
     private fun showHeader(data: LoanRecordSummary, second: LoanRecord) {
-        header.findViewById<View>(R.id.cv_header).visibility = View.VISIBLE
-        header.findViewById<TextView>(R.id.tv_time).text = loanPeriodText(second)
+        binding.header!!.run {
+            isShow.set(true)
+            loanTime.set(loanPeriodText(second).toString())
+            loanNum.set(data.amount.toEngineeringString())
+            orderNum.set(data.orderId.toString())
+            status.set(loanStatusText(data.status).toString())
+            currency.set(data.currency?.symbol)
+            repay.set(if (second.expectLoanInterest == null || second.amount == null) {
+                "---"
+            } else {
+                second.amount.add(second.expectLoanInterest).toString()
+            })
 
-        header.findViewById<TextView>(R.id.tv_order).text = data.orderId.toString()
-        header.findViewById<TextView>(R.id.tv_money).text = data.amount.toEngineeringString()
-        header.findViewById<TextView>(R.id.tv_currency).text = data.currency?.symbol
-        header.findViewById<TextView>(R.id.tv_repay).text =
-                if (second.expectLoanInterest == null || second.amount == null) {
-                    "---"
-                } else {
-                    second.amount.add(second.expectLoanInterest).toString()
+            moreOrder.observe(this@LoanActivity, Observer {
+                navigateTo(LoanRecordsActivity::class.java)
+            })
+
+            orderClick.observe(this@LoanActivity, Observer {
+                navigateTo(LoanRecordDetailActivity::class.java) {
+                    putExtra(Extras.EXTRA_LOAN_RECORD_ID, data.orderId)
                 }
-        header.findViewById<TextView>(R.id.tv_status).text = loanStatusText(data.status)
-        header.findViewById<Button>(R.id.btn_more).onClick {
-            navigateTo(LoanRecordsActivity::class.java)
-        }
-        header.findViewById<View>(R.id.cv_header).onClick {
-            navigateTo(LoanRecordDetailActivity::class.java) {
-                putExtra(Extras.EXTRA_LOAN_RECORD_ID, data.orderId)
-            }
+            })
         }
     }
 

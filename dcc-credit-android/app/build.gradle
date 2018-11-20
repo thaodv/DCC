@@ -27,8 +27,8 @@ android {
             }
         }
 
-        buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_ID', '"wxb9733394b8133087"'
-        buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_KEY', '"3e6bb4bcbdee5c1089ca007d0dafe240"'
+        buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_ID', '"wx775da1e970b779e1"'
+        buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_KEY', '"b9b698d6e5f8c3d9276d3f31f925f987"'
     }
     signingConfigs {
         debug {
@@ -52,16 +52,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // debuggable true
 
-            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://gateway.wexpass.cn/passport-logic/"'
-            buildConfigField 'java.lang.String', 'CHAIN_FRONTEND_URL', '"http://cms.bitphare.com/chain-frontend/"'
+            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"https://gateway.bitphare.com/passport-logic/"'
+            buildConfigField 'java.lang.String', 'CHAIN_FRONTEND_URL', '"http://www.icohint.com/chain-frontend/"'
             buildConfigField 'java.lang.String', 'CHAIN_EXPLORER_URL', '"http://wexpass.cn/chain-observer/restful/"'
-            buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://gateway.wexpass.cn/chain-service-frontend/"'
-            buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://gateway.wexpass.cn/passport-gateway/restful/"'
-            buildConfigField 'java.lang.String', 'COIN_MARKET', '"http://gateway.wexpass.cn/chain-service-frontend/"'
+            buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"https://gateway.bitphare.com/chain-service-frontend/"'
+            buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"https://gateway.bitphare.com/passport-gateway/restful/"'
+            buildConfigField 'java.lang.String', 'COIN_MARKET', '"https://gateway.bitphare.com/chain-service-frontend/"'
             buildConfigField 'java.lang.String', 'PRVATE_ACCROSS_DETAIL_URL', '"http://explorer.dcc.finance/index.html#/block/hash/"'
             buildConfigField 'java.lang.String', 'PUBLIC_ACCROSS_DETAIL_URL', '"https://etherscan.io/tx/"'
-            buildConfigField 'java.lang.String', 'ACCROSS_DETAIL', '"http://explorer.dcc.finance/index.html#/block/hash/"'
-            buildConfigField 'java.lang.String', 'CONTRACT_BASE_URL', '"http://gateway.wexpass.cn/passport-gateway/restful/"'
+            buildConfigField 'java.lang.String', 'CONTRACT_BASE_URL', '"https://gateway.bitphare.com/passport-gateway/restful/"'
             buildConfigField 'java.lang.String', 'IPFS_ADDRESS', '"http://ipfs.dcc.finance:8000/api/v0/"'
         }
         debug {
@@ -81,7 +80,6 @@ android {
             buildConfigField 'java.lang.String', 'COIN_MARKET', '"http://10.65.178.50:9310/coin-market/"'
             buildConfigField 'java.lang.String', 'PRVATE_ACCROSS_DETAIL_URL', '"http://funcexplorer.dcc.finance/index.html#/block/hash/"'
             buildConfigField 'java.lang.String', 'PUBLIC_ACCROSS_DETAIL_URL', '"https://rinkeby.etherscan.io/tx/"'
-            buildConfigField 'java.lang.String', 'ACCROSS_DETAIL', '"http://funcexplorer.dcc.finance/index.html#/block/hash/"'
             buildConfigField 'java.lang.String', 'CONTRACT_BASE_URL', '"http://10.65.209.13:9511/passport-gateway/restful/"'
             buildConfigField 'java.lang.String', 'IPFS_ADDRESS', '"http://ipfs.dcc.finance:8000/api/v0/"'
         }
@@ -98,7 +96,6 @@ android {
             buildConfigField 'java.lang.String', 'PRVATE_ACCROSS_DETAIL_URL', '"http://funcexplorer.dcc.finance/index.html#/block/hash/"'
             buildConfigField 'java.lang.String', 'PUBLIC_ACCROSS_DETAIL_URL', '"https://rinkeby.etherscan.io/tx/"'
             buildConfigField 'java.lang.String', 'CONTRACT_BASE_URL', '"http://10.65.209.13:9511/passport-gateway/restful/"'
-            buildConfigField 'java.lang.String', 'ACCROSS_DETAIL', '"http://funcexplorer.dcc.finance/index.html#/block/hash/"'
             matchingFallbacks = ['debug']
         }
 
@@ -107,7 +104,6 @@ android {
             def buildType = it.buildType.name
             def fileName
             //下面的channel是获取渠道号，你获取渠道号不一定会和我的代码一样，因为有可能你的渠道名称的规则和我的不一样，我的规则是${渠道名}-${applicationId},所以我是这样取的。
-            def channel = "wor"//it.productFlavors[0].name.split("-")[0]
             //获取当前时间的"YYYY-MM-dd"格式。
             def createTime = new Date().format("MM-dd HH.mm.ss", TimeZone.getTimeZone("GMT+08:00"))
             //只对Release包起作用，如果不是Release包则不变更输出路径，否则可能导致AS无法自动安装debug包。
@@ -118,14 +114,13 @@ android {
                 //只对Release包起作用，如果不是Release包则不变更名称。
                 if (buildType == "release") {}
                 //我此处的命名规则是：渠道名_项目名_版本名_创建时间_构建类型.apk
-                fileName = "${channel}_BE_v${defaultConfig.versionName}_${createTime}-${buildType}.apk"
+                fileName = "BE_v${defaultConfig.versionName}_${createTime}-${buildType}.apk"
                 //将名字打印出来，以便及时查看是否满意。
                 println "文件名：-----------------${fileName}"
                 //重新对apk命名。(适用于Gradle4.0以下版本)
                 //it.outputFile = new File(it.outputFile.parent, fileName)
                 //重新对apk命名。(适用于Gradle4.0（含）以上版本)如果你Gradle版本是4.0以下版本则将上面的一行代码放开并注释下面的这一行。
                 it.outputFileName = fileName
-
             }
         }
     }
@@ -151,6 +146,9 @@ kapt {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
     kapt "com.android.databinding:compiler:$android_gradle_plugin_version"
@@ -186,11 +184,6 @@ dependencies {
     implementation project(':barcode')
     implementation project(':localprotect')
     implementation project(':tllibrary')
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation 'com.alibaba:fastjson:1.2.49'
-    implementation 'com.jcodecraeer:xrecyclerview:1.5.9'
     implementation project(':idcardlib')
     implementation project(':ipfslib')
     implementation project(':certs')

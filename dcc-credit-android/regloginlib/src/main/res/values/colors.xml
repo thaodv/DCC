@@ -8,9 +8,6 @@
 
     <color name="blue_magenta_loading">#53368a</color>
     <color name="purple">#ad6dfd</color>
-    <color name="purplebg">#9038d8</color>
-    <color name="fontpurple">#BA4CDB</color>
-    <color name="fontblack">#4A4A4A</color>
 
     <color name="colorPrimary">@color/white</color>
     <color name="colorPrimaryDark">@color/white</color>

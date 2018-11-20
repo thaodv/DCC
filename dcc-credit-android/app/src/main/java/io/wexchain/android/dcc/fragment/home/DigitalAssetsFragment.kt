@@ -8,11 +8,11 @@ import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.DccExchangeActivity
 import io.wexchain.android.dcc.DigitalCurrencyActivity
 import io.wexchain.android.dcc.SearchDigitalCurrencyActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
+import io.wexchain.android.dcc.modules.trans.activity.DccExchangeActivity
 import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
@@ -69,7 +69,6 @@ class DigitalAssetsFragment : BindFragment<ActivityDigitalAssetsBinding>(), Item
                         onError = {
                             binding.digitalSelectNode.setImageResource(R.drawable.img_node_red)
                         })
-
 
         val assetsVm = getViewModel<DigitalAssetsVm>()
         assetsVm.ensureHolderAddress(this)

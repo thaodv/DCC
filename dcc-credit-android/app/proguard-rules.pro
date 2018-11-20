@@ -128,10 +128,6 @@
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
 
-
-
-
-
 -keep class org.web3j.crypto.WalletFile{*;}
 -keep class org.web3j.crypto.WalletFile$*{*;}
 -keep,includedescriptorclasses class io.wexchain.android.dcc.domain.**{*;}

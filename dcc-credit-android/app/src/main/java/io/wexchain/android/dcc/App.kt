@@ -17,6 +17,7 @@ import io.wexchain.android.dcc.modules.selectnode.NodeBean
 import io.wexchain.android.dcc.network.CommonApi
 import io.wexchain.android.dcc.network.IpfsApi
 import io.wexchain.android.dcc.repo.AssetsRepository
+import io.wexchain.android.dcc.repo.GardenTokenManager
 import io.wexchain.android.dcc.repo.PassportRepository
 import io.wexchain.android.dcc.repo.ScfTokenManager
 import io.wexchain.android.dcc.repo.db.PassportDatabase
@@ -29,6 +30,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.WxApiManager
 import io.wexchain.dccchainservice.*
 import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.dccchainservice.domain.UserInfo
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
@@ -72,8 +74,11 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
     lateinit var passportRepository: PassportRepository
     lateinit var assetsRepository: AssetsRepository
     lateinit var scfTokenManager: ScfTokenManager
+    lateinit var gardenTokenManager: GardenTokenManager
 
     lateinit var nodeList: List<NodeBean>
+
+    var userInfo:UserInfo? = null
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
@@ -84,7 +89,6 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         super.onCreate()
         instance = WeakReference(this)
 
-
         val themeWrapper = ContextThemeWrapper(this, R.style.DccLightTheme_App)
         RxJavaPlugins.setErrorHandler {
             val ex = it.cause ?: it
@@ -93,6 +97,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
             }
             if (BuildConfig.DEBUG) it.printStackTrace()
         }
+
         initLibraries(this)
 
         initNode()
@@ -102,7 +107,6 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         initData(this)
         initIpfs()
         initcerts()
-
     }
 
     fun initcerts() {
@@ -121,7 +125,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         IpfsCore.init(baseUrl)
     }
 
-    fun initNode() {
+    private fun initNode() {
         val a = NodeBean(1, "https://ethrpc.wexfin.com:58545/", "  以太坊节点-中国上海")
         val b = NodeBean(2, "https://ethrpc2.wexfin.com:58545/", "  以太坊节点-中国北京")
         val c = NodeBean(3, "https://ethrpc3.wexfin.com:58545/", "  以太坊节点-美国加州")
@@ -130,11 +134,10 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         nodeList = listOf(a, b, c)
     }
 
-    private fun initRxDownload() {
+    fun initRxDownload() {
         val builder = DownloadConfig.Builder.create(this)
                 .enableAutoStart(true)
                 .enableDb(true)
-                .enableNotification(true)
 
         DownloadConfig.init(builder)
     }
@@ -193,6 +196,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         )
 
         scfTokenManager = ScfTokenManager(app)
+        gardenTokenManager = GardenTokenManager(app)
         CertOperations.init(app)
         JuzixData.init(app)
 

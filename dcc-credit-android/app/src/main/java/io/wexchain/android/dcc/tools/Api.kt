@@ -21,6 +21,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.math.BigInteger
 import java.security.MessageDigest
+import java.util.*
 
 /**
  *Created by liuyang on 2018/7/20.
@@ -136,7 +137,7 @@ fun View.onLongSaveImageToGallery(onError: (Throwable) -> Unit, onSuccess: (Stri
 }
 
 fun isRoot(): Boolean {
-    return  isRootSystem() || checkSuperuserApk()||CommonUtils.isRooted()
+    return isRootSystem() || checkSuperuserApk() || CommonUtils.isRooted()
 }
 
 fun isRootSystem(): Boolean {
@@ -154,13 +155,14 @@ fun isRootSystem(): Boolean {
     return false
 }
 
-fun checkSuperuserApk():Boolean{
+fun checkSuperuserApk(): Boolean {
     try {
-        val file =  File("/system/app/SuperSU/SuperSU.apk")
+        val file = File("/system/app/SuperSU/SuperSU.apk")
         if (file.exists()) {
             return true
         }
-    } catch (e:Exception ) { }
+    } catch (e: Exception) {
+    }
     return false
 }
 
@@ -172,6 +174,41 @@ fun checkXPosed(): Boolean {
     } catch (localThrowable: Throwable) {
         false
     }
+
+}
+
+fun Long.getTimeFormatText(): String {
+    val minute: Long = 60 * 1000
+    val hour: Long = 60 * minute
+    val day: Long = 24 * hour
+    val month: Long = 31 * day
+    val year: Long = 12 * month
+
+    val date = Date(this)
+
+    val diff = Date().time - date.time;
+    var r: Long = 0
+    if (diff > year) {
+        r = (diff / year)
+        return "$r 年前"
+    }
+    if (diff > month) {
+        r = (diff / month)
+        return "$r 个月前"
+    }
+    if (diff > day) {
+        r = (diff / day)
+        return "$r 天前"
+    }
+    if (diff > hour) {
+        r = (diff / hour)
+        return "$r 个小时前"
+    }
+    if (diff > minute) {
+        r = (diff / minute)
+        return "$r 分钟前"
+    }
+    return "刚刚"
 
 }
 

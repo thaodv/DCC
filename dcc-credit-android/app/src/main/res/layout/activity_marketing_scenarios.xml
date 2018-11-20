@@ -13,30 +13,6 @@
             android:id="@+id/toolbar"
             />
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.DccTitle"
-            android:text="活动内容简介"
-            android:visibility="gone"
-            />
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.DccSubTitle"
-            android:text="每身份证认证奖励仅可领取一次"
-            android:visibility="gone"
-            />
-
-    <ImageView
-            android:id="@+id/iv_banner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/content_padding_horizontal"
-            android:layout_marginRight="@dimen/content_padding_horizontal"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            />
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_list"

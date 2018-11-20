@@ -1,12 +1,11 @@
 package io.wexchain.android.dcc
 
 import android.os.Bundle
-import android.util.Log
-import com.alibaba.fastjson.JSON
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.domain.SaleInfo
 import io.wexchain.android.dcc.tools.BintApi
 import io.wexchain.android.dcc.tools.BytesUtils
+import io.wexchain.android.dcc.tools.toBean
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityMyInterestdetailBinding
 import io.wexchain.digitalwallet.Erc20Helper
@@ -53,7 +52,7 @@ class MyInterestDetailActivity : BindActivity<ActivityMyInterestdetailBinding>()
 
                     val df = DecimalFormat("###,###")
                     //开始格式化
-                 //   Log.e("lastAmount", "" + BytesUtils.encodeStringsimple(it.result))
+                    //   Log.e("lastAmount", "" + BytesUtils.encodeStringsimple(it.result))
 
                     binding.totalamountDCC = df.format(lastAmount)
                     exPro = (pRate * BigDecimal(lastAmount)).setScale(2, BigDecimal.ROUND_DOWN)//*BigDecimal(saleInfo.period)
@@ -79,7 +78,7 @@ class MyInterestDetailActivity : BindActivity<ActivityMyInterestdetailBinding>()
                 {
                     mystatu = BytesUtils.encodeStringstatu(it.result)
 
-               //     Log.e("getbiStatues", "" + mystatu)
+                    //     Log.e("getbiStatues", "" + mystatu)
                     setUI()
                 },
                 {
@@ -99,7 +98,7 @@ class MyInterestDetailActivity : BindActivity<ActivityMyInterestdetailBinding>()
         ).doMain().subscribe(
                 {
                     var ss = BytesUtils.encodeString(it.result)//.replace(" ","")
-                    saleInfo = JSON.parseObject(ss, SaleInfo::class.java)
+                    saleInfo = ss.toBean(SaleInfo::class.java)
 
                     binding.saleInfo = saleInfo
                 },

@@ -3,22 +3,15 @@
     <string name="loading">loading…</string>
     <string name="title_verify_sms_code">验证短信验证码</string>
     <string name="title_liveness_detection">人脸识别</string>
-    <string name="enable_passport_will_disable_other_warning">导入口袋成功后，其他设备统一登录功能将不可用</string>
     <string name="on_chain_dcc">\@Distributed Credit Chain</string>
     <string name="on_chain_ethereum">\@Ethereum</string>
     <string name="dcc">DCC</string>
-    <string name="_24h_high">24H High</string>
-    <string name="_24h_low">24H Low</string>
-    <string name="_24h_vol">24H Vol</string>
-    <string name="approx_capital">市值</string>
     <string name="time_format_yyyymmdd_hhmm">%1$tY-%1$tm-%1$td  %1$tH:%1$tM</string>
     <string name="time_format_yyyymmdd">%1$tY-%1$tm-%1$td</string>
     <string name="period_format_yyyymmdd_dot">%1$tY.%1$tm.%1$td-%2$tY.%2$tm.%2$td</string>
     <string name="time_format_yyyymmdd_hhmmss">%1$tY-%1$tm-%1$td  %1$tH:%1$tM:%1$tS</string>
     <string name="empty_slash">--</string>
     <string name="status_pending">待上链</string>
-    <string name="transaction_fee">矿工费用</string>
-    <string name="transaction_type_colon">订单信息:</string>
     <string name="gwei">Gwei</string>
     <string name="ftc_transfer_fee_hint">FTC转账手续费%1$s‰</string>
     <string name="receive_amount_colon">接收金额:</string>
@@ -29,20 +22,13 @@
     <string name="bitexpress">BitExpress</string>
     <string name="submit_new_token_title">如何提交新token给BitExpress?</string>
     <string name="token_submit_info_general">如果需要在钱包显示你的Token信息，请务必使用官方邮箱提供一下信息，发送至yimtoken1@163.com我们会有专人处理。</string>
-    <string name="app_introduction_description">BitExpress是基于Distributed Credit Chain发布的一款帮助用户解决去中心化场景中数字资产借贷问题的Dapp。需要借贷的用户在Dapp中将个人信息通过认证方认证后,用户可以将认证后的信息通过Dapp发送给数字资产出借方，出借方审核后，决定是否放款给需要借贷的用户。\n
-在BitExpress平台中借款方可以获得应急所需的数字资产，出借方可以获得出借本金及出借时间和金额所对应的利息。
-下面是我们的联系方式，如果您对我们感兴趣，寻求合作，业务咨询或发送简历等，欢迎与我们联系。\n
-邮箱 yimtoken1@163.com</string>
     <string name="common_service_error_toast">系统繁忙,请稍后重试</string>
     <string name="bitexpress_info_mail_address">yimtoken1@163.com</string>
     <string name="coming_soon">Coming soon</string>
     <string name="affiliate_description">总共可邀请5位好友加入BitEXPRESS，\n每邀请一位好友注册并实名后，\n您将获得额外奖励</string>
-    <string name="business_contact_2">出借代币\n商务咨询</string>
 
 
-    <string name="please_confirm_in">因转账确认需要时间，请在3分钟之后确认</string>
     <string name="confirm_repayment">确认还币</string>
-    <string name="click_the_button_below">②转币完成后点击下面的按钮完成还币</string>
     <string name="scan_the_qr">扫描二维码可获得还币地址</string>
     <string name="loan_submit_fee_colon">借款申请手续费:</string>
     <string name="repayment_date_colon">还币日期:</string>
@@ -54,15 +40,10 @@
     <string name="remarks">备注</string>
     <string name="transfer_amount">转账金额</string>
     <string name="transaction_record_detail">交易记录详情</string>
-    <string name="quote_source_colon">来源:%1$s</string>
     <string name="no_more">没有更多了</string>
     <string name="load_more">加载更多</string>
-    <string name="holding_amount">持有量</string>
     <string name="no_transaction_record_yet">未查询到该币种交易记录</string>
-    <string name="choose_picture_from_gallery">相册</string>
-    <string name="import_and_enable_passport">导入已有钱包</string>
     <string name="communication_log_submit_hint">温馨提示\n\n1、请使用本人实名制手机号进行认证\n2、服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3、点击“提交”按钮会收到运营商的通知短信，无需回复\n4、如忘记服务密码,请登录运营商官网找回服务密码</string>
-    <string name="buyinterest_log_submit_hint">温馨提示\n\n1、请使用本人实名制手机号进行认证\n2、服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3、点击“提交”按钮会收到运营商的通知短信，无需回复\n4、如忘记服务密码,请登录运营商官网找回服务密码</string>
     <string name="please_input_phone_num">请输入手机号</string>
     <string name="bank_registered_phone_num">银行预留手机号</string>
     <string name="please_input_bank_card_no">请输入银行卡号</string>
@@ -108,7 +89,6 @@
     <string name="please_paste_keystore">请粘贴KEYSTORE信息</string>
     <string name="please_set_passport_password">设置数字钱包密码</string>
     <string name="please_input_passport_password">验证数字钱包密码</string>
-    <string name="share">分享</string>
     <string name="verification">去实名</string>
     <string name="the_chain_of_dcc">\@DCC业务链\n DCC业务链上的token只能在DCC业务链钱包地址间进行互转，DCC业务链的钱包和以太坊的钱包是通用的，您以太坊的钱包地址同时也是DCC业务链的钱包地址。如您需要将DCC业务链上的token转移到以太坊主链上，请使用跨链转移功能。</string>
     <string name="transaction_status_colon">交易状态:</string>
@@ -136,7 +116,6 @@
     <string name="data_unavailable">暂无数据</string>
     <string name="scan_or_enterinput">扫码或输入钱包地址</string>
     <string name="address_book_informration">地址薄信息与钱包地址绑定，删除钱包地址或删除app将导致本地保存的地址薄信息丢失。请知悉！</string>
-    <string name="click_here_to_passport">点击这里备份钱包</string>
     <string name="description_remove_passport">如果您还没有对钱包进行过备份，删除钱包可能会导致您的数字资产永远无法找回，请您自行检查钱包备份。</string>
     <string name="remove_passport_description">删除钱包后，您只能通过导入钱包恢复当前钱包的使用。如果您未备份钱包，则无法继续使用当前钱包，如果未开启云存储功能，本地数据不会自动恢复。强烈建议您在删除钱包之前备份钱包，将数据备份到云。</string>
     <string name="title_remove_passport">删除钱包</string>
@@ -166,8 +145,6 @@
     <string name="status_disabled">状态</string>
     <string name="oauth_login_history">统一登录记录</string>
     <string name="no_more_records">没有更多记录了</string>
-    <string name="auth_management">统一登录管理</string>
-    <string name="auth_key_change_log">统一登录变更记录</string>
     <string name="disable_passport_login">禁用统一登录</string>
     <string name="enable_passport_login">启用统一登录</string>
     <string name="update_key">更新密钥</string>
@@ -254,7 +231,6 @@
     <string name="the_latest_update">更新报告</string>
     <string name="personal_information">个人基本信息</string>
     <string name="borrowers_name">借款人姓名:</string>
-    <string name="about_the_loan">借币信息</string>
     <string name="amount">借币金额</string>
     <string name="loan_issuerlender">放币机构</string>
     <string name="loan_issuerlender1">放币机构：</string>
@@ -339,8 +315,6 @@
     <string name="unsettled">未结清</string>
     <string name="settled">已结清</string>
     <string name="insufficient_balance_holding">持有量不足</string>
-    <string name="insufficient_balance">余额不足</string>
-    <string name="next_version_soon">该功能将在下个版本中开放</string>
     <string name="cross_chain_transfer">跨链转移</string>
     <string name="ongoing">进行中</string>
     <string name="unverify_nowied">未认证</string>
@@ -364,7 +338,6 @@
     <string name="carrier_information">运营商信息</string>
     <string name="to_address_book">转到地址簿</string>
     <string name="to_wallet_address">转到钱包地址</string>
-    <string name="amount2">金额</string>
     <string name="import_wallet">导入已有钱包</string>
     <string name="create_wallet">创建数字钱包</string>
     <string name="copy_private_key">请粘贴私钥明文</string>
@@ -388,7 +361,6 @@
     <string name="edit">编辑</string>
     <string name="delete">删除</string>
     <string name="edit_address">编辑地址</string>
-    <string name="modify_nikename">修改昵称</string>
     <string name="coin_received">已收币</string>
     <string name="your_order_has_been_processed">您的订单已处理完毕</string>
     <string name="started_on">开始时间:</string>
@@ -402,7 +374,6 @@
     <string name="verified">认证完成</string>
     <string name="per_day">日利率</string>
     <string name="principal">本金</string>
-    <string name="verification_to_be_completed">信用借币</string>
     <string name="handling_fee_of_loan1">借币手续费:  </string>
     <string name="verify">去认证</string>
     <string name="verified1">已认证</string>
@@ -436,12 +407,10 @@
     <string name="Maximum_absenteeism">最高旷工费</string>
 
     <string name="across_trans_warning_tip">温馨提示:</string>
-    <string name="across_trans_warning_tips1">预计<font color="#ED190F">1分钟内</font>到账\n<font color="#ED190F">结果返回前，请不要重复转移DCC</font></string>
-    <string name="across_trans_warning_tips2"><font color="#ED190F">结果返回前，请不要重复转移DCC</font>\n公链转私链的交易记录需要6个区块的生成时间进行确认。</string>
-    <string name="across_trans_warning_tips3">• 币生息只能使用私链上的DCC；\n• 通过跨链交易将公链上的DCC转移到私链上，即可购买币生息产品。<font color="#6766CC">公链转到私链 ></font></string>
+    <string name="across_trans_warning_tips2">\n公链转私链的交易记录需要6个区块的生成时间进行确认。</string>
+    <string name="across_trans_warning_tips3">• 币生息只能使用私链上的DCC；\n• 通过跨链交易将公链上的DCC转移到私链上，即可购买币生息产品。</string>
     <string name="trans_sure">交易确认</string>
     <string name="trans_orientation">交易方向：</string>
-    <string name="max_pay_money">最高支付金额：</string>
     <string name="order_money">订单金额：</string>
     <string name="max_absenteeism">最高矿工费：</string>
     <string name="holding_count">持有量：</string>
@@ -474,15 +443,11 @@
     <string name="ipfs_select_node_tip">说明：\n
 云端数据默认存储在Bit Express提供的节点，您也可以自己搭建节点，选择把数据存储在自建节点上。
         搭建节点教程可以访问 <u>https://open.dcc.finance/cn/sdk/ipfs.html</u></string>
-    <string name="service_bsx_title">多币种预计年化 <font color='#ff0000'>10%-40%</font></string>
+    <string name="service_bsx_title">多币种预计年化 </string>
 
-    <string name="bsx_buy_again">想再买点？去<font color='#7B40FF'>币生息</font>市场看看 ></string>
+    <string name="bsx_buy_again"><![CDATA[想再买点？去市场看看 >]]></string>
     <string name="passport_auth"><font color='#C009FF'>变更记录</font></string>
-    <string name="asset_auth"><font color='#C009FF'>资产授权</font></string>
-    <string name="asset_delete"><font color='#C009FF'>一键删除</font></string>
     <string name="skip_creat"><font color='#C009FF'>跳过</font></string>
     <string name="from_gallery"><font color='#C009FF'>相册</font></string>
-
-    <string name="tokenplus_tips">基于Linux环境搭建的量化交易系统，速度提升不止3倍\n无需自行购买服务器和配置交易软件，仅需注册账户，即可轻松套利\n每个用户独立服务器和IP，四重加密全面保障你的账户key安全\n遍布全球的服务器网络节点，优选离交易所最近节点，力争不错过每一次交易机会\n目前已支持国内前11大交易所，并持续增加中。</string>
 
 </resources>

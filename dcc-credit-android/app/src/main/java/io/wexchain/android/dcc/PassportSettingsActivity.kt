@@ -25,7 +25,7 @@ import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
 import worhavah.regloginlib.tools.checkonMain
-import io.wexchain.android.dcc.view.dialog.UpgradeDialog
+import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.fragment.CreateProtectFragment
@@ -183,7 +183,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
     }
 
     private fun showUpgradeDialog(it: CheckUpgrade) {
-        val dialog = UpgradeDialog(this)
+        val dialog = BaseDialog(this)
         if (it.mandatoryUpgrade) {
             dialog.createHomeDialog(it.version, it.updateLog)
                     .onClick {
@@ -222,7 +222,7 @@ class PassportSettingsActivity : BindActivity<ActivityPassportSettingsBinding>()
                 installApk(file)
             } else {
                 val mission = Mission(updateUrl, filename, savepath.absolutePath)
-                UpgradeDialog(this).crateDownloadDialog(mission)
+                BaseDialog(this).crateDownloadDialog(mission)
             }
         }
     }

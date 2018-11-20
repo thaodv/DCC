@@ -24,11 +24,6 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="DccLightTheme.App.Transparent.Loading">
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowBackground">@drawable/splash_window_bg</item>
-    </style>
-
     <style name="DccLightTheme.App.Transparent.Aff">
         <item name="android:windowBackground">@color/blue_magenta_loading</item>
         <item name="android:actionMenuTextColor">?android:attr/textColorPrimary</item>

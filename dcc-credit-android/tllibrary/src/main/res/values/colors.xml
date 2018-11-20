@@ -8,5 +8,5 @@
     <color name="colorPress">#013169 </color>
     <color name="colorGray">@android:color/darker_gray </color>
 
-    <color name="trans">#00000000</color>
+    <color name="trans">@android:color/transparent</color>
 </resources>

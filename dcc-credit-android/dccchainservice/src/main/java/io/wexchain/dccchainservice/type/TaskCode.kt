@@ -1,0 +1,24 @@
+package io.wexchain.dccchainservice.type
+
+/**
+ *Created by liuyang on 2018/11/12.
+ */
+enum class TaskCode {
+    ATTENDENCE,
+    INVITE_FRIEND,
+    LOAN_BIT,
+    REPAY_BIT,
+    BIND_WECHAT,
+    CREATE_WALLET,
+    OPEN_CLOUD_STORE,
+    ID,
+    BANK_CARD,
+    COMMUNICATION_LOG,
+    TN_COMMUNICATION_LOG,
+    BACKUP_ID,
+    BACKUP_BANK_CARD,
+    BACKUP_COMMUNICATION_LOG,
+    BACKUP_TN_COMMUNICATION_LOG,
+    BACKUP_WALLET,
+    INVITE_FRIEND_CREATE_WALLET
+}

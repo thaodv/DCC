@@ -41,6 +41,10 @@ object Extras {
     const val EXTRA_PAY_MONEY = "pay_money"
 
 
+
+
+
+    const val Searchain_BASE ="http://www.searchain.io"
     const val Searchain ="http://www.searchain.io/address?from=1000&address="
 
     const val SP_SELECTED_NODE_FILE = "select_node_file"

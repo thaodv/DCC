@@ -29,6 +29,7 @@ data class Result<out T>(
 
     companion object {
         const val SUCCESS = "SUCCESS"
+        const val WECHAT_HAD_BEEN_BOUND = "WECHAT_HAD_BEEN_BOUND"
 
         fun <T> checkedAllowingNull(whenNull: T): SingleTransformer<Result<T>, T> {
             return SingleTransformer { upstream ->
@@ -44,6 +45,19 @@ data class Result<out T>(
         }
 
         fun <T> checked(): SingleTransformer<Result<T>, T> {
+            return SingleTransformer { upstream ->
+                return@SingleTransformer upstream
+                        .flatMap { resp ->
+                            if (resp.isSuccess && resp.result != null) {
+                                return@flatMap Single.just(resp.result)
+                            } else {
+                                return@flatMap Single.error<T>(resp.asError())
+                            }
+                        }
+            }
+        }
+
+        fun <T> checkToken():SingleTransformer<Result<T>, T> {
             return SingleTransformer { upstream ->
                 return@SingleTransformer upstream
                         .flatMap { resp ->

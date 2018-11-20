@@ -23,7 +23,6 @@ import io.wexchain.ipfs.utils.io_main
 
 class SelectNodeActivity : BaseCompatActivity() {
 
-
     lateinit var grContent: RadioGroup
     lateinit var cb1: RadioButton
     lateinit var cb2: RadioButton
@@ -62,17 +61,17 @@ class SelectNodeActivity : BaseCompatActivity() {
         cb1 = findViewById(R.id.cb1)
         cb2 = findViewById(R.id.cb2)
         cb3 = findViewById(R.id.cb3)
-       // cb4 = findViewById(R.id.cb4)
+        //cb4 = findViewById(R.id.cb4)
 
         cb1.id = 0
         cb2.id = 1
         cb3.id = 2
-       // cb4.id = 3
+        //cb4.id = 3
 
         base1 = nodeList[0].url
         base2 = nodeList[1].url
         base3 = nodeList[2].url
-      //  base4 = nodeList[3].url
+        //base4 = nodeList[3].url
 
         initColor()
 
@@ -124,7 +123,7 @@ class SelectNodeActivity : BaseCompatActivity() {
             1 -> cb1.isChecked = true
             2 -> cb2.isChecked = true
             3 -> cb3.isChecked = true
-           // 4 -> cb4.isChecked = true
+            //4 -> cb4.isChecked = true
         }
 
         if (cb1.isChecked) {
@@ -136,12 +135,12 @@ class SelectNodeActivity : BaseCompatActivity() {
             text1 = ""
             text2 = "已连接"
             text3 = ""
-           // text4 = ""
+            //text4 = ""
         } else if (cb3.isChecked) {
             text1 = ""
             text2 = ""
             text3 = "已连接"
-           // text4 = ""
+            //text4 = ""
         } /*else if (cb4.isChecked) {
             text1 = ""
             text2 = ""
@@ -291,4 +290,5 @@ class SelectNodeActivity : BaseCompatActivity() {
         App.get().initData(App.get())
 
     }
+
 }
