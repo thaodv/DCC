@@ -19,7 +19,7 @@ import java.util.*
  */
 object TaskHelper {
 
-    private val expiredFormat = SimpleDateFormat("yyyy-mm-dd  HH:mm:ss", Locale.CHINA)
+    private val expiredFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss", Locale.CHINA)
 
     @JvmStatic
     fun expiredText(expired: Long?): String {

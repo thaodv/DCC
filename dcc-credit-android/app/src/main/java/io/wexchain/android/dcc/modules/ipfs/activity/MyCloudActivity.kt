@@ -159,7 +159,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         }
     }
 
-    fun Single<Boolean>.checkStatus(business: String): Single<IpfsStatus> {
+    private fun Single<Boolean>.checkStatus(business: String): Single<IpfsStatus> {
         return this.map {
             //本地没有数据
             if (it) {
@@ -190,7 +190,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         }
     }
 
-    fun checkIpfsAndChainDigest(business: String): Single<Boolean> {
+    private fun checkIpfsAndChainDigest(business: String): Single<Boolean> {
         return IpfsOperations.getIpfsToken(business)
                 .map {
                     if (it.result.toString() == "0x") {
@@ -403,25 +403,25 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
     private fun setProgress(business: String, progress: Int, type: EventType) {
         when (business) {
             ChainGateway.BUSINESS_ID -> {
-                binding.asIdVm!!.run {
+                binding.asIdVm!!.apply {
                     this.progress.set(progress)
                     event.set(type)
                 }
             }
             ChainGateway.BUSINESS_BANK_CARD -> {
-                binding.asBankVm!!.run {
+                binding.asBankVm!!.apply {
                     this.progress.set(progress)
                     event.set(type)
                 }
             }
             ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
-                binding.asCmVm!!.run {
+                binding.asCmVm!!.apply {
                     this.progress.set(progress)
                     event.set(type)
                 }
             }
             ChainGateway.TN_COMMUNICATION_LOG -> {
-                binding.asCmTnVm!!.run {
+                binding.asCmTnVm!!.apply {
                     this.progress.set(progress)
                     event.set(type)
                 }

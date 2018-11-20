@@ -170,7 +170,7 @@ object GardenOperations {
         error.check {
             val req = WXLaunchMiniProgram.Req()
             req.userName = "gh_0d13628f5e03"
-            req.path = "/pages/login/login?playid=$it"
+            req.path = "/pages/contest/contest?playid=$it"
             req.miniprogramType = WXLaunchMiniProgram.Req.MINIPROGRAM_TYPE_PREVIEW
             WxApiManager.wxapi.sendReq(req)
         }
