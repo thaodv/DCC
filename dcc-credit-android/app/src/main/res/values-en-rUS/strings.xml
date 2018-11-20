@@ -10,8 +10,6 @@
     <string name="status_disabled">OAuth login status: Unavailable</string>
     <string name="oauth_login_history">OAuth login history</string>
     <string name="no_more_records">No more records</string>
-    <string name="auth_management">OAuth login management</string>
-    <string name="auth_key_change_log">OAuth login change record</string>
     <string name="disable_passport_login">Disable OAuth login</string>
     <string name="enable_passport_login">Enable OAuth login</string>
     <string name="update_key">Update private key</string>
@@ -96,7 +94,6 @@
     <string name="the_latest_update">Update </string>
     <string name="personal_information">Personal information</string>
     <string name="borrowers_name">Borrowers name</string>
-    <string name="about_the_loan">About the loan</string>
     <string name="amount">Amount</string>
     <string name="loan_issuerlender">Loan issuerLender</string>
     <string name="loan_issuerlender1">Loan issuer:</string>
@@ -184,7 +181,6 @@
     <string name="remove_passport_description">After deleting the wallet, you can only import the wallet and re-enbale it. If you failed to back it updon’t have a backup, then there is no way to keep usingyou won’t be able to use the current wallet. It is strongly recommended to back it upup the wallet before you deletinge it.</string>
     <string name="back_up_wallet">Back up</string>
     <string name="description_remove_passport">If you have not backed your wallet up haven’t backed up your wallet, then deleting it could cause you never find your digital asset backyou may be unable to find your digital assets after deleting it., pPlease check and confirm if your wallet has been backed up.</string>
-    <string name="click_here_to_passport">Click here to back up walletwallet up</string>
     <string name="data_unavailable">Data unavailable</string>
     <string name="attentiontip">AttentionTip:</string>
     <string name="address_book_informration">Address book informration iswill be bindinglinked with the wallet address., the deletion of Deleting the wallet address or the app will lead to loss of the local address book saved locally. Please be noticed! </string>
@@ -206,10 +202,8 @@
     <string name="no_loan_record_available">No loan record available</string>
     <string name="unsettled">Unsettled</string>
     <string name="insufficient_balance_holding">Insufficient balance holding</string>
-    <string name="insufficient_balance">Insufficient balance</string>
     <string name="loan_issuance_failed">Loan issuance failed</string>
     <string name="creating_order">Creating order</string>
-    <string name="next_version_soon">Thise function will be available in next version soon</string>
     <string name="cross_chain_transfer">Cross-chain transfer</string>
     <string name="ongoing">ongoing</string>
     <string name="your_loan_application_is_under_review">Your loan application is under review</string>
@@ -240,7 +234,6 @@
     <string name="block_number_colon">Block Height:</string>
     <string name="transaction_time_colon">TimeStamp:</string>
     <string name="transaction_status_colon">TxReceipt Status:</string>
-    <string name="share">Share</string>
     <string name="current_version">Current version</string>
     <string name="enable_login">Enable login</string>
     <string name="disable_login">Disable login</string>
@@ -250,13 +243,10 @@
     <string name="id">ID</string>
     <string name="bank_accoun">bank accoun</string>
     <string name="carrier_information">carrier information</string>
-    <string name="quote_source_colon">Source:%1$s</string>
     <string name="to_address_book">To address book</string>
     <string name="to_wallet_address">To wallet address</string>
     <string name="transfer_amount">Amount to be transferred</string>
-    <string name="amount2">Amount</string>
     <string name="the_chain_of_dcc">\@The token on the DCC\n business chain can only be transferred between the wallet addresses on this chain and are compatible with ERC20. If the transfer is to the wallet on ETH business chain, please use cross-chain transfer function.</string>
-    <string name="choose_picture_from_gallery">Album</string>
     <string name="verification">Verification</string>
     <string name="import_wallet">Import</string>
     <string name="create_wallet">Create</string>
@@ -310,9 +300,7 @@
     <string name="please_input_bank_card_no">Please enter your bank account number here</string>
     <string name="bank_registered_phone_num">Phone number linked to the account</string>
     <string name="please_input_phone_num">Please enter your phone number here</string>
-    <string name="import_and_enable_passport">Import wallet</string>
     <string name="no_transaction_record_yet">No record of this currency</string>
-    <string name="holding_amount">Current balance</string>
     <string name="load_more">Load more</string>
     <string name="no_more">No more data</string>
     <string name="transaction_record_detail">Detail of transaction history</string>
@@ -353,7 +341,6 @@
     <string name="verified">Verified</string>
     <string name="per_day">Per day</string>
     <string name="principal">Principal</string>
-    <string name="verification_to_be_completed">Verification to be completed</string>
     <string name="verify">Verify</string>
     <string name="verified1">Verified</string>
     <string name="next_step">Next</string>
@@ -367,8 +354,6 @@
     <string name="sms_code1">SMS code</string>
     <string name="scan_the_qr">Scan the QR code for repayment address</string>
     <string name="confirm_repayment">Confirm repayment</string>
-    <string name="please_confirm_in">Please confirm in 3 minutes</string>
-    <string name="click_the_button_below">②Click the button below to complete repayment</string>
     <string name="copy">Copy</string>
     <string name="please_transfer"><![CDATA[Please transfer %1$s %2$s to the address below]]></string>
     <string name="result">Result</string>

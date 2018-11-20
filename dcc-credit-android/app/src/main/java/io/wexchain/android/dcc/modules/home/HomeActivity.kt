@@ -24,12 +24,12 @@ import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.reName
 import io.wexchain.android.dcc.view.bottomnavigation.BottomNavigationBar
 import io.wexchain.android.dcc.view.bottomnavigation.BottomNavigationItem
+import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.android.dcc.view.dialog.BonusDialog
-import io.wexchain.android.dcc.view.dialog.UpgradeDialog
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
-import kotlinx.android.synthetic.main.activity_home2.*
+import kotlinx.android.synthetic.main.activity_home.*
 import org.jetbrains.anko.doAsync
 import worhavah.regloginlib.tools.checkonMain
 import zlc.season.rxdownload3.core.Mission
@@ -39,30 +39,17 @@ import java.io.File
 /**
  *Created by liuyang on 2018/9/18.
  */
-class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
-
-    override fun onSkip() {
-
-    }
-
-    override fun onComplete() {
-
-    }
+class HomeActivity : BaseCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home2)
+        setContentView(R.layout.activity_home)
         initView()
-        replaceFragment(ServiceFragment())
+        replaceFragment(FindFragment.getInstance(intent.getStringExtra("data")))
         initEvent()
         initPhototTask()
         checkUpgrade()
         showRedeem()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        signin()
     }
 
     private fun showRedeem() {
@@ -75,21 +62,21 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
                 }
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribeBy {
-                        val bonus = it.first()
-                        showRedeemToken(bonus)
+                    val bonus = it.first()
+                    showRedeemToken(bonus)
                 }
     }
 
     private fun showRedeemToken(redeemToken: RedeemToken) {
-        BonusDialog.create(redeemToken, this).show(supportFragmentManager, "BONUS#${redeemToken.scenarioCode}")
-    }
+        BonusDialog.create(redeemToken, object : BonusDialog.Listener {
+            override fun onSkip() {
 
-    private fun signin() {
-        ScfOperations.loginWithCurrentPassport().subscribe()
+            }
 
-        ScfOperations.withScfTokenInCurrentPassport {
-            App.get().scfApi.signIn(it)
-        }.subscribeBy(onError = {})
+            override fun onComplete() {
+
+            }
+        }).show(supportFragmentManager, "BONUS#${redeemToken.scenarioCode}")
     }
 
     private fun initEvent() {
@@ -127,6 +114,7 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
             addItem(BottomNavigationItem(R.drawable.tab_activity_find, "发现").setInactiveIconResource(R.drawable.tab_find).setActiveColorResource(R.color.main_tab))
             addItem(BottomNavigationItem(R.drawable.tab_activity_digital, "钱包").setInactiveIconResource(R.drawable.tab_digital).setActiveColorResource(R.color.main_tab))
             addItem(BottomNavigationItem(R.drawable.tab_activity_mine, "我的").setInactiveIconResource(R.drawable.tab_mine).setActiveColorResource(R.color.main_tab))
+            setFirstSelectedPosition(1)
             initialise()
         }
     }
@@ -167,7 +155,7 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
     }
 
     private fun showUpgradeDialog(it: CheckUpgrade) {
-        val dialog = UpgradeDialog(this)
+        val dialog = BaseDialog(this)
         if (it.mandatoryUpgrade) {
             dialog.createHomeDialog(it.version, it.updateLog)
                     .onClick {
@@ -203,7 +191,7 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
                             installApk(file)
                         } else {
                             val mission = Mission(updateUrl, filename, savepath.absolutePath)
-                            UpgradeDialog(this).crateDownloadDialog(mission)
+                            BaseDialog(this).crateDownloadDialog(mission)
                         }
                     } else {
                         toast("没有读写文件权限,请重新打开App授权")
@@ -211,5 +199,11 @@ class HomeActivity : BaseCompatActivity(), BonusDialog.Listener {
                     }
                 }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        App.get().passportRepository.setUserInfo("")
+    }
+
 
 }

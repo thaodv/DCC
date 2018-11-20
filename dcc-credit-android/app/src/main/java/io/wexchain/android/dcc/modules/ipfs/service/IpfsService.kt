@@ -9,6 +9,7 @@ import io.wexchain.android.common.ensureNewFile
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
+import io.wexchain.android.dcc.modules.ipfs.EventType
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.tools.FileUtils
 import io.wexchain.android.dcc.tools.formatSize
@@ -56,103 +57,120 @@ class IpfsService : Service() {
         return mBinder
     }
 
-    fun createIdData(onSize: (String) -> Unit) {
+    fun createItemData(business: String): Single<String> {
+        return when (business) {
+            ChainGateway.BUSINESS_ID -> createIdData()
+            ChainGateway.BUSINESS_BANK_CARD -> createBankData()
+            ChainGateway.BUSINESS_COMMUNICATION_LOG -> createCmData()
+            ChainGateway.TN_COMMUNICATION_LOG -> createTnData()
+            else -> Single.error(Throwable(""))
+        }
+    }
+
+    fun createIdData(): Single<String> {
         ID_NONCE = IpfsOperations.getNonce().blockingGet()
-        val certIdPics = CertOperations.getCertIdPics()
-        val positivePhoto = certIdPics!!.first.base64()
-        val backPhoto = certIdPics.second.base64()
-        val facePhoto = certIdPics.third.base64()
+        return Single.create<String> {
+            val certIdPics = CertOperations.getCertIdPics()
+            val positivePhoto = certIdPics!!.first.base64()
+            val backPhoto = certIdPics.second.base64()
+            val facePhoto = certIdPics.third.base64()
 
-        val certIdData = CertOperations.getCertIdData()!!
-        val orderid = CertOperations.getOrderId()
-        val idCertPassed = CertOperations.getCertIdStatus()
-        val similarity = CertOperations.getCertIdSimilarity()!!
-        val expiredText = ViewModelHelper.expiredText(certIdData.expired)
+            val certIdData = CertOperations.getCertIdData()!!
+            val orderid = CertOperations.getOrderId()
+            val idCertPassed = CertOperations.getCertIdStatus()
+            val similarity = CertOperations.getCertIdSimilarity()!!
+            val expiredText = ViewModelHelper.expiredText(certIdData.expired)
 
-        val idInfo = IdInfo(
-                positivePhoto = positivePhoto,
-                backPhoto = backPhoto,
-                facePhoto = facePhoto,
-                idAuthenStatus = idCertPassed,
-                orderId = orderid.toInt(),
-                similarity = similarity,
-                userAddress = certIdData.address!!,
-                userName = certIdData.name,
-                userNumber = certIdData.id,
-                userNation = certIdData.race!!,
-                userSex = certIdData.sex!!,
-                userTimeLimit = expiredText,
-                userAuthority = certIdData.authority!!,
-                userYear = certIdData.year!!,
-                userMonth = certIdData.month!!,
-                userDay = certIdData.dayOfMonth!!)
+            val idInfo = IdInfo(
+                    positivePhoto = positivePhoto,
+                    backPhoto = backPhoto,
+                    facePhoto = facePhoto,
+                    idAuthenStatus = idCertPassed,
+                    orderId = orderid.toInt(),
+                    similarity = similarity,
+                    userAddress = certIdData.address!!,
+                    userName = certIdData.name,
+                    userNumber = certIdData.id,
+                    userNation = certIdData.race!!,
+                    userSex = certIdData.sex!!,
+                    userTimeLimit = expiredText,
+                    userAuthority = certIdData.authority!!,
+                    userYear = certIdData.year!!,
+                    userMonth = certIdData.month!!,
+                    userDay = certIdData.dayOfMonth!!)
 
-        val json = idInfo.toJson()
-        val data = json.toByteArray()
+            val json = idInfo.toJson()
+            val data = json.toByteArray()
 
-        val size = getDataFromSize(data, MyCloudActivity.ID_ENTIFY_DATA, ID_NONCE)
-        onSize.invoke(size)
+            val size = getDataFromSize(data, MyCloudActivity.ID_ENTIFY_DATA, ID_NONCE)
+            it.onSuccess(size)
+        }
     }
 
-    fun createCmData(onSize: (String) -> Unit) {
+    private fun createCmData(): Single<String> {
         CM_NONCE = IpfsOperations.getNonce().blockingGet()
-        val cmCertOrderId = CertOperations.getCmCertOrderId()
-        val cmLogPhoneNo = CertOperations.getCmLogPhoneNo()
-        val status = CertOperations.getCmLogUserStatus().name
-        val json = CertOperations.getCmLogData(cmCertOrderId).blockingGet()
-        val cmLogCertExpired = CertOperations.getCmLogCertExpired()
+        return Single.create<String> {
+            val cmCertOrderId = CertOperations.getCmCertOrderId()
+            val cmLogPhoneNo = CertOperations.getCmLogPhoneNo()
+            val status = CertOperations.getCmLogUserStatus().name
+            val json = CertOperations.getCmLogData(cmCertOrderId).blockingGet()
+            val cmLogCertExpired = CertOperations.getCmLogCertExpired()
 
-        val phoneInfo = PhoneInfo(
-                mobileAuthenStatus = status,
-                mobileAuthenOrderid = cmCertOrderId.toInt(),
-                mobileAuthenNumber = cmLogPhoneNo!!,
-                mobileAuthenCmData = json.base64(),
-                mobileAuthenExpired = cmLogCertExpired)
+            val phoneInfo = PhoneInfo(
+                    mobileAuthenStatus = status,
+                    mobileAuthenOrderid = cmCertOrderId.toInt(),
+                    mobileAuthenNumber = cmLogPhoneNo!!,
+                    mobileAuthenCmData = json.base64(),
+                    mobileAuthenExpired = cmLogCertExpired)
 
-        val data = phoneInfo.toJson()
-        val size = getDataFromSize(data.toByteArray(), MyCloudActivity.PHONE_OPERATOR, CM_NONCE)
-        onSize.invoke(size)
+            val data = phoneInfo.toJson()
+            val size = getDataFromSize(data.toByteArray(), MyCloudActivity.PHONE_OPERATOR, CM_NONCE)
+            it.onSuccess(size)
+        }
     }
 
-    fun createTnData(onSize: (String) -> Unit) {
+    private fun createTnData(): Single<String> {
         TN_NONCE = IpfsOperations.getNonce().blockingGet()
-        val cmCertOrderId = worhavah.certs.tools.CertOperations.getTNCertOrderId()
-        val cmLogPhoneNo = worhavah.certs.tools.CertOperations.getTnLogPhoneNo()
-        val status = worhavah.certs.tools.CertOperations.getTNLogUserStatus().name
-        // val json = worhavah.certs.tools.CertOperations.getTNLogData(cmCertOrderId).blockingGet()
-        val cmLogCertExpired = worhavah.certs.tools.CertOperations.getTNLogCertExpired()
-        val js2 = worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.get()!!.toByteArray()
-        val phoneInfo = TNPhoneInfo(
-                sameCowMobileAuthenStatus = status,
-                sameCowMobileAuthenOrderid = cmCertOrderId.toString(),
-                sameCowMobileAuthenNumber = cmLogPhoneNo!!,
-                sameCowMobileAuthenCmData = js2.base64(),
-                sameCowMobileAuthenExpired = cmLogCertExpired.toString(),
-                sameCowMobileAuthenNonce=worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.get().toString())
+        return Single.create<String> {
+            val cmCertOrderId = worhavah.certs.tools.CertOperations.getTNCertOrderId()
+            val cmLogPhoneNo = worhavah.certs.tools.CertOperations.getTnLogPhoneNo()
+            val status = worhavah.certs.tools.CertOperations.getTNLogUserStatus().name
+            val cmLogCertExpired = worhavah.certs.tools.CertOperations.getTNLogCertExpired()
+            val js2 = worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.get()!!.toByteArray()
+            val phoneInfo = TNPhoneInfo(
+                    sameCowMobileAuthenStatus = status,
+                    sameCowMobileAuthenOrderid = cmCertOrderId.toString(),
+                    sameCowMobileAuthenNumber = cmLogPhoneNo!!,
+                    sameCowMobileAuthenCmData = js2.base64(),
+                    sameCowMobileAuthenExpired = cmLogCertExpired.toString(),
+                    sameCowMobileAuthenNonce = worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.get().toString())
 
-        val data = phoneInfo.toJson()
-        val size = getDataFromSize(data.toByteArray(), MyCloudActivity.TNDATA, TN_NONCE)
-        onSize.invoke(size)
+            val data = phoneInfo.toJson()
+            val size = getDataFromSize(data.toByteArray(), MyCloudActivity.TNDATA, TN_NONCE)
+            it.onSuccess(size)
+        }
     }
 
-    fun createBankData(onSize: (String) -> Unit) {
+    private fun createBankData(): Single<String> {
         BANK_NONCE = IpfsOperations.getNonce().blockingGet()
-        val info = CertOperations.getCertBankCardData()!!
-        val expired = CertOperations.getBankCardCertExpired()
-        val bankStatus = CertOperations.getBankStatus()
+        return Single.create<String> {
+            val info = CertOperations.getCertBankCardData()!!
+            val expired = CertOperations.getBankCardCertExpired()
+            val bankStatus = CertOperations.getBankStatus()
 
-        val bankInfo = BankInfo(
-                bankAuthenStatus = bankStatus.first,
-                bankAuthenOrderid = bankStatus.second.toInt(),
-                bankAuthenName = info.bankName,
-                bankAuthenCode = info.bankCode,
-                bankAuthenCodeNumber = info.bankCardNo,
-                bankAuthenMobile = info.phoneNo,
-                bankAuthenExpired = expired)
+            val bankInfo = BankInfo(
+                    bankAuthenStatus = bankStatus.first,
+                    bankAuthenOrderid = bankStatus.second.toInt(),
+                    bankAuthenName = info.bankName,
+                    bankAuthenCode = info.bankCode,
+                    bankAuthenCodeNumber = info.bankCardNo,
+                    bankAuthenMobile = info.phoneNo,
+                    bankAuthenExpired = expired)
 
-        val data = bankInfo.toJson()
-        val size = getDataFromSize(data.toByteArray(), MyCloudActivity.BANK_CARD_DATA, BANK_NONCE)
-        onSize.invoke(size)
+            val data = bankInfo.toJson()
+            val size = getDataFromSize(data.toByteArray(), MyCloudActivity.BANK_CARD_DATA, BANK_NONCE)
+            it.onSuccess(size)
+        }
     }
 
     private fun getDataFromSize(data: ByteArray, filename: String, nonce: BigInteger): String {
@@ -167,7 +185,7 @@ class IpfsService : Service() {
         return filezip.formatSize()
     }
 
-    fun upload(business: String, filename: String, status: (String, String) -> Unit, successful: (String) -> Unit, onError: (String, Throwable) -> Unit, onProgress: (String, Int) -> Unit) {
+    fun upload(business: String, filename: String, status: (String, EventType) -> Unit, successful: (String) -> Unit, onError: (String, Throwable) -> Unit, onProgress: (String, Int) -> Unit) {
         val file = File(rootpath, "$filename.zip")
         IpfsCore.upload(file)
                 .doProgress(business, 60, onProgress)
@@ -196,7 +214,7 @@ class IpfsService : Service() {
                     }
                 }
                 .doMain()
-                .doOnSubscribe(business, status, "正在上传", onProgress)
+                .doOnSubscribe(business, status, EventType.STATUS_UPLOADING, onProgress)
                 .subscribeBy(
                         onSuccess = {
                             onProgress.invoke(business, 100)
@@ -207,7 +225,7 @@ class IpfsService : Service() {
                         })
     }
 
-    fun download(business: String, filename: String, status: (String, String) -> Unit, successful: (String) -> Unit, onError: (Throwable) -> Unit, onProgress: (String, Int) -> Unit) {
+    fun download(business: String, filename: String, status: (String, EventType) -> Unit, successful: (String) -> Unit, onError: (Throwable) -> Unit, onProgress: (String, Int) -> Unit) {
         var nonce = BigInteger("0")
         IpfsOperations.getIpfsToken(business)
                 .map {
@@ -267,13 +285,11 @@ class IpfsService : Service() {
                             val phoneInfo = it.replace("\n", "").toBean(TNPhoneInfo::class.java)
                             CertOperations.saveIpfsTNData(phoneInfo)
                         }
-                        else -> {
-                        }
                     }
                     delectedFile(filename)
                 }
                 .doMain()
-                .doOnSubscribe(business, status, "正在下载", onProgress)
+                .doOnSubscribe(business, status, EventType.STATUS_DOWNLOADING, onProgress)
                 .subscribeBy(
                         onSuccess = {
                             onProgress.invoke(business, 100)
@@ -289,7 +305,7 @@ class IpfsService : Service() {
         FileUtils.deleteFile(rootpath + File.separator + "$filename.zip")
     }
 
-    fun <T> Single<T>.doOnSubscribe(business: String, status: (String, String) -> Unit, text: String, onProgress: (String, Int) -> Unit): Single<T> {
+    fun <T> Single<T>.doOnSubscribe(business: String, status: (String, EventType) -> Unit, text: EventType, onProgress: (String, Int) -> Unit): Single<T> {
         return this.doOnSubscribe {
             status.invoke(business, text)
             onProgress.invoke(business, 0)

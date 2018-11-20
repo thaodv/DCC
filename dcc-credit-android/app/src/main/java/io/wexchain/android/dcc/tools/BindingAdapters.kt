@@ -30,6 +30,13 @@ var SwitchButton.switchStatus
         this.isChecked = value
     }
 
+@set:BindingAdapter("setisEnable")
+var View.setisEnable
+    get() = this.isEnabled
+    set(value) {
+        this.isEnabled = value
+    }
+
 
 @set:BindingAdapter("visibleOrInvisible")
 var View.visibleOrInvisible

@@ -55,7 +55,7 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setWindowExtended()
-        initToolbarS()
+        initToolbar()
 
         countDownProgress = findViewById<View>(R.id.countdownProgress) as CountDownProgress
         countDownProgress.setCountdownTime(900)
@@ -130,25 +130,6 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                     }
                 }
     }
-
-    private fun initToolbarS(showHomeAsUp: Boolean = true): Toolbar? {
-        toolbar = findViewById(R.id.toolbar)
-        val tb = toolbar
-        if (tb != null) {
-            setSupportActionBar(toolbar)
-            toolbarTitle = findViewById(R.id.toolbar_title)
-            intendedTitle?.let { title = it }
-        }
-        supportActionBar?.run {
-            setDisplayHomeAsUpEnabled(showHomeAsUp)
-            setDisplayShowHomeEnabled(showHomeAsUp)
-            if (toolbarTitle != null) {
-                setDisplayShowTitleEnabled(false)
-            }
-        }
-        return toolbar
-    }
-
 
     private fun obtainAuthStatus(certificationType: CertificationType): AuthenticationStatusVm? {
         return ViewModelProviders.of(this)[certificationType.name, AuthenticationStatusVm::class.java]

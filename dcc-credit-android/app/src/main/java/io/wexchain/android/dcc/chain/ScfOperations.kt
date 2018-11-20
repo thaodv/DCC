@@ -1,6 +1,7 @@
 package io.wexchain.android.dcc.chain
 
 import android.util.Base64
+import android.util.Log
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Single
 import io.reactivex.SingleTransformer
@@ -396,7 +397,13 @@ object ScfOperations {
                             )
                             .map {
                                 if (it.isSuccessful) {
-                                    it.body()!!
+                                    val result = it.body()!!
+                                    if (result.isSuccess) {
+                                        Log.e("member/register",it.headers().toString())
+                                        val token = it.headers()[ScfApi.HEADER_TOKEN]!!
+                                        App.get().scfTokenManager.scfToken = token
+                                    }
+                                    result
                                 } else {
                                     throw HttpException(it)
                                 }

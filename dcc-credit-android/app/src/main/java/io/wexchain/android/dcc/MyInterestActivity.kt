@@ -3,16 +3,16 @@ package io.wexchain.android.dcc
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
-import com.alibaba.fastjson.JSON
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.runOnMainThread
-import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.domain.SaleInfo
+import io.wexchain.android.dcc.modules.bsx.BuyInterestActivity
 import io.wexchain.android.dcc.tools.BintApi
 import io.wexchain.android.dcc.tools.BytesUtils
 import io.wexchain.android.dcc.tools.BytesUtils.encodeStringsimple
+import io.wexchain.android.dcc.tools.toBean
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityMyInterestBinding
 import io.wexchain.digitalwallet.Erc20Helper
@@ -84,7 +84,7 @@ class MyInterestActivity : BindActivity<ActivityMyInterestBinding>() {
         }.doFinally { hideLoadingDialog() }.subscribe(
                 {
                     var ss = BytesUtils.encodeString(it.result)//.replace(" ","")
-                    saleInfo = JSON.parseObject(ss, SaleInfo::class.java)
+                    saleInfo = ss.toBean(SaleInfo::class.java)
 
                     binding.saleInfo = saleInfo
                     //binding.tvProfit.setText(saleInfo.annualRateP())

@@ -1,143 +1,158 @@
 package io.wexchain.android.dcc.fragment.home
 
-import android.content.Intent
-import android.databinding.DataBindingUtil
-import android.net.Uri
+import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.DividerItemDecoration
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.base.BaseCompatFragment
+import io.reactivex.rxkotlin.subscribeBy
+import io.wexchain.android.common.base.BindFragment
+import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.*
-import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.android.dcc.modules.home.GardenActivity
-import io.wexchain.android.dcc.view.adapter.*
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.chain.GardenOperations
+import io.wexchain.android.dcc.modules.garden.activity.GardenActivity
+import io.wexchain.android.dcc.modules.garden.activity.GardenListActivity
+import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
+import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.dcc.R
-import io.wexchain.dcc.databinding.ItemMarketingActivityBinding
-import io.wexchain.dccchainservice.domain.MarketingActivity
-import io.wexchain.dccchainservice.domain.Result
-import kotlinx.android.synthetic.main.fragment_find.*
+import io.wexchain.dcc.databinding.FragmentFindBinding
+
 
 /**
  *Created by liuyang on 2018/9/18.
  */
-class FindFragment: BaseCompatFragment(), ItemViewClickListener<MarketingActivity>  {
+class FindFragment : BindFragment<FragmentFindBinding>() {
 
-    private val adapter = Adapter(this::onItemClick)
+    companion object {
+        private const val MATE_DATA = "mate_data"
 
-    private val header by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-        LayoutInflater.from(activity).inflate(R.layout.find_header, find_root, false)
-    }
-
-    private val wrappedAdapter = BottomMoreItemsAdapter(
-            adapter,
-            object : BottomMoreItemsAdapter.BottomViewProvider {
-                override fun inflateBottomView(parent: ViewGroup): View {
-                    val view = LayoutInflater.from(parent.context).inflate(R.layout.bottom_more_candy, parent, false)
-                    view.findViewById<View>(R.id.item_business_contact).setOnClickListener {
-                        toBusinessEmail()
-                    }
-                    return view
-                }
-
-                override fun onBind(bottomView: View?, position: Int) {
-                }
+        fun getInstance(data: String? = null): FindFragment {
+            val fragment = FindFragment()
+            fragment.arguments = Bundle().apply {
+                putString(MATE_DATA, data)
             }
-    )
-
-    private fun toBusinessEmail() {
-        val intent = Intent(Intent.ACTION_SENDTO)
-        intent.data = Uri.parse("mailto:") // only email apps should handle this
-        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.bitexpress_info_mail_address)))
-        startActivity(Intent.createChooser(intent, "发送邮件"))
+            return fragment
+        }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_find, container, false)
+    private val passport by lazy {
+        App.get().passportRepository
     }
+
+    private val data by lazy {
+        arguments?.getString(MATE_DATA)
+    }
+
+    private var dialog: BaseDialog? = null
+
+    override val contentLayoutId: Int
+        get() = R.layout.fragment_find
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
-        loadMa()
+        initClick()
+        login()
     }
 
-    private fun initView() {
-        rv_list.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL).apply {
-            setDrawable(ContextCompat.getDrawable(context!!, R.drawable.divider_space)!!)
-        })
-        rv_list.adapter = wrappedAdapter
-
-        rv_list.addHeaderView(header)
-        rv_list.setLoadingMoreEnabled(false)
-        rv_list.setPullRefreshEnabled(false)
-        header.onClick {
-            navigateTo(GardenActivity::class.java)
-        }
-    }
-
-    fun onItemClick(position: Int, viewId: Int) {
-        val pos = position -2
-        onItemClick(adapter.getItemOnPos(pos), pos, viewId)
-    }
-
-    override fun onItemClick(item: MarketingActivity?, position: Int, viewId: Int) {
-        item?.let {
-            when(it.code){
-                "10002"->{
-                    navigateTo(DccAffiliateActivity::class.java)
-                }
-                "10003"->{
-                    navigateTo(DccEcoRewardsActivity::class.java)
-                }
-                "10004"->{
-                    navigateTo(MineRewardsActivity::class.java)
-                }
-                else->{
-                    if (it.status == MarketingActivity.Status.STARTED) {
-                        navigateTo(MarketingScenariosActivity::class.java) {
-                            putExtra(Extras.EXTRA_MARKETING_ACTIVITY, it)
+    fun login() {
+        GardenOperations.loginWithCurrentPassport()
+                .withLoading()
+                .subscribeBy {
+                    initVm()
+                    if (!data.isNullOrEmpty()) {
+                        val list = data!!.split('/')
+                        val code = list[0]
+                        val playid = list[1]
+                        val unionId = list[2]
+                        val info = it.first
+                        if (null != info.player) {
+                            if (info.player!!.id.toString() != playid || unionId != info.player!!.unionId) {//不是同一个用户
+                                BaseDialog(activity!!).TipsDialog()
+                            }
                         }
                     }
                 }
+    }
+
+    private fun initVm() {
+        passport.currPassport.observe(this, Observer {
+            binding.passport = it
+        })
+
+        if (!GardenOperations.isBound()) {
+            showBoundDialog()
+        } else {
+            binding.vm = getViewModel()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (GardenOperations.isBound()) {
+            binding.vm?.refresh()
+        }
+    }
+
+    private fun initClick() {
+        binding.gardenTask.checkBoundClick {
+            navigateTo(GardenTaskActivity::class.java)
+        }
+        binding.findInGarden.checkBoundClick {
+            navigateTo(GardenActivity::class.java)
+        }
+        binding.findShare.checkBoundClick {
+            GardenOperations.shareWechat {
+                toast(it)
+            }
+        }
+        binding.findGardenCard.checkBoundClick {
+            navigateTo(GardenActivity::class.java)
+        }
+        binding.findGardenList.checkBoundClick {
+            navigateTo(GardenListActivity::class.java)
+        }
+        binding.findGardenList2.checkBoundClick {
+            navigateTo(GardenListActivity::class.java)
+        }
+        binding.findZhishiCard.checkBoundClick {
+            GardenOperations.startWechat {
+                toast(it)
             }
         }
     }
 
-    private fun loadMa() {
-        App.get().marketingApi.queryActivity()
-                .compose(Result.checked())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ list ->
-                    adapter.setList(list)
-                }, {
-                    toast(R.string.common_service_error_toast)
+    fun View.checkBoundClick(event: () -> Unit) {
+        this.onClick {
+            if (GardenOperations.isLogin()) {
+                if (GardenOperations.isBound()) {
+                    event()
+                } else {
+                    showBoundDialog()
+                }
+            } else {
+                toast("用户未登陆")
+                login()
+            }
+        }
+    }
+
+    fun showBoundDialog() {
+        if (dialog == null) {
+            dialog = BaseDialog(activity!!)
+        } else {
+            dialog!!.show()
+            return
+        }
+        if (dialog!!.isShowing) {
+            return
+        }
+        dialog!!.BoundWechatDialog()
+                .onClick(onConfirm = {
+                    GardenOperations.wechatLogin {
+                        toast(it)
+                    }
                 })
     }
 
-
-    private class Adapter(val onPosClick: (Int, Int) -> Unit) :
-            DataBindAdapter<ItemMarketingActivityBinding, MarketingActivity>(
-                    R.layout.item_marketing_activity,
-                    itemDiffCallback = defaultItemDiffCallback()
-            ) {
-        override fun bindData(binding: ItemMarketingActivityBinding, item: MarketingActivity?) {
-            binding.ma = item
-        }
-
-        override fun onCreateViewHolder(
-                parent: ViewGroup,
-                viewType: Int
-        ): BindingViewHolder<ItemMarketingActivityBinding> {
-            val layoutInflater = LayoutInflater.from(parent.context)
-            val binding: ItemMarketingActivityBinding = DataBindingUtil.inflate(layoutInflater, layout, parent, false)
-            return ClickAwareHolder(binding, onPosClick)
-        }
-    }
 }

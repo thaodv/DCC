@@ -2,7 +2,6 @@ package com.wexmarket.android.network
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.wexmarket.android.network.cookie.CookieSendLoggingInterceptor

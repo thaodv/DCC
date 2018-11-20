@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="order"
+            type="io.wexchain.dccchainservice.domain.ChangeOrder" />
+
+        <import type="io.wexchain.android.dcc.modules.garden.TaskHelper"/>
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="@{order.memo}"
+            android:textColor="@color/FF4A4A4A"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="绑定微信" />
+
+        <TextView
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="@{TaskHelper.expiredText(order.lastUpdatedTime)}"
+            android:textColor="#BAC0C5"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="2018-08-08 08:08:08" />
+
+        <TextView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{TaskHelper.getItemNum(order.direction,order.amount)}"
+            android:textColor="@color/FF7B40FF"
+            android:textSize="16sp"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            tools:text="+10阳光" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import com.alibaba.fastjson.JSON
 import io.reactivex.Single
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.runOnMainThread
@@ -16,6 +15,7 @@ import io.wexchain.android.dcc.tools.BytesUtils
 import io.wexchain.android.dcc.tools.BytesUtils.encodeStringsimple
 import io.wexchain.android.dcc.tools.BytesUtils.encodeStringsimple2
 import io.wexchain.android.dcc.tools.LogUtils
+import io.wexchain.android.dcc.tools.toBean
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityBsxDetailBinding
 import io.wexchain.digitalwallet.Currencies
@@ -129,7 +129,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
                     hideLoadingDialog()
                 }.subscribe({
                     var ss = BytesUtils.encodeString(it.result)//.replace(" ","")
-                    saleInfo = JSON.parseObject(ss, SaleInfo::class.java)
+                    saleInfo = ss.toBean(SaleInfo::class.java)
                     binding.saleInfo = saleInfo
                     getBsxMinAmountPerHando()
                 }, {

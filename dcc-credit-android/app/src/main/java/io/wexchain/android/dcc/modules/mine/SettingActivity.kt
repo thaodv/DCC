@@ -13,9 +13,8 @@ import io.wexchain.android.dcc.AboutActivity
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.PassportRemovalActivity
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
-import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.android.dcc.tools.checkonMain
-import io.wexchain.android.dcc.view.dialog.UpgradeDialog
+import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.fragment.CreateProtectFragment
@@ -94,7 +93,7 @@ class SettingActivity : BindActivity<ActivitySettingBinding>() {
     }
 
     private fun showUpgradeDialog(it: CheckUpgrade) {
-        val dialog = UpgradeDialog(this)
+        val dialog = BaseDialog(this)
         if (it.mandatoryUpgrade) {
             dialog.createHomeDialog(it.version, it.updateLog)
                     .onClick {
@@ -134,7 +133,7 @@ class SettingActivity : BindActivity<ActivitySettingBinding>() {
                         installApk(file)
                     } else {
                         val mission = Mission(updateUrl, filename, savepath.absolutePath)
-                        UpgradeDialog(this).crateDownloadDialog(mission)
+                        BaseDialog(this).crateDownloadDialog(mission)
                     }
                 }
                 .subscribeBy()

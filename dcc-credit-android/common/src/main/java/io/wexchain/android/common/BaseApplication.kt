@@ -1,6 +1,7 @@
 package io.wexchain.android.common
 
 import android.app.Application
+import android.arch.lifecycle.MutableLiveData
 import kotlin.properties.Delegates
 
 /**
