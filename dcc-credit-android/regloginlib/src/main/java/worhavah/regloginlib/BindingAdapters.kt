@@ -1,4 +1,5 @@
 package worhavah.regloginlib
+
 import android.databinding.BindingAdapter
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
@@ -10,10 +11,11 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import com.bumptech.glide.Glide
 import com.wexmarket.android.barcode.util.QrCodeDrawable
-import worhavah.regloginlib.tools.DoNothingTransformationMethod
 import worhavah.ViewBackgroundTarget
+import worhavah.regloginlib.tools.DoNothingTransformationMethod
 
 @set:BindingAdapter("visibleOrGone")
 var View.visibleOrGone
@@ -29,10 +31,18 @@ var View.visibleOrInvisible
         this.visibility = if (value) View.VISIBLE else View.INVISIBLE
     }
 
+@set:BindingAdapter("progress")
+var ProgressBar.progress
+    get() = this.progress
+    set(value) {
+        this.progress = value
+    }
+
+
 @BindingAdapter("imageRes")
 fun ImageView.setImageRes(
-    @DrawableRes
-    res: Int?
+        @DrawableRes
+        res: Int?
 ) {
     if (res == null || res == 0) {
         this.setImageDrawable(null)
@@ -62,8 +72,8 @@ fun ImageView.setImageRawBytes(imageRawBytes: ByteArray?, errorRes: Drawable?) {
 @BindingAdapter(value = ["imageUrl", "errorRes"], requireAll = false)
 fun setImageUrl(imageView: ImageView, url: String?, errorRes: Drawable?) {
     Glide.with(imageView).load(url)
-      // .error(errorRes)
-        .into(imageView)
+            // .error(errorRes)
+            .into(imageView)
 }
 
 @BindingAdapter("dataList")
@@ -76,11 +86,11 @@ fun View.setBackgroundUrl(url: String?) {
     val target = ViewBackgroundTarget(this)
     if (url.isNullOrBlank()) {
         Glide.with(this)
-            .clear(target)
+                .clear(target)
     } else {
         Glide.with(this)
-            .load(url)
-            .into(target)
+                .load(url)
+                .into(target)
     }
 }
 

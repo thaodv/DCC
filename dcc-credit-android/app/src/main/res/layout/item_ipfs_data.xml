@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="io.wexchain.android.dcc.modules.ipfs.IpfsHelper" />
+
+        <variable
+            name="vm"
+            type="io.wexchain.android.dcc.modules.ipfs.vm.CloudItemVm" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:onClick="@{(v)->vm.itemClick()}">
+
+        <ImageView
+            android:id="@+id/cloud_item_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:src="@{IpfsHelper.getStatusImg(context,vm.state,vm.action)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cloud_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@{vm.name}"
+            android:textColor="@color/FF4A4A4A"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toRightOf="@id/cloud_item_tag"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="实名认证数据" />
+
+        <TextView
+            visibleOrInvisible="@{IpfsHelper.getSizeStatus(vm.state)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="110dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@{vm.size}"
+            android:textColor="@color/text_min"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="100kB" />
+
+        <TextView
+            android:id="@+id/cloud_item_select"
+            visibleOrInvisible="@{IpfsHelper.getSeleStatus(vm.state)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@{IpfsHelper.getSeleTxt(vm.state,vm.action,vm.event)}"
+            android:textColor="@color/text_min"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="未选中" />
+
+        <ProgressBar
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            progress="@{vm.progress}"
+            visibleOrInvisible="@{IpfsHelper.getProgressStatus(vm.event)}"
+            android:layout_width="60dp"
+            android:layout_height="5dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cloud_item_select" />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Dcc.Small"
+            visibleOrInvisible="@{IpfsHelper.getAddressStatus(vm.state)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/round_rect_border"
+            android:onClick="@{(v)->vm.addressClick()}"
+            android:padding="5dp"
+            android:text="云端地址"
+            android:textColor="@color/blue_magenta"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="5dp"
+            android:text="@{IpfsHelper.getStatusTxt(vm.state)}"
+            android:textColor="@color/text_min"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toRightOf="@id/cloud_item_tag"
+            app:layout_constraintTop_toBottomOf="@id/cloud_item_name"
+            tools:text="可上传" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

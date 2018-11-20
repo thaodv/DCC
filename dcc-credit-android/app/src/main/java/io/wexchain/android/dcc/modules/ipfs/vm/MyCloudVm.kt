@@ -9,54 +9,24 @@ import io.wexchain.android.common.SingleLiveEvent
  */
 class MyCloudVm : ViewModel() {
 
-    val idsize = ObservableField<Boolean>()
-    val idselected = ObservableField<Boolean>()
-    val idaddress = ObservableField<Boolean>()
-    val idstatus = ObservableField<String>()
-    val idsizetxt = ObservableField<String>()
-    val idtag = ObservableField<Int>()
-    val idAddressEvent = SingleLiveEvent<Void>()
+    val syncCall = SingleLiveEvent<Void>()
+    val resetCall = SingleLiveEvent<Void>()
+    val tipsCall = SingleLiveEvent<Void>()
+    val isEnable = ObservableField<Boolean>()
+            .apply { set(false) }
 
-    val banksize = ObservableField<Boolean>()
-    val bankselected = ObservableField<Boolean>()
-    val bankaddress = ObservableField<Boolean>()
-    val bankstatus = ObservableField<String>()
-    val banksizetxt = ObservableField<String>()
-    val banktag = ObservableField<Int>()
-    val bankAddressEvent = SingleLiveEvent<Void>()
-
-    val cmsize = ObservableField<Boolean>()
-    val cmselected = ObservableField<Boolean>()
-    val cmaddress = ObservableField<Boolean>()
-    val cmstatus = ObservableField<String>()
-    val cmsizetxt = ObservableField<String>()
-    val cmtag = ObservableField<Int>()
-    val cmAddressEvent = SingleLiveEvent<Void>()
-
-
-    val tnsize = ObservableField<Boolean>()
-    val tnselected = ObservableField<Boolean>()
-    val tnaddress = ObservableField<Boolean>()
-    val tnstatus = ObservableField<String>()
-    val tnsizetxt = ObservableField<String>()
-    val tntag = ObservableField<Int>()
-    val tnAddressEvent = SingleLiveEvent<Void>()
-
-
-    fun idAddressCall() {
-        idAddressEvent.call()
+    fun syncClick() {
+        syncCall.call()
     }
 
-    fun bankAddressCall() {
-        bankAddressEvent.call()
+    fun resetClick() {
+        resetCall.call()
     }
 
-    fun cmAddressCall() {
-        cmAddressEvent.call()
+    fun tipsClick() {
+        tipsCall.call()
     }
 
-    fun tnAddressCall() {
-        tnAddressEvent.call()
-    }
+
 
 }

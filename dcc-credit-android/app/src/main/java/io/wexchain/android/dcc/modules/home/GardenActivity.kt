@@ -14,6 +14,7 @@ import io.wexchain.dcc.R
  *Created by liuyang on 2018/9/21.
  */
 class GardenActivity : BaseCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView( R.layout.activity_tokenplus)
