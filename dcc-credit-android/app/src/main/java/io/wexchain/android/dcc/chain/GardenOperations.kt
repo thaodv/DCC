@@ -45,10 +45,6 @@ object GardenOperations {
         App.get().marketingApi
     }
 
-    private val token: String by lazy {
-        App.get().gardenTokenManager.gardenToken!!
-    }
-
     fun loginWithCurrentPassport(): Single<Pair<UserInfo, String>> {
         val address = passport.currPassport.value?.address
         val privateKey = passport.getCurrentPassport()?.authKey?.getPrivateKey()
@@ -215,7 +211,7 @@ object GardenOperations {
     fun completeTask(taskCode: TaskCode): Single<ChangeOrder> {
         return GardenOperations
                 .refreshToken {
-                    api.completeTask(token, taskCode.name).check()
+                    api.completeTask(it, taskCode.name).check()
                 }
 
     }

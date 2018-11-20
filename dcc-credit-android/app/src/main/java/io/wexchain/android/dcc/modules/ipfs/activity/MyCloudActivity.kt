@@ -64,7 +64,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
     }
 
     private fun initVm() {
-        binding.run {
+        binding.apply {
             vm = getViewModel()
             asIdVm = getViewModel("ID")
             asIdVm!!.name.set("实名认证数据")
@@ -139,7 +139,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
     data class Function4<out T1, out T2, out T3, out T4>(val data1: T1, val data2: T2, val data3: T3, val data4: T4)
 
     private fun updateUI(it: Function4<IpfsStatus, IpfsStatus, IpfsStatus, IpfsStatus>) {
-        binding.run {
+        binding.apply {
             asIdVm!!.setItemData(it.data1, ChainGateway.BUSINESS_ID)
             asBankVm!!.setItemData(it.data2, ChainGateway.BUSINESS_BANK_CARD)
             asCmVm!!.setItemData(it.data3, ChainGateway.BUSINESS_COMMUNICATION_LOG)
@@ -302,7 +302,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
     }
 
     private fun initClick() {
-        binding.vm!!.run {
+        binding.vm!!.apply {
             tipsCall.observe(this@MyCloudActivity, Observer {
                 CloudstorageDialog(this@MyCloudActivity).createTipsDialog()
             })
@@ -310,7 +310,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 navigateTo(ResetPasswordActivity::class.java)
             })
             syncCall.observe(this@MyCloudActivity, Observer {
-                binding.run {
+                binding.apply {
                     asIdVm!!.checkAction(ChainGateway.BUSINESS_ID, ID_ENTIFY_DATA)
                     asBankVm!!.checkAction(ChainGateway.BUSINESS_BANK_CARD, BANK_CARD_DATA)
                     asCmVm!!.checkAction(ChainGateway.BUSINESS_COMMUNICATION_LOG, PHONE_OPERATOR)

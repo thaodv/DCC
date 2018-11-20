@@ -47,7 +47,10 @@ class FindPageVm : ViewModel() {
     }
 
     private fun getLastDuel() {
-        api.getLastDuel()
+        GardenOperations
+                .refreshToken {
+                    api.getLastDuel(it)
+                }
                 .checkonMain()
                 .subscribeBy {
                     lastDuel.postValue(it)

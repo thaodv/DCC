@@ -101,8 +101,8 @@ interface MarketingApi {
                     @Field("size") size: Int): Single<Result<PagedList<ChangeOrder>>>
 
     // 小程序获取最后一次对战
-    @POST("ss/duel/getLastDuel")
-    fun getLastDuel(): Single<Result<ChangeOrder>>
+    @POST("player/ss/duel/getLastDuel")
+    fun getLastDuel(@Header(HEADER_TOKEN) token: String?): Single<Result<ChangeOrder>>
 
     // 查询是否有可领取花朵
     @POST("bemember/ss/flower/queryFlower")
