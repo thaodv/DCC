@@ -3,7 +3,9 @@ package io.wexchain.android.dcc.modules.garden.vm
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
@@ -153,6 +155,8 @@ class GardenTaskVm : ViewModel() {
                 .flatMap {
                     GardenOperations.completeTask(it.code).toObservable()
                 }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy {
                     refreshTaskList()
                 }
@@ -160,6 +164,9 @@ class GardenTaskVm : ViewModel() {
 
     fun refreshTaskList() {
         getTaskList()
+        getBalance {
+            balance.postValue(it)
+        }
     }
 
     fun withSign() {
