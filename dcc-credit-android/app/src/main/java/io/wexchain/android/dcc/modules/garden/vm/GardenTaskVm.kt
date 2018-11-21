@@ -5,14 +5,20 @@ import android.arch.lifecycle.ViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.rxkotlin.zipWith
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
+import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.vm.domain.UserCertStatus
+import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.MarketingApi
+import io.wexchain.dccchainservice.domain.ChangeOrder
 import io.wexchain.dccchainservice.domain.TaskList
 import io.wexchain.dccchainservice.domain.WeekRecord
 import io.wexchain.dccchainservice.type.StatusType
@@ -20,6 +26,7 @@ import io.wexchain.dccchainservice.type.TaskCode
 import io.wexchain.dccchainservice.type.TaskType
 import io.wexchain.ipfs.utils.doMain
 import io.wexchain.ipfs.utils.io_main
+import java.util.concurrent.TimeUnit
 
 /**
  *Created by liuyang on 2018/11/7.
@@ -126,25 +133,72 @@ class GardenTaskVm : ViewModel() {
                     api.getTaskList(it).check()
                 }
                 .doMain()
+                .doOnSuccess {
+                    checkOlderUser(it)
+                    checkCreateWallet(it)
+                    checkCert(it)
+                }
                 .subscribeBy {
                     taskList.postValue(it)
-                    checkOlderUser(it)
                 }
     }
 
-    private fun checkOlderUser(list: List<TaskList>) {
-        Observable.just(isOpenIpfs.value != null && isOpenIpfs.value!!.first)
-                .filter {
-                    it
+    fun getTaskList2() {
+        GardenOperations
+                .refreshToken {
+                    api.getTaskList(it).check()
                 }
-                .flatMap {
-                    Observable.fromIterable(list)
+                .doMain()
+                .doOnSuccess {
+                    taskList.postValue(it)
                 }
+                .subscribe()
+    }
+
+    private fun checkCreateWallet(it: List<TaskList>) {
+        Observable.fromIterable(it)
                 .filter {
                     it.category == TaskType.NEWBIE_TASK
                 }
                 .map {
                     it.taskList
+                }
+                .flatMap {
+                    Observable.fromIterable(it)
+                }
+                .filter {
+                    it.code == TaskCode.CREATE_WALLET
+                }
+                .filter {
+                    it.status == StatusType.UNFULFILLED
+                }
+                .flatMap {
+                    GardenOperations.completeTask(TaskCode.CREATE_WALLET).toObservable()
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete {
+                    refreshTaskList()
+                }
+                .subscribe()
+    }
+
+    private fun checkOlderUser(list: List<TaskList>) {
+        IpfsOperations.getIpfsKey()
+                .checkKey()
+                .toObservable()
+                .filter {
+                    it.isNotEmpty()
+                }
+                .flatMap {
+                    Observable.fromIterable(list)
+                }
+                .zipWith(checkBackTask(list))
+                .filter {
+                    it.first.category == TaskType.NEWBIE_TASK
+                }
+                .map {
+                    it.first.taskList
                 }
                 .flatMap {
                     Observable.fromIterable(it)
@@ -157,16 +211,102 @@ class GardenTaskVm : ViewModel() {
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy {
+                .doOnComplete {
                     refreshTaskList()
                 }
+                .subscribe()
     }
 
-    fun refreshTaskList() {
-        getTaskList()
+    fun checkCert(list: List<TaskList>) {
+        val idstatus = CertOperations.getCertStatus(CertificationType.ID)
+        val bankstatus = CertOperations.getCertStatus(CertificationType.BANK)
+        val cmstatus = CertOperations.getCertStatus(CertificationType.MOBILE)
+        val tnstatus = CertOperations.getCertStatus(CertificationType.TONGNIU)
+
+        Observable.fromIterable(list)
+                .filter {
+                    it.category == TaskType.CERT_TASK
+                }
+                .map {
+                    it.taskList
+                }
+                .flatMap {
+                    Observable.fromIterable(it)
+                }
+                .filter {
+                    it.status == StatusType.UNFULFILLED
+                }
+                .flatMap {
+                    when (it.code) {
+                        TaskCode.ID -> Observable.just(it.code to idstatus)
+                        TaskCode.BANK_CARD -> Observable.just(it.code to bankstatus)
+                        TaskCode.COMMUNICATION_LOG -> Observable.just(it.code to cmstatus)
+                        TaskCode.TN_COMMUNICATION_LOG -> Observable.just(it.code to tnstatus)
+                        else -> throw Exception("")
+                    }
+                }
+                .filter {
+                    it.second == UserCertStatus.DONE || it.second == UserCertStatus.TIMEOUT
+                }
+                .flatMap {
+                    GardenOperations.completeTask(it.first).toObservable()
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete {
+                    refreshTaskList()
+                }
+                .subscribe()
+    }
+
+    private fun checkBackTask(list: List<TaskList>): Observable<ChangeOrder> {
+        return Observable.fromIterable(list)
+                .filter {
+                    it.category == TaskType.BACKUP_TASK
+                }
+                .map {
+                    it.taskList
+                }
+                .flatMap {
+                    Observable.fromIterable(it)
+                }
+                .filter {
+                    it.code != TaskCode.BACKUP_WALLET
+                }
+                .filter {
+                    it.status == StatusType.UNFULFILLED
+                }
+                .flatMap {
+                    when (it.code) {
+                        TaskCode.BACKUP_ID -> IpfsOperations.getIpfsToken(ChainGateway.BUSINESS_ID).toObservable().zipWith(Observable.just(it.code))
+                        TaskCode.BACKUP_BANK_CARD -> IpfsOperations.getIpfsToken(ChainGateway.BUSINESS_BANK_CARD).toObservable().zipWith(Observable.just(it.code))
+                        TaskCode.BACKUP_COMMUNICATION_LOG -> IpfsOperations.getIpfsToken(ChainGateway.BUSINESS_COMMUNICATION_LOG).toObservable().zipWith(Observable.just(it.code))
+                        TaskCode.BACKUP_TN_COMMUNICATION_LOG -> IpfsOperations.getIpfsToken(ChainGateway.TN_COMMUNICATION_LOG).toObservable().zipWith(Observable.just(it.code))
+                        else -> throw  Exception("no find code ")
+                    }
+                }
+                .filter {
+                    it.first.result.toString() != "0x"
+                }
+                .map {
+                    it.second
+                }
+                .flatMap {
+                    GardenOperations.completeTask(it).toObservable()
+                }
+
+
+    }
+
+    fun refreshTaskList(event: () -> Unit = {}) {
+        getTaskList2()
         getBalance {
             balance.postValue(it)
         }
+        Observable.timer(2,TimeUnit.SECONDS)
+                .subscribe {
+                    event()
+                }
     }
 
     fun withSign() {

@@ -389,6 +389,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.home.HomeActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BsxMarketActivity"

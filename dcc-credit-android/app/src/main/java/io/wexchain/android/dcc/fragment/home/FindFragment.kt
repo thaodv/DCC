@@ -17,6 +17,7 @@ import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
 import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentFindBinding
+import io.wexchain.ipfs.utils.io_main
 
 
 /**
@@ -57,6 +58,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
 
     fun login() {
         GardenOperations.loginWithCurrentPassport()
+                .io_main()
                 .withLoading()
                 .subscribeBy {
                     initVm()
@@ -137,7 +139,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
         }
     }
 
-    fun showBoundDialog() {
+   private fun showBoundDialog() {
         if (dialog == null) {
             dialog = BaseDialog(activity!!)
         } else {

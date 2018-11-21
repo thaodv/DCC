@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.modules.garden.activity
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
+import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
@@ -32,8 +33,19 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-        binding.vm = getViewModel()
+        initVm()
         initEvent()
+    }
+
+    private fun initVm() {
+        binding.vm = getViewModel()
+        binding.srlList.apply {
+            isEnableLoadMore = false
+            setOnRefreshListener { srl ->
+                binding.vm!!.refreshTaskList { srl.finishRefresh() }
+            }
+            setRefreshHeader(ClassicsHeader(this@GardenTaskActivity))
+        }
     }
 
     fun checkCert(type: CertificationType, event: () -> Unit) {
@@ -42,6 +54,8 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
             PassportOperations.ensureCaValidity(this@GardenTaskActivity) {
                 event.invoke()
             }
+        } else {
+
         }
     }
 
@@ -118,6 +132,11 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
                 }
             })
         }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        binding.vm?.refreshTaskList()
     }
 
     private fun getReward() {

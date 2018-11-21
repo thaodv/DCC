@@ -21,6 +21,11 @@
 
         <include layout="@layout/include_toolbar" />
 
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/srl_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -128,7 +133,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="第一天"
+                            android:text="第1天"
                             android:textColor="#fff"
                             android:textSize="13sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -137,9 +142,9 @@
 
                         <TextView
                             android:id="@+id/task_day1"
-                            android:layout_width="17dp"
-                            android:layout_height="17dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginBottom="8dp"
                             android:background="@{TaskHelper.signDayBack(context,1,vm.currentWeekRecord)}"
                             android:gravity="center"
                             android:text="+10"
@@ -151,10 +156,11 @@
                             tools:background="@drawable/background_task"
                             tools:text="+10" />
 
+
                         <View
                             android:layout_width="0dp"
                             android:layout_height="2dp"
-                            android:layout_marginTop="7dp"
+                            android:layout_marginTop="8dp"
                             android:background="#80000000"
                             app:layout_constraintLeft_toRightOf="@id/task_day1"
                             app:layout_constraintRight_toRightOf="parent"
@@ -171,7 +177,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="第二天"
+                            android:text="第2天"
                             android:textColor="#fff"
                             android:textSize="13sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -180,9 +186,9 @@
 
                         <TextView
                             android:id="@+id/task_day2"
-                            android:layout_width="17dp"
-                            android:layout_height="17dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginBottom="8dp"
                             android:background="@{TaskHelper.signDayBack(context,2,vm.currentWeekRecord)}"
                             android:gravity="center"
                             android:text="+15"
@@ -196,7 +202,7 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="2dp"
-                            android:layout_marginTop="7dp"
+                            android:layout_marginTop="8dp"
                             android:background="#80000000"
                             app:layout_constraintLeft_toRightOf="@id/task_day2"
                             app:layout_constraintRight_toRightOf="parent"
@@ -205,7 +211,7 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="2dp"
-                            android:layout_marginTop="7dp"
+                            android:layout_marginTop="8dp"
                             android:background="#80000000"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/task_day2"
@@ -222,7 +228,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="第三天"
+                            android:text="第3天"
                             android:textColor="#fff"
                             android:textSize="13sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -231,9 +237,9 @@
 
                         <TextView
                             android:id="@+id/task_day3"
-                            android:layout_width="17dp"
-                            android:layout_height="17dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginBottom="8dp"
                             android:background="@{TaskHelper.signDayBack(context,3,vm.currentWeekRecord)}"
                             android:gravity="center"
                             android:text="+20"
@@ -247,7 +253,7 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="2dp"
-                            android:layout_marginTop="7dp"
+                            android:layout_marginTop="8dp"
                             android:background="#80000000"
                             app:layout_constraintLeft_toRightOf="@id/task_day3"
                             app:layout_constraintRight_toRightOf="parent"
@@ -256,7 +262,7 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="2dp"
-                            android:layout_marginTop="7dp"
+                            android:layout_marginTop="8dp"
                             android:background="#80000000"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/task_day3"
@@ -273,7 +279,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="第四天"
+                            android:text="第4天"
                             android:textColor="#fff"
                             android:textSize="13sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -282,9 +288,9 @@
 
                         <TextView
                             android:id="@+id/task_day4"
-                            android:layout_width="17dp"
-                            android:layout_height="17dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginBottom="8dp"
                             android:background="@{TaskHelper.signDayBack(context,4,vm.currentWeekRecord)}"
                             android:gravity="center"
                             android:text="+50"
@@ -298,7 +304,7 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="2dp"
-                            android:layout_marginTop="7dp"
+                            android:layout_marginTop="8dp"
                             android:background="#80000000"
                             app:layout_constraintLeft_toRightOf="@id/task_day4"
                             app:layout_constraintRight_toRightOf="parent"
@@ -307,7 +313,7 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="2dp"
-                            android:layout_marginTop="7dp"
+                            android:layout_marginTop="8dp"
                             android:background="#80000000"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/task_day4"
@@ -324,7 +330,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="第五天"
+                            android:text="第5天"
                             android:textColor="#fff"
                             android:textSize="13sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -333,9 +339,9 @@
 
                         <TextView
                             android:id="@+id/task_day5"
-                            android:layout_width="17dp"
-                            android:layout_height="17dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginBottom="8dp"
                             android:background="@{TaskHelper.signDayBack(context,5,vm.currentWeekRecord)}"
                             android:gravity="center"
                             android:text="+60"
@@ -349,7 +355,7 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="2dp"
-                            android:layout_marginTop="7dp"
+                            android:layout_marginTop="8dp"
                             android:background="#80000000"
                             app:layout_constraintLeft_toRightOf="@id/task_day5"
                             app:layout_constraintRight_toRightOf="parent"
@@ -358,7 +364,7 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="2dp"
-                            android:layout_marginTop="7dp"
+                            android:layout_marginTop="8dp"
                             android:background="#80000000"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/task_day5"
@@ -375,7 +381,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="第六天"
+                            android:text="第6天"
                             android:textColor="#fff"
                             android:textSize="13sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -384,9 +390,9 @@
 
                         <TextView
                             android:id="@+id/task_day6"
-                            android:layout_width="17dp"
-                            android:layout_height="17dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginBottom="8dp"
                             android:background="@{TaskHelper.signDayBack(context,6,vm.currentWeekRecord)}"
                             android:gravity="center"
                             android:text="+70"
@@ -400,7 +406,7 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="2dp"
-                            android:layout_marginTop="7dp"
+                            android:layout_marginTop="8dp"
                             android:background="#80000000"
                             app:layout_constraintLeft_toRightOf="@id/task_day6"
                             app:layout_constraintRight_toRightOf="parent"
@@ -409,7 +415,7 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="2dp"
-                            android:layout_marginTop="7dp"
+                            android:layout_marginTop="8dp"
                             android:background="#80000000"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/task_day6"
@@ -426,7 +432,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="第七天"
+                            android:text="第7天"
                             android:textColor="#fff"
                             android:textSize="13sp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -435,9 +441,9 @@
 
                         <TextView
                             android:id="@+id/task_day7"
-                            android:layout_width="17dp"
-                            android:layout_height="17dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginBottom="8dp"
                             android:background="@{TaskHelper.signDayBack(context,7,vm.currentWeekRecord)}"
                             android:gravity="center"
                             android:text="+90"
@@ -451,7 +457,7 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="2dp"
-                            android:layout_marginTop="7dp"
+                            android:layout_marginTop="8dp"
                             android:background="#80000000"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/task_day7"
@@ -478,20 +484,18 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:text="@{vm.taskList[0].name}"
+                        android:text="每日任务"
                         android:textColor="#000"
-                        android:textSize="17sp"
-                        tools:text="每日任务" />
+                        android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="30dp"
-                        android:text="@{vm.taskList[0].description}"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="14sp"
-                        tools:text="次数无上限 奖励无上限" />
+                        android:text="次数无上限 奖励无上限" />
 
 
                 </LinearLayout>
@@ -502,8 +506,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        imageUrl="@{vm.taskList[0].taskList[0].img}"
-                        errorRes="@{@drawable/task_sign}"
+                        android:src="@drawable/task_sign"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center_vertical"
@@ -515,10 +518,9 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
-                        android:text="@{vm.taskList[0].taskList[0].name}"
+                        android:text="每日签到"
                         android:textColor="@color/FF4A4A4A"
-                        android:textSize="17sp"
-                        tools:text="每日签到" />
+                        android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -546,8 +548,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        imageUrl="@{vm.taskList[0].taskList[1].img}"
-                        errorRes="@{@drawable/task_invitation}"
+                        android:src="@drawable/task_invitation"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center_vertical"
@@ -1303,10 +1304,9 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        imageUrl="@{vm.taskList[3].taskList[4].img}"
-                        errorRes="@{@drawable/backup_wallet}"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
+                        android:src="@drawable/backup_wallet"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin" />
 
@@ -1342,6 +1342,7 @@
             </LinearLayout>
 
         </ScrollView>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     </LinearLayout>
 

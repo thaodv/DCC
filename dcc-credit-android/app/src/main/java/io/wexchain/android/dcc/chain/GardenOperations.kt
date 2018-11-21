@@ -59,7 +59,6 @@ object GardenOperations {
                             "address" to address
                     )))
                 }
-                .doMain()
                 .map {
                     val body = it.body()
                     if (it.isSuccessful && body != null) {
@@ -74,6 +73,7 @@ object GardenOperations {
                         throw IllegalStateException()
                     }
                 }
+                .doMain()
                 .doOnSuccess {
                     val userinfo = it.first
                     App.get().userInfo = userinfo
@@ -189,7 +189,7 @@ object GardenOperations {
             val msg = WXMediaMessage(miniProgramObj)
                     .apply {
                         setThumbImage(BitmapFactory.decodeResource(App.get().resources, R.drawable.wechat_share))
-                        title = "我发现了一个免费领取Token的好地方，可以一边玩游戏，一边赚奖励哦~~"
+                        title = "哈哈，既然发现了我，不如顺手来偷点糖果吧。"
                         description = ""
                     }
 

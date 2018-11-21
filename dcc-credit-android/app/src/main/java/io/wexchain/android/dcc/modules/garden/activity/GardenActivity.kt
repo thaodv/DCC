@@ -86,7 +86,8 @@ class GardenActivity : BaseCompatActivity() {
 
         }, "BitExpress")
 
-        webView.loadUrl("http://10.65.100.69/garden/dist/#/Mygarden?playerID=${App.get().userInfo!!.member.id}&token=${App.get().gardenTokenManager.gardenToken!!}")
+//        webView.loadUrl("http://10.65.100.69/garden/dist/#/Mygarden?playerID=${App.get().userInfo!!.member.id}&token=${App.get().gardenTokenManager.gardenToken!!}")
+        webView.loadUrl("http://funcstatic.bitphare.com/dapp/garden/dist/index.html#/Mygarden?playerID=${App.get().userInfo!!.member.id}&token=${App.get().gardenTokenManager.gardenToken!!}")
     }
 
     override fun onBackPressed() {

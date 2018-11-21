@@ -12,11 +12,13 @@ import android.view.MenuItem
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.rxkotlin.zipWith
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.modules.ipfs.ActionType
 import io.wexchain.android.dcc.modules.ipfs.EventType
@@ -30,6 +32,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityMyCloudBinding
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
+import io.wexchain.dccchainservice.type.TaskCode
 import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.ipfs.utils.io_main
 import org.web3j.abi.FunctionReturnDecoder
@@ -145,7 +148,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
             asCmVm!!.setItemData(it.data3, ChainGateway.BUSINESS_COMMUNICATION_LOG)
             asCmTnVm!!.setItemData(it.data4, ChainGateway.TN_COMMUNICATION_LOG)
         }
-
+        sync()
     }
 
     private fun CloudItemVm.setItemData(status: IpfsStatus, business: String) {
@@ -262,9 +265,10 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 val idCertPassed = CertOperations.isIdCertPassed()
                 Single.just(!idCertPassed)
                         .checkStatus(ChainGateway.BUSINESS_ID)
+                        .zipWith(GardenOperations.completeTask(TaskCode.BACKUP_ID))
                         .io_main()
                         .subscribeBy {
-                            binding.asIdVm!!.state.set(it)
+                            binding.asIdVm!!.state.set(it.first)
                         }
             }
             ChainGateway.BUSINESS_BANK_CARD -> {
@@ -272,20 +276,22 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 val bankCertPassed = CertOperations.isBankCertPassed()
                 Single.just(!bankCertPassed)
                         .checkStatus(ChainGateway.BUSINESS_BANK_CARD)
+                        .zipWith(GardenOperations.completeTask(TaskCode.BACKUP_BANK_CARD))
                         .io_main()
                         .subscribeBy {
-                            binding.asBankVm!!.state.set(it)
+                            binding.asBankVm!!.state.set(it.first)
                         }
             }
             ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
                 binding.asCmVm!!.event.set(EventType.STATUS_COMPLETE)
                 val status = CertOperations.getCmLogUserStatus()
                 val cmStatus = status == UserCertStatus.DONE || status == UserCertStatus.TIMEOUT
-                Single.just(cmStatus)
+                Single.just(!cmStatus)
                         .checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG)
+                        .zipWith(GardenOperations.completeTask(TaskCode.BACKUP_COMMUNICATION_LOG))
                         .io_main()
                         .subscribeBy {
-                            binding.asCmVm!!.state.set(it)
+                            binding.asCmVm!!.state.set(it.first)
                         }
             }
             ChainGateway.TN_COMMUNICATION_LOG -> {
@@ -293,9 +299,10 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 val tnstatus = worhavah.certs.tools.CertOperations.getTNLogUserStatus()
                 Single.just(tnstatus != worhavah.certs.tools.UserCertStatus.DONE)
                         .checkStatus(ChainGateway.TN_COMMUNICATION_LOG)
+                        .zipWith(GardenOperations.completeTask(TaskCode.BACKUP_TN_COMMUNICATION_LOG))
                         .io_main()
                         .subscribeBy {
-                            binding.asCmTnVm!!.state.set(it)
+                            binding.asCmTnVm!!.state.set(it.first)
                         }
             }
         }
