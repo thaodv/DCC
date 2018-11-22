@@ -76,17 +76,23 @@ class GardenTaskVm : ViewModel() {
 
     val isOpenIpfs = MutableLiveData<Pair<Boolean, String?>>()
             .apply {
-                IpfsOperations.getIpfsKey()
-                        .checkKey()
-                        .io_main()
-                        .subscribeBy {
-                            if (it.isEmpty()) {
-                                this.postValue(false to null)
-                            } else {
-                                this.postValue(true to it)
-                            }
-                        }
+                getIpfsKey{
+                    if (it.isEmpty()) {
+                        this.postValue(false to null)
+                    } else {
+                        this.postValue(true to it)
+                    }
+                }
             }
+
+    private fun getIpfsKey(event: (String) -> Unit) {
+        IpfsOperations.getIpfsKey()
+                .checkKey()
+                .io_main()
+                .subscribeBy {
+                    event(it)
+                }
+    }
 
     fun getBalance(event: (String) -> Unit) {
         GardenOperations
@@ -303,6 +309,13 @@ class GardenTaskVm : ViewModel() {
         getBalance {
             balance.postValue(it)
         }
+        getIpfsKey{
+            if (it.isEmpty()) {
+                isOpenIpfs.postValue(false to null)
+            } else {
+                isOpenIpfs.postValue(true to it)
+            }
+        }
         Observable.timer(2,TimeUnit.SECONDS)
                 .subscribe {
                     event()
@@ -351,25 +364,25 @@ class GardenTaskVm : ViewModel() {
 
     fun idCert(task: TaskList.Task?) {
         checkFulfilled(task) {
-            idCert.call()
+            syncIpfs.call()
         }
     }
 
     fun bankCert(task: TaskList.Task?) {
         checkFulfilled(task) {
-            bankCert.call()
+            syncIpfs.call()
         }
     }
 
     fun cmCert(task: TaskList.Task?) {
         checkFulfilled(task) {
-            cmCert.call()
+            syncIpfs.call()
         }
     }
 
     fun tnCert(task: TaskList.Task?) {
         checkFulfilled(task) {
-            tnCert.call()
+            syncIpfs.call()
         }
     }
 

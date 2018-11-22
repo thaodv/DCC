@@ -69,7 +69,7 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
                     toast(it)
                 }
             })
-            idCert.observe(this@GardenTaskActivity, Observer {
+            /*idCert.observe(this@GardenTaskActivity, Observer {
                 navigateTo(SubmitIdActivity::class.java)
             })
             bankCert.observe(this@GardenTaskActivity, Observer {
@@ -86,7 +86,7 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
                 checkCert(CertificationType.TONGNIU) {
                     navigateTo(SubmitTNLogActivity::class.java)
                 }
-            })
+            })*/
             backWallet.observe(this@GardenTaskActivity, Observer {
                 val dialog = BaseDialog(this@GardenTaskActivity)
                 dialog.removePassportDialog("备份钱包", "点击【去备份钱包】完成备份钱包任务。备份完成，点击【已备份领阳光】，获得50阳光！", "去备份钱包", "已备份领阳光")
@@ -107,7 +107,8 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
                 }
             })
             syncIpfs.observe(this@GardenTaskActivity, Observer {
-                isOpenIpfs.value?.let {
+                navigateTo(MyCreditNewActivity::class.java)
+                /*isOpenIpfs.value?.let {
                     if (!it.first) {
                         navigateTo(OpenCloudActivity::class.java) {
                             putExtra("activity_type", PassportSettingsActivity.NOT_OPEN_CLOUD)
@@ -129,7 +130,7 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
                             }
                         }
                     }
-                }
+                }*/
             })
         }
     }

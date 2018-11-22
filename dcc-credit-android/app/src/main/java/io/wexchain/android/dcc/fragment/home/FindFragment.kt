@@ -139,7 +139,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
         }
     }
 
-   private fun showBoundDialog() {
+    private fun showBoundDialog() {
         if (dialog == null) {
             dialog = BaseDialog(activity!!)
         } else {
