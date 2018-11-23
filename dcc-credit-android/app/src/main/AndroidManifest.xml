@@ -141,9 +141,6 @@
             android:label="统一登录"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="io.wexchain.android.dcc.WebPageActivity"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name="io.wexchain.android.dcc.PassportCreationSucceedActivity"
             android:screenOrientation="portrait"/>
         <activity

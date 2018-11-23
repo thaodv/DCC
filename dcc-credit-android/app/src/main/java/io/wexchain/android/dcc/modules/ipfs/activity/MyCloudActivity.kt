@@ -153,6 +153,10 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
 
     private fun CloudItemVm.setItemData(status: IpfsStatus, business: String) {
         state.set(status)
+        when (status) {
+            IpfsStatus.STATUS_UPLOAD, IpfsStatus.STATUS_DOWNLOAD -> action.set(ActionType.STATUS_SELECT)
+            else -> action.set(ActionType.STATUS_NOSELECT)
+        }
         if (status == IpfsStatus.STATUS_UPLOAD) {
             mBinder.createItemData(business)
                     .io_main()

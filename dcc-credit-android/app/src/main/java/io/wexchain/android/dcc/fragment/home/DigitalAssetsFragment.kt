@@ -2,7 +2,8 @@ package io.wexchain.android.dcc.fragment.home
 
 import android.arch.lifecycle.Observer
 import com.wexmarket.android.network.Networking
-import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.Single
+import io.reactivex.rxkotlin.zipWith
 import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
@@ -13,7 +14,6 @@ import io.wexchain.android.dcc.SearchDigitalCurrencyActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
 import io.wexchain.android.dcc.modules.trans.activity.DccExchangeActivity
-import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.DigitalAssetsAdapter
@@ -52,23 +52,23 @@ class DigitalAssetsFragment : BindFragment<ActivityDigitalAssetsBinding>(), Item
         val createApi = Networking(App.get()).createApi(EthJsonRpcApiWithAuth::class.java, base)
         val agent = EthsRpcAgent.by(createApi)
 
-        val startTime = System.currentTimeMillis()
-        LogUtils.i("SelectNodeActivity-base1-time-start", startTime)
-        agent.checkNode()
+        Single.just(System.currentTimeMillis())
+                .zipWith(agent.checkNode())
+                .map {
+                    when {
+                        System.currentTimeMillis() - it.first <= 300 -> R.drawable.img_node_green
+                        System.currentTimeMillis() - it.first <= 1000 -> R.drawable.img_node_yellow
+                        else -> R.drawable.img_node_red
+                    }
+                }
+                .onErrorReturn {
+                    R.drawable.img_node_red
+                }
                 .io_main()
-                .subscribeBy(
-                        onSuccess = {
-                            if (System.currentTimeMillis() - startTime <= 300) {
-                                binding.digitalSelectNode.setImageResource(R.drawable.img_node_green)
-                            } else if (System.currentTimeMillis() - startTime <= 1000) {
-                                binding.digitalSelectNode.setImageResource(R.drawable.img_node_yellow)
-                            } else {
-                                binding.digitalSelectNode.setImageResource(R.drawable.img_node_red)
-                            }
-                        },
-                        onError = {
-                            binding.digitalSelectNode.setImageResource(R.drawable.img_node_red)
-                        })
+                .doOnSuccess {
+                    binding.digitalSelectNode.setImageResource(it)
+                }
+                .subscribe()
 
         val assetsVm = getViewModel<DigitalAssetsVm>()
         assetsVm.ensureHolderAddress(this)

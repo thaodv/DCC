@@ -177,7 +177,7 @@ fun checkXPosed(): Boolean {
 
 }
 
-fun Long.getTimeFormatText(): String {
+fun Long.formatText(): String {
     val minute: Long = 60 * 1000
     val hour: Long = 60 * minute
     val day: Long = 24 * hour
@@ -209,6 +209,16 @@ fun Long.getTimeFormatText(): String {
         return "$r 分钟前"
     }
     return "刚刚"
+
+}
+
+fun View.onNoDoubleClick(click: (View) -> Unit) {
+    val view = this
+    view.setOnClickListener(object : NoDoubleClickListener() {
+        override fun onNoDoubleClick(v: View?) {
+            click(view)
+        }
+    })
 
 }
 

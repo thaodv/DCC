@@ -8,15 +8,15 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.DigitalCurrencyActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.tools.MultiChainHelper
-import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.tools.SharedPreferenceUtil
+import io.wexchain.android.dcc.tools.onNoDoubleClick
 import io.wexchain.android.dcc.view.dialog.WaitTransDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityDccExchangeBinding
@@ -47,50 +47,47 @@ class DccExchangeActivity : BindActivity<ActivityDccExchangeBinding>() {
             }
         }
 
-        binding.ibDccToPublic.setOnClickListener(object : NoDoubleClickListener() {
-            override fun onNoDoubleClick(v: View?) {
-                val dccJuzix = MultiChainHelper.dispatch(Currencies.DCC).first { it.chain == Chain.JUZIX_PRIVATE }
-                navigateTo(Private2PublicActivity::class.java) {
-                    putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dccJuzix)
-                }
+        binding.ibDccToPublic.onNoDoubleClick {
+            val dccJuzix = MultiChainHelper.dispatch(Currencies.DCC).first { it.chain == Chain.JUZIX_PRIVATE }
+            navigateTo(Private2PublicActivity::class.java) {
+                putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dccJuzix)
             }
-        })
+        }
 
-        binding.ibPublicToDcc.setOnClickListener(object : NoDoubleClickListener() {
-            override fun onNoDoubleClick(v: View?) {
-                val dccPublic = MultiChainHelper.dispatch(Currencies.DCC).first { it.chain == Chain.publicEthChain }
-                if (dccPublic.chain == Chain.publicEthChain) {//公链
 
-                    val eth = SharedPreferenceUtil.get(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING) as? EthsTransaction
+        binding.ibPublicToDcc.onNoDoubleClick {
+            val dccPublic = MultiChainHelper.dispatch(Currencies.DCC).first { it.chain == Chain.publicEthChain }
+            if (dccPublic.chain == Chain.publicEthChain) {//公链
 
-                    if (null == eth) {
-                        navigateTo(Public2PrivateActivity::class.java) {
-                            putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dccPublic)
-                        }
-                    } else {
-                        val p = App.get().passportRepository.getCurrentPassport()!!
+                val eth = SharedPreferenceUtil.get(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING) as? EthsTransaction
 
-                        var agent = App.get().assetsRepository.getDigitalCurrencyAgent(dccPublic)
-
-                        agent.getNonce(p.address).observeOn(AndroidSchedulers.mainThread()).subscribe({
-                            if (it > eth.nonce) {
-                                navigateTo(Public2PrivateActivity::class.java) {
-                                    putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dccPublic)
-                                }
-                            } else {
-                                val waitTransDialog = WaitTransDialog(this@DccExchangeActivity)
-                                waitTransDialog.mTvText.text = "请待「待上链」交易变为「已上链」后再提交新的交易。"
-                                waitTransDialog.show()
-                            }
-                        }, {})
-                    }
-                } else {
+                if (null == eth) {
                     navigateTo(Public2PrivateActivity::class.java) {
                         putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dccPublic)
                     }
+                } else {
+                    val p = App.get().passportRepository.getCurrentPassport()!!
+
+                    var agent = App.get().assetsRepository.getDigitalCurrencyAgent(dccPublic)
+
+                    agent.getNonce(p.address).observeOn(AndroidSchedulers.mainThread()).subscribe({
+                        if (it > eth.nonce) {
+                            navigateTo(Public2PrivateActivity::class.java) {
+                                putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dccPublic)
+                            }
+                        } else {
+                            val waitTransDialog = WaitTransDialog(this@DccExchangeActivity)
+                            waitTransDialog.mTvText.text = "请待「待上链」交易变为「已上链」后再提交新的交易。"
+                            waitTransDialog.show()
+                        }
+                    }, {})
+                }
+            } else {
+                navigateTo(Public2PrivateActivity::class.java) {
+                    putExtra(Extras.EXTRA_DIGITAL_CURRENCY, dccPublic)
                 }
             }
-        })
+        }
 
         val sp = getSharedPreferences("setting", Context.MODE_PRIVATE)
         if (sp.getBoolean("first_into", true)) {

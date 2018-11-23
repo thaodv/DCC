@@ -29,6 +29,10 @@ android {
 
         buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_ID', '"wx775da1e970b779e1"'
         buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_KEY', '"b9b698d6e5f8c3d9276d3f31f925f987"'
+        resConfigs "en"
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
     }
     signingConfigs {
         debug {
@@ -48,7 +52,8 @@ android {
         release {
             signingConfig signingConfigs.wexchain
 
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // debuggable true
 

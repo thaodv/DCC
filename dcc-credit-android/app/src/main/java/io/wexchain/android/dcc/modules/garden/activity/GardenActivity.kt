@@ -79,9 +79,10 @@ class GardenActivity : BaseCompatActivity() {
             }
 
             @JavascriptInterface
-            fun refreshToken(): String {
-                val token = GardenOperations.loginWithCurrentPassport().blockingGet().second
-                return token
+            fun refreshToken() {
+                /*val token = GardenOperations.loginWithCurrentPassport().blockingGet().second
+                return token*/
+                finish()
             }
 
         }, "BitExpress")

@@ -92,7 +92,11 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
     override fun onResume() {
         super.onResume()
         if (GardenOperations.isBound()) {
-            binding.vm?.refresh()
+            if (null == binding.vm) {
+                binding.vm = getViewModel()
+            } else {
+                binding.vm?.refresh()
+            }
         }
     }
 
