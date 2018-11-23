@@ -23,8 +23,8 @@ class DoRepayActivity : BaseCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initToolbar(true)
         setContentView(R.layout.activity_do_repay)
+        initToolbar()
         mTvTip = findViewById(R.id.tv_tip)
         mBtSubmit = findViewById(R.id.btn_submit)
 

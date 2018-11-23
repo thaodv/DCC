@@ -108,7 +108,7 @@ object IpfsOperations {
             if (result == "0x") {
                 ""
             } else {
-                val decode = FunctionReturnDecoder.decode(it.result, Erc20Helper.decodeKeyResponse())
+                val decode = FunctionReturnDecoder.decode(result, Erc20Helper.decodeKeyResponse())
                 val keyHash = (decode[1] as Bytes32).value.toHex()
                 val hex = keyHash.hexToTen()
                 if (hex != BigInteger.ZERO) {

@@ -9,6 +9,7 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.tools.toJson
+import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
 
 
@@ -88,7 +89,8 @@ class GardenActivity : BaseCompatActivity() {
         }, "BitExpress")
 
 //        webView.loadUrl("http://10.65.100.69/garden/dist/#/Mygarden?playerID=${App.get().userInfo!!.member.id}&token=${App.get().gardenTokenManager.gardenToken!!}")
-        webView.loadUrl("http://funcstatic.bitphare.com/dapp/garden/dist/index.html#/Mygarden?playerID=${App.get().userInfo!!.member.id}&token=${App.get().gardenTokenManager.gardenToken!!}")
+//        webView.loadUrl("http://funcstatic.bitphare.com/dapp/garden/dist/index.html#/Mygarden?playerID=${App.get().userInfo!!.member.id}&token=${App.get().gardenTokenManager.gardenToken!!}")
+        webView.loadUrl("${BuildConfig.GARDEN_BASEURL}#/Mygarden?playerID=${App.get().userInfo!!.member.id}&token=${App.get().gardenTokenManager.gardenToken!!}")
     }
 
     override fun onBackPressed() {
