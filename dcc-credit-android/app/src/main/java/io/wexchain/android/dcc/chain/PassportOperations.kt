@@ -170,7 +170,7 @@ object PassportOperations {
                                     }
                                     it
                                 }
-                                .retryWhen(RetryWithDelay.createSimple(4, 5000L))
+                                .retryWhen(RetryWithDelay.createSimple(10, 5000L))
                     }
                     .flatMap {
                         api.getPubKey(address)
