@@ -128,10 +128,11 @@
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
 
--keep class org.web3j.crypto.WalletFile{*;}
--keep class org.web3j.crypto.WalletFile$*{*;}
+-keep class  org.web3j.**
+
 -keep,includedescriptorclasses class io.wexchain.android.dcc.domain.**{*;}
 -keep,includedescriptorclasses class io.wexchain.android.dcc.vm.domain.**{*;}
+-keep,includedescriptorclasses class io.wexchain.ipfs.entity.**{*;}
 #glide 4
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep public class * extends com.bumptech.glide.AppGlideModule

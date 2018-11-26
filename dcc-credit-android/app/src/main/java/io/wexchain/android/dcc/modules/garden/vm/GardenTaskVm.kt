@@ -41,10 +41,6 @@ class GardenTaskVm : ViewModel() {
     val syncIpfs = SingleLiveEvent<Void>()
     val toGardenList = SingleLiveEvent<Void>()
     val shareWechat = SingleLiveEvent<Void>()
-    val idCert = SingleLiveEvent<Void>()
-    val bankCert = SingleLiveEvent<Void>()
-    val cmCert = SingleLiveEvent<Void>()
-    val tnCert = SingleLiveEvent<Void>()
     val openIpfs = SingleLiveEvent<Void>()
 
     val taskList = MutableLiveData<List<TaskList>>()
@@ -199,12 +195,11 @@ class GardenTaskVm : ViewModel() {
                 .flatMap {
                     Observable.fromIterable(list)
                 }
-                .zipWith(checkBackTask(list))
                 .filter {
-                    it.first.category == TaskType.NEWBIE_TASK
+                    it.category == TaskType.NEWBIE_TASK
                 }
                 .map {
-                    it.first.taskList
+                    it.taskList
                 }
                 .flatMap {
                     Observable.fromIterable(it)
@@ -215,6 +210,7 @@ class GardenTaskVm : ViewModel() {
                 .flatMap {
                     GardenOperations.completeTask(it.code).toObservable()
                 }
+                .zipWith(checkBackTask(list))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete {
@@ -300,8 +296,6 @@ class GardenTaskVm : ViewModel() {
                 .flatMap {
                     GardenOperations.completeTask(it).toObservable()
                 }
-
-
     }
 
     fun refreshTaskList(event: () -> Unit = {}) {
