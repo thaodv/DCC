@@ -130,8 +130,14 @@
 
 -keep class  org.web3j.**
 
+-keep class org.web3j.crypto.WalletFile{*;}
+-keep class org.web3j.crypto.WalletFile$*{*;}
+
 -keep,includedescriptorclasses class io.wexchain.android.dcc.domain.**{*;}
 -keep,includedescriptorclasses class io.wexchain.android.dcc.vm.domain.**{*;}
+-keep,includedescriptorclasses class worhavah.regloginlib.Net.**{*;}
+-keep,includedescriptorclasses class worhavah.certs.bean.**{*;}
+-keep,includedescriptorclasses class worhavah.certs.beans.**{*;}
 -keep,includedescriptorclasses class io.wexchain.ipfs.entity.**{*;}
 #glide 4
 -keep public class * implements com.bumptech.glide.module.GlideModule

@@ -137,6 +137,7 @@ class PassportRemovalActivity : BaseCompatActivity() {
             //clear session token
             App.get().scfTokenManager.scfToken = null
             App.get().gardenTokenManager.gardenToken = null
+            App.get().userInfo = null
             SharedPreferenceUtil.save(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING, null)
         }
                 .doOnSubscribe {

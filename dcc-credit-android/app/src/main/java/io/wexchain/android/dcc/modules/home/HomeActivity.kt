@@ -92,7 +92,7 @@ class HomeActivity : BaseCompatActivity() {
             override fun onTabSelected(position: Int) {
                 when (position) {
                     0 -> replaceFragment(ServiceFragment())
-                    1 -> replaceFragment(FindFragment())
+                    1 -> replaceFragment(FindFragment.getInstance())
                     2 -> replaceFragment(DigitalAssetsFragment())
                     3 -> replaceFragment(MineFragment())
                 }

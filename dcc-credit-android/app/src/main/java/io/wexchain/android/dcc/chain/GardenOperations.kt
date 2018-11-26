@@ -65,6 +65,7 @@ object GardenOperations {
                         if (body.isSuccess) {
                             val token = it.headers()[MarketingApi.HEADER_TOKEN]!!
                             App.get().gardenTokenManager.gardenToken = token
+                            App.get().userInfo = body.result
                             it.body()!!.result!! to token
                         } else {
                             throw body.asError()
@@ -76,7 +77,6 @@ object GardenOperations {
                 .doMain()
                 .doOnSuccess {
                     val userinfo = it.first
-                    App.get().userInfo = userinfo
                     passport.setUserInfo(it.toJson())
 
                     userinfo.member.profilePhoto?.let {

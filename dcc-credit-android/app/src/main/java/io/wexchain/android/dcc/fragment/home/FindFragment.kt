@@ -81,22 +81,19 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
         passport.currPassport.observe(this, Observer {
             binding.passport = it
         })
+        binding.vm = getViewModel()
 
         if (!GardenOperations.isBound()) {
             showBoundDialog()
-        } else {
-            binding.vm = getViewModel()
+        }else{
+            binding.vm?.refresh()
         }
     }
 
     override fun onResume() {
         super.onResume()
         if (GardenOperations.isBound()) {
-            if (null == binding.vm) {
-                binding.vm = getViewModel()
-            } else {
-                binding.vm?.refresh()
-            }
+            binding.vm?.refresh()
         }
     }
 
@@ -128,7 +125,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
         }
     }
 
-    fun View.checkBoundClick(event: () -> Unit) {
+    private fun View.checkBoundClick(event: () -> Unit) {
         this.onClick {
             if (GardenOperations.isLogin()) {
                 if (GardenOperations.isBound()) {
