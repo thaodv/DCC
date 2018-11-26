@@ -43,7 +43,7 @@ class BaseDialog(context: Context) : Dialog(context) {
         val d = context.resources.displayMetrics
         lp.width = (d.widthPixels * 0.7).toInt()
         dialogWindow.attributes = lp
-        window.setBackgroundDrawableResource(R.drawable.background_holding)
+        window.setBackgroundDrawableResource(R.drawable.background_holding2)
 
         check_btn_tag.visibility = View.VISIBLE
         check_upgrade_cancle.setOnClickListener {
@@ -71,7 +71,7 @@ class BaseDialog(context: Context) : Dialog(context) {
         val d = context.resources.displayMetrics
         lp.width = (d.widthPixels * 0.8).toInt()
         dialogWindow.attributes = lp
-        window.setBackgroundDrawableResource(R.drawable.background_holding)
+        window.setBackgroundDrawableResource(R.drawable.background_holding2)
 
         val cancel = view.findViewById<TextView>(R.id.dialog_cancle)
         val confirm = view.findViewById<TextView>(R.id.dialog_confirm)
@@ -115,7 +115,7 @@ class BaseDialog(context: Context) : Dialog(context) {
         val d = context.resources.displayMetrics
         lp.width = (d.widthPixels * 0.8).toInt()
         dialogWindow.attributes = lp
-        window.setBackgroundDrawableResource(R.drawable.background_holding)
+        window.setBackgroundDrawableResource(R.drawable.background_holding2)
 
         view.findViewById<ImageView>(R.id.bound_close).setOnClickListener {
             dismiss()
@@ -139,7 +139,7 @@ class BaseDialog(context: Context) : Dialog(context) {
         val d = context.resources.displayMetrics
         lp.width = (d.widthPixels * 0.8).toInt()
         dialogWindow.attributes = lp
-        window.setBackgroundDrawableResource(R.drawable.background_holding)
+        window.setBackgroundDrawableResource(R.drawable.background_holding2)
 
         tiptitle?.let {
             view.findViewById<TextView>(R.id.tips_title).text = it
@@ -177,7 +177,7 @@ class BaseDialog(context: Context) : Dialog(context) {
         val d = context.resources.displayMetrics
         lp.width = (d.widthPixels * 0.7).toInt()
         dialogWindow.attributes = lp
-        window.setBackgroundDrawableResource(R.drawable.background_holding)
+        window.setBackgroundDrawableResource(R.drawable.background_holding2)
 
         home_upgrade_confirm.visibility = View.VISIBLE
         check_upgrade_title.text = getString(R.string.please_download_and_update)

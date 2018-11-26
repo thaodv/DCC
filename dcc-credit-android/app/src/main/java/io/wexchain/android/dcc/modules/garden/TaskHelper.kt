@@ -4,13 +4,14 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
-import io.wexchain.android.dcc.tools.getTimeFormatText
+import io.wexchain.android.dcc.tools.formatText
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.domain.ChangeOrder
 import io.wexchain.dccchainservice.domain.TaskList
 import io.wexchain.dccchainservice.domain.WeekRecord
 import io.wexchain.dccchainservice.type.MathType
 import io.wexchain.dccchainservice.type.StatusType
+import io.wexchain.dccchainservice.type.TaskCode
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,7 +20,7 @@ import java.util.*
  */
 object TaskHelper {
 
-    private val expiredFormat = SimpleDateFormat("yyyy-mm-dd  HH:mm:ss", Locale.CHINA)
+    private val expiredFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss", Locale.CHINA)
 
     @JvmStatic
     fun expiredText(expired: Long?): String {
@@ -77,7 +78,20 @@ object TaskHelper {
             ""
         } else when {
             task.status == StatusType.FULFILLED -> "已完成"
-            task.status == StatusType.UNFULFILLED -> task.bonus
+            task.status == StatusType.UNFULFILLED ->
+                when (task.code) {
+                    TaskCode.BACKUP_ID,
+                    TaskCode.BACKUP_BANK_CARD,
+                    TaskCode.BACKUP_COMMUNICATION_LOG,
+                    TaskCode.BACKUP_TN_COMMUNICATION_LOG,
+                    TaskCode.BACKUP_WALLET,
+                    TaskCode.OPEN_CLOUD_STORE,
+                    TaskCode.ID,
+                    TaskCode.BANK_CARD,
+                    TaskCode.COMMUNICATION_LOG,
+                    TaskCode.TN_COMMUNICATION_LOG -> task.bonus + " 〉"
+                    else -> task.bonus
+                }
             else -> ""
         }
     }
@@ -105,17 +119,17 @@ object TaskHelper {
 
     @JvmStatic
     fun getZhishimsg(data: ChangeOrder?): String {
-        return "${data?.nickName?:"王思聪"}获胜  +${data?.amount?:"5"}阳光值"
+        return "${data?.nickName ?: "王思聪"}获胜  +${data?.amount ?: "5"}阳光值"
     }
 
     @JvmStatic
     fun getGardenmsg(ismsg: Boolean?): String {
-        return if (ismsg == true)"您有奖励未收取哦" else "您的奖励将于48小时后发放"
+        return if (ismsg == true) "您有奖励未收取哦" else "您的奖励将于48小时后发放"
     }
 
     @JvmStatic
     fun getZhishiTime(data: ChangeOrder?): String {
-        return data?.lastUpdatedTime?.getTimeFormatText()?:""
+        return data?.lastUpdatedTime?.formatText() ?: ""
     }
 
 }

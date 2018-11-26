@@ -18,8 +18,8 @@ android {
         applicationId "io.wexchain.dcc"
         minSdkVersion min_sdk
         targetSdkVersion target_sdk
-        versionCode 28
-        versionName "3.0.6"
+        versionCode 29
+        versionName "3.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -29,6 +29,10 @@ android {
 
         buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_ID', '"wx775da1e970b779e1"'
         buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_KEY', '"b9b698d6e5f8c3d9276d3f31f925f987"'
+        resConfigs "en","zh"
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
     }
     signingConfigs {
         debug {
@@ -49,6 +53,7 @@ android {
             signingConfig signingConfigs.wexchain
 
             minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // debuggable true
 
@@ -62,6 +67,8 @@ android {
             buildConfigField 'java.lang.String', 'PUBLIC_ACCROSS_DETAIL_URL', '"https://etherscan.io/tx/"'
             buildConfigField 'java.lang.String', 'CONTRACT_BASE_URL', '"https://gateway.bitphare.com/passport-gateway/restful/"'
             buildConfigField 'java.lang.String', 'IPFS_ADDRESS', '"http://ipfs.dcc.finance:8000/api/v0/"'
+            buildConfigField 'java.lang.String', 'GARDEN_BASEURL', '"https://static.bitphare.com/dapp/garden/dist/index.html"'
+
         }
         debug {
             //            signingConfig signingConfigs.wexchain
@@ -82,6 +89,7 @@ android {
             buildConfigField 'java.lang.String', 'PUBLIC_ACCROSS_DETAIL_URL', '"https://rinkeby.etherscan.io/tx/"'
             buildConfigField 'java.lang.String', 'CONTRACT_BASE_URL', '"http://10.65.209.13:9511/passport-gateway/restful/"'
             buildConfigField 'java.lang.String', 'IPFS_ADDRESS', '"http://ipfs.dcc.finance:8000/api/v0/"'
+            buildConfigField 'java.lang.String', 'GARDEN_BASEURL', '"http://funcstatic.bitphare.com/dapp/garden/dist/index.html"'
         }
         staging {
 

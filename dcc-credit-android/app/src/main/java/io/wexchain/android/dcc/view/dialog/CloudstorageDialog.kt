@@ -23,7 +23,7 @@ class CloudstorageDialog(context: Context):Dialog(context) {
         val d = context.resources.displayMetrics
         lp.width = (d.widthPixels * 0.7).toInt()
         dialogWindow.attributes = lp
-        window.setBackgroundDrawableResource(R.drawable.background_holding)
+        window.setBackgroundDrawableResource(R.drawable.background_holding2)
         help_cancel.onClick {
             dismiss()
         }
@@ -50,7 +50,7 @@ class CloudstorageDialog(context: Context):Dialog(context) {
         val d = context.resources.displayMetrics
         lp.width = (d.widthPixels * 0.7).toInt()
         dialogWindow.attributes = lp
-        window.setBackgroundDrawableResource(R.drawable.background_holding)
+        window.setBackgroundDrawableResource(R.drawable.background_holding2)
         btn_ok.onClick {
             dismiss()
         }

@@ -59,7 +59,6 @@ object GardenOperations {
                             "address" to address
                     )))
                 }
-                .doMain()
                 .map {
                     val body = it.body()
                     if (it.isSuccessful && body != null) {
@@ -74,6 +73,7 @@ object GardenOperations {
                         throw IllegalStateException()
                     }
                 }
+                .doMain()
                 .doOnSuccess {
                     val userinfo = it.first
                     App.get().userInfo = userinfo
@@ -170,7 +170,7 @@ object GardenOperations {
         error.check {
             val req = WXLaunchMiniProgram.Req()
             req.userName = "gh_0d13628f5e03"
-            req.path = "/pages/login/login?playid=$it"
+            req.path = "/pages/contest/contest?playId=$it"
             req.miniprogramType = WXLaunchMiniProgram.Req.MINIPROGRAM_TYPE_PREVIEW
             WxApiManager.wxapi.sendReq(req)
         }
@@ -183,13 +183,13 @@ object GardenOperations {
                         webpageUrl = "http://open.dcc.finance/dapp/invite/index.html" // 兼容低版本的网页链接
                         miniprogramType = WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW// 正式版:0，测试版:1，体验版:2
                         userName = "gh_0d13628f5e03"
-                        path = "/pages/login/login?playid=$it"
+                        path = "/pages/login/login?playId=$it"
                     }
 
             val msg = WXMediaMessage(miniProgramObj)
                     .apply {
                         setThumbImage(BitmapFactory.decodeResource(App.get().resources, R.drawable.wechat_share))
-                        title = "我发现了一个免费领取Token的好地方，可以一边玩游戏，一边赚奖励哦~~"
+                        title = "哈哈，既然发现了我，不如顺手来偷点糖果吧。"
                         description = ""
                     }
 

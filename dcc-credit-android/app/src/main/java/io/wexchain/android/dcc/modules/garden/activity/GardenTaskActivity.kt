@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.modules.garden.activity
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
+import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
@@ -32,8 +33,19 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-        binding.vm = getViewModel()
+        initVm()
         initEvent()
+    }
+
+    private fun initVm() {
+        binding.vm = getViewModel()
+        binding.srlList.apply {
+            isEnableLoadMore = false
+            setOnRefreshListener { srl ->
+                binding.vm!!.refreshTaskList { srl.finishRefresh() }
+            }
+            setRefreshHeader(ClassicsHeader(this@GardenTaskActivity))
+        }
     }
 
     fun checkCert(type: CertificationType, event: () -> Unit) {
@@ -42,6 +54,8 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
             PassportOperations.ensureCaValidity(this@GardenTaskActivity) {
                 event.invoke()
             }
+        } else {
+
         }
     }
 
@@ -55,7 +69,7 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
                     toast(it)
                 }
             })
-            idCert.observe(this@GardenTaskActivity, Observer {
+            /*idCert.observe(this@GardenTaskActivity, Observer {
                 navigateTo(SubmitIdActivity::class.java)
             })
             bankCert.observe(this@GardenTaskActivity, Observer {
@@ -72,7 +86,7 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
                 checkCert(CertificationType.TONGNIU) {
                     navigateTo(SubmitTNLogActivity::class.java)
                 }
-            })
+            })*/
             backWallet.observe(this@GardenTaskActivity, Observer {
                 val dialog = BaseDialog(this@GardenTaskActivity)
                 dialog.removePassportDialog("备份钱包", "点击【去备份钱包】完成备份钱包任务。备份完成，点击【已备份领阳光】，获得50阳光！", "去备份钱包", "已备份领阳光")
@@ -93,7 +107,8 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
                 }
             })
             syncIpfs.observe(this@GardenTaskActivity, Observer {
-                isOpenIpfs.value?.let {
+                navigateTo(MyCreditNewActivity::class.java)
+                /*isOpenIpfs.value?.let {
                     if (!it.first) {
                         navigateTo(OpenCloudActivity::class.java) {
                             putExtra("activity_type", PassportSettingsActivity.NOT_OPEN_CLOUD)
@@ -115,9 +130,14 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
                             }
                         }
                     }
-                }
+                }*/
             })
         }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        binding.vm?.refreshTaskList()
     }
 
     private fun getReward() {

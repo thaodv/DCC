@@ -102,7 +102,7 @@ class LoadingActivity : BaseCompatActivity() {
             lp.width = (d.widthPixels * 0.8).toInt()
             lp.height = (d.heightPixels * 0.3).toInt()
             dialogWindow.attributes = lp
-            window.setBackgroundDrawableResource(R.drawable.background_holding)
+            window.setBackgroundDrawableResource(R.drawable.background_holding2)
             setCancelable(false)
             show()
             return this

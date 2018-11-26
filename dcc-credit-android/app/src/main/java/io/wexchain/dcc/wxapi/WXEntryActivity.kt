@@ -18,6 +18,7 @@ import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.dcc.WxApiManager
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.ipfs.utils.io_main
 
 
 class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
@@ -48,6 +49,7 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
                             .flatMap {
                                 GardenOperations.loginWithCurrentPassport()
                             }
+                            .io_main()
                             .withLoading()
                             .doOnError {
                                 if (it is DccChainServiceException) {

@@ -78,12 +78,13 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
 
     lateinit var nodeList: List<NodeBean>
 
-    var userInfo:UserInfo? = null
+    var userInfo: UserInfo? = null
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this)
     }
+
 
     override fun onCreate() {
         super.onCreate()
@@ -299,6 +300,15 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         private lateinit var instance: WeakReference<App>
         @JvmStatic
         fun get(): App = instance.get()!!
+
+        /*@Synchronized
+        fun getUserInfo(): UserInfo {
+            if (get().userInfo == null) {
+                val info = get().passportRepository.getUserInfo()
+                get().userInfo = info!!.toBean(UserInfo::class.java)
+            }
+            return get().userInfo!!
+        }*/
     }
 
 }

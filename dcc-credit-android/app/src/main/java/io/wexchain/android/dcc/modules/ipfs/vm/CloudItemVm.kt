@@ -15,7 +15,6 @@ class CloudItemVm : ViewModel() {
     val state = ObservableField<IpfsStatus>()
 
     val action = ObservableField<ActionType>()
-            .apply { this.set(ActionType.STATUS_SELECT) }
 
     val event = ObservableField<EventType>()
             .apply { this.set(EventType.STATUS_DEFAULT) }
