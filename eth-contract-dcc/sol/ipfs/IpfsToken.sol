@@ -3,7 +3,7 @@ pragma solidity ^0.4.2;
 import "./IpfsKeyHash.sol";
 import "../ownership/Ownable.sol";
 
-contract IpfsToken is OwnerPermission{
+contract IpfsToken is Ownable{
     struct IpfsTokenData {
         uint256 version;
         string cipher;
@@ -90,8 +90,7 @@ contract IpfsToken is OwnerPermission{
         );
     }
 
-    function setIpfsKeyHash(address ipfsKeyHashAddress) public {
-        onlyOwner();
+    function setIpfsKeyHash(address ipfsKeyHashAddress) public onlyOwner{
         require(ipfsKeyHashAddress != 0);
         ipfsKeyHash=IpfsKeyHash(ipfsKeyHashAddress);
     }

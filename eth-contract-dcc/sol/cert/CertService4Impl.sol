@@ -11,7 +11,7 @@ contract CertService4Impl is CertService4, CertRepo{
 
     event orderUpdated(address indexed applicant, uint256 indexed orderId, Status status);
 
-    enum Status {INVALID, APPLIED,ACCEPTED, PASSED, REJECTED}
+    enum Status {INVALID, APPLIED,CANCELED,ACCEPTED, PASSED, REJECTED}
 
     struct CertOrder{
         uint256 orderId;
@@ -53,7 +53,7 @@ contract CertService4Impl is CertService4, CertRepo{
             //Status lastOrderStatus=certOrders[lastOrderId].status;
             CertOrder memory lastCertOrder=innerGetLastCertOrder(msg.sender);
             //require(lastOrderStatus==Status.PASSED ||lastOrderStatus==Status.REJECTED || lastOrderStatus==Status.REVOKED);
-            require(lastCertOrder.status==Status.PASSED ||lastCertOrder.status==Status.REJECTED);
+            require(lastCertOrder.status==Status.PASSED ||lastCertOrder.status==Status.REJECTED || lastCertOrder.status==Status.CANCELED);
         }
 
         if(digest1Integrity == DigestIntegrity.APPLICANT){
@@ -87,6 +87,14 @@ contract CertService4Impl is CertService4, CertRepo{
         }
 
         return insertOrder(msg.sender, Status.APPLIED, Content(digest1,digest2,digest3,expired),fee);
+    }
+
+    function cancel(uint256 orderId) external{
+        require(orderId < certOrders.length);
+        CertOrder storage order = certOrders[orderId];
+        require((operators[msg.sender] || msg.sender == owner) || order.applicant==msg.sender);
+        require(order.status == Status.APPLIED);
+        changeStatus(order, orderId, Status.CANCELED);
     }
 
     function accept(uint256 orderId) external onlyOperator{
