@@ -69,8 +69,10 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                         val unionId = list[2]
                         val info = it.first
                         if (null != info.player) {
-                            if (info.player!!.id.toString() != playid || unionId != info.player!!.unionId) {//不是同一个用户
-                                BaseDialog(activity!!).TipsDialog()
+                            val localplayid = info.player!!.id.toString()
+                            if ( localplayid!= playid || unionId != info.player!!.unionId) {//不是同一个用户
+                                val message = "当前登录的微信账号($localplayid)与BitExpress绑定的微信账号($playid)不一致"
+                                BaseDialog(activity!!).TipsDialog(tipmessage = message)
                             }
                         }
                     }
