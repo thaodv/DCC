@@ -45,7 +45,6 @@ class HomeActivity : BaseCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         initView()
-        replaceFragment(FindFragment.getInstance(intent.getStringExtra("data")))
         initEvent()
         initPhototTask()
         checkUpgrade()
@@ -117,6 +116,7 @@ class HomeActivity : BaseCompatActivity() {
             setFirstSelectedPosition(1)
             initialise()
         }
+        replaceFragment(FindFragment.getInstance(intent.getStringExtra("data")))
     }
 
     private fun initPhototTask() {

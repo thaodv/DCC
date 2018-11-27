@@ -17,6 +17,7 @@ import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
 import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentFindBinding
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.ipfs.utils.io_main
 
 
@@ -60,6 +61,11 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
         GardenOperations.loginWithCurrentPassport()
                 .io_main()
                 .withLoading()
+                .doOnError {
+                    if (it is DccChainServiceException) {
+                        toast(it.message!!)
+                    }
+                }
                 .subscribeBy {
                     initVm()
                     if (!data.isNullOrEmpty()) {
@@ -68,9 +74,9 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                         val playid = list[1]
                         val unionId = list[2]
                         val info = it.first
-                        if (null != info.player) {
-                            val localplayid = info.player!!.id.toString()
-                            if ( localplayid!= playid || unionId != info.player!!.unionId) {//不是同一个用户
+                        info.player?.let {
+                            val localplayid = it.id.toString()
+                            if (localplayid != playid || unionId != it.unionId) {//不是同一个用户
                                 val message = "当前登录的微信账号($localplayid)与BitExpress绑定的微信账号($playid)不一致"
                                 BaseDialog(activity!!).TipsDialog(tipmessage = message)
                             }
@@ -87,7 +93,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
 
         if (!GardenOperations.isBound()) {
             showBoundDialog()
-        }else{
+        } else {
             binding.vm?.refresh()
         }
     }
