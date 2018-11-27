@@ -11,7 +11,7 @@ contract CertService4Impl is CertService4, CertRepo{
 
     event orderUpdated(address indexed applicant, uint256 indexed orderId, Status status);
 
-    enum Status {INVALID, APPLIED,ACCEPTED, PASSED, REJECTED}
+    enum Status {INVALID, APPLIED,CANCELED,ACCEPTED, PASSED, REJECTED}
 
     struct CertOrder{
         uint256 orderId;
@@ -55,8 +55,8 @@ contract CertService4Impl is CertService4, CertRepo{
             //Status lastOrderStatus=certOrders[lastOrderId].status;
             CertOrder memory lastCertOrder=innerGetLastCertOrder(msg.sender);
             //require(lastOrderStatus==Status.PASSED ||lastOrderStatus==Status.REJECTED);
-            if(!(lastCertOrder.status==Status.PASSED ||lastCertOrder.status==Status.REJECTED)){
-                log("!(lastCertOrder.status==Status.PASSED ||lastCertOrder.status==Status.REJECTED");
+            if(!(lastCertOrder.status==Status.PASSED ||lastCertOrder.status==Status.REJECTED || lastCertOrder.status==Status.CANCELED)){
+                log("!(lastCertOrder.status==Status.PASSED ||lastCertOrder.status==Status.REJECTED || lastCertOrder.status==Status.CANCELED");
                 throw;
             }
         }
@@ -116,6 +116,23 @@ contract CertService4Impl is CertService4, CertRepo{
         }
 
         return insertOrder(msg.sender, Status.APPLIED, Content(digest1,digest2,digest3,expired),fee);
+    }
+
+    function cancel(uint256 orderId) external{
+        if(!(orderId < certOrders.length)){
+            log("!(orderId < certOrders.length)");
+            throw;
+        }
+        CertOrder storage order = certOrders[orderId];
+        if(!((operators[msg.sender] || msg.sender == owner) || order.applicant==msg.sender)){
+            log("!((operators[msg.sender] || msg.sender == owner) || order.applicant==msg.sender)");
+            throw;
+        }
+        if(!(order.status == Status.APPLIED)){
+            log("!(order.status == Status.APPLIED)");
+            throw;
+        }
+        changeStatus(order, orderId, Status.CANCELED);
     }
 
     function accept(uint256 orderId) public{
