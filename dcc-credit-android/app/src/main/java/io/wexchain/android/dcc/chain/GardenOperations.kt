@@ -65,6 +65,7 @@ object GardenOperations {
                         if (body.isSuccess) {
                             val token = it.headers()[MarketingApi.HEADER_TOKEN]!!
                             App.get().gardenTokenManager.gardenToken = token
+                            App.get().userInfo = body.result
                             it.body()!!.result!! to token
                         } else {
                             throw body.asError()
@@ -76,7 +77,6 @@ object GardenOperations {
                 .doMain()
                 .doOnSuccess {
                     val userinfo = it.first
-                    App.get().userInfo = userinfo
                     passport.setUserInfo(it.toJson())
 
                     userinfo.member.profilePhoto?.let {
@@ -171,7 +171,7 @@ object GardenOperations {
             val req = WXLaunchMiniProgram.Req()
             req.userName = "gh_0d13628f5e03"
             req.path = "/pages/contest/contest?playId=$it"
-            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPROGRAM_TYPE_PREVIEW
+            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE
             WxApiManager.wxapi.sendReq(req)
         }
     }
@@ -181,7 +181,7 @@ object GardenOperations {
             val miniProgramObj = WXMiniProgramObject()
                     .apply {
                         webpageUrl = "http://open.dcc.finance/dapp/invite/index.html" // 兼容低版本的网页链接
-                        miniprogramType = WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW// 正式版:0，测试版:1，体验版:2
+                        miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE// 正式版:0，测试版:1，体验版:2
                         userName = "gh_0d13628f5e03"
                         path = "/pages/login/login?playId=$it"
                     }

@@ -53,6 +53,7 @@ android {
             signingConfig signingConfigs.wexchain
 
             minifyEnabled false
+            zipAlignEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // debuggable true
@@ -97,7 +98,6 @@ android {
 
             initWith debug
             buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.209.12:9201/passport-logic/"'
-            //mock
             buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://10.65.209.20:9033/chain-service-frontend/"'
             buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://222.73.39.37:9511/passport-gateway/restful/"'
             buildConfigField 'java.lang.String', 'COIN_MARKET', '"http://10.65.209.20:9033/chain-service-frontend/"'
@@ -108,26 +108,12 @@ android {
         }
 
         applicationVariants.all {
-            //判断是release还是debug版本
             def buildType = it.buildType.name
             def fileName
-            //下面的channel是获取渠道号，你获取渠道号不一定会和我的代码一样，因为有可能你的渠道名称的规则和我的不一样，我的规则是${渠道名}-${applicationId},所以我是这样取的。
-            //获取当前时间的"YYYY-MM-dd"格式。
             def createTime = new Date().format("MM-dd HH.mm.ss", TimeZone.getTimeZone("GMT+08:00"))
-            //只对Release包起作用，如果不是Release包则不变更输出路径，否则可能导致AS无法自动安装debug包。
-            if (buildType == "release") {}
-            //      it.getPackageApplication().outputDirectory = new File(project.rootDir.absolutePath + "/apks/${it.productFlavors[0].applicationId}/${createTime}")
-
             it.outputs.each {
-                //只对Release包起作用，如果不是Release包则不变更名称。
-                if (buildType == "release") {}
-                //我此处的命名规则是：渠道名_项目名_版本名_创建时间_构建类型.apk
                 fileName = "BE_v${defaultConfig.versionName}_${createTime}-${buildType}.apk"
-                //将名字打印出来，以便及时查看是否满意。
                 println "文件名：-----------------${fileName}"
-                //重新对apk命名。(适用于Gradle4.0以下版本)
-                //it.outputFile = new File(it.outputFile.parent, fileName)
-                //重新对apk命名。(适用于Gradle4.0（含）以上版本)如果你Gradle版本是4.0以下版本则将上面的一行代码放开并注释下面的这一行。
                 it.outputFileName = fileName
             }
         }

@@ -11,12 +11,12 @@ import android.view.animation.AnimationUtils
 import android.widget.TextView
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.atLeastCreated
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.noStatusBar
 import io.wexchain.android.common.onClick
-import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
 import io.wexchain.android.dcc.modules.home.HomeActivity
 import io.wexchain.android.dcc.tools.PermissionHelper
 import io.wexchain.android.dcc.tools.checkXPosed
@@ -122,7 +122,7 @@ class LoadingActivity : BaseCompatActivity() {
         if (App.get().passportRepository.passportExists) {
             Single.timer(1500, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { _ ->
+                    .subscribeBy {
                         atLeastCreated {
                             navigateTo(HomeActivity::class.java) {
                                 putExtras(intent)

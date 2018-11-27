@@ -305,20 +305,19 @@ class IpfsService : Service() {
         FileUtils.deleteFile(rootpath + File.separator + "$filename.zip")
     }
 
-    fun <T> Single<T>.doOnSubscribe(business: String, status: (String, EventType) -> Unit, text: EventType, onProgress: (String, Int) -> Unit): Single<T> {
+    private fun <T> Single<T>.doOnSubscribe(business: String, status: (String, EventType) -> Unit, text: EventType, onProgress: (String, Int) -> Unit): Single<T> {
         return this.doOnSubscribe {
             status.invoke(business, text)
             onProgress.invoke(business, 0)
         }
     }
 
-}
-
-fun <T> Single<T>.doProgress(business: String, progress: Int, onProgress: (String, Int) -> Unit): Single<T> {
-    return this.doMain()
-            .map {
-                onProgress.invoke(business, progress)
-                it
-            }
-            .doBack()
+   private fun <T> Single<T>.doProgress(business: String, progress: Int, onProgress: (String, Int) -> Unit): Single<T> {
+        return this.doMain()
+                .map {
+                    onProgress.invoke(business, progress)
+                    it
+                }
+                .doBack()
+    }
 }

@@ -20,20 +20,8 @@ class FindPageVm : ViewModel() {
     }
 
     val balance = MutableLiveData<String>()
-            .apply {
-                getBalance()
-            }
-
     val lastDuel = MutableLiveData<ChangeOrder>()
-            .apply {
-                getLastDuel()
-            }
-
     val queryFlower = MutableLiveData<Boolean>()
-            .apply {
-                queryFlower()
-            }
-
 
     private fun getBalance() {
         GardenOperations

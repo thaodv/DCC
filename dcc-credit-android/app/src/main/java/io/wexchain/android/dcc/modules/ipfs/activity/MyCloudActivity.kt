@@ -20,6 +20,7 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
+import io.wexchain.android.dcc.domain.Function4
 import io.wexchain.android.dcc.modules.ipfs.ActionType
 import io.wexchain.android.dcc.modules.ipfs.EventType
 import io.wexchain.android.dcc.modules.ipfs.IpfsStatus
@@ -40,6 +41,7 @@ import org.web3j.abi.datatypes.DynamicBytes
 import org.web3j.abi.datatypes.Utf8String
 import worhavah.certs.tools.CertOperations.certed
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -138,8 +140,6 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                     updateUI(it)
                 }
     }
-
-    data class Function4<out T1, out T2, out T3, out T4>(val data1: T1, val data2: T2, val data3: T3, val data4: T4)
 
     private fun updateUI(it: Function4<IpfsStatus, IpfsStatus, IpfsStatus, IpfsStatus>) {
         binding.apply {
@@ -266,8 +266,11 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         when (business) {
             ChainGateway.BUSINESS_ID -> {
                 binding.asIdVm!!.event.set(EventType.STATUS_COMPLETE)
-                val idCertPassed = CertOperations.isIdCertPassed()
-                Single.just(!idCertPassed)
+                Single.timer(1, TimeUnit.SECONDS)
+                        .map {
+                            val idCertPassed = CertOperations.isIdCertPassed()
+                            !idCertPassed
+                        }
                         .checkStatus(ChainGateway.BUSINESS_ID)
                         .zipWith(GardenOperations.completeTask(TaskCode.BACKUP_ID))
                         .io_main()

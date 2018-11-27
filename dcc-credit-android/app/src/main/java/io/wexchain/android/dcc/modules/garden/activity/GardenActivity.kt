@@ -38,6 +38,10 @@ class GardenActivity : BaseCompatActivity() {
             javaScriptEnabled = true
             useWideViewPort = true
             loadWithOverviewMode = true
+            blockNetworkImage = false
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+            }
         }
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(webView: WebView, url: String): Boolean {
@@ -88,8 +92,6 @@ class GardenActivity : BaseCompatActivity() {
 
         }, "BitExpress")
 
-//        webView.loadUrl("http://10.65.100.69/garden/dist/#/Mygarden?playerID=${App.get().userInfo!!.member.id}&token=${App.get().gardenTokenManager.gardenToken!!}")
-//        webView.loadUrl("http://funcstatic.bitphare.com/dapp/garden/dist/index.html#/Mygarden?playerID=${App.get().userInfo!!.member.id}&token=${App.get().gardenTokenManager.gardenToken!!}")
         webView.loadUrl("${BuildConfig.GARDEN_BASEURL}#/Mygarden?playerID=${App.get().userInfo!!.member.id}&token=${App.get().gardenTokenManager.gardenToken!!}")
     }
 

@@ -45,7 +45,6 @@ class HomeActivity : BaseCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         initView()
-        replaceFragment(FindFragment.getInstance(intent.getStringExtra("data")))
         initEvent()
         initPhototTask()
         checkUpgrade()
@@ -92,7 +91,7 @@ class HomeActivity : BaseCompatActivity() {
             override fun onTabSelected(position: Int) {
                 when (position) {
                     0 -> replaceFragment(ServiceFragment())
-                    1 -> replaceFragment(FindFragment())
+                    1 -> replaceFragment(FindFragment.getInstance())
                     2 -> replaceFragment(DigitalAssetsFragment())
                     3 -> replaceFragment(MineFragment())
                 }
@@ -117,6 +116,7 @@ class HomeActivity : BaseCompatActivity() {
             setFirstSelectedPosition(1)
             initialise()
         }
+        replaceFragment(FindFragment.getInstance(intent.getStringExtra("data")))
     }
 
     private fun initPhototTask() {

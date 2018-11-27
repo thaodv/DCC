@@ -97,6 +97,6 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
         val intent = Intent(this, LoadingActivity::class.java)
         intent.putExtra("data", obj.extInfo)
         startActivity(intent)
-        finish()
+        finishAllActivity()
     }
 }

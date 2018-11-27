@@ -14,16 +14,6 @@
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation_bar"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v4.app.FragmentTabHost
-        android:id="@+id/main_tab_host"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="55dp"
-        android:paddingTop="5dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-
     <io.wexchain.android.dcc.view.bottomnavigation.BottomNavigationBar
         android:id="@+id/bottom_navigation_bar"
         android:layout_width="match_parent"
