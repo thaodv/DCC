@@ -46,8 +46,10 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
             }
             setRefreshHeader(ClassicsHeader(mActivity))
         }
+        /*binding.vm!!.errLog.observe(this, Observer {
+            toast(it ?: "")
+        })*/
     }
-
 
     private fun initEvent() {
         binding.vm!!.run {

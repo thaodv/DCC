@@ -170,6 +170,7 @@ dependencies {
     //third party sdk
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.4'
     implementation 'zlc.season:rxdownload3:1.2.7'
+    implementation 'com.contrarywind:Android-PickerView:4.1.6'
     implementation project(':common')
     implementation project(':idverify')
     implementation project(':dccchainservice')
