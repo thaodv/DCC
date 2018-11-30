@@ -420,6 +420,7 @@
         <activity
             android:name="io.wexchain.android.dcc.modules.garden.activity.GardenActivity"
             android:label="神秘花园"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BsxDccBuyActivity"

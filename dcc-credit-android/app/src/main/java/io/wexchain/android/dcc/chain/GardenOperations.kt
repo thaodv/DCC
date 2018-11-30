@@ -21,12 +21,10 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.WxApiManager
 import io.wexchain.dccchainservice.MarketingApi
 import io.wexchain.dccchainservice.domain.ChangeOrder
-import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.UserInfo
 import io.wexchain.dccchainservice.type.TaskCode
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import io.wexchain.ipfs.utils.doMain
-import retrofit2.Response
 import zlc.season.rxdownload3.RxDownload
 import zlc.season.rxdownload3.core.Mission
 import zlc.season.rxdownload3.core.Succeed
@@ -171,7 +169,7 @@ object GardenOperations {
             val req = WXLaunchMiniProgram.Req()
             req.userName = "gh_0d13628f5e03"
             req.path = "/pages/contest/contest?playId=$it"
-            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE
+            req.miniprogramType = if (BuildConfig.DEBUG) WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW else WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE
             WxApiManager.wxapi.sendReq(req)
         }
     }
@@ -181,7 +179,7 @@ object GardenOperations {
             val miniProgramObj = WXMiniProgramObject()
                     .apply {
                         webpageUrl = "http://open.dcc.finance/dapp/invite/index.html" // 兼容低版本的网页链接
-                        miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE// 正式版:0，测试版:1，体验版:2
+                        miniprogramType = if (BuildConfig.DEBUG) WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW else WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE// 正式版:0，测试版:1，体验版:2
                         userName = "gh_0d13628f5e03"
                         path = "/pages/login/login?playId=$it"
                     }

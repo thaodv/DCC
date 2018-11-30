@@ -53,4 +53,13 @@ object ActivityCollector {
         }
     }
 
+    fun isExistActivity(activity: String): Boolean {
+        for (act in activities) {
+            if (act.localClassName == activity) {
+                return true
+            }
+        }
+        return false
+    }
+
 }
