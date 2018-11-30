@@ -124,7 +124,7 @@ object TaskHelper {
 
     @JvmStatic
     fun getGardenmsg(ismsg: Boolean?): String {
-        return if (ismsg == true) "您有奖励未收取哦" else "您的奖励将于48小时后发放"
+        return if (ismsg == true) "您有奖励未收取哦" else "您的奖励将于3小时后发放"
     }
 
     @JvmStatic

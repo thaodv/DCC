@@ -94,7 +94,7 @@ interface MarketingApi {
     fun balance(@Header(HEADER_TOKEN) token: String?): Single<Result<WeekRecord>>
 
     // 查询玩家阳光值变更记录
-    @POST("bemember/ss/changeOrder/query")
+    @POST("bemember/ss/score/query")
     @FormUrlEncoded
     fun changeOrder(@Header(HEADER_TOKEN) token: String?,
                     @Field("number") number: Int,

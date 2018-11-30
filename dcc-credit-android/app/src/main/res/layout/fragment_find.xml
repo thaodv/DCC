@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="passport"
             type="io.wexchain.android.dcc.domain.Passport" />
@@ -12,7 +13,7 @@
             name="vm"
             type="io.wexchain.android.dcc.fragment.home.vm.FindPageVm" />
 
-        <import type="io.wexchain.android.dcc.modules.garden.TaskHelper"/>
+        <import type="io.wexchain.android.dcc.modules.garden.TaskHelper" />
 
     </data>
 
@@ -71,7 +72,8 @@
                     android:textColor="@color/FF4A4A4A"
                     android:textSize="18sp"
                     app:layout_constraintLeft_toRightOf="@id/find_user_avatar"
-                    app:layout_constraintTop_toTopOf="@id/find_user_avatar" />
+                    app:layout_constraintTop_toTopOf="@id/find_user_avatar"
+                    tools:text="王思聪" />
 
                 <LinearLayout
                     android:id="@+id/find_user_garden"
@@ -99,9 +101,9 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="5dp"
                         android:text="@{vm.balance}"
-                        tools:text="0"
                         android:textColor="#fff"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        tools:text="0" />
 
                     <TextView
                         android:id="@+id/find_in_garden"
@@ -289,7 +291,8 @@
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="11sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/find_garden_root" />
+                        app:layout_constraintTop_toBottomOf="@id/find_garden_root"
+                        tools:text="您的奖励将于3小时后发放" />
 
                     <TextView
                         android:id="@+id/garden_card_txt2"
@@ -299,6 +302,7 @@
                         android:text="2分钟前"
                         android:textColor="#BAC0C5"
                         android:textSize="11sp"
+                        android:visibility="gone"
                         app:layout_constraintBaseline_toBaselineOf="@id/garden_card_txt1"
                         app:layout_constraintLeft_toRightOf="@id/garden_card_txt1"
                         app:layout_constraintTop_toBottomOf="@id/find_garden_root" />
@@ -389,7 +393,8 @@
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="11sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/find_zhishi_root" />
+                        app:layout_constraintTop_toBottomOf="@id/find_zhishi_root"
+                        tools:text="王思聪获胜 +5阳光值" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -400,7 +405,8 @@
                         android:textSize="11sp"
                         app:layout_constraintBaseline_toBaselineOf="@id/find_zhishi_txt1"
                         app:layout_constraintLeft_toRightOf="@id/find_zhishi_txt1"
-                        app:layout_constraintTop_toBottomOf="@id/find_zhishi_root" />
+                        app:layout_constraintTop_toBottomOf="@id/find_zhishi_root"
+                        tools:text="2分钟前" />
 
 
                 </android.support.constraint.ConstraintLayout>
