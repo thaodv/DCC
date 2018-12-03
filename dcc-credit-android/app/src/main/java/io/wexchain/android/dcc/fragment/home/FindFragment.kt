@@ -79,6 +79,12 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                             if (localplayid != playid) {//不是同一个用户
                                 val message = "当前登录的微信账号($localplayid)与BitExpress绑定的微信账号($playid)不一致"
                                 BaseDialog(activity!!).TipsDialog(tipmessage = message)
+                            } else {
+                                if ("garden" == code) {
+                                    navigateTo(GardenActivity::class.java)
+                                } else {
+
+                                }
                             }
                         }
                     }

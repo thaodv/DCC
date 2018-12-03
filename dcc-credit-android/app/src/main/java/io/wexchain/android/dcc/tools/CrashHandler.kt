@@ -32,9 +32,9 @@ class CrashHandler : Thread.UncaughtExceptionHandler {
     }
 
     private fun dumpExceptionToSDCard(ex: Throwable) {
-        if (!BuildConfig.DEBUG){
+        /*if (!BuildConfig.DEBUG){
             return
-        }
+        }*/
         if (Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED) {
             return
         }

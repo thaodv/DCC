@@ -5,16 +5,20 @@ import android.os.Bundle
 import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
+import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.modelmsg.ShowMessageFromWX
 import com.tencent.mm.opensdk.modelmsg.WXAppExtendObject
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
+import io.wexchain.android.common.base.ActivityCollector
 import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.noStatusBar
 import io.wexchain.android.common.noTitleBar
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.LoadingActivity
 import io.wexchain.android.dcc.chain.GardenOperations
+import io.wexchain.android.dcc.modules.garden.activity.GardenActivity
 import io.wexchain.dcc.WxApiManager
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.Result
@@ -43,7 +47,7 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
         }
         when (resp.errCode) {
             BaseResp.ErrCode.ERR_OK -> {
-                if (resp.type == 1) {
+                if (resp.type == ConstantsAPI.COMMAND_SENDAUTH) {
                     val code = (resp as SendAuth.Resp).code
                     GardenOperations.boundWechat(code)
                             .flatMap {
@@ -62,8 +66,10 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
                                 finish()
                             }
                             .subscribe()
-                } else {
-                    finish()
+                } else if (resp.type == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM) {
+                    val launchMiniProResp = resp as WXLaunchMiniProgram.Resp
+                    val extraData = launchMiniProResp.extMsg
+                    toBeApp(extraData)
                 }
             }
             BaseResp.ErrCode.ERR_USER_CANCEL -> finish()
@@ -84,9 +90,9 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
     }
 
     private fun goToGetMsg() {
-        /*val intent = Intent(this, LoadingActivity::class.java)
-        intent.putExtras(getIntent())
-        startActivity(intent)*/
+        /*  val intent = Intent(this, LoadingActivity::class.java)
+          intent.putExtras(getIntent())
+          startActivity(intent)*/
         finish()
     }
 
@@ -94,9 +100,18 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
         val wxMsg = showReq.message
         val obj = wxMsg.mediaObject as WXAppExtendObject
 
-        val intent = Intent(this, LoadingActivity::class.java)
-        intent.putExtra("data", obj.extInfo)
-        startActivity(intent)
-        finishAllActivity()
+        toBeApp(obj.extInfo)
+    }
+
+   private fun toBeApp(data:String){
+        if (ActivityCollector.isExistActivity("io.wexchain.android.dcc.modules.home.HomeActivity")){
+            navigateTo(GardenActivity::class.java)
+            finish()
+        }else{
+            val intent = Intent(this, LoadingActivity::class.java)
+            intent.putExtra("data", data)
+            startActivity(intent)
+            finishAllActivity()
+        }
     }
 }
