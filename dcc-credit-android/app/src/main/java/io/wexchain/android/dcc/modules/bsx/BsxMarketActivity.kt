@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
@@ -31,48 +30,47 @@ class BsxMarketActivity : BindActivity<ActivityBsxMarketBinding>(), ItemViewClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar(true)
+        initView()
+    }
 
+    private fun initView() {
         binding.ivNext.setOnClickListener { navigateTo(BsxHoldingActivity::class.java) }
-
         binding.rvList.adapter = adapter
-
     }
 
     @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
-
         Singles.zip(
                 App.get().scfApi.getHoldingSum(App.get().passportRepository.currPassport.value!!.address).check(),
-                App.get().scfApi.getBsxMarketList().check()
-
-        ).subscribeOn(Schedulers.io())
+                App.get().scfApi.getBsxMarketList().check())
                 .doMain()
                 .withLoading()
-                .subscribeBy({
-                    toast(it.message ?: "系统错误")
-                }, {
-                    val first = it.first
-                    val second = it.second
+                .subscribeBy(
+                        onSuccess = {
+                            val first = it.first
+                            val second = it.second
 
-                    binding.tvInvestMoney.text = "≈" + if (null == first.corpus) {
-                        "0"
-                    } else StringUtils.keep4double(first.corpus)
-                    binding.tvWaitProfit.text = "≈" + if (null == first.profit) {
-                        "0"
-                    } else StringUtils.keep4double(first.profit)
+                            binding.tvInvestMoney.text = "≈" + if (null == first.corpus) {
+                                "0"
+                            } else StringUtils.keep4double(first.corpus)
+                            binding.tvWaitProfit.text = "≈" + if (null == first.profit) {
+                                "0"
+                            } else StringUtils.keep4double(first.profit)
+                            binding.records = second
 
-                    binding.records = second
-
-                })
+                        },
+                        onError = {
+                            toast(it.message ?: "系统错误")
+                        })
     }
 
     override fun onItemClick(item: BsxMarketBean?, position: Int, viewId: Int) {
         startActivity(Intent(this, BsxDetailActivity::class.java)
                 .putExtra("assetCode", item!!.assetCode)
-                .putExtra("name", item!!.name)
-                .putExtra("titleName", item!!.saleInfo.name)
-                .putExtra("contractAddress", item!!.contractAddress))
+                .putExtra("name", item.name)
+                .putExtra("titleName", item.saleInfo.name)
+                .putExtra("contractAddress", item.contractAddress))
     }
 
     private class Adapter(itemViewClickListener: ItemViewClickListener<BsxMarketBean>) :

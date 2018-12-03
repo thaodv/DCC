@@ -8,9 +8,12 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Window
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
+import android.widget.EditText
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.dccchainservice.DccChainServiceException
@@ -136,10 +139,6 @@ fun View.onLongSaveImageToGallery(onError: (Throwable) -> Unit, onSuccess: (Stri
     }
 }
 
-fun isRoot(): Boolean {
-    return isRootSystem() || checkSuperuserApk() || CommonUtils.isRooted()
-}
-
 fun isRootSystem(): Boolean {
     var f: File? = null
     val kSuSearchPaths = arrayOf("/system/bin/", "/system/xbin/", "/system/sbin/", "/sbin/", "/vendor/bin/")
@@ -153,28 +152,6 @@ fun isRootSystem(): Boolean {
     } catch (e: Exception) {
     }
     return false
-}
-
-fun checkSuperuserApk(): Boolean {
-    try {
-        val file = File("/system/app/SuperSU/SuperSU.apk")
-        if (file.exists()) {
-            return true
-        }
-    } catch (e: Exception) {
-    }
-    return false
-}
-
-fun checkXPosed(): Boolean {
-    return try {
-        val localObject = ClassLoader.getSystemClassLoader().loadClass("de.robv.android.xposed.XposedHelpers").newInstance()
-        // 如果加载类失败 则表示当前环境没有xposed
-        true
-    } catch (localThrowable: Throwable) {
-        false
-    }
-
 }
 
 fun Long.formatText(): String {
@@ -222,4 +199,62 @@ fun View.onNoDoubleClick(click: (View) -> Unit) {
 
 }
 
+fun EditText.fixPrice() {
+    val view = this
+    view.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            s?.toString()?.let {
+                var res = it
+                if (res.contains(".")) {
+                    if (res.length - 1 - res.indexOf(".") > 2) {
+                        res = res.substring(0, res.indexOf(".") + 3)
+                        view.setText(res)
+                        view.setSelection(res.length)
+                    }
+                }
+
+                //如果.在起始位置,则起始位置自动补0
+                if (res.trim().substring(0) == ".") {
+                    res = "0$res";
+                    view.setText(res)
+                    view.setSelection(2)
+                }
+
+                //如果起始位置为0并且第二位跟的不是".",则无法后续输入
+                if (res.startsWith("0") && res.trim().length > 1) {
+                    if (res.substring(1, 2) != ".") {
+                        view.setText(res.subSequence(0, 1))
+                        view.setSelection(1)
+                        return
+                    }
+                }
+            }
+        }
+    })
+}
+
+fun isRoot(): Boolean {
+    val file1 = File("/system/bin/su")
+    val file2 = File("/system/xbin/su")
+    return file1.exists() || file2.exists()
+}
+
+fun checkXPosed(): Boolean {
+    return try {
+        val localObject = ClassLoader.getSystemClassLoader().loadClass("de.robv.android.xposed.XposedHelpers").newInstance()
+        // 如果加载类失败 则表示当前环境没有xposed
+        true
+    } catch (localThrowable: Throwable) {
+        false
+    }
+
+}
 

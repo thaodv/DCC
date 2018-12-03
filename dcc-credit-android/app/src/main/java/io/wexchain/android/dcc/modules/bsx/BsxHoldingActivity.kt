@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
@@ -31,7 +30,6 @@ class BsxHoldingActivity : BindActivity<ActivityBsxHoldingBinding>(), ItemViewCl
         super.onCreate(savedInstanceState)
         initToolbar(true)
         binding.tvBuyAgain.setOnClickListener { finish() }
-
         binding.rvList.adapter = adapter
     }
 
@@ -40,27 +38,27 @@ class BsxHoldingActivity : BindActivity<ActivityBsxHoldingBinding>(), ItemViewCl
         super.onResume()
         Singles.zip(
                 App.get().scfApi.getHoldingSum(App.get().passportRepository.currPassport.value!!.address).check(),
-                App.get().scfApi.getBsxHoldingList(App.get().passportRepository.currPassport.value!!.address).check()
-
-        ).subscribeOn(Schedulers.io())
+                App.get().scfApi.getBsxHoldingList(App.get().passportRepository.currPassport.value!!.address).check())
                 .doMain()
                 .withLoading()
-                .subscribeBy({
-                    toast(it.message ?: "系统错误")
-                }, {
-                    val first = it.first
-                    val second = it.second
+                .subscribeBy(
+                        onSuccess = {
+                            val first = it.first
+                            val second = it.second
 
-                    binding.tvInvestMoney.text = "≈" + if (null == first.corpus) {
-                        "0"
-                    } else StringUtils.keep4double(first.corpus)
-                    binding.tvWaitProfit.text = "≈" + if (null == first.profit) {
-                        "0"
-                    } else StringUtils.keep4double(first.profit)
+                            binding.tvInvestMoney.text = "≈" + if (null == first.corpus) {
+                                "0"
+                            } else StringUtils.keep4double(first.corpus)
+                            binding.tvWaitProfit.text = "≈" + if (null == first.profit) {
+                                "0"
+                            } else StringUtils.keep4double(first.profit)
 
-                    binding.records = second
+                            binding.records = second
 
-                })
+                        },
+                        onError = {
+                            toast(it.message ?: "系统错误")
+                        })
     }
 
     override fun onItemClick(item: BsxHoldingBean?, position: Int, viewId: Int) {
