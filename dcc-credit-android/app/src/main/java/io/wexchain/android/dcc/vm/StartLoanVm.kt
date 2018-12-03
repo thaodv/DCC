@@ -116,7 +116,6 @@ class StartLoanVm : ViewModel() {
             failEvent.value = "amount or fee is empty"
             return
         }
-        val c = product.currency
         val minAmount = product.volumeOptionList.first()
         val maxAmount = product.volumeOptionList.last()
         if (amount < minAmount) {

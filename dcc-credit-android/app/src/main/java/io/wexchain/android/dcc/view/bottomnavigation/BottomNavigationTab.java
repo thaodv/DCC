@@ -1,6 +1,5 @@
 package io.wexchain.android.dcc.view.bottomnavigation;
 
-import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;

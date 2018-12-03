@@ -2,17 +2,15 @@ package com.xxy.maple.tllibrary.retrofit;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
-import com.xxy.maple.tllibrary.BuildConfig;
-import okhttp3.Dns;
 
-import java.lang.reflect.*;
-import java.net.Inet4Address;
+import com.xxy.maple.tllibrary.BuildConfig;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import okhttp3.Dns;
 
 public class TlDns implements Dns {
 

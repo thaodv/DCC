@@ -1,19 +1,17 @@
 package worhavah.certs.tools
 
-import EventMsg
-import RxBus
 import android.content.Context
 import android.content.SharedPreferences
 import android.support.v4.app.FragmentManager
-import android.text.TextUtils
 import com.google.gson.Gson
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.Prefs
 import io.wexchain.android.common.UrlManage
 import io.wexchain.android.common.kotlin.weak
 import io.wexchain.android.common.stackTrace
+import io.wexchain.android.common.tools.EventMsg
+import io.wexchain.android.common.tools.RxBus
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.dccchainservice.CertApi
@@ -384,92 +382,6 @@ object CertOperations {
 
     fun saveTnLogCertExpired(expired: Long) {
         certPrefs.certTNLogExpired.set(expired)
-    }
-
-    fun submitCert(
-            passport: Passport,
-            eMail: String,
-            onOrderCreated: (Long) -> Unit,
-            business: String = "EMAIL"
-    ): Single<String> {
-        require(passport.authKey != null)
-        require(eMail.isNotBlank())
-        val api = Networkutils.chainGateway
-        val credentials = passport.credential
-        val authKey = passport.authKey!!
-        val nonce = privateChainNonce(credentials.address)
-        return Single.just(eMail)
-                .observeOn(Schedulers.computation())
-                .map {
-                    val data = it.toByteArray(Charsets.UTF_8)
-                    val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
-                    val digest2 = byteArrayOf()
-                    EthsFunctions.apply(digest1, digest2, BigInteger.ZERO)
-                }
-                .observeOn(Schedulers.io())
-                .flatMap { applyCall ->
-                    Single.zip(
-                            api.getCertContractAddress(business).compose(Result.checked()),
-                            api.getTicket().compose(Result.checked()),
-                            pair()
-                    ).flatMap { (contractAddress, ticket) ->
-                        val tx = applyCall.txSigned(credentials, contractAddress, nonce)
-                        // insCertApi.certApply(ticket.ticket, tx, null, business)
-                        api.certApply(ticket.ticket, tx, null, business)
-                                .compose(Result.checked())
-                    }
-                }
-                .certOrderByTx(api, business)
-                .doOnSuccess {
-                    onOrderCreated(it.orderId)
-                }
-                .flatMap {
-                    Single.just(it.toString())
-                    // verifyBankCardCert(passport, bankCardInfo, accountName, id, it.orderId)
-                }
-    }
-
-    fun homeAddressCert(
-            passport: Passport,
-            eMail: String,
-            onOrderCreated: (Long) -> Unit,
-            business: String = "EMAIL"
-    ): Single<String> {
-        require(passport.authKey != null)
-        require(eMail.isNotBlank())
-        val api = Networkutils.chainGateway
-        val credentials = passport.credential
-        val authKey = passport.authKey!!
-        val nonce = privateChainNonce(credentials.address)
-        return Single.just(eMail)
-                .observeOn(Schedulers.computation())
-                .map {
-                    val data = it.toByteArray(Charsets.UTF_8)
-                    val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
-                    val digest2 = byteArrayOf()
-                    EthsFunctions.apply(digest1, digest2, BigInteger.ZERO)
-                }
-                .observeOn(Schedulers.io())
-                .flatMap { applyCall ->
-                    Single.zip(
-                            api.getCertContractAddress(business).compose(Result.checked()),
-                            api.getTicket().compose(Result.checked()),
-                            pair()
-                    ).flatMap { (contractAddress, ticket) ->
-                        val tx = applyCall.txSigned(credentials, contractAddress, nonce)
-                        // insCertApi.certApply(ticket.ticket, tx, null, business)
-                        api.certApply(ticket.ticket, tx, null, business)
-                                .compose(Result.checked())
-                    }
-                }
-                .certOrderByTx(api, business)
-                .doOnSuccess {
-                    onOrderCreated(it.orderId)
-                }
-                .flatMap {
-                    Single.just(it.toString())
-                    // verifyBankCardCert(passport, bankCardInfo, accountName, id, it.orderId)
-                }
     }
 
     fun advanceCommunicationLog(

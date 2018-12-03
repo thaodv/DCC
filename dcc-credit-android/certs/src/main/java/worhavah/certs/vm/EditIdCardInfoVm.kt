@@ -2,16 +2,13 @@ package worhavah.certs.vm
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.idverify.IdCardEssentialData
 import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.domain.IdOcrInfo
-import io.wexchain.dccchainservice.domain.Result
 import worhavah.certs.tools.CertOperations
 import worhavah.certs.tools.IdCardCertData
-import worhavah.regloginlib.Net.Networkutils
 
 /**
  * Created by sisel on 2018/2/27.

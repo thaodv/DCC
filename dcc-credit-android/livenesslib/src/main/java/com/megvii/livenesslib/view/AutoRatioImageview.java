@@ -3,7 +3,6 @@ package com.megvii.livenesslib.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 import com.megvii.livenesslib.R;
 

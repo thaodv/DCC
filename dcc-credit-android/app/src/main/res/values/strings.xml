@@ -303,6 +303,7 @@
     <string name="more_candies_are_coming">更多糖果 敬请期待</string>
     <string name="digging_mining">努力挖矿中…</string>
     <string name="reward_unavailable">暂无奖励</string>
+    <string name="empty_loan">暂无借款记录</string>
     <string name="calculating">统计中</string>
     <string name="issuing">发放中</string>
     <string name="share_the_invitation_code">分享邀请码</string>
