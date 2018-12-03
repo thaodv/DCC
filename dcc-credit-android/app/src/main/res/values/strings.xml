@@ -433,6 +433,8 @@
     <string name="user_id_front">身份证正面照</string>
     <string name="user_id_back">身份证反面照</string>
     <string name="user_activity_photo">人像照片</string>
+    <string name="cash_loan_tips"><u>借款须知</u></string>
+    <string name="mycash_loan"><font color="#C009FF">我的借贷</font></string>
 
     <string name="select_node">选择以太坊节点</string>
     <string name="select_node_green"><font color='#9B9B9B'>（网络质量好）</font></string>

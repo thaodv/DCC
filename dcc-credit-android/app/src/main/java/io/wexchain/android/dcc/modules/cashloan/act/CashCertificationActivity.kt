@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.modules.cashloan
+package io.wexchain.android.dcc.modules.cashloan.act
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders

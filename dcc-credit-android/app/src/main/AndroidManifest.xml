@@ -326,10 +326,6 @@
             android:label="@string/across_trans_detail"
             android:screenOrientation="portrait" />
         <activity
-            android:name="io.wexchain.android.dcc.modules.repay.RePaymentProcessActivity"
-            android:label="@string/repayment_process"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity"
             android:label="@string/title_open_cloud"
             android:screenOrientation="portrait" />
@@ -439,7 +435,30 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.cashloan.act.CashLoanActivity"
-            android:label="现金贷"
+            android:label="法币借贷"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashCertificationActivity"
+            android:label="额度申请"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.LoanInfoActivity"
+            android:label="我的借款"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.MyLoanActivity"
+            android:label="我的借款"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.UserInfoCertificationActivity"
+            android:label="真实信息"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.WithDrawActivity"
+            android:label="提现"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashLoanRepaymentActivity"
             android:screenOrientation="portrait" />
 
     </application>

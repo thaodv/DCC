@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.modules.cashloan
+package io.wexchain.android.dcc.modules.cashloan.act
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

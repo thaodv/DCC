@@ -112,14 +112,6 @@ object ViewModelHelper {
 
         }
         return ContextCompat.getDrawable(this, drawableId)
-       /* return when (userCertStatus) {
-            "已认证" -> R.drawable.shape_certstatu_green
-            "已过期" -> R.drawable.shape_certstatu_red
-            "未认证" -> R.drawable.shape_certstatu_red
-            "查看报告" -> R.drawable.shape_certstatu_purple
-            "认证中" -> R.drawable.shape_certstatu_blue
-            else -> R.drawable.shape_certstatu_red
-        }*/
     }
 
     @JvmStatic
@@ -536,23 +528,6 @@ object ViewModelHelper {
             }
         }
 
-    }
-
-    @JvmStatic
-    fun Context.mineRewardIcon(mineCandy: MineCandy?): Drawable? {
-        mineCandy ?: return null
-        val drawable = when (mineCandy.id.rem(8L)) {
-            1L -> R.drawable.ic_mine_reward_01
-            2L -> R.drawable.ic_mine_reward_02
-            3L -> R.drawable.ic_mine_reward_03
-            4L -> R.drawable.ic_mine_reward_04
-            5L -> R.drawable.ic_mine_reward_05
-            6L -> R.drawable.ic_mine_reward_06
-            7L -> R.drawable.ic_mine_reward_07
-            0L -> R.drawable.ic_mine_reward_08
-            else -> 0
-        }
-        return ContextCompat.getDrawable(this, drawable)
     }
 
     @JvmStatic

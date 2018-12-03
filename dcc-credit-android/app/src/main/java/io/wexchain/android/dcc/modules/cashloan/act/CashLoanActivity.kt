@@ -1,35 +1,53 @@
 package io.wexchain.android.dcc.modules.cashloan.act
 
 import android.os.Bundle
-import android.widget.Button
-import io.wexchain.android.common.base.BaseCompatActivity
-import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.tools.PickerHelper
+import android.view.Menu
+import android.view.MenuItem
+import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.onClick
 import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityCashloanBinding
 
 /**
- *Created by liuyang on 2018/11/28.
+ *Created by liuyang on 2018/10/15.
  */
-class CashLoanActivity : BaseCompatActivity() {
+class CashLoanActivity : BindActivity<ActivityCashloanBinding>() {
 
-    private val picker by lazy {
-        PickerHelper()
-    }
+    override val contentLayoutId: Int
+        get() = R.layout.activity_cashloan
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cashloan)
         initToolbar()
-        picker.init(this)
-        findViewById<Button>(R.id.btn).setOnClickListener {
-            if (picker.isLoad) {
-                picker.showPickerView { ti, t2, t3 ->
-                    toast("$ti - $t2 - $t3")
-                }
-            } else {
-                toast("加载未完成")
-            }
+//        initView()
+        initClick()
+    }
+
+    private fun initView() {
+        binding.countdownProgress.setCountdownTime(900)
+        binding.countdownProgress.setPercent(80)
+        binding.countdownProgress.startCountDownTime {  }
+    }
+
+    private fun initClick() {
+        binding.cashLoanApply.onClick {
+            navigateTo(CashCertificationActivity::class.java)
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_dcc_cash_loan, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.action_my_cash_loan -> {
+                navigateTo(MyLoanActivity::class.java)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }

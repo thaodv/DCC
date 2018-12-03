@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:background="#F5F5FD"
         android:orientation="vertical"
-        tools:context="io.wexchain.android.dcc.modules.cashloan.LoanInfoActivity">
+        tools:context="io.wexchain.android.dcc.modules.cashloan.act.LoanInfoActivity">
 
         <include layout="@layout/include_toolbar"/>
 
