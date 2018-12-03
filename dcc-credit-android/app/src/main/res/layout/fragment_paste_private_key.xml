@@ -1,98 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <data>
 
         <variable
-                name="inputPassword"
-                type="io.wexchain.android.dcc.vm.InputPasswordVm"
-                />
+            name="inputPassword"
+            type="io.wexchain.android.dcc.vm.InputPasswordVm"
+            />
 
         <variable
-                name="key"
-                type="String"
-                />
+            name="key"
+            type="String"
+            />
     </data>
 
     <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
         <TextView
-                android:id="@+id/tv_wallet_password_guide"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
-                android:text="@string/wallet_password_guide"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="4dp"
-                />
+            android:id="@+id/tv_wallet_password_guide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/wallet_password_guide"
+            android:textAppearance="@style/TextAppearance.AppCompat.DccSupplementary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
         <View
-                android:id="@+id/v_divider"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/divider_stroke_width"
-                style="@style/DividerHorizontal"
-                app:layout_constraintBottom_toTopOf="@id/tv_wallet_password_guide"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
-                android:layout_marginRight="@dimen/content_padding_horizontal"
-                android:layout_marginBottom="4dp"
-                />
+            android:id="@+id/v_divider"
+            style="@style/DividerHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_stroke_width"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginRight="@dimen/content_padding_horizontal"
+            app:layout_constraintBottom_toTopOf="@id/tv_wallet_password_guide"
+            />
 
         <include
-                android:id="@+id/ll_input_password"
-                layout="@layout/include_input_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:inputPassword="@{inputPassword}"
-                app:layout_constraintBottom_toTopOf="@id/v_divider"
-                />
+            android:id="@+id/ll_input_password"
+            layout="@layout/include_input_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:inputPassword="@{inputPassword}"
+            app:layout_constraintBottom_toTopOf="@id/v_divider"
+            />
 
         <TextView
-                android:id="@+id/tv_wallet_password_notice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/WeXCreatePassportViewController_description1"
-                android:gravity="left"
-                style="@style/NoticeTextLabel"
-                app:layout_constraintBottom_toTopOf="@id/ll_input_password"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginBottom="4dp"
-                />
+            android:id="@+id/tv_wallet_password_notice"
+            style="@style/NoticeTextLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:gravity="left"
+            android:text="@string/WeXCreatePassportViewController_description1"
+            app:layout_constraintBottom_toTopOf="@id/ll_input_password"
+            />
 
         <EditText
-                android:id="@+id/et_paste_private_key"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:hint="@string/copy_private_key"
-                android:minLines="2"
-                android:text="@={key}"
-                app:layout_constraintBottom_toTopOf="@id/tv_wallet_password_notice"
-                app:layout_constraintTop_toTopOf="parent"
-                android:background="@drawable/bg_round_rect_frame_white"
-                />
+            android:id="@+id/et_paste_private_key"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_round_rect_frame_white"
+            android:gravity="center"
+            android:hint="@string/copy_private_key"
+            android:minLines="2"
+            android:text="@={key}"
+            app:layout_constraintBottom_toTopOf="@id/tv_wallet_password_notice"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <ImageButton
-                android:id="@+id/iv_scan"
-                style="@style/Widget.AppCompat.ImageButton.Dcc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:elevation="8dp"
-                android:padding="8dp"
-                android:src="@drawable/ic_scan"
-                app:layout_constraintBottom_toTopOf="@id/tv_wallet_password_notice"
-                app:layout_constraintRight_toRightOf="parent"
-                />
+            android:id="@+id/iv_scan"
+            style="@style/Widget.AppCompat.ImageButton.Dcc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:elevation="8dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_scan"
+            app:layout_constraintBottom_toTopOf="@id/tv_wallet_password_notice"
+            app:layout_constraintRight_toRightOf="parent"
+            />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

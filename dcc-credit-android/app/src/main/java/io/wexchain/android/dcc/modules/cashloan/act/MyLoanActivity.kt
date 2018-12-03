@@ -7,8 +7,7 @@ import io.wexchain.dcc.databinding.ActivityMyLoanBinding
 
 class MyLoanActivity : BindActivity<ActivityMyLoanBinding>() {
 
-    override val contentLayoutId: Int
-        get() = R.layout.activity_my_loan
+    override val contentLayoutId: Int get() = R.layout.activity_my_loan
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
