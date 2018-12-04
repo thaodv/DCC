@@ -12,6 +12,18 @@
             name="asEnterpriseVm"
             type="io.wexchain.android.dcc.modules.cashloan.vm.AddressVm" />
 
+        <variable
+            name="contactsVm1"
+            type="io.wexchain.android.dcc.modules.cashloan.vm.ContactsVm" />
+
+        <variable
+            name="contactsVm2"
+            type="io.wexchain.android.dcc.modules.cashloan.vm.ContactsVm" />
+
+        <variable
+            name="contactsVm3"
+            type="io.wexchain.android.dcc.modules.cashloan.vm.ContactsVm" />
+
     </data>
 
     <LinearLayout
@@ -87,6 +99,7 @@
                         android:text="居住地址" />
 
                     <EditText
+                        android:id="@+id/detail_address"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_marginLeft="90dp"
@@ -118,6 +131,7 @@
                         android:text="借款用途" />
 
                     <TextView
+                        android:id="@+id/loanpurpose_tatus"
                         style="@style/SelectBtnStyle"
                         android:layout_alignParentRight="true" />
 
@@ -138,14 +152,15 @@
                     android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_centerVertical="true"
                         style="@style/InfoTitleStyle"
+                        android:layout_centerVertical="true"
                         android:text="工作类别" />
 
                     <TextView
-                        android:layout_centerVertical="true"
+                        android:id="@+id/workcategory_status"
                         style="@style/SelectBtnStyle"
-                        android:layout_alignParentRight="true" />
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
 
                 </RelativeLayout>
 
@@ -159,14 +174,15 @@
                     android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_centerVertical="true"
                         style="@style/InfoTitleStyle"
+                        android:layout_centerVertical="true"
                         android:text="工作行业" />
 
                     <TextView
-                        android:layout_centerVertical="true"
+                        android:id="@+id/workindustry_status"
                         style="@style/SelectBtnStyle"
-                        android:layout_alignParentRight="true" />
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
 
                 </RelativeLayout>
 
@@ -184,6 +200,7 @@
                         android:text="工作年限" />
 
                     <EditText
+                        android:id="@+id/work_year"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_marginLeft="90dp"
@@ -205,8 +222,8 @@
                 <TextView
                     style="@style/CertTitleStyle"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:text="企业所在地址"
                     android:paddingBottom="10dp"
+                    android:text="企业所在地址"
                     android:textSize="16sp" />
 
                 <include
@@ -228,6 +245,7 @@
                         android:text="办公地址" />
 
                     <EditText
+                        android:id="@+id/work_address"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_marginLeft="90dp"
@@ -255,6 +273,7 @@
                         android:text="单位全称" />
 
                     <EditText
+                        android:id="@+id/work_name"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_marginLeft="90dp"
@@ -282,6 +301,7 @@
                         android:text="办公电话" />
 
                     <EditText
+                        android:id="@+id/work_phone"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_marginLeft="90dp"
@@ -314,13 +334,20 @@
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:text="联系人信息" />
 
-                <include layout="@layout/include_contacts" />
+                <include
+                    layout="@layout/include_contacts"
+                    app:vm="@{contactsVm1}" />
 
-                <include layout="@layout/include_contacts" />
+                <include
+                    layout="@layout/include_contacts"
+                    app:vm="@{contactsVm2}" />
 
-                <include layout="@layout/include_contacts" />
+                <include
+                    layout="@layout/include_contacts"
+                    app:vm="@{contactsVm3}" />
 
                 <Button
+                    android:id="@+id/cert_commit"
                     style="@style/Widget.AppCompat.Button.Dcc.Full"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

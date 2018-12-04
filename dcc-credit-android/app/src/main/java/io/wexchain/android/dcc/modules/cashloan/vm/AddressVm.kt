@@ -1,7 +1,5 @@
 package io.wexchain.android.dcc.modules.cashloan.vm
 
-import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.ViewModel
 import android.content.Context
 import android.databinding.ObservableField
@@ -14,7 +12,7 @@ class AddressVm : ViewModel() {
 
     private val helper = PickerHelper()
 
-    fun init(context: Context){
+    fun init(context: Context) {
         helper.init(context)
     }
 
@@ -36,5 +34,9 @@ class AddressVm : ViewModel() {
 
     fun isSelect(): Boolean {
         return !(province.get() == "选择省份" || city.get() == "选择城市" || area.get() == "选择地区")
+    }
+
+    fun getAddress(): Triple<String, String, String> {
+        return Triple(province.get()!!, city.get()!!, area.get()!!)
     }
 }
