@@ -386,6 +386,14 @@ class PassportRepository(
         passportPrefs.userInfo.set(userinfo)
     }
 
+    fun getUserInfoCert(): String? {
+        return passportPrefs.userInfoCert.get()
+    }
+
+    fun setUserInfoCert(userinfoCert: String) {
+        passportPrefs.userInfoCert.set(userinfoCert)
+    }
+
     fun getUserInfo(): String? {
         return passportPrefs.userInfo.get()
     }
@@ -489,6 +497,7 @@ class PassportRepository(
         private const val IPFS_URL_PORT = "ipfs_url_port"
         private const val USER_INFO = "user_info"
         private const val IPFS_DEFAULT_HOST_STATUS = "ipfs_default_host_status"
+        private const val USER_INFO_CERT = "user_info_cert"
 
         private const val DEFAULT_BENEFICIARY_ADDRESS = "default_beneficiary_address"
 
@@ -516,6 +525,7 @@ class PassportRepository(
         val ipfsUrlPort = StringPref(IPFS_URL_PORT)
         val ipfsHostStatus = BoolPref(IPFS_DEFAULT_HOST_STATUS, true)
         val userInfo = StringPref(USER_INFO)
+        val userInfoCert = StringPref(USER_INFO_CERT)
 
         fun loadAuthKey(): AuthKey? {
             val keyAlias = authKeyAlias.get()

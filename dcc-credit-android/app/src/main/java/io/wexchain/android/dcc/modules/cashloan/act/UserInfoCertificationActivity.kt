@@ -10,8 +10,12 @@ import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.modules.cashloan.bean.CertificationInfo
 import io.wexchain.android.dcc.modules.cashloan.vm.AddressVm
 import io.wexchain.android.dcc.modules.cashloan.vm.ContactsVm
+import io.wexchain.android.dcc.tools.toBean
+import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.dcc.BR
@@ -56,31 +60,13 @@ class UserInfoCertificationActivity : BindActivity<ActivityUserinfoCertification
             workcategoryStatus.selectTag(WorkCategoryList)
             workindustryStatus.selectTag(WorkIndustryList)
             certCommit.onClick {
-                val marriages = binding.marriagesTatus.text.toString()
-                if (!checkSeclected(marriages)) {
-                    toast("请选择婚姻状况")
-                    return@onClick
+                saveDataToSdcard(true) {
+                    toast(it)
                 }
-                val isSelect = binding.asAddressVm!!.isSelect()
-                if (!isSelect) {
-                    toast("请选择居住地址")
-                    return@onClick
-                }
-                val detailAddress = binding.asAddressVm!!.getAddress()
-
-                val address = binding.detailAddress.text.toString()
-                if (address.isEmpty()) {
-                    toast("请填写居住地址")
-                    return@onClick
-                }
-                val loanpurpose = binding.loanpurposeTatus.text.toString()
-                if (!checkSeclected(loanpurpose)) {
-                    toast("请选择借款用途")
-                    return@onClick
-                }
-
-
             }
+        }
+        toolbar?.setNavigationOnClickListener {
+            saveDataToSdcard()
         }
     }
 
@@ -133,15 +119,174 @@ class UserInfoCertificationActivity : BindActivity<ActivityUserinfoCertification
                     title.set("联系人3")
                     observeRelation()
                 }
+        setData()
     }
 
-    override fun onStop() {
-        super.onStop()
+    private fun setData() {
+        val infoCert = App.get().passportRepository.getUserInfoCert()
+        infoCert?.let {
+            val bean = it.toBean(CertificationInfo::class.java)
+            binding.marriagesTatus.text = bean.MarriageStatus
+            bean.ResideProvince?.let {
+                binding.asAddressVm!!.province.set(it)
+                binding.asAddressVm!!.city.set(bean.ResideCity)
+                binding.asAddressVm!!.area.set(bean.ResideArea)
+            }
+            bean.ResideAddress?.let {
+                binding.detailAddress.setText(it)
+            }
+            bean.LoanPurpose?.let {
+                binding.loanpurposeTatus.text = it
+            }
+            bean.WorkCategory?.let {
+                binding.workcategoryStatus.text = it
+            }
+            bean.WorkIndustry?.let {
+                binding.workindustryStatus.text = it
+            }
+            bean.WorkYear?.let {
+                binding.workYear.setText(it)
+            }
+            bean.CompanyProvince?.let {
+                binding.asEnterpriseVm!!.province.set(it)
+                binding.asEnterpriseVm!!.city.set(bean.CompanyCity)
+                binding.asEnterpriseVm!!.area.set(bean.CompanyArea)
+            }
+            bean.CompanyAddress?.let {
+                binding.workAddress.setText(it)
+            }
+            bean.CompanyName?.let {
+                binding.workName.setText(it)
+            }
+            bean.CompanyPhone?.let {
+                binding.workPhone.setText(it)
+            }
+            bean.Contacts1Relation?.let {
+                binding.contactsVm1!!.relation.set(it)
+            }
+            bean.Contacts1Name?.let {
+                binding.contactsVm1!!.name.set(it)
+            }
+            bean.Contacts1Phone?.let {
+                binding.contactsVm1!!.phone.set(it)
+            }
+
+            bean.Contacts2Relation?.let {
+                binding.contactsVm2!!.relation.set(it)
+            }
+            bean.Contacts2Name?.let {
+                binding.contactsVm2!!.name.set(it)
+            }
+            bean.Contacts2Phone?.let {
+                binding.contactsVm2!!.phone.set(it)
+            }
+
+            bean.Contacts3Relation?.let {
+                binding.contactsVm3!!.relation.set(it)
+            }
+            bean.Contacts3Name?.let {
+                binding.contactsVm3!!.name.set(it)
+            }
+            bean.Contacts3Phone?.let {
+                binding.contactsVm3!!.phone.set(it)
+            }
+        }
+    }
+
+    override fun onBackPressed() {
         saveDataToSdcard()
     }
 
-    private fun saveDataToSdcard() {
-//        CertificationInfo()
+    private fun saveDataToSdcard(check: Boolean = false, error: (String) -> Unit = {}) {
+        val marriages = binding.marriagesTatus.text.toString()
+        val isSelect = binding.asAddressVm!!.isSelect()
+        val detailAddress = binding.asAddressVm!!.getAddress()
+        val address = binding.detailAddress.text.toString()
+        val loanpurpose = binding.loanpurposeTatus.text.toString()
+        val workcategory = binding.workcategoryStatus.text.toString()
+        val workindustry = binding.workindustryStatus.text.toString()
+        val workYear = binding.workYear.text.toString()
+        val isSelect2 = binding.asEnterpriseVm!!.isSelect()
+        val companyAddress = binding.asEnterpriseVm!!.getAddress()
+        val workAddress = binding.workAddress.text.toString()
+        val workName = binding.workName.text.toString()
+        val workPhone = binding.workPhone.text.toString()
+        val check1 = binding.contactsVm1!!.check()
+        val relation1 = binding.contactsVm1!!.relation.get()
+        val name1 = binding.contactsVm1!!.name.get()
+        val phone1 = binding.contactsVm1!!.phone.get()
+
+        val check2 = binding.contactsVm2!!.check()
+        val relation2 = binding.contactsVm2!!.relation.get()
+        val name2 = binding.contactsVm2!!.name.get()
+        val phone2 = binding.contactsVm2!!.phone.get()
+
+        val check3 = binding.contactsVm3!!.check()
+        val relation3 = binding.contactsVm3!!.relation.get()
+        val name3 = binding.contactsVm3!!.name.get()
+        val phone3 = binding.contactsVm3!!.phone.get()
+
+        if (check) {
+            if (!checkSeclected(marriages)) {
+                error("请选择婚姻状况")
+                return
+            }
+            if (!isSelect) {
+                error("请选择居住地址")
+                return
+            }
+            if (address.isEmpty()) {
+                error("请填写居住地址")
+                return
+            }
+            if (!checkSeclected(loanpurpose)) {
+                error("请选择借款用途")
+                return
+            }
+            if (!checkSeclected(workcategory)) {
+                error("请选择工作类别")
+                return
+            }
+            if (!checkSeclected(workindustry)) {
+                error("请选择工作行业")
+                return
+            }
+            if (workYear.isEmpty()) {
+                error("请填写工作年限")
+                return
+            }
+            if (!isSelect2) {
+                error("请选择企业所在地址")
+                return
+            }
+            if (workAddress.isEmpty()) {
+                error("请填写办公地址")
+                return
+            }
+            if (workName.isEmpty()) {
+                error("请填写单位全称")
+                return
+            }
+            if (check1) {
+                toast("请填写完整联系人1信息")
+                return
+            }
+            if (check2) {
+                toast("请填写完整联系人2信息")
+                return
+            }
+            if (check3) {
+                toast("请填写完整联系人3信息")
+                return
+            }
+        }
+
+        val data = CertificationInfo(marriages, detailAddress.first, detailAddress.second, detailAddress.third, address, loanpurpose,
+                workcategory, workindustry, workYear, companyAddress.first, companyAddress.second, companyAddress.third, workAddress,
+                workName, workPhone, relation1, phone1, name1, relation2, phone2, name2, relation3, phone3, name3)
+        val json = data.toJson()
+        App.get().passportRepository.setUserInfoCert(json)
+        finish()
     }
 
     val adapter = SimpleDataBindAdapter<ItemTagBinding, String>(

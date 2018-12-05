@@ -2,13 +2,12 @@ package io.wexchain.android.common
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
+import io.wexchain.android.common.view.SimpleTextWatcher
 import java.math.BigDecimal
 
 
@@ -42,15 +41,7 @@ fun View.onClick(click: () -> Unit) {
 
 fun EditText.fixPrice() {
     val view = this
-    view.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) {
-
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-        }
-
+    view.addTextChangedListener(object : SimpleTextWatcher() {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             s?.toString()?.let {
                 var res = it
@@ -84,15 +75,7 @@ fun EditText.fixPrice() {
 
 fun EditText.transTips(transCount: TextView, showTips: () -> Unit, hidTips: () -> Unit) {
     val view = this
-    view.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) {
-
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-        }
-
+    view.addTextChangedListener(object : SimpleTextWatcher() {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             val txt = s?.toString()
             if (txt == ".") {

@@ -2,9 +2,8 @@ package io.wexchain.android.dcc.modules.cashloan.vm
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import android.text.Editable
 import io.wexchain.android.common.SingleLiveEvent
-import io.wexchain.android.dcc.modules.cashloan.SimpleTextWatcher
+import io.wexchain.android.common.view.SimpleTextWatcher
 
 /**
  *Created by liuyang on 2018/12/4.
@@ -26,7 +25,7 @@ class ContactsVm : ViewModel() {
         relationCall.call()
     }
 
-    val  phoneWatcher = object :SimpleTextWatcher() {
+    val phoneWatcher = object : SimpleTextWatcher() {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             s?.toString()?.let {
                 phone.set(it)
@@ -34,12 +33,16 @@ class ContactsVm : ViewModel() {
         }
     }
 
-    val  nameWatcher = object :SimpleTextWatcher() {
+    val nameWatcher = object : SimpleTextWatcher() {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             s?.toString()?.let {
                 name.set(it)
             }
         }
+    }
+
+    fun check(): Boolean {
+        return relation.get() != "请选择" && !phone.get().isNullOrEmpty() && !name.get().isNullOrEmpty()
     }
 
 }

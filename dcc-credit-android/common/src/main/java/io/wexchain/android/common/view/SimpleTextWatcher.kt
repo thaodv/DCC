@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.modules.cashloan
+package io.wexchain.android.common.view
 
 import android.text.Editable
 import android.text.TextWatcher
