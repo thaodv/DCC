@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="@string/amount1"
+            android:text="最高"
             android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@id/tv_product_period_label"

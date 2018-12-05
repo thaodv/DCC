@@ -73,7 +73,7 @@ data class LoanProduct(
         val end = volumeOptionList.last()
         val startStr = start.toPlainString()
         val endStr = end.toPlainString()
-        return "$startStr-$endStr${c.symbol}"
+        return "$endStr${c.symbol}"
     }
 
     fun getMaxRangeStr(): String {
