@@ -16,8 +16,10 @@ class ContactsVm : ViewModel() {
             .apply { set("请选择") }
 
     val phone = ObservableField<String>()
+    val olderPhone = ObservableField<String>()
 
     val name = ObservableField<String>()
+    val olderName = ObservableField<String>()
 
     val relationCall = SingleLiveEvent<Void>()
 

@@ -6,8 +6,11 @@ import android.view.MenuItem
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityCashloanBinding
+import io.wexchain.dccchainservice.type.TnOrderStatus
 
 /**
  *Created by liuyang on 2018/10/15.
@@ -22,12 +25,25 @@ class CashLoanActivity : BindActivity<ActivityCashloanBinding>() {
         initToolbar()
 //        initView()
         initClick()
+        initData()
+    }
+
+    private fun initData() {
+        ScfOperations
+                .withScfTokenInCurrentPassport {
+                    App.get().scfApi.createLoanOrder(it)
+                }
+                .map {
+                    it.status ?: TnOrderStatus.NONE
+                }
+
+
     }
 
     private fun initView() {
         binding.countdownProgress.setCountdownTime(900)
         binding.countdownProgress.setPercent(80)
-        binding.countdownProgress.startCountDownTime {  }
+        binding.countdownProgress.startCountDownTime { }
     }
 
     private fun initClick() {

@@ -165,29 +165,33 @@ class UserInfoCertificationActivity : BindActivity<ActivityUserinfoCertification
                 binding.contactsVm1!!.relation.set(it)
             }
             bean.Contacts1Name?.let {
+                binding.contactsVm1!!.olderName.set(it)
                 binding.contactsVm1!!.name.set(it)
             }
             bean.Contacts1Phone?.let {
+                binding.contactsVm1!!.olderPhone.set(it)
                 binding.contactsVm1!!.phone.set(it)
             }
-
             bean.Contacts2Relation?.let {
                 binding.contactsVm2!!.relation.set(it)
             }
             bean.Contacts2Name?.let {
+                binding.contactsVm2!!.olderName.set(it)
                 binding.contactsVm2!!.name.set(it)
             }
             bean.Contacts2Phone?.let {
+                binding.contactsVm2!!.olderPhone.set(it)
                 binding.contactsVm2!!.phone.set(it)
             }
-
             bean.Contacts3Relation?.let {
                 binding.contactsVm3!!.relation.set(it)
             }
             bean.Contacts3Name?.let {
+                binding.contactsVm3!!.olderName.set(it)
                 binding.contactsVm3!!.name.set(it)
             }
             bean.Contacts3Phone?.let {
+                binding.contactsVm3!!.olderPhone.set(it)
                 binding.contactsVm3!!.phone.set(it)
             }
         }
