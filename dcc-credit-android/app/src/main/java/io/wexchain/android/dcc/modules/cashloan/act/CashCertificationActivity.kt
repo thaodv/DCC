@@ -41,6 +41,9 @@ class CashCertificationActivity : BindActivity<ActivityCashCertificationBinding>
         binding.cardAsUserinfo.onClick {
             navigateTo(UserInfoCertificationActivity::class.java)
         }
+        binding.certCommit.onClick {
+            navigateTo(CreateLoanInfoActivity::class.java)
+        }
     }
 
     private fun obtainAuthStatus(certificationType: CertificationType): AuthenticationStatusVm? {
@@ -85,18 +88,26 @@ class CashCertificationActivity : BindActivity<ActivityCashCertificationBinding>
         when (certificationType) {
             CertificationType.ID -> {
                 if (status == UserCertStatus.DONE) {
-                    navigateTo(IdCertificationActivity::class.java)
+                    navigateTo(IdCertificationActivity::class.java) {
+                        putExtra("type", CERT_TYPE_CASHLOAN)
+                    }
                 } else {
-                    navigateTo(SubmitIdActivity::class.java)
+                    navigateTo(SubmitIdActivity::class.java) {
+                        putExtra("type", CERT_TYPE_CASHLOAN)
+                    }
                 }
             }
 
             CertificationType.BANK ->
                 if (status == UserCertStatus.DONE) {
-                    navigateTo(BankCardCertificationActivity::class.java)
+                    navigateTo(BankCardCertificationActivity::class.java) {
+                        putExtra("type", CERT_TYPE_CASHLOAN)
+                    }
                 } else {
                     PassportOperations.ensureCaValidity(this) {
-                        navigateTo(SubmitBankCardActivity::class.java)
+                        navigateTo(SubmitBankCardActivity::class.java) {
+                            putExtra("type", CERT_TYPE_CASHLOAN)
+                        }
                     }
                 }
             CertificationType.TONGNIU -> {
@@ -114,10 +125,19 @@ class CashCertificationActivity : BindActivity<ActivityCashCertificationBinding>
                         // get report processing
                         //      startActivity(Intent(this, SubmitTNLogActivity::class.java))
                     }
+                    else->{
+
+                    }
                 }
 
             }
+            else -> {
+            }
         }
+    }
+
+    companion object {
+        const val CERT_TYPE_CASHLOAN = "cert_type_cashloan"
     }
 
 

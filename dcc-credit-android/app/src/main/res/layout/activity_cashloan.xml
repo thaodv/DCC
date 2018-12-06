@@ -2,6 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="vm"
+            type="io.wexchain.android.dcc.modules.cashloan.vm.CashLoanVm" />
+
+        <import type="io.wexchain.android.dcc.modules.cashloan.CashLoanHelper" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,9 +24,9 @@
             android:layout_height="match_parent">
 
             <android.support.constraint.ConstraintLayout
-                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/cash_loan_img3"
@@ -127,6 +136,7 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                visibleOrGone="@{CashLoanHelper.loanRejected(vm.loanStatus)}"
                 android:visibility="gone">
 
                 <ImageView
@@ -207,6 +217,7 @@
 
 
             <android.support.constraint.ConstraintLayout
+                visibleOrGone="@{CashLoanHelper.loanStatus(vm.loanStatus) }"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="visible">
@@ -233,8 +244,8 @@
                     android:text="最高可借"
                     android:textColor="#fff"
                     android:textSize="20sp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/cash_loan_num"

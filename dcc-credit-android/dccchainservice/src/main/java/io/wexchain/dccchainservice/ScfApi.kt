@@ -350,35 +350,35 @@ interface ScfApi {
     @POST("secure/tn_loan/apply")
     @FormUrlEncoded
     fun tnApply(@Header(ScfApi.HEADER_TOKEN) token: String?,
-                id:Long,
-                borrowerName:String,
-                idCardNo:String,
-                idCardFrontPicCacheKey:String,
-                idCardBackPicCacheKey:String,
-                facePicCacheKey:String,
-                bankCardNo:String,
-                bankCardMobile:String,
-                mobile:String,
-                communicationLog:String,
-                maritalStatus:String,
-                residentialProvince:String,
-                residentialCity:String,
-                residentialDistrict:String,
-                residentialAddress:String,
-                loanUsage:String,
-                workingType:String,
-                workingIndustry:String,
-                workingYears:String,
-                companyProvince:String,
-                companyCity:String,
-                companyDistrict:String,
-                companyAddress:String,
-                companyName:String,
-                companyTel:String,
-                contactInfoList:String,
-                relationship:String,
-                name:String
-                ): Single<Result<TnLoanOrder>>//TODO 返回值未确定
+                id: Long,
+                borrowerName: String,
+                idCardNo: String,
+                idCardFrontPicCacheKey: String,
+                idCardBackPicCacheKey: String,
+                facePicCacheKey: String,
+                bankCardNo: String,
+                bankCardMobile: String,
+                mobile: String,
+                communicationLog: String,
+                maritalStatus: String,
+                residentialProvince: String,
+                residentialCity: String,
+                residentialDistrict: String,
+                residentialAddress: String,
+                loanUsage: String,
+                workingType: String,
+                workingIndustry: String,
+                workingYears: String,
+                companyProvince: String,
+                companyCity: String,
+                companyDistrict: String,
+                companyAddress: String,
+                companyName: String,
+                companyTel: String,
+                contactInfoList: String,
+                relationship: String,
+                name: String
+    ): Single<Result<TnLoanOrder>>//TODO 返回值未确定
 
     //获取额度审核结果
     @POST("secure/tn_loan/getAuditResult")
@@ -414,6 +414,22 @@ interface ScfApi {
     //查询银行列表
     @POST("bank/tn_loan/queryBankInfo")
     fun queryBankInfo(): Single<Result<List<BankInfo>>>
+
+    //查询同牛借贷订单详情
+    @POST("secure/tn_loan/getTNLoanOrderDetail")
+    @FormUrlEncoded
+    fun getTNLoanOrderDetail(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            id: Int
+    ): Single<Result<TnLoanOrder>>
+
+    //查询还款计划
+    @POST("secure/tn_loan/getTNRepayPlan")
+    @FormUrlEncoded
+    fun getTNRepayPlan(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            id: Int
+    ): Single<Result<TnLoanOrder>>
 
 
     companion object {

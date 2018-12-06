@@ -3,14 +3,19 @@ package io.wexchain.android.dcc.modules.cashloan.act
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.ScfOperations
+import io.wexchain.android.dcc.modules.cashloan.vm.CashLoanVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityCashloanBinding
 import io.wexchain.dccchainservice.type.TnOrderStatus
+import io.wexchain.ipfs.utils.doMain
 
 /**
  *Created by liuyang on 2018/10/15.
@@ -25,6 +30,10 @@ class CashLoanActivity : BindActivity<ActivityCashloanBinding>() {
         initToolbar()
 //        initView()
         initClick()
+    }
+
+    override fun onResume() {
+        super.onResume()
         initData()
     }
 
@@ -36,8 +45,14 @@ class CashLoanActivity : BindActivity<ActivityCashloanBinding>() {
                 .map {
                     it.status ?: TnOrderStatus.NONE
                 }
-
-
+                .doMain()
+                .subscribeBy { status->
+                    toast(status.name)
+                    binding.vm = getViewModel<CashLoanVm>()
+                            .apply {
+                                loanStatus.set(status)
+                            }
+                }
     }
 
     private fun initView() {

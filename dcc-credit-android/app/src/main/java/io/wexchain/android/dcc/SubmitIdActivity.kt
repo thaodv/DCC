@@ -15,6 +15,7 @@ import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.fragment.InputIdInfoFragment
 import io.wexchain.android.dcc.fragment.LivenessDetectionFragment
+import io.wexchain.android.dcc.modules.cashloan.act.CashCertificationActivity
 import io.wexchain.android.dcc.vm.domain.IdCardCertData
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
@@ -26,7 +27,7 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
     private val inputIdInfoFragment by lazy { InputIdInfoFragment.create(this) }
     private val livenessDetectionFragment by lazy { LivenessDetectionFragment.create(this) }
 
-    private lateinit var idCardCertData:IdCardCertData
+    private lateinit var idCardCertData: IdCardCertData
     private var portrait: ByteArray? = null
 
     override fun onProceed(idCardCertData: IdCardCertData) {
@@ -62,8 +63,8 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
                         handleCertResult(it, idData)
                     }, {
                         if (it is IllegalStateException && it.message == CertOperations.ERROR_SUBMIT_ID_NOT_MATCH) {
-                            INMDialog().show(supportFragmentManager,null)
-                        }else if (it is DccChainServiceException && !it.message.isNullOrBlank()) {
+                            INMDialog().show(supportFragmentManager, null)
+                        } else if (it is DccChainServiceException && !it.message.isNullOrBlank()) {
                             toast(it.message!!)
                         }
                         stackTrace(it)
@@ -86,7 +87,7 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
 
     private fun scheduleReDoLoginToRefreshMinePts() {
         ScfOperations.loginWithCurrentPassport()
-            .subscribe()
+                .subscribe()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,8 +110,13 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
 
     private fun enterStep(step: Int) {
         when (step) {
-            STEP_INPUT_ID ->
+            STEP_INPUT_ID -> {
+                val type = intent.getStringExtra("type")
+                if (CashCertificationActivity.CERT_TYPE_CASHLOAN == type) {
+                    inputIdInfoFragment.certType = type
+                }
                 replaceFragment(inputIdInfoFragment, R.id.fl_container)
+            }
             STEP_LIVENESS_DETECT ->
                 replaceFragment(livenessDetectionFragment, R.id.fl_container, backStackStateName = "step_$step")
         }

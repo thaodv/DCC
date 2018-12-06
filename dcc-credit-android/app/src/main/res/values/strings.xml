@@ -446,13 +446,13 @@
     <string name="ipfs_select_node_tip">说明：\n
 云端数据默认存储在Bit Express提供的节点，您也可以自己搭建节点，选择把数据存储在自建节点上。
         搭建节点教程可以访问 <u>https://open.dcc.finance/cn/sdk/ipfs.html</u></string>
-    <string name="service_bsx_title">多币种预计年化 </string>
+    <string name="service_bsx_title">多币种预计年化 <font color='#ff0000'>10%-40%</font> </string>
 
     <string name="bsx_buy_again"><![CDATA[想再买点？去市场看看 >]]></string>
     <string name="passport_auth"><font color='#C009FF'>变更记录</font></string>
     <string name="skip_creat"><font color='#C009FF'>跳过</font></string>
     <string name="from_gallery"><font color='#C009FF'>相册</font></string>
 
-    <string name="service_cash_title"> <font color='#7B40FF'>1000元</font>现金立等可取</string>
+    <string name="service_cash_title"> <font color='#7B40FF'>1000元</font> 现金立等可取</string>
 
 </resources>

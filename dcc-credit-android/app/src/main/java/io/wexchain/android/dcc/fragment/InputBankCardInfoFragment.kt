@@ -8,10 +8,12 @@ import android.view.View
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
+import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.common.base.BindFragment
+import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.cashloan.act.CashCertificationActivity
 import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
@@ -48,6 +50,9 @@ class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), 
 
         val ctx = activity!!
 //        rxLocation = RxLocationManager(ctx)
+        if (CashCertificationActivity.CERT_TYPE_CASHLOAN == certType) {
+            binding.tvCertOrg.text = "认证方:同牛"
+        }
         rxPermissions = RxPermissions(ctx)
         App.get().marketingApi.getBankList()
                 .checkonMain()
@@ -102,7 +107,7 @@ class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), 
     private fun showOrHideBanksSheet() {
         var dialog = bankDialog
         if (dialog == null) {
-            dialog = Dialog(context!!,R.style.FullWidthWhiteDialog).apply {
+            dialog = Dialog(context!!, R.style.FullWidthWhiteDialog).apply {
                 setContentView(R.layout.dialog_banks)
                 val dialogWindow = window
                 val lp = dialogWindow.attributes
@@ -132,8 +137,16 @@ class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), 
 
     interface Listener {
         fun onProceed(bankCardInfo: BankCardInfo)
-
     }
+
+    var certType: String
+        get() = arguments?.getString(Extras.EXTRA_CERT_TYPE) ?: ""
+        set(value) {
+            if (arguments == null) {
+                arguments = Bundle()
+            }
+            arguments!!.putString(Extras.EXTRA_CERT_TYPE, value)
+        }
 
     companion object {
         fun create(listener: Listener): InputBankCardInfoFragment {

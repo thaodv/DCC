@@ -9,6 +9,7 @@ import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.fragment.InputBankCardInfoFragment
 import io.wexchain.android.dcc.fragment.VerifyBankSmsCodeFragment
+import io.wexchain.android.dcc.modules.cashloan.act.CashCertificationActivity
 import io.wexchain.android.dcc.vm.domain.BankCardInfo
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
@@ -82,8 +83,15 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
 
     private fun enterStep(step: Int) {
         when (step) {
-            STEP_INPUT_BANK_CARD_INFO -> replaceFragment(inputBankCardInfoFragment, R.id.fl_container)
+            STEP_INPUT_BANK_CARD_INFO -> {
+                val type = intent.getStringExtra("type")
+                if (CashCertificationActivity.CERT_TYPE_CASHLOAN == type) {
+                    inputBankCardInfoFragment.certType = type
+                }
+                replaceFragment(inputBankCardInfoFragment, R.id.fl_container)
+            }
             STEP_VERIFY_BANK_CARD_SMS_CODE -> {
+
                 verifyBankSmsCodeFragment.phoneNum = bankCardInfo!!.phoneNo
                 replaceFragment(verifyBankSmsCodeFragment, R.id.fl_container, backStackStateName = "step_$STEP_VERIFY_BANK_CARD_SMS_CODE")
             }
@@ -107,7 +115,7 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
                 .doFinally {
                     hideLoadingDialog()
                 }
-                .subscribe({it->
+                .subscribe({ it ->
                     setSmsTicket(it)
                     enterStep(STEP_VERIFY_BANK_CARD_SMS_CODE)
                 })
@@ -146,7 +154,7 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
     private fun handleCertResult(certOrder: CertOrder, bankCardInfo: BankCardInfo) {
         if (certOrder.status.isPassed()) {
             toast("认证成功")
-            CertOperations.saveBankCertData(certOrder,bankCardInfo)
+            CertOperations.saveBankCertData(certOrder, bankCardInfo)
             worhavah.certs.tools.CertOperations.certed()
             finish()
         } else {

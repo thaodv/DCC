@@ -456,9 +456,17 @@
         <activity
             android:name="io.wexchain.android.dcc.modules.cashloan.act.WithDrawActivity"
             android:label="提现"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="io.wexchain.android.dcc.modules.cashloan.act.CashLoanRepaymentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.CreateLoanInfoActivity"
+            android:label="借款信息"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashBoundBankActivity"
+            android:label="绑定银行卡"
             android:screenOrientation="portrait" />
 
     </application>

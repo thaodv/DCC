@@ -137,7 +137,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
     private fun getTitle(type: CardType): String? {
         return when (type) {
-            CardType.BSX -> "多币种预计年化"
+            CardType.BSX ->  getString(R.string.service_bsx_title)
             CardType.CASHLOAN -> getString(R.string.service_cash_title)
             CardType.TOKENPLUS -> "TokenPlus套利神器"
             CardType.SEARCHAIN -> "数字资产追踪引擎"
