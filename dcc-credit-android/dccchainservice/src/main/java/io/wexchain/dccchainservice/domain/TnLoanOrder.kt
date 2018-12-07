@@ -13,7 +13,7 @@ data class TnLoanOrder(
         val failMessage: String,
         val status: TnOrderStatus?,
         val repaymentTime: Long,
-        val createdTime: Long,
+        val createdTime: String,
         val orderInfoMap: OrderInfoMap,
         val loanOrder: LoanOrder,
         val auditTime: String,

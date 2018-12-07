@@ -385,7 +385,7 @@ interface ScfApi {
     @FormUrlEncoded
     fun getAuditResult(
             @Header(ScfApi.HEADER_TOKEN) token: String?,
-            id: Long
+            @Field("id") id: Long
     ): Single<Result<TnLoanOrder>>
 
     //获取借款试算信息
@@ -393,7 +393,7 @@ interface ScfApi {
     @FormUrlEncoded
     fun getLoanCalculationInfo(
             @Header(ScfApi.HEADER_TOKEN) token: String?,
-            id: Long
+            @Field("id") id: Long
     ): Single<Result<TnLoanOrder>>
 
     //绑卡
@@ -401,10 +401,10 @@ interface ScfApi {
     @FormUrlEncoded
     fun bindingBankCard(
             @Header(ScfApi.HEADER_TOKEN) token: String?,
-            bankCode: String,
-            bankCardNo: String,
-            bankCardMobile: String,
-            verifyCode: String
+            @Field("bankCode") bankCode: String,
+            @Field("bankCardNo") bankCardNo: String,
+            @Field("bankCardMobile") bankCardMobile: String,
+            @Field("verifyCode") verifyCode: String
     ): Single<Result<String>>
 
     //查询用户已绑定银行卡
@@ -420,7 +420,7 @@ interface ScfApi {
     @FormUrlEncoded
     fun getTNLoanOrderDetail(
             @Header(ScfApi.HEADER_TOKEN) token: String?,
-            id: Int
+            @Field("id") id: Int
     ): Single<Result<TnLoanOrder>>
 
     //查询还款计划
@@ -428,7 +428,36 @@ interface ScfApi {
     @FormUrlEncoded
     fun getTNRepayPlan(
             @Header(ScfApi.HEADER_TOKEN) token: String?,
-            id: Int
+            @Field("id") id: Int
+    ): Single<Result<TnLoanOrder>>
+
+    //分页查询同牛借贷订单
+    @POST("secure/tn_loan/queryOrderPage")
+    @FormUrlEncoded
+    fun queryOrderPage(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("number") number: Int,
+            @Field("size") size: Int = 20
+    ): Single<Result<PagedList<TnLoanOrder>>>
+
+    //还款
+    @POST("secure/tn_loan/repay")
+    @FormUrlEncoded
+    fun repay(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("id") id: Long,
+            @Field("verifyCode") verifyCode: Long
+    ): Single<Result<TnLoanOrder>>
+
+    //确认借款
+    @POST("secure/tn_loan/confirmLoan")
+    @FormUrlEncoded
+    fun confirmLoan(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("id") id: Long,
+            @Field("chainOrderId") chainOrderId: Long,
+            @Field("useDcc") useDcc: Long,
+            @Field("dccAmount") dccAmount: Long
     ): Single<Result<TnLoanOrder>>
 
 
