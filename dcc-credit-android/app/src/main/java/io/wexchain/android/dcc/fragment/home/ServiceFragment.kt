@@ -39,8 +39,7 @@ import io.wexchain.dccchainservice.domain.LoanProduct
  */
 class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
-    override val contentLayoutId: Int
-        get() = R.layout.fragment_service
+    override val contentLayoutId: Int get() = R.layout.fragment_service
 
     private val passport by lazy {
         App.get().passportRepository.getCurrentPassport()
