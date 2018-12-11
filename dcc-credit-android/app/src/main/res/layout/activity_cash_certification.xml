@@ -21,7 +21,11 @@
 
         <variable
             name="vm"
-            type="io.wexchain.android.dcc.vm.DccExchangeVm"/>
+            type="io.wexchain.android.dcc.vm.DccExchangeVm" />
+
+        <variable
+            name="cert"
+            type="io.wexchain.android.dcc.modules.cashloan.vm.CashCertificationVm" />
 
     </data>
 
@@ -75,6 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18dp"
+                    android:onClick="@{(v)->cert.userinfoCert()}"
                     android:background="@drawable/bg_round_rect_noframe_white"
                     android:minHeight="80dp">
 
@@ -158,11 +163,11 @@
                     tools:text="4738.93DCC" />
 
                 <TextView
+                    android:onClick="@{(v)->cert.showTips()}"
                     android:id="@+id/cert_tips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:autoLink="all"
-                    android:text="DCC不足?"
+                    android:text="@string/cash_loan_dcc_tips"
                     android:textColor="#7B40FF" />
 
             </LinearLayout>
@@ -170,10 +175,12 @@
             <Button
                 android:id="@+id/cert_commit"
                 style="@style/Widget.AppCompat.Button.Dcc.Full"
+                setisEnable="@{cert.btnStatus}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:onClick="@{(v)->cert.commitCert()}"
                 android:text="提交" />
 
         </LinearLayout>

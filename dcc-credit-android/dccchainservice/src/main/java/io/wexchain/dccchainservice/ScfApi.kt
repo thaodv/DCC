@@ -348,37 +348,13 @@ interface ScfApi {
 
     //申请现金贷额度
     @POST("secure/tn_loan/apply")
-    @FormUrlEncoded
+    @Multipart
     fun tnApply(@Header(ScfApi.HEADER_TOKEN) token: String?,
-                id: Long,
-                borrowerName: String,
-                idCardNo: String,
-                idCardFrontPicCacheKey: String,
-                idCardBackPicCacheKey: String,
-                facePicCacheKey: String,
-                bankCardNo: String,
-                bankCardMobile: String,
-                mobile: String,
-                communicationLog: String,
-                maritalStatus: String,
-                residentialProvince: String,
-                residentialCity: String,
-                residentialDistrict: String,
-                residentialAddress: String,
-                loanUsage: String,
-                workingType: String,
-                workingIndustry: String,
-                workingYears: String,
-                companyProvince: String,
-                companyCity: String,
-                companyDistrict: String,
-                companyAddress: String,
-                companyName: String,
-                companyTel: String,
-                contactInfoList: String,
-                relationship: String,
-                name: String
-    ): Single<Result<TnLoanOrder>>//TODO 返回值未确定
+                @Part("data") data: String,
+                @Part idCardFrontPic: MultipartBody.Part,
+                @Part idCardBackPic: MultipartBody.Part,
+                @Part facePic: MultipartBody.Part
+    ): Single<Result<TnLoanOrder>>
 
     //获取额度审核结果
     @POST("secure/tn_loan/getAuditResult")
@@ -420,7 +396,7 @@ interface ScfApi {
     @FormUrlEncoded
     fun getTNLoanOrderDetail(
             @Header(ScfApi.HEADER_TOKEN) token: String?,
-            @Field("id") id: Int
+            @Field("id") id: String
     ): Single<Result<TnLoanOrder>>
 
     //查询还款计划
@@ -456,8 +432,8 @@ interface ScfApi {
             @Header(ScfApi.HEADER_TOKEN) token: String?,
             @Field("id") id: Long,
             @Field("chainOrderId") chainOrderId: Long,
-            @Field("useDcc") useDcc: Long,
-            @Field("dccAmount") dccAmount: Long
+            @Field("useDcc") useDcc: Boolean,
+            @Field("dccAmount") dccAmount: BigDecimal
     ): Single<Result<TnLoanOrder>>
 
 

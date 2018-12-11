@@ -41,9 +41,6 @@ import java.security.MessageDigest
 object CertOperations {
     lateinit var certApi: CertApi
     lateinit var certApi2: CertApi2
-    lateinit var insCertApi: insCertApi
-    lateinit var marketingApi: MarketingApi
-    lateinit var idVerifyHelper: IdVerifyHelper
     var context: Context? by weak()
     lateinit var tnCertApi: tnCertApi
 
@@ -55,8 +52,6 @@ object CertOperations {
         certPrefs = CertPrefs(context.getSharedPreferences("dcc_certification_status", Context.MODE_PRIVATE))
         certApi = Networkutils.networking.createApi(CertApi::class.java, UrlManage.CHAIN_FUNC_URL)
         certApi2 = Networkutils.networking.createApi(CertApi2::class.java, UrlManage.CHAIN_FUNC_URL2)
-        insCertApi = Networkutils.networking.createApi(worhavah.certs.tools.insCertApi::class.java, UrlManage.BaseRnsUrl)
-        marketingApi = Networkutils.networking.createApi(MarketingApi::class.java, UrlManage.DCC_MARKETING_API_URL)
         tnCertApi = Networkutils.networking.createApi(worhavah.certs.tools.tnCertApi::class.java, UrlManage.TN_URL)
         this.context = context
         RxBus.getInstance().toObservable().map {
@@ -66,7 +61,6 @@ object CertOperations {
                 clearAllCertData()
             }
         }
-        idVerifyHelper = IdVerifyHelper(context)
         setFreeData()// 初始化数据 打开限制
     }
 
@@ -237,51 +231,6 @@ object CertOperations {
         return true
     }
 
-    fun savePNCertData(order: BeanValidResult) {
-        certPrefs.certPhoneNum.set(order.phoneNum)
-        certPrefs.certPhoneData.set(order.verifyDate)
-    }
-
-    fun getcertPhoneNum(): String? {
-        return certPrefs.certPhoneNum.get()
-    }
-
-    fun getcertPhoneData(): String? {
-        return certPrefs.certPhoneData.get()
-    }
-
-    fun saveEmCertData(order: BeanValidMailResult) {
-        certPrefs.certMailNum.set(order.mailAddress)
-        certPrefs.certMailData.set(order.verifyDate)
-    }
-
-    fun getcertEmCNum(): String? {
-        return certPrefs.certMailNum.get()
-    }
-
-    fun getcertEmCData(): String? {
-        return certPrefs.certMailData.get()
-    }
-
-    fun saveHomeAddressData(order: BeanValidHomeResult, line1: String, line2: String) {
-        certPrefs.certHANum.set(order.homeAddress)
-        certPrefs.certHAData.set(order.verifyDate)
-        certPrefs.certHALine1.set(line1)
-        certPrefs.certHALine2.set(line2)
-
-    }
-
-    fun getcertHANum(): String? {
-        return certPrefs.certHANum.get()
-    }
-
-    fun getcertHAData(): String? {
-        return certPrefs.certHAData.get()
-    }
-
-    private fun certIdPhotoFileName(order: CertOrder) =
-            "cert${File.separator}id${File.separator}${order.orderId}.jpg"
-
     fun clearAllCertData() {
         certPrefs.clearAll()
         val eventMsg = EventMsg()
@@ -294,7 +243,6 @@ object CertOperations {
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertID.set(-1L)
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertuserName.set("")
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertcertNo.set("")
-        //worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set("" )
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertpassword.set("")
         worhavah.certs.tools.CertOperations.certPrefs.ertTNcertsignature.set("")
     }
@@ -309,22 +257,13 @@ object CertOperations {
 
     class CertPrefs(sp: SharedPreferences) : Prefs(sp) {
         //report
-        val reportData = StringPref("loanReportDataList")
         val reportUpdateTime = LongPref("loanReportUpdateTime", -1L)
 
         //id
-        val certIdOrderId = LongPref("certIdOrderId", INVALID_CERT_ORDER_ID)
         val certIdStatus = StringPref("certIdStatus")
         val certRealName = StringPref("certRealName")
         val certRealId = StringPref("certRealId")
         val certIdData = StringPref("certIdData")
-        val certIdTime = StringPref("certIdTime")
-        val certIdSimilarity = StringPref("certIdSimilarity")
-        //bank card
-        val certBankOrderId = LongPref("certBankOrderId", INVALID_CERT_ORDER_ID)
-        val certBankStatus = StringPref("certBankStatus")
-        val certBankExpired = LongPref("certBankExpired", -1L)
-        val certBankCardData = StringPref("certBankCardData")
 
         //communication log
         val certCmLogOrderId = LongPref("certCmLogOrderId", INVALID_CERT_ORDER_ID)
@@ -349,16 +288,6 @@ object CertOperations {
         val certTNcertnonce = StringPref("certTNcertnonce")//认证id
         val ertTNcertsignature = StringPref("ertTNcertsignature")//认证id
 
-
-        //手机邮箱
-        val certPhoneNum = StringPref("certPhoneNum")
-        val certPhoneData = StringPref("certPhoneData")
-        val certMailNum = StringPref("certMailNum")
-        val certMailData = StringPref("certMailData")
-        val certHANum = StringPref("certHANum")
-        val certHAData = StringPref("certHAData")
-        val certHALine1 = StringPref("certHALine1")
-        val certHALine2 = StringPref("certHALine2")
 
         val certLasttime = StringPref("certLasttime")
 

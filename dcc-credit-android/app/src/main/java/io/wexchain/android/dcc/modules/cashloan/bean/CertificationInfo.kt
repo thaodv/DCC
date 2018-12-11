@@ -30,4 +30,8 @@ data class CertificationInfo(
         val Contacts3Relation: String?,
         val Contacts3Phone: String?,
         val Contacts3Name: String?
-) : Serializable
+) : Serializable {
+        fun isCert(): Boolean {
+            return true
+    }
+}

@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.BankCardCertificationActivity
@@ -32,18 +33,30 @@ class CashCertificationActivity : BindActivity<ActivityCashCertificationBinding>
         super.onCreate(savedInstanceState)
         initToolbar()
         initVm()
+        initClick()
+    }
+
+    private fun initClick() {
+        binding.cert!!.apply {
+            userinfoCall.observe(this@CashCertificationActivity, Observer {
+                navigateTo(UserInfoCertificationActivity::class.java)
+            })
+            tipsCall.observe(this@CashCertificationActivity, Observer {
+
+            })
+            commitCall.observe(this@CashCertificationActivity, Observer {
+                navigateTo(CreateLoanInfoActivity::class.java)
+            })
+        }
+
     }
 
     private fun initVm() {
         binding.asIdVm = obtainAuthStatus(CertificationType.ID)
         binding.asBankVm = obtainAuthStatus(CertificationType.BANK)
         binding.asTongniuVm = obtainAuthStatus(CertificationType.TONGNIU)
-        binding.cardAsUserinfo.onClick {
-            navigateTo(UserInfoCertificationActivity::class.java)
-        }
-        binding.certCommit.onClick {
-            navigateTo(CreateLoanInfoActivity::class.java)
-        }
+        binding.cert = getViewModel()
+        binding.vm = getViewModel()
     }
 
     private fun obtainAuthStatus(certificationType: CertificationType): AuthenticationStatusVm? {
@@ -125,7 +138,7 @@ class CashCertificationActivity : BindActivity<ActivityCashCertificationBinding>
                         // get report processing
                         //      startActivity(Intent(this, SubmitTNLogActivity::class.java))
                     }
-                    else->{
+                    else -> {
 
                     }
                 }

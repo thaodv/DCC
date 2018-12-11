@@ -40,7 +40,7 @@ class CashLoanActivity : BindActivity<ActivityCashloanBinding>() {
     private fun initData() {
         ScfOperations
                 .withScfTokenInCurrentPassport {
-                    App.get().scfApi.createLoanOrder(it)
+                    App.get().scfApi.getTnLastOrder(it)
                 }
                 .map {
                     it.status ?: TnOrderStatus.NONE

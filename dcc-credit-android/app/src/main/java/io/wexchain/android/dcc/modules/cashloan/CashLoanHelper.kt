@@ -71,7 +71,15 @@ object CashLoanHelper {
         }
     }
 
+    /*TnOrderStatus.DELAYED->{
 
+    }
+    TnOrderStatus.REPAID->{}
+    TnOrderStatus.CANCELLED->{}
+    TnOrderStatus.DELIVERIED->{}
+    TnOrderStatus.FAILURE->{}
+    TnOrderStatus.DELIVERING->{}
+     */
 
 
 }

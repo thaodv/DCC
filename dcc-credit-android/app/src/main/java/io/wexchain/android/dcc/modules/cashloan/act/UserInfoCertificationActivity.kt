@@ -271,15 +271,15 @@ class UserInfoCertificationActivity : BindActivity<ActivityUserinfoCertification
                 error("请填写单位全称")
                 return
             }
-            if (check1) {
+            if (!check1) {
                 toast("请填写完整联系人1信息")
                 return
             }
-            if (check2) {
+            if (!check2) {
                 toast("请填写完整联系人2信息")
                 return
             }
-            if (check3) {
+            if (!check3) {
                 toast("请填写完整联系人3信息")
                 return
             }

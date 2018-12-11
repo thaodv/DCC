@@ -1,14 +1,16 @@
 package io.wexchain.android.dcc.modules.cashloan.act
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
+import io.wexchain.android.common.navigateTo
+import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.cashloan.vm.CashLoanRecordsVm
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
-import io.wexchain.android.dcc.vm.LoanRecordsVm
 import io.wexchain.dcc.BR
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityCashloanRecordsBinding
@@ -32,7 +34,11 @@ class CashLoanRecordsActivity : BindActivity<ActivityCashloanRecordsBinding>(), 
     }
 
     override fun onItemClick(item: TnLoanOrder?, position: Int, viewId: Int) {
-
+        item?.let {
+            navigateTo(LoanInfoActivity::class.java) {
+                putExtra(Extras.EXTRA_LOAN_RECORD_ID, it.orderId)
+            }
+        }
     }
 
     override fun onResume() {
@@ -49,11 +55,14 @@ class CashLoanRecordsActivity : BindActivity<ActivityCashloanRecordsBinding>(), 
         binding.srlList.setOnLoadMoreListener { srl ->
             vm.loadNext { srl.finishLoadMore() }
         }
+        vm.checkData.observe(this, Observer {
+            val status = binding.emptyView.visibility
+            if (status != it!!) {
+                binding.emptyView.visibility = it
+            }
+        })
         binding.srlList.setRefreshHeader(ClassicsHeader(this))
         binding.srlList.setRefreshFooter(ClassicsFooter(this))
-        vm.records
         binding.vm = vm
-
-
     }
 }
