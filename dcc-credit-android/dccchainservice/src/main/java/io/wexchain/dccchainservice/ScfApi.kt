@@ -369,7 +369,7 @@ interface ScfApi {
     @FormUrlEncoded
     fun getLoanCalculationInfo(
             @Header(ScfApi.HEADER_TOKEN) token: String?,
-            @Field("id") id: Long
+            @Field("id") id: String
     ): Single<Result<TnLoanOrder>>
 
     //绑卡

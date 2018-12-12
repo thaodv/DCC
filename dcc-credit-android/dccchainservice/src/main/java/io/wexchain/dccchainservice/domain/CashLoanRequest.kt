@@ -30,7 +30,7 @@ data class CashLoanRequest(
             val companyDistrict: String,
             val companyAddress: String,
             val companyName: String,
-            val companyTel: String,
+            val companyTel: String?,
             val contactInfoList: List<ContactInfo>
     ) {
         data class ContactInfo(

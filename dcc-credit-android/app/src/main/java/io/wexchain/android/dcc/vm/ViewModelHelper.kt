@@ -89,7 +89,11 @@ object ViewModelHelper {
             CertificationType.TONGNIU -> R.drawable.cash_loan_phone
             CertificationType.LOANREPORT -> R.drawable.shape_newloanreport
         }
-        return ContextCompat.getDrawable(this, drawableId)
+        return if (drawableId == 0) {
+            null
+        } else {
+            ContextCompat.getDrawable(this, drawableId)
+        }
     }
 
     @JvmStatic

@@ -19,12 +19,14 @@ class CashCertificationVm : ViewModel() {
                 val idCertPassed = CertOperations.isIdCertPassed()
                 val bankCertPassed = CertOperations.isBankCertPassed()
                 val tnstatus = worhavah.certs.tools.CertOperations.getTNLogUserStatus()
+                val tnCmStatus = tnstatus == worhavah.certs.tools.UserCertStatus.DONE
                 val infoCert = App.get().passportRepository.getUserInfoCert()
                 val isCert = infoCert?.let {
                     val data = it.toBean(CertificationInfo::class.java)
                     data.isCert()
                 } ?: false
-                set(idCertPassed && bankCertPassed && tnstatus == UserCertStatus.DONE && isCert)
+                val status= idCertPassed && bankCertPassed && tnCmStatus && isCert
+                set(status)
             }
 
     val userinfoCall = SingleLiveEvent<Void>()
@@ -33,12 +35,6 @@ class CashCertificationVm : ViewModel() {
 
     fun commitCert() {
         commitCall.call()
-/*
-        val index = CashLoanRequest.Index("1")
-        val bankinfo = CashLoanRequest.BankCardCertInfo()
-        val idinfo = CashLoanRequest.IdCertInfo()
-        val request = CashLoanRequest()*/
-
     }
 
     fun userinfoCert() {

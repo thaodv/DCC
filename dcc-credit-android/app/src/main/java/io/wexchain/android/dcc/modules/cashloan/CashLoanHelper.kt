@@ -71,6 +71,69 @@ object CashLoanHelper {
         }
     }
 
+    @JvmStatic
+    fun getRequestLoanTxt(status: TnOrderStatus?): String {
+        return when (status) {
+            TnOrderStatus.AUDITED -> "提现"
+            TnOrderStatus.DELIVERIED -> "提前还款"
+            TnOrderStatus.DELAYED -> "去还款"
+            TnOrderStatus.NONE, TnOrderStatus.REPAID -> "申请额度"
+            else -> ""
+        }
+    }
+
+    @JvmStatic
+    fun isshowLoanTips(status: TnOrderStatus?): Boolean {
+        return when (status) {
+            TnOrderStatus.NONE, TnOrderStatus.REPAID, TnOrderStatus.DELAYED -> true
+            else -> false
+        }
+    }
+
+    @JvmStatic
+    fun loanMaxtxt(status: TnOrderStatus?): String {
+        return when (status) {
+            TnOrderStatus.AUDITED -> "借款额度"
+            TnOrderStatus.DELIVERIED, TnOrderStatus.DELAYED -> "借款金额已到账"
+            TnOrderStatus.NONE, TnOrderStatus.REPAID -> "最高可借"
+            else -> ""
+        }
+    }
+
+    @JvmStatic
+    fun showAudited(status: TnOrderStatus?): Boolean {
+        return when (status) {
+            TnOrderStatus.AUDITED -> true
+            else -> false
+        }
+    }
+
+    @JvmStatic
+    fun showRepayTime(status: TnOrderStatus?): Boolean {
+        return when (status) {
+            TnOrderStatus.DELIVERIED, TnOrderStatus.DELAYED -> true
+            else -> false
+        }
+    }
+
+    @JvmStatic
+    fun showRepayTip(status: TnOrderStatus?): Boolean {
+        return when (status) {
+            TnOrderStatus.DELAYED -> true
+            else -> false
+        }
+    }
+
+    @JvmStatic
+    fun showLoanLog(status: TnOrderStatus?, isTrue: Boolean): Boolean {
+        return when (status) {
+            TnOrderStatus.NONE, TnOrderStatus.REPAID -> isTrue
+            TnOrderStatus.DELIVERIED, TnOrderStatus.DELAYED, TnOrderStatus.AUDITED -> !isTrue
+            else -> false
+        }
+    }
+
+
     /*TnOrderStatus.DELAYED->{
 
     }

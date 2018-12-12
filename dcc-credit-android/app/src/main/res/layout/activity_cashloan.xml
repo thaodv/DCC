@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -134,9 +135,9 @@
 
 
             <android.support.constraint.ConstraintLayout
+                visibleOrGone="@{CashLoanHelper.loanRejected(vm.loanStatus)}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                visibleOrGone="@{CashLoanHelper.loanRejected(vm.loanStatus)}"
                 android:visibility="gone">
 
                 <ImageView
@@ -217,7 +218,7 @@
 
 
             <android.support.constraint.ConstraintLayout
-                visibleOrGone="@{CashLoanHelper.loanStatus(vm.loanStatus) }"
+                visibleOrGone="@{CashLoanHelper.loanStatus(vm.loanStatus)}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="visible">
@@ -241,31 +242,109 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="35dp"
                     android:layout_marginTop="45dp"
-                    android:text="最高可借"
+                    android:text="@{CashLoanHelper.loanMaxtxt(vm.loanStatus)}"
                     android:textColor="#fff"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="最高可借" />
 
                 <TextView
                     android:id="@+id/cash_loan_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="¥3000"
+                    android:text="@{vm.maximumAmount}"
                     android:textColor="#fff"
                     android:textSize="36sp"
                     app:layout_constraintLeft_toLeftOf="@id/cash_loan_max"
-                    app:layout_constraintTop_toBottomOf="@id/cash_loan_max" />
+                    app:layout_constraintTop_toBottomOf="@id/cash_loan_max"
+                    tools:text="¥3000" />
 
                 <TextView
+                    android:id="@+id/cash_loan_timetag"
+                    visibleOrGone="@{CashLoanHelper.showAudited(vm.loanStatus)}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="借款期限"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:visibility="invisible"
+                    app:layout_constraintLeft_toLeftOf="@id/cash_loan_num"
+                    app:layout_constraintTop_toBottomOf="@id/cash_loan_num" />
+
+                <TextView
+                    android:id="@+id/cash_loan_day"
+                    visibleOrGone="@{CashLoanHelper.showAudited(vm.loanStatus)}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="65dp"
+                    android:text="14"
+                    android:textColor="#fff"
+                    android:textSize="36sp"
+                    android:visibility="invisible"
+                    app:layout_constraintLeft_toLeftOf="@id/cash_loan_num"
+                    app:layout_constraintTop_toBottomOf="@id/cash_loan_num" />
+
+                <TextView
+                    visibleOrGone="@{CashLoanHelper.showAudited(vm.loanStatus)}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="65dp"
+                    android:text="天"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@id/cash_loan_day"
+                    app:layout_constraintLeft_toRightOf="@id/cash_loan_day" />
+
+                <TextView
+                    android:id="@+id/cash_loan_repay_time"
+                    visibleOrGone="@{CashLoanHelper.showRepayTime(vm.loanStatus)}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="45dp"
+                    android:text="2018-10-01日还款"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    app:layout_constraintLeft_toLeftOf="@id/cash_loan_num"
+                    app:layout_constraintTop_toBottomOf="@id/cash_loan_num" />
+
+                <TextView
+                    visibleOrGone="@{CashLoanHelper.showRepayTip(vm.loanStatus)}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="您的借款已经逾期，请及时还款"
+                    android:textColor="#fff"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toLeftOf="@id/cash_loan_num"
+                    app:layout_constraintTop_toBottomOf="@id/cash_loan_repay_time" />
+
+                <TextView
+                    visibleOrGone="@{CashLoanHelper.showLoanLog(vm.loanStatus,true)}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="65dp"
                     android:text="简单易贷，随借随还"
                     android:textColor="#D3A9FF"
                     android:textSize="14sp"
+                    android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="@id/cash_loan_num"
                     app:layout_constraintTop_toBottomOf="@id/cash_loan_num" />
+
+                <TextView
+                    visibleOrGone="@{CashLoanHelper.showLoanLog(vm.loanStatus,false)}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="50dp"
+                    android:text="简单易贷，随借随还"
+                    android:textColor="#D3A9FF"
+                    android:textSize="14sp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@id/cash_loan_img1"
+                    app:layout_constraintLeft_toLeftOf="@id/cash_loan_max" />
 
                 <TextView
                     android:id="@+id/cash_loan_apply"
@@ -274,26 +353,31 @@
                     android:layout_marginLeft="70dp"
                     android:layout_marginTop="20dp"
                     android:background="@drawable/background_cash_gradient"
+                    android:onClick="@{(v)->vm.requestBtn()}"
                     android:paddingBottom="8dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="8dp"
-                    android:text="申请额度"
+                    android:text="@{CashLoanHelper.getRequestLoanTxt(vm.loanStatus)}"
                     android:textColor="#fff"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cash_loan_img1" />
+                    app:layout_constraintTop_toBottomOf="@id/cash_loan_img1"
+                    tools:text="申请额度" />
 
                 <TextView
+                    visibleOrGone="@{CashLoanHelper.isshowLoanTips(vm.loanStatus)}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:onClick="@{(v)->vm.loanTips()}"
                     android:text="@string/cash_loan_tips"
                     android:textColor="#7B40FF"
                     android:textSize="16sp"
                     app:layout_constraintLeft_toLeftOf="@id/cash_loan_apply"
                     app:layout_constraintTop_toBottomOf="@id/cash_loan_apply" />
             </android.support.constraint.ConstraintLayout>
+
         </FrameLayout>
 
     </LinearLayout>

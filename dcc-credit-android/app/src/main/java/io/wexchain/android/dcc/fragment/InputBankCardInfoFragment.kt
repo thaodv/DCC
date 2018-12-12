@@ -50,9 +50,6 @@ class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), 
 
         val ctx = activity!!
 //        rxLocation = RxLocationManager(ctx)
-        if (CashCertificationActivity.CERT_TYPE_CASHLOAN == certType) {
-            binding.tvCertOrg.text = "认证方:同牛"
-        }
         rxPermissions = RxPermissions(ctx)
         App.get().marketingApi.getBankList()
                 .checkonMain()
@@ -71,7 +68,9 @@ class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), 
                 it?.let { toast("请输入完整信息") }
             })
         }*/
-
+        if (CashCertificationActivity.CERT_TYPE_CASHLOAN == certType) {
+            binding.tvCertOrg.text = "认证方:同牛"
+        }
         binding.btNext.setOnClickListener(object : NoDoubleClickListener() {
             override fun onNoDoubleClick(v: View?) {
                 val info = viewModel.checkAndBuildBankCardInfo()
