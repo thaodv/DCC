@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.view.dialog
 
 import android.app.Dialog
 import android.content.Context
+import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -34,17 +35,7 @@ class BaseDialog(context: Context) : Dialog(context) {
     private lateinit var mission: Mission
 
     fun createCheckDialog(newvs: String, body: String): BaseDialog {
-        this.setCancelable(false)
-        val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.dialog_check_update, null)
-        setContentView(view)
-        val dialogWindow = window
-        val lp = dialogWindow!!.attributes
-        val d = context.resources.displayMetrics
-        lp.width = (d.widthPixels * 0.7).toInt()
-        dialogWindow.attributes = lp
-        window.setBackgroundDrawableResource(R.drawable.background_holding2)
-
+        val view = init(R.layout.dialog_check_update)
         check_btn_tag.visibility = View.VISIBLE
         check_upgrade_cancle.setOnClickListener {
             onCancleStub.invoke()
@@ -62,17 +53,7 @@ class BaseDialog(context: Context) : Dialog(context) {
     }
 
     fun removePassportDialog(titletxt: String? = null, messagetxt: String? = null, lefttxt: String? = null, righttxt: String? = null): BaseDialog {
-        this.setCancelable(false)
-        val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.dialog_remove_passport, null)
-        setContentView(view)
-        val dialogWindow = window
-        val lp = dialogWindow!!.attributes
-        val d = context.resources.displayMetrics
-        lp.width = (d.widthPixels * 0.8).toInt()
-        dialogWindow.attributes = lp
-        window.setBackgroundDrawableResource(R.drawable.background_holding2)
-
+        val view = init(R.layout.dialog_remove_passport)
         val cancel = view.findViewById<TextView>(R.id.dialog_cancle)
         val confirm = view.findViewById<TextView>(R.id.dialog_confirm)
         val title = view.findViewById<TextView>(R.id.dialog_title)
@@ -106,17 +87,7 @@ class BaseDialog(context: Context) : Dialog(context) {
     }
 
     fun BoundWechatDialog(): BaseDialog {
-        this.setCancelable(false)
-        val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.dialog_bound_wechat, null)
-        setContentView(view)
-        val dialogWindow = window
-        val lp = dialogWindow!!.attributes
-        val d = context.resources.displayMetrics
-        lp.width = (d.widthPixels * 0.8).toInt()
-        dialogWindow.attributes = lp
-        window.setBackgroundDrawableResource(R.drawable.background_holding2)
-
+        val view = init(R.layout.dialog_bound_wechat)
         view.findViewById<ImageView>(R.id.bound_close).setOnClickListener {
             dismiss()
         }
@@ -130,17 +101,7 @@ class BaseDialog(context: Context) : Dialog(context) {
     }
 
     fun TipsDialog(tiptitle: String? = null, tipmessage: String? = null, tipconfirm: String? = null): BaseDialog {
-        this.setCancelable(false)
-        val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.dialog_tips, null)
-        setContentView(view)
-        val dialogWindow = window
-        val lp = dialogWindow!!.attributes
-        val d = context.resources.displayMetrics
-        lp.width = (d.widthPixels * 0.8).toInt()
-        dialogWindow.attributes = lp
-        window.setBackgroundDrawableResource(R.drawable.background_holding2)
-
+        val view = init(R.layout.dialog_tips)
         tiptitle?.let {
             view.findViewById<TextView>(R.id.tips_title).text = it
         }
@@ -159,6 +120,39 @@ class BaseDialog(context: Context) : Dialog(context) {
         return this
     }
 
+    fun errorDialog(message: String? = null, tipconfirm: String? = null): BaseDialog {
+        val view = init(R.layout.dialog_tips)
+        message?.let {
+            view.findViewById<TextView>(R.id.tips_message).text = it
+        }
+        val confirm = view.findViewById<Button>(R.id.tips_confirm)
+        tipconfirm?.let {
+            confirm.text = it
+        }
+        confirm.setOnClickListener {
+            onConfirmStub.invoke()
+            dismiss()
+        }
+        show()
+        return this
+    }
+
+    private fun init(@LayoutRes layoutId: Int, background: Boolean = true): View {
+        val inflater = LayoutInflater.from(context)
+        val view = inflater.inflate(layoutId, null)
+        setContentView(view)
+        val dialogWindow = window
+        val lp = dialogWindow!!.attributes
+        val d = context.resources.displayMetrics
+        lp.width = (d.widthPixels * 0.8).toInt()
+        dialogWindow.attributes = lp
+        if (background) {
+            window.setBackgroundDrawableResource(R.drawable.background_holding2)
+        }
+        this.setCancelable(false)
+        return view
+    }
+
     private var onCancleStub: () -> Unit = {}
     private var onConfirmStub: () -> Unit = {}
 
@@ -168,17 +162,7 @@ class BaseDialog(context: Context) : Dialog(context) {
     }
 
     fun createHomeDialog(newvs: String, body: String): BaseDialog {
-        this.setCancelable(false)
-        val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.dialog_check_update, null)
-        setContentView(view)
-        val dialogWindow = window
-        val lp = dialogWindow.attributes
-        val d = context.resources.displayMetrics
-        lp.width = (d.widthPixels * 0.7).toInt()
-        dialogWindow.attributes = lp
-        window.setBackgroundDrawableResource(R.drawable.background_holding2)
-
+        val view = init(R.layout.dialog_check_update)
         home_upgrade_confirm.visibility = View.VISIBLE
         check_upgrade_title.text = getString(R.string.please_download_and_update)
         check_upgrade_body.text = body
@@ -193,16 +177,7 @@ class BaseDialog(context: Context) : Dialog(context) {
 
     fun crateDownloadDialog(mission: Mission) {
         this.mission = mission
-        this.setCancelable(false)
-        val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.dialog_download, null)
-        setContentView(view)
-        val dialogWindow = window
-        val lp = dialogWindow!!.attributes
-        val d = context.resources.displayMetrics
-        lp.width = (d.widthPixels * 0.8).toInt()
-        dialogWindow.attributes = lp
-
+        init(R.layout.dialog_download, false)
         show()
         downloadApk()
     }

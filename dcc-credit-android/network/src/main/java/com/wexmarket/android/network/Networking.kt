@@ -1,5 +1,6 @@
 package com.wexmarket.android.network
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import com.google.gson.Gson
@@ -21,7 +22,11 @@ import java.net.CookieManager
 import java.net.CookiePolicy
 import java.net.CookieStore
 import java.net.HttpCookie
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.*
+
 
 /**
  * Created by lulingzhi on 2017/9/28.
@@ -35,13 +40,13 @@ class Networking {
     private val cookieStore: CookieStore
     val okHttpClient: OkHttpClient
     private val retrofit: Retrofit
-    val networkGson:Gson
+    val networkGson: Gson
 
     constructor(context: Application, debug: Boolean = BuildConfig.DEBUG) {
         networkGson = createGson()
-        cookieStore = CookieStoreFactory.create(context,{
-            networkGson.fromJson(it,HttpCookie::class.java)
-        },{
+        cookieStore = CookieStoreFactory.create(context, {
+            networkGson.fromJson(it, HttpCookie::class.java)
+        }, {
             networkGson.toJson(it)
         })
         val cookieJar = JavaNetCookieJar(CookieManager(cookieStore, DEFAULT_COOKIE_POLICY))
@@ -49,7 +54,7 @@ class Networking {
         retrofit = createRetrofit(okHttpClient, networkGson, "https://www.wexmarket.com")
     }
 
-    fun <T> createApi(api: Class<T>,baseUrl: String): T {
+    fun <T> createApi(api: Class<T>, baseUrl: String): T {
         return retrofit.newBuilder().baseUrl(baseUrl).build().create(api)
     }
 
@@ -73,6 +78,9 @@ class Networking {
                                 Logutil.d(LOG_TAG_OKHTTP, it)
                             }.setLevel(HttpLoggingInterceptor.Level.BODY))
                             addNetworkInterceptor(CookieSendLoggingInterceptor())
+                        }else{
+                            sslSocketFactory(createSSLSocketFactory())
+                            hostnameVerifier(TrustAllHostnameVerifier())
                         }
                     }
                     .build()
@@ -96,5 +104,36 @@ class Networking {
 //                    .registerTypeAdapterFactory(EnumAdapterFactory())
                     .create()
         }
+
+        private fun createSSLSocketFactory(): SSLSocketFactory {
+            val sc = SSLContext.getInstance("TLS")
+            sc.init(null, arrayOf<TrustManager>(TrustAllManager()), SecureRandom())
+            return sc.socketFactory
+        }
+
+        private class TrustAllManager : X509TrustManager {
+            @SuppressLint("TrustAllX509TrustManager")
+            override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+
+            }
+
+            @SuppressLint("TrustAllX509TrustManager")
+            override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+            }
+
+            override fun getAcceptedIssuers(): Array<X509Certificate> {
+                return arrayOf()
+            }
+        }
+
+        private class TrustAllHostnameVerifier : HostnameVerifier {
+            @SuppressLint("BadHostnameVerifier")
+            override fun verify(hostname: String?, session: SSLSession?): Boolean {
+                return true
+            }
+
+        }
     }
+
+
 }
