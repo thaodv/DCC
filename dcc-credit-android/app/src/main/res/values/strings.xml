@@ -455,5 +455,7 @@
     <string name="from_gallery"><font color='#C009FF'>相册</font></string>
 
     <string name="service_cash_title"> <font color='#7B40FF'>1000元</font> 现金立等可取</string>
+    <string name="cash_loan_perfect">已完善</string>
+    <string name="cash_loan_perfect_no">去完善</string>
 
 </resources>

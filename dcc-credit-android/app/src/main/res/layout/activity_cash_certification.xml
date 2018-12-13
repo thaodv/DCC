@@ -79,9 +79,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18dp"
-                    android:onClick="@{(v)->cert.userinfoCert()}"
                     android:background="@drawable/bg_round_rect_noframe_white"
-                    android:minHeight="80dp">
+                    android:minHeight="80dp"
+                    android:onClick="@{(v)->cert.userinfoCert()}">
 
                     <TextView
                         android:id="@+id/tv_as_title"
@@ -103,15 +103,17 @@
                         android:layout_height="25dp"
                         android:layout_marginRight="16dp"
                         android:width="80dp"
-                        android:background="@drawable/shape_certstatu_green"
+                        android:background="@{cert.isCert?@drawable/shape_certstatu_green:@drawable/shape_certstatu_purple}"
                         android:gravity="center"
-                        android:text="已完善"
+                        android:text="@{cert.isCert?@string/cash_loan_perfect:@string/cash_loan_perfect_no}"
                         android:textColor="#FFFFFFFF"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed" />
+                        app:layout_constraintVertical_chainStyle="packed"
+                        tools:background="@drawable/shape_certstatu_green"
+                        tools:text="已完善" />
 
                 </android.support.constraint.ConstraintLayout>
 
@@ -163,10 +165,10 @@
                     tools:text="4738.93DCC" />
 
                 <TextView
-                    android:onClick="@{(v)->cert.showTips()}"
                     android:id="@+id/cert_tips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="@{(v)->cert.showTips()}"
                     android:text="@string/cash_loan_dcc_tips"
                     android:textColor="#7B40FF" />
 

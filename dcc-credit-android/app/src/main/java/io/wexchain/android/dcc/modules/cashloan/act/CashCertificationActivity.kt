@@ -18,6 +18,7 @@ import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.modules.cashloan.bean.CertificationInfo
+import io.wexchain.android.dcc.modules.cashloan.vm.CashCertificationVm
 import io.wexchain.android.dcc.tools.toBean
 import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
@@ -41,6 +42,7 @@ import java.util.concurrent.TimeUnit
  *Created by liuyang on 2018/10/15.
  */
 class CashCertificationActivity : BindActivity<ActivityCashCertificationBinding>() {
+
     override val contentLayoutId: Int
         get() = R.layout.activity_cash_certification
 
@@ -223,8 +225,27 @@ class CashCertificationActivity : BindActivity<ActivityCashCertificationBinding>
         binding.asIdVm = obtainAuthStatus(CertificationType.ID)
         binding.asBankVm = obtainAuthStatus(CertificationType.BANK)
         binding.asTongniuVm = obtainAuthStatus(CertificationType.TONGNIU)
-        binding.cert = getViewModel()
+        binding.cert = getViewModel<CashCertificationVm>()
+                .apply {
+                    val idCertPassed = CertOperations.isIdCertPassed()
+                    val bankCertPassed = CertOperations.isBankCertPassed()
+                    val tnstatus = worhavah.certs.tools.CertOperations.getTNLogUserStatus()
+                    val tnCmStatus = tnstatus == worhavah.certs.tools.UserCertStatus.DONE
+                    val certStatus = getCertStatus()
+                    val status = idCertPassed && bankCertPassed && tnCmStatus && certStatus
+                    btnStatus.set(status)
+                    isCert.set(certStatus)
+                }
         binding.vm = getViewModel()
+    }
+
+    private fun getCertStatus(): Boolean {
+        val infoCert = App.get().passportRepository.getUserInfoCert()
+        return infoCert?.let {
+            val data = it.toBean(CertificationInfo::class.java)
+            data.isCert()
+        } ?: false
+
     }
 
     private fun obtainAuthStatus(certificationType: CertificationType): AuthenticationStatusVm? {
