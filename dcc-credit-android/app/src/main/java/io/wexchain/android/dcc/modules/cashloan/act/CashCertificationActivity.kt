@@ -26,6 +26,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityCashCertificationBinding
 import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CashLoanRequest
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
@@ -130,79 +131,92 @@ class CashCertificationActivity : BindActivity<ActivityCashCertificationBinding>
                 navigateTo(UserInfoCertificationActivity::class.java)
             })
             tipsCall.observe(this@CashCertificationActivity, Observer {
-//                toast("DCC不足?")
+                toast("DCC不足?")
             })
             commitCall.observe(this@CashCertificationActivity, Observer {
-                navigateTo(CreateLoanInfoActivity::class.java)
-                /*Single
-                        .fromCallable {
-                            val idData = CertOperations.getCertIdData()!!
-                            val certIdPics = CertOperations.getCertIdPics()!!
-                            val bankData = CertOperations.getCertBankCardData()!!
-                            val tnCmData = worhavah.certs.tools.CertOperations.getTnLogPhoneNo()!!
-                            val tnCmLog = worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.get()!!
-                            val infoCert = App.get().passportRepository.getUserInfoCert()!!
-                            val certInfo = infoCert.toBean(CertificationInfo::class.java)
-
-                            val list = mutableListOf<CashLoanRequest.ExtraPersonalInfo.ContactInfo>()
-                            val contact1 = CashLoanRequest.ExtraPersonalInfo.ContactInfo(certInfo.Contacts1Relation!!, certInfo.Contacts1Name!!, certInfo.Contacts1Phone!!)
-                            val contact2 = CashLoanRequest.ExtraPersonalInfo.ContactInfo(certInfo.Contacts2Relation!!, certInfo.Contacts2Name!!, certInfo.Contacts2Phone!!)
-                            val contact3 = CashLoanRequest.ExtraPersonalInfo.ContactInfo(certInfo.Contacts3Relation!!, certInfo.Contacts3Name!!, certInfo.Contacts3Phone!!)
-                            list.add(contact1)
-                            list.add(contact2)
-                            list.add(contact3)
-
-                            val index = CashLoanRequest.Index("1")
-                            val idInfo = CashLoanRequest.IdCertInfo(idData.name, idData.id)
-                            val bankInfo = CashLoanRequest.BankCardCertInfo(bankData.bankCardNo, bankData.phoneNo)
-                            val tnCmInfo = CashLoanRequest.CommunicationLogCertInfo(tnCmData, tnCmLog)
-                            val extraInfo = CashLoanRequest.ExtraPersonalInfo(
-                                    maritalStatus = certInfo.MarriageStatus,
-                                    residentialProvince = certInfo.ResideProvince!!,
-                                    residentialCity = certInfo.ResideCity!!,
-                                    residentialDistrict = certInfo.ResideArea!!,
-                                    residentialAddress = certInfo.ResideAddress!!,
-                                    loanUsage = certInfo.LoanPurpose!!,
-                                    workingType = certInfo.WorkCategory!!,
-                                    workingIndustry = certInfo.WorkIndustry!!,
-                                    workingYears = certInfo.WorkYear!!,
-                                    companyProvince = certInfo.CompanyProvince!!,
-                                    companyCity = certInfo.CompanyCity!!,
-                                    companyDistrict = certInfo.CompanyArea!!,
-                                    companyAddress = certInfo.CompanyAddress!!,
-                                    companyName = certInfo.CompanyName!!,
-                                    companyTel = certInfo.CompanyPhone,
-                                    contactInfoList = list
-                            )
-                            val request = CashLoanRequest(
-                                    index = index,
-                                    idCertInfo = idInfo,
-                                    bankCardCertInfo = bankInfo,
-                                    communicationLogCertInfo = tnCmInfo,
-                                    extraPersonalInfo = extraInfo)
-
-                            certIdPics to request
-                        }
-                        .flatMap {
-                            val pic = it.first
-                            val data = it.second
-                            ScfOperations.withScfTokenInCurrentPassport {
-                                App.get().scfApi.tnApply(
-                                        token = it,
-                                        data = data.toJson(),
-                                        idCardFrontPic = CertApi.uploadFilePart(pic.first, "front.jpg", "image/jpeg", "idCardFrontPic"),
-                                        idCardBackPic = CertApi.uploadFilePart(pic.second, "back.jpg", "image/jpeg", "idCardBackPic"),
-                                        facePic = CertApi.uploadFilePart(pic.third, "user.jpg", "image/jpeg", "facePic")
-                                )
-                            }
-                        }
-                        .io_main()
-                        .withLoading()
-                        .subscribeBy {
-                            navigateTo(CreateLoanInfoActivity::class.java)
-                        }*/
+                doApply()
             })
         }
+    }
+
+    private fun doApply() {
+        ScfOperations
+                .withScfTokenInCurrentPassport {
+                    App.get().scfApi.createLoanOrder(it)
+                }
+                .map {
+                    val idData = CertOperations.getCertIdData()!!
+                    val certIdPics = CertOperations.getCertIdPics()!!
+                    val bankData = CertOperations.getCertBankCardData()!!
+                    val tnCmData = worhavah.certs.tools.CertOperations.getTnLogPhoneNo()!!
+                    val tnCmLog = worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.get()!!
+                    val infoCert = App.get().passportRepository.getUserInfoCert()!!
+                    val certInfo = infoCert.toBean(CertificationInfo::class.java)
+
+                    val list = mutableListOf<CashLoanRequest.ExtraPersonalInfo.ContactInfo>()
+                    val contact1 = CashLoanRequest.ExtraPersonalInfo.ContactInfo(certInfo.Contacts1Relation!!, certInfo.Contacts1Name!!, certInfo.Contacts1Phone!!)
+                    val contact2 = CashLoanRequest.ExtraPersonalInfo.ContactInfo(certInfo.Contacts2Relation!!, certInfo.Contacts2Name!!, certInfo.Contacts2Phone!!)
+                    val contact3 = CashLoanRequest.ExtraPersonalInfo.ContactInfo(certInfo.Contacts3Relation!!, certInfo.Contacts3Name!!, certInfo.Contacts3Phone!!)
+                    list.add(contact1)
+                    list.add(contact2)
+                    list.add(contact3)
+
+                    val index = CashLoanRequest.Index(it.orderId)
+                    val idInfo = CashLoanRequest.IdCertInfo(idData.name, idData.id)
+                    val bankInfo = CashLoanRequest.BankCardCertInfo(bankData.bankCardNo, bankData.phoneNo)
+                    val tnCmInfo = CashLoanRequest.CommunicationLogCertInfo(tnCmData, tnCmLog)
+                    val extraInfo = CashLoanRequest.ExtraPersonalInfo(
+                            maritalStatus = certInfo.MarriageStatus,
+                            residentialProvince = certInfo.ResideProvince!!,
+                            residentialCity = certInfo.ResideCity!!,
+                            residentialDistrict = certInfo.ResideArea!!,
+                            residentialAddress = certInfo.ResideAddress!!,
+                            loanUsage = certInfo.LoanPurpose!!,
+                            workingType = certInfo.WorkCategory!!,
+                            workingIndustry = certInfo.WorkIndustry!!,
+                            workingYears = certInfo.WorkYear!!,
+                            companyProvince = certInfo.CompanyProvince!!,
+                            companyCity = certInfo.CompanyCity!!,
+                            companyDistrict = certInfo.CompanyArea!!,
+                            companyAddress = certInfo.CompanyAddress!!,
+                            companyName = certInfo.CompanyName!!,
+                            companyTel = certInfo.CompanyPhone,
+                            contactInfoList = list
+                    )
+                    val request = CashLoanRequest(
+                            index = index,
+                            idCertInfo = idInfo,
+                            bankCardCertInfo = bankInfo,
+                            communicationLogCertInfo = tnCmInfo,
+                            extraPersonalInfo = extraInfo)
+
+                    certIdPics to request
+                }
+                .flatMap {
+                    val pic = it.first
+                    val data = it.second
+                    ScfOperations.withScfTokenInCurrentPassport {
+                        App.get().scfApi.tnApply(
+                                token = it,
+                                data = data.toJson(),
+                                idCardFrontPic = CertApi.uploadFilePart(pic.first, "front.jpg", "image/jpeg", "idCardFrontPic"),
+                                idCardBackPic = CertApi.uploadFilePart(pic.second, "back.jpg", "image/jpeg", "idCardBackPic"),
+                                facePic = CertApi.uploadFilePart(pic.third, "user.jpg", "image/jpeg", "facePic")
+                        )
+                    }
+                }
+                .io_main()
+                .doOnError {
+                    if (it is DccChainServiceException) {
+                        toast(it.message ?: "系统错误")
+                    } else {
+                        toast("系统错误")
+                    }
+                }
+                .withLoading()
+                .subscribeBy {
+                    finish()
+                }
     }
 
     private fun initVm() {

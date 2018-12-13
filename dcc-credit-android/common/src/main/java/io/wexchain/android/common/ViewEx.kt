@@ -105,3 +105,11 @@ fun EditText.transTips(transCount: TextView, showTips: () -> Unit, hidTips: () -
         }
     })
 }
+
+fun onTextChanged(text: (String) -> Unit) = object : SimpleTextWatcher() {
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        s?.toString()?.let {
+            text(it)
+        }
+    }
+}

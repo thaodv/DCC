@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -286,7 +287,9 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="30dp"
-                        android:text="尾号0102"
+                        android:onClick="@{(v)->vm.showbankCard()}"
+                        android:text="@{vm.bankCardNum}"
+                        tools:text="尾号0102"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="16sp" />
 
@@ -313,6 +316,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
                         android:text="提交"
+                        android:onClick="@{(v)->vm.confirmLoan()}"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
@@ -320,12 +324,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/activity_vertical_margin"
-                        android:drawableLeft="@drawable/tv_state_enabled"
+                        android:drawableLeft="@{vm.agreement?@drawable/tv_state_enabled:@drawable/tv_state_disabled}"
                         android:drawablePadding="8dp"
-                        android:text="已阅读并同意《借款服务协议》"
+                        android:onClick="@{(v)->vm.checkAgreement()}"
+                        android:text="已阅读并同意"
                         android:textColor="@color/FF4A4A4A"
                         android:textSize="13sp"
-                        app:layout_constraintTop_toBottomOf="@id/commit" />
+                        app:layout_constraintTop_toBottomOf="@id/commit"
+                        tools:drawableLeft="@drawable/tv_state_enabled" />
+
+                    <TextView
+                        android:textColor="@color/FF4A4A4A"
+                        android:textSize="13sp"
+                        android:layout_width="wrap_content"
+                        android:text=" 《借款服务协议》"
+                        android:onClick="@{(v)->vm.showAgreement()}"
+                        app:layout_constraintLeft_toRightOf="@id/check_agreement"
+                        app:layout_constraintBaseline_toBaselineOf="@id/check_agreement"
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/tips"

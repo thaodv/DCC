@@ -3,7 +3,7 @@ package io.wexchain.android.dcc.modules.cashloan.vm
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import io.wexchain.android.common.SingleLiveEvent
-import io.wexchain.android.common.view.SimpleTextWatcher
+import io.wexchain.android.common.onTextChanged
 
 /**
  *Created by liuyang on 2018/12/4.
@@ -27,20 +27,12 @@ class ContactsVm : ViewModel() {
         relationCall.call()
     }
 
-    val phoneWatcher = object : SimpleTextWatcher() {
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            s?.toString()?.let {
-                phone.set(it)
-            }
-        }
+    val phoneWatcher = onTextChanged {
+        phone.set(it)
     }
 
-    val nameWatcher = object : SimpleTextWatcher() {
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            s?.toString()?.let {
-                name.set(it)
-            }
-        }
+    val nameWatcher = onTextChanged {
+        name.set(it)
     }
 
     fun check(): Boolean {

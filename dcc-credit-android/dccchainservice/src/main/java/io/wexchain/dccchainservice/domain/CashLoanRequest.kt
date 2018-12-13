@@ -12,7 +12,7 @@ data class CashLoanRequest(
         val extraPersonalInfo: ExtraPersonalInfo
 ) {
     data class Index(
-            val address: String
+            val id: String
     )
 
     data class ExtraPersonalInfo(

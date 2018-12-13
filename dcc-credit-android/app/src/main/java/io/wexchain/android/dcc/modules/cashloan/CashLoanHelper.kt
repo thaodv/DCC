@@ -25,6 +25,16 @@ object CashLoanHelper {
     }
 
     @JvmStatic
+    fun loanAuditing(status: TnOrderStatus?): Boolean {
+        if (status == null) {
+            return false
+        }
+        return status == TnOrderStatus.AUDITING
+    }
+
+
+
+    @JvmStatic
     fun loanStatus(status: TnOrderStatus?): Boolean {
         return when (status) {
             TnOrderStatus.NONE, TnOrderStatus.DELAYED, TnOrderStatus.DELIVERIED, TnOrderStatus.CREATED -> true

@@ -8,7 +8,6 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.ScfOperations
@@ -109,11 +108,20 @@ class CashLoanActivity : BindActivity<ActivityCashloanBinding>() {
     private fun initClick(status: TnOrderStatus) {
         binding.vm!!.apply {
             requestCall.observe(this@CashLoanActivity, Observer {
-                when (status){
-                    TnOrderStatus.NONE,TnOrderStatus.REPAID->{
+                when (status) {
+                    TnOrderStatus.NONE, TnOrderStatus.REPAID -> {
                         navigateTo(CashCertificationActivity::class.java)
                     }
+                    TnOrderStatus.AUDITED -> {
+                        navigateTo(CreateLoanInfoActivity::class.java)
+                    }
+                    TnOrderStatus.AUDITING -> {
+                        toast("请耐心等待订单审核完成")
+                    }
                 }
+            })
+            loanTipsCall.observe(this@CashLoanActivity, Observer {
+                toast("借款协议")
             })
         }
     }
