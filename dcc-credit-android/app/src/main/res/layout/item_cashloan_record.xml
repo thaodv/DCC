@@ -70,7 +70,7 @@
             android:layout_marginLeft="14dp"
             android:textColor="@color/text_white"
             android:textSize="18sp"
-            tools:text="订单创建中"
+            android:text="订单创建中"
             tools:visibility="gone" />
 
         <ProgressBar

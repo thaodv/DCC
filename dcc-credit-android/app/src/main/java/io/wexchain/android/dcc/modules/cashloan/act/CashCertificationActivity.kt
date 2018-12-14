@@ -163,7 +163,7 @@ class CashCertificationActivity : BindActivity<ActivityCashCertificationBinding>
                     list.add(contact2)
                     list.add(contact3)
 
-                    val index = CashLoanRequest.Index(it.orderId)
+                    val index = CashLoanRequest.Index(it.id)
                     val idInfo = CashLoanRequest.IdCertInfo(idData.name, idData.id)
                     val bankInfo = CashLoanRequest.BankCardCertInfo(bankData.bankCardNo, bankData.phoneNo)
                     val tnCmInfo = CashLoanRequest.CommunicationLogCertInfo(tnCmData, tnCmLog)

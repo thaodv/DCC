@@ -31,6 +31,9 @@
     <color name="FF333333">#333333</color>
     <color name="FFFC318C">#FC318C</color>
     <color name="FF7B40FF">#7B40FF</color>
+    <color name="FFBAC0C5">#BAC0C5</color>
+    <color name="FFD90C0C">#D90C0C</color>
+    <color name="FF000000">#000000</color>
 
 
 </resources>

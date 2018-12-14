@@ -433,7 +433,7 @@
             android:label="额度申请"
             android:screenOrientation="portrait" />
         <activity
-            android:name="io.wexchain.android.dcc.modules.cashloan.act.LoanInfoActivity"
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashRecordDetailActivity"
             android:label="我的借款"
             android:screenOrientation="portrait" />
         <activity
@@ -445,7 +445,7 @@
             android:label="真实信息"
             android:screenOrientation="portrait" />
         <activity
-            android:name="io.wexchain.android.dcc.modules.cashloan.act.WithDrawActivity"
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashRepaySuccessActivity"
             android:label="提现"
             android:screenOrientation="portrait" />
         <activity

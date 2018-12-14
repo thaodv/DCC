@@ -48,7 +48,7 @@ class CashLoanActivity : BindActivity<ActivityCashloanBinding>() {
                     orderId = it.orderId
                     it.status
                 }
-                .doMain()
+                .io_main()
                 .doOnError {
                     if (it is DccChainServiceException) {
                         initVm(TnOrderStatus.NONE)
@@ -67,8 +67,9 @@ class CashLoanActivity : BindActivity<ActivityCashloanBinding>() {
                     loanStatus.set(status)
                 }
         when (status) {
-            TnOrderStatus.NONE, TnOrderStatus.REPAID -> getPageData()
+            TnOrderStatus.NONE, TnOrderStatus.REPAID ,TnOrderStatus.CREATED-> getPageData()
             TnOrderStatus.DELIVERIED, TnOrderStatus.DELAYED, TnOrderStatus.AUDITED -> getPageData2()
+            TnOrderStatus.AUDITING -> initView()
             else -> {
 
             }
@@ -101,7 +102,7 @@ class CashLoanActivity : BindActivity<ActivityCashloanBinding>() {
 
     private fun initView() {
         binding.countdownProgress.setCountdownTime(900)
-        binding.countdownProgress.setPercent(80)
+        binding.countdownProgress.setPercent(35)
         binding.countdownProgress.startCountDownTime { }
     }
 
@@ -109,7 +110,7 @@ class CashLoanActivity : BindActivity<ActivityCashloanBinding>() {
         binding.vm!!.apply {
             requestCall.observe(this@CashLoanActivity, Observer {
                 when (status) {
-                    TnOrderStatus.NONE, TnOrderStatus.REPAID -> {
+                    TnOrderStatus.NONE, TnOrderStatus.REPAID,TnOrderStatus.CREATED -> {
                         navigateTo(CashCertificationActivity::class.java)
                     }
                     TnOrderStatus.AUDITED -> {

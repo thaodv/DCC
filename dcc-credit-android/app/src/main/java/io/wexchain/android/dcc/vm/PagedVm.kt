@@ -51,7 +51,9 @@ abstract class PagedVm<T> : ViewModel() {
 
     private fun mergeList(list: List<T>?, page: Int) {
         if (list == null) {
-            checkData.postValue(View.VISIBLE)
+            if (page == 0) {
+                checkData.postValue(View.VISIBLE)
+            }
             return
         }
         if (page == 0) {

@@ -16,6 +16,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityCashloanRecordsBinding
 import io.wexchain.dcc.databinding.ItemCashloanRecordBinding
 import io.wexchain.dccchainservice.domain.TnLoanOrder
+import io.wexchain.dccchainservice.type.TnOrderStatus
 
 class CashLoanRecordsActivity : BindActivity<ActivityCashloanRecordsBinding>(), ItemViewClickListener<TnLoanOrder> {
 
@@ -35,8 +36,11 @@ class CashLoanRecordsActivity : BindActivity<ActivityCashloanRecordsBinding>(), 
 
     override fun onItemClick(item: TnLoanOrder?, position: Int, viewId: Int) {
         item?.let {
-            navigateTo(LoanInfoActivity::class.java) {
-                putExtra(Extras.EXTRA_LOAN_RECORD_ID, it.orderId)
+            if (it.status == TnOrderStatus.CREATED){
+                return
+            }
+            navigateTo(CashRecordDetailActivity::class.java) {
+                putExtra(Extras.EXTRA_LOAN_RECORD_ID, it.id)
             }
         }
     }

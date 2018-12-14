@@ -11,7 +11,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityLoanInfoBinding
 import io.wexchain.ipfs.utils.io_main
 
-class LoanInfoActivity : BindActivity<ActivityLoanInfoBinding>() {
+class CashRecordDetailActivity : BindActivity<ActivityLoanInfoBinding>() {
 
     override val contentLayoutId: Int
         get() = R.layout.activity_loan_info

@@ -53,6 +53,8 @@ public class CountDownProgress extends View {
     private int defaultCircleRadius = dp2px(DEFAULT_CIRCLE_RADIUS);//半径
     //进度条
     private int progressColor = PROGRESS_COLOR;
+    private int progressStartColor = Color.parseColor("#FFB274FF");
+    private int progressEndColor = Color.parseColor("#FF7B40FF");
     private int progressWidth = dp2px(PROGRESS_WIDTH);
 
     private int mPercent;
@@ -86,6 +88,7 @@ public class CountDownProgress extends View {
 
     //额外距离
     private float extraDistance = 0.7F;
+
 
 
     public CountDownProgress(Context context) {
@@ -142,6 +145,12 @@ public class CountDownProgress extends View {
                     break;
                 case R.styleable.CountDownProgress_text_size:
                     textSize = (int) typedArray.getDimension(attr, textSize);
+                    break;
+                case R.styleable.CountDownProgress_progress_start_color:
+                    progressStartColor = typedArray.getColor(attr, progressStartColor);
+                    break;
+                case R.styleable.CountDownProgress_progress_end_color:
+                    progressEndColor = typedArray.getColor(attr, progressEndColor);
                     break;
             }
         }
@@ -221,11 +230,11 @@ public class CountDownProgress extends View {
     }
 
     //private int[] RATE_COLORS = {0xFFbb59ff,0xFF44dcfc};
-    private int[] RATE_COLORS = {0xFFB274FF, 0xFF7B40FF};
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        int[] RATE_COLORS = {progressStartColor, progressEndColor};
 
         mWidth = this.getMeasuredWidth();
         mHeight = this.getMeasuredHeight();
