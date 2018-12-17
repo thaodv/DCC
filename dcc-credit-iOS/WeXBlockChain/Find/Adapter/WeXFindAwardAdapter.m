@@ -1,18 +1,17 @@
 //
-//  WeXSunBalanceRecordAdapter.m
+//  WeXFindAwardAdapter.m
 //  WeXBlockChain
 //
-//  Created by 张君君 on 2018/11/7.
+//  Created by 张君君 on 2018/11/14.
 //  Copyright © 2018年 WeX. All rights reserved.
 //
 
-#import "WeXSunBalanceRecordAdapter.h"
+#import "WeXFindAwardAdapter.h"
 
-@implementation WeXSunBalanceRecordAdapter
+@implementation WeXFindAwardAdapter
 
 - (NSString*)getRequestUrl {
-    //@"bemember/ss/changeOrder/query"
-    return @"bemember/ss/score/query";
+    return @"bemember/ss/flower/queryFlower";
 }
 
 - (WexBaseUrlType)getBasetUrlType {
@@ -24,7 +23,7 @@
 }
 
 - (Class)getResponseClass {
-    return [WeXSunBlanceResModel class];
+    return [WeXFindAwardResModel class];
 }
 
 - (BOOL)isNeedBindWeChatToken {
@@ -33,5 +32,7 @@
 - (BOOL)isNeedSaveWeChatToken {
     return false;
 }
+
+
 
 @end

@@ -1,18 +1,18 @@
 //
-//  WeXSunBalanceRecordAdapter.m
+//  WeXFindLastPKAdapter.m
 //  WeXBlockChain
 //
-//  Created by 张君君 on 2018/11/7.
+//  Created by 张君君 on 2018/11/14.
 //  Copyright © 2018年 WeX. All rights reserved.
 //
 
-#import "WeXSunBalanceRecordAdapter.h"
+#import "WeXFindLastPKAdapter.h"
 
-@implementation WeXSunBalanceRecordAdapter
+
+@implementation WeXFindLastPKAdapter
 
 - (NSString*)getRequestUrl {
-    //@"bemember/ss/changeOrder/query"
-    return @"bemember/ss/score/query";
+    return @"ss/duel/getLastDuel";
 }
 
 - (WexBaseUrlType)getBasetUrlType {
@@ -24,14 +24,16 @@
 }
 
 - (Class)getResponseClass {
-    return [WeXSunBlanceResModel class];
+    return [WeXLastPKResModel class];
 }
 
 - (BOOL)isNeedBindWeChatToken {
-    return true;
+    return false;
 }
 - (BOOL)isNeedSaveWeChatToken {
     return false;
 }
+
+
 
 @end
