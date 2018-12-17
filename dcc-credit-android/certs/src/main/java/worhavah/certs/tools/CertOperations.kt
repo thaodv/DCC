@@ -380,7 +380,6 @@ object CertOperations {
 
     fun onTNLogSuccessGot(reportData: String) {
         certPrefs.certTNLogState.set(UserCertStatus.DONE.name)
-        val orderId = certPrefs.certTNLogOrderId.get()
         certPrefs.certTNLogData.set(reportData)
     }
 

@@ -14,6 +14,7 @@ import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.modules.garden.activity.GardenActivity
 import io.wexchain.android.dcc.modules.garden.activity.GardenListActivity
 import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
+import io.wexchain.android.dcc.modules.redpacket.GetRedpacketActivity
 import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentFindBinding
@@ -48,8 +49,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
 
     private var dialog: BaseDialog? = null
 
-    override val contentLayoutId: Int
-        get() = R.layout.fragment_find
+    override val contentLayoutId: Int get() = R.layout.fragment_find
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -130,6 +130,9 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
             GardenOperations.startWechat {
                 toast(it)
             }
+        }
+        binding.ivRedpacket.setOnClickListener {
+            navigateTo(GetRedpacketActivity::class.java)
         }
     }
 
