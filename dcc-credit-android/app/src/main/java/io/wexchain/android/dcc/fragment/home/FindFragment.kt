@@ -169,4 +169,20 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                 })
     }
 
+    private fun showRedPacketTipDialog() {
+        if (dialog == null) {
+            dialog = BaseDialog(activity!!)
+        } else {
+            dialog!!.show()
+            return
+        }
+        if (dialog!!.isShowing) {
+            return
+        }
+        dialog!!.RedPacketDialog()
+                .onClick(onConfirm = {
+                    navigateTo(GardenTaskActivity::class.java)
+                })
+    }
+
 }

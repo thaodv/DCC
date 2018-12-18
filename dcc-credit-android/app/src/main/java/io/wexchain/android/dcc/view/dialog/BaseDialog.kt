@@ -129,6 +129,30 @@ class BaseDialog(context: Context) : Dialog(context) {
         return this
     }
 
+    fun RedPacketDialog(): BaseDialog {
+        this.setCancelable(false)
+        val inflater = LayoutInflater.from(context)
+        val view = inflater.inflate(R.layout.dialog_bound_wechat2, null)
+        setContentView(view)
+        val dialogWindow = window
+        val lp = dialogWindow!!.attributes
+        val d = context.resources.displayMetrics
+        lp.width = (d.widthPixels * 0.8).toInt()
+        dialogWindow.attributes = lp
+        window.setBackgroundDrawableResource(R.drawable.background_holding2)
+
+        view.findViewById<ImageView>(R.id.btn_ok).setOnClickListener {
+            dismiss()
+        }
+
+        view.findViewById<Button>(R.id.tv_tasks).setOnClickListener {
+            onConfirmStub.invoke()
+            dismiss()
+        }
+        show()
+        return this
+    }
+
     fun TipsDialog(tiptitle: String? = null, tipmessage: String? = null, tipconfirm: String? = null): BaseDialog {
         this.setCancelable(false)
         val inflater = LayoutInflater.from(context)
