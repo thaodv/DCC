@@ -17,11 +17,6 @@ fun <T> Single<Result<T>>.checkonMain(): Single<T> {
     return this.compose(Result.checked()).doMain()
 }
 
-fun <T> Single<T>.doRoom(): Single<T> {
-    return this.observeOn(RoomHelper.roomScheduler)
-}
-
-
 fun <T> Single<T>.doMain(): Single<T> {
     return this.observeOn(AndroidSchedulers.mainThread())
 }

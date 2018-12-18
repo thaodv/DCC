@@ -69,6 +69,7 @@ public class CountDownProgress extends View {
 
 
     //画笔
+    private Paint fillCriclePaint;
     private Paint defaultCriclePaint;
     private Paint progressPaint;
     private Paint smallCirclePaint;//画小圆边框的画笔
@@ -172,6 +173,13 @@ public class CountDownProgress extends View {
         defaultCriclePaint.setStrokeWidth(defaultCircleStrokeWidth);
         defaultCriclePaint.setColor(defaultCircleStrokeColor);//这里先画边框的颜色，后续再添加画笔画实心的颜色
 
+
+        fillCriclePaint = new Paint();
+        fillCriclePaint.setAntiAlias(true);//抗锯齿
+        fillCriclePaint.setDither(true);//防抖动
+        fillCriclePaint.setStyle(Paint.Style.FILL);
+        fillCriclePaint.setColor(defaultCircleStrokeColor);//这里先画边框的颜色，后续再添加画笔画实心的颜色
+
         //默认圆上面的进度弧度
         progressPaint = new Paint();
         progressPaint.setAntiAlias(true);
@@ -257,6 +265,13 @@ public class CountDownProgress extends View {
             float textWidth = textPaint.measureText(textDesc);
             float textHeight = (textPaint.descent() + textPaint.ascent()) / 2;
             canvas.drawText(textDesc, defaultCircleRadius - textWidth / 2, defaultCircleRadius - textHeight, textPaint);
+
+            fillCriclePaint.setShader(gradient);
+            fillCriclePaint.setMaskFilter(new BlurMaskFilter(50, BlurMaskFilter.Blur.SOLID));
+        }else{
+            LinearGradient gradient2 = new LinearGradient(0, 0, mWidth, mHeight, RATE_COLORS, null, Shader.TileMode.MIRROR);
+            fillCriclePaint.setShader(gradient2);
+            canvas.drawCircle(defaultCircleRadius, defaultCircleRadius, defaultCircleRadius-(progressWidth/2), fillCriclePaint);
         }
 
         //画小圆

@@ -7,6 +7,7 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.cashloan.vm.CashLoanRecordsVm
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
@@ -36,7 +37,7 @@ class CashLoanRecordsActivity : BindActivity<ActivityCashloanRecordsBinding>(), 
 
     override fun onItemClick(item: TnLoanOrder?, position: Int, viewId: Int) {
         item?.let {
-            if (it.status == TnOrderStatus.CREATED){
+            if (it.status == TnOrderStatus.CREATED || it.status == TnOrderStatus.AUDITING) {
                 return
             }
             navigateTo(CashRecordDetailActivity::class.java) {
@@ -63,6 +64,11 @@ class CashLoanRecordsActivity : BindActivity<ActivityCashloanRecordsBinding>(), 
             val status = binding.emptyView.visibility
             if (status != it!!) {
                 binding.emptyView.visibility = it
+            }
+        })
+        vm.loadFailEvent.observe(this, Observer {
+            it?.let {
+                toast(it)
             }
         })
         binding.srlList.setRefreshHeader(ClassicsHeader(this))

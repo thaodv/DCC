@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
@@ -15,8 +16,8 @@ import io.wexchain.android.dcc.modules.cashloan.vm.CashLoanVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityCashloanBinding
 import io.wexchain.dccchainservice.DccChainServiceException
+import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.type.TnOrderStatus
-import io.wexchain.ipfs.utils.doMain
 import io.wexchain.ipfs.utils.io_main
 
 /**
@@ -44,14 +45,32 @@ class CashLoanActivity : BindActivity<ActivityCashloanBinding>() {
                 .withScfTokenInCurrentPassport {
                     App.get().scfApi.getTnLastOrder(it)
                 }
-                .map {
-                    orderId = it.orderId
-                    it.status
+                .flatMap { order ->
+                    orderId = order.id
+                    if (TnOrderStatus.REJECTED == order.status) {
+                        ScfOperations
+                                .withScfTokenInCurrentPassport {
+                                    App.get().scfApi.getAuditResult(it, orderId!!)
+                                }
+                                .map {
+                                    if (it.canLoanTime.isNullOrEmpty()) {
+                                        TnOrderStatus.NONE
+                                    } else {
+                                        TnOrderStatus.REJECTED
+                                    }
+                                }
+                    } else {
+                        Single.just(order.status)
+                    }
                 }
                 .io_main()
                 .doOnError {
                     if (it is DccChainServiceException) {
-                        initVm(TnOrderStatus.NONE)
+                        if (it.systemCode == Result.SUCCESS && it.businessCode == Result.SUCCESS) {
+                            initVm(TnOrderStatus.NONE)
+                        } else {
+                            toast(it.message ?: "系统错误")
+                        }
                     } else {
                         toast("系统错误")
                     }
@@ -67,14 +86,27 @@ class CashLoanActivity : BindActivity<ActivityCashloanBinding>() {
                     loanStatus.set(status)
                 }
         when (status) {
-            TnOrderStatus.NONE, TnOrderStatus.REPAID ,TnOrderStatus.CREATED-> getPageData()
+            TnOrderStatus.NONE, TnOrderStatus.REPAID, TnOrderStatus.CREATED -> getPageData()
             TnOrderStatus.DELIVERIED, TnOrderStatus.DELAYED, TnOrderStatus.AUDITED -> getPageData2()
             TnOrderStatus.AUDITING -> initView()
+            TnOrderStatus.REJECTED -> errorOrder()
             else -> {
 
             }
         }
         initClick(status)
+
+    }
+
+    private fun errorOrder() {
+        ScfOperations
+                .withScfTokenInCurrentPassport {
+                    App.get().scfApi.getAuditResult(it, orderId!!)
+                }
+                .io_main()
+                .subscribeBy {
+
+                }
 
     }
 
@@ -110,7 +142,7 @@ class CashLoanActivity : BindActivity<ActivityCashloanBinding>() {
         binding.vm!!.apply {
             requestCall.observe(this@CashLoanActivity, Observer {
                 when (status) {
-                    TnOrderStatus.NONE, TnOrderStatus.REPAID,TnOrderStatus.CREATED -> {
+                    TnOrderStatus.NONE, TnOrderStatus.REPAID, TnOrderStatus.CREATED -> {
                         navigateTo(CashCertificationActivity::class.java)
                     }
                     TnOrderStatus.AUDITED -> {

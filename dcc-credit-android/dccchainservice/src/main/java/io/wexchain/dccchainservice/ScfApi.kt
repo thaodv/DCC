@@ -361,7 +361,7 @@ interface ScfApi {
     @FormUrlEncoded
     fun getAuditResult(
             @Header(ScfApi.HEADER_TOKEN) token: String?,
-            @Field("id") id: Long
+            @Field("id") id: String
     ): Single<Result<TnLoanOrder>>
 
     //获取借款试算信息
@@ -436,6 +436,25 @@ interface ScfApi {
             @Field("dccAmount") dccAmount: BigDecimal
     ): Single<Result<TnLoanOrder>>
 
+    //手机号认证校验
+    @POST("secure/tn_loan/mobileNumber")
+    @Headers("Content-Type:application/x-www-form-urlencoded; charset=utf-8")
+    @FormUrlEncoded
+    fun mobileNumber(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("mobileNumber") mobileNumber: String,
+            @Field("idNo") idNo: String,
+            @Field("username") username: String,
+            @Field("nonce") nonce: String
+    ): Single<Result<String>>
+
+    //获取借款合同
+    @POST("secure/tn_loan/getLoanContract")
+    @FormUrlEncoded
+    fun getLoanContract(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("id") id: String
+    ): Single<Result<TnLoanOrder>>
 
     companion object {
         const val HEADER_TOKEN = "x-auth-token"

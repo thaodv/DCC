@@ -13,27 +13,21 @@ import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.tools.EventMsg
 import io.wexchain.android.common.tools.RxBus
 import io.wexchain.android.idverify.IdCardEssentialData
-import io.wexchain.android.idverify.IdVerifyHelper
 import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.CertApi2
 import io.wexchain.dccchainservice.DccChainServiceException
-import io.wexchain.dccchainservice.MarketingApi
 import io.wexchain.dccchainservice.domain.CertOrder
 import io.wexchain.dccchainservice.domain.CertProcess
 import io.wexchain.dccchainservice.domain.CertStatus
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.util.DateUtil.getCurrentDate2
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
-import worhavah.certs.beans.BeanValidHomeResult
-import worhavah.certs.beans.BeanValidMailResult
-import worhavah.certs.beans.BeanValidResult
 import worhavah.certs.views.CertsCertFeeConfirmDialog
 import worhavah.regloginlib.Net.ChainGateway
 import worhavah.regloginlib.Net.Networkutils
 import worhavah.regloginlib.Net.beans.CertOrderUpdatedEvent
 import worhavah.regloginlib.Passport
 import worhavah.regloginlib.tools.*
-import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
 
@@ -66,6 +60,10 @@ object CertOperations {
 
     private fun setFreeData() {
         certPrefs.makeStringprf("Cert" + ChainGateway.TN_COMMUNICATION_LOG + "txhashcode").set("")
+    }
+
+    fun getTnCertNonce(): String? {
+        return certPrefs.certTNcertnonce.get()
     }
 
 
@@ -104,15 +102,12 @@ object CertOperations {
         }.certOrderByTx(api, business)
     }
 
-    var TNnonce = ""
     fun obtainNewCmLogUpdateOrderId(passport: Passport, pn: String): Single<CertOrderUpdatedEvent> {
         val business = ChainGateway.TN_COMMUNICATION_LOG
         val api = Networkutils.chainGateway
         val nonce = privateChainNonce(passport.address)
-        TNnonce = nonce.toString()
-        worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.set(
-            TNnonce
-        )
+        val TNnonce = nonce.toString()
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.set(TNnonce)
         return Single.zip(
                 api.getCertContractAddress(business).compose(Result.checked()),
                 api.getTicket().compose(Result.checked()),
@@ -148,40 +143,40 @@ object CertOperations {
                 }
     }
 
-      fun Single<String>.certUpdateOrderByTx(api: ChainGateway, business: String): Single<CertOrderUpdatedEvent> {
+    fun Single<String>.certUpdateOrderByTx(api: ChainGateway, business: String): Single<CertOrderUpdatedEvent> {
         return this.flatMap { rtxHash ->
-            val ltx=CertOperations.certPrefs.makeStringprf("CertTN_COMMUNICATION_LOGtxhashcode").get()
+            val ltx = CertOperations.certPrefs.makeStringprf("CertTN_COMMUNICATION_LOGtxhashcode").get()
 
-                if(!ltx.equals( rtxHash)){
-                    certPrefs.certTNcerttxhashcode.set(rtxHash)
-                    certPrefs.certTNcerttxhashtime.set(System.currentTimeMillis())
-                }
+            if (!ltx.equals(rtxHash)) {
+                certPrefs.certTNcerttxhashcode.set(rtxHash)
+                certPrefs.certTNcerttxhashtime.set(System.currentTimeMillis())
+            }
 
             var txHash = rtxHash
             api.getReceiptResult(txHash)
                     .compose(Result.checked())
-                      .doOnError {
-                          /*val ltx=CertOperations.certPrefs.makeStringprf("CertTN_COMMUNICATION_LOGtxhashcode").get()
-                          if(!TextUtils.isEmpty(ltx)){
-                              if(!ltx.equals( rtxHash)){
-                                  certPrefs.certTNcerttxhashcode.set(rtxHash)
-                                  certPrefs.certTNcerttxhashtime.set(System.currentTimeMillis())
-                              }
-                          }*/
-                      }
+                    .doOnError {
+                        /*val ltx=CertOperations.certPrefs.makeStringprf("CertTN_COMMUNICATION_LOGtxhashcode").get()
+                        if(!TextUtils.isEmpty(ltx)){
+                            if(!ltx.equals( rtxHash)){
+                                certPrefs.certTNcerttxhashcode.set(rtxHash)
+                                certPrefs.certTNcerttxhashtime.set(System.currentTimeMillis())
+                            }
+                        }*/
+                    }
                     .map {
-                        if (!(it.hasReceipt&&it.approximatelySuccess)) {
+                        if (!(it.hasReceipt && it.approximatelySuccess)) {
                             throw DccChainServiceException("订单已超时,请重新认证")
                         }
                         txHash
                     }
                     .retryWhen(RetryWithDelay.createSimple(10, 3000L))
-                   /* .map {
-                        if (!it.approximatelySuccess) {
-                            throw DccChainServiceException()
-                        }
-                        txHash
-                    }*/
+            /* .map {
+                 if (!it.approximatelySuccess) {
+                     throw DccChainServiceException()
+                 }
+                 txHash
+             }*/
         }
                 .flatMap {
 
@@ -291,8 +286,8 @@ object CertOperations {
 
         val certLasttime = StringPref("certLasttime")
 
-        val certTNcerttxhashtime = LongPref("certTNcerttxhashtime",-1L)//
-        val certTNcerttxhashcode = StringPref("certTNcerttxhashcode" )//txhash
+        val certTNcerttxhashtime = LongPref("certTNcerttxhashtime", -1L)//
+        val certTNcerttxhashcode = StringPref("certTNcerttxhashcode")//txhash
         fun makeStringprf(ss: String): StringPref {
             return StringPref(ss)
         }

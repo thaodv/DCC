@@ -3,8 +3,6 @@ package worhavah.certs.vm
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
-import io.reactivex.schedulers.Schedulers
-import worhavah.regloginlib.tools.RoomHelper
 import io.wexchain.dccchainservice.domain.Result
 
 
@@ -24,11 +22,4 @@ fun <T> Single<T>.doMain(): Single<T> {
     return this.observeOn(AndroidSchedulers.mainThread())
 }
 
-fun <T> Single<T>.doRoom(): Single<T> {
-    return this.observeOn(RoomHelper.roomScheduler)
-}
-
-fun <T> Single<T>.doBack(): Single<T> {
-    return this.observeOn(Schedulers.io())
-}
 

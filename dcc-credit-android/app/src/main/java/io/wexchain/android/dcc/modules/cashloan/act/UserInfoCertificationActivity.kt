@@ -33,17 +33,17 @@ class UserInfoCertificationActivity : BindActivity<ActivityUserinfoCertification
 
     private var bankDialog: Dialog? = null
 
-    private val MarriageList = arrayListOf("未婚", "已婚", "离异")
-    private val LoanPurposeList = arrayListOf("房屋支出", "看病就医", "家装指出", "旅游指出", "网购消费")
-    private val WorkCategoryList = arrayListOf("工薪", "企业主", "个体户", "自由职业")
-    private val RelationList = arrayListOf("父亲", "母亲", "儿子", "女儿", "兄弟", "姐妹", "配偶", "同学", "亲戚", "同事", "朋友", "其他")
-    private val WorkIndustryList = arrayListOf("商业、服务人员", "专业技术人员", "办事人员、文员、行政等", "工业、生产、运输人员", "农、林、牧、渔、水利业人员",
-            "前线销售人员", "国际机关、企事业单位管理人员", "军人")
 
     companion object {
         const val contactsVm1 = "contactsVm1"
         const val contactsVm2 = "contactsVm2"
         const val contactsVm3 = "contactsVm3"
+        val MarriageList = arrayListOf("未婚", "已婚", "离异", "已婚未育", "丧偶", "其他")
+        val LoanPurposeList = arrayListOf("房屋支出", "看病就医", "家装指出", "旅游消费", "网购消费", "购买农资")
+        val WorkCategoryList = arrayListOf("私企公司职工", "国企事业单位职工", "公务员", "自雇创业人员", "农林牧副渔人员", "军人", "自由职业者", "失业人员", "退休人员", "家庭主妇")
+        val RelationList = arrayListOf("父亲", "配偶", "母亲", "子女", "同学", "朋友", "同事", "亲戚", "儿子", "女儿", "兄弟", "姐妹", "其他")
+        val WorkIndustryList = arrayListOf("商业、服务人员", "专业技术人员", "办事人员、文员、行政等", "工业、生产、运输人员", "农、林、牧、渔、水利业人员",
+                "前线销售人员", "国际机关、企事业单位管理人员", "军人", "在校学生")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

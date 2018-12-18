@@ -6,7 +6,6 @@ import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.domain.TnLoanOrder
-import io.wexchain.dccchainservice.domain.WeekRecord
 import io.wexchain.dccchainservice.type.TnOrderStatus
 
 /**
@@ -45,7 +44,7 @@ object CashLoanHelper {
 
     @JvmStatic
     fun loanDelivering(status: TnOrderStatus?, type: Boolean): Boolean {
-        return TnOrderStatus.CREATED == status && type
+        return (TnOrderStatus.CREATED == status || TnOrderStatus.AUDITING == status) && type
     }
 
     @JvmStatic
@@ -57,7 +56,7 @@ object CashLoanHelper {
             TnOrderStatus.DELIVERIED -> ContextCompat.getDrawable(this, R.drawable.bg_myloan_success)
             TnOrderStatus.FAILURE -> ContextCompat.getDrawable(this, R.drawable.bg_myloan_failed)
             TnOrderStatus.DELIVERING -> ContextCompat.getDrawable(this, R.drawable.bg_myloan_delivering)
-            TnOrderStatus.CREATED -> ContextCompat.getDrawable(this, R.drawable.bg_myloan_auditing)
+            TnOrderStatus.CREATED, TnOrderStatus.AUDITING -> ContextCompat.getDrawable(this, R.drawable.bg_myloan_auditing)
             else -> ContextCompat.getDrawable(this, R.drawable.bg_loan_status_other)
         }
     }
@@ -145,7 +144,7 @@ object CashLoanHelper {
     }
 
     @JvmStatic
-    fun loanDetailTips(status: TnOrderStatus?):String {
+    fun loanDetailTips(status: TnOrderStatus?): String {
         return when (status) {
             TnOrderStatus.DELAYED -> "您的订单已逾期，会产生额外的逾期费用，请及时还款"
             TnOrderStatus.REPAID -> "您的借款订单已结清"
@@ -159,18 +158,18 @@ object CashLoanHelper {
 
     @JvmStatic
     @ColorInt
-    fun Context.loanDetailColor(status: TnOrderStatus?):Int {
+    fun Context.loanDetailColor(status: TnOrderStatus?): Int {
         return when (status) {
             TnOrderStatus.DELAYED -> ContextCompat.getColor(this, R.color.FFED190F)
-            TnOrderStatus.REPAID,TnOrderStatus.DELIVERIED  -> ContextCompat.getColor(this, R.color.FF000000)
-            TnOrderStatus.DELIVERING,TnOrderStatus.CANCELLED -> ContextCompat.getColor(this, R.color.FFBAC0C5)
+            TnOrderStatus.REPAID, TnOrderStatus.DELIVERIED -> ContextCompat.getColor(this, R.color.FF000000)
+            TnOrderStatus.DELIVERING, TnOrderStatus.CANCELLED -> ContextCompat.getColor(this, R.color.FFBAC0C5)
             TnOrderStatus.FAILURE -> ContextCompat.getColor(this, R.color.FFD90C0C)
-            else ->  ContextCompat.getColor(this, R.color.FFFC318C)
+            else -> ContextCompat.getColor(this, R.color.FFFC318C)
         }
     }
 
     @JvmStatic
-    fun loanConfirmTxt(status: TnOrderStatus?):String {
+    fun loanConfirmTxt(status: TnOrderStatus?): String {
         return when (status) {
             TnOrderStatus.DELAYED -> "还款"
             TnOrderStatus.REPAID -> "再次借款"
@@ -181,7 +180,7 @@ object CashLoanHelper {
     }
 
     @JvmStatic
-    fun loanShowItem1(status: TnOrderStatus?):Boolean {
+    fun loanShowItem1(status: TnOrderStatus?): Boolean {
         return when (status) {
             TnOrderStatus.CANCELLED -> true
             else -> false
@@ -189,7 +188,7 @@ object CashLoanHelper {
     }
 
     @JvmStatic
-    fun loanShowItem2(status: TnOrderStatus?):Boolean {
+    fun loanShowItem2(status: TnOrderStatus?): Boolean {
         return when (status) {
             TnOrderStatus.DELIVERING -> true
             else -> false
@@ -197,9 +196,9 @@ object CashLoanHelper {
     }
 
     @JvmStatic
-    fun loanShowItem3(status: TnOrderStatus?):Boolean {
+    fun loanShowItem3(status: TnOrderStatus?): Boolean {
         return when (status) {
-            TnOrderStatus.FAILURE,TnOrderStatus.DELIVERIED,TnOrderStatus.REPAID ,TnOrderStatus.DELAYED-> true
+            TnOrderStatus.FAILURE, TnOrderStatus.DELIVERIED, TnOrderStatus.REPAID, TnOrderStatus.DELAYED -> true
             else -> false
         }
     }

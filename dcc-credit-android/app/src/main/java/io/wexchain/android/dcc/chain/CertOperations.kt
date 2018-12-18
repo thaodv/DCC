@@ -553,9 +553,9 @@ object CertOperations {
         if (orderId == -1L) {
             return null
         }
-        val photo = File(App.get().filesDir, certIdPhotoFileName("facePhoto")).readBytes()
         val idFront = File(App.get().filesDir, certIdPhotoFileName("positivePhoto")).readBytes()
         val idBack = File(App.get().filesDir, certIdPhotoFileName("backPhoto")).readBytes()
+        val photo = File(App.get().filesDir, certIdPhotoFileName("facePhoto")).readBytes()
         return Triple(idFront, idBack, photo)
     }
 

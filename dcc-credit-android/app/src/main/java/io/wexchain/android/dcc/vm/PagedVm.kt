@@ -14,6 +14,7 @@ abstract class PagedVm<T> : ViewModel() {
 
     val loadFailEvent = SingleLiveEvent<String>()
 
+    //Check that the data is empty and return View.GONE
     val checkData = SingleLiveEvent<Int>()
             .apply {
                 postValue(View.GONE)
