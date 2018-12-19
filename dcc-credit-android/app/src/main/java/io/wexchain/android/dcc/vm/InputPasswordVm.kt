@@ -5,7 +5,7 @@ import android.arch.lifecycle.AndroidViewModel
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import io.wexchain.android.common.SingleLiveEvent
-import worhavah.regloginlib.tools.isPasswordValid
+import io.wexchain.android.dcc.tools.isPasswordValid
 
 /**
  * Created by lulingzhi on 2017/11/29.
