@@ -10,8 +10,11 @@
     <string name="cert_expired_label">认证有效期</string>
     <string name="communication_log_submit_hint">温馨提示\n\n1、请使用本人实名制手机号进行认证\n2、服务密码是登录运营商（移动、联通、电信）营业厅的密码\n3、点击“提交”按钮会收到运营商的通知短信，无需回复\n4、如忘记服务密码,请登录运营商官网找回服务密码</string>
     <string name="submit">提交</string>
+    <string name="update">更新</string>
     <string name="please_input_phone_service_password">请输入服务密码</string>
     <string name="phone_service_password">服务密码</string>
     <string name="please_input_phone_no">请输入手机号码</string>
     <string name="phone_no">手机号码</string>
+    <string name="sms_code">短信验证码</string>
+    <string name="sms_code1">请输入短信验证码</string>
 </resources>

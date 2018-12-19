@@ -357,7 +357,7 @@
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        visibleOrGone="@{CashLoanHelper.loanShowItem2(vm.order.status)}"
+                        visibleOrGone="@{CashLoanHelper.loanShowItem3(vm.order.status)}"
                         android:visibility="visible">
 
                         <RelativeLayout
