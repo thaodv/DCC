@@ -21,6 +21,7 @@ import io.wexchain.android.dcc.fragment.home.FindFragment
 import io.wexchain.android.dcc.fragment.home.MineFragment
 import io.wexchain.android.dcc.fragment.home.ServiceFragment
 import io.wexchain.android.dcc.tools.ShareUtils
+import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.tools.reName
 import io.wexchain.android.dcc.view.bottomnavigation.BottomNavigationBar
 import io.wexchain.android.dcc.view.bottomnavigation.BottomNavigationItem
@@ -31,7 +32,6 @@ import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
 import kotlinx.android.synthetic.main.activity_home.*
 import org.jetbrains.anko.doAsync
-import worhavah.regloginlib.tools.checkonMain
 import zlc.season.rxdownload3.core.Mission
 import java.io.File
 

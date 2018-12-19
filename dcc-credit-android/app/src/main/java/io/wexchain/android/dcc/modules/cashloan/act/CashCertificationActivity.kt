@@ -19,6 +19,7 @@ import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.modules.cashloan.bean.CertificationInfo
 import io.wexchain.android.dcc.modules.cashloan.vm.CashCertificationVm
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.toBean
 import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
@@ -33,7 +34,6 @@ import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import io.wexchain.ipfs.utils.io_main
 import worhavah.certs.bean.TNcert1newreport
-import worhavah.regloginlib.tools.check
 import worhavah.tongniucertmodule.SubmitTNLogActivity
 import worhavah.tongniucertmodule.TnLogCertificationActivity
 import java.util.concurrent.TimeUnit

@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.View
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.modules.cashloan.act.CashCertificationActivity

@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.support.annotation.WorkerThread
 import android.support.v4.app.FragmentManager
 import android.util.Base64
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Single
@@ -18,8 +17,8 @@ import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.tools.RetryWithDelay
-import worhavah.regloginlib.tools.check
-import worhavah.regloginlib.tools.pair
+import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.tools.pair
 import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.android.dcc.view.dialog.CertFeeConfirmDialog
 import io.wexchain.android.dcc.vm.ViewModelHelper
@@ -38,7 +37,6 @@ import io.wexchain.ipfs.entity.IdInfo
 import io.wexchain.ipfs.entity.PhoneInfo
 import io.wexchain.ipfs.entity.TNPhoneInfo
 import io.wexchain.ipfs.utils.base64
-import worhavah.certs.tools.CertOperations
 import worhavah.certs.tools.CertOperations.getTNLogCertExpired
 import worhavah.certs.tools.CertOperations.getTNLogUserStatus
 import worhavah.certs.tools.CertOperations.saveTnLogCertExpired
@@ -90,12 +88,12 @@ object CertOperations {
                     val content = it.content
                     var de1 = Base64.decode(content.digest1, Base64.DEFAULT)
                     val de2 = Base64.decode(content.digest2, Base64.DEFAULT)
-                   /* if(business.equals(ChainGateway.TN_COMMUNICATION_LOG)){
-                        de1 = MessageDigest.getInstance("SHA256").digest(Base64.decode(content.digest1, Base64.DEFAULT))
-                    }*/
-                   /* val d3=Base64.encode(de1, Base64.DEFAULT)
-                    Log.e("d3=  ", String(d3))*/
-                   // Log.e("d3=d3=",dig264String)
+                    /* if(business.equals(ChainGateway.TN_COMMUNICATION_LOG)){
+                         de1 = MessageDigest.getInstance("SHA256").digest(Base64.decode(content.digest1, Base64.DEFAULT))
+                     }*/
+                    /* val d3=Base64.encode(de1, Base64.DEFAULT)
+                     Log.e("d3=  ", String(d3))*/
+                    // Log.e("d3=d3=",dig264String)
                     Pair(de1, de2)
                 }
     }
@@ -106,19 +104,19 @@ object CertOperations {
                     ChainGateway.BUSINESS_ID -> getLocalIdDigest()
                     ChainGateway.BUSINESS_BANK_CARD -> getLocalBankDigest()
                     ChainGateway.BUSINESS_COMMUNICATION_LOG -> getLocalCmDigest()
-                    ChainGateway.TN_COMMUNICATION_LOG-> worhavah.certs.tools.CertOperations.getLocalTnDigest()
+                    ChainGateway.TN_COMMUNICATION_LOG -> worhavah.certs.tools.CertOperations.getLocalTnDigest()
                     else -> null
                 }
         return getChainDigest(business)
                 .map {
-                    if(business.equals(ChainGateway.TN_COMMUNICATION_LOG)){
-                     /*   Log.e("it.first",String(it.first))
-                        Log.e("localDigest!!.first",String(localDigest!!.first))
-                        Log.e("it.first  decode",String(Base64.encode(it.first, Base64.DEFAULT)))
-                        Log.e("localDigest!!.decode",String(Base64.encode(localDigest!!.first, Base64.DEFAULT)) )
-                        Log.e("it.2  decode",String(Base64.encode(it.second, Base64.DEFAULT)))
+                    if (business.equals(ChainGateway.TN_COMMUNICATION_LOG)) {
+                        /*   Log.e("it.first",String(it.first))
+                           Log.e("localDigest!!.first",String(localDigest!!.first))
+                           Log.e("it.first  decode",String(Base64.encode(it.first, Base64.DEFAULT)))
+                           Log.e("localDigest!!.decode",String(Base64.encode(localDigest!!.first, Base64.DEFAULT)) )
+                           Log.e("it.2  decode",String(Base64.encode(it.second, Base64.DEFAULT)))
 
-                        Log.e("localDigest2222.decode",String(Base64.encode(localDigest!!.second, Base64.DEFAULT)) )*/
+                           Log.e("localDigest2222.decode",String(Base64.encode(localDigest!!.second, Base64.DEFAULT)) )*/
                     }
                     Arrays.equals(it.first, localDigest!!.first) && Arrays.equals(it.second, localDigest.second)
                 }
@@ -447,7 +445,6 @@ object CertOperations {
     }
 
 
-
     fun getCommunicationLogReport(passport: Passport): Single<CmLogReportData> {
         require(passport.authKey != null)
         val address = passport.address
@@ -639,9 +636,9 @@ object CertOperations {
             } else {
                 if (UserCertStatus.DONE.name == state) {
                     if (getCmLogCertExpired() < System.currentTimeMillis()) {
-                        if(getCmLogCertExpired() ==-1L){
+                        if (getCmLogCertExpired() == -1L) {
                             UserCertStatus.INCOMPLETE
-                        }else{
+                        } else {
                             UserCertStatus.TIMEOUT
                         }
                     } else {
@@ -675,28 +672,27 @@ object CertOperations {
                 getCmLogUserStatus()
             }
             CertificationType.TONGNIU -> {
-               val i= getTNLogUserStatus()
-              var ll=  when (i){
-                    worhavah.certs.tools . UserCertStatus.DONE -> UserCertStatus.DONE
-                    worhavah.certs.tools .  UserCertStatus.NONE -> UserCertStatus.NONE
-                    worhavah.certs.tools .  UserCertStatus.INCOMPLETE -> UserCertStatus.INCOMPLETE
+                val i = getTNLogUserStatus()
+                var ll = when (i) {
+                    worhavah.certs.tools.UserCertStatus.DONE -> UserCertStatus.DONE
+                    worhavah.certs.tools.UserCertStatus.NONE -> UserCertStatus.NONE
+                    worhavah.certs.tools.UserCertStatus.INCOMPLETE -> UserCertStatus.INCOMPLETE
                 }
-                if(UserCertStatus.DONE.name == ll.name){
+                if (UserCertStatus.DONE.name == ll.name) {
                     Networkutils.chainGateway.getCertData(Networkutils.passportRepository.currPassport.value!!.address, ChainGateway.TN_COMMUNICATION_LOG).blockingGet().result.apply {
                         saveTnLogCertExpired(this!!.content!!.expired)
-                        if (getTNLogCertExpired()  < System.currentTimeMillis()) {
-                            if(getTNLogCertExpired() ==-1L){
-                                ll=   UserCertStatus.INCOMPLETE
-                            }else{
-                                ll=   UserCertStatus.TIMEOUT
+                        if (getTNLogCertExpired() < System.currentTimeMillis()) {
+                            if (getTNLogCertExpired() == -1L) {
+                                ll = UserCertStatus.INCOMPLETE
+                            } else {
+                                ll = UserCertStatus.TIMEOUT
                             }
                         } else {
-                            ll=     UserCertStatus.DONE
+                            ll = UserCertStatus.DONE
                         }
                     }
-
                 }
-                return  ll
+                return ll
 
             }
             CertificationType.LOANREPORT -> {
@@ -719,19 +715,19 @@ object CertOperations {
     }
 
     fun saveIpfsTNData(phoneInfo: TNPhoneInfo) {
-        saveTnLogCertExpired(java.lang.Long.parseLong(phoneInfo.sameCowMobileAuthenExpired) )
+        saveTnLogCertExpired(java.lang.Long.parseLong(phoneInfo.sameCowMobileAuthenExpired))
         worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.set(phoneInfo.sameCowMobileAuthenOrderid.toLong())
         worhavah.certs.tools.CertOperations.certPrefs.certTNLogState.set(phoneInfo.sameCowMobileAuthenStatus)
-        worhavah.certs.tools.CertOperations. certPrefs.certTNLogPhoneNo.set(phoneInfo.sameCowMobileAuthenNumber)
-        worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(String(phoneInfo.sameCowMobileAuthenCmData.base64()) )
-        worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.set( phoneInfo.sameCowMobileAuthenNonce)
-        worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set( phoneInfo.sameCowMobileAuthenNumber)
-       // worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(String(Base64.encode(phoneInfo.sameCowMobileAuthenCmData.toByteArray(),Base64.NO_WRAP)  ))
-       /* File(App.get().filesDir, certCmLogReportFileName(phoneInfo.mobileAuthenOrderid.toLong()))
-            .apply {
-                ensureNewFile()
-                writeBytes(phoneInfo.mobileAuthenCmData.base64())
-            }*/
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogPhoneNo.set(phoneInfo.sameCowMobileAuthenNumber)
+        worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(String(phoneInfo.sameCowMobileAuthenCmData.base64()))
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.set(phoneInfo.sameCowMobileAuthenNonce)
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set(phoneInfo.sameCowMobileAuthenNumber)
+        // worhavah.certs.tools.CertOperations.certPrefs.certTNLogData.set(String(Base64.encode(phoneInfo.sameCowMobileAuthenCmData.toByteArray(),Base64.NO_WRAP)  ))
+        /* File(App.get().filesDir, certCmLogReportFileName(phoneInfo.mobileAuthenOrderid.toLong()))
+             .apply {
+                 ensureNewFile()
+                 writeBytes(phoneInfo.mobileAuthenCmData.base64())
+             }*/
     }
 
     fun saveIpfsBankData(bankInfo: BankInfo) {
@@ -860,8 +856,7 @@ object CertOperations {
         }
     }
 
-    private fun certCmLogReportFileName(orderId: Long) =
-            "cert${File.separator}cmlog${File.separator}$orderId.dat"
+    private fun certCmLogReportFileName(orderId: Long) = "cert${File.separator}cmlog${File.separator}$orderId.dat"
 
     private val gson = Gson()
     private const val INVALID_CERT_ORDER_ID = -1L

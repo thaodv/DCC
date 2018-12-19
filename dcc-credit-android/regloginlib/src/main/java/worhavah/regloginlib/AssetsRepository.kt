@@ -15,15 +15,8 @@ class AssetsRepository(
         val erc20AgentBuilder: (DigitalCurrency) -> Erc20Agent) {
 
     private val pinned = MutableLiveData<List<DigitalCurrency>>().apply {
-        value = listOf(
-                Currencies.DCC,
-                Currencies.Ethereum
-        )
+        value = listOf(Currencies.DCC, Currencies.Ethereum)
     }
-
-
-
-
 
     private val quoteCache = mutableMapOf<String, Quote>()
 

@@ -13,7 +13,6 @@ import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.tools.EventMsg
 import io.wexchain.android.common.tools.RxBus
 import io.wexchain.android.idverify.IdCardEssentialData
-import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.CertApi2
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.CertOrder
@@ -33,7 +32,6 @@ import java.security.MessageDigest
 
 
 object CertOperations {
-    lateinit var certApi: CertApi
     lateinit var certApi2: CertApi2
     var context: Context? by weak()
     lateinit var tnCertApi: tnCertApi
@@ -44,7 +42,6 @@ object CertOperations {
 
     fun init(context: Context) {
         certPrefs = CertPrefs(context.getSharedPreferences("dcc_certification_status", Context.MODE_PRIVATE))
-        certApi = Networkutils.networking.createApi(CertApi::class.java, UrlManage.CHAIN_FUNC_URL)
         certApi2 = Networkutils.networking.createApi(CertApi2::class.java, UrlManage.CHAIN_FUNC_URL2)
         tnCertApi = Networkutils.networking.createApi(worhavah.certs.tools.tnCertApi::class.java, UrlManage.TN_URL)
         this.context = context

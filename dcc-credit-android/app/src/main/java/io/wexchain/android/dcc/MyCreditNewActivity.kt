@@ -18,6 +18,7 @@ import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.CountDownProgress
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
@@ -36,7 +37,6 @@ import worhavah.certs.tools.CertOperations.clearTNCertCache
 import worhavah.certs.tools.CertOperations.onTNLogSuccessGot
 import worhavah.certs.tools.CertOperations.saveTnLogCertExpired
 import worhavah.regloginlib.Net.Networkutils
-import worhavah.regloginlib.tools.check
 import worhavah.tongniucertmodule.SubmitTNLogActivity
 import worhavah.tongniucertmodule.TnLogCertificationActivity
 import java.math.BigDecimal

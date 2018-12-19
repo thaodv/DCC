@@ -24,7 +24,7 @@ import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
-import worhavah.regloginlib.tools.checkonMain
+import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.android.dcc.vm.Protect
 import io.wexchain.android.localprotect.LocalProtectType
