@@ -10,62 +10,123 @@
 
     <include layout="@layout/include_toolbar"/>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/colorAccent"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-        <LinearLayout
-            android:id="@+id/ll_invite_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="center">
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/ll_invite_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="邀请好友"/>
+                android:layout_centerHorizontal="true">
 
-            <TextView
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="邀请好友"
+                    android:textColor="#000"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="#ED3735"
+                    android:textSize="24sp"
+                    tools:text="12"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="人"
+                    android:textColor="#000"
+                    android:textSize="16sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="12"/>
+                android:layout_below="@id/ll_invite_num"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="14dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="人"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="活动时间 "
+                    android:textColor="#000"
+                    android:textSize="12sp"/>
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#000"
+                    android:textSize="12sp"
+                    tools:text="2018.12.25~2019.01.03"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ll_invite_num"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="14dp">
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="活动时间 "/>
+        </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="2018.12.25~2019.01.03"/>
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/srl_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_tag"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_redpacket_invite"/>
 
-    </RelativeLayout>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_tag"
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_redpacket_invite"/>
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_redpacket_empty_invite"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="您还未邀请好友哦~"
+            android:textColor="@color/FF4A4A4A"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/bt_invite"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/bg_redpacket_empty_invite"
+            android:text="邀请好友 领微信红包"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
 
 </LinearLayout>
