@@ -4,16 +4,20 @@ import android.R
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
-import android.view.View
+import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.view.Window
+import android.widget.EditText
+import android.widget.ListView
+import android.widget.ScrollView
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
-import android.widget.EditText
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.dccchainservice.DccChainServiceException
@@ -125,11 +129,12 @@ fun Bitmap.saveImageToGallery(context: Context): Single<String> {
     }
 }
 
-fun View.onLongSaveImageToGallery(onError: (Throwable) -> Unit, onSuccess: (String) -> Unit) {
+fun View.onLongSaveImageToGallery(root: View? = null, onError: (Throwable) -> Unit, onSuccess: (String) -> Unit) {
     this.setOnLongClickListener { view ->
-        view.isDrawingCacheEnabled = true
-        view.buildDrawingCache()
-        view.drawingCache.saveImageToGallery(context)
+        val cacheView = root ?: view
+        cacheView.isDrawingCacheEnabled = true
+        cacheView.buildDrawingCache()
+        cacheView.drawingCache ?: getViewBitmap().saveImageToGallery(context)
                 .io_main()
                 .doFinally {
                     view.destroyDrawingCache()
@@ -137,6 +142,33 @@ fun View.onLongSaveImageToGallery(onError: (Throwable) -> Unit, onSuccess: (Stri
                 .subscribeBy(onError, onSuccess)
         true
     }
+}
+
+fun View.getViewBitmap(): Bitmap {
+    val bitmap = when {
+        this is ScrollView -> {
+            val height = this.getChildAt(0).height
+            Bitmap.createBitmap(this.width, height, Bitmap.Config.ARGB_8888)
+        }
+        this is ListView -> {
+            var height = 0
+            for (i in 0..this.childCount) {
+                height += this.getChildAt(i).height
+            }
+            Bitmap.createBitmap(this.width, height, Bitmap.Config.ARGB_8888)
+        }
+        this is RecyclerView -> {
+            var height = 0
+            for (i in 0..this.childCount) {
+                height += this.getChildAt(i).height
+            }
+            Bitmap.createBitmap(this.width, height, Bitmap.Config.ARGB_8888)
+        }
+        else -> Bitmap.createBitmap(this.width, this.height, Bitmap.Config.ARGB_8888)
+    }
+    val canvas = Canvas(bitmap)
+    this.draw(canvas)
+    return bitmap
 }
 
 fun isRootSystem(): Boolean {
