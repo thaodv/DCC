@@ -15,10 +15,13 @@ import io.wexchain.android.dcc.modules.garden.activity.GardenActivity
 import io.wexchain.android.dcc.modules.garden.activity.GardenListActivity
 import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
 import io.wexchain.android.dcc.modules.redpacket.GetRedpacketActivity
+import io.wexchain.android.dcc.modules.redpacket.RuleActivity
 import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentFindBinding
 import io.wexchain.dccchainservice.DccChainServiceException
+import io.wexchain.dccchainservice.domain.redpacket.RedPacketActivityBean
+import io.wexchain.ipfs.utils.doMain
 import io.wexchain.ipfs.utils.io_main
 
 
@@ -56,6 +59,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
         initClick()
         login()
     }
+
 
     fun login() {
         GardenOperations.loginWithCurrentPassport()
@@ -103,6 +107,28 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
         if (GardenOperations.isBound()) {
             binding.vm?.refresh()
         }
+
+        getRedPacketActivity()
+
+    }
+
+    private fun getRedPacketActivity() {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getRedPacketActivity(it).doMain()
+                }
+                .subscribe({
+                    if (it.result!!.status == RedPacketActivityBean.Status.STARTED) {
+                        binding.llRedpacket.setOnClickListener {
+                            navigateTo(GetRedpacketActivity::class.java)
+                        }
+                    } else {
+                        binding.llRedpacket.setOnClickListener {
+                            navigateTo(RuleActivity::class.java)
+                        }
+                    }
+                }, {
+                })
     }
 
     private fun initClick() {
@@ -131,9 +157,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                 toast(it)
             }
         }
-        binding.ivRedpacket.setOnClickListener {
-            navigateTo(GetRedpacketActivity::class.java)
-        }
+
     }
 
     private fun View.checkBoundClick(event: () -> Unit) {

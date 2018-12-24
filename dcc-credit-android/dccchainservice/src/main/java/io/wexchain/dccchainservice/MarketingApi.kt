@@ -2,6 +2,7 @@ package io.wexchain.dccchainservice
 
 import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
+import io.wexchain.dccchainservice.domain.redpacket.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -109,6 +110,46 @@ interface MarketingApi {
     @FormUrlEncoded
     fun queryFlower(@Header(HEADER_TOKEN) token: String?,
                     @Field("ownerId") ownerId: Int): Single<Result<Any>>
+
+    /**
+     * 领取红包
+     * @param token
+     */
+    @POST("bemember/redpacket/receiveRedPacket")
+    @FormUrlEncoded
+    fun getRedPacket(@Header(HEADER_TOKEN) token: String,
+                     @Field("redPacketId") redPacketId: String): Single<Result<GetPacketBean>>
+
+    /**
+     * 查询库存
+     * @param token
+     */
+    @POST("bemember/redpacket/queryStock")
+    @FormUrlEncoded
+    fun queryStore(@Header(HEADER_TOKEN) token: String): Single<Result<List<QueryStoreBean>>>
+
+    /**
+     * 查询邀请信息
+     * @param token
+     */
+    @POST("bemember/redpacket/queryInviteInfo")
+    @FormUrlEncoded
+    fun queryInviteInfo(@Header(HEADER_TOKEN) token: String): Single<Result<InviteInfoBean>>
+
+    /**
+     * 分页查询被邀请者信息
+     * @param token
+     */
+    @POST("bemember/redpacket/queryInviteePage")
+    @FormUrlEncoded
+    fun queryInviteRecord(@Header(HEADER_TOKEN) token: String): Single<Result<PagedList<InviteRecordBean>>>
+
+    /**
+     * 查询红包活动
+     * @param token
+     */
+    @POST("bemember/redpacket/getActivity")
+    fun getRedPacketActivity(@Header(HEADER_TOKEN) token: String): Single<Result<RedPacketActivityBean>>
 
 
     companion object {

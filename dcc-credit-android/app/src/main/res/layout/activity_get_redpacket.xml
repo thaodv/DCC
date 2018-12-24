@@ -194,7 +194,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
+                    android:layout_margin="10dp"
                     android:background="@drawable/bg_redpacket_save_poster"
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
@@ -215,11 +215,17 @@
 
                 </LinearLayout>
 
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#F5F5FD"
+                    android:padding="10dp"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_redpacket_invite"/>
+
             </LinearLayout>
 
-
         </ScrollView>
-
 
     </LinearLayout>
 </layout>

@@ -47,7 +47,8 @@ class HomeActivity : BaseCompatActivity() {
         initView()
         initEvent()
         initPhototTask()
-        checkUpgrade()
+
+        //checkUpgrade()
         showRedeem()
     }
 
