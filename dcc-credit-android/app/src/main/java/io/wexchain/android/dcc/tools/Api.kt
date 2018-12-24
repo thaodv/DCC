@@ -134,7 +134,7 @@ fun View.onLongSaveImageToGallery(root: View? = null, onError: (Throwable) -> Un
         val cacheView = root ?: view
         cacheView.isDrawingCacheEnabled = true
         cacheView.buildDrawingCache()
-        cacheView.drawingCache ?: getViewBitmap().saveImageToGallery(context)
+        cacheView.drawingCache ?: cacheView.getViewBitmap().saveImageToGallery(context)
                 .io_main()
                 .doFinally {
                     view.destroyDrawingCache()

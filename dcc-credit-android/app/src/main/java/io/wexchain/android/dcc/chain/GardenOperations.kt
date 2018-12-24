@@ -19,14 +19,14 @@ import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
 import io.wexchain.dcc.WxApiManager
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.MarketingApi
+import io.wexchain.dccchainservice.domain.BusinessCodes
 import io.wexchain.dccchainservice.domain.ChangeOrder
-import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.UserInfo
 import io.wexchain.dccchainservice.type.TaskCode
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
 import io.wexchain.ipfs.utils.doMain
-import retrofit2.Response
 import zlc.season.rxdownload3.RxDownload
 import zlc.season.rxdownload3.core.Mission
 import zlc.season.rxdownload3.core.Succeed
@@ -227,16 +227,12 @@ object GardenOperations {
                     data(it)
                 }
                 .retryWhen {
-                    var mRetryCount = 0
-                    if (mRetryCount < 3) {
-                        mRetryCount += 1
-                        loginWithCurrentPassport()
-                                .map {
-                                    it.second
-                                }
-                                .toFlowable()
-                    } else {
-                        Flowable.just(Throwable())
+                    it.flatMap {
+                        if (it is DccChainServiceException && it.businessCode == BusinessCodes.TOKEN_FORBIDDEN) {
+                            loginWithCurrentPassport()
+                        } else {
+                            Single.error<T>(it)
+                        } .toFlowable()
                     }
                 }
     }
