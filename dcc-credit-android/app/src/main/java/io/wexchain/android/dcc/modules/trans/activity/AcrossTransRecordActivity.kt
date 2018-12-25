@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.modules.trans.vm.AcrossTransRecordsVm
 import io.wexchain.android.dcc.tools.StringUtils
@@ -40,8 +40,7 @@ class AcrossTransRecordActivity : BindActivity<ActivityAcrossTransRecordBinding>
 
     var endTime: String = DateUtil.getCurrentSunday()
 
-    override val contentLayoutId: Int
-        get() = R.layout.activity_across_trans_record
+    override val contentLayoutId: Int get() = R.layout.activity_across_trans_record
 
     private val adapter = SimpleDataBindAdapter<ItemTransRecordBinding, AccrossTransRecord>(
             layoutId = R.layout.item_trans_record,

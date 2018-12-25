@@ -1,131 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="io.wexchain.android.dcc.modules.redpacket.InviteRecordActivity">
 
-    <include layout="@layout/include_toolbar"/>
+<layout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible">
+    <data>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:gravity="center">
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
 
-            <LinearLayout
-                android:id="@+id/ll_invite_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true">
+        <variable
+            name="vm"
+            type="io.wexchain.android.dcc.modules.redpacket.InviteRecordActivity.RewardsListVm"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="邀请好友 "
-                    android:textColor="#000"
-                    android:textSize="16sp"/>
-
-                <TextView
-                    android:id="@+id/tv_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#ED3735"
-                    android:textSize="24sp"
-                    tools:text="12"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" 人"
-                    android:textColor="#000"
-                    android:textSize="16sp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ll_invite_num"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="14dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="活动时间 "
-                    android:textColor="#000"
-                    android:textSize="12sp"/>
-
-                <TextView
-                    android:id="@+id/tv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="#000"
-                    android:textSize="12sp"
-                    tools:text="2018.12.25~2019.01.03"/>
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/srl_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_tag"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_redpacket_invite"/>
-
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
-    </LinearLayout>
+    </data>
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
+        tools:context="io.wexchain.android.dcc.modules.redpacket.InviteRecordActivity">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_redpacket_empty_invite"/>
+        <include layout="@layout/include_toolbar"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="您还未邀请好友哦~"
-            android:textColor="@color/FF4A4A4A"
-            android:textSize="16sp"/>
-
-        <Button
-            android:id="@+id/bt_invite"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/bg_redpacket_empty_invite"
-            android:text="邀请好友 领微信红包"
-            android:textColor="@color/white"
-            android:textSize="14sp"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                visibleOrGone="@{vm.records == null || vm.records.isEmpty()}"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:id="@+id/ll_invite_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="邀请好友 "
+                        android:textColor="#000"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#ED3735"
+                        android:textSize="24sp"
+                        tools:text="12"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" 人"
+                        android:textColor="#000"
+                        android:textSize="16sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ll_invite_num"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="活动时间 "
+                        android:textColor="#000"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="#000"
+                        android:textSize="12sp"
+                        tools:text="2018.12.25~2019.01.03"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                android:id="@+id/srl_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_list"
+                    dataList="@{vm.records}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_redpacket_invite"/>
+
+                <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            visibleOrGone="@{vm.records == null || vm.records.isEmpty()}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_redpacket_empty_invite"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="您还未邀请好友哦~"
+                android:textColor="@color/FF4A4A4A"
+                android:textSize="16sp"/>
+
+            <Button
+                android:id="@+id/bt_invite"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/bg_redpacket_empty_invite"
+                android:text="邀请好友 领微信红包"
+                android:textColor="@color/white"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</layout>

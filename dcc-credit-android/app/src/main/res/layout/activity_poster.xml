@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="io.wexchain.android.dcc.modules.redpacket.PosterActivity">
+
+        <include layout="@layout/include_toolbar"/>
+
+        <ScrollView
+            android:id="@+id/sc_root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/rl_root"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/img_poster_bg">
+
+                <ImageView
+                    android:id="@+id/iv_ercode"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_centerInParent="true"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/ic_app_dcc"/>
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:textColor="#FFF8E71C"
+                    android:textSize="14sp"
+                    tools:text="活动时间：2018/12/25~2019/01/03"/>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+</layout>

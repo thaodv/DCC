@@ -9,21 +9,30 @@ import com.google.gson.annotations.SerializedName
  */
 data class RedPacketActivityBean(
         @SerializedName("id") val id: String,
-        @SerializedName("merchantCode") val merchantCode: String,
-        @SerializedName("code") val code: String,
-        @SerializedName("name") val name: String,
-        @SerializedName("assetCode") val assetCode: String,
-        @SerializedName("totalAmount") val totalAmount: String,
         @SerializedName("description") val description: String,
         @SerializedName("bannerImgUrl") val bannerImgUrl: String,
         @SerializedName("coverImgUrl") val coverImgUrl: String,
         @SerializedName("bannerLinkUrl") val bannerLinkUrl: String,
         @SerializedName("status") val status: Status,
-        @SerializedName("lastUpdatedTime") val lastUpdatedTime: String,
-        @SerializedName("startTime") val startTime: String,
-        @SerializedName("endTime") val endTime: String
+        @SerializedName("from") val from: Long,
+        @SerializedName("to") val to: Long
 ) {
     enum class Status {
-        STARTED
+        /**
+         * 已创建
+         */
+        CREATED,
+        /**
+         * 已上架
+         */
+        SHELVED,
+        /**
+         * 已开始
+         */
+        STARTED,
+        /**
+         * 已结束
+         */
+        ENDED
     }
 }

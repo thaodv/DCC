@@ -8,12 +8,12 @@ import com.google.gson.annotations.SerializedName
  * usage:
  *
  * @param nickName 昵称
- * @param portrait 头像路径
- * @param createdTime 创建时间
+ * @param amount 金额
+ * @param receiveTime 领取红包时间
  *
  */
-data class InviteRecordBean(
+data class GetRecordBean(
+        @SerializedName("amount") val amount: String,
         @SerializedName("nickName") val nickName: String,
-        @SerializedName("portrait") val portrait: String,
-        @SerializedName("createdTime") val createdTime: Long
+        @SerializedName("receiveTime") val receiveTime: Long
 )

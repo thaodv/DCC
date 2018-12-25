@@ -5,6 +5,7 @@ import io.wexchain.dccchainservice.domain.*
 import io.wexchain.dccchainservice.domain.redpacket.*
 import retrofit2.Response
 import retrofit2.http.*
+import java.io.File
 
 interface MarketingApi {
 
@@ -125,7 +126,6 @@ interface MarketingApi {
      * @param token
      */
     @POST("bemember/redpacket/queryStock")
-    @FormUrlEncoded
     fun queryStore(@Header(HEADER_TOKEN) token: String): Single<Result<List<QueryStoreBean>>>
 
     /**
@@ -133,7 +133,6 @@ interface MarketingApi {
      * @param token
      */
     @POST("bemember/redpacket/queryInviteInfo")
-    @FormUrlEncoded
     fun queryInviteInfo(@Header(HEADER_TOKEN) token: String): Single<Result<InviteInfoBean>>
 
     /**
@@ -141,8 +140,10 @@ interface MarketingApi {
      * @param token
      */
     @POST("bemember/redpacket/queryInviteePage")
-    @FormUrlEncoded
-    fun queryInviteRecord(@Header(HEADER_TOKEN) token: String): Single<Result<PagedList<InviteRecordBean>>>
+    fun queryInviteRecord(@Header(HEADER_TOKEN) token: String,
+                          @Field("number") number: Long,
+                          @Field("size") size: Long
+    ): Single<Result<PagedList<InviteRecordBean>>>
 
     /**
      * 查询红包活动
@@ -150,6 +151,27 @@ interface MarketingApi {
      */
     @POST("bemember/redpacket/getActivity")
     fun getRedPacketActivity(@Header(HEADER_TOKEN) token: String): Single<Result<RedPacketActivityBean>>
+
+    /**
+     * 领取红包记录
+     * @param token
+     */
+    @POST("bemember/redpacket/queryRedPacketOrderPage")
+    fun getRedPacketRecord(@Header(HEADER_TOKEN) token: String): Single<Result<GetRecordBean>>
+
+    /**
+     * 领取红包记录
+     * @param token
+     */
+    @POST("bemember/redpacket/getWXACodeUnlimit")
+    fun getRedPacketErCode(@Header(HEADER_TOKEN) token: String): Single<Result<File>>
+
+    /**
+     * 查询红包聚合体
+     * @param token
+     */
+    @POST("bemember/redpacket/queryRedPacketBounded")
+    fun getRedPacket(@Header(HEADER_TOKEN) token: String): Single<Result<RedPacketBoundBean>>
 
 
     companion object {

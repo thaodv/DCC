@@ -37,8 +37,7 @@ class DigitalAssetsFragment : BindFragment<ActivityDigitalAssetsBinding>(), Item
     private var tmpList: List<DigitalCurrency>? = null
     private val adapter = DigitalAssetsAdapter(this)
 
-    override val contentLayoutId: Int
-        get() = R.layout.activity_digital_assets
+    override val contentLayoutId: Int get() = R.layout.activity_digital_assets
 
     override fun onResume() {
         super.onResume()

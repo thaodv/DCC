@@ -129,16 +129,25 @@ fun Bitmap.saveImageToGallery(context: Context): Single<String> {
     }
 }
 
-fun View.onLongSaveImageToGallery(root: View? = null, onError: (Throwable) -> Unit, onSuccess: (String) -> Unit) {
+fun View.onLongSaveImageToGallery(onError: (Throwable) -> Unit, onSuccess: (String) -> Unit) {
     this.setOnLongClickListener { view ->
-        val cacheView = root ?: view
-        cacheView.isDrawingCacheEnabled = true
-        cacheView.buildDrawingCache()
-        cacheView.drawingCache ?: cacheView.getViewBitmap().saveImageToGallery(context)
+        view.isDrawingCacheEnabled = true
+        view.buildDrawingCache()
+        view.drawingCache.saveImageToGallery(context)
                 .io_main()
                 .doFinally {
                     view.destroyDrawingCache()
                 }
+                .subscribeBy(onError, onSuccess)
+        true
+    }
+}
+
+fun View.onLongSaveImageToGallery(root: View, onError: (Throwable) -> Unit, onSuccess: (String) -> Unit) {
+    this.setOnLongClickListener { view ->
+        val cacheView = root
+        cacheView.getViewBitmap().saveImageToGallery(context)
+                .io_main()
                 .subscribeBy(onError, onSuccess)
         true
     }

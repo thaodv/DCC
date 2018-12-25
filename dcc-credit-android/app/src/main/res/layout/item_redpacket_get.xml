@@ -6,28 +6,18 @@
         <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
 
         <variable
-            name="inviteRecordBean"
-            type="io.wexchain.dccchainservice.domain.redpacket.InviteRecordBean"/>
+            name="getRecordBean"
+            type="io.wexchain.dccchainservice.domain.redpacket.GetRecordBean"/>
 
     </data>
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
-
-        <ImageView
-            android:id="@+id/iv_logo"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_centerVertical="true"
-            app:errorRes="@{@drawable/mine_user_avatar}"
-            app:imageUrl="@{inviteRecordBean.portrait}"
-            tools:src="@drawable/mine_user_avatar"/>
 
         <TextView
             android:id="@+id/tv_nick_name"
@@ -35,11 +25,21 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:layout_toRightOf="@id/iv_logo"
-            android:text="@{inviteRecordBean.nickName}"
+            android:text="@{getRecordBean.nickName}"
             android:textColor="@color/FF4A4A4A"
             android:textSize="14sp"
             tools:text="微信昵称"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@{ViewModelHelper.showRedPacketGetMoney(getRecordBean.amount)}"
+            android:textColor="@color/FF4A4A4A"
+            android:textSize="14sp"
+            tools:text="￥5.00 红包"/>
+
 
         <TextView
             android:id="@+id/tv_time"
@@ -47,10 +47,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="@{ViewModelHelper.showRedPacketInviteTime(inviteRecordBean.createdTime)}"
+            android:text="@{ViewModelHelper.showRedPacketGetTime(getRecordBean.receiveTime)}"
             android:textColor="@color/FF4A4A4A"
             android:textSize="14sp"
-            tools:text="2018-08-08 08:08:08"/>
+            tools:text="08-08 08:08:08"/>
 
     </RelativeLayout>
 

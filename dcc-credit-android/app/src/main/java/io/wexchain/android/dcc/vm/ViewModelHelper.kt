@@ -633,6 +633,51 @@ object ViewModelHelper {
         return period + "天"
     }
 
+
+    @JvmStatic
+    fun showRedPacketGetable(count: String): String {
+        return if ("0" == count) {
+            "已解锁"
+        } else {
+            "未解锁"
+        }
+    }
+
+    @JvmStatic
+    fun showRedPacketGetTime(count: Long): String {
+        return DateUtil.getStringTime(count, "MM-dd HH:mm:ss")
+    }
+
+    @JvmStatic
+    fun showRedPacketGetMoney(count: String): String {
+        return "￥" + count + "红包"
+    }
+
+    @JvmStatic
+    fun showRedPacketInviteTime(count: Long): String {
+        return DateUtil.getStringTime(count, "yyyy-MM-dd HH:mm:ss")
+    }
+
+    @JvmStatic
+    fun Context.showRedPacketGetableBg(count: String): Drawable? {
+        return when (count) {
+            "0" -> ContextCompat.getDrawable(this, R.drawable.bg_redpacket_get_locked)
+            else -> {
+                ContextCompat.getDrawable(this, R.drawable.bg_redpacket_get_unlock)
+            }
+        }
+    }
+
+    @JvmStatic
+    fun Context.showRedPacketBgStatus(count: String): Drawable? {
+        return when (count) {
+            "0" -> ContextCompat.getDrawable(this, R.drawable.bg_redpacket_level_rule_over)
+            else -> {
+                ContextCompat.getDrawable(this, R.drawable.bg_redpacket_level_rule)
+            }
+        }
+    }
+
     @JvmStatic
     fun Context.showBsxTopBgStatus(status: String): Drawable? {
         return when (status) {
