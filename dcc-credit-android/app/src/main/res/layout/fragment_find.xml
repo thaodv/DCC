@@ -10,6 +10,10 @@
             type="io.wexchain.android.dcc.domain.Passport"/>
 
         <variable
+            name="imgUrl"
+            type="String"/>
+
+        <variable
             name="vm"
             type="io.wexchain.android.dcc.fragment.home.vm.FindPageVm"/>
 
@@ -219,6 +223,7 @@
                         android:id="@+id/iv_redpacket"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:imageUrl="@{imgUrl}"
                         tools:background="@drawable/img_find_redpacket_banner_undo"/>
 
                 </LinearLayout>

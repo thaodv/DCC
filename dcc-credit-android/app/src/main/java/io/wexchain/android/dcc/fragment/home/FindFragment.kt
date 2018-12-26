@@ -16,6 +16,7 @@ import io.wexchain.android.dcc.modules.garden.activity.GardenListActivity
 import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
 import io.wexchain.android.dcc.modules.redpacket.GetRedpacketActivity
 import io.wexchain.android.dcc.modules.redpacket.RuleActivity
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentFindBinding
@@ -115,10 +116,16 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
     private fun getRedPacketActivity() {
         GardenOperations
                 .refreshToken {
-                    App.get().marketingApi.getRedPacketActivity(it).doMain()
+                    App.get().marketingApi.getRedPacketActivity(it).check()
                 }
+                .doMain()
                 .subscribe({
-                    if (it.result!!.status == RedPacketActivityBean.Status.STARTED || it.result!!.status == RedPacketActivityBean.Status.ENDED) {
+
+                    if (null != it.bannerImgUrl) {
+                        binding.imgUrl = it.bannerLinkUrl
+                    }
+
+                    if (it.status == RedPacketActivityBean.Status.STARTED || it.status == RedPacketActivityBean.Status.ENDED) {
                         binding.llRedpacket.setOnClickListener {
                             navigateTo(GetRedpacketActivity::class.java)
                         }
