@@ -5,7 +5,6 @@ import io.wexchain.dccchainservice.domain.*
 import io.wexchain.dccchainservice.domain.redpacket.*
 import retrofit2.Response
 import retrofit2.http.*
-import java.io.File
 
 interface MarketingApi {
 
@@ -139,7 +138,9 @@ interface MarketingApi {
      * 分页查询被邀请者信息
      * @param token
      */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/redpacket/queryInviteePage")
+    @FormUrlEncoded
     fun queryInviteRecord(@Header(HEADER_TOKEN) token: String,
                           @Field("number") number: Long,
                           @Field("size") size: Long
@@ -157,14 +158,17 @@ interface MarketingApi {
      * @param token
      */
     @POST("bemember/redpacket/queryRedPacketOrderPage")
-    fun getRedPacketRecord(@Header(HEADER_TOKEN) token: String): Single<Result<GetRecordBean>>
+    fun getRedPacketRecord(@Header(HEADER_TOKEN) token: String): Single<Result<PagedList<GetRecordBean>>>
 
     /**
-     * 领取红包记录
+     * 获取微信小程序码
      * @param token
      */
-    @POST("bemember/redpacket/getWXACodeUnlimit")
-    fun getRedPacketErCode(@Header(HEADER_TOKEN) token: String): Single<Result<File>>
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("redpacket/getWXACodeUnlimit")
+    @FormUrlEncoded
+    fun getRedPacketErCodeFirst(@Field("scene") scene: String): Single<Result<String>>
+
 
     /**
      * 查询红包聚合体
@@ -176,6 +180,7 @@ interface MarketingApi {
 
     companion object {
         const val HEADER_TOKEN = "x-auth-token"
+
     }
 
 }

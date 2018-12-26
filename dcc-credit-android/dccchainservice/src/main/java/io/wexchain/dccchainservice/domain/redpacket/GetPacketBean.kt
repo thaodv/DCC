@@ -13,7 +13,7 @@ data class GetPacketBean(
         @SerializedName("amount") val amount: String,
         @SerializedName("memberId") val memberId: String,
         @SerializedName("openId") val openId: String,
-        @SerializedName("openId") val appId: String
+        @SerializedName("appId") val appId: String
 ) {
     enum class Status {
         ACCEPTED,//"转移中"

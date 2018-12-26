@@ -114,6 +114,7 @@
                         tools:text="活动时间 2018.12.25~2019.01.03"/>
 
                     <Button
+                        android:id="@+id/bt_realname"
                         android:layout_width="70dp"
                         android:layout_height="30dp"
                         android:layout_alignParentRight="true"
@@ -244,6 +245,23 @@
                         tools:listitem="@layout/item_redpacket_info"/>
 
                 </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="领取红包名单"
+                    android:textColor="#FFFF0A77"
+                    android:textSize="18sp"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_redpacket_get"
+                    dataList="@{records}"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:paddingBottom="10dp"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_redpacket_get"/>
 
             </LinearLayout>
 

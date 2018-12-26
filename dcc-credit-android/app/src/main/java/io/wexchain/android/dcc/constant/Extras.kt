@@ -41,6 +41,9 @@ object Extras {
     const val EXTRA_PAY_MONEY = "pay_money"
     const val EXTRA_CERT_TYPE = "cert_type"
 
+    const val EXTRA_REDPACKET_START_TIME ="redpacket_start_time"
+    const val EXTRA_REDPACKET_END_TIME ="redpacket_end_time"
+
 
 
 

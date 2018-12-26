@@ -23,8 +23,7 @@ import io.wexchain.dccchainservice.type.TaskCode
  */
 class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
 
-    override val contentLayoutId: Int
-        get() = R.layout.activity_gardentask
+    override val contentLayoutId: Int get() = R.layout.activity_gardentask
 
     private val mActivity: GardenTaskActivity by lazy {
         this

@@ -7,7 +7,6 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
 import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject
-import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
@@ -190,6 +189,33 @@ object GardenOperations {
                     .apply {
                         setThumbImage(BitmapFactory.decodeResource(App.get().resources, R.drawable.wechat_share))
                         title = "哈哈，既然发现了我，不如顺手来偷点糖果吧。"
+                        description = ""
+                    }
+
+            val req = SendMessageToWX.Req()
+                    .apply {
+                        transaction = buildTransaction("webpage", false)
+                        message = msg
+                        scene = SendMessageToWX.Req.WXSceneSession  // 目前支持会话
+                    }
+            WxApiManager.wxapi.sendReq(req)
+        }
+    }
+
+    fun shareWechatRedPacket(error: (String) -> Unit) {
+        error.check {
+            val miniProgramObj = WXMiniProgramObject()
+                    .apply {
+                        webpageUrl = "http://open.dcc.finance/dapp/invite/index.html" // 兼容低版本的网页链接
+                        miniprogramType = WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE// 正式版:0，测试版:1，体验版:2
+                        userName = "gh_0d13628f5e03"
+                        path = "/pages/login/login?playId=$it"
+                    }
+
+            val msg = WXMediaMessage(miniProgramObj)
+                    .apply {
+                        setThumbImage(BitmapFactory.decodeResource(App.get().resources, R.drawable.wechat_share))
+                        title = "我正在抢微信现金红包，请给我助力吧，么么哒！"
                         description = ""
                     }
 

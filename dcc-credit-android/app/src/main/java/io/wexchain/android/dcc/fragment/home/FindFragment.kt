@@ -118,7 +118,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                     App.get().marketingApi.getRedPacketActivity(it).doMain()
                 }
                 .subscribe({
-                    if (it.result!!.status == RedPacketActivityBean.Status.STARTED) {
+                    if (it.result!!.status == RedPacketActivityBean.Status.STARTED || it.result!!.status == RedPacketActivityBean.Status.ENDED) {
                         binding.llRedpacket.setOnClickListener {
                             navigateTo(GetRedpacketActivity::class.java)
                         }

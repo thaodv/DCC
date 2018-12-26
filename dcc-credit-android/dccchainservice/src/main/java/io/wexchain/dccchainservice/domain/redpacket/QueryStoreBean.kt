@@ -26,10 +26,4 @@ data class QueryStoreBean(
         @SerializedName("exceptInviteCount") val exceptInviteCount: String,
         @SerializedName("needInviteCount") val needInviteCount: String
 
-) {
-    enum class Status {
-        ACCEPTED,//"转移中"
-
-        DELIVERED; //"已完成"
-    }
-}
+)
