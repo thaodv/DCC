@@ -214,7 +214,7 @@ object GardenOperations {
 
             val msg = WXMediaMessage(miniProgramObj)
                     .apply {
-                        setThumbImage(BitmapFactory.decodeResource(App.get().resources, R.drawable.wechat_share))
+                        setThumbImage(BitmapFactory.decodeResource(App.get().resources, R.drawable.img_wechat_redpacket))
                         title = "我正在抢微信现金红包，请给我助力吧，么么哒！"
                         description = ""
                     }
@@ -258,7 +258,7 @@ object GardenOperations {
                             loginWithCurrentPassport()
                         } else {
                             Single.error<T>(it)
-                        } .toFlowable()
+                        }.toFlowable()
                     }
                 }
     }

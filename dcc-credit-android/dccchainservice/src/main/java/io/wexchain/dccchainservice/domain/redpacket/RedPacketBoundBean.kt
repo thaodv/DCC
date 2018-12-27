@@ -10,5 +10,11 @@ import com.google.gson.annotations.SerializedName
 data class RedPacketBoundBean(
         @SerializedName("activity") val activity: RedPacketActivityBean,
         @SerializedName("inviteInfo") val inviteInfo: InviteInfoBean,
-        @SerializedName("redPacketStocks") val redPacketStocks: List<QueryStoreBean>
-)
+        @SerializedName("redPacketStocks") val redPacketStocks: FirstBean
+) {
+    data class FirstBean(
+            @SerializedName("expectedUnlockStock") val expectedUnlockStock: String,
+            @SerializedName("actualUnlockStock") val actualUnlockStock: String,
+            @SerializedName("redPacketStocks") val redPacketStocks: List<QueryStoreBean>
+    )
+}

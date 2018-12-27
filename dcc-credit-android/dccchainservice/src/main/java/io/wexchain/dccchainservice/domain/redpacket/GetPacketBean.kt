@@ -9,15 +9,15 @@ import com.google.gson.annotations.SerializedName
  */
 data class GetPacketBean(
         @SerializedName("id") val id: String,
-        @SerializedName("status") val status: Status,
+        //@SerializedName("status") val status: Status,
         @SerializedName("amount") val amount: String,
         @SerializedName("memberId") val memberId: String,
         @SerializedName("openId") val openId: String,
         @SerializedName("appId") val appId: String
 ) {
-    enum class Status {
+    /*enum class Status {
         ACCEPTED,//"转移中"
 
         DELIVERED; //"已完成"
-    }
+    }*/
 }

@@ -117,8 +117,8 @@ interface MarketingApi {
      */
     @POST("bemember/redpacket/receiveRedPacket")
     @FormUrlEncoded
-    fun getRedPacket(@Header(HEADER_TOKEN) token: String,
-                     @Field("redPacketId") redPacketId: String): Single<Result<GetPacketBean>>
+    fun pickRedPacket(@Header(HEADER_TOKEN) token: String,
+                     @Field("redPacketId") redPacketId: Long): Single<Result<GetPacketBean>>
 
     /**
      * 查询库存

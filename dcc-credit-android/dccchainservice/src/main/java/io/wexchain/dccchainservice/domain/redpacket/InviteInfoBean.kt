@@ -10,5 +10,7 @@ import com.google.gson.annotations.SerializedName
 data class InviteInfoBean(
         @SerializedName("unionId") val unionId: String,
         @SerializedName("inviteCount") val inviteCount: String,
-        @SerializedName("redPacketOrderId") val redPacketOrderId: String
+        @SerializedName("redPacketOrderId") val redPacketOrderId: String,
+        @SerializedName("redPacketAmount") val redPacketAmount: String,
+        @SerializedName("status") val status: Boolean
 )
