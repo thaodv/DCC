@@ -41,6 +41,20 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
             }
             return fragment
         }
+
+        /**
+         * 未开始
+         */
+        const val create = "https://static.bitphare.com/dapp/redPacket/banner2@2x.png"
+        /**
+         * 开始
+         */
+        const val started = "https://static.bitphare.com/dapp/redPacket/banner1@2x.png"
+        /**
+         * 结束
+         */
+        const val end = "https://static.bitphare.com/dapp/redPacket/banner3@2x.png"
+
     }
 
     private val passport by lazy {
@@ -129,19 +143,26 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                 .doMain()
                 .subscribe({
 
-                    if (null != it.bannerImgUrl) {
-                        binding.imgUrl = it.bannerLinkUrl
-                    }
+                    /*if (null != it.coverImgUrl) {
+                        binding.imgUrl = it.coverImgUrl
+                    }*/
 
                     if (it.status == RedPacketActivityBean.Status.STARTED || it.status == RedPacketActivityBean.Status.ENDED) {
-                        binding.llRedpacket.setOnClickListener {
+                        binding.llRedpacket.checkBoundClick {
                             navigateTo(GetRedpacketActivity::class.java)
                         }
                     } else {
-                        binding.llRedpacket.setOnClickListener {
+                        binding.llRedpacket.checkBoundClick {
                             navigateTo(RuleActivity::class.java)
                         }
                     }
+
+                    when {
+                        it.status == RedPacketActivityBean.Status.STARTED -> binding.imgUrl = started
+                        it.status == RedPacketActivityBean.Status.ENDED -> binding.imgUrl = end
+                        else -> binding.imgUrl = create
+                    }
+
                 }, {
                 })
     }
@@ -205,22 +226,6 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                     GardenOperations.wechatLogin {
                         toast(it)
                     }
-                })
-    }
-
-    private fun showRedPacketTipDialog() {
-        if (dialog == null) {
-            dialog = BaseDialog(activity!!)
-        } else {
-            dialog!!.show()
-            return
-        }
-        if (dialog!!.isShowing) {
-            return
-        }
-        dialog!!.RedPacketDialog()
-                .onClick(onConfirm = {
-                    navigateTo(GardenTaskActivity::class.java)
                 })
     }
 

@@ -43,10 +43,6 @@ object Extras {
 
     const val EXTRA_REDPACKET_START_TIME ="redpacket_start_time"
     const val EXTRA_REDPACKET_END_TIME ="redpacket_end_time"
-    const val EXTRA_REDPACKET_RULE_TEXT ="redpacket_rule_text"
-
-
-
 
 
     const val Searchain_BASE ="http://www.searchain.io"

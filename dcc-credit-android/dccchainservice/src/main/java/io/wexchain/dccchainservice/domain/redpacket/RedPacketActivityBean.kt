@@ -8,11 +8,11 @@ import com.google.gson.annotations.SerializedName
  * usage:
  */
 data class RedPacketActivityBean(
-        @SerializedName("id") val id: String,
+        /*@SerializedName("id") val id: String,
         @SerializedName("description") val description: String,
         @SerializedName("bannerImgUrl") val bannerImgUrl: String,
         @SerializedName("coverImgUrl") val coverImgUrl: String,
-        @SerializedName("bannerLinkUrl") val bannerLinkUrl: String,
+        @SerializedName("bannerLinkUrl") val bannerLinkUrl: String,*/
         @SerializedName("status") val status: Status,
         @SerializedName("from") val from: Long,
         @SerializedName("to") val to: Long

@@ -185,6 +185,7 @@
 
                 <include
                     layout="@layout/include_service_card"
+                    android:visibility="gone"
                     app:vm="@{cashloan}" />
 
                 <include

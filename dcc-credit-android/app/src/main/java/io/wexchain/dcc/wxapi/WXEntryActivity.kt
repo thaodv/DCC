@@ -1,5 +1,6 @@
 package io.wexchain.dcc.wxapi
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.tencent.mm.opensdk.constants.ConstantsAPI
@@ -10,11 +11,14 @@ import com.tencent.mm.opensdk.modelmsg.ShowMessageFromWX
 import com.tencent.mm.opensdk.modelmsg.WXAppExtendObject
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
 import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.noStatusBar
 import io.wexchain.android.common.noTitleBar
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.LoadingActivity
 import io.wexchain.android.dcc.chain.GardenOperations
+import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
+import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.dcc.WxApiManager
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.Result
@@ -22,6 +26,8 @@ import io.wexchain.ipfs.utils.io_main
 
 
 class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
+
+    private var dialog: BaseDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         noStatusBar()
@@ -55,6 +61,25 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
                                 if (it is DccChainServiceException) {
                                     if (it.systemCode == Result.SUCCESS && it.businessCode == Result.WECHAT_HAD_BEEN_BOUND) {
                                         toast(it.message!!)
+
+                                        val sp = getSharedPreferences("setting", Context.MODE_PRIVATE)
+                                        if (sp.getBoolean("sunshine_tip_first_into", true)) {
+
+                                            if (dialog == null) {
+                                                dialog = BaseDialog(this)
+                                            } else {
+                                                dialog!!.show()
+                                            }
+                                            if (dialog!!.isShowing) {
+                                            }
+                                            dialog!!.RedPacketDialog()
+                                                    .onClick(onConfirm = {
+                                                        navigateTo(GardenTaskActivity::class.java)
+                                                    }, onCancle = {
+                                                        sp.edit().putBoolean("sunshine_tip_first_into", false).commit()
+                                                    })
+                                        }
+
                                     }
                                 }
                             }
@@ -99,4 +124,5 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
         startActivity(intent)
         finishAllActivity()
     }
+
 }

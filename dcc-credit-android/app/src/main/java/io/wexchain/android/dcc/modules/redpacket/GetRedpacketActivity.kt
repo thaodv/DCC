@@ -41,13 +41,12 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
 
     private lateinit var mActivityStatus: RedPacketActivityBean.Status
 
-    var mStartTime: Long = 0
-    var mEndTime: Long = 0
-    var mRuleText: String = "0"
+    private var mStartTime: Long = 0
+    private var mEndTime: Long = 0
 
-    var hasGet: Boolean = false
+    private var hasGet: Boolean = false
 
-    lateinit var getMoney: String
+    private lateinit var getMoney: String
 
     var redPacketId: String? = ""
 
@@ -88,9 +87,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
         }
 
         binding.tvRule.setOnClickListener {
-            navigateTo(RuleActivity::class.java) {
-                putExtra(Extras.EXTRA_REDPACKET_RULE_TEXT, mRuleText)
-            }
+            navigateTo(RuleActivity::class.java)
         }
 
         binding.llSavePoster.setOnClickListener {
@@ -166,33 +163,31 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                             }
 
                             override fun sure() {
-                                if (null != redPacketId) {
-                                    GardenOperations
-                                            .refreshToken {
-                                                App.get().marketingApi.pickRedPacket(it, redPacketId!!.toLong()).check()
-                                            }
-                                            .doMain()
-                                            .subscribe({
-                                                getRedpacketDialog.setTitle("已领取")
-                                                getRedpacketDialog.setIbtCloseVisble(View.GONE)
-                                                getRedpacketDialog.setText("微信红包稍后将发放到您的微信账户，请至【微信钱包】的【零钱明细】中查看！")
-                                                getRedpacketDialog.setBtnText("我知道了", "")
-                                                getRedpacketDialog.setBtSureVisble(View.GONE)
-                                                getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
-                                                    override fun cancel() {
-                                                        initDataFromNet()
-                                                    }
+                                GardenOperations
+                                        .refreshToken {
+                                            App.get().marketingApi.pickRedPacket(it, redPacketId!!.toLong()).check()
+                                        }
+                                        .doMain()
+                                        .subscribe({
+                                            getRedpacketDialog.setTitle("已领取")
+                                            getRedpacketDialog.setIbtCloseVisble(View.GONE)
+                                            getRedpacketDialog.setText("微信红包稍后将发放到您的微信账户，请至【微信钱包】的【零钱明细】中查看！")
+                                            getRedpacketDialog.setBtnText("我知道了", "")
+                                            getRedpacketDialog.setBtSureVisble(View.GONE)
+                                            getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
+                                                override fun cancel() {
+                                                    initDataFromNet()
+                                                }
 
-                                                    override fun sure() {
+                                                override fun sure() {
 
-                                                    }
+                                                }
 
-                                                })
-                                                getRedpacketDialog.show()
-                                            }, {
-                                                toast(it.message ?: "系统错误")
                                             })
-                                }
+                                            getRedpacketDialog.show()
+                                        }, {
+                                            toast(it.message ?: "系统错误")
+                                        })
                             }
                         })
                     } else {
@@ -209,7 +204,6 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                             override fun sure() {
 
                             }
-
                         })
                     }
                 }
@@ -224,6 +218,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
         initDataFromNet()
     }
 
+    @SuppressLint("SetTextI18n")
     fun initDataFromNet() {
         Singles.zip(
                 App.get().chainGateway.getCertData(App.get().passportRepository.getCurrentPassport()!!.address, ChainGateway.BUSINESS_ID).check(),
@@ -268,13 +263,6 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                             mStartTime = it.second.activity.from
                             mEndTime = it.second.activity.to
                             mActivityStatus = it.second.activity.status
-                            //mRuleText = it.second.activity.description
-
-                            mRuleText = if (null == it.second.activity.description) "" else it.second.activity.description
-
-                            /*it.second.activity.description.let {
-                                mRuleText = it
-                            }*/
 
                             var endStr = ""
 
@@ -300,7 +288,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                             }
                         },
                         onError = {
-                            toast(it.toString())
+                            toast(it.message ?: "系统错误")
                         }
                 )
     }

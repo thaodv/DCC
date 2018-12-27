@@ -142,6 +142,7 @@ class BaseDialog(context: Context) : Dialog(context) {
         window.setBackgroundDrawableResource(R.drawable.background_holding2)
 
         view.findViewById<ImageView>(R.id.btn_ok).setOnClickListener {
+            onCancleStub.invoke()
             dismiss()
         }
 
