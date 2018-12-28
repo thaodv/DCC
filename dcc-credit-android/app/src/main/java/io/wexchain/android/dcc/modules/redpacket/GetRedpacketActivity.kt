@@ -49,6 +49,10 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
     private lateinit var getMoney: String
 
     var redPacketId: String? = ""
+    /**
+     * 为null时候代表没有解锁
+     */
+    var hasUnLock: String? = ""
 
     @SuppressLint("HandlerLeak")
     private val sHandler = object : Handler() {
@@ -132,7 +136,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                 getRedpacketDialog.show()
             } else {
                 // 未解锁
-                if (null == redPacketId) {
+                if (null == hasUnLock) {
                     getRedpacketDialog.setTitle("提示")
                     getRedpacketDialog.setIbtCloseVisble(View.GONE)
                     getRedpacketDialog.setText("您还没有解锁的红包！\n邀请好友为您助力~")
@@ -148,48 +152,72 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
 
                         }
                     })
-                } else {
+                }
+                // 已解锁
+                else {
                     // 未领取
                     if (!hasGet) {
-                        getRedpacketDialog.setTitle("提示")
-                        getRedpacketDialog.setIbtCloseVisble(View.VISIBLE)
-                        getRedpacketDialog.setText("每位用户限领1个红包！\n确认领取【$getMoney】元红包？")
-                        getRedpacketDialog.setBtnText("继续邀请", "领取红包")
-                        getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
-                            override fun cancel() {
-                                GardenOperations.shareWechatRedPacket {
-                                    toast(it)
+                        // 无红包可领取
+                        if (null == redPacketId) {
+                            getRedpacketDialog.setTitle("提示")
+                            getRedpacketDialog.setIbtCloseVisble(View.GONE)
+                            getRedpacketDialog.setText("每位用户限领1个红包！\n可领红包已领光！")
+                            getRedpacketDialog.setBtnText("继续邀请", "取消")
+                            getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
+                                override fun cancel() {
+                                    GardenOperations.shareWechatRedPacket {
+                                        toast(it)
+                                    }
                                 }
-                            }
 
-                            override fun sure() {
-                                GardenOperations
-                                        .refreshToken {
-                                            App.get().marketingApi.pickRedPacket(it, redPacketId!!.toLong()).check()
-                                        }
-                                        .doMain()
-                                        .subscribe({
-                                            getRedpacketDialog.setTitle("已领取")
-                                            getRedpacketDialog.setIbtCloseVisble(View.GONE)
-                                            getRedpacketDialog.setText("微信红包稍后将发放到您的微信账户，请至【微信钱包】的【零钱明细】中查看！")
-                                            getRedpacketDialog.setBtnText("我知道了", "")
-                                            getRedpacketDialog.setBtSureVisble(View.GONE)
-                                            getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
-                                                override fun cancel() {
-                                                    initDataFromNet()
-                                                }
+                                override fun sure() {
 
-                                                override fun sure() {
+                                }
+                            })
+                        }
+                        // 可领取
+                        else {
+                            getRedpacketDialog.setTitle("提示")
+                            getRedpacketDialog.setIbtCloseVisble(View.VISIBLE)
+                            getRedpacketDialog.setText("每位用户限领1个红包！\n确认领取【$getMoney】元红包？")
+                            getRedpacketDialog.setBtnText("继续邀请", "领取红包")
+                            getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
+                                override fun cancel() {
+                                    GardenOperations.shareWechatRedPacket {
+                                        toast(it)
+                                    }
+                                }
 
-                                                }
+                                override fun sure() {
+                                    GardenOperations
+                                            .refreshToken {
+                                                App.get().marketingApi.pickRedPacket(it, redPacketId!!.toLong()).check()
+                                            }
+                                            .doMain()
+                                            .withLoading()
+                                            .subscribe({
+                                                getRedpacketDialog.setTitle("已领取")
+                                                getRedpacketDialog.setIbtCloseVisble(View.GONE)
+                                                getRedpacketDialog.setText("微信红包稍后将发放到您的微信账户，请至【微信钱包】的【零钱明细】中查看！")
+                                                getRedpacketDialog.setBtnText("我知道了", "")
+                                                getRedpacketDialog.setBtSureVisble(View.GONE)
+                                                getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
+                                                    override fun cancel() {
+                                                        initDataFromNet()
+                                                    }
 
+                                                    override fun sure() {
+
+                                                    }
+
+                                                })
+                                                getRedpacketDialog.show()
+                                            }, {
+                                                toast(it.message ?: "系统错误")
                                             })
-                                            getRedpacketDialog.show()
-                                        }, {
-                                            toast(it.message ?: "系统错误")
-                                        })
-                            }
-                        })
+                                }
+                            })
+                        }
                     } else {
                         getRedpacketDialog.setTitle("已领取")
                         getRedpacketDialog.setIbtCloseVisble(View.GONE)
@@ -244,6 +272,8 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
 
                             redPacketId = it.second.redPacketStocks.actualUnlockStock
 
+                            hasUnLock = it.second.redPacketStocks.expectedUnlockStock
+
                             binding.records = it.second.redPacketStocks.redPacketStocks
 
                             binding.tvNum.text = it.second.inviteInfo.inviteCount
@@ -252,11 +282,13 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
 
                             if (hasGet) {
                                 binding.rlGetRedpacket.background = resources.getDrawable(R.drawable.img_redpacket_got)
+                                getMoney = it.second.inviteInfo.redPacketAmount
+                                binding.tvTip.text = "已领取 ￥ "
                             } else {
                                 binding.rlGetRedpacket.background = resources.getDrawable(R.drawable.img_redpacket_get)
+                                getMoney = if (null == it.second.redPacketStocks.amount) "0" else it.second.redPacketStocks.amount
+                                binding.tvTip.text = "已解锁 ￥ "
                             }
-
-                            getMoney = it.second.inviteInfo.redPacketAmount
 
                             binding.tvMoney.text = getMoney
 

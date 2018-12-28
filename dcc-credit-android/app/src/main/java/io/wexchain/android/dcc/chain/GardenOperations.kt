@@ -87,7 +87,7 @@ object GardenOperations {
                         }
                         val fileName = "${passport.getCurrentPassport()!!.address}-useravatar.png"
                         val imgFile = File(imgDir, fileName)
-                        RxDownload.create(Mission(it, fileName, imgDir.absolutePath))
+                        RxDownload.create(Mission(it, fileName, imgDir.absolutePath), true)
                                 .filter {
                                     it is Succeed
                                 }

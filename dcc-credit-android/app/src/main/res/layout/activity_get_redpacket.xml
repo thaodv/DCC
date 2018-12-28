@@ -151,11 +151,12 @@
                         android:layout_marginTop="25dp">
 
                         <TextView
+                            android:id="@+id/tv_tip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="已解锁 ￥ "
                             android:textColor="#FFF"
-                            android:textSize="16sp"/>
+                            android:textSize="16sp"
+                            tools:text="已解锁 ￥ "/>
 
                         <TextView
                             android:id="@+id/tv_money"
@@ -261,6 +262,7 @@
                     dataList="@{records}"
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
+                    android:minHeight="40dp"
                     android:paddingBottom="10dp"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_redpacket_get"/>

@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.modules.redpacket;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,17 +34,19 @@ public class RedPacketGetAdapter extends RecyclerView.Adapter<RedPacketGetAdapte
         return new MyViewHolder(view);
     }
     
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         
         if (mDataBeanList.size() > 6) {
             holder.tv_nick_name.setText(mDataBeanList.get(position % mDataBeanList.size()).getNickName());
-            holder.tv_amount.setText(mDataBeanList.get(position % mDataBeanList.size()).getAmount());
+            holder.tv_amount.setText("￥" + mDataBeanList.get(position % mDataBeanList.size()).getAmount() +
+                    " 红包");
             holder.tv_time.setText(DateUtil.getStringTime(mDataBeanList.get(position % mDataBeanList.size()
             ).getReceiveTime(), "MM-dd HH:mm:ss"));
         } else {
             holder.tv_nick_name.setText(mDataBeanList.get(position).getNickName());
-            holder.tv_amount.setText(mDataBeanList.get(position).getAmount());
+            holder.tv_amount.setText("￥" + mDataBeanList.get(position).getAmount() + " 红包");
             holder.tv_time.setText(DateUtil.getStringTime(mDataBeanList.get(position % mDataBeanList.size()
             ).getReceiveTime(), "MM-dd HH:mm:ss"));
         }

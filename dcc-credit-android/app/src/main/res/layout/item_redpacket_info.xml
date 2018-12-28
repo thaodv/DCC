@@ -11,7 +11,7 @@
 
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -19,16 +19,14 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:background="@{ViewModelHelper.showRedPacketBgStatus(context,storebean.stockCount)}"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        tools:background="@drawable/bg_redpacket_level_rule">
+        android:background="@drawable/bg_redpacket_level_rule">
 
         <RelativeLayout
             android:id="@+id/rl_money"
             android:layout_width="60dp"
             android:layout_height="80dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/img_redpacket_rule_money">
 
             <TextView
@@ -45,9 +43,10 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/rl_money"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
@@ -155,7 +154,13 @@
 
         </LinearLayout>
 
+        <RelativeLayout
+            visibleOrGone="@{ViewModelHelper.showRedPacketBgStatus(storebean.stockCount)}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_redpacket_level_rule_over_layer"/>
 
-    </LinearLayout>
+
+    </RelativeLayout>
 
 </layout>

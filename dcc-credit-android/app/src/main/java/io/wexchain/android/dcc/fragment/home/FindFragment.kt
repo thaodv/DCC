@@ -91,7 +91,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                         val list = data!!.split('/')
                         val code = list[0]
                         val playid = list[1]
-                        val unionId = list[2]
+                        //val unionId = list[2]
                         val info = it.first
                         info.player?.let {
                             val localplayid = it.id.toString()
@@ -143,9 +143,9 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                 .doMain()
                 .subscribe({
 
-                    /*if (null != it.coverImgUrl) {
-                        binding.imgUrl = it.coverImgUrl
-                    }*/
+                    if (null != it.currentBannerImgUrl) {
+                        binding.imgUrl = it.currentBannerImgUrl
+                    }
 
                     if (it.status == RedPacketActivityBean.Status.STARTED || it.status == RedPacketActivityBean.Status.ENDED) {
                         binding.llRedpacket.checkBoundClick {
@@ -157,11 +157,11 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                         }
                     }
 
-                    when {
+                    /*when {
                         it.status == RedPacketActivityBean.Status.STARTED -> binding.imgUrl = started
                         it.status == RedPacketActivityBean.Status.ENDED -> binding.imgUrl = end
                         else -> binding.imgUrl = create
-                    }
+                    }*/
 
                 }, {
                 })

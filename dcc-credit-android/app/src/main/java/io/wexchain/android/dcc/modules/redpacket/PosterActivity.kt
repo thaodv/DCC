@@ -39,7 +39,7 @@ class PosterActivity : BindActivity<ActivityPosterBinding>() {
                     else "保存失败")
                 },
                 onSuccess = {
-                    toast("已保存至: $it")
+                    toast("已保存至相册")
                 })
 
         App.get().marketingApi
@@ -47,8 +47,9 @@ class PosterActivity : BindActivity<ActivityPosterBinding>() {
                 .check()
                 .doMain()
                 .subscribe({
-                    Glide.with(binding.ivErcode).load(BuildConfig.DCC_MARKETING_API_URL + "/redpacket/codeImage?key=" + it)
+                    Glide.with(binding.ivErcode).load(BuildConfig.DCC_MARKETING_API_URL + "redpacket/codeImage?key=" + it)
                             .into(binding.ivErcode)
+                    toast("长按保存海报")
                 }, {})
 
 

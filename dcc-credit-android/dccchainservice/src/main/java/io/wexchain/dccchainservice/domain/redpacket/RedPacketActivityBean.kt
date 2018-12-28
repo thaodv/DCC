@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * @author Created by Wangpeng on 2018/12/24 11:21.
  * usage:
+ * @param currentBannerImgUrl 图片入口
  */
 data class RedPacketActivityBean(
         /*@SerializedName("id") val id: String,
@@ -15,7 +16,8 @@ data class RedPacketActivityBean(
         @SerializedName("bannerLinkUrl") val bannerLinkUrl: String,*/
         @SerializedName("status") val status: Status,
         @SerializedName("from") val from: Long,
-        @SerializedName("to") val to: Long
+        @SerializedName("to") val to: Long,
+        @SerializedName("currentBannerImgUrl") val currentBannerImgUrl: String
 ) {
     enum class Status {
         /**

@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-
-    <data>
-
-        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
-
-        <variable
-            name="getRecordBean"
-            type="io.wexchain.dccchainservice.domain.redpacket.GetRecordBean"/>
-
-    </data>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:paddingLeft="10dp"
@@ -35,7 +27,6 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@{ViewModelHelper.showRedPacketGetMoney(getRecordBean.amount)}"
             android:textColor="@color/FF4A4A4A"
             android:textSize="14sp"
             tools:text="￥5.00 红包"/>
@@ -47,11 +38,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="@{ViewModelHelper.showRedPacketGetTime(getRecordBean.receiveTime)}"
             android:textColor="@color/FF4A4A4A"
             android:textSize="14sp"
             tools:text="08-08 08:08:08"/>
 
     </RelativeLayout>
 
-</layout>
+</LinearLayout>
+

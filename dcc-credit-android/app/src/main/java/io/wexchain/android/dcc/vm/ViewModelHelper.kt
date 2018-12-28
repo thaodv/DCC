@@ -679,6 +679,11 @@ object ViewModelHelper {
     }
 
     @JvmStatic
+    fun showRedPacketBgStatus(count: String): Boolean {
+        return "0" == count
+    }
+
+    @JvmStatic
     fun Context.showBsxTopBgStatus(status: String): Drawable? {
         return when (status) {
             "3" -> ContextCompat.getDrawable(this, R.drawable.bg_bsx_market_item_top2)
