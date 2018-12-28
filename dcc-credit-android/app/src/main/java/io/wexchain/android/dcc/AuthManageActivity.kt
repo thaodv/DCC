@@ -4,21 +4,15 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import io.wexchain.android.common.base.BindActivity
-import io.wexchain.android.dcc.repo.db.AddressBook
 import io.wexchain.android.dcc.repo.db.AuthKeyChangeRecord
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
-import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback
 import io.wexchain.android.dcc.vm.AuthManage
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityAuthManageBinding
 import io.wexchain.dcc.databinding.ItemAuthkeyChangeRecordBinding
 
-class AuthManageActivity : BindActivity<ActivityAuthManageBinding>(), ItemViewClickListener<AddressBook> {
-
-    override fun onItemClick(item: AddressBook?, position: Int, viewId: Int) {
-
-    }
+class AuthManageActivity : BindActivity<ActivityAuthManageBinding>() {
 
     override val contentLayoutId: Int = R.layout.activity_auth_manage
 

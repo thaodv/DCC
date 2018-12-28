@@ -43,6 +43,10 @@ fun <T : Any> T.Log(message: CharSequence?) {
     LogUtils.e(clazz.simpleName, message?.toString())
 }
 
+val <T : Any> T.javaClass: Class<T>
+    @Suppress("UsePropertyAccessSyntax")
+    get() = (this as java.lang.Object).getClass() as Class<T>
+
 /*fun Log(tag: String, message: CharSequence) {
     LogUtils.e(tag, message.toString())
 }*/
@@ -50,7 +54,6 @@ fun <T : Any> T.Log(message: CharSequence?) {
 fun ByteArray.toSha256(): ByteArray {
     return MessageDigest.getInstance("SHA256").digest(this)
 }
-
 
 fun File.reName(newName: String) {
     FileUtils.rename(this, newName)

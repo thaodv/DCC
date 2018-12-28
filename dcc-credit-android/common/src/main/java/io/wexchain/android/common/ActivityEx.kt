@@ -130,6 +130,5 @@ fun Context.installApk(file: File) {
     startActivity(intent)
 }
 
-fun ByteArray.toBitmap(): Bitmap {
-    return BitmapFactory.decodeByteArray(this, 0, this.size)
-}
+
+
