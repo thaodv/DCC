@@ -210,8 +210,8 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/ll_redpacket"
+                <RelativeLayout
+                    android:id="@+id/rl_redpacket"
                     android:layout_width="match_parent"
                     android:layout_height="105dp"
                     android:layout_marginTop="10dp"
@@ -228,14 +228,25 @@
                         app:imageUrl="@{imgUrl}"
                         tools:background="@drawable/img_find_redpacket_banner_doing"/>
 
-                </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="16dp"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        tools:text="活动时间 2018.12.25~2019.1.3"/>
+
+                </RelativeLayout>
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/find_garden_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/activity_vertical_margin"
-                    app:layout_constraintTop_toBottomOf="@id/ll_redpacket">
+                    app:layout_constraintTop_toBottomOf="@id/rl_redpacket">
 
                     <TextView
                         android:id="@+id/garden_card_name"

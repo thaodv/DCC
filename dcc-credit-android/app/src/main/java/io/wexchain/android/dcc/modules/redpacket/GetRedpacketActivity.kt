@@ -24,6 +24,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityGetRedpacketBinding
 import io.wexchain.dcc.databinding.ItemRedpacketInfoBinding
 import io.wexchain.dccchainservice.ChainGateway
+import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.redpacket.QueryStoreBean
 import io.wexchain.dccchainservice.domain.redpacket.RedPacketActivityBean
 import io.wexchain.dccchainservice.util.DateUtil
@@ -35,9 +36,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
 
     private val adapter = Adapter(this)
 
-    private lateinit var getRedpacketDialog: GetRedpacketDialog
-
-    private var mRvRedpacketGet: RecyclerView? = null
+    private lateinit var mRvRedpacketGet: RecyclerView
 
     private lateinit var mActivityStatus: RedPacketActivityBean.Status
 
@@ -60,7 +59,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
             super.handleMessage(msg)
             when (msg.what) {
                 1 -> {
-                    mRvRedpacketGet!!.smoothScrollBy(0, 60)
+                    mRvRedpacketGet.smoothScrollBy(0, 60)
                     val message = Message()
                     message.what = 1
                     this.removeMessages(1)
@@ -78,7 +77,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
 
         mRvRedpacketGet = findViewById(R.id.rv_redpacket_get)
 
-        getRedpacketDialog = GetRedpacketDialog(this)
+        //getRedpacketDialog = GetRedpacketDialog(this)
 
         binding.rvList.isNestedScrollingEnabled = false
         binding.rvList.adapter = adapter
@@ -91,7 +90,10 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
         }
 
         binding.tvRule.setOnClickListener {
-            navigateTo(RuleActivity::class.java)
+            navigateTo(RuleActivity::class.java) {
+                putExtra(Extras.EXTRA_REDPACKET_START_TIME, mStartTime)
+                putExtra(Extras.EXTRA_REDPACKET_END_TIME, mEndTime)
+            }
         }
 
         binding.llSavePoster.setOnClickListener {
@@ -118,7 +120,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
         binding.rlGetRedpacket.setOnClickListener {
             // 活动结束
             if (mActivityStatus == RedPacketActivityBean.Status.ENDED) {
-
+                var getRedpacketDialog = GetRedpacketDialog(this)
                 getRedpacketDialog.setTitle("提示")
                 getRedpacketDialog.setIbtCloseVisble(View.GONE)
                 getRedpacketDialog.setText("本次活动已结束。非常感谢您的参与和关注！")
@@ -137,6 +139,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
             } else {
                 // 未解锁
                 if (null == hasUnLock) {
+                    var getRedpacketDialog = GetRedpacketDialog(this)
                     getRedpacketDialog.setTitle("提示")
                     getRedpacketDialog.setIbtCloseVisble(View.GONE)
                     getRedpacketDialog.setText("您还没有解锁的红包！\n邀请好友为您助力~")
@@ -152,6 +155,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
 
                         }
                     })
+                    getRedpacketDialog.show()
                 }
                 // 已解锁
                 else {
@@ -159,6 +163,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                     if (!hasGet) {
                         // 无红包可领取
                         if (null == redPacketId) {
+                            var getRedpacketDialog = GetRedpacketDialog(this)
                             getRedpacketDialog.setTitle("提示")
                             getRedpacketDialog.setIbtCloseVisble(View.GONE)
                             getRedpacketDialog.setText("每位用户限领1个红包！\n可领红包已领光！")
@@ -174,9 +179,11 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
 
                                 }
                             })
+                            getRedpacketDialog.show()
                         }
                         // 可领取
                         else {
+                            var getRedpacketDialog = GetRedpacketDialog(this)
                             getRedpacketDialog.setTitle("提示")
                             getRedpacketDialog.setIbtCloseVisble(View.VISIBLE)
                             getRedpacketDialog.setText("每位用户限领1个红包！\n确认领取【$getMoney】元红包？")
@@ -196,6 +203,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                                             .doMain()
                                             .withLoading()
                                             .subscribe({
+                                                var getRedpacketDialog = GetRedpacketDialog(this@GetRedpacketActivity)
                                                 getRedpacketDialog.setTitle("已领取")
                                                 getRedpacketDialog.setIbtCloseVisble(View.GONE)
                                                 getRedpacketDialog.setText("微信红包稍后将发放到您的微信账户，请至【微信钱包】的【零钱明细】中查看！")
@@ -213,12 +221,33 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                                                 })
                                                 getRedpacketDialog.show()
                                             }, {
-                                                toast(it.message ?: "系统错误")
+                                                val err = it as DccChainServiceException
+                                                if (err.businessCode == "BONUS_IS_EMPTY") {
+                                                    var getRedpacketDialog = GetRedpacketDialog(this@GetRedpacketActivity)
+                                                    getRedpacketDialog.setTitle("提示")
+                                                    getRedpacketDialog.setIbtCloseVisble(View.GONE)
+                                                    getRedpacketDialog.setText("可领红包已领完")
+                                                    getRedpacketDialog.setBtnText("继续邀请", "取消")
+                                                    getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
+                                                        override fun cancel() {
+                                                        }
+
+                                                        override fun sure() {
+                                                        }
+
+                                                    })
+                                                    getRedpacketDialog.show()
+                                                } else {
+                                                    toast(it.message ?: "系统错误")
+                                                }
+
                                             })
                                 }
                             })
+                            getRedpacketDialog.show()
                         }
                     } else {
+                        var getRedpacketDialog = GetRedpacketDialog(this)
                         getRedpacketDialog.setTitle("已领取")
                         getRedpacketDialog.setIbtCloseVisble(View.GONE)
                         getRedpacketDialog.setText("微信红包稍后将发放到您的微信账户，请至【微信钱包】的【零钱明细】中查看！")
@@ -233,10 +262,10 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
 
                             }
                         })
+                        getRedpacketDialog.show()
                     }
                 }
             }
-            getRedpacketDialog.show()
         }
     }
 
@@ -308,15 +337,20 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                             val res = it.third.items
 
                             if (null != res && res.isNotEmpty()) {
+                                binding.llEmpty.visibility = View.GONE
+                                mRvRedpacketGet.visibility = View.VISIBLE
                                 val testAdapter = RedPacketGetAdapter(res)
 
-                                mRvRedpacketGet!!.adapter = testAdapter
+                                mRvRedpacketGet.adapter = testAdapter
 
                                 if (res.size > 6) {
                                     val msg = Message()
                                     msg.what = 1
                                     sHandler.sendMessageDelayed(msg, 3000)
                                 }
+                            } else {
+                                binding.llEmpty.visibility = View.VISIBLE
+                                mRvRedpacketGet.visibility = View.GONE
                             }
                         },
                         onError = {
@@ -337,108 +371,6 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
     }
 
     override fun onItemClick(item: QueryStoreBean?, position: Int, viewId: Int) {
-
-        /*// 活动结束
-        if (mActivityStatus == RedPacketActivityBean.Status.ENDED) {
-            getRedpacketDialog.setTitle("提示")
-            getRedpacketDialog.setIbtCloseVisble(View.GONE)
-            getRedpacketDialog.setText("本次活动已结束。非常感谢您的参与和关注！")
-            getRedpacketDialog.setBtnText("我知道了", "")
-            getRedpacketDialog.setBtSureVisble(View.GONE)
-            getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
-                override fun cancel() {
-
-                }
-
-                override fun sure() {
-
-                }
-
-            })
-        } else {
-            // 未解锁
-            if ("0" != item!!.needInviteCount) {
-                getRedpacketDialog.setTitle("提示")
-                getRedpacketDialog.setIbtCloseVisble(View.GONE)
-                getRedpacketDialog.setText("您还没有解锁的红包！\n邀请好友为您助力~")
-                getRedpacketDialog.setBtnText("继续邀请", "取消")
-                getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
-                    override fun cancel() {
-                        GardenOperations.shareWechatRedPacket {
-                            toast(it)
-                        }
-                    }
-
-                    override fun sure() {
-
-                    }
-                })
-            }
-            // 已领完
-            else if ("0" == item!!.stockCount) {
-                getRedpacketDialog.setTitle("提示")
-                getRedpacketDialog.setIbtCloseVisble(View.GONE)
-                getRedpacketDialog.setText("每位用户限领1个红包！\n可领红包已领光！")
-                getRedpacketDialog.setBtnText("继续邀请", "取消")
-                getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
-                    override fun cancel() {
-                        GardenOperations.shareWechatRedPacket {
-                            toast(it)
-                        }
-                    }
-
-                    override fun sure() {
-                    }
-
-                })
-            }
-            // 可领取
-            else {
-                getRedpacketDialog.setTitle("提示")
-                getRedpacketDialog.setIbtCloseVisble(View.VISIBLE)
-                getRedpacketDialog.setText("每位用户限领1个红包！\n确认领取【" + item.amount + "】元红包？")
-                getRedpacketDialog.setBtnText("继续邀请", "领取红包")
-                getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
-                    override fun cancel() {
-                        GardenOperations.shareWechatRedPacket {
-                            toast(it)
-                        }
-                    }
-
-                    override fun sure() {
-                        if (null != item.id) {
-                            GardenOperations
-                                    .refreshToken {
-                                        App.get().marketingApi.pickRedPacket(it, item.id.toLong()).check()
-                                    }
-                                    .doMain()
-                                    .subscribe({
-                                        getRedpacketDialog.setTitle("已领取")
-                                        getRedpacketDialog.setIbtCloseVisble(View.GONE)
-                                        getRedpacketDialog.setText("微信红包稍后将发放到您的微信账户，请至【微信钱包】的【零钱明细】中查看！")
-                                        getRedpacketDialog.setBtnText("我知道了", "")
-                                        getRedpacketDialog.setBtSureVisble(View.GONE)
-                                        getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
-                                            override fun cancel() {
-
-                                            }
-
-                                            override fun sure() {
-
-                                            }
-
-                                        })
-
-                                        getRedpacketDialog.show()
-                                    }, {
-                                        toast(it.message ?: "系统错误")
-                                    })
-                        }
-                    }
-                })
-            }
-        }
-        getRedpacketDialog.show()*/
 
     }
 

@@ -257,15 +257,46 @@
                     android:textColor="#FFFF0A77"
                     android:textSize="18sp"/>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_redpacket_get"
-                    dataList="@{records}"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="240dp"
-                    android:minHeight="40dp"
-                    android:paddingBottom="10dp"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_redpacket_get"/>
+                    android:layout_height="240dp">
+
+                    <LinearLayout
+                        android:id="@+id/ll_empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="114dp"
+                            android:layout_height="124dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/bsx_norecord"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="38dp"
+                            android:text="暂无记录"
+                            android:textColor="#FF4A4A4A"
+                            android:textSize="15sp"/>
+
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_redpacket_get"
+                        dataList="@{records}"
+                        android:layout_width="match_parent"
+                        android:layout_height="240dp"
+                        android:minHeight="40dp"
+                        android:paddingBottom="10dp"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_redpacket_get"/>
+
+                </RelativeLayout>
+
 
             </LinearLayout>
 
