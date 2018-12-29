@@ -175,6 +175,16 @@ object GardenOperations {
         }
     }
 
+    fun startWechatRedPacket(error: (String) -> Unit) {
+        error.check {
+            val req = WXLaunchMiniProgram.Req()
+            req.userName = "gh_0d13628f5e03"
+            req.path = "/pages/login/login?playId=$it"
+            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE
+            WxApiManager.wxapi.sendReq(req)
+        }
+    }
+
     fun shareWechat(error: (String) -> Unit) {
         error.check {
             val miniProgramObj = WXMiniProgramObject()

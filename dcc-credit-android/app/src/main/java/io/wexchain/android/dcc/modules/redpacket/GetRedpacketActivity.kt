@@ -240,6 +240,24 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
 
                                                     })
                                                     getRedpacketDialog.show()
+                                                } else if (err.businessCode == "REDPACKET_OPEN_ID_NOT_FOUND") {
+                                                    var getRedpacketDialog = GetRedpacketDialog(this@GetRedpacketActivity)
+                                                    getRedpacketDialog.setTitle("提示")
+                                                    getRedpacketDialog.setIbtCloseVisble(View.GONE)
+                                                    getRedpacketDialog.setText("需要登录BitExpress小程序，才可以领取红包！")
+                                                    getRedpacketDialog.setBtnText("去小程序", "取消")
+                                                    getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
+                                                        override fun cancel() {
+                                                            GardenOperations.startWechatRedPacket {
+                                                                toast(it)
+                                                            }
+                                                        }
+
+                                                        override fun sure() {
+                                                        }
+
+                                                    })
+                                                    getRedpacketDialog.show()
                                                 } else {
                                                     toast(it.message ?: "系统错误")
                                                 }
