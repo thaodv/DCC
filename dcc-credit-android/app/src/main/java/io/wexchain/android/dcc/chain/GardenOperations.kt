@@ -180,7 +180,7 @@ object GardenOperations {
             val req = WXLaunchMiniProgram.Req()
             req.userName = "gh_0d13628f5e03"
             req.path = "/pages/login/login?playId=$it"
-            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE
+            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPROGRAM_TYPE_PREVIEW // 正式版:0，测试版:1，体验版:2
             WxApiManager.wxapi.sendReq(req)
         }
     }
