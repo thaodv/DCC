@@ -230,6 +230,9 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                                                     getRedpacketDialog.setBtnText("继续邀请", "取消")
                                                     getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
                                                         override fun cancel() {
+                                                            GardenOperations.shareWechatRedPacket {
+                                                                toast(it)
+                                                            }
                                                         }
 
                                                         override fun sure() {
