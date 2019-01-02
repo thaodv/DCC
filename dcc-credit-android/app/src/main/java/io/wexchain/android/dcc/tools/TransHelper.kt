@@ -88,7 +88,6 @@ object TransHelper {
                 "latest"
         ).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 {
-                    var a = it
                     oLlastNounce = it
                 }, { stackTrace(it) }
         )

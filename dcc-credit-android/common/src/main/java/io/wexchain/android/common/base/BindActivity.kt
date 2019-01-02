@@ -20,6 +20,5 @@ abstract class BindActivity<T:ViewDataBinding>: BaseCompatActivity() {
         binding = DataBindingUtil.setContentView(this,contentLayoutId)
         binding.setLifecycleOwner(this)
 
-
     }
 }

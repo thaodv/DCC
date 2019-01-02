@@ -18,7 +18,6 @@ import io.wexchain.digitalwallet.proxy.*
 import worhavah.regloginlib.AssetsRepository
 import worhavah.regloginlib.Net.beans.PrivateChainApi
 import worhavah.regloginlib.PassportRepository
-import worhavah.regloginlib.ScfTokenManager
 import java.io.File
 import java.math.BigInteger
 
@@ -31,8 +30,6 @@ object Networkutils {
     lateinit var chainGateway: ChainGateway
     lateinit var networking: Networking
     lateinit var passportRepository: PassportRepository
-    lateinit var scfApi: ScfApi
-    lateinit var scfTokenManager: ScfTokenManager
     lateinit var assetsRepository: AssetsRepository
     lateinit var publicRpc: EthsRpcAgent
     lateinit var customPublicJsonRpc: EthJsonRpcApi
@@ -65,11 +62,9 @@ object Networkutils {
         passportRepository = PassportRepository.letinit(app)
         passportRepository.load()
         chainGateway = networking.createApi(ChainGateway::class.java, UrlManage.GATEWAY_BASE_URL)
-        scfApi = networking.createApi(ScfApi::class.java, UrlManage.BaseRnsUrl)
         customPublicJsonRpc = networking.createApi(EthJsonRpcApi::class.java, cc.sisel.ewallet.BuildConfig.PUBLIC_CHAIN_RPC).getPrepared()
         publicRpc = EthsRpcAgent.by(customPublicJsonRpc)
         etherScanApi = networking.createApi(EtherScanApi::class.java, EtherScanApi.apiUrl(Chain.publicEthChain))
-        scfTokenManager = ScfTokenManager(app)
         privateChainApi = networking.createApi(PrivateChainApi::class.java, UrlManage.CHAIN_EXPLORER_URL)
         ethplorerApi = networking.createApi(EthplorerApi::class.java, EthplorerApi.API_URL)
         assetsRepository = AssetsRepository(

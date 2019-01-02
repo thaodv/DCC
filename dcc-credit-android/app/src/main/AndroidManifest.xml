@@ -47,7 +47,6 @@
             android:name="io.wexchain.android.dcc.MyCreditNewActivity"
             android:label="@string/my_credit"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name="io.wexchain.android.dcc.SubmitIdActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
@@ -274,18 +273,6 @@
             android:label="@string/rules"
             android:screenOrientation="portrait"/>
         <activity
-            android:name="io.wexchain.android.dcc.tl.TlPayActivity"
-            android:exported="false">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-
-                <action android:name="io.wexchain.intent.action.SIGN_ETH_TRANSACTION_TL"/>
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="io.wexchain.android.dcc.tl.TlWebPageActivity"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddressDetailActivity"
             android:screenOrientation="portrait"/>
         <activity
@@ -324,10 +311,6 @@
         <activity
             android:name="io.wexchain.android.dcc.modules.trans.activity.TransPrivate2PublicDetailActivity"
             android:label="@string/across_trans_detail"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="io.wexchain.android.dcc.modules.repay.RePaymentProcessActivity"
-            android:label="@string/repayment_process"
             android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity"
@@ -438,7 +421,57 @@
             android:name="io.wexchain.android.dcc.modules.garden.activity.GardenListActivity"
             android:label="阳光记录"
             android:screenOrientation="portrait"/>
-
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashLoanActivity"
+            android:label="法币借贷"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashCertificationActivity"
+            android:label="额度申请"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashRecordDetailActivity"
+            android:label="我的借款"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashLoanRecordsActivity"
+            android:label="我的借款"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.UserInfoCertificationActivity"
+            android:label="真实信息"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashRepaySuccessActivity"
+            android:label="提现"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashLoanRepaymentActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.CreateLoanInfoActivity"
+            android:label="借款信息"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashBoundBankActivity"
+            android:label="绑定银行卡"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.redpacket.GetRedpacketActivity"
+            android:label="天天领红包"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.redpacket.InviteRecordActivity"
+            android:label="邀请记录"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.redpacket.RuleActivity"
+            android:label="天天领红包"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.redpacket.PosterActivity"
+            android:label="天天领红包"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

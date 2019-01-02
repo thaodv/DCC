@@ -20,7 +20,10 @@ class BsxHoldingDetailActivity : BindActivity<ActivityBsxHoldingDetailBinding>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar(true)
+        initView()
+    }
 
+    private fun initView() {
         binding.tvIdtitle.text = "在投本金(" + bsxHoldingBean.assetCode + ")"
         binding.tvCapital.text = bsxHoldingBean.positionAmount
         binding.tvProfit.text = BigDecimal(bsxHoldingBean.profit).setScale(4, RoundingMode.DOWN).toPlainString()
@@ -47,25 +50,23 @@ class BsxHoldingDetailActivity : BindActivity<ActivityBsxHoldingDetailBinding>()
             binding.tvLableProfit.text = "待收收益（" + bsxHoldingBean.assetCode + ")"
             binding.tvLablePendding.text = "待收本息合计（" + bsxHoldingBean.assetCode + ")"
 
-            var statusText = ""
-
-            if ("1" == bsxHoldingBean.status) {
-                statusText = "认购中"
-            } else if ("2" == bsxHoldingBean.status || "3" == bsxHoldingBean.status) {
-                statusText = "收益中"
-            } else {
-                statusText = "已结束"
-            }
+            val statusText =
+                    if ("1" == bsxHoldingBean.status) {
+                        "认购中"
+                    } else if ("2" == bsxHoldingBean.status || "3" == bsxHoldingBean.status) {
+                        "收益中"
+                    } else {
+                        "已结束"
+                    }
             binding.tvRaisedata.text = statusText
         }
 
         binding.rlDetail.setOnClickListener {
             startActivity(Intent(this, BsxDetailActivity::class.java)
-                    .putExtra("assetCode", bsxHoldingBean!!.assetCode)
-                    .putExtra("name", bsxHoldingBean!!.name)
-                    .putExtra("titleName", bsxHoldingBean!!.saleInfo.name)
-                    .putExtra("contractAddress", bsxHoldingBean!!.contractAddress))
+                    .putExtra("assetCode", bsxHoldingBean.assetCode)
+                    .putExtra("name", bsxHoldingBean.name)
+                    .putExtra("titleName", bsxHoldingBean.saleInfo.name)
+                    .putExtra("contractAddress", bsxHoldingBean.contractAddress))
         }
-
     }
 }

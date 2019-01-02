@@ -8,6 +8,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.App
@@ -133,13 +134,10 @@ class BsxEthBuyVm {
     fun updateGasPrice() {
         agent.getGasPrice()
                 .doMain()
-                .subscribe({
-                    LogUtils.i("updateGasPrice", it.toString())
+                .subscribeBy {
                     gasPrice.set(weiToGwei(it).stripTrailingZeros().toPlainString())
                     dataInvalidatedEvent.call()
-                }, {
-                    stackTrace(it)
-                })
+                }
     }
 
     val r = FunctionEncoder.encode(Erc20Helper.investEthBsx())
@@ -173,17 +171,13 @@ class BsxEthBuyVm {
                     .onErrorReturn {
                         BigInteger.valueOf(100000)
                     }
-                    .subscribe({
+                    .subscribeBy {
                         if (currency == dc && gasLimit.get().isNullOrEmpty()) {
                             LogUtils.i("gas-res:", it.toString())
                             gasLimit.set(it.toString())
                             dataInvalidatedEvent.call()
                         }
-                    }, {
-                        stackTrace(it)
-                        LogUtils.i("获取gasLimit错误")
-                        LogUtils.i(it.message ?: "获取gasLimit错误")
-                    })
+                    }
         }
     }
 

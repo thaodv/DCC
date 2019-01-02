@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.modules.garden.vm
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.widget.Toast
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
@@ -14,6 +15,7 @@ import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
 import io.wexchain.android.dcc.domain.CertificationType
+import io.wexchain.android.dcc.tools.Log
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dccchainservice.ChainGateway
@@ -43,6 +45,8 @@ class GardenTaskVm : ViewModel() {
     val shareWechat = SingleLiveEvent<Void>()
     val openIpfs = SingleLiveEvent<Void>()
 
+    val errLog=MutableLiveData<String>()
+
     val taskList = MutableLiveData<List<TaskList>>()
             .apply {
                 getTaskList()
@@ -69,26 +73,6 @@ class GardenTaskVm : ViewModel() {
                     this.postValue(it)
                 }
             }
-
-    val isOpenIpfs = MutableLiveData<Pair<Boolean, String?>>()
-            .apply {
-                getIpfsKey{
-                    if (it.isEmpty()) {
-                        this.postValue(false to null)
-                    } else {
-                        this.postValue(true to it)
-                    }
-                }
-            }
-
-    private fun getIpfsKey(event: (String) -> Unit) {
-        IpfsOperations.getIpfsKey()
-                .checkKey()
-                .io_main()
-                .subscribeBy {
-                    event(it)
-                }
-    }
 
     fun getBalance(event: (String) -> Unit) {
         GardenOperations
@@ -182,6 +166,10 @@ class GardenTaskVm : ViewModel() {
                 .doOnComplete {
                     refreshTaskList()
                 }
+                .doOnError {
+                    Log(it.message)
+                    errLog.postValue(it.message)
+                }
                 .subscribe()
     }
 
@@ -213,6 +201,10 @@ class GardenTaskVm : ViewModel() {
                 .zipWith(checkBackTask(list))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError{
+                    Log(it.message)
+                    errLog.postValue(it.message)
+                }
                 .doOnComplete {
                     refreshTaskList()
                 }
@@ -258,6 +250,10 @@ class GardenTaskVm : ViewModel() {
                 .doOnComplete {
                     refreshTaskList()
                 }
+                .doOnError {
+                    Log(it.message)
+                    errLog.postValue(it.message)
+                }
                 .subscribe()
     }
 
@@ -302,13 +298,6 @@ class GardenTaskVm : ViewModel() {
         getTaskList2()
         getBalance {
             balance.postValue(it)
-        }
-        getIpfsKey{
-            if (it.isEmpty()) {
-                isOpenIpfs.postValue(false to null)
-            } else {
-                isOpenIpfs.postValue(true to it)
-            }
         }
         Observable.timer(2,TimeUnit.SECONDS)
                 .subscribe {

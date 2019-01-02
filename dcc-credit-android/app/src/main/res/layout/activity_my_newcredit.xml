@@ -80,7 +80,6 @@
 
                     <io.wexchain.android.dcc.view.CountDownProgress
                         android:layout_gravity="center"
-
                         android:id="@+id/countdownProgress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

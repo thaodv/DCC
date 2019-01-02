@@ -4,11 +4,18 @@ import android.R
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
+import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.Window
+import android.widget.EditText
+import android.widget.ListView
+import android.widget.ScrollView
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.dcc.App
@@ -36,6 +43,10 @@ fun <T : Any> T.Log(message: CharSequence?) {
     LogUtils.e(clazz.simpleName, message?.toString())
 }
 
+val <T : Any> T.javaClass: Class<T>
+    @Suppress("UsePropertyAccessSyntax")
+    get() = (this as java.lang.Object).getClass() as Class<T>
+
 /*fun Log(tag: String, message: CharSequence) {
     LogUtils.e(tag, message.toString())
 }*/
@@ -43,7 +54,6 @@ fun <T : Any> T.Log(message: CharSequence?) {
 fun ByteArray.toSha256(): ByteArray {
     return MessageDigest.getInstance("SHA256").digest(this)
 }
-
 
 fun File.reName(newName: String) {
     FileUtils.rename(this, newName)
@@ -136,8 +146,41 @@ fun View.onLongSaveImageToGallery(onError: (Throwable) -> Unit, onSuccess: (Stri
     }
 }
 
-fun isRoot(): Boolean {
-    return isRootSystem() || checkSuperuserApk() || CommonUtils.isRooted()
+fun View.onLongSaveImageToGallery(root: View, onError: (Throwable) -> Unit, onSuccess: (String) -> Unit) {
+    this.setOnLongClickListener { view ->
+        val cacheView = root
+        cacheView.getViewBitmap().saveImageToGallery(context)
+                .io_main()
+                .subscribeBy(onError, onSuccess)
+        true
+    }
+}
+
+fun View.getViewBitmap(): Bitmap {
+    val bitmap = when {
+        this is ScrollView -> {
+            val height = this.getChildAt(0).height
+            Bitmap.createBitmap(this.width, height, Bitmap.Config.ARGB_8888)
+        }
+        this is ListView -> {
+            var height = 0
+            for (i in 0..this.childCount) {
+                height += this.getChildAt(i).height
+            }
+            Bitmap.createBitmap(this.width, height, Bitmap.Config.ARGB_8888)
+        }
+        this is RecyclerView -> {
+            var height = 0
+            for (i in 0..this.childCount) {
+                height += this.getChildAt(i).height
+            }
+            Bitmap.createBitmap(this.width, height, Bitmap.Config.ARGB_8888)
+        }
+        else -> Bitmap.createBitmap(this.width, this.height, Bitmap.Config.ARGB_8888)
+    }
+    val canvas = Canvas(bitmap)
+    this.draw(canvas)
+    return bitmap
 }
 
 fun isRootSystem(): Boolean {
@@ -153,28 +196,6 @@ fun isRootSystem(): Boolean {
     } catch (e: Exception) {
     }
     return false
-}
-
-fun checkSuperuserApk(): Boolean {
-    try {
-        val file = File("/system/app/SuperSU/SuperSU.apk")
-        if (file.exists()) {
-            return true
-        }
-    } catch (e: Exception) {
-    }
-    return false
-}
-
-fun checkXPosed(): Boolean {
-    return try {
-        val localObject = ClassLoader.getSystemClassLoader().loadClass("de.robv.android.xposed.XposedHelpers").newInstance()
-        // 如果加载类失败 则表示当前环境没有xposed
-        true
-    } catch (localThrowable: Throwable) {
-        false
-    }
-
 }
 
 fun Long.formatText(): String {
@@ -222,4 +243,62 @@ fun View.onNoDoubleClick(click: (View) -> Unit) {
 
 }
 
+fun EditText.fixPrice() {
+    val view = this
+    view.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            s?.toString()?.let {
+                var res = it
+                if (res.contains(".")) {
+                    if (res.length - 1 - res.indexOf(".") > 2) {
+                        res = res.substring(0, res.indexOf(".") + 3)
+                        view.setText(res)
+                        view.setSelection(res.length)
+                    }
+                }
+
+                //如果.在起始位置,则起始位置自动补0
+                if (res.trim().substring(0) == ".") {
+                    res = "0$res";
+                    view.setText(res)
+                    view.setSelection(2)
+                }
+
+                //如果起始位置为0并且第二位跟的不是".",则无法后续输入
+                if (res.startsWith("0") && res.trim().length > 1) {
+                    if (res.substring(1, 2) != ".") {
+                        view.setText(res.subSequence(0, 1))
+                        view.setSelection(1)
+                        return
+                    }
+                }
+            }
+        }
+    })
+}
+
+fun isRoot(): Boolean {
+    val file1 = File("/system/bin/su")
+    val file2 = File("/system/xbin/su")
+    return file1.exists() || file2.exists()
+}
+
+fun checkXPosed(): Boolean {
+    return try {
+        val localObject = ClassLoader.getSystemClassLoader().loadClass("de.robv.android.xposed.XposedHelpers").newInstance()
+        // 如果加载类失败 则表示当前环境没有xposed
+        true
+    } catch (localThrowable: Throwable) {
+        false
+    }
+
+}
 

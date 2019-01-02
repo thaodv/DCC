@@ -13,12 +13,12 @@ import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.dcc.QrScannerActivity
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.tools.CommonUtils
+import io.wexchain.android.dcc.tools.isEcPrivateKeyValid
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentPastePrivateKeyBinding
 import io.wexchain.dccchainservice.DccChainServiceException
 import org.web3j.crypto.Credentials
-import worhavah.regloginlib.tools.isEcPrivateKeyValid
 
 /**
  * Created by lulingzhi on 2017/11/17.

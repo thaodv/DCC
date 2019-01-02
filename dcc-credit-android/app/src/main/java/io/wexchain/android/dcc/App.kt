@@ -85,7 +85,6 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         MultiDex.install(this)
     }
 
-
     override fun onCreate() {
         super.onCreate()
         instance = WeakReference(this)
@@ -131,7 +130,6 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         val b = NodeBean(2, "https://ethrpc2.wexfin.com:58545/", "  以太坊节点-中国北京")
         val c = NodeBean(3, "https://ethrpc3.wexfin.com:58545/", "  以太坊节点-美国加州")
         val d = NodeBean(4, "https://ethrpc4.wexfin.com:58545/", "  以太坊节点-美国马萨诸塞州")
-        //nodeList = listOf(a, b, c, d)
         nodeList = listOf(a, b, c)
     }
 
@@ -163,8 +161,8 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
                 keyHash?.let {
                     passportRepository.setIpfsKeyHash(it)
                 }
-                var password = App.get().passportRepository.getPassword()
-                var wallet = App.get().passportRepository.getWallet()
+                val password = App.get().passportRepository.getPassword()
+                val wallet = App.get().passportRepository.getWallet()
 
                 App.get().passportRepository.setPassword(password)
                 App.get().passportRepository.setWallet(wallet)
@@ -180,10 +178,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
                         LocalProtect.setProtect(first, AESSign.encryptPsw(second, CommonUtils.getMacAddress()))
                     }
                 }
-                //ShareUtils.setBoolean("has_encrypt", false)
-            } /*else {
-                LocalProtect.reloadProtect()
-            }*/
+            }
             ShareUtils.setBoolean("has_encrypt", false)
         }
 

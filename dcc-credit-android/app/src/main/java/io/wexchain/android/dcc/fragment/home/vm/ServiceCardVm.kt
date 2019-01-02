@@ -14,6 +14,9 @@ class ServiceCardVm : ViewModel() {
     val message = ObservableField<String>()
     val img = ObservableField<Drawable>()
 
+    val showBtn = ObservableField<Boolean>()
+    val btnTxt = ObservableField<String>()
+
     val performOperationEvent = SingleLiveEvent<Void>()
 
     fun performOperation() {

@@ -31,8 +31,7 @@ import java.io.File
  */
 class SettingActivity : BindActivity<ActivitySettingBinding>() {
 
-    override val contentLayoutId: Int
-        get() = R.layout.activity_setting
+    override val contentLayoutId: Int get() = R.layout.activity_setting
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

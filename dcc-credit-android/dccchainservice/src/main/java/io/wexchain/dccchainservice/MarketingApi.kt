@@ -2,6 +2,7 @@ package io.wexchain.dccchainservice
 
 import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
+import io.wexchain.dccchainservice.domain.redpacket.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -110,9 +111,76 @@ interface MarketingApi {
     fun queryFlower(@Header(HEADER_TOKEN) token: String?,
                     @Field("ownerId") ownerId: Int): Single<Result<Any>>
 
+    /**
+     * 领取红包
+     * @param token
+     */
+    @POST("bemember/redpacket/receiveRedPacket")
+    @FormUrlEncoded
+    fun pickRedPacket(@Header(HEADER_TOKEN) token: String,
+                     @Field("redPacketId") redPacketId: Long): Single<Result<GetPacketBean>>
+
+    /**
+     * 查询库存
+     * @param token
+     */
+    @POST("bemember/redpacket/queryStock")
+    fun queryStore(@Header(HEADER_TOKEN) token: String): Single<Result<List<QueryStoreBean>>>
+
+    /**
+     * 查询邀请信息
+     * @param token
+     */
+    @POST("bemember/redpacket/queryInviteInfo")
+    fun queryInviteInfo(@Header(HEADER_TOKEN) token: String): Single<Result<InviteInfoBean>>
+
+    /**
+     * 分页查询被邀请者信息
+     * @param token
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/redpacket/queryInviteePage")
+    @FormUrlEncoded
+    fun queryInviteRecord(@Header(HEADER_TOKEN) token: String,
+                          @Field("number") number: Long,
+                          @Field("size") size: Long
+    ): Single<Result<PagedList<InviteRecordBean>>>
+
+    /**
+     * 查询红包活动
+     * @param token
+     */
+    @POST("bemember/redpacket/getActivity")
+    fun getRedPacketActivity(@Header(HEADER_TOKEN) token: String): Single<Result<RedPacketActivityBean>>
+
+    /**
+     * 领取红包记录
+     * @param token
+     */
+    @POST("bemember/redpacket/queryRedPacketOrderPage")
+    fun getRedPacketRecord(@Header(HEADER_TOKEN) token: String): Single<Result<PagedList<GetRecordBean>>>
+
+    /**
+     * 获取微信小程序码
+     * @param token
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("redpacket/getWXACodeUnlimit")
+    @FormUrlEncoded
+    fun getRedPacketErCodeFirst(@Field("scene") scene: String): Single<Result<String>>
+
+
+    /**
+     * 查询红包聚合体
+     * @param token
+     */
+    @POST("bemember/redpacket/queryRedPacketBounded")
+    fun getRedPacket(@Header(HEADER_TOKEN) token: String): Single<Result<RedPacketBoundBean>>
+
 
     companion object {
         const val HEADER_TOKEN = "x-auth-token"
+
     }
 
 }

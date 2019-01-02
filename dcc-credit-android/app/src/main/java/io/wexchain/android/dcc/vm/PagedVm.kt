@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.vm
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
+import android.view.View
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.SingleLiveEvent
@@ -12,6 +13,12 @@ abstract class PagedVm<T> : ViewModel() {
     val records = ObservableField<List<T>>()
 
     val loadFailEvent = SingleLiveEvent<String>()
+
+    //Check that the data is empty and return View.GONE
+    val checkData = SingleLiveEvent<Int>()
+            .apply {
+                postValue(View.GONE)
+            }
 
     private var page = 0
 
@@ -44,12 +51,23 @@ abstract class PagedVm<T> : ViewModel() {
     }
 
     private fun mergeList(list: List<T>?, page: Int) {
-        list ?: return
+        if (list == null) {
+            if (page == 0) {
+                checkData.postValue(View.VISIBLE)
+            }
+            return
+        }
         if (page == 0) {
             records.set(list)
         } else if (this.page + 1 == page) {
             records.set((records.get() ?: emptyList()) + list)
         }
+        checkData.postValue(
+                if (records.get()?.isEmpty() != false) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                })
         this.page = page
     }
 }

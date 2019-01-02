@@ -14,7 +14,9 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.base.BindFragment
+import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
+import io.wexchain.android.dcc.modules.cashloan.act.CashCertificationActivity
 import io.wexchain.android.dcc.vm.EditIdCardInfoVm
 import io.wexchain.android.dcc.vm.domain.IdCardCertData
 import io.wexchain.android.idverify.IdVerifyHelper
@@ -35,6 +37,9 @@ class InputIdInfoFragment : BindFragment<FragmentEditIdInfoBinding>() {
 
     private fun initVm() {
         val vm = getViewModel<EditIdCardInfoVm>()
+        if (CashCertificationActivity.CERT_TYPE_CASHLOAN == certType) {
+            binding.certIdOrg.text = "认证方:同牛"
+        }
         vm.informationIncompleteEvent.observe(this, Observer {
             it?.let { toast(it) }
         })
@@ -120,6 +125,15 @@ class InputIdInfoFragment : BindFragment<FragmentEditIdInfoBinding>() {
     interface Listener {
         fun onProceed(idCardCertData: IdCardCertData)
     }
+
+    var certType: String
+        get() = arguments?.getString(Extras.EXTRA_CERT_TYPE) ?: ""
+        set(value) {
+            if (arguments == null) {
+                arguments = Bundle()
+            }
+            arguments!!.putString(Extras.EXTRA_CERT_TYPE, value)
+        }
 
     companion object {
         fun create(listener: Listener): InputIdInfoFragment {

@@ -15,6 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <View
+            android:id="@+id/line"
+            style="@style/DividerHorizontal"
+            android:layout_height="10dp"
+            android:background="#F8F8FF" />
+
         <TextView
             android:id="@+id/card_name"
             android:layout_width="match_parent"
@@ -27,8 +33,8 @@
             android:textColor="#000"
             android:textSize="17sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="name" />
+            app:layout_constraintTop_toBottomOf="@id/line"
+            tools:text="资产套利" />
 
         <RelativeLayout
             android:id="@+id/card_root"
@@ -47,7 +53,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:src="@{vm.img}"
-                tools:src="@drawable/service_tokenplus" />
+                tools:src="@drawable/service_cash" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -76,6 +82,24 @@
                     tools:text="专为数字货币持有者提供高效的套利服务!" />
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/card_btn"
+                style="@style/Widget.AppCompat.Button.Dcc.Violet"
+                visibleOrGone="@{vm.showBtn}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:clickable="false"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:text="@{vm.btnTxt}"
+                android:textColor="#fff"
+                tools:text="去认购" />
 
         </RelativeLayout>
 

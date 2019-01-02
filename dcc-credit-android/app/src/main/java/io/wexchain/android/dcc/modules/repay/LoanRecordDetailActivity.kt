@@ -38,9 +38,7 @@ class LoanRecordDetailActivity : BindActivity<ActivityLoanRecordDetailBinding>()
                 }
             }
         }
-        binding.tvRepaymentProcess.onClick {
-            navigateTo(RePaymentProcessActivity::class.java)
-        }
+
     }
 
     private fun performAction(order: LoanRecord?) {

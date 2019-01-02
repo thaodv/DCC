@@ -1,51 +1,38 @@
 package worhavah.certs.tools
 
-import EventMsg
-import RxBus
 import android.content.Context
 import android.content.SharedPreferences
 import android.support.v4.app.FragmentManager
-import android.text.TextUtils
 import com.google.gson.Gson
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.Prefs
 import io.wexchain.android.common.UrlManage
 import io.wexchain.android.common.kotlin.weak
 import io.wexchain.android.common.stackTrace
+import io.wexchain.android.common.tools.EventMsg
+import io.wexchain.android.common.tools.RxBus
 import io.wexchain.android.idverify.IdCardEssentialData
-import io.wexchain.android.idverify.IdVerifyHelper
-import io.wexchain.dccchainservice.CertApi
 import io.wexchain.dccchainservice.CertApi2
 import io.wexchain.dccchainservice.DccChainServiceException
-import io.wexchain.dccchainservice.MarketingApi
 import io.wexchain.dccchainservice.domain.CertOrder
 import io.wexchain.dccchainservice.domain.CertProcess
 import io.wexchain.dccchainservice.domain.CertStatus
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.util.DateUtil.getCurrentDate2
 import io.wexchain.dccchainservice.util.ParamSignatureUtil
-import worhavah.certs.beans.BeanValidHomeResult
-import worhavah.certs.beans.BeanValidMailResult
-import worhavah.certs.beans.BeanValidResult
 import worhavah.certs.views.CertsCertFeeConfirmDialog
 import worhavah.regloginlib.Net.ChainGateway
 import worhavah.regloginlib.Net.Networkutils
 import worhavah.regloginlib.Net.beans.CertOrderUpdatedEvent
 import worhavah.regloginlib.Passport
 import worhavah.regloginlib.tools.*
-import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
 
 
 object CertOperations {
-    lateinit var certApi: CertApi
     lateinit var certApi2: CertApi2
-    lateinit var insCertApi: insCertApi
-    lateinit var marketingApi: MarketingApi
-    lateinit var idVerifyHelper: IdVerifyHelper
     var context: Context? by weak()
     lateinit var tnCertApi: tnCertApi
 
@@ -55,10 +42,7 @@ object CertOperations {
 
     fun init(context: Context) {
         certPrefs = CertPrefs(context.getSharedPreferences("dcc_certification_status", Context.MODE_PRIVATE))
-        certApi = Networkutils.networking.createApi(CertApi::class.java, UrlManage.CHAIN_FUNC_URL)
         certApi2 = Networkutils.networking.createApi(CertApi2::class.java, UrlManage.CHAIN_FUNC_URL2)
-        insCertApi = Networkutils.networking.createApi(worhavah.certs.tools.insCertApi::class.java, UrlManage.BaseRnsUrl)
-        marketingApi = Networkutils.networking.createApi(MarketingApi::class.java, UrlManage.DCC_MARKETING_API_URL)
         tnCertApi = Networkutils.networking.createApi(worhavah.certs.tools.tnCertApi::class.java, UrlManage.TN_URL)
         this.context = context
         RxBus.getInstance().toObservable().map {
@@ -68,12 +52,15 @@ object CertOperations {
                 clearAllCertData()
             }
         }
-        idVerifyHelper = IdVerifyHelper(context)
         setFreeData()// 初始化数据 打开限制
     }
 
     private fun setFreeData() {
         certPrefs.makeStringprf("Cert" + ChainGateway.TN_COMMUNICATION_LOG + "txhashcode").set("")
+    }
+
+    fun getTnCertNonce(): String? {
+        return certPrefs.certTNcertnonce.get()
     }
 
 
@@ -112,15 +99,12 @@ object CertOperations {
         }.certOrderByTx(api, business)
     }
 
-    var TNnonce = ""
     fun obtainNewCmLogUpdateOrderId(passport: Passport, pn: String): Single<CertOrderUpdatedEvent> {
         val business = ChainGateway.TN_COMMUNICATION_LOG
         val api = Networkutils.chainGateway
         val nonce = privateChainNonce(passport.address)
-        TNnonce = nonce.toString()
-        worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.set(
-            TNnonce
-        )
+        val TNnonce = nonce.toString()
+        worhavah.certs.tools.CertOperations.certPrefs.certTNcertnonce.set(TNnonce)
         return Single.zip(
                 api.getCertContractAddress(business).compose(Result.checked()),
                 api.getTicket().compose(Result.checked()),
@@ -156,40 +140,40 @@ object CertOperations {
                 }
     }
 
-      fun Single<String>.certUpdateOrderByTx(api: ChainGateway, business: String): Single<CertOrderUpdatedEvent> {
+    fun Single<String>.certUpdateOrderByTx(api: ChainGateway, business: String): Single<CertOrderUpdatedEvent> {
         return this.flatMap { rtxHash ->
-            val ltx=CertOperations.certPrefs.makeStringprf("CertTN_COMMUNICATION_LOGtxhashcode").get()
+            val ltx = CertOperations.certPrefs.makeStringprf("CertTN_COMMUNICATION_LOGtxhashcode").get()
 
-                if(!ltx.equals( rtxHash)){
-                    certPrefs.certTNcerttxhashcode.set(rtxHash)
-                    certPrefs.certTNcerttxhashtime.set(System.currentTimeMillis())
-                }
+            if (!ltx.equals(rtxHash)) {
+                certPrefs.certTNcerttxhashcode.set(rtxHash)
+                certPrefs.certTNcerttxhashtime.set(System.currentTimeMillis())
+            }
 
             var txHash = rtxHash
             api.getReceiptResult(txHash)
                     .compose(Result.checked())
-                      .doOnError {
-                          /*val ltx=CertOperations.certPrefs.makeStringprf("CertTN_COMMUNICATION_LOGtxhashcode").get()
-                          if(!TextUtils.isEmpty(ltx)){
-                              if(!ltx.equals( rtxHash)){
-                                  certPrefs.certTNcerttxhashcode.set(rtxHash)
-                                  certPrefs.certTNcerttxhashtime.set(System.currentTimeMillis())
-                              }
-                          }*/
-                      }
+                    .doOnError {
+                        /*val ltx=CertOperations.certPrefs.makeStringprf("CertTN_COMMUNICATION_LOGtxhashcode").get()
+                        if(!TextUtils.isEmpty(ltx)){
+                            if(!ltx.equals( rtxHash)){
+                                certPrefs.certTNcerttxhashcode.set(rtxHash)
+                                certPrefs.certTNcerttxhashtime.set(System.currentTimeMillis())
+                            }
+                        }*/
+                    }
                     .map {
-                        if (!(it.hasReceipt&&it.approximatelySuccess)) {
+                        if (!(it.hasReceipt && it.approximatelySuccess)) {
                             throw DccChainServiceException("订单已超时,请重新认证")
                         }
                         txHash
                     }
                     .retryWhen(RetryWithDelay.createSimple(10, 3000L))
-                   /* .map {
-                        if (!it.approximatelySuccess) {
-                            throw DccChainServiceException()
-                        }
-                        txHash
-                    }*/
+            /* .map {
+                 if (!it.approximatelySuccess) {
+                     throw DccChainServiceException()
+                 }
+                 txHash
+             }*/
         }
                 .flatMap {
 
@@ -239,51 +223,6 @@ object CertOperations {
         return true
     }
 
-    fun savePNCertData(order: BeanValidResult) {
-        certPrefs.certPhoneNum.set(order.phoneNum)
-        certPrefs.certPhoneData.set(order.verifyDate)
-    }
-
-    fun getcertPhoneNum(): String? {
-        return certPrefs.certPhoneNum.get()
-    }
-
-    fun getcertPhoneData(): String? {
-        return certPrefs.certPhoneData.get()
-    }
-
-    fun saveEmCertData(order: BeanValidMailResult) {
-        certPrefs.certMailNum.set(order.mailAddress)
-        certPrefs.certMailData.set(order.verifyDate)
-    }
-
-    fun getcertEmCNum(): String? {
-        return certPrefs.certMailNum.get()
-    }
-
-    fun getcertEmCData(): String? {
-        return certPrefs.certMailData.get()
-    }
-
-    fun saveHomeAddressData(order: BeanValidHomeResult, line1: String, line2: String) {
-        certPrefs.certHANum.set(order.homeAddress)
-        certPrefs.certHAData.set(order.verifyDate)
-        certPrefs.certHALine1.set(line1)
-        certPrefs.certHALine2.set(line2)
-
-    }
-
-    fun getcertHANum(): String? {
-        return certPrefs.certHANum.get()
-    }
-
-    fun getcertHAData(): String? {
-        return certPrefs.certHAData.get()
-    }
-
-    private fun certIdPhotoFileName(order: CertOrder) =
-            "cert${File.separator}id${File.separator}${order.orderId}.jpg"
-
     fun clearAllCertData() {
         certPrefs.clearAll()
         val eventMsg = EventMsg()
@@ -296,7 +235,6 @@ object CertOperations {
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertID.set(-1L)
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertuserName.set("")
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertcertNo.set("")
-        //worhavah.certs.tools.CertOperations.certPrefs.certTNcertphoneNo.set("" )
         worhavah.certs.tools.CertOperations.certPrefs.certTNcertpassword.set("")
         worhavah.certs.tools.CertOperations.certPrefs.ertTNcertsignature.set("")
     }
@@ -311,22 +249,13 @@ object CertOperations {
 
     class CertPrefs(sp: SharedPreferences) : Prefs(sp) {
         //report
-        val reportData = StringPref("loanReportDataList")
         val reportUpdateTime = LongPref("loanReportUpdateTime", -1L)
 
         //id
-        val certIdOrderId = LongPref("certIdOrderId", INVALID_CERT_ORDER_ID)
         val certIdStatus = StringPref("certIdStatus")
         val certRealName = StringPref("certRealName")
         val certRealId = StringPref("certRealId")
         val certIdData = StringPref("certIdData")
-        val certIdTime = StringPref("certIdTime")
-        val certIdSimilarity = StringPref("certIdSimilarity")
-        //bank card
-        val certBankOrderId = LongPref("certBankOrderId", INVALID_CERT_ORDER_ID)
-        val certBankStatus = StringPref("certBankStatus")
-        val certBankExpired = LongPref("certBankExpired", -1L)
-        val certBankCardData = StringPref("certBankCardData")
 
         //communication log
         val certCmLogOrderId = LongPref("certCmLogOrderId", INVALID_CERT_ORDER_ID)
@@ -352,20 +281,10 @@ object CertOperations {
         val ertTNcertsignature = StringPref("ertTNcertsignature")//认证id
 
 
-        //手机邮箱
-        val certPhoneNum = StringPref("certPhoneNum")
-        val certPhoneData = StringPref("certPhoneData")
-        val certMailNum = StringPref("certMailNum")
-        val certMailData = StringPref("certMailData")
-        val certHANum = StringPref("certHANum")
-        val certHAData = StringPref("certHAData")
-        val certHALine1 = StringPref("certHALine1")
-        val certHALine2 = StringPref("certHALine2")
-
         val certLasttime = StringPref("certLasttime")
 
-        val certTNcerttxhashtime = LongPref("certTNcerttxhashtime",-1L)//
-        val certTNcerttxhashcode = StringPref("certTNcerttxhashcode" )//txhash
+        val certTNcerttxhashtime = LongPref("certTNcerttxhashtime", -1L)//
+        val certTNcerttxhashcode = StringPref("certTNcerttxhashcode")//txhash
         fun makeStringprf(ss: String): StringPref {
             return StringPref(ss)
         }
@@ -384,92 +303,6 @@ object CertOperations {
 
     fun saveTnLogCertExpired(expired: Long) {
         certPrefs.certTNLogExpired.set(expired)
-    }
-
-    fun submitCert(
-            passport: Passport,
-            eMail: String,
-            onOrderCreated: (Long) -> Unit,
-            business: String = "EMAIL"
-    ): Single<String> {
-        require(passport.authKey != null)
-        require(eMail.isNotBlank())
-        val api = Networkutils.chainGateway
-        val credentials = passport.credential
-        val authKey = passport.authKey!!
-        val nonce = privateChainNonce(credentials.address)
-        return Single.just(eMail)
-                .observeOn(Schedulers.computation())
-                .map {
-                    val data = it.toByteArray(Charsets.UTF_8)
-                    val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
-                    val digest2 = byteArrayOf()
-                    EthsFunctions.apply(digest1, digest2, BigInteger.ZERO)
-                }
-                .observeOn(Schedulers.io())
-                .flatMap { applyCall ->
-                    Single.zip(
-                            api.getCertContractAddress(business).compose(Result.checked()),
-                            api.getTicket().compose(Result.checked()),
-                            pair()
-                    ).flatMap { (contractAddress, ticket) ->
-                        val tx = applyCall.txSigned(credentials, contractAddress, nonce)
-                        // insCertApi.certApply(ticket.ticket, tx, null, business)
-                        api.certApply(ticket.ticket, tx, null, business)
-                                .compose(Result.checked())
-                    }
-                }
-                .certOrderByTx(api, business)
-                .doOnSuccess {
-                    onOrderCreated(it.orderId)
-                }
-                .flatMap {
-                    Single.just(it.toString())
-                    // verifyBankCardCert(passport, bankCardInfo, accountName, id, it.orderId)
-                }
-    }
-
-    fun homeAddressCert(
-            passport: Passport,
-            eMail: String,
-            onOrderCreated: (Long) -> Unit,
-            business: String = "EMAIL"
-    ): Single<String> {
-        require(passport.authKey != null)
-        require(eMail.isNotBlank())
-        val api = Networkutils.chainGateway
-        val credentials = passport.credential
-        val authKey = passport.authKey!!
-        val nonce = privateChainNonce(credentials.address)
-        return Single.just(eMail)
-                .observeOn(Schedulers.computation())
-                .map {
-                    val data = it.toByteArray(Charsets.UTF_8)
-                    val digest1 = MessageDigest.getInstance(DIGEST).digest(data)
-                    val digest2 = byteArrayOf()
-                    EthsFunctions.apply(digest1, digest2, BigInteger.ZERO)
-                }
-                .observeOn(Schedulers.io())
-                .flatMap { applyCall ->
-                    Single.zip(
-                            api.getCertContractAddress(business).compose(Result.checked()),
-                            api.getTicket().compose(Result.checked()),
-                            pair()
-                    ).flatMap { (contractAddress, ticket) ->
-                        val tx = applyCall.txSigned(credentials, contractAddress, nonce)
-                        // insCertApi.certApply(ticket.ticket, tx, null, business)
-                        api.certApply(ticket.ticket, tx, null, business)
-                                .compose(Result.checked())
-                    }
-                }
-                .certOrderByTx(api, business)
-                .doOnSuccess {
-                    onOrderCreated(it.orderId)
-                }
-                .flatMap {
-                    Single.just(it.toString())
-                    // verifyBankCardCert(passport, bankCardInfo, accountName, id, it.orderId)
-                }
     }
 
     fun advanceCommunicationLog(
@@ -539,7 +372,6 @@ object CertOperations {
 
     fun onTNLogSuccessGot(reportData: String) {
         certPrefs.certTNLogState.set(UserCertStatus.DONE.name)
-        val orderId = certPrefs.certTNLogOrderId.get()
         certPrefs.certTNLogData.set(reportData)
     }
 

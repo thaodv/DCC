@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.View
 import io.reactivex.Single
@@ -19,6 +18,7 @@ import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.CountDownProgress
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.vm.AuthenticationStatusVm
@@ -37,7 +37,6 @@ import worhavah.certs.tools.CertOperations.clearTNCertCache
 import worhavah.certs.tools.CertOperations.onTNLogSuccessGot
 import worhavah.certs.tools.CertOperations.saveTnLogCertExpired
 import worhavah.regloginlib.Net.Networkutils
-import worhavah.regloginlib.tools.check
 import worhavah.tongniucertmodule.SubmitTNLogActivity
 import worhavah.tongniucertmodule.TnLogCertificationActivity
 import java.math.BigDecimal
@@ -277,21 +276,6 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
         }
     }
 
-    fun getTNrealdata() {
-        getTNLogReport2(App.get().passportRepository.getCurrentPassport()!!).subscribeBy(
-                onSuccess = {
-                    // android.util.Log.e(" getTNLogReport2 ", it  )
-                    val ss = it
-                    var dd = ss.substring(it.indexOf("\"reportData\":\"") + 14, it.length - 2)
-                    // android.util.Log.e(" getTNLogReport2 dddddd", dd  )
-                    onTNLogSuccessGot(dd)
-                    setVM()
-
-                    it
-                }
-        )
-    }
-
     fun getTNLogReport(passport: Passport): Single<TNcert1newreport> {
         require(passport.authKey != null)
         val address = passport.address
@@ -309,26 +293,6 @@ class MyCreditNewActivity : BindActivity<ActivityMyNewcreditBinding>() {
                 )
                 )
         ).compose(Result.checked())
-        //.compose(Result.checked())
-    }
-
-    fun getTNLogReport2(passport: Passport): Single<String> {
-        require(passport.authKey != null)
-        val address = passport.address
-        val privateKey = passport.authKey!!.getPrivateKey()
-        val orderId = worhavah.certs.tools.CertOperations.certPrefs.certTNLogOrderId.get()
-
-        return worhavah.certs.tools.CertOperations.tnCertApi.TNgetReport2(
-                address = address,
-                orderId = orderId,
-
-                signature = ParamSignatureUtil.sign(
-                        privateKey, mapOf(
-                        "address" to address,
-                        "orderId" to orderId.toString()
-                )
-                )
-        )
         //.compose(Result.checked())
     }
 

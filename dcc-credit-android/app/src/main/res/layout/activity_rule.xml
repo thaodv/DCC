@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="io.wexchain.android.dcc.modules.redpacket.RuleActivity">
+
+    <include layout="@layout/include_toolbar"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <WebView
+            android:id="@+id/wv_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/bt_invite"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFCB2A"
+            android:text="邀请好友 领微信红包"
+            android:textColor="#D00F1A"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

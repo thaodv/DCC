@@ -79,6 +79,35 @@ object ViewModelHelper {
     }
 
     @JvmStatic
+    fun Context.getCashCertTypeIcon(certificationType: CertificationType?): Drawable? {
+        val drawableId = when (certificationType) {
+            null -> 0
+            CertificationType.ID -> R.drawable.cash_loan_id
+            CertificationType.PERSONAL -> R.drawable.shape_personal
+            CertificationType.BANK -> R.drawable.cash_loan_bank
+            CertificationType.MOBILE -> R.drawable.shape_newmobile
+            CertificationType.TONGNIU -> R.drawable.cash_loan_phone
+            CertificationType.LOANREPORT -> R.drawable.shape_newloanreport
+        }
+        return if (drawableId == 0) {
+            null
+        } else {
+            ContextCompat.getDrawable(this, drawableId)
+        }
+    }
+
+    @JvmStatic
+    fun getCashCertTypeName(certificationType: CertificationType?): String {
+        return when (certificationType) {
+            null -> ""
+            CertificationType.ID -> "身份证"
+            CertificationType.BANK -> "银行卡"
+            CertificationType.TONGNIU -> "同牛\n运营商"
+            else -> ""
+        }
+    }
+
+    @JvmStatic
     fun Context.getCertStatusOpIcon(userCertStatus: UserCertStatus?): Drawable? {
         return when (userCertStatus) {
             UserCertStatus.INCOMPLETE -> ContextCompat.getDrawable(this, R.drawable.progress_indeterminate_gear)
@@ -100,7 +129,7 @@ object ViewModelHelper {
     }
 
     @JvmStatic
-    fun Context.getCertStatusShape(userCertStatus: String?): Drawable?  {
+    fun Context.getCertStatusShape(userCertStatus: String?): Drawable? {
         val drawableId = when (userCertStatus) {
             "已认证" -> R.drawable.shape_certstatu_green
             "认证完成" -> R.drawable.shape_certstatu_green
@@ -112,14 +141,6 @@ object ViewModelHelper {
 
         }
         return ContextCompat.getDrawable(this, drawableId)
-       /* return when (userCertStatus) {
-            "已认证" -> R.drawable.shape_certstatu_green
-            "已过期" -> R.drawable.shape_certstatu_red
-            "未认证" -> R.drawable.shape_certstatu_red
-            "查看报告" -> R.drawable.shape_certstatu_purple
-            "认证中" -> R.drawable.shape_certstatu_blue
-            else -> R.drawable.shape_certstatu_red
-        }*/
     }
 
     @JvmStatic
@@ -234,8 +255,8 @@ object ViewModelHelper {
     }
 
     @JvmStatic
-    fun getBalanceStr(dc: DigitalCurrency, holding: BigInteger?): String {
-        return holding?.let { dc.toDecimalAmount(it).currencyToDisplayStr() }
+    fun getBalanceStr(dc: DigitalCurrency?, holding: BigInteger?): String {
+        return holding?.let { dc!!.toDecimalAmount(it).currencyToDisplayStr() }
                 ?: "--"
     }
 
@@ -539,23 +560,6 @@ object ViewModelHelper {
     }
 
     @JvmStatic
-    fun Context.mineRewardIcon(mineCandy: MineCandy?): Drawable? {
-        mineCandy ?: return null
-        val drawable = when (mineCandy.id.rem(8L)) {
-            1L -> R.drawable.ic_mine_reward_01
-            2L -> R.drawable.ic_mine_reward_02
-            3L -> R.drawable.ic_mine_reward_03
-            4L -> R.drawable.ic_mine_reward_04
-            5L -> R.drawable.ic_mine_reward_05
-            6L -> R.drawable.ic_mine_reward_06
-            7L -> R.drawable.ic_mine_reward_07
-            0L -> R.drawable.ic_mine_reward_08
-            else -> 0
-        }
-        return ContextCompat.getDrawable(this, drawable)
-    }
-
-    @JvmStatic
     fun mineRewardAmountStr(mineCandy: MineCandy?): CharSequence? {
         mineCandy ?: return null
         return "+${Currencies.DCC.toDecimalAmount(mineCandy.amount).currencyToDisplayStr()}${Currencies.DCC.symbol}"
@@ -627,6 +631,56 @@ object ViewModelHelper {
     @JvmStatic
     fun showBsPeriod(period: String): String {
         return period + "天"
+    }
+
+
+    @JvmStatic
+    fun showRedPacketGetable(count: String): String {
+        return if ("0" == count) {
+            "已解锁"
+        } else {
+            "未解锁"
+        }
+    }
+
+    @JvmStatic
+    fun showRedPacketGetTime(count: Long): String {
+        return DateUtil.getStringTime(count, "MM-dd HH:mm:ss")
+    }
+
+    @JvmStatic
+    fun showRedPacketGetMoney(count: String): String {
+        return "￥" + count + "红包"
+    }
+
+    @JvmStatic
+    fun showRedPacketInviteTime(count: Long): String {
+        return DateUtil.getStringTime(count, "yyyy-MM-dd HH:mm:ss")
+    }
+
+    @JvmStatic
+    fun Context.showRedPacketGetableBg(count: String): Drawable? {
+        return when (count) {
+            "0" -> ContextCompat.getDrawable(this, R.drawable.bg_redpacket_get_locked)
+            else -> {
+                ContextCompat.getDrawable(this, R.drawable.bg_redpacket_get_unlock)
+            }
+        }
+    }
+
+    @JvmStatic
+    fun Context.showRedPacketBgStatus(count: String): Drawable? {
+        return when (count) {
+            "0" -> ContextCompat.getDrawable(this, R.drawable.bg_redpacket_level_rule_over)
+            else -> {
+                ContextCompat.getDrawable(this, R.drawable.bg_redpacket_level_rule)
+            }
+        }
+    }
+
+    @JvmStatic
+    fun showRedPacketBgStatus(count: String): Boolean {
+        return "0" == count
     }
 
     @JvmStatic

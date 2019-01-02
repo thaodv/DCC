@@ -10,6 +10,8 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion compile_sdk
+    buildToolsVersion build_tool_version
+
     dataBinding {
         enabled true
     }
@@ -29,7 +31,7 @@ android {
 
         buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_ID', '"wx775da1e970b779e1"'
         buildConfigField 'java.lang.String', 'WECHAT_OPEN_APP_KEY', '"b9b698d6e5f8c3d9276d3f31f925f987"'
-        resConfigs "en","zh"
+        resConfigs "en", "zh", "zh-rCN"
         ndk {
             abiFilters 'armeabi-v7a'
         }
@@ -56,7 +58,6 @@ android {
             zipAlignEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            // debuggable true
 
             buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"https://gateway.bitphare.com/passport-logic/"'
             buildConfigField 'java.lang.String', 'CHAIN_FRONTEND_URL', '"http://cms.bitphare.com/chain-frontend/"'
@@ -72,17 +73,9 @@ android {
 
         }
         debug {
-            //            signingConfig signingConfigs.wexchain
-
-            //            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://func.wexchain.io/passport-logic/"'
-            //            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.103.28:1212/passport-logic/"'
             buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.178.12:9101/passport-logic/"'
-            //mock
-            //            buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.104.12:8080/"'
             buildConfigField 'java.lang.String', 'CHAIN_FRONTEND_URL', '"http://cms.bitphare.com/chain-frontend/"'
             buildConfigField 'java.lang.String', 'CHAIN_EXPLORER_URL', '"http://10.65.209.17:9301/chain-observer/restful/"'
-            //            buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://10.65.103.67:8030/"'
-            //            buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://10.65.100.61:8383/"'//yy本机
             buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://10.65.178.18:9033/chain-service-frontend/"'
             buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://10.65.178.18:9511/passport-gateway/restful/"'
             buildConfigField 'java.lang.String', 'COIN_MARKET', '"http://10.65.178.50:9310/coin-market/"'
@@ -96,9 +89,12 @@ android {
 
             signingConfig signingConfigs.wexchain
 
+
+
             initWith debug
             buildConfigField 'java.lang.String', 'CHAIN_FUNC_URL', '"http://10.65.209.12:9201/passport-logic/"'
             buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://10.65.209.20:9033/chain-service-frontend/"'
+            //            buildConfigField 'java.lang.String', 'DCC_MARKETING_API_URL', '"http://10.65.100.73:9004/chain-service-frontend/"'
             buildConfigField 'java.lang.String', 'GATEWAY_BASE_URL', '"http://222.73.39.37:9511/passport-gateway/restful/"'
             buildConfigField 'java.lang.String', 'COIN_MARKET', '"http://10.65.209.20:9033/chain-service-frontend/"'
             buildConfigField 'java.lang.String', 'PRVATE_ACCROSS_DETAIL_URL', '"http://funcexplorer.dcc.finance/index.html#/block/hash/"'
@@ -128,7 +124,6 @@ android {
     dexOptions {
         javaMaxHeapSize "4g"
     }
-
     androidExtensions {
         experimental = true
     }
@@ -140,6 +135,7 @@ kapt {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
@@ -170,6 +166,7 @@ dependencies {
     //third party sdk
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.4'
     implementation 'zlc.season:rxdownload3:1.2.7'
+    implementation 'com.contrarywind:Android-PickerView:4.1.6'
     implementation project(':common')
     implementation project(':idverify')
     implementation project(':dccchainservice')

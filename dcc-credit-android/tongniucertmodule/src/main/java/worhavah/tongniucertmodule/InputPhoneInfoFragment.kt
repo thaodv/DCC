@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.text.InputType
 import android.text.TextUtils
 import android.view.View
-import io.wexchain.android.common.base.BindFragment
 import io.reactivex.rxkotlin.subscribeBy
+import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.getViewModel
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.digitalwallet.Currencies

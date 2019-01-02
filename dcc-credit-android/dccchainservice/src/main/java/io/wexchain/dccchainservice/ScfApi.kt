@@ -334,6 +334,128 @@ interface ScfApi {
     @GET("bsx/getPositionSum")
     fun getHoldingSum(@Query("userAddress") userAddress: String): Single<Result<BsxHoldingSumBean>>
 
+    //查询借款最大额度
+    @POST("secure/tn_loan/getMaximumAmount")
+    fun getMaximumAmount(@Header(ScfApi.HEADER_TOKEN) token: String?): Single<Result<String>>
+
+    //创建新现金贷订单
+    @POST("secure/tn_loan/createLoanOrder")
+    fun createLoanOrder(@Header(ScfApi.HEADER_TOKEN) token: String?): Single<Result<TnLoanOrder>>
+
+    //查询最后一笔创建的订单
+    @POST("secure/tn_loan/getLastOrder")
+    fun getTnLastOrder(@Header(ScfApi.HEADER_TOKEN) token: String?): Single<Result<TnLoanOrder>>
+
+    //申请现金贷额度
+    @POST("secure/tn_loan/apply")
+    @Multipart
+    fun tnApply(@Header(ScfApi.HEADER_TOKEN) token: String?,
+                @Part("data") data: String,
+                @Part idCardFrontPic: MultipartBody.Part,
+                @Part idCardBackPic: MultipartBody.Part,
+                @Part facePic: MultipartBody.Part
+    ): Single<Result<TnLoanOrder>>
+
+    //获取额度审核结果
+    @POST("secure/tn_loan/getAuditResult")
+    @FormUrlEncoded
+    fun getAuditResult(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("id") id: String
+    ): Single<Result<TnLoanOrder>>
+
+    //获取借款试算信息
+    @POST("secure/tn_loan/getLoanCalculationInfo")
+    @FormUrlEncoded
+    fun getLoanCalculationInfo(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("id") id: String
+    ): Single<Result<TnLoanOrder>>
+
+    //绑卡
+    @POST("bank/tn_loan/bindingBankCard")
+    @FormUrlEncoded
+    fun bindingBankCard(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("bankCode") bankCode: String,
+            @Field("bankCardNo") bankCardNo: String,
+            @Field("bankCardMobile") bankCardMobile: String,
+            @Field("verifyCode") verifyCode: String
+    ): Single<Result<String>>
+
+    //查询用户已绑定银行卡
+    @POST("bank/tn_loan/getBindingBankCard")
+    fun getBindingBankCard(): Single<Result<BankInfo>>
+
+    //查询银行列表
+    @POST("bank/tn_loan/queryBankInfo")
+    fun queryBankInfo(): Single<Result<List<BankInfo>>>
+
+    //查询同牛借贷订单详情
+    @POST("secure/tn_loan/getTNLoanOrderDetail")
+    @FormUrlEncoded
+    fun getTNLoanOrderDetail(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("id") id: String
+    ): Single<Result<TnLoanOrder>>
+
+    //查询还款计划
+    @POST("secure/tn_loan/getTNRepayPlan")
+    @FormUrlEncoded
+    fun getTNRepayPlan(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("id") id: Int
+    ): Single<Result<TnLoanOrder>>
+
+    //分页查询同牛借贷订单
+    @POST("secure/tn_loan/queryOrderPage")
+    @FormUrlEncoded
+    fun queryOrderPage(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("number") number: Int,
+            @Field("size") size: Int = 20
+    ): Single<Result<PagedList<TnLoanOrder>>>
+
+    //还款
+    @POST("secure/tn_loan/repay")
+    @FormUrlEncoded
+    fun repay(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("id") id: Long,
+            @Field("verifyCode") verifyCode: Long
+    ): Single<Result<TnLoanOrder>>
+
+    //确认借款
+    @POST("secure/tn_loan/confirmLoan")
+    @FormUrlEncoded
+    fun confirmLoan(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("id") id: Long,
+            @Field("chainOrderId") chainOrderId: Long,
+            @Field("useDcc") useDcc: Boolean,
+            @Field("dccAmount") dccAmount: BigDecimal
+    ): Single<Result<TnLoanOrder>>
+
+    //手机号认证校验
+    @POST("secure/tn_loan/mobileNumber")
+    @Headers("Content-Type:application/x-www-form-urlencoded; charset=utf-8")
+    @FormUrlEncoded
+    fun mobileNumber(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("mobileNumber") mobileNumber: String,
+            @Field("idNo") idNo: String,
+            @Field("username") username: String,
+            @Field("nonce") nonce: String
+    ): Single<Result<String>>
+
+    //获取借款合同
+    @POST("secure/tn_loan/getLoanContract")
+    @FormUrlEncoded
+    fun getLoanContract(
+            @Header(ScfApi.HEADER_TOKEN) token: String?,
+            @Field("id") id: String
+    ): Single<Result<TnLoanOrder>>
+
     companion object {
         const val HEADER_TOKEN = "x-auth-token"
     }

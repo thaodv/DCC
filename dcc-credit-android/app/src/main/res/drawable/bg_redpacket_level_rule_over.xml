@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/bg_redpacket_level_rule"/>
+
+    <item android:drawable="@drawable/bg_redpacket_level_rule_over_layer"/>
+
+</layer-list>
+

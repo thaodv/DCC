@@ -1,17 +1,12 @@
 package worhavah.certs.tools
 
 import io.reactivex.Single
-import io.wexchain.dccchainservice.ScfApi
-import io.wexchain.dccchainservice.domain.*
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import retrofit2.http.*
-import worhavah.certs.bean.*
-import worhavah.certs.beans.BeanValidHomeResult
-import worhavah.certs.beans.BeanValidMailResult
-import worhavah.certs.beans.BeanValidResult
-import worhavah.certs.beans.Beancitys
+import io.wexchain.dccchainservice.domain.Result
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
+import worhavah.certs.bean.TNcert1new
+import worhavah.certs.bean.TNcert1newreport
 
 /**
  * Created by sisel on 2018/2/8.
@@ -60,16 +55,5 @@ interface tnCertApi {
 
         @Part("signature") signature:String
     ):Single<Result<TNcert1newreport>>
-
-    @POST("dcc/endorsement/tongniu/communicationLog2/getReport")
-    @Multipart
-    fun TNgetReport2(
-        @Part("address") address:String,
-        @Part("orderId") orderId:Long,
-
-        @Part("signature") signature:String
-    ):Single< String >
-
-
 
 }
