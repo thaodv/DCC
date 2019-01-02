@@ -82,7 +82,6 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
                                                         sp.edit().putBoolean("sunshine_tip_first_into", false).commit()
                                                     })
                                         }
-
                                     }
                                 }
                             }
@@ -94,6 +93,8 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
                     val launchMiniProResp = resp as WXLaunchMiniProgram.Resp
                     val extraData = launchMiniProResp.extMsg
                     toBeApp(extraData)
+                } else {
+                    finish()
                 }
             }
             BaseResp.ErrCode.ERR_USER_CANCEL -> finish()
@@ -127,11 +128,11 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
         toBeApp(obj.extInfo)
     }
 
-   private fun toBeApp(data:String){
-        if (ActivityCollector.isExistActivity("io.wexchain.android.dcc.modules.home.HomeActivity")){
+    private fun toBeApp(data: String) {
+        if (ActivityCollector.isExistActivity("io.wexchain.android.dcc.modules.home.HomeActivity")) {
             navigateTo(GardenActivity::class.java)
             finish()
-        }else{
+        } else {
             val intent = Intent(this, LoadingActivity::class.java)
             intent.putExtra("data", data)
             startActivity(intent)
