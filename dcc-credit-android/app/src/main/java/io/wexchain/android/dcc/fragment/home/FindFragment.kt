@@ -90,13 +90,9 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                             } else {
                                 if ("garden" == code) {
                                     navigateTo(GardenActivity::class.java)
-                                } else {
-
                                 }
-                            }
-                            // 跳转到红包领取页面
-                            else {
-                                if ("redPacket" == code) {
+                                // 跳转到红包领取页面
+                                else if ("redPacket" == code) {
                                     navigateTo(GetRedpacketActivity::class.java)
                                 } else {
 
