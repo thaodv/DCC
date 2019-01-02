@@ -180,7 +180,7 @@ object GardenOperations {
             val req = WXLaunchMiniProgram.Req()
             req.userName = "gh_0d13628f5e03"
             req.path = "/pages/login/login?playId=$it"
-            req.miniprogramType = WXLaunchMiniProgram.Req.MINIPROGRAM_TYPE_PREVIEW // 正式版:0，测试版:1，体验版:2
+            req.miniprogramType = if (BuildConfig.DEBUG) WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW else WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE // 正式版:0，测试版:1，体验版:2
             WxApiManager.wxapi.sendReq(req)
         }
     }
@@ -217,7 +217,7 @@ object GardenOperations {
             val miniProgramObj = WXMiniProgramObject()
                     .apply {
                         webpageUrl = "http://open.dcc.finance/dapp/invite/index.html" // 兼容低版本的网页链接
-                        miniprogramType = WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW// 正式版:0，测试版:1，体验版:2
+                        miniprogramType = if (BuildConfig.DEBUG) WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW else WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE// 正式版:0，测试版:1，体验版:2
                         userName = "gh_0d13628f5e03"
                         path = "/pages/login/login?playId=$it"
                     }
