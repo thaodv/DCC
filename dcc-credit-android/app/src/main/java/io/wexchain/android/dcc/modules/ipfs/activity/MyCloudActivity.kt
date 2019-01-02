@@ -12,7 +12,6 @@ import android.view.MenuItem
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.rxkotlin.zipWith
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
@@ -35,6 +34,7 @@ import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.type.TaskCode
 import io.wexchain.digitalwallet.Erc20Helper
+import io.wexchain.ipfs.utils.doBack
 import io.wexchain.ipfs.utils.io_main
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.datatypes.DynamicBytes
@@ -267,27 +267,23 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
             ChainGateway.BUSINESS_ID -> {
                 binding.asIdVm!!.event.set(EventType.STATUS_COMPLETE)
                 Single.timer(1, TimeUnit.SECONDS)
-                        .map {
-                            val idCertPassed = CertOperations.isIdCertPassed()
-                            !idCertPassed
-                        }
+                        .map { !CertOperations.isIdCertPassed() }
                         .checkStatus(ChainGateway.BUSINESS_ID)
-                        .zipWith(GardenOperations.completeTask(TaskCode.BACKUP_ID))
                         .io_main()
-                        .subscribeBy {
-                            binding.asIdVm!!.state.set(it.first)
-                        }
+                        .map { binding.asIdVm!!.state.set(it) }
+                        .doBack()
+                        .flatMap { GardenOperations.completeTask(TaskCode.BACKUP_ID) }
+                        .subscribeBy()
             }
             ChainGateway.BUSINESS_BANK_CARD -> {
                 binding.asBankVm!!.event.set(EventType.STATUS_COMPLETE)
-                val bankCertPassed = CertOperations.isBankCertPassed()
-                Single.just(!bankCertPassed)
+                Single.just(!CertOperations.isBankCertPassed())
                         .checkStatus(ChainGateway.BUSINESS_BANK_CARD)
-                        .zipWith(GardenOperations.completeTask(TaskCode.BACKUP_BANK_CARD))
                         .io_main()
-                        .subscribeBy {
-                            binding.asBankVm!!.state.set(it.first)
-                        }
+                        .map { binding.asBankVm!!.state.set(it) }
+                        .doBack()
+                        .flatMap { GardenOperations.completeTask(TaskCode.BACKUP_BANK_CARD) }
+                        .subscribeBy()
             }
             ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
                 binding.asCmVm!!.event.set(EventType.STATUS_COMPLETE)
@@ -295,22 +291,22 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                 val cmStatus = status == UserCertStatus.DONE || status == UserCertStatus.TIMEOUT
                 Single.just(!cmStatus)
                         .checkStatus(ChainGateway.BUSINESS_COMMUNICATION_LOG)
-                        .zipWith(GardenOperations.completeTask(TaskCode.BACKUP_COMMUNICATION_LOG))
                         .io_main()
-                        .subscribeBy {
-                            binding.asCmVm!!.state.set(it.first)
-                        }
+                        .map { binding.asCmVm!!.state.set(it) }
+                        .doBack()
+                        .flatMap { GardenOperations.completeTask(TaskCode.BACKUP_COMMUNICATION_LOG) }
+                        .subscribeBy()
             }
             ChainGateway.TN_COMMUNICATION_LOG -> {
                 binding.asCmTnVm!!.event.set(EventType.STATUS_COMPLETE)
                 val tnstatus = worhavah.certs.tools.CertOperations.getTNLogUserStatus()
                 Single.just(tnstatus != worhavah.certs.tools.UserCertStatus.DONE)
                         .checkStatus(ChainGateway.TN_COMMUNICATION_LOG)
-                        .zipWith(GardenOperations.completeTask(TaskCode.BACKUP_TN_COMMUNICATION_LOG))
                         .io_main()
-                        .subscribeBy {
-                            binding.asCmTnVm!!.state.set(it.first)
-                        }
+                        .map { binding.asCmTnVm!!.state.set(it) }
+                        .doBack()
+                        .flatMap { GardenOperations.completeTask(TaskCode.BACKUP_TN_COMMUNICATION_LOG) }
+                        .subscribeBy()
             }
         }
     }
