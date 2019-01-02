@@ -19,6 +19,10 @@ import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.modules.cashloan.bean.CertificationInfo
 import io.wexchain.android.dcc.modules.cashloan.vm.CashCertificationVm
+import io.wexchain.android.dcc.modules.cert.BankCardCertificationActivity
+import io.wexchain.android.dcc.modules.cert.IdCertificationActivity
+import io.wexchain.android.dcc.modules.cert.SubmitBankCardActivity
+import io.wexchain.android.dcc.modules.cert.SubmitIdActivity
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.toBean
 import io.wexchain.android.dcc.tools.toJson

@@ -12,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.ChooseCutImageActivity
+import io.wexchain.android.dcc.modules.other.ChooseCutImageActivity
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.dcc.BuildConfig

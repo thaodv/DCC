@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="io.wexchain.android.dcc.modules.home.LoanActivity">
+    tools:context="io.wexchain.android.dcc.modules.loan.LoanActivity">
 
     <data>
 
         <variable
             name="header"
-            type="io.wexchain.android.dcc.modules.home.vm.LoanHeaderVm" />
+            type="io.wexchain.android.dcc.modules.loan.vm.LoanHeaderVm" />
     </data>
 
 

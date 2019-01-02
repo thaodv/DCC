@@ -13,7 +13,7 @@ import io.wexchain.android.common.base.ActivityCollector
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.MyInterestDetailActivity
+import io.wexchain.android.dcc.modules.bsx.MyInterestDetailActivity
 import io.wexchain.android.dcc.chain.JuzixConstants
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.repay.LoanRepayActivity

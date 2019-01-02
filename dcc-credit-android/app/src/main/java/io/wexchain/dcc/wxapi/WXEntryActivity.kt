@@ -11,13 +11,10 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.modelmsg.ShowMessageFromWX
 import com.tencent.mm.opensdk.modelmsg.WXAppExtendObject
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
+import io.wexchain.android.common.*
 import io.wexchain.android.common.base.ActivityCollector
 import io.wexchain.android.common.base.BaseCompatActivity
-import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.noStatusBar
-import io.wexchain.android.common.noTitleBar
-import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.LoadingActivity
+import io.wexchain.android.dcc.modules.other.LoadingActivity
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.modules.garden.activity.GardenActivity
 import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
@@ -33,8 +30,7 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
     private var dialog: BaseDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        noStatusBar()
-        noTitleBar()
+        fullWindow()
         super.onCreate(savedInstanceState)
         WxApiManager.wxapi.handleIntent(intent, this)
     }

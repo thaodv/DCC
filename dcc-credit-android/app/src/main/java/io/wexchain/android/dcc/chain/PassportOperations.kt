@@ -10,7 +10,7 @@ import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.getAndroidKeyStoreLoaded
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.PassportActivity
+import io.wexchain.android.dcc.modules.passport.PassportActivity
 import io.wexchain.android.dcc.chain.EthsFunctions.deleteKey
 import io.wexchain.android.dcc.chain.EthsHelper.ANDROID_RSA_PREFIX
 import io.wexchain.android.dcc.chain.EthsHelper.createAndroidRSAKeyPair

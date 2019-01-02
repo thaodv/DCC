@@ -7,8 +7,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -24,6 +22,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import java.io.File
+import kotlin.reflect.KClass
 
 /**
  * Created by sisel on 2018/3/27.
@@ -33,6 +32,14 @@ inline fun <T : Activity> Activity.navigateTo(activity: Class<T>, options: Bundl
     this.startActivity(Intent(this, activity).apply {
         this.extras()
     }, options)
+}
+
+inline fun <T : Activity> Activity.navigateTo(activity: KClass<T>, options: Bundle? = null, crossinline extras: Intent.() -> Unit = {}) {
+    navigateTo(activity.java, options, extras)
+}
+
+inline fun <T : Activity> Fragment.navigateTo(activity: KClass<T>, options: Bundle? = null, crossinline extras: Intent.() -> Unit = {}) {
+    navigateTo(activity.java, options, extras)
 }
 
 inline fun <T : Activity> Fragment.navigateTo(activity: Class<T>, options: Bundle? = null, crossinline extras: Intent.() -> Unit = {}) {
@@ -76,11 +83,18 @@ fun FragmentActivity.replaceFragment(
 fun Activity.setWindowExtended() {
     window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 }
-fun Activity.noStatusBar(){
-    window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+fun Activity.noStatusBar() {
+    window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 }
-fun Activity.noTitleBar(){
+
+fun Activity.noTitleBar() {
     requestWindowFeature(Window.FEATURE_NO_TITLE)
+}
+
+fun Activity.fullWindow() {
+    noStatusBar()
+    noTitleBar()
 }
 
 inline fun <reified T : ViewModel> FragmentActivity.getViewModel(key: String? = null): T {

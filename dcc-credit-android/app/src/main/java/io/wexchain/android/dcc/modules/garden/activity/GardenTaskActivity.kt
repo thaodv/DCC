@@ -8,11 +8,11 @@ import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.MyCreditNewActivity
-import io.wexchain.android.dcc.PassportExportActivity
-import io.wexchain.android.dcc.PassportSettingsActivity
+import io.wexchain.android.dcc.modules.cert.MyCreditActivity
+import io.wexchain.android.dcc.modules.passport.PassportExportActivity
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
+import io.wexchain.android.dcc.modules.mine.SettingActivity
 import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityGardentaskBinding
@@ -76,11 +76,11 @@ class GardenTaskActivity : BindActivity<ActivityGardentaskBinding>() {
             })
             openIpfs.observe(mActivity, Observer {
                 navigateTo(OpenCloudActivity::class.java) {
-                    putExtra("activity_type", PassportSettingsActivity.NOT_OPEN_CLOUD)
+                    putExtra("activity_type", SettingActivity.NOT_OPEN_CLOUD)
                 }
             })
             syncIpfs.observe(mActivity, Observer {
-                navigateTo(MyCreditNewActivity::class.java)
+                navigateTo(MyCreditActivity::class.java)
             })
         }
     }

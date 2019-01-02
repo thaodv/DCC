@@ -17,7 +17,7 @@ import android.widget.TextView
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.resultOk
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.CreateTransactionActivity
+import io.wexchain.android.dcc.modules.trans.activity.CreateTransactionActivity
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.repo.db.AddressBook

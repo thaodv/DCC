@@ -12,8 +12,6 @@ import android.support.v4.view.ViewCompat
 import android.view.*
 import android.view.animation.AnimationUtils
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.tencent.mm.opensdk.modelmsg.SendAuth
-import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindFragment
@@ -29,10 +27,11 @@ import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
+import io.wexchain.android.dcc.modules.mine.ModifyPassportPasswordActivity
 import io.wexchain.android.dcc.modules.mine.SettingActivity
-import io.wexchain.dcc.BuildConfig
+import io.wexchain.android.dcc.modules.other.ChooseCutImageActivity
+import io.wexchain.android.dcc.modules.passport.PassportExportActivity
 import io.wexchain.dcc.R
-import io.wexchain.dcc.WxApiManager
 import io.wexchain.dcc.databinding.FragmentMineBinding
 import io.wexchain.ipfs.utils.io_main
 
@@ -96,12 +95,12 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                     binding.tvDataCloud.onClick {
                         if (it.isEmpty()) {
                             activity?.navigateTo(OpenCloudActivity::class.java) {
-                                putExtra("activity_type", PassportSettingsActivity.NOT_OPEN_CLOUD)
+                                putExtra("activity_type", SettingActivity.NOT_OPEN_CLOUD)
                             }
                         } else {
                             if (ipfsKeyHash.isNullOrEmpty()) {
                                 activity?.navigateTo(OpenCloudActivity::class.java) {
-                                    putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)
+                                    putExtra("activity_type", SettingActivity.OPEN_CLOUD)
                                 }
                             } else {
                                 if (ipfsKeyHash == it) {
@@ -109,7 +108,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                                 } else {
                                     passport.setIpfsKeyHash("")
                                     activity?.navigateTo(OpenCloudActivity::class.java) {
-                                        putExtra("activity_type", PassportSettingsActivity.OPEN_CLOUD)
+                                        putExtra("activity_type", SettingActivity.OPEN_CLOUD)
                                     }
                                 }
                             }

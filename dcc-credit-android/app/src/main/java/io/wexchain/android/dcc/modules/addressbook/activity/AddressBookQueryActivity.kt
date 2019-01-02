@@ -12,7 +12,7 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.dcc.CreateTransactionActivity
+import io.wexchain.android.dcc.modules.trans.activity.CreateTransactionActivity
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.addressbook.vm.QueryBookAddressVm

@@ -9,9 +9,8 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
 import io.wexchain.android.common.base.BindActivity
-import io.wexchain.android.dcc.AboutActivity
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.PassportRemovalActivity
+import io.wexchain.android.dcc.modules.passport.PassportRemovalActivity
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.dialog.BaseDialog
@@ -30,6 +29,11 @@ import java.io.File
  *Created by liuyang on 2018/9/18.
  */
 class SettingActivity : BindActivity<ActivitySettingBinding>() {
+
+    companion object {
+        const val OPEN_CLOUD = 1
+        const val NOT_OPEN_CLOUD = 2
+    }
 
     override val contentLayoutId: Int get() = R.layout.activity_setting
 

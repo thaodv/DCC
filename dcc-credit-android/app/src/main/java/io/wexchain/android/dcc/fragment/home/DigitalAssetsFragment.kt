@@ -9,8 +9,8 @@ import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.DigitalCurrencyActivity
-import io.wexchain.android.dcc.SearchDigitalCurrencyActivity
+import io.wexchain.android.dcc.modules.digital.DigitalCurrencyActivity
+import io.wexchain.android.dcc.modules.digital.SearchDigitalCurrencyActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
 import io.wexchain.android.dcc.modules.trans.activity.DccExchangeActivity

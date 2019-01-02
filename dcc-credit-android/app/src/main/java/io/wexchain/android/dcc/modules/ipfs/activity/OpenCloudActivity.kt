@@ -5,9 +5,9 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.PassportSettingsActivity
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
+import io.wexchain.android.dcc.modules.mine.SettingActivity
 import io.wexchain.android.dcc.tools.CommonUtils
 import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.dcc.view.dialog.CloudstorageDialog
@@ -39,7 +39,7 @@ class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
         super.onCreate(savedInstanceState)
 
         initToolbar()
-        if (TYPE == PassportSettingsActivity.OPEN_CLOUD) {
+        if (TYPE == SettingActivity.OPEN_CLOUD) {
             title = "我的云存储"
             hint = "请输入8-20位云存储密码"
             binding.ivDescribe.text = "您的钱包已开启数据云存储功能，请输入云存储密码以便将云端存储的数据下载到手机本地。"
@@ -47,7 +47,7 @@ class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
             binding.tvLoadMore.onClick {
                 navigateTo(ResetPasswordActivity::class.java)
             }
-        } else if (TYPE == PassportSettingsActivity.NOT_OPEN_CLOUD) {
+        } else if (TYPE == SettingActivity.NOT_OPEN_CLOUD) {
             title = "开启云存储"
             hint = "设置8-20位云存储密码"
             binding.ivDescribe.text = "您需要设置云存储密码以开启数据备份功能。云存储密码丢失后无法找回，请妥善保管。"
@@ -64,7 +64,7 @@ class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
             val pw = binding.inputPw!!.password.get()
             pw ?: return@setOnClickListener
 
-            if (TYPE == PassportSettingsActivity.NOT_OPEN_CLOUD) {
+            if (TYPE == SettingActivity.NOT_OPEN_CLOUD) {
                 if (CommonUtils.checkPassword(pw)) {
                     createCloudPsw(pw)
                 } else {
@@ -87,7 +87,7 @@ class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
             finish()
             return
         }
-        if (TYPE == PassportSettingsActivity.OPEN_CLOUD) {
+        if (TYPE == SettingActivity.OPEN_CLOUD) {
             IpfsOperations.checkPsw()
                     .doMain()
                     .filter {
@@ -105,7 +105,7 @@ class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
                         navigateTo(MyCloudActivity::class.java)
                         finish()
                     }
-        } else if (TYPE == PassportSettingsActivity.NOT_OPEN_CLOUD) {
+        } else if (TYPE == SettingActivity.NOT_OPEN_CLOUD) {
             IpfsOperations.putIpfsKey(psw)
                     .flatMap {
                         GardenOperations.completeTask(TaskCode.OPEN_CLOUD_STORE)

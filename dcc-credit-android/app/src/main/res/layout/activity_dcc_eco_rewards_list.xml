@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="io.wexchain.android.dcc.DccEcoRewardsListActivity.RewardsListVm"/>
+            type="io.wexchain.android.dcc.modules.home.DccEcoRewardsListActivity.RewardsListVm"/>
 
         <variable
             name="accumIncome"
@@ -20,7 +20,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="io.wexchain.android.dcc.DccEcoRewardsListActivity"
+        tools:context="io.wexchain.android.dcc.modules.home.DccEcoRewardsListActivity"
         >
 
         <include

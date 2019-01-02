@@ -12,7 +12,7 @@ import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.MyCreditNewActivity
+import io.wexchain.android.dcc.modules.cert.MyCreditActivity
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.tools.check
@@ -110,11 +110,11 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
         }
 
         binding.rlRealname.setOnClickListener {
-            navigateTo(MyCreditNewActivity::class.java)
+            navigateTo(MyCreditActivity::class.java)
         }
 
         binding.btRealname.setOnClickListener {
-            navigateTo(MyCreditNewActivity::class.java)
+            navigateTo(MyCreditActivity::class.java)
         }
 
         binding.rlGetRedpacket.setOnClickListener {

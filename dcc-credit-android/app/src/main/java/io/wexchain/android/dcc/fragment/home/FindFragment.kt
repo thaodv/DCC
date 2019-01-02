@@ -1,6 +1,5 @@
 package io.wexchain.android.dcc.fragment.home
 
-import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
@@ -18,14 +17,10 @@ import io.wexchain.android.dcc.modules.garden.activity.GardenListActivity
 import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
 import io.wexchain.android.dcc.modules.redpacket.GetRedpacketActivity
 import io.wexchain.android.dcc.modules.redpacket.RuleActivity
-import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentFindBinding
 import io.wexchain.dccchainservice.DccChainServiceException
-import io.wexchain.dccchainservice.domain.redpacket.RedPacketActivityBean
-import io.wexchain.dccchainservice.util.DateUtil
-import io.wexchain.ipfs.utils.doMain
 import io.wexchain.ipfs.utils.io_main
 
 
@@ -63,7 +58,6 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
         initClick()
         login()
     }
-
 
     fun login() {
         GardenOperations.loginWithCurrentPassport()
@@ -112,50 +106,28 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
         if (!GardenOperations.isBound()) {
             showBoundDialog()
         } else {
-            binding.vm?.refresh()
+            refresh()
         }
+    }
+
+    private fun refresh() {
+        binding.vm?.refresh()
+        binding.vm?.redpacket1?.observe(this, Observer {
+            navigateTo(GetRedpacketActivity::class.java)
+        })
+        binding.vm?.redpacket2?.observe(this, Observer { time ->
+            navigateTo(RuleActivity::class.java) {
+                putExtra(Extras.EXTRA_REDPACKET_START_TIME, time?.first)
+                putExtra(Extras.EXTRA_REDPACKET_END_TIME, time?.second)
+            }
+        })
     }
 
     override fun onResume() {
         super.onResume()
         if (GardenOperations.isBound()) {
-            binding.vm?.refresh()
+            refresh()
         }
-
-        getRedPacketActivity()
-
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun getRedPacketActivity() {
-        GardenOperations
-                .refreshToken {
-                    App.get().marketingApi.getRedPacketActivity(it).check()
-                }
-                .doMain()
-                .subscribe({
-
-                    if (null != it.currentBannerImgUrl) {
-                        binding.imgUrl = it.currentBannerImgUrl
-                    }
-
-                    if (it.status == RedPacketActivityBean.Status.STARTED || it.status == RedPacketActivityBean.Status.ENDED) {
-                        binding.rlRedpacket.checkBoundClick {
-                            navigateTo(GetRedpacketActivity::class.java)
-                        }
-                    } else {
-                        binding.rlRedpacket.checkBoundClick {
-                            navigateTo(RuleActivity::class.java) {
-                                putExtra(Extras.EXTRA_REDPACKET_START_TIME, it.from)
-                                putExtra(Extras.EXTRA_REDPACKET_END_TIME, it.to)
-                            }
-                        }
-                    }
-
-                    binding.tvTime.text = "活动时间 " + DateUtil.getStringTime(it.from, "yyyy.MM.dd") + " ~ " + DateUtil.getStringTime(it.to, "yyyy.MM.dd")
-
-                }, {
-                })
     }
 
     private fun initClick() {

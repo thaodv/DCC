@@ -19,8 +19,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.ChooseCutImageActivity
-import io.wexchain.android.dcc.QrScannerActivity
+import io.wexchain.android.dcc.modules.other.ChooseCutImageActivity
+import io.wexchain.android.dcc.modules.other.QrScannerActivity
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes

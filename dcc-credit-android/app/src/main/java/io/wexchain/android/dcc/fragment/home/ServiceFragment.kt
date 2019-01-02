@@ -17,13 +17,19 @@ import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.*
-import io.wexchain.android.dcc.base.StaticHtmlActivity
+import io.wexchain.android.dcc.modules.other.StaticHtmlActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm
 import io.wexchain.android.dcc.modules.bsx.BsxMarketActivity
 import io.wexchain.android.dcc.modules.cashloan.act.CashLoanActivity
-import io.wexchain.android.dcc.modules.home.LoanActivity
+import io.wexchain.android.dcc.modules.cert.MyCreditActivity
+import io.wexchain.android.dcc.modules.home.DccEcoRewardsActivity
+import io.wexchain.android.dcc.modules.loan.LoanActivity
+import io.wexchain.android.dcc.modules.home.MarketingScenariosActivity
 import io.wexchain.android.dcc.modules.home.TokenPlusActivity
+import io.wexchain.android.dcc.modules.loan.LoanProductDetailActivity
+import io.wexchain.android.dcc.modules.passport.PassportActivity
+import io.wexchain.android.dcc.modules.passport.PassportAddressActivity
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.BindingViewHolder
 import io.wexchain.android.dcc.view.adapter.ClickAwareHolder
@@ -177,7 +183,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
             navigateTo(LoanActivity::class.java)
         }
         binding.viewCardPassport.cardPassport.onClick {
-            navigateTo(MyCreditNewActivity::class.java)
+            navigateTo(MyCreditActivity::class.java)
         }
         binding.viewCardPassport.tvPassportAddress.onClick {
             navigateTo(PassportAddressActivity::class.java)

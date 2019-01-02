@@ -18,7 +18,7 @@ import io.wexchain.android.common.map
 import io.wexchain.android.common.switchMap
 import io.wexchain.android.common.tools.AESSign
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.ChooseCutImageActivity
+import io.wexchain.android.dcc.modules.other.ChooseCutImageActivity
 import io.wexchain.android.dcc.chain.EthsHelper
 import io.wexchain.android.dcc.domain.AuthKey
 import io.wexchain.android.dcc.domain.Passport

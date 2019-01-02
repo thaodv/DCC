@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context="io.wexchain.android.dcc.LoanReportActivity">
+        tools:context="io.wexchain.android.dcc.modules.loan.LoanReportActivity">
 
     <data>
         <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>

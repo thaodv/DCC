@@ -1,6 +1,7 @@
 package io.wexchain.android.common.base
 
 import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.IdRes
@@ -8,7 +9,6 @@ import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-import android.view.WindowManager
 import android.widget.TextView
 import io.reactivex.Single
 import io.wexchain.android.common.R
@@ -26,11 +26,11 @@ abstract class BaseCompatActivity : AppCompatActivity() {
     protected val currentActivity: Activity
         get() = ActivityCollector.currentActivity
 
-    fun initToolbar(showHomeAsUp: Boolean = true,isWhite: Boolean = false): Toolbar? {
+    fun initToolbar(showHomeAsUp: Boolean = true, isWhite: Boolean = false): Toolbar? {
         toolbar = findViewById(R.id.toolbar)
         val tb = toolbar
         if (tb != null) {
-            if(isWhite){
+            if (isWhite) {
                 tb.setBackgroundColor(Color.parseColor("#FFFFFF"))
             }
             setSupportActionBar(toolbar)
@@ -48,13 +48,21 @@ abstract class BaseCompatActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+        if (setOrientation()) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
         super.onCreate(savedInstanceState)
         ActivityCollector.addActivity(this)
     }
 
-    protected fun finishAllActivity() = ActivityCollector.finishAll()
+    /**
+     * 继承BaseCompatActivity的Activity默认强制竖屏，若不需要竖屏重写此方法return false
+     */
+    protected open fun setOrientation(): Boolean {
+        return true
+    }
 
+    protected fun finishAllActivity() = ActivityCollector.finishAll()
 
     protected fun finishActivity(vararg tClass: Class<*>) {
         ActivityCollector.finishActivitys(*tClass)

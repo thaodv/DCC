@@ -21,4 +21,5 @@ abstract class BindActivity<T:ViewDataBinding>: BaseCompatActivity() {
         binding.setLifecycleOwner(this)
 
     }
+
 }

@@ -4,14 +4,13 @@ import android.os.Bundle
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.Pop
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.onClick
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.LoanAgreementActivity
+import io.wexchain.android.dcc.modules.loan.LoanAgreementActivity
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.android.dcc.modules.home.LoanActivity
+import io.wexchain.android.dcc.modules.loan.LoanActivity
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityLoanRecordDetailBinding
 import io.wexchain.dccchainservice.domain.LoanRecord
