@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc
 
+import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -134,6 +135,8 @@ class PassportRemovalActivity : BaseCompatActivity() {
             PassportOperations.deleteAllLocalAndroidRSAKeys()
             //clear cert data
             CertOperations.clearAllCertData()
+            getSharedPreferences("setting", Context.MODE_PRIVATE).edit().clear().apply()
+            getSharedPreferences(Extras.SP_SELECTED_NODE_FILE, Context.MODE_PRIVATE).edit().clear().apply()
             //clear session token
             App.get().scfTokenManager.scfToken = null
             App.get().gardenTokenManager.gardenToken = null
