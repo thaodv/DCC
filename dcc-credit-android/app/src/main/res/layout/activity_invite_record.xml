@@ -121,10 +121,11 @@
         </LinearLayout>
 
         <LinearLayout
-            visibleOrGone="@{vm.records == null || vm.records.isEmpty()}"
+            android:id="@+id/ll_empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:visibility="gone"
             android:orientation="vertical"
             tools:visibility="gone">
 

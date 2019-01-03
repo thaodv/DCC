@@ -1,6 +1,7 @@
 package io.wexchain.android.dcc.modules.redpacket
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import com.android.databinding.library.baseAdapters.BR
 import io.reactivex.Single
@@ -55,6 +56,14 @@ class InviteRecordActivity : BindActivity<ActivityInviteRecordBinding>() {
 
         val vm = getViewModel<RewardsListVm>()
         val srl = binding.srlList
+
+        vm.checkData.observe(this, Observer {
+            val status = binding.llEmpty.visibility
+            if (status != it!!) {
+                binding.llEmpty.visibility = it
+            }
+        })
+
         srl.setOnRefreshListener { sr ->
             vm.refresh { sr.finishRefresh() }
         }

@@ -2,8 +2,10 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="320dp"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/white"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -60,6 +62,8 @@
         android:layout_height="40dp"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="#7B40FF"
+        android:gravity="center"
         android:text="我知道了"
         android:textSize="14sp"/>
 

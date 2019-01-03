@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.fragment.home
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
@@ -17,10 +18,14 @@ import io.wexchain.android.dcc.modules.garden.activity.GardenListActivity
 import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
 import io.wexchain.android.dcc.modules.redpacket.GetRedpacketActivity
 import io.wexchain.android.dcc.modules.redpacket.RuleActivity
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentFindBinding
 import io.wexchain.dccchainservice.DccChainServiceException
+import io.wexchain.dccchainservice.domain.redpacket.RedPacketActivityBean
+import io.wexchain.dccchainservice.util.DateUtil
+import io.wexchain.ipfs.utils.doMain
 import io.wexchain.ipfs.utils.io_main
 
 
@@ -53,11 +58,16 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
 
     override val contentLayoutId: Int get() = R.layout.fragment_find
 
+    private var mStartTime: Long = 0
+    private var mEndTime: Long = 0
+    private lateinit var mStatus: RedPacketActivityBean.Status
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initClick()
         login()
     }
+
 
     fun login() {
         GardenOperations.loginWithCurrentPassport()
@@ -92,6 +102,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
 
                                 }
                             }
+
                         }
                     }
                 }
@@ -106,31 +117,56 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
         if (!GardenOperations.isBound()) {
             showBoundDialog()
         } else {
-            refresh()
+            binding.vm?.refresh()
         }
-    }
-
-    private fun refresh() {
-        binding.vm?.refresh()
-        binding.vm?.redpacket1?.observe(this, Observer {
-            navigateTo(GetRedpacketActivity::class.java)
-        })
-        binding.vm?.redpacket2?.observe(this, Observer { time ->
-            navigateTo(RuleActivity::class.java) {
-                putExtra(Extras.EXTRA_REDPACKET_START_TIME, time?.first)
-                putExtra(Extras.EXTRA_REDPACKET_END_TIME, time?.second)
-            }
-        })
     }
 
     override fun onResume() {
         super.onResume()
         if (GardenOperations.isBound()) {
-            refresh()
+            binding.vm?.refresh()
+
         }
+        getRedPacketActivity()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun getRedPacketActivity() {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getRedPacketActivity(it).check()
+                }
+                .doMain()
+                .subscribe({
+
+                    if (null != it.currentBannerImgUrl) {
+                        binding.imgUrl = it.currentBannerImgUrl
+                    }
+
+                    mStartTime = it.from
+                    mEndTime = it.to
+
+                    mStatus = it.status
+
+                    binding.tvTime.text = "活动时间 " + DateUtil.getStringTime(it.from, "yyyy.MM.dd") + " ~ " + DateUtil.getStringTime(it.to, "yyyy.MM.dd")
+
+                }, {
+                })
     }
 
     private fun initClick() {
+
+        binding.rlRedpacket.checkBoundClick {
+            if (mStatus == RedPacketActivityBean.Status.STARTED || mStatus == RedPacketActivityBean.Status.ENDED) {
+                navigateTo(GetRedpacketActivity::class.java)
+            } else {
+                navigateTo(RuleActivity::class.java) {
+                    putExtra(Extras.EXTRA_REDPACKET_START_TIME, mStartTime)
+                    putExtra(Extras.EXTRA_REDPACKET_END_TIME, mEndTime)
+                }
+            }
+        }
+
         binding.gardenTask.checkBoundClick {
             navigateTo(GardenTaskActivity::class.java)
         }
