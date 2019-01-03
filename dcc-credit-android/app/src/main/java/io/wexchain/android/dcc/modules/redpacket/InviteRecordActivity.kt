@@ -62,6 +62,14 @@ class InviteRecordActivity : BindActivity<ActivityInviteRecordBinding>() {
             if (status != it!!) {
                 binding.llEmpty.visibility = it
             }
+
+
+        })
+        vm.checkDataVisible.observe(this, Observer {
+            val status = binding.rlEmpty.visibility
+            if (status != it!!) {
+                binding.rlEmpty.visibility = it
+            }
         })
 
         srl.setOnRefreshListener { sr ->

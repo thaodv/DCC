@@ -60,7 +60,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
 
     private var mStartTime: Long = 0
     private var mEndTime: Long = 0
-    private lateinit var mStatus: RedPacketActivityBean.Status
+    private var mStatus: RedPacketActivityBean.Status = RedPacketActivityBean.Status.STARTED
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

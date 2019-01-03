@@ -21,6 +21,7 @@ import io.wexchain.android.dcc.LoadingActivity
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.modules.garden.activity.GardenActivity
 import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
+import io.wexchain.android.dcc.modules.redpacket.GetRedpacketActivity
 import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.android.dcc.view.dialog.ShowRedPacketDialog
 import io.wexchain.dcc.WxApiManager
@@ -79,7 +80,7 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
                                         }
                                     })
                                     showRedPacketDialog.show()
-                                }else{
+                                } else {
                                     finish()
                                 }
                             }, {
@@ -129,8 +130,23 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
     }
 
     private fun toBeApp(data: String) {
+
+        val list = data!!.split('/')
+        val code = list[0]
+        val playid = list[1]
+
         if (ActivityCollector.isExistActivity("io.wexchain.android.dcc.modules.home.HomeActivity")) {
-            navigateTo(GardenActivity::class.java)
+
+            if ("garden" == code) {
+                navigateTo(GardenActivity::class.java)
+            }
+            // 跳转到红包领取页面
+            else if ("redPacket" == code) {
+                navigateTo(GetRedpacketActivity::class.java)
+            } else {
+
+            }
+
             finish()
         } else {
             val intent = Intent(this, LoadingActivity::class.java)
