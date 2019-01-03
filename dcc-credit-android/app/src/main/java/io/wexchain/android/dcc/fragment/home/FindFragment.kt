@@ -119,6 +119,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
         } else {
             binding.vm?.refresh()
         }
+        getRedPacketActivity()
     }
 
     override fun onResume() {
@@ -134,8 +135,9 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
     private fun getRedPacketActivity() {
         GardenOperations
                 .refreshToken {
-                    App.get().marketingApi.getRedPacketActivity(it).check()
+                    App.get().marketingApi.getRedPacketActivity(App.get().gardenTokenManager.gardenToken).check()
                 }
+                //.retryWhen(RetryWithDelay.createSimple(10, 3000))
                 .doMain()
                 .subscribe({
 
@@ -151,6 +153,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                     binding.tvTime.text = "活动时间 " + DateUtil.getStringTime(it.from, "yyyy.MM.dd") + " ~ " + DateUtil.getStringTime(it.to, "yyyy.MM.dd")
 
                 }, {
+
                 })
     }
 
