@@ -58,6 +58,10 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
 
     override val contentLayoutId: Int get() = R.layout.fragment_find
 
+    private var mStartTime: Long = 0
+    private var mEndTime: Long = 0
+    private lateinit var mStatus: RedPacketActivityBean.Status
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initClick()
@@ -98,6 +102,7 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
 
                                 }
                             }
+
                         }
                     }
                 }
@@ -120,10 +125,9 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
         super.onResume()
         if (GardenOperations.isBound()) {
             binding.vm?.refresh()
+
         }
-
         getRedPacketActivity()
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -139,18 +143,10 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                         binding.imgUrl = it.currentBannerImgUrl
                     }
 
-                    if (it.status == RedPacketActivityBean.Status.STARTED || it.status == RedPacketActivityBean.Status.ENDED) {
-                        binding.rlRedpacket.checkBoundClick {
-                            navigateTo(GetRedpacketActivity::class.java)
-                        }
-                    } else {
-                        binding.rlRedpacket.checkBoundClick {
-                            navigateTo(RuleActivity::class.java) {
-                                putExtra(Extras.EXTRA_REDPACKET_START_TIME, it.from)
-                                putExtra(Extras.EXTRA_REDPACKET_END_TIME, it.to)
-                            }
-                        }
-                    }
+                    mStartTime = it.from
+                    mEndTime = it.to
+
+                    mStatus = it.status
 
                     binding.tvTime.text = "活动时间 " + DateUtil.getStringTime(it.from, "yyyy.MM.dd") + " ~ " + DateUtil.getStringTime(it.to, "yyyy.MM.dd")
 
@@ -159,6 +155,18 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
     }
 
     private fun initClick() {
+
+        binding.rlRedpacket.checkBoundClick {
+            if (mStatus == RedPacketActivityBean.Status.STARTED || mStatus == RedPacketActivityBean.Status.ENDED) {
+                navigateTo(GetRedpacketActivity::class.java)
+            } else {
+                navigateTo(RuleActivity::class.java) {
+                    putExtra(Extras.EXTRA_REDPACKET_START_TIME, mStartTime)
+                    putExtra(Extras.EXTRA_REDPACKET_END_TIME, mEndTime)
+                }
+            }
+        }
+
         binding.gardenTask.checkBoundClick {
             navigateTo(GardenTaskActivity::class.java)
         }
