@@ -27,11 +27,6 @@ class FindPageVm : ViewModel() {
     val balance = MutableLiveData<String>()
     val lastDuel = MutableLiveData<ChangeOrder>()
     val queryFlower = MutableLiveData<Boolean>()
-    val redPacket = MutableLiveData<RedPacketActivityBean>()
-    val time = ObservableField<String>()
-
-    val redpacket1 = SingleLiveEvent<Void>()
-    val redpacket2 = SingleLiveEvent<Pair<Long, Long>>()
 
     private fun getBalance() {
         GardenOperations
@@ -41,28 +36,6 @@ class FindPageVm : ViewModel() {
                 .checkonMain()
                 .subscribeBy {
                     balance.postValue(it.balance)
-                }
-    }
-
-    fun redpacketCall() {
-        redPacket.value?.let {
-            if (it.status == RedPacketActivityBean.Status.STARTED || it.status == RedPacketActivityBean.Status.ENDED) {
-                redpacket1.call()
-            } else {
-                redpacket2.postValue(it.from to it.to)
-            }
-        }
-    }
-
-    private fun getRedPacket() {
-        GardenOperations
-                .refreshToken {
-                    api.getRedPacketActivity(it).check()
-                }
-                .doMain()
-                .subscribeBy {
-                    redPacket.postValue(it)
-                    time.set("活动时间 " + DateUtil.getStringTime(it.from, "yyyy.MM.dd") + " ~ " + DateUtil.getStringTime(it.to, "yyyy.MM.dd"))
                 }
     }
 
@@ -92,6 +65,5 @@ class FindPageVm : ViewModel() {
         getBalance()
         getLastDuel()
         queryFlower()
-        getRedPacket()
     }
 }

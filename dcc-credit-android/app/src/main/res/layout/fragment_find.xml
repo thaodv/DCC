@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -217,7 +217,6 @@
                     android:layout_marginTop="10dp"
                     android:background="#F5F5FD"
                     android:paddingLeft="10dp"
-                    android:onClick="@{(v)->vm.redpacketCall()}"
                     app:layout_constraintTop_toBottomOf="@id/find_user_garden">
 
                     <ImageView
@@ -226,7 +225,7 @@
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
                         app:errorRes="@{@drawable/img_find_redpacket_banner_doing}"
-                        app:imageUrl="@{vm.redPacket.currentBannerImgUrl}"
+                        app:imageUrl="@{imgUrl}"
                         tools:background="@drawable/img_find_redpacket_banner_doing"/>
 
                     <TextView
@@ -237,7 +236,6 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="16dp"
                         android:textColor="@color/white"
-                        android:text="@{vm.time}"
                         android:textSize="10sp"
                         tools:text="活动时间 2018.12.25~2019.1.3"/>
 
@@ -436,7 +434,6 @@
                         app:layout_constraintTop_toBottomOf="@id/find_zhishi_root"
                         tools:text="2分钟前"/>
 
-
                 </android.support.constraint.ConstraintLayout>
 
                 <TextView
@@ -458,4 +455,3 @@
 
     </LinearLayout>
 </layout>
-

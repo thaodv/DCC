@@ -92,14 +92,10 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                                 val message = "当前登录的微信账号($localplayid)与BitExpress绑定的微信账号($playid)不一致"
                                 BaseDialog(activity!!).TipsDialog(tipmessage = message)
                             } else {
-                                if ("garden" == code) {
-                                    navigateTo(GardenActivity::class.java)
-                                }
-                                // 跳转到红包领取页面
-                                else if ("redPacket" == code) {
-                                    navigateTo(GetRedpacketActivity::class.java)
-                                } else {
-
+                                when (code) {
+                                    "garden" -> navigateTo(GardenActivity::class.java)
+                                    "redPacket" -> navigateTo(GetRedpacketActivity::class.java)
+                                    else -> { }
                                 }
                             }
 
@@ -113,7 +109,6 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
             binding.passport = it
         })
         binding.vm = getViewModel()
-
         if (!GardenOperations.isBound()) {
             showBoundDialog()
         } else {
