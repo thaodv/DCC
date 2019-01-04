@@ -2,10 +2,10 @@ package io.wexchain.android.common
 
 object UrlManage {
     //release
-    /*const val CHAIN_EXPLORER_URL = "http://wexpass.cn/chain-observer/restful/"
+    const val CHAIN_EXPLORER_URL = "http://wexpass.cn/chain-observer/restful/"
     const val GATEWAY_BASE_URL = "https://gateway.bitphare.com/passport-gateway/restful/"
     const val CHAIN_FUNC_URL2 = "https://gateway.bitphare.com/passport-logic/"
-    const val TN_URL = "https://gateway.bitphare.com/passport-logic/"*/
+    const val TN_URL = "https://gateway.bitphare.com/passport-logic/"
 
 
     //debug
@@ -24,10 +24,10 @@ object UrlManage {
 
 
     //staging
-    const val CHAIN_EXPLORER_URL="http://10.65.209.17:9301/chain-observer/restful/"
+    /*const val CHAIN_EXPLORER_URL="http://10.65.209.17:9301/chain-observer/restful/"
     const val GATEWAY_BASE_URL="http://222.73.39.37:9511/passport-gateway/restful/"
     const val CHAIN_FUNC_URL2 = "http://10.65.209.12:9201/passport-logic/"
-    const val TN_URL="http://10.65.209.12:9201/passport-logic/"
+    const val TN_URL="http://10.65.209.12:9201/passport-logic/"*/
 
 
 }

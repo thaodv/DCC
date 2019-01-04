@@ -151,7 +151,7 @@ interface MarketingApi {
      * @param token
      */
     @POST("bemember/redpacket/getActivity")
-    fun getRedPacketActivity(@Header(HEADER_TOKEN) token: String): Single<Result<RedPacketActivityBean>>
+    fun getRedPacketActivity(@Header(HEADER_TOKEN) token: String?): Single<Result<RedPacketActivityBean>>
 
     /**
      * 领取红包记录

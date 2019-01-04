@@ -20,6 +20,11 @@ abstract class PagedVm<T> : ViewModel() {
                 postValue(View.GONE)
             }
 
+    val checkDataVisible = SingleLiveEvent<Int>()
+            .apply {
+                postValue(View.GONE)
+            }
+
     private var page = 0
 
     fun load(page: Int, onLoadFinish: ((Int) -> Unit)? = null) {
@@ -54,6 +59,7 @@ abstract class PagedVm<T> : ViewModel() {
         if (list == null) {
             if (page == 0) {
                 checkData.postValue(View.VISIBLE)
+                checkDataVisible.postValue(View.GONE)
             }
             return
         }
@@ -67,6 +73,12 @@ abstract class PagedVm<T> : ViewModel() {
                     View.VISIBLE
                 } else {
                     View.GONE
+                })
+        checkDataVisible.postValue(
+                if (records.get()?.isEmpty() != false) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
                 })
         this.page = page
     }

@@ -29,7 +29,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                visibleOrGone="@{vm.records == null || vm.records.size()!=0}"
+                android:id="@+id/rl_empty"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:gravity="center"
@@ -126,8 +126,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:visibility="gone"
-            android:orientation="vertical"
-            tools:visibility="gone">
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="wrap_content"
