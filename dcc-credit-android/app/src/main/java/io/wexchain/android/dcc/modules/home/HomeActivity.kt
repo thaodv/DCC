@@ -48,8 +48,12 @@ class HomeActivity : BaseCompatActivity() {
         initEvent()
         initPhototTask()
 
-        checkUpgrade()
         showRedeem()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkUpgrade()
     }
 
     private fun showRedeem() {

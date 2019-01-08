@@ -87,6 +87,7 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
                                 if (it is DccChainServiceException) {
                                     if (it.systemCode == Result.SUCCESS && it.businessCode == Result.WECHAT_HAD_BEEN_BOUND) {
                                         toast(it.message!!)
+                                        finish()
                                     }
                                 }
                             })
