@@ -221,6 +221,7 @@ class BaseDialog(context: Context) : Dialog(context) {
                         val file = File(mission.savePath, mission.saveName)
                         if (file.exists()) {
                             context.installApk(file)
+                            dismiss()
                         } else {
                             error()
                         }

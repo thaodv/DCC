@@ -48,7 +48,6 @@ class HomeActivity : BaseCompatActivity() {
         initEvent()
         initPhototTask()
 
-        checkUpgrade()
         showRedeem()
     }
 
@@ -65,6 +64,11 @@ class HomeActivity : BaseCompatActivity() {
                     val bonus = it.first()
                     showRedeemToken(bonus)
                 }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkUpgrade()
     }
 
     private fun showRedeemToken(redeemToken: RedeemToken) {

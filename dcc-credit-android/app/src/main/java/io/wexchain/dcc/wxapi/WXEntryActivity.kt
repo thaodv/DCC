@@ -11,13 +11,15 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.modelmsg.ShowMessageFromWX
 import com.tencent.mm.opensdk.modelmsg.WXAppExtendObject
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
-import io.wexchain.android.common.*
 import io.wexchain.android.common.base.ActivityCollector
 import io.wexchain.android.common.base.BaseCompatActivity
-import io.wexchain.android.dcc.modules.other.LoadingActivity
+import io.wexchain.android.common.fullWindow
+import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.modules.garden.activity.GardenActivity
 import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
+import io.wexchain.android.dcc.modules.other.LoadingActivity
 import io.wexchain.android.dcc.modules.redpacket.GetRedpacketActivity
 import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.android.dcc.view.dialog.ShowRedPacketDialog
@@ -83,6 +85,7 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
                                 if (it is DccChainServiceException) {
                                     if (it.systemCode == Result.SUCCESS && it.businessCode == Result.WECHAT_HAD_BEEN_BOUND) {
                                         toast(it.message!!)
+                                        finish()
                                     }
                                 }
                             })
