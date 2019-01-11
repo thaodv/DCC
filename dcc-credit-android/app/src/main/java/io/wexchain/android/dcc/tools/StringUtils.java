@@ -10,6 +10,17 @@ import java.nio.charset.Charset;
  */
 public class StringUtils {
     
+    public static String getBsxName(String name) {
+        String res = "";
+        if (name.length() == 1) {
+            res = "0" + name;
+        } else {
+            res = name;
+        }
+        
+        return "bsx_" + res;
+    }
+    
     /**
      * 保留两位小数
      *
@@ -109,6 +120,7 @@ public class StringUtils {
             return res.toString();
         }
     }
+    
     public static String keep0double(String source) {
         
         if (null == source) {

@@ -56,6 +56,16 @@ interface IpfsApi {
         const val BSX_DCC_08 = "bsx_08"
         const val BSX_DCC_09 = "bsx_09"
         const val BSX_DCC_10 = "bsx_10"
+        const val BSX_DCC_11 = "bsx_11"
+        const val BSX_DCC_12 = "bsx_12"
+        const val BSX_DCC_13 = "bsx_13"
+        const val BSX_DCC_14 = "bsx_14"
+        const val BSX_DCC_15 = "bsx_15"
+        const val BSX_DCC_16 = "bsx_16"
+        const val BSX_DCC_17 = "bsx_17"
+        const val BSX_DCC_18 = "bsx_18"
+        const val BSX_DCC_19 = "bsx_19"
+        const val BSX_DCC_20 = "bsx_20"
 
         internal val idAtomic = AtomicLong(0L)
     }

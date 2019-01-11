@@ -10,11 +10,11 @@ import io.wexchain.android.common.runOnMainThread
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.BsxOperations
 import io.wexchain.android.dcc.domain.SaleInfo
-import io.wexchain.android.dcc.network.IpfsApi
 import io.wexchain.android.dcc.tools.BytesUtils
 import io.wexchain.android.dcc.tools.BytesUtils.encodeStringsimple
 import io.wexchain.android.dcc.tools.BytesUtils.encodeStringsimple2
 import io.wexchain.android.dcc.tools.LogUtils
+import io.wexchain.android.dcc.tools.StringUtils
 import io.wexchain.android.dcc.tools.toBean
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityBsxDetailBinding
@@ -65,7 +65,9 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
 
 
         if ("DCC" == assetCode) {
-            if ("1" == name) {
+            bussiness = StringUtils.getBsxName(name)
+
+            /*if ("1" == name) {
                 bussiness = IpfsApi.BSX_DCC_01
             } else if ("2" == name) {
                 bussiness = IpfsApi.BSX_DCC_02
@@ -85,7 +87,27 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
                 bussiness = IpfsApi.BSX_DCC_09
             } else if ("10" == name) {
                 bussiness = IpfsApi.BSX_DCC_10
-            }
+            } else if ("11" == name) {
+                bussiness = IpfsApi.BSX_DCC_11
+            } else if ("12" == name) {
+                bussiness = IpfsApi.BSX_DCC_12
+            } else if ("13" == name) {
+                bussiness = IpfsApi.BSX_DCC_13
+            } else if ("14" == name) {
+                bussiness = IpfsApi.BSX_DCC_14
+            } else if ("15" == name) {
+                bussiness = IpfsApi.BSX_DCC_15
+            } else if ("16" == name) {
+                bussiness = IpfsApi.BSX_DCC_16
+            } else if ("17" == name) {
+                bussiness = IpfsApi.BSX_DCC_17
+            } else if ("18" == name) {
+                bussiness = IpfsApi.BSX_DCC_18
+            } else if ("19" == name) {
+                bussiness = IpfsApi.BSX_DCC_19
+            } else if ("20" == name) {
+                bussiness = IpfsApi.BSX_DCC_20
+            }*/
         } /*else if ("ETH" == assetCode) {
             bussiness = ""
         }*/
