@@ -23,8 +23,7 @@ class GardenListActivity : BindActivity<ActivityGardenListBinding>(), ItemViewCl
 
     }
 
-    override val contentLayoutId: Int
-        get() = R.layout.activity_garden_list
+    override val contentLayoutId: Int get() = R.layout.activity_garden_list
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

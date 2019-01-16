@@ -35,7 +35,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:text="@{TaskHelper.expiredText(order.lastUpdatedTime)}"
+            android:text="@{TaskHelper.expiredText(order.createdTime)}"
             android:textColor="#BAC0C5"
             android:textSize="13sp"
             app:layout_constraintStart_toStartOf="parent"
