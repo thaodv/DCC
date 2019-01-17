@@ -18,49 +18,55 @@ import java.util.concurrent.atomic.AtomicLong
 interface EthJsonRpcApi {
 
     @POST("./")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun getBalance(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
     @POST("./")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun getTransactionCount(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
     @POST("./")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun getGasPrice(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
     @POST("./")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun checkNode(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
     @POST("./")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun getTransactionReceipt(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<EthJsonTxReceipt>>
 
     @POST("./")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun getTransactionByHash(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<EthJsonTxInfo>>
 
     @POST("./")
-    @Headers("Content-Type: application/json", "Accept: application/json")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun postSendRawTransaction(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
     @POST("./")
-    @Headers("Content-Type: application/json", "Accept: application/json")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun postEstimateGas(
             @Body body: EthJsonRpcRequestBody<EthJsonTxScratch>
     ): Single<EthJsonRpcResponse<String>>
 
     @POST("./")
-    @Headers("Content-Type: application/json", "Accept: application/json")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun postCall(
             @Body body: EthJsonRpcRequestBody<Any>
     ): Single<EthJsonRpcResponse<String>>

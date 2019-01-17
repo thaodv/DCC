@@ -1,9 +1,9 @@
 package io.wexchain.android.dcc.tools
 
-import io.wexchain.dcc.BuildConfig
 import io.reactivex.Single
-import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.android.dcc.tools.BintApi.Companion.encodeJsonParamArray
+import io.wexchain.dcc.BuildConfig
+import io.wexchain.digitalwallet.Erc20Helper
 import io.wexchain.digitalwallet.api.InfuraApi
 import io.wexchain.digitalwallet.api.domain.*
 import org.json.JSONArray
@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicLong
 interface BintApi  {
 
     @POST(postUrl)
-    @Headers("Content-Type: application/json", "Accept: application/json")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun postStatus(
         @Body body: EthJsonRpcRequestBody<Any>
     ): Single<EthJsonRpcResponse<String>>
@@ -72,19 +72,19 @@ interface BintApi  {
     ): Single<EthJsonRpcResponse<EthJsonTxInfo>>
 
     @POST(postUrl)
-    @Headers("Content-Type: application/json", "Accept: application/json")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun postSendRawTransaction(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
     @POST(postUrl)
-    @Headers("Content-Type: application/json", "Accept: application/json")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun postEstimateGas(
             @Body body: EthJsonRpcRequestBody<EthJsonTxScratch>
     ): Single<EthJsonRpcResponse<String>>
 
     @POST(postUrl)
-    @Headers("Content-Type: application/json", "Accept: application/json")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun postCall(
             @Body body: EthJsonRpcRequestBody<Any>
     ): Single<EthJsonRpcResponse<String>>

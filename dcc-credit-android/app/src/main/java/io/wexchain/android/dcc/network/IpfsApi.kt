@@ -15,20 +15,20 @@ import java.util.concurrent.atomic.AtomicLong
 interface IpfsApi {
 
     @POST("contract/1/web3/{business}")
-    @Headers("Content-Type: application/json", "Accept: application/json")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun postCall(
             @Path("business") business: String,
             @Body body: EthJsonRpcRequestBody<Any>
     ): Single<EthJsonRpcResponse<String>>
 
     @POST("contract/1/web3/{business}")
-    @Headers("Content-Type: application/json", "Accept: application/json")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun postSendRawTransaction(
             @Path("business") business: String,
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
-    @Headers("Content-Type: application/json", "Accept: application/json")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     @POST("contract/1/web3/{business}")
     fun getTransactionReceipt(
             @Path("business") business: String,

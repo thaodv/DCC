@@ -2,18 +2,16 @@ package io.wexchain.android.dcc.modules.digital
 
 import android.arch.lifecycle.Observer
 import android.content.Intent
-import android.graphics.Paint
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.View
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
-import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.modules.other.StaticHtmlActivity
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.addressbook.activity.AddAddressBookActivity
@@ -206,7 +204,7 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
             })
             deleteDialog.show()
         }
-        binding.tvToAddressValue.paint.flags = Paint.UNDERLINE_TEXT_FLAG
+        /*binding.tvToAddressValue.paint.flags = Paint.UNDERLINE_TEXT_FLAG
         binding.tvToAddressValue.setOnClickListener {
             startActivity(StaticHtmlActivity.getResultIntent(this, "Searchain数据分析", Extras.Searchain + binding.tvToAddressValue.text))
         }
@@ -214,7 +212,7 @@ class DigitalTransactionDetailActivity : BindActivity<ActivityDigitalTransaction
         binding.tvFromAddressValue.paint.flags = Paint.UNDERLINE_TEXT_FLAG
         binding.tvFromAddressValue.setOnClickListener {
             startActivity(StaticHtmlActivity.getResultIntent(this, "Searchain数据分析", Extras.Searchain + binding.tvFromAddressValue.text))
-        }
+        }*/
 
         var to = tx.to
         var from = tx.from

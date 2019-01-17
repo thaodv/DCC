@@ -58,19 +58,19 @@ interface InfuraApi {
     ): Single<EthJsonRpcResponse<EthJsonTxInfo>>
 
     @POST(postUrl)
-    @Headers("Content-Type: application/json", "Accept: application/json")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun postSendRawTransaction(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
     @POST(postUrl)
-    @Headers("Content-Type: application/json", "Accept: application/json")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun postEstimateGas(
             @Body body: EthJsonRpcRequestBody<EthJsonTxScratch>
     ): Single<EthJsonRpcResponse<String>>
 
     @POST(postUrl)
-    @Headers("Content-Type: application/json", "Accept: application/json")
+    @Headers("Content-Type:application/json", "Accept:application/json")
     fun postCall(
             @Body body: EthJsonRpcRequestBody<Any>
     ): Single<EthJsonRpcResponse<String>>

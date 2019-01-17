@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="bsx"
-            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />
+            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm"/>
 
         <variable
             name="cashloan"
-            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />
+            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm"/>
 
         <variable
             name="tokenplus"
-            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />
+            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm"/>
 
         <variable
             name="searchain"
-            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />
+            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm"/>
 
         <variable
             name="ecology"
-            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />
+            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm"/>
 
         <variable
             name="certification"
-            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />
+            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm"/>
 
         <variable
             name="login"
-            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />
+            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm"/>
 
     </data>
 
@@ -49,12 +49,12 @@
             android:paddingLeft="15dp"
             android:text="服务"
             android:textColor="@color/main_tab"
-            android:textSize="17sp" />
+            android:textSize="17sp"/>
 
         <View
             android:layout_width="wrap_content"
             android:layout_height="10dp"
-            android:background="#F8F8FF" />
+            android:background="#F8F8FF"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -77,16 +77,16 @@
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:text="我的征信"
                     android:textColor="#000"
-                    android:textSize="17sp" />
+                    android:textSize="17sp"/>
 
                 <include
                     android:id="@+id/view_card_passport"
-                    layout="@layout/include_card_passport" />
+                    layout="@layout/include_card_passport"/>
 
                 <View
                     android:layout_width="wrap_content"
                     android:layout_height="10dp"
-                    android:background="#F8F8FF" />
+                    android:background="#F8F8FF"/>
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -104,10 +104,9 @@
                         android:textColor="#000"
                         android:textSize="17sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <TextView
-                        android:visibility="invisible"
                         android:id="@+id/home_credit_more"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -117,8 +116,9 @@
                         android:text="更多币种"
                         android:textColor="#C009FF"
                         android:textSize="15sp"
+                        android:visibility="invisible"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <RelativeLayout
                         android:id="@+id/home_borrow"
@@ -133,7 +133,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/home_credit" />
+                            android:src="@drawable/home_credit"/>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -148,14 +148,14 @@
                                 android:layout_height="wrap_content"
                                 android:text="丰富币种等你来借"
                                 android:textColor="@color/FF4A4A4A"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="做空、抄底给你再来一把的机会"
                                 android:textColor="#BAC0C5"
-                                android:textSize="12sp" />
+                                android:textSize="12sp"/>
 
                         </LinearLayout>
 
@@ -172,7 +172,7 @@
                             android:paddingRight="10dp"
                             android:paddingTop="5dp"
                             android:text="去借币"
-                            android:textColor="#fff" />
+                            android:textColor="#fff"/>
                     </RelativeLayout>
 
                 </android.support.constraint.ConstraintLayout>
@@ -182,36 +182,37 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:overScrollMode="never"
-                    tools:listitem="@layout/item_service_loan" />
+                    tools:listitem="@layout/item_service_loan"/>
 
                 <include
                     layout="@layout/include_service_card"
                     android:visibility="gone"
-                    app:vm="@{cashloan}" />
+                    app:vm="@{cashloan}"/>
 
                 <include
                     layout="@layout/include_service_card"
-                    app:vm="@{bsx}" />
+                    app:vm="@{bsx}"/>
 
                 <include
                     layout="@layout/include_service_card"
-                    app:vm="@{tokenplus}" />
+                    app:vm="@{tokenplus}"/>
 
                 <include
                     layout="@layout/include_service_card"
-                    app:vm="@{searchain}" />
+                    android:visibility="gone"
+                    app:vm="@{searchain}"/>
 
                 <include
                     layout="@layout/include_service_card"
-                    app:vm="@{ecology}" />
+                    app:vm="@{ecology}"/>
 
                 <include
                     layout="@layout/include_service_card"
-                    app:vm="@{certification}" />
+                    app:vm="@{certification}"/>
 
                 <include
                     layout="@layout/include_service_card"
-                    app:vm="@{login}" />
+                    app:vm="@{login}"/>
 
                 <TextView
                     android:id="@+id/service_mail"
@@ -224,7 +225,7 @@
                     android:paddingTop="10dp"
                     android:text="商务合作联系方式  yimtoken1@163.com"
                     android:textColor="#9B9B9B"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
 
             </LinearLayout>
         </ScrollView>

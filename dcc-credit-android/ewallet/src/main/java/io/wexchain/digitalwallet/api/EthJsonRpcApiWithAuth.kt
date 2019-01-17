@@ -16,56 +16,56 @@ import java.util.concurrent.atomic.AtomicLong
  */
 interface EthJsonRpcApiWithAuth {
 
-    @Headers("parityrpc:1")
+    @Headers("Content-Type:application/json", "Accept:application/json", "parityrpc:1")
     @POST("./")
     fun getBalance(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
-    @Headers("parityrpc:1")
+    @Headers("Content-Type:application/json", "Accept:application/json", "parityrpc:1")
     @POST("./")
     fun getTransactionCount(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
-    @Headers("Content-Type: application/json", "Accept: application/json", "parityrpc:1")
+    @Headers("Content-Type:application/json", "Accept:application/json", "parityrpc:1")
     @POST("./")
     fun checkNode(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
-    @Headers("parityrpc:1")
+    @Headers("Content-Type:application/json", "Accept:application/json", "parityrpc:1")
     @POST("./")
     fun getGasPrice(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
-    @Headers("parityrpc:1")
+    @Headers("Content-Type:application/json", "Accept:application/json", "parityrpc:1")
     @POST("./")
     fun getTransactionReceipt(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<EthJsonTxReceipt>>
 
-    @Headers("parityrpc:1")
+    @Headers("Content-Type:application/json", "Accept:application/json", "parityrpc:1")
     @POST("./")
     fun getTransactionByHash(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<EthJsonTxInfo>>
 
     @POST("./")
-    @Headers("Content-Type: application/json", "Accept: application/json", "parityrpc:1")
+    @Headers("Content-Type:application/json", "Accept:application/json", "parityrpc:1")
     fun postSendRawTransaction(
             @Body body: EthJsonRpcRequestBody<String>
     ): Single<EthJsonRpcResponse<String>>
 
     @POST("./")
-    @Headers("Content-Type: application/json", "Accept: application/json", "parityrpc:1")
+    @Headers("Content-Type:application/json", "Accept:application/json", "parityrpc:1")
     fun postEstimateGas(
             @Body body: EthJsonRpcRequestBody<EthJsonTxScratch>
     ): Single<EthJsonRpcResponse<String>>
 
     @POST("./")
-    @Headers("Content-Type: application/json", "Accept: application/json", "parityrpc:1")
+    @Headers("Content-Type:application/json", "Accept:application/json", "parityrpc:1")
     fun postCall(
             @Body body: EthJsonRpcRequestBody<Any>
     ): Single<EthJsonRpcResponse<String>>
