@@ -16,17 +16,16 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
-import io.wexchain.android.dcc.*
-import io.wexchain.android.dcc.modules.other.StaticHtmlActivity
+import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm
 import io.wexchain.android.dcc.modules.bsx.BsxMarketActivity
 import io.wexchain.android.dcc.modules.cashloan.act.CashLoanActivity
 import io.wexchain.android.dcc.modules.cert.MyCreditActivity
 import io.wexchain.android.dcc.modules.home.DccEcoRewardsActivity
-import io.wexchain.android.dcc.modules.loan.LoanActivity
 import io.wexchain.android.dcc.modules.home.MarketingScenariosActivity
 import io.wexchain.android.dcc.modules.home.TokenPlusActivity
+import io.wexchain.android.dcc.modules.loan.LoanActivity
 import io.wexchain.android.dcc.modules.loan.LoanProductDetailActivity
 import io.wexchain.android.dcc.modules.passport.PassportActivity
 import io.wexchain.android.dcc.modules.passport.PassportAddressActivity
@@ -102,7 +101,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
                 navigateTo(TokenPlusActivity::class.java)
             }
             CardType.SEARCHAIN -> {
-                startActivity(StaticHtmlActivity.getResultIntent(activity!!, "Searchain数据分析", Extras.Searchain_BASE))
+//                startActivity(StaticHtmlActivity.getResultIntent(activity!!, "Searchain数据分析", Extras.Searchain_BASE))
             }
             CardType.ECOLOGY -> {
                 navigateTo(DccEcoRewardsActivity::class.java)
@@ -142,7 +141,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
     private fun getTitle(type: CardType): String? {
         return when (type) {
-            CardType.BSX ->  getString(R.string.service_bsx_title)
+            CardType.BSX -> getString(R.string.service_bsx_title)
             CardType.CASHLOAN -> getString(R.string.service_cash_title)
             CardType.TOKENPLUS -> "TokenPlus套利神器"
             CardType.SEARCHAIN -> "数字资产追踪引擎"
@@ -167,11 +166,11 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
     private fun initVm() {
         binding.viewCardPassport.passport = passport
         binding.bsx = getCardVm(CardType.BSX)
-        binding.cashloan = getCardVm(CardType.CASHLOAN)
+//        binding.cashloan = getCardVm(CardType.CASHLOAN)
         binding.tokenplus = getCardVm(CardType.TOKENPLUS)
         binding.certification = getCardVm(CardType.CERTIFICATION)
         binding.ecology = getCardVm(CardType.ECOLOGY)
-        binding.searchain = getCardVm(CardType.SEARCHAIN)
+//        binding.searchain = getCardVm(CardType.SEARCHAIN)
         binding.login = getCardVm(CardType.LOGIN)
     }
 

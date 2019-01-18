@@ -227,9 +227,6 @@
             android:name="io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity"
             android:label="@string/select_node" />
         <activity
-            android:name="io.wexchain.android.dcc.modules.other.StaticHtmlActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="io.wexchain.android.dcc.modules.repay.RepayingActivity"
             android:label="还币" />
         <activity

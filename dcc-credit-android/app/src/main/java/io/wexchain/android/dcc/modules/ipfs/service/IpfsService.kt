@@ -67,7 +67,7 @@ class IpfsService : Service() {
         }
     }
 
-    fun createIdData(): Single<String> {
+    private fun createIdData(): Single<String> {
         ID_NONCE = IpfsOperations.getNonce().blockingGet()
         return Single.create<String> {
             val certIdPics = CertOperations.getCertIdPics()
@@ -312,7 +312,7 @@ class IpfsService : Service() {
         }
     }
 
-   private fun <T> Single<T>.doProgress(business: String, progress: Int, onProgress: (String, Int) -> Unit): Single<T> {
+    private fun <T> Single<T>.doProgress(business: String, progress: Int, onProgress: (String, Int) -> Unit): Single<T> {
         return this.doMain()
                 .map {
                     onProgress.invoke(business, progress)
