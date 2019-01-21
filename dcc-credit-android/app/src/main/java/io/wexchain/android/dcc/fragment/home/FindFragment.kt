@@ -130,12 +130,10 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
     private fun getRedPacketActivity() {
         GardenOperations
                 .refreshToken {
-                    App.get().marketingApi.getRedPacketActivity(App.get().gardenTokenManager.gardenToken).check()
+                    App.get().marketingApi.getRedPacketActivity(it).check()
                 }
-                //.retryWhen(RetryWithDelay.createSimple(10, 3000))
                 .doMain()
                 .subscribe({
-
                     if (null != it.currentBannerImgUrl) {
                         binding.imgUrl = it.currentBannerImgUrl
                     }
@@ -186,7 +184,12 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
             navigateTo(GardenListActivity::class.java)
         }
         binding.findZhishiCard.checkBoundClick {
-            GardenOperations.startWechat {
+            GardenOperations.startWechatGarden {
+                toast(it)
+            }
+        }
+        binding.findCricketCard.checkBoundClick {
+            GardenOperations.startWechatCricket {
                 toast(it)
             }
         }

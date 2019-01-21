@@ -436,6 +436,107 @@
 
                 </android.support.constraint.ConstraintLayout>
 
+                <View
+                    android:id="@+id/v_line4"
+                    style="@style/DividerHorizontal"
+                    android:layout_height="10dp"
+                    android:background="#F8F8FF"
+                    app:layout_constraintTop_toBottomOf="@id/find_zhishi_card"/>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/find_cricket_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    app:layout_constraintTop_toBottomOf="@id/v_line4">
+
+                    <TextView
+                        android:id="@+id/cricket_card_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="#fff"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingTop="5dp"
+                        android:text="斗蟋蟀"
+                        android:textColor="#000"
+                        android:textSize="17sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <RelativeLayout
+                        android:id="@+id/find_cricket_root"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#fff"
+                        android:minHeight="60dp"
+                        android:paddingTop="5dp"
+                        app:layout_constraintTop_toBottomOf="@id/cricket_card_name">
+
+                        <ImageView
+                            android:id="@+id/cricket_card_img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:src="@drawable/find_xishuai"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:layout_toRightOf="@id/cricket_card_img"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="修炼蟋蟀升级，参与斗蟋蟀PK！"
+                                android:textColor="@color/FF4A4A4A"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="阳光越多，获得的蟋蟀宝宝越多~~"
+                                android:textColor="#BAC0C5"
+                                android:textSize="12sp"/>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/find_cricket_txt1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginTop="10dp"
+                        android:drawableLeft="@drawable/find_garden_img4"
+                        android:drawablePadding="5dp"
+                        android:text="@{vm.cricketCount}"
+                        android:textColor="@color/FF4A4A4A"
+                        android:textSize="11sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/find_cricket_root"
+                        tools:text="您有1000蟋蟀宝宝"/>
+
+                    <TextView
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:text="@{vm.cricketTime}"
+                        android:textColor="#BAC0C5"
+                        android:textSize="11sp"
+                        app:layout_constraintBaseline_toBaselineOf="@id/find_cricket_txt1"
+                        app:layout_constraintLeft_toRightOf="@id/find_cricket_txt1"
+                        app:layout_constraintTop_toBottomOf="@id/find_cricket_root"
+                        tools:text="2分钟前"/>
+
+                </android.support.constraint.ConstraintLayout>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -447,7 +548,7 @@
                     android:textColor="#d2d5db"
                     android:textSize="11sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/find_zhishi_card"/>
+                    app:layout_constraintTop_toBottomOf="@id/find_cricket_card"/>
 
             </android.support.constraint.ConstraintLayout>
 
