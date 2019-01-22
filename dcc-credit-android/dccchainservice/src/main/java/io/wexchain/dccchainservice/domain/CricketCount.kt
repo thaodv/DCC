@@ -25,7 +25,7 @@ data class CricketCount(val coin: String,
 
     companion object {
         fun empty(): CricketCount {
-            return CricketCount("0", Unit.MINUTES, "0")
+            return CricketCount("-1", Unit.MINUTES, "0")
         }
     }
 }

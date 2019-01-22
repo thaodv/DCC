@@ -11,6 +11,8 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import io.wexchain.android.common.tools.EventMsg
+import io.wexchain.android.common.tools.RxBus
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.modules.other.ChooseCutImageActivity
 import io.wexchain.android.dcc.tools.check
@@ -35,6 +37,8 @@ import java.io.File
  *Created by liuyang on 2018/8/21.
  */
 object GardenOperations {
+
+    const val GO_HOME = "goHome"
 
     private val passport by lazy {
         App.get().passportRepository
@@ -173,9 +177,10 @@ object GardenOperations {
         }
     }
 
-    fun startWechatCricket(error: (String) -> Unit) {
+    fun startWechatCricket(success: () -> Unit={},error: (String) -> Unit) {
         error.check {
-            toWechat("/pages/cricket/cricket?playId=$it")
+            toWechat("/pages/cricket/cricket")
+            success.invoke()
         }
     }
 
@@ -279,6 +284,12 @@ object GardenOperations {
                         }.toFlowable()
                     }
                 }
+    }
+
+    fun goHome() {
+        val eventMsg = EventMsg()
+        eventMsg.msg = GO_HOME
+        RxBus.getInstance().post(eventMsg)
     }
 
 

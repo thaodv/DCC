@@ -24,6 +24,7 @@ class FindPageVm : ViewModel() {
     val lastDuel = MutableLiveData<ChangeOrder>()
     val queryFlower = MutableLiveData<Boolean>()
     val cricketCount = MutableLiveData<String>()
+            .apply { postValue("家有蟋蟀初养成，等待主人来领养！") }
     val cricketTime = MutableLiveData<String>()
 
     private fun getBalance() {
@@ -76,57 +77,19 @@ class FindPageVm : ViewModel() {
                     if (it == CricketCount.empty()) {
                         cricketCount.postValue("家有蟋蟀初养成，等待主人来领养！")
                     } else {
-                        cricketCount.postValue(/*unitFormat(it.coin)*/"主人，您有离线收益未收取哦")
+                        cricketCount.postValue("主人，您有离线收益未收取哦")
                         val time = if (it.offlineDurationUnit == CricketCount.Unit.MINUTES) {
-                            "${it.offlineDuration} 分钟前"
+                            if (it.offlineDuration == "0") {
+                                "刚才"
+                            } else {
+                                "${it.offlineDuration} 分钟前"
+                            }
                         } else {
                             "${it.offlineDuration} 小时前"
                         }
                         cricketTime.postValue(time)
                     }
                 }
-
-    }
-
-    private fun unitFormat(data: String): String {
-        return when {
-            data.length <= 4 -> {
-                data
-            }
-            data.length <= 8 -> {
-                "${data.substring(0, 4)} 万"
-            }
-            data.length <= 12 -> {
-                "${data.substring(0, 4)} 亿"
-            }
-            data.length <= 16 -> {
-                "${data.substring(0, 4)} 兆"
-            }
-            data.length <= 20 -> {
-                "${data.substring(0, 4)} 京"
-            }
-            data.length <= 24 -> {
-                "${data.substring(0, 4)} 垓"
-            }
-            data.length <= 28 -> {
-                "${data.substring(0, 4)} 秭"
-            }
-            data.length <= 32 -> {
-                "${data.substring(0, 4)} 穰"
-            }
-            data.length <= 36 -> {
-                "${data.substring(0, 4)} 沟"
-            }
-            data.length <= 40 -> {
-                "${data.substring(0, 4)} 涧"
-            }
-            data.length <= 44 -> {
-                "${data.substring(0, 4)} 正"
-            }
-            else -> {
-                "${data.substring(0, 4)} *"
-            }
-        }
     }
 
     fun refresh() {
