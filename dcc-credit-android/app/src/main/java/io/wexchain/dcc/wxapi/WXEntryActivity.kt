@@ -21,7 +21,6 @@ import io.wexchain.android.dcc.modules.garden.activity.GardenActivity
 import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
 import io.wexchain.android.dcc.modules.other.LoadingActivity
 import io.wexchain.android.dcc.modules.redpacket.GetRedpacketActivity
-import io.wexchain.android.dcc.view.dialog.BaseDialog
 import io.wexchain.android.dcc.view.dialog.ShowRedPacketDialog
 import io.wexchain.dcc.WxApiManager
 import io.wexchain.dccchainservice.DccChainServiceException
@@ -30,8 +29,6 @@ import io.wexchain.ipfs.utils.doMain
 
 
 class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
-
-    private lateinit var dialog: BaseDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         fullWindow()
@@ -43,6 +40,10 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
         super.onNewIntent(intent)
         setIntent(intent)
         WxApiManager.wxapi.handleIntent(intent, this)
+    }
+
+    override fun setPortOrientation(): Boolean {
+        return false
     }
 
     override fun onResp(resp: BaseResp?) {
@@ -85,9 +86,10 @@ class WXEntryActivity : BaseCompatActivity(), IWXAPIEventHandler {
                                 if (it is DccChainServiceException) {
                                     if (it.systemCode == Result.SUCCESS && it.businessCode == Result.WECHAT_HAD_BEEN_BOUND) {
                                         toast(it.message!!)
-                                        finish()
                                     }
                                 }
+                                GardenOperations.goHome()
+                                finish()
                             })
                 } else if (resp.type == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM) {
                     val launchMiniProResp = resp as WXLaunchMiniProgram.Resp

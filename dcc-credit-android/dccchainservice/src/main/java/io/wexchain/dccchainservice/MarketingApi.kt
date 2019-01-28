@@ -111,6 +111,10 @@ interface MarketingApi {
     fun queryFlower(@Header(HEADER_TOKEN) token: String?,
                     @Field("ownerId") ownerId: Int): Single<Result<Any>>
 
+    // 会员查询蟋蟀信息
+    @POST("bemember/ss/player/getCricketPlayer")
+    fun getCricketPlayer(@Header(HEADER_TOKEN) token: String?): Single<Result<CricketCount>>
+
     /**
      * 领取红包
      * @param token

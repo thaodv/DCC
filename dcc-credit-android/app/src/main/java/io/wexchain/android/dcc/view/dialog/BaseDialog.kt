@@ -89,6 +89,7 @@ class BaseDialog(context: Context) : Dialog(context) {
     fun BoundWechatDialog(): BaseDialog {
         val view = init(R.layout.dialog_bound_wechat)
         view.findViewById<ImageView>(R.id.bound_close).setOnClickListener {
+            onCancleStub.invoke()
             dismiss()
         }
 

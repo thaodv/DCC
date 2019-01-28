@@ -16,6 +16,7 @@ import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.garden.activity.GardenActivity
 import io.wexchain.android.dcc.modules.garden.activity.GardenListActivity
 import io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity
+import io.wexchain.android.dcc.modules.home.HomeActivity
 import io.wexchain.android.dcc.modules.redpacket.GetRedpacketActivity
 import io.wexchain.android.dcc.modules.redpacket.RuleActivity
 import io.wexchain.android.dcc.tools.check
@@ -95,7 +96,8 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                                 when (code) {
                                     "garden" -> navigateTo(GardenActivity::class.java)
                                     "redPacket" -> navigateTo(GetRedpacketActivity::class.java)
-                                    else -> { }
+                                    else -> {
+                                    }
                                 }
                             }
 
@@ -130,12 +132,10 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
     private fun getRedPacketActivity() {
         GardenOperations
                 .refreshToken {
-                    App.get().marketingApi.getRedPacketActivity(App.get().gardenTokenManager.gardenToken).check()
+                    App.get().marketingApi.getRedPacketActivity(it).check()
                 }
-                //.retryWhen(RetryWithDelay.createSimple(10, 3000))
                 .doMain()
                 .subscribe({
-
                     if (null != it.currentBannerImgUrl) {
                         binding.imgUrl = it.currentBannerImgUrl
                     }
@@ -186,11 +186,15 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
             navigateTo(GardenListActivity::class.java)
         }
         binding.findZhishiCard.checkBoundClick {
-            GardenOperations.startWechat {
+            GardenOperations.startWechatGarden {
                 toast(it)
             }
         }
-
+        binding.findCricketCard.checkBoundClick {
+            GardenOperations.startWechatCricket {
+                toast(it)
+            }
+        }
     }
 
     private fun View.checkBoundClick(event: () -> Unit) {
@@ -223,6 +227,8 @@ class FindFragment : BindFragment<FragmentFindBinding>() {
                     GardenOperations.wechatLogin {
                         toast(it)
                     }
+                }, onCancle = {
+                    GardenOperations.goHome()
                 })
     }
 

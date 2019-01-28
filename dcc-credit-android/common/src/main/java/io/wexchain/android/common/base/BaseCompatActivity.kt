@@ -48,7 +48,7 @@ abstract class BaseCompatActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (setOrientation()) {
+        if (setPortOrientation()) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
         super.onCreate(savedInstanceState)
@@ -58,7 +58,7 @@ abstract class BaseCompatActivity : AppCompatActivity() {
     /**
      * 继承BaseCompatActivity的Activity默认强制竖屏，若不需要竖屏重写此方法return false
      */
-    protected open fun setOrientation(): Boolean {
+    protected open fun setPortOrientation(): Boolean {
         return true
     }
 

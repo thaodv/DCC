@@ -90,6 +90,17 @@ class GardenActivity : BaseCompatActivity() {
                 finish()
             }
 
+            @JavascriptInterface
+            fun cricketFight() {
+                GardenOperations.startWechatCricket(
+                        success = {
+                            finish()
+                        },
+                        error = {
+                            toast(it)
+                        })
+            }
+
         }, "BitExpress")
 
         webView.loadUrl("${BuildConfig.GARDEN_BASEURL}#/Mygarden?playerID=${App.get().userInfo!!.member.id}&token=${App.get().gardenTokenManager.gardenToken!!}")

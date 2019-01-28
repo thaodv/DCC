@@ -11,6 +11,8 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import io.wexchain.android.common.tools.EventMsg
+import io.wexchain.android.common.tools.RxBus
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.modules.other.ChooseCutImageActivity
 import io.wexchain.android.dcc.tools.check
@@ -36,6 +38,8 @@ import java.io.File
  */
 object GardenOperations {
 
+    const val GO_HOME = "goHome"
+
     private val passport by lazy {
         App.get().passportRepository
     }
@@ -43,6 +47,8 @@ object GardenOperations {
     private val api: MarketingApi by lazy {
         App.get().marketingApi
     }
+
+    private const val wechatName = "gh_0d13628f5e03"
 
     fun loginWithCurrentPassport(): Single<Pair<UserInfo, String>> {
         val address = passport.currPassport.value?.address
@@ -165,24 +171,31 @@ object GardenOperations {
         }
     }
 
-    fun startWechat(error: (String) -> Unit) {
+    fun startWechatGarden(error: (String) -> Unit) {
         error.check {
-            val req = WXLaunchMiniProgram.Req()
-            req.userName = "gh_0d13628f5e03"
-            req.path = "/pages/contest/contest?playId=$it"
-            req.miniprogramType = if (BuildConfig.DEBUG) WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW else WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE
-            WxApiManager.wxapi.sendReq(req)
+            toWechat("/pages/contest/contest?playId=$it")
+        }
+    }
+
+    fun startWechatCricket(success: () -> Unit={},error: (String) -> Unit) {
+        error.check {
+            toWechat("/pages/cricket/cricket")
+            success.invoke()
         }
     }
 
     fun startWechatRedPacket(error: (String) -> Unit) {
         error.check {
-            val req = WXLaunchMiniProgram.Req()
-            req.userName = "gh_0d13628f5e03"
-            req.path = "/pages/login/login?playId=$it"
-            req.miniprogramType = if (BuildConfig.DEBUG) WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW else WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE // 正式版:0，测试版:1，体验版:2
-            WxApiManager.wxapi.sendReq(req)
+            toWechat("/pages/login/login?playId=$it")
         }
+    }
+
+    private fun toWechat(path: String, debug:Boolean = BuildConfig.DEBUG,username: String = wechatName) {
+        val req = WXLaunchMiniProgram.Req()
+        req.userName = username
+        req.path = path
+        req.miniprogramType = if (debug) WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW else WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE // 正式版:0，测试版:1，体验版:2
+        WxApiManager.wxapi.sendReq(req)
     }
 
     fun shareWechat(error: (String) -> Unit) {
@@ -271,6 +284,12 @@ object GardenOperations {
                         }.toFlowable()
                     }
                 }
+    }
+
+    fun goHome() {
+        val eventMsg = EventMsg()
+        eventMsg.msg = GO_HOME
+        RxBus.getInstance().post(eventMsg)
     }
 
 

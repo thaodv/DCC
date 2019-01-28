@@ -2,17 +2,13 @@ package io.wexchain.android.dcc.fragment.home.vm
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableField
 import io.reactivex.rxkotlin.subscribeBy
-import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
-import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.dccchainservice.MarketingApi
 import io.wexchain.dccchainservice.domain.ChangeOrder
-import io.wexchain.dccchainservice.domain.redpacket.RedPacketActivityBean
-import io.wexchain.dccchainservice.util.DateUtil
+import io.wexchain.dccchainservice.domain.CricketCount
 import io.wexchain.ipfs.utils.doMain
 
 /**
@@ -27,6 +23,9 @@ class FindPageVm : ViewModel() {
     val balance = MutableLiveData<String>()
     val lastDuel = MutableLiveData<ChangeOrder>()
     val queryFlower = MutableLiveData<Boolean>()
+    val cricketCount = MutableLiveData<String>()
+            .apply { postValue("家有蟋蟀初养成，等待主人来领养！") }
+    val cricketTime = MutableLiveData<String>()
 
     private fun getBalance() {
         GardenOperations
@@ -61,9 +60,42 @@ class FindPageVm : ViewModel() {
                 }
     }
 
+    private fun getCricketCount() {
+        GardenOperations
+                .refreshToken {
+                    api.getCricketPlayer(it)
+                            .map {
+                                if (it.isSuccess) {
+                                    it.result ?: CricketCount.empty()
+                                } else {
+                                    throw it.asError()
+                                }
+                            }
+                }
+                .doMain()
+                .subscribeBy {
+                    if (it == CricketCount.empty()) {
+                        cricketCount.postValue("家有蟋蟀初养成，等待主人来领养！")
+                    } else {
+                        cricketCount.postValue("主人，您有离线收益未收取哦")
+                        val time = if (it.offlineDurationUnit == CricketCount.Unit.MINUTES) {
+                            if (it.offlineDuration == "0") {
+                                "刚才"
+                            } else {
+                                "${it.offlineDuration} 分钟前"
+                            }
+                        } else {
+                            "${it.offlineDuration} 小时前"
+                        }
+                        cricketTime.postValue(time)
+                    }
+                }
+    }
+
     fun refresh() {
         getBalance()
         getLastDuel()
         queryFlower()
+        getCricketCount()
     }
 }

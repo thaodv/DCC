@@ -11,9 +11,12 @@ import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.commitTransaction
 import io.wexchain.android.common.installApk
 import io.wexchain.android.common.toast
+import io.wexchain.android.common.tools.EventMsg
+import io.wexchain.android.common.tools.RxBus
 import io.wexchain.android.common.versionInfo
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.CertOperations
+import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.fragment.home.DigitalAssetsFragment
@@ -47,8 +50,20 @@ class HomeActivity : BaseCompatActivity() {
         initView()
         initEvent()
         initPhototTask()
+        initBus()
 
         showRedeem()
+    }
+
+    private fun initBus() {
+        RxBus.getInstance()
+                .toObservable()
+                .filter {
+                    it is EventMsg && it.msg == GardenOperations.GO_HOME
+                }
+                .subscribe {
+                    goHome()
+                }
     }
 
     private fun showRedeem() {
@@ -141,6 +156,10 @@ class HomeActivity : BaseCompatActivity() {
         }
     }
 
+    private fun goHome() {
+        bottom_navigation_bar.selectTab(0)
+        replaceFragment(ServiceFragment())
+    }
 
     private fun checkUpgrade() {
         App.get().marketingApi.checkUpgrade(versionInfo.versionCode.toString())
@@ -209,6 +228,5 @@ class HomeActivity : BaseCompatActivity() {
         super.onDestroy()
         App.get().passportRepository.setUserInfo("")
     }
-
 
 }
