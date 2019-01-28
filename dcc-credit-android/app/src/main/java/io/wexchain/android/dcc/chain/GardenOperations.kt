@@ -190,11 +190,11 @@ object GardenOperations {
         }
     }
 
-    private fun toWechat(path: String, username: String = wechatName) {
+    private fun toWechat(path: String, debug:Boolean = BuildConfig.DEBUG,username: String = wechatName) {
         val req = WXLaunchMiniProgram.Req()
         req.userName = username
         req.path = path
-        req.miniprogramType = if (BuildConfig.DEBUG) WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW else WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE // 正式版:0，测试版:1，体验版:2
+        req.miniprogramType = if (debug) WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW else WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE // 正式版:0，测试版:1，体验版:2
         WxApiManager.wxapi.sendReq(req)
     }
 
