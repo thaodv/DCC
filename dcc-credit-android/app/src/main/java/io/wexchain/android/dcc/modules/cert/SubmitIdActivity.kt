@@ -16,7 +16,6 @@ import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.fragment.cert.InputIdInfoFragment
 import io.wexchain.android.dcc.fragment.cert.LivenessDetectionFragment
-import io.wexchain.android.dcc.modules.cashloan.act.CashCertificationActivity
 import io.wexchain.android.dcc.vm.domain.IdCardCertData
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
@@ -112,10 +111,6 @@ class SubmitIdActivity : BaseCompatActivity(), InputIdInfoFragment.Listener, Liv
     private fun enterStep(step: Int) {
         when (step) {
             STEP_INPUT_ID -> {
-                val type = intent.getStringExtra("type")
-                if (CashCertificationActivity.CERT_TYPE_CASHLOAN == type) {
-                    inputIdInfoFragment.certType = type
-                }
                 replaceFragment(inputIdInfoFragment, R.id.fl_container)
             }
             STEP_LIVENESS_DETECT ->

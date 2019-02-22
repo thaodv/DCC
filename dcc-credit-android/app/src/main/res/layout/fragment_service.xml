@@ -9,17 +9,9 @@
             name="bsx"
             type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />
 
-        <!--<variable
-            name="cashloan"
-            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />-->
-
         <variable
             name="tokenplus"
             type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />
-
-       <!-- <variable
-            name="searchain"
-            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />-->
 
         <variable
             name="ecology"
@@ -184,11 +176,6 @@
                     android:overScrollMode="never"
                     tools:listitem="@layout/item_service_loan" />
 
-                <!--<include
-                    layout="@layout/include_service_card"
-                    android:visibility="gone"
-                    app:vm="@{cashloan}" />-->
-
                 <include
                     layout="@layout/include_service_card"
                     app:vm="@{bsx}" />
@@ -196,10 +183,6 @@
                 <include
                     layout="@layout/include_service_card"
                     app:vm="@{tokenplus}" />
-
-                <!--<include
-                    layout="@layout/include_service_card"
-                    app:vm="@{searchain}" />-->
 
                 <include
                     layout="@layout/include_service_card"
