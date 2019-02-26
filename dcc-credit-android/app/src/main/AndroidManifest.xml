@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="io.wexchain.dcc">
+<manifest package="io.wexchain.dcc"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <!-- for wechat sdk -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
 
     <!-- end of wechat sdk -->
     <application
@@ -25,158 +25,158 @@
         tools:replace="android:allowBackup,android:icon,android:label,android:theme,android:supportsRtl">
         <activity android:name="io.wexchain.android.dcc.modules.other.LoadingActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
                     android:host="bitexpress"
                     android:pathPrefix="/loadingactivity"
-                    android:scheme="scheme" />
+                    android:scheme="scheme"/>
             </intent-filter>
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.cert.MyCreditActivity"
-            android:label="@string/my_credit" />
+            android:label="@string/my_credit"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cert.SubmitIdActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
-            android:label="@string/title_id_certification" />
+            android:label="@string/title_id_certification"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cert.SubmitBankCardActivity"
             android:label="@string/bank_account_verification"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.home.CreatePassportActivity"
-            android:label="@string/create_new_digital_wallet" />
+            android:label="@string/create_new_digital_wallet"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.trans.activity.DccExchangeActivity"
-            android:label="@string/dcc" />
+            android:label="@string/dcc"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cert.SubmitCommunicationLogActivity"
-            android:label="@string/title_phone_carrier_certification" />
+            android:label="@string/title_phone_carrier_certification"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.passport.PassportImportActivity"
-            android:label="@string/title_import_wallet" />
-        <activity android:name="io.wexchain.android.dcc.modules.digital.DigitalCurrencyActivity" />
-        <activity android:name="io.wexchain.android.dcc.modules.digital.DigitalTransactionDetailActivity" />
-        <activity android:name="io.wexchain.android.dcc.modules.digital.DigitalTransactionsActivity" />
-        <activity android:name="io.wexchain.android.dcc.modules.trans.activity.CreateTransactionActivity" />
+            android:label="@string/title_import_wallet"/>
+        <activity android:name="io.wexchain.android.dcc.modules.digital.DigitalCurrencyActivity"/>
+        <activity android:name="io.wexchain.android.dcc.modules.digital.DigitalTransactionDetailActivity"/>
+        <activity android:name="io.wexchain.android.dcc.modules.digital.DigitalTransactionsActivity"/>
+        <activity android:name="io.wexchain.android.dcc.modules.trans.activity.CreateTransactionActivity"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.other.QrScannerActivity"
             android:label=""
-            android:theme="@style/DccLightTheme.App.Transparent" />
+            android:theme="@style/DccLightTheme.App.Transparent"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.passport.PassportAddressActivity"
-            android:label="@string/passport_address" />
+            android:label="@string/passport_address"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cert.IdCertificationActivity"
-            android:label="@string/title_id_certification_data" />
+            android:label="@string/title_id_certification_data"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cert.BankCardCertificationActivity"
-            android:label="@string/title_bank_card_certification_data" />
+            android:label="@string/title_bank_card_certification_data"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cert.CmLogCertificationActivity"
-            android:label="@string/phone_carrier_certification_data" />
+            android:label="@string/phone_carrier_certification_data"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.passport.PassportRemovalActivity"
-            android:label="@string/passport_removal" />
+            android:label="@string/passport_removal"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.passport.PassportExportActivity"
-            android:label="@string/passport_backup" />
+            android:label="@string/passport_backup"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.mine.ModifyPassportPasswordActivity"
-            android:label="@string/change_the_wallet_password" />
-        <activity android:name="io.wexchain.android.dcc.modules.digital.SearchDigitalCurrencyActivity" />
-        <activity android:name="io.wexchain.android.dcc.modules.other.ChooseCutImageActivity" />
-        <activity android:name="io.wexchain.android.dcc.modules.home.MarketingScenariosActivity" />
+            android:label="@string/change_the_wallet_password"/>
+        <activity android:name="io.wexchain.android.dcc.modules.digital.SearchDigitalCurrencyActivity"/>
+        <activity android:name="io.wexchain.android.dcc.modules.other.ChooseCutImageActivity"/>
+        <activity android:name="io.wexchain.android.dcc.modules.home.MarketingScenariosActivity"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.passport.PassportActivity"
-            android:label="统一登录" />
-        <activity android:name="io.wexchain.android.dcc.modules.passport.PassportCreationSucceedActivity" />
-        <activity android:name="io.wexchain.android.dcc.modules.digital.SubmitNewTokenActivity" />
+            android:label="统一登录"/>
+        <activity android:name="io.wexchain.android.dcc.modules.passport.PassportCreationSucceedActivity"/>
+        <activity android:name="io.wexchain.android.dcc.modules.digital.SubmitNewTokenActivity"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.passport.AuthManageActivity"
-            android:label="统一登录变更记录" />
+            android:label="统一登录变更记录"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.mine.AboutActivity"
-            android:label="@string/about_us" />
+            android:label="@string/about_us"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddBeneficiaryAddressActivity"
-            android:label="@string/add_annew_collection_address" />
+            android:label="@string/add_annew_collection_address"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddAddressBookActivity"
-            android:label="@string/add_address" />
-        <activity android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity" />
-        <activity android:name="io.wexchain.android.dcc.modules.loan.LoanProductDetailActivity" />
-        <activity android:name="io.wexchain.android.dcc.modules.loan.StartLoanActivity" />
+            android:label="@string/add_address"/>
+        <activity android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity"/>
+        <activity android:name="io.wexchain.android.dcc.modules.loan.LoanProductDetailActivity"/>
+        <activity android:name="io.wexchain.android.dcc.modules.loan.StartLoanActivity"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.loan.LoanSubmitResultActivity"
             android:label="@string/result_of_loan_application"
-            android:noHistory="true" />
+            android:noHistory="true"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.LoanRecordsActivity"
-            android:label="@string/loan_history" />
-        <activity android:name="io.wexchain.android.dcc.modules.addressbook.activity.EditAddressBookActivity" />
+            android:label="@string/loan_history"/>
+        <activity android:name="io.wexchain.android.dcc.modules.addressbook.activity.EditAddressBookActivity"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.LoanRecordDetailActivity"
-            android:label="@string/loan_details" />
+            android:label="@string/loan_details"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.LoanRepayResultActivity"
             android:label="@string/result"
-            android:noHistory="true" />
+            android:noHistory="true"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.LoanRepayActivity"
-            android:label="@string/repayment" />
+            android:label="@string/repayment"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.addressbook.activity.ChooseBeneficiaryAddressActivity"
-            android:label="@string/selected_address" />
+            android:label="@string/selected_address"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.ReviewRepayActivity"
-            android:label="@string/confirmation_of_repayment" />
+            android:label="@string/confirmation_of_repayment"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.loan.RequisiteCertListActivity"
-            android:label="@string/required_information" />
-        <activity android:name="io.wexchain.android.dcc.modules.loan.LoanAgreementActivity" />
-        <activity android:name="io.wexchain.android.dcc.modules.other.ViewPdfActivity" />
+            android:label="@string/required_information"/>
+        <activity android:name="io.wexchain.android.dcc.modules.loan.LoanAgreementActivity"/>
+        <activity android:name="io.wexchain.android.dcc.modules.other.ViewPdfActivity"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cert.CmCertDataActivity"
-            android:label="报告原文" />
+            android:label="报告原文"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.loan.LoanReportActivity"
-            android:label="@string/loan_report" />
+            android:label="@string/loan_report"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.loan.LoanReportDetailActivity"
-            android:label="@string/loan_details" />
+            android:label="@string/loan_details"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.loan.LoanBillDetailActivity"
-            android:label="@string/repayment_plan" />
+            android:label="@string/repayment_plan"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.home.CreateScfAccountActivity"
-            android:label="@string/enter_invitation_code" />
+            android:label="@string/enter_invitation_code"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.home.DccEcoRewardsActivity"
-            android:label="@string/eco_rewardsds" />
+            android:label="@string/eco_rewardsds"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.home.DccEcoRewardsListActivity"
-            android:label="@string/reward_details" />
+            android:label="@string/reward_details"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.home.DccEcoRewardsTermsActivity"
-            android:label="@string/rules" />
+            android:label="@string/rules"/>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:taskAffinity="io.wexchain.dcc"
-            android:theme="@style/translucent" />
-        <activity android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddressDetailActivity" />
-        <activity android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddressBookQueryActivity" />
+            android:theme="@style/translucent"/>
+        <activity android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddressDetailActivity"/>
+        <activity android:name="io.wexchain.android.dcc.modules.addressbook.activity.AddressBookQueryActivity"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -185,140 +185,146 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
+                android:resource="@xml/file_paths"/>
         </provider>
 
-        <activity android:name="io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity" />
+        <activity android:name="io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.trans.activity.Private2PublicActivity"
-            android:label="@string/across_trans" />
+            android:label="@string/across_trans"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.trans.activity.Public2PrivateActivity"
-            android:label="@string/across_trans" />
+            android:label="@string/across_trans"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.trans.activity.AcrossTransRecordActivity"
-            android:label="@string/across_trans_record" />
+            android:label="@string/across_trans_record"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.trans.activity.TransPublic2PrivateDetailActivity"
-            android:label="@string/across_trans_detail" />
+            android:label="@string/across_trans_detail"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.trans.activity.TransPrivate2PublicDetailActivity"
-            android:label="@string/across_trans_detail" />
+            android:label="@string/across_trans_detail"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity"
-            android:label="@string/title_open_cloud" />
+            android:label="@string/title_open_cloud"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.ResetPasswordActivity"
-            android:label="重置密码" />
+            android:label="重置密码"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity"
-            android:label="我的云存储" />
-        <activity android:name="io.wexchain.android.dcc.modules.ipfs.activity.CloudAddressActivity" />
+            android:label="我的云存储"/>
+        <activity android:name="io.wexchain.android.dcc.modules.ipfs.activity.CloudAddressActivity"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.SelectNodeActivity"
-            android:label="选择节点" />
+            android:label="选择节点"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.EditNodeActivity"
-            android:label="编辑节点" />
+            android:label="编辑节点"/>
 
-        <service android:name="io.wexchain.android.dcc.modules.ipfs.service.IpfsService" />
+        <service android:name="io.wexchain.android.dcc.modules.ipfs.service.IpfsService"/>
 
         <activity
             android:name="io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity"
-            android:label="@string/select_node" />
+            android:label="@string/select_node"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.RepayingActivity"
-            android:label="还币" />
+            android:label="还币"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.DoRepayActivity"
-            android:label="还币" />
+            android:label="还币"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.repay.RePaymentErrorActivity"
-            android:label="还币" />
+            android:label="还币"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.MyInterestActivity"
-            android:label="DCC私链币生息1期" />
+            android:label="DCC私链币生息1期"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.MyInterestDetailActivity"
-            android:label="币生息详情" />
+            android:label="币生息详情"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BuyInterestActivity"
-            android:label="认购额度" />
+            android:label="认购额度"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.home.HomeActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BsxMarketActivity"
-            android:label="币生息" />
+            android:label="币生息"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity"
-            android:label="币生息持仓" />
+            android:label="币生息持仓"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.mine.SettingActivity"
-            android:label="更多" />
+            android:label="更多"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.home.TokenPlusActivity"
-            android:label="Tokenplus介绍" />
-        <activity android:name="io.wexchain.android.dcc.modules.bsx.BsxDetailActivity" />
+            android:label="Tokenplus介绍"/>
+        <activity android:name="io.wexchain.android.dcc.modules.bsx.BsxDetailActivity"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BsxHoldingDetailActivity"
-            android:label="持仓详情" />
+            android:label="持仓详情"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.loan.LoanActivity"
-            android:label="信用借币" />
+            android:label="信用借币"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.garden.activity.GardenActivity"
             android:label="神秘花园"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BsxDccBuyActivity"
-            android:label="认购额度" />
+            android:label="认购额度"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.bsx.BsxEthBuyActivity"
-            android:label="认购额度" />
+            android:label="认购额度"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity"
-            android:label="每日任务" />
+            android:label="每日任务"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.garden.activity.GardenListActivity"
-            android:label="阳光记录" />
+            android:label="阳光记录"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cashloan.act.CashLoanActivity"
-            android:label="法币借贷" />
+            android:label="法币借贷"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cashloan.act.CashCertificationActivity"
-            android:label="额度申请" />
+            android:label="额度申请"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cashloan.act.CashRecordDetailActivity"
-            android:label="我的借款" />
+            android:label="我的借款"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cashloan.act.CashLoanRecordsActivity"
-            android:label="我的借款" />
+            android:label="我的借款"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cashloan.act.UserInfoCertificationActivity"
-            android:label="真实信息" />
+            android:label="真实信息"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cashloan.act.CashRepaySuccessActivity"
-            android:label="提现" />
-        <activity android:name="io.wexchain.android.dcc.modules.cashloan.act.CashLoanRepaymentActivity" />
+            android:label="提现"/>
+        <activity android:name="io.wexchain.android.dcc.modules.cashloan.act.CashLoanRepaymentActivity"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cashloan.act.CreateLoanInfoActivity"
-            android:label="借款信息" />
+            android:label="借款信息"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cashloan.act.CashBoundBankActivity"
-            android:label="绑定银行卡" />
+            android:label="绑定银行卡"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.redpacket.GetRedpacketActivity"
-            android:label="天天领红包" />
+            android:label="天天领红包"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.redpacket.InviteRecordActivity"
-            android:label="邀请记录" />
+            android:label="邀请记录"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.redpacket.RuleActivity"
-            android:label="天天领红包" />
+            android:label="天天领红包"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.redpacket.PosterActivity"
-            android:label="天天领红包" />
+            android:label="天天领红包"/>
+        <activity android:name="io.wexchain.android.dcc.modules.bsxnew.BsxHomeActivity">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.bsxnew.BsxBuyRecordsActivity">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.digestpocket.DigestPocketHomeActivity">
+        </activity>
     </application>
 
 </manifest>

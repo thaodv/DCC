@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
+        <variable
+            name="bsxMarketBean"
+            type="io.wexchain.dccchainservice.domain.BsxMarketBean"
+            />
+
+    </data>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="184dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:background="@color/trans"
+        android:baselineAligned="false"
+        android:paddingBottom="10dp"
+        tools:ignore="HardcodedText,NestedWeights,RelativeOverlap">
+
+        <LinearLayout
+            android:id="@+id/ll_top"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/iv_logo"
+                errorRes="@{@drawable/ethereum}"
+                imageUrl="@{bsxMarketBean.logo}"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                tools:src="@drawable/ethereum"/>
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@{bsxMarketBean.saleInfo.name}"
+                android:textColor="#4A4A4A"
+                android:textSize="14sp"
+                tools:text="ETH币生息1期"/>
+
+            <TextView
+                android:id="@+id/tv_rate1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:background="@drawable/bg_bsx_new_market_item_period"
+                android:paddingBottom="1dp"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="1dp"
+                android:text="@{ViewModelHelper.showBsxRate(bsxMarketBean.saleInfo.annualRate)}"
+                android:textColor="#9B9B9B"
+                android:textSize="10sp"
+                tools:text="28天"/>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_line"
+            style="@style/DividerHorizontal"
+            android:layout_height="1dp"
+            android:layout_below="@+id/ll_top"
+            android:background="#EFEFEF"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/v_line"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:background="@{ViewModelHelper.showBsxBodyBgStatus(context,bsxMarketBean.status)}"
+            android:baselineAligned="false"
+            android:orientation="vertical"
+            tools:background="@drawable/bg_bsx_market_item_body">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="币种"
+                        android:textColor="#FFBAC0C5"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{bsxMarketBean.assetCode}"
+                        android:textColor="#FF4A4A4A"
+                        android:textSize="16sp"
+                        tools:text="DCC"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="预期年化收益"
+                        android:textColor="#FFBAC0C5"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/rv_rate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{ViewModelHelper.showBsxRate(bsxMarketBean.saleInfo.annualRate)}"
+                        android:textColor="#FFED190F"
+                        android:textSize="16sp"
+                        tools:text="+10.00%"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="管理期限"
+                        android:textColor="#FFBAC0C5"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_period"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{ViewModelHelper.showBsPeriod(bsxMarketBean.saleInfo.period)}"
+                        android:textColor="#FFED190F"
+                        android:textSize="16sp"
+                        tools:text="28天"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="起购数量"
+                        android:textColor="#FFBAC0C5"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_min_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{ViewModelHelper.showBsxMinCount(bsxMarketBean.minPerHand,bsxMarketBean.assetCode)}"
+                        android:textColor="#FF4A4A4A"
+                        android:textSize="16sp"
+                        tools:text="100DCC"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>
