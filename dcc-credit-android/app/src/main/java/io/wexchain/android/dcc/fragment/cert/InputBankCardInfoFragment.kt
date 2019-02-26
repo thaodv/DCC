@@ -13,7 +13,6 @@ import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.android.dcc.modules.cashloan.act.CashCertificationActivity
 import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
@@ -68,9 +67,7 @@ class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), 
                 it?.let { toast("请输入完整信息") }
             })
         }*/
-        if (CashCertificationActivity.CERT_TYPE_CASHLOAN == certType) {
-            binding.tvCertOrg.text = "认证方:同牛"
-        }
+
         binding.btNext.setOnClickListener(object : NoDoubleClickListener() {
             override fun onNoDoubleClick(v: View?) {
                 val info = viewModel.checkAndBuildBankCardInfo()

@@ -5,9 +5,7 @@ package io.wexchain.android.dcc.fragment.home
  */
 enum class CardType {
     BSX,
-    CASHLOAN,
     TOKENPLUS,
-    SEARCHAIN,
     ECOLOGY,
     CERTIFICATION,
     LOGIN

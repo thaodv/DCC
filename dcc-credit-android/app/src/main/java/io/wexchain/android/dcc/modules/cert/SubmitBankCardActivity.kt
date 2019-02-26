@@ -10,7 +10,6 @@ import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.fragment.cert.InputBankCardInfoFragment
 import io.wexchain.android.dcc.fragment.cert.VerifyBankSmsCodeFragment
-import io.wexchain.android.dcc.modules.cashloan.act.CashCertificationActivity
 import io.wexchain.android.dcc.vm.domain.BankCardInfo
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
@@ -85,16 +84,12 @@ class SubmitBankCardActivity : BaseCompatActivity(), InputBankCardInfoFragment.L
     private fun enterStep(step: Int) {
         when (step) {
             STEP_INPUT_BANK_CARD_INFO -> {
-                val type = intent.getStringExtra("type")
-                if (CashCertificationActivity.CERT_TYPE_CASHLOAN == type) {
-                    inputBankCardInfoFragment.certType = type
-                }
                 replaceFragment(inputBankCardInfoFragment, R.id.fl_container)
             }
             STEP_VERIFY_BANK_CARD_SMS_CODE -> {
 
                 verifyBankSmsCodeFragment.phoneNum = bankCardInfo!!.phoneNo
-                replaceFragment(verifyBankSmsCodeFragment, R.id.fl_container, backStackStateName = "step_${STEP_VERIFY_BANK_CARD_SMS_CODE}")
+                replaceFragment(verifyBankSmsCodeFragment, R.id.fl_container, backStackStateName = "step_$STEP_VERIFY_BANK_CARD_SMS_CODE")
             }
         }
     }

@@ -20,7 +20,6 @@ import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm
 import io.wexchain.android.dcc.modules.bsx.BsxMarketActivity
-import io.wexchain.android.dcc.modules.cashloan.act.CashLoanActivity
 import io.wexchain.android.dcc.modules.cert.MyCreditActivity
 import io.wexchain.android.dcc.modules.home.DccEcoRewardsActivity
 import io.wexchain.android.dcc.modules.home.MarketingScenariosActivity
@@ -78,14 +77,13 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
     private fun getBtnTxt(type: CardType): String {
         return when (type) {
             CardType.BSX -> "去认购"
-            CardType.CASHLOAN -> "去贷款"
             else -> ""
         }
     }
 
     private fun isShow(type: CardType): Boolean {
         return when (type) {
-            CardType.BSX, CardType.CASHLOAN -> true
+            CardType.BSX -> true
             else -> false
         }
     }
@@ -102,14 +100,8 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
             CardType.BSX -> {
                 navigateTo(BsxMarketActivity::class.java)
             }
-            CardType.CASHLOAN -> {
-                navigateTo(CashLoanActivity::class.java)
-            }
             CardType.TOKENPLUS -> {
                 navigateTo(TokenPlusActivity::class.java)
-            }
-            CardType.SEARCHAIN -> {
-//                startActivity(StaticHtmlActivity.getResultIntent(activity!!, "Searchain数据分析", Extras.Searchain_BASE))
             }
             CardType.ECOLOGY -> {
                 navigateTo(DccEcoRewardsActivity::class.java)
@@ -126,9 +118,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
     private fun getImg(type: CardType): Drawable? {
         return when (type) {
             CardType.BSX -> ContextCompat.getDrawable(activity!!, R.drawable.service_bsx)
-            CardType.CASHLOAN -> ContextCompat.getDrawable(activity!!, R.drawable.service_cash)
             CardType.TOKENPLUS -> ContextCompat.getDrawable(activity!!, R.drawable.service_tokenplus)
-            CardType.SEARCHAIN -> ContextCompat.getDrawable(activity!!, R.drawable.service_searchain)
             CardType.ECOLOGY -> ContextCompat.getDrawable(activity!!, R.drawable.service_ecology)
             CardType.CERTIFICATION -> ContextCompat.getDrawable(activity!!, R.drawable.service_certification)
             CardType.LOGIN -> ContextCompat.getDrawable(activity!!, R.drawable.service_login)
@@ -138,9 +128,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
     private fun getMessage(type: CardType): String? {
         return when (type) {
             CardType.BSX -> "极低风险跨市套利让你持币有红利"
-            CardType.CASHLOAN -> "用DCC支付手续费更享超高利息折扣"
             CardType.TOKENPLUS -> "专为数字货币持有者提供高效的套利服务"
-            CardType.SEARCHAIN -> "为用户提供数字资产网络的交易监测服务"
             CardType.ECOLOGY -> "对DCC链上数据做出贡献的奖励！"
             CardType.CERTIFICATION -> "完成BitExpress认证 领取DCC奖励"
             CardType.LOGIN -> "使用个人数字认证信息实现联合登录！"
@@ -150,9 +138,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
     private fun getTitle(type: CardType): String? {
         return when (type) {
             CardType.BSX -> getString(R.string.service_bsx_title)
-            CardType.CASHLOAN -> getString(R.string.service_cash_title)
             CardType.TOKENPLUS -> "TokenPlus套利神器"
-            CardType.SEARCHAIN -> "数字资产追踪引擎"
             CardType.ECOLOGY -> "DCC奖励"
             CardType.CERTIFICATION -> "认证有奖励"
             CardType.LOGIN -> "扫码登录"
@@ -162,9 +148,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
     private fun getName(type: CardType): String {
         return when (type) {
             CardType.BSX -> "币生息"
-            CardType.CASHLOAN -> "信用借贷"
             CardType.TOKENPLUS -> "资产套利"
-            CardType.SEARCHAIN -> "Searchain资产分析"
             CardType.ECOLOGY -> "生态奖励"
             CardType.CERTIFICATION -> "认证奖励"
             CardType.LOGIN -> "统一登录管理"
@@ -174,11 +158,9 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
     private fun initVm() {
         binding.viewCardPassport.passport = passport
         binding.bsx = getCardVm(CardType.BSX)
-//        binding.cashloan = getCardVm(CardType.CASHLOAN)
         binding.tokenplus = getCardVm(CardType.TOKENPLUS)
         binding.certification = getCardVm(CardType.CERTIFICATION)
         binding.ecology = getCardVm(CardType.ECOLOGY)
-//        binding.searchain = getCardVm(CardType.SEARCHAIN)
         binding.login = getCardVm(CardType.LOGIN)
     }
 
