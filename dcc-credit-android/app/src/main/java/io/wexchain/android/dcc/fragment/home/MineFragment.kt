@@ -19,7 +19,7 @@ import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.*
+import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
@@ -44,8 +44,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
         App.get().passportRepository
     }
 
-    override val contentLayoutId: Int
-        get() = R.layout.fragment_mine
+    override val contentLayoutId: Int get() = R.layout.fragment_mine
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

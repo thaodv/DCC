@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="vm"
-            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm" />
+            type="io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm"/>
 
     </data>
 
@@ -19,11 +19,46 @@
             android:id="@+id/line"
             style="@style/DividerHorizontal"
             android:layout_height="10dp"
-            android:background="#F8F8FF" />
+            android:background="#F8F8FF"/>
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/ll_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/line">
+
+            <TextView
+                android:id="@+id/card_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingTop="5dp"
+                android:text="@{vm.name}"
+                android:textColor="#000"
+                android:textSize="17sp"
+                tools:text="资产套利"/>
+
+            <TextView
+                visibleOrGone="@{vm.showTip}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:background="@drawable/bg_service_bsx_tip"
+                android:gravity="center"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="2dp"
+                android:text="热卖中"
+                android:textColor="@color/white"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+        <!--<TextView
             android:id="@+id/card_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="#fff"
@@ -34,7 +69,8 @@
             android:textSize="17sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/line"
-            tools:text="资产套利" />
+            tools:text="资产套利"/>-->
+
 
         <RelativeLayout
             android:id="@+id/card_root"
@@ -44,7 +80,7 @@
             android:minHeight="60dp"
             android:onClick="@{(v)->vm.performOperation()}"
             android:paddingTop="5dp"
-            app:layout_constraintTop_toBottomOf="@id/card_name">
+            app:layout_constraintTop_toBottomOf="@id/ll_title">
 
             <ImageView
                 android:id="@+id/card_img"
@@ -53,7 +89,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:src="@{vm.img}"
-                tools:src="@drawable/service_cash" />
+                tools:src="@drawable/service_cash"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -70,7 +106,7 @@
                     android:text="@{vm.title}"
                     android:textColor="@color/FF4A4A4A"
                     android:textSize="14sp"
-                    tools:text="Tokenplus套利神器" />
+                    tools:text="Tokenplus套利神器"/>
 
                 <TextView
                     android:id="@+id/card_message"
@@ -79,7 +115,7 @@
                     android:text="@{vm.message}"
                     android:textColor="#BAC0C5"
                     android:textSize="12sp"
-                    tools:text="专为数字货币持有者提供高效的套利服务!" />
+                    tools:text="专为数字货币持有者提供高效的套利服务!"/>
 
             </LinearLayout>
 
@@ -92,14 +128,14 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:clickable="false"
                 android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
-                android:clickable="false"
                 android:paddingRight="10dp"
                 android:paddingTop="5dp"
                 android:text="@{vm.btnTxt}"
                 android:textColor="#fff"
-                tools:text="去认购" />
+                tools:text="去认购"/>
 
         </RelativeLayout>
 

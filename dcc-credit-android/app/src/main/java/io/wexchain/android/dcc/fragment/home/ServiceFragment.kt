@@ -67,6 +67,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
             message.set(getMessage(type))
             img.set(getImg(type))
             showBtn.set(isShow(type))
+            showTip.set(isShowTip(type))
             btnTxt.set(getBtnTxt(type))
             performOperationEvent.observe(this@ServiceFragment, Observer {
                 cardClick(type)
@@ -85,6 +86,13 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
     private fun isShow(type: CardType): Boolean {
         return when (type) {
             CardType.BSX, CardType.CASHLOAN -> true
+            else -> false
+        }
+    }
+
+    private fun isShowTip(type: CardType): Boolean {
+        return when (type) {
+            CardType.BSX -> true
             else -> false
         }
     }

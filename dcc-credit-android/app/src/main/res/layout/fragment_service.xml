@@ -88,6 +88,10 @@
                     android:layout_height="10dp"
                     android:background="#F8F8FF" />
 
+                <include
+                    layout="@layout/include_service_card"
+                    app:vm="@{bsx}" />
+
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -189,9 +193,7 @@
                     android:visibility="gone"
                     app:vm="@{cashloan}" />-->
 
-                <include
-                    layout="@layout/include_service_card"
-                    app:vm="@{bsx}" />
+
 
                 <include
                     layout="@layout/include_service_card"
