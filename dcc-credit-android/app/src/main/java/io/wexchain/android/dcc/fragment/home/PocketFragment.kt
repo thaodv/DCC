@@ -1,70 +1,39 @@
-package io.wexchain.android.dcc.modules.digestpocket
+package io.wexchain.android.dcc.fragment.home
 
 import android.arch.lifecycle.Observer
-import com.wexmarket.android.network.Networking
-import io.reactivex.Single
-import io.reactivex.rxkotlin.zipWith
-import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
-import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity
+import io.wexchain.android.dcc.modules.digestpocket.DigestPocketHomeActivity
 import io.wexchain.android.dcc.modules.digital.DigitalCurrencyActivity
-import io.wexchain.android.dcc.modules.digital.SearchDigitalCurrencyActivity
-import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity
 import io.wexchain.android.dcc.modules.trans.activity.DccExchangeActivity
-import io.wexchain.android.dcc.tools.ShareUtils
+import io.wexchain.android.dcc.modules.trustpocket.TrustPocketHomeActivity
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.DigitalAssetsAdapter
 import io.wexchain.android.dcc.vm.DigitalAssetsVm
 import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.dcc.R
-import io.wexchain.dcc.databinding.ActivityDigestPocketHomeBinding
+import io.wexchain.dcc.databinding.FragmentPocketBinding
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
-import io.wexchain.digitalwallet.api.EthJsonRpcApiWithAuth
-import io.wexchain.digitalwallet.proxy.EthsRpcAgent
-import io.wexchain.ipfs.utils.io_main
 import java.math.BigDecimal
 
-class DigestPocketHomeActivity : BindActivity<ActivityDigestPocketHomeBinding>(), ItemViewClickListener<DigitalCurrency> {
+/**
+ *Created by liuyang on 2018/9/27.
+ */
+class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListener<DigitalCurrency> {
 
     private var tmpList: List<DigitalCurrency>? = null
     private val adapter = DigitalAssetsAdapter(this)
 
-    override val contentLayoutId: Int get() = R.layout.activity_digest_pocket_home
+    override val contentLayoutId: Int get() = R.layout.fragment_pocket
 
     override fun onResume() {
         super.onResume()
-
-        var base = ShareUtils.getString(Extras.SP_SELECTED_NODE, App.get().nodeList[0].url)
-
-        if (base == "https://ethrpc4.wexfin.com:58545/") {
-            base = App.get().nodeList[0].url
-        }
-
-        val createApi = Networking(App.get()).createApi(EthJsonRpcApiWithAuth::class.java, base)
-        val agent = EthsRpcAgent.by(createApi)
-
-        Single.just(System.currentTimeMillis())
-                .zipWith(agent.checkNode())
-                .map {
-                    when {
-                        System.currentTimeMillis() - it.first <= 300 -> R.drawable.img_node_green
-                        System.currentTimeMillis() - it.first <= 1000 -> R.drawable.img_node_yellow
-                        else -> R.drawable.img_node_red
-                    }
-                }
-                .onErrorReturn {
-                    R.drawable.img_node_red
-                }
-                .io_main()
-                .doOnSuccess {
-                    binding.digitalSelectNode.setImageResource(it)
-                }
-                .subscribe()
 
         val assetsVm = getViewModel<DigitalAssetsVm>()
         assetsVm.ensureHolderAddress(this)
@@ -101,14 +70,16 @@ class DigestPocketHomeActivity : BindActivity<ActivityDigestPocketHomeBinding>()
 
         binding.assets!!.updateHoldingAndQuote()
 
-        binding.digitalAdd.onClick {
-            navigateTo(SearchDigitalCurrencyActivity::class.java)
+        binding.rlTrustPocket.onClick {
+            navigateTo(TrustPocketHomeActivity::class.java)
         }
-        binding.digitalSelectNode.onClick {
-            navigateTo(SelectNodeActivity::class.java)
+
+        binding.rlDigestPocket.onClick {
+            navigateTo(DigestPocketHomeActivity::class.java)
         }
-        binding.ivBack.onClick {
-            finish()
+
+        binding.rlInvest.onClick {
+            navigateTo(BsxHoldingActivity::class.java)
         }
 
     }

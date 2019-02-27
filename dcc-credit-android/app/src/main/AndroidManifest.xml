@@ -283,31 +283,6 @@
             android:name="io.wexchain.android.dcc.modules.garden.activity.GardenListActivity"
             android:label="阳光记录"/>
         <activity
-            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashLoanActivity"
-            android:label="法币借贷"/>
-        <activity
-            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashCertificationActivity"
-            android:label="额度申请"/>
-        <activity
-            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashRecordDetailActivity"
-            android:label="我的借款"/>
-        <activity
-            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashLoanRecordsActivity"
-            android:label="我的借款"/>
-        <activity
-            android:name="io.wexchain.android.dcc.modules.cashloan.act.UserInfoCertificationActivity"
-            android:label="真实信息"/>
-        <activity
-            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashRepaySuccessActivity"
-            android:label="提现"/>
-        <activity android:name="io.wexchain.android.dcc.modules.cashloan.act.CashLoanRepaymentActivity"/>
-        <activity
-            android:name="io.wexchain.android.dcc.modules.cashloan.act.CreateLoanInfoActivity"
-            android:label="借款信息"/>
-        <activity
-            android:name="io.wexchain.android.dcc.modules.cashloan.act.CashBoundBankActivity"
-            android:label="绑定银行卡"/>
-        <activity
             android:name="io.wexchain.android.dcc.modules.redpacket.GetRedpacketActivity"
             android:label="天天领红包"/>
         <activity
@@ -324,6 +299,8 @@
         <activity android:name="io.wexchain.android.dcc.modules.bsxnew.BsxBuyRecordsActivity">
         </activity>
         <activity android:name="io.wexchain.android.dcc.modules.digestpocket.DigestPocketHomeActivity">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketHomeActivity">
         </activity>
     </application>
 

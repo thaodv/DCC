@@ -19,9 +19,9 @@ import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.android.dcc.fragment.home.DigitalAssetsFragment
 import io.wexchain.android.dcc.fragment.home.FindFragment
 import io.wexchain.android.dcc.fragment.home.MineFragment
+import io.wexchain.android.dcc.fragment.home.PocketFragment
 import io.wexchain.android.dcc.fragment.home.ServiceFragment
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.checkonMain
@@ -112,7 +112,7 @@ class HomeActivity : BaseCompatActivity() {
                 when (position) {
                     0 -> replaceFragment(ServiceFragment())
                     1 -> replaceFragment(FindFragment.getInstance())
-                    2 -> replaceFragment(DigitalAssetsFragment())
+                    2 -> replaceFragment(PocketFragment())
                     3 -> replaceFragment(MineFragment())
                 }
             }
