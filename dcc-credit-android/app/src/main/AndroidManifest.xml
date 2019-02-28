@@ -304,9 +304,7 @@
         </activity>
         <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketSettingsActivity">
         </activity>
-        <activity
-            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenTipActivity"
-            >
+        <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenTipActivity">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenStep1Activity"
@@ -315,6 +313,10 @@
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenStep2Activity"
             android:label="开通托管钱包">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneActivity"
+            android:label="修改绑定手机">
         </activity>
     </application>
 

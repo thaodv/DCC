@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#F5F5FD"
     android:orientation="vertical"
-    tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenStep1Activity">
+    tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneActivity">
 
     <include layout="@layout/include_toolbar"/>
 
@@ -29,23 +29,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14dp"
-                android:text="手机号"
+                android:text="验证您现有手机号"
                 android:textColor="#4A4A4A"
                 android:textSize="16sp"/>
 
-            <EditText
-                android:id="@+id/et_phone"
+            <TextView
+                android:id="@+id/tv_phone"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:background="@null"
-                android:hint="请输入手机号"
-                android:inputType="phone"
-                android:maxLength="11"
-                android:maxLines="1"
-                android:textColor="#9B9B9B"
-                android:textSize="14sp"/>
-
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textColor="#4A4A4A"
+                android:textSize="16sp"
+                tools:text="133****3333"/>
         </LinearLayout>
 
         <View
@@ -95,14 +90,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="14dp"
-        android:text="如您已开启过托管钱包，直接输入原手机号即可"
-        android:textColor="#9B9B9B"
-        android:textSize="14sp"/>
 
     <Button
         android:id="@+id/bt_next"

@@ -44,12 +44,12 @@
 
             <ImageView
                 android:id="@+id/iv_show"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="10dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/tv_title"
-                android:src="@drawable/img_node_green"/>
+                tools:src="@drawable/icon_asset_show"/>
 
         </RelativeLayout>
 
@@ -96,7 +96,7 @@
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:src="@drawable/img_node_green"/>
+                    android:src="@drawable/icon_trust_in"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -119,7 +119,7 @@
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:src="@drawable/img_node_green"/>
+                    android:src="@drawable/icon_trust_out"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -142,7 +142,7 @@
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:src="@drawable/img_node_green"/>
+                    android:src="@drawable/icon_trust_trans"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -165,7 +165,7 @@
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:src="@drawable/img_node_green"/>
+                    android:src="@drawable/icon_trust_detail"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -201,12 +201,12 @@
 
             <ImageView
                 android:id="@+id/iv_query"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/toolbar_add"/>
+                android:src="@drawable/icon_trust_query"/>
 
         </RelativeLayout>
 
