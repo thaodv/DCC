@@ -318,6 +318,8 @@
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneActivity"
             android:label="修改绑定手机">
         </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneBindActivity">
+        </activity>
     </application>
 
 </manifest>
