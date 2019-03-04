@@ -47,7 +47,6 @@
             style="@style/DividerHorizontal"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"/>
 
@@ -79,6 +78,7 @@
                 android:textSize="14sp"/>
 
             <Button
+                android:id="@+id/bt_get"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="14dp"
