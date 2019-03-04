@@ -3,6 +3,9 @@ package io.wexchain.dccchainservice
 import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
 import io.wexchain.dccchainservice.domain.redpacket.*
+import io.wexchain.dccchainservice.domain.trustpocket.CheckCodeBean
+import io.wexchain.dccchainservice.domain.trustpocket.DepositWalletsBean
+import io.wexchain.dccchainservice.domain.trustpocket.ValidatePaymentPasswordBean
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -122,7 +125,7 @@ interface MarketingApi {
     @POST("bemember/redpacket/receiveRedPacket")
     @FormUrlEncoded
     fun pickRedPacket(@Header(HEADER_TOKEN) token: String,
-                     @Field("redPacketId") redPacketId: Long): Single<Result<GetPacketBean>>
+                      @Field("redPacketId") redPacketId: Long): Single<Result<GetPacketBean>>
 
     /**
      * 查询库存
@@ -181,6 +184,96 @@ interface MarketingApi {
     @POST("bemember/redpacket/queryRedPacketBounded")
     fun getRedPacket(@Header(HEADER_TOKEN) token: String): Single<Result<RedPacketBoundBean>>
 
+
+    /**
+     * 查询托管钱包
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/getHostingWallet")
+    fun getHostingWallet(@Header(HEADER_TOKEN) token: String): Single<Result<String>>
+
+    /**
+     * 发送短信验证码
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/sendSmsCode")
+    fun sendSmsCode(@Header(HEADER_TOKEN) token: String, @Field("mobile") mobile: String): Single<Result<String>>
+
+    /**
+     * 验证短信验证码
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/validateSmsCode")
+    fun validateSmsCode(@Header(HEADER_TOKEN) token: String,
+                        @Field("mobile") mobile: String,
+                        @Field("code") code: String): Single<Result<CheckCodeBean>>
+
+    /**
+     * 绑定开通钱包
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/bindHostingWallet")
+    fun bindHostingWallet(@Header(HEADER_TOKEN) token: String,
+                          @Field("encPassword") encPassword: String,
+                          @Field("salt") salt: String): Single<Result<String>>
+
+    /**
+     * 查询储值地址
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/getDepositWallets")
+    fun getDepositWallets(@Header(HEADER_TOKEN) token: String,
+                          @Field("encPassword") encPassword: String,
+                          @Field("salt") salt: String): Single<Result<DepositWalletsBean>>
+
+    /**
+     * 准备输入支付密码
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/payPwd/prepareInputPwd")
+    fun prepareInputPwd(@Header(HEADER_TOKEN) token: String): Single<Result<CheckCodeBean>>
+
+    /**
+     * 验证支付密码
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/payPwd/validatePaymentPassword")
+    fun validatePaymentPassword(@Header(HEADER_TOKEN) token: String,
+                                @Field("encPassword") encPassword: String,
+                                @Field("salt") salt: String): Single<Result<ValidatePaymentPasswordBean>>
+
+    /**
+     * 密码锁定规则
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/payPwd/getLockRule")
+    fun getLockRule(@Header(HEADER_TOKEN) token: String): Single<Result<String>>
+
+    /**
+     * 创建验证密码上下文
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/payPwd/createPayPwdSecurityContext")
+    fun createPayPwdSecurityContext(@Header(HEADER_TOKEN) token: String,
+                                    @Field("contextName") contextName: String = "RESET_PAYPWD" //重设支付密码
+    ): Single<Result<String>>
+
+    /**
+     * 设置支付密码
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/payPwd/initialPaymentPassword")
+    fun initialPaymentPassword(@Header(HEADER_TOKEN) token: String,
+                               @Field("encPassword") encPassword: String,
+                               @Field("salt") salt: String): Single<Result<ValidatePaymentPasswordBean>>
+
+    /**
+     * 查询支付密码状态
+     * @return UNLOCKED("未锁定"),LOCKED("已锁定"),BLANK("空白");
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/payPwd/getPaymentPasswordStatus")
+    fun getPaymentPasswordStatus(@Header(HEADER_TOKEN) token: String): Single<Result<String>>
 
     companion object {
         const val HEADER_TOKEN = "x-auth-token"
