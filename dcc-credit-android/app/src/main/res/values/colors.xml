@@ -35,5 +35,8 @@
     <color name="FFD90C0C">#D90C0C</color>
     <color name="FF000000">#000000</color>
 
+    <color name="pass_view_rect_input">#3DA3FF</color>
+    <color name="regi_line_color">#c8c8c8</color>
+
 
 </resources>

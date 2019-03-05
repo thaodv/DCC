@@ -11,6 +11,50 @@
 
     <include layout="@layout/include_toolbar"/>
 
+    <TextView
+        android:id="@+id/tv_tip1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="14dp"
+        android:textColor="#4A4A4A"
+        android:textSize="16sp"
+        tools:text="请再次确认支付密码"/>
+
+    <TextView
+        android:id="@+id/tv_tip2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:textColor="#9B9B9B"
+        android:textSize="14sp"
+        tools:text="请再次输入密码"/>
+
+    <io.wexchain.android.dcc.view.passwordview.PassWordLayout
+        android:id="@+id/password1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="14dp"
+        android:background="@color/white"
+        app:box_draw_type="rect"
+        app:interval_width="0dp"
+        app:item_height="50dp"
+        app:item_width="60dp"
+        app:pass_inputed_type="stars"
+        app:pass_leng="six"/>
+
+    <io.wexchain.android.dcc.view.passwordview.PassWordLayout
+        android:id="@+id/password2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="14dp"
+        android:background="@color/white"
+        android:visibility="gone"
+        app:box_draw_type="rect"
+        app:interval_width="0dp"
+        app:item_height="50dp"
+        app:item_width="60dp"
+        app:pass_inputed_type="stars"
+        app:pass_leng="six"/>
 
 
 </LinearLayout>

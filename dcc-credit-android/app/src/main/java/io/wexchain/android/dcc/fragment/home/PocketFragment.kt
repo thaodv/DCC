@@ -10,7 +10,7 @@ import io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity
 import io.wexchain.android.dcc.modules.digestpocket.DigestPocketHomeActivity
 import io.wexchain.android.dcc.modules.digital.DigitalCurrencyActivity
 import io.wexchain.android.dcc.modules.trans.activity.DccExchangeActivity
-import io.wexchain.android.dcc.modules.trustpocket.TrustPocketHomeActivity
+import io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenStep1Activity
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.DigitalAssetsAdapter
 import io.wexchain.android.dcc.vm.DigitalAssetsVm
@@ -71,7 +71,9 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
         binding.assets!!.updateHoldingAndQuote()
 
         binding.rlTrustPocket.onClick {
-            navigateTo(TrustPocketHomeActivity::class.java)
+            //navigateTo(TrustPocketHomeActivity::class.java)
+
+            navigateTo(TrustPocketOpenStep1Activity::class.java)
         }
 
         binding.rlDigestPocket.onClick {

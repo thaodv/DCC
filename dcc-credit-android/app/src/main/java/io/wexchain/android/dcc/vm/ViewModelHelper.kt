@@ -194,6 +194,15 @@ object ViewModelHelper {
     }
 
     @JvmStatic
+    fun Context.smsTimeText2(resend: Long?): String? {
+        if (canResendSms(resend)) {
+            return "发送"
+        } else {
+            return "$resend s"
+        }
+    }
+
+    @JvmStatic
     fun canResendSms(resend: Long?): Boolean {
         return (resend == null || resend <= 1L)
     }

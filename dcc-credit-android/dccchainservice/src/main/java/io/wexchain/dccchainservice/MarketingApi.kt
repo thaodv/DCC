@@ -197,6 +197,7 @@ interface MarketingApi {
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/sendSmsCode")
+    @FormUrlEncoded
     fun sendSmsCode(@Header(HEADER_TOKEN) token: String, @Field("mobile") mobile: String): Single<Result<String>>
 
     /**
@@ -204,6 +205,7 @@ interface MarketingApi {
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/validateSmsCode")
+    @FormUrlEncoded
     fun validateSmsCode(@Header(HEADER_TOKEN) token: String,
                         @Field("mobile") mobile: String,
                         @Field("code") code: String): Single<Result<CheckCodeBean>>
@@ -213,6 +215,7 @@ interface MarketingApi {
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/bindHostingWallet")
+    @FormUrlEncoded
     fun bindHostingWallet(@Header(HEADER_TOKEN) token: String,
                           @Field("encPassword") encPassword: String,
                           @Field("salt") salt: String): Single<Result<String>>
@@ -222,6 +225,7 @@ interface MarketingApi {
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/getDepositWallets")
+    @FormUrlEncoded
     fun getDepositWallets(@Header(HEADER_TOKEN) token: String,
                           @Field("encPassword") encPassword: String,
                           @Field("salt") salt: String): Single<Result<DepositWalletsBean>>
@@ -238,6 +242,7 @@ interface MarketingApi {
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/payPwd/validatePaymentPassword")
+    @FormUrlEncoded
     fun validatePaymentPassword(@Header(HEADER_TOKEN) token: String,
                                 @Field("encPassword") encPassword: String,
                                 @Field("salt") salt: String): Single<Result<ValidatePaymentPasswordBean>>
@@ -254,6 +259,7 @@ interface MarketingApi {
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/payPwd/createPayPwdSecurityContext")
+    @FormUrlEncoded
     fun createPayPwdSecurityContext(@Header(HEADER_TOKEN) token: String,
                                     @Field("contextName") contextName: String = "RESET_PAYPWD" //重设支付密码
     ): Single<Result<String>>
@@ -263,6 +269,7 @@ interface MarketingApi {
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/payPwd/initialPaymentPassword")
+    @FormUrlEncoded
     fun initialPaymentPassword(@Header(HEADER_TOKEN) token: String,
                                @Field("encPassword") encPassword: String,
                                @Field("salt") salt: String): Single<Result<ValidatePaymentPasswordBean>>
