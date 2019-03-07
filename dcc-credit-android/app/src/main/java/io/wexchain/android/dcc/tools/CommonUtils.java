@@ -9,9 +9,6 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.regex.Matcher;
@@ -25,7 +22,7 @@ import io.wexchain.dcc.R;
  * usage:
  */
 public class CommonUtils {
-
+    
     public static String getRealFilePath(final Context context, final Uri uri) {
         if (null == uri) {
             return null;
@@ -51,7 +48,7 @@ public class CommonUtils {
         }
         return data;
     }
-
+    
     private static Uri getUri(Context context, String path) {
         Uri uri = null;
         if (path != null) {
@@ -81,7 +78,7 @@ public class CommonUtils {
         }
         return uri;
     }
-
+    
     public static Uri str2Uri(String str) {
         if (TextUtils.isEmpty(str) || str == "null") {
             return getUriFromDrawableRes(App.get(), R.drawable.icon_default_avatar);
@@ -89,14 +86,14 @@ public class CommonUtils {
             return Uri.parse(str);
         }
     }
-
+    
     private static Uri getUriFromDrawableRes(Context context, int id) {
         Resources resources = context.getResources();
         String path = ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + resources.getResourcePackageName
                 (id) + "/" + resources.getResourceTypeName(id) + "/" + resources.getResourceEntryName(id);
         return Uri.parse(path);
     }
-
+    
     public static String setStatusName(int code) {
         if (0 == code) {
             return "添加";
@@ -104,11 +101,11 @@ public class CommonUtils {
             return "已添加";
         }
     }
-
+    
     public static String rePay(String arg1, String arg2) {
         return App.get().getResources().getString(R.string.please_transfer, arg1, arg2);
     }
-
+    
     /**
      * 获取mac地址
      *
@@ -140,7 +137,7 @@ public class CommonUtils {
         }
         return macAddress;
     }
-
+    
     /**
      * 校验密码 （字母数字特殊符号至少2种混合）
      *
@@ -153,7 +150,7 @@ public class CommonUtils {
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }
-
+    
     /**
      * 获取packageName
      *
@@ -162,5 +159,20 @@ public class CommonUtils {
     public static String getPackageName() {
         return App.get().getApplicationInfo().packageName;
     }
-
+    
+    /**
+     * 手机号码 xxxx****xxx
+     *
+     * @param s 手机号码
+     * @return
+     */
+    public static String phone(String s) {
+        if (!s.isEmpty()) {
+            String head = s.substring(0, 3);
+            String end = s.substring(s.length() - 4, s.length());
+            return head + "****" + end;
+        }
+        return "";
+    }
+    
 }

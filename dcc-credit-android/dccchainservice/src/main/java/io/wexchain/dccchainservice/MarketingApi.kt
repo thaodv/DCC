@@ -3,9 +3,7 @@ package io.wexchain.dccchainservice
 import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
 import io.wexchain.dccchainservice.domain.redpacket.*
-import io.wexchain.dccchainservice.domain.trustpocket.CheckCodeBean
-import io.wexchain.dccchainservice.domain.trustpocket.DepositWalletsBean
-import io.wexchain.dccchainservice.domain.trustpocket.ValidatePaymentPasswordBean
+import io.wexchain.dccchainservice.domain.trustpocket.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -190,7 +188,7 @@ interface MarketingApi {
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/getHostingWallet")
-    fun getHostingWallet(@Header(HEADER_TOKEN) token: String): Single<Result<String>>
+    fun getHostingWallet(@Header(HEADER_TOKEN) token: String): Single<Result<BindHostingWalletBean>>
 
     /**
      * 发送短信验证码
@@ -218,7 +216,7 @@ interface MarketingApi {
     @FormUrlEncoded
     fun bindHostingWallet(@Header(HEADER_TOKEN) token: String,
                           @Field("encPassword") encPassword: String,
-                          @Field("salt") salt: String): Single<Result<String>>
+                          @Field("salt") salt: String): Single<Result<BindHostingWalletBean>>
 
     /**
      * 查询储值地址
@@ -272,7 +270,7 @@ interface MarketingApi {
     @FormUrlEncoded
     fun initialPaymentPassword(@Header(HEADER_TOKEN) token: String,
                                @Field("encPassword") encPassword: String,
-                               @Field("salt") salt: String): Single<Result<ValidatePaymentPasswordBean>>
+                               @Field("salt") salt: String): Single<Result<String>>
 
     /**
      * 查询支付密码状态
@@ -281,6 +279,68 @@ interface MarketingApi {
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/payPwd/getPaymentPasswordStatus")
     fun getPaymentPasswordStatus(@Header(HEADER_TOKEN) token: String): Single<Result<String>>
+
+
+    /**
+     * 资产预览
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/asset/getAssetOverview")
+    fun getAssetOverview(@Header(HEADER_TOKEN) token: String): Single<Result<String>>
+
+
+    /**
+     * 上架资产
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/asset/listAsset")
+    fun listAsset(@Header(HEADER_TOKEN) token: String): Single<Result<String>>
+
+    /**
+     * 搜索上架资产
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/asset/searchAssetList")
+    @FormUrlEncoded
+    fun searchAssetList(@Header(HEADER_TOKEN) token: String,
+                        @Field("keyword") keyword: String,
+                        @Field("candidateSize") candidateSize: Int): Single<Result<String>>
+
+    /**
+     * 换绑手机发送短信验证码
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/mobileUser/sendSmsCode")
+    @FormUrlEncoded
+    fun changeSendSmsCode(@Header(HEADER_TOKEN) token: String,
+                          @Field("mobile") mobile: String): Single<Result<String>>
+
+    /**
+     * 验证换绑短信验证码
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/mobileUser/validateSmsCode")
+    @FormUrlEncoded
+    fun changeValidateSmsCode(@Header(HEADER_TOKEN) token: String,
+                              @Field("mobile") mobile: String,
+                              @Field("code") code: String): Single<Result<String>>
+
+    /**
+     * 换绑手机
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/mobileUser/updateMobile")
+    @FormUrlEncoded
+    fun updateMobile(@Header(HEADER_TOKEN) token: String,
+                     @Field("mobile") mobile: String): Single<Result<String>>
+
+    /**
+     * 查询手机用户
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/mobileUser/getMobileUser")
+    fun getMobileUser(@Header(HEADER_TOKEN) token: String): Single<Result<GetMobileUserBean>>
+
 
     companion object {
         const val HEADER_TOKEN = "x-auth-token"

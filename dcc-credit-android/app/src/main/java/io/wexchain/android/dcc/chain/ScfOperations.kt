@@ -37,7 +37,7 @@ object ScfOperations {
 
     val LOAN_DIGEST_VERSION_1 = BigInteger.ONE
 
-    private const val DIGEST = "SHA256"
+    const val DIGEST = "SHA256"
 
     @Deprecated("replaced")
     fun cancelLoan(orderId: Long, passport: Passport): Single<String> {

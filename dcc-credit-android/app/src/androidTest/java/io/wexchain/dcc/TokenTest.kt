@@ -195,7 +195,7 @@ class TokenTest {
     }
 
     @Test
-    fun tes(){
+    fun tes() {
         val s = BigDecimal("21000000000").scaleByPowerOfTen(-9).toString()
         println(s)
     }

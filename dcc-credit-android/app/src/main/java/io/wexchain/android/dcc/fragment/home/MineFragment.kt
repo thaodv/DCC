@@ -19,6 +19,7 @@ import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.modules.mine.ModifyPassportPasswordActivity
 import io.wexchain.android.dcc.modules.mine.SettingActivity
 import io.wexchain.android.dcc.modules.passport.PassportExportActivity
+import io.wexchain.android.dcc.modules.trustpocket.TrustPocketSettingsActivity
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentMineBinding
 import io.wexchain.ipfs.utils.io_main
@@ -117,6 +118,9 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
         }
         binding.tvModifyPassportPassword.onClick {
             navigateTo(ModifyPassportPasswordActivity::class.java)
+        }
+        binding.tvTrustPocketSetting.onClick {
+            navigateTo(TrustPocketSettingsActivity::class.java)
         }
     }
 

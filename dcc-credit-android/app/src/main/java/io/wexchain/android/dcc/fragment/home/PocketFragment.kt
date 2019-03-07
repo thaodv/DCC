@@ -1,16 +1,21 @@
 package io.wexchain.android.dcc.fragment.home
 
 import android.arch.lifecycle.Observer
+import android.view.View
 import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity
 import io.wexchain.android.dcc.modules.digestpocket.DigestPocketHomeActivity
 import io.wexchain.android.dcc.modules.digital.DigitalCurrencyActivity
 import io.wexchain.android.dcc.modules.trans.activity.DccExchangeActivity
-import io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenStep1Activity
+import io.wexchain.android.dcc.modules.trustpocket.TrustPocketHomeActivity
+import io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenTipActivity
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.DigitalAssetsAdapter
 import io.wexchain.android.dcc.vm.DigitalAssetsVm
@@ -20,6 +25,7 @@ import io.wexchain.dcc.databinding.FragmentPocketBinding
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
+import io.wexchain.ipfs.utils.doMain
 import java.math.BigDecimal
 
 /**
@@ -31,6 +37,8 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
     private val adapter = DigitalAssetsAdapter(this)
 
     override val contentLayoutId: Int get() = R.layout.fragment_pocket
+
+    var isOpenTrustPocket:Boolean = false
 
     override fun onResume() {
         super.onResume()
@@ -61,19 +69,46 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                 }
                 adapter.setList(tmp)
             }
-
-
         })
         binding.assets = assetsVm
         adapter.assetsVm = assetsVm
         binding.rvAssets.adapter = adapter
 
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getHostingWallet(it).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    // 已开户
+                    if (it?.mobileUserId != null){
+                        isOpenTrustPocket = true
+                        binding.ivNext.visibility= View.VISIBLE
+                        binding.btOpen.visibility = View.GONE
+                    }else{
+                        isOpenTrustPocket = false
+                        binding.ivNext.visibility= View.GONE
+                        binding.btOpen.visibility = View.VISIBLE
+                    }
+                }, {
+                    // 未开户
+                    isOpenTrustPocket = false
+                    binding.ivNext.visibility= View.GONE
+                    binding.btOpen.visibility = View.VISIBLE
+                })
+
+
+
         binding.assets!!.updateHoldingAndQuote()
 
         binding.rlTrustPocket.onClick {
-            //navigateTo(TrustPocketHomeActivity::class.java)
 
-            navigateTo(TrustPocketOpenStep1Activity::class.java)
+            if(isOpenTrustPocket){
+                navigateTo(TrustPocketHomeActivity::class.java)
+            }else{
+                navigateTo(TrustPocketOpenTipActivity::class.java)
+            }
         }
 
         binding.rlDigestPocket.onClick {

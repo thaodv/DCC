@@ -1,116 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F5F5FD"
-    android:orientation="vertical"
-    tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneBindActivity">
+<layout>
 
-    <include layout="@layout/include_toolbar"/>
+    <data>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_marginLeft="14dp"
-        android:gravity="center_vertical"
-        android:text="绑定新手机号"
-        android:textColor="#4A4A4A"
-        android:textSize="16sp"/>
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
+        <variable
+            name="vm"
+            type="io.wexchain.android.dcc.vm.TrustPocketOpenVm"/>
+    </data>
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:background="#F5F5FD"
+        android:orientation="vertical"
+        tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneBindActivity">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <include layout="@layout/include_toolbar"/>
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/white"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="14dp"
-                android:text="手机号"
-                android:textColor="#4A4A4A"
-                android:textSize="16sp"/>
-
-            <EditText
-                android:id="@+id/et_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:background="@null"
-                android:hint="请输入新手机号"
-                android:inputType="phone"
-                android:maxLength="11"
-                android:maxLines="1"
-                android:textColor="#9B9B9B"
-                android:textSize="14sp"/>
-
-        </LinearLayout>
-
-        <View
-            style="@style/DividerHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
             android:layout_marginLeft="14dp"
-            android:layout_marginRight="14dp"/>
+            android:gravity="center_vertical"
+            android:text="绑定新手机号"
+            android:textColor="#4A4A4A"
+            android:textSize="16sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:background="@color/white"
-            android:gravity="center_vertical">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:text="手机号"
+                    android:textColor="#4A4A4A"
+                    android:textSize="16sp"/>
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:background="@null"
+                    android:hint="请输入新手机号"
+                    android:inputType="phone"
+                    android:maxLength="11"
+                    android:maxLines="1"
+                    android:text="@{vm.phoneNo}"
+                    android:textColor="#9B9B9B"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <View
+                style="@style/DividerHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginLeft="14dp"
-                android:text="验证码"
-                android:textColor="#4A4A4A"
-                android:textSize="16sp"/>
+                android:layout_marginRight="14dp"/>
 
-            <EditText
-                android:id="@+id/et_check_code"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:hint="请输入验证码"
-                android:inputType="number"
-                android:maxLines="1"
-                android:textColor="#9B9B9B"
-                android:textSize="14sp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/white"
+                android:gravity="center_vertical">
 
-            <Button
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="14dp"
-                android:background="#6144CC"
-                android:text="获取"
-                android:textColor="@color/white"
-                android:textSize="14sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:text="验证码"
+                    android:textColor="#4A4A4A"
+                    android:textSize="16sp"/>
+
+                <EditText
+                    android:id="@+id/et_check_code"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="请输入验证码"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:text="@={vm.code}"
+                    android:textColor="#9B9B9B"
+                    android:textSize="14sp"/>
+
+                <Button
+                    android:id="@+id/bt_get"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="14dp"
+                    android:background="#6144CC"
+                    android:enabled="@{ViewModelHelper.canResendSms(vm.resendRemain)}"
+                    android:text="@{ViewModelHelper.smsTimeText2(context,vm.resendRemain)}"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    tools:text="获取"/>
+
+            </LinearLayout>
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/bt_submit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="15dp"
+            android:background="#6144CC"
+            android:text="提交"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/bt_submit"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="15dp"
-        android:background="#6144CC"
-        android:text="提交"
-        android:textColor="@color/white"
-        android:textSize="15sp"/>
-
-</LinearLayout>
+</layout>

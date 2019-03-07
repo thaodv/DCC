@@ -1,13 +1,55 @@
 package io.wexchain.android.dcc.modules.trustpocket
 
 import android.os.Bundle
-import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.toast
+import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.chain.GardenOperations
+import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.modules.cert.SubmitIdActivity
+import io.wexchain.android.dcc.tools.ShareUtils
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityTrustPocketSettingsBinding
+import io.wexchain.ipfs.utils.doMain
 
-class TrustPocketSettingsActivity : BaseCompatActivity() {
+class TrustPocketSettingsActivity : BindActivity<ActivityTrustPocketSettingsBinding>() {
+
+    override val contentLayoutId: Int get() = R.layout.activity_trust_pocket_settings
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_trust_pocket_settings)
+        initToolbar()
+
+        binding.rlChangePhone.setOnClickListener {
+            navigateTo(TrustPocketModifyPhoneActivity::class.java)
+        }
+
+        binding.rlModifyPwd.setOnClickListener {
+
+        }
+
+        binding.rlReal.setOnClickListener {
+            navigateTo(SubmitIdActivity::class.java)
+        }
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getMobileUser(it).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    binding.tvPhoneNum.text = it.mobile
+                    ShareUtils.setString(Extras.SP_TRUST_MOBILE_PHONE, it.mobile)
+                }, {
+                    toast(it.message.toString())
+                })
     }
 }

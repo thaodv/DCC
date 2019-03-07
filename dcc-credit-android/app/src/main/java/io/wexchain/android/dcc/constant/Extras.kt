@@ -41,15 +41,16 @@ object Extras {
     const val EXTRA_PAY_MONEY = "pay_money"
     const val EXTRA_CERT_TYPE = "cert_type"
 
-    const val EXTRA_REDPACKET_START_TIME ="redpacket_start_time"
-    const val EXTRA_REDPACKET_END_TIME ="redpacket_end_time"
+    const val EXTRA_REDPACKET_START_TIME = "redpacket_start_time"
+    const val EXTRA_REDPACKET_END_TIME = "redpacket_end_time"
 
 
-    const val Searchain_BASE ="http://www.searchain.io"
-    const val Searchain ="http://www.searchain.io/address?from=1000&address="
+    const val Searchain_BASE = "http://www.searchain.io"
+    const val Searchain = "http://www.searchain.io/address?from=1000&address="
 
     const val SP_SELECTED_NODE_FILE = "select_node_file"
     const val SP_SELECTED_NODE = "select_node"
     const val SP_VERSION_NAME = "version_name"
     const val SP_TRUST_PUBKEY = "pubKey"
+    const val SP_TRUST_MOBILE_PHONE = "trust_mobile_phone"
 }

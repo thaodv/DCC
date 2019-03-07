@@ -2,7 +2,6 @@ package io.wexchain.android.dcc.modules.trustpocket
 
 import android.os.Bundle
 import android.os.SystemClock
-import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
@@ -15,6 +14,7 @@ import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.vm.TrustPocketOpenVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustPocketOpenStep1Binding
+import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.ipfs.utils.doMain
 
 class TrustPocketOpenStep1Activity : BindActivity<ActivityTrustPocketOpenStep1Binding>() {
@@ -47,7 +47,6 @@ class TrustPocketOpenStep1Activity : BindActivity<ActivityTrustPocketOpenStep1Bi
             } else {
                 requestReSendSmsCode(phoneNum)
             }
-
         }
 
         binding.btNext.setOnClickListener {
@@ -73,13 +72,15 @@ class TrustPocketOpenStep1Activity : BindActivity<ActivityTrustPocketOpenStep1Bi
                     it.pubKey
                     it.salt
                     ShareUtils.setString(Extras.SP_TRUST_PUBKEY, it.pubKey)
+                    ShareUtils.setString(Extras.SP_TRUST_MOBILE_PHONE, mobile)
 
-                    navigateTo(TrustPocketOpenStep2Activity::class.java)
-
+                    navigateTo(TrustPocketOpenStep2Activity::class.java) {
+                        putExtra("salt", it.salt)
+                    }
+                    finish()
                 }, {
-                    toast(it.toString())
+                    toast(it.message.toString())
                 })
-
     }
 
     private fun requestReSendSmsCode(mobile: String) {
@@ -89,15 +90,16 @@ class TrustPocketOpenStep1Activity : BindActivity<ActivityTrustPocketOpenStep1Bi
                 }
                 .doMain()
                 .withLoading()
-                .subscribeBy(
-                        onSuccess = {
-                            toast("已发验证码")
-                            smsUpTimeStamp = SystemClock.uptimeMillis()
-                            binding.vm?.upTimeStamp?.value = smsUpTimeStamp
-                        },
-                        onError = {
-                            toast(it.toString())
-                        }
-                )
+                .subscribe({
+                    if (it.systemCode == Result.SUCCESS && it.businessCode == Result.SUCCESS) {
+                        toast("已发验证码")
+                        smsUpTimeStamp = SystemClock.uptimeMillis()
+                        binding.vm?.upTimeStamp?.value = smsUpTimeStamp
+                    } else {
+                        toast(it.message.toString())
+                    }
+                }, {
+                    toast(it.message.toString())
+                })
     }
 }
