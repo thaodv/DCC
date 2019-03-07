@@ -27,13 +27,12 @@ class TrustPocketSettingsActivity : BindActivity<ActivityTrustPocketSettingsBind
         }
 
         binding.rlModifyPwd.setOnClickListener {
-
+            navigateTo(TrustPocketModifyPwdActivity::class.java)
         }
 
         binding.rlReal.setOnClickListener {
             navigateTo(SubmitIdActivity::class.java)
         }
-
 
     }
 

@@ -328,7 +328,13 @@
         </activity>
         <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustChangPhoneSuccessActivity">
         </activity>
-        <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPwdActivity">
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPwdActivity"
+            android:label="修改支付密码">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPwdRestActivity"
+            android:label="设置新密码">
         </activity>
     </application>
 

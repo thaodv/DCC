@@ -1,10 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5FD"
+    android:orientation="vertical"
     tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPwdActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <include layout="@layout/include_toolbar"/>
+
+    <TextView
+        android:id="@+id/tv_tip1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="14dp"
+        android:text="请输入原支付密码"
+        android:textColor="#4A4A4A"
+        android:textSize="16sp"/>
+
+    <io.wexchain.android.dcc.view.passwordview.PassWordLayout
+        android:id="@+id/oldpwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="14dp"
+        android:background="@color/white"
+        app:box_draw_type="rect"
+        app:interval_width="0dp"
+        app:item_height="50dp"
+        app:item_width="60dp"
+        app:pass_inputed_type="stars"
+        app:pass_leng="six"/>
+
+    <TextView
+        android:id="@+id/tv_forget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="14dp"
+        android:text="忘记密码"
+        android:textColor="#9B9B9B"
+        android:textSize="14sp"/>
+
+</LinearLayout>

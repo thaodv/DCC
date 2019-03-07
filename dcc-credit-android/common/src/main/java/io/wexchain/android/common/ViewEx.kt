@@ -113,3 +113,72 @@ fun onTextChanged(text: (String) -> Unit) = object : SimpleTextWatcher() {
         }
     }
 }
+
+fun String.checkWeak(): Boolean {
+    return equalStr() || isOrderNumeric() || isOrderNumeric_()
+}
+
+fun String.equalStr(): Boolean {
+    var flag = true
+    val str = this[0]
+    for (i in 0 until this.length) {
+        if (str != this[i]) {
+            flag = false
+            break
+        }
+    }
+    return flag
+}
+
+fun String.isOrderNumeric(): Boolean {
+    var flag = true//如果全是连续数字返回true
+    var isNumeric = true//如果全是数字返回true
+    for (i in 0 until this.length) {
+        if (!Character.isDigit(this[i])) {
+            isNumeric = false
+            break
+        }
+    }
+    if (isNumeric) {//如果全是数字则执行是否连续数字判断
+        for (i in 0 until this.length) {
+            if (i > 0) {//判断如123456
+                val num = Integer.parseInt(this[i] + "")
+                val num_ = Integer.parseInt(this[i - 1] + "") + 1
+                if (num != num_) {
+                    flag = false
+                    break
+                }
+            }
+        }
+    } else {
+        flag = false
+    }
+    return flag
+}
+
+//不能是连续的数字--递减（如：987654、876543）连续数字返回true
+fun String.isOrderNumeric_(): Boolean {
+    var flag = true//如果全是连续数字返回true
+    var isNumeric = true//如果全是数字返回true
+    for (i in 0 until this.length) {
+        if (!Character.isDigit(this[i])) {
+            isNumeric = false
+            break
+        }
+    }
+    if (isNumeric) {//如果全是数字则执行是否连续数字判断
+        for (i in 0 until this.length) {
+            if (i > 0) {//判断如654321
+                val num = Integer.parseInt(this[i] + "")
+                val num_ = Integer.parseInt(this[i - 1] + "") - 1
+                if (num != num_) {
+                    flag = false
+                    break
+                }
+            }
+        }
+    } else {
+        flag = false
+    }
+    return flag
+}

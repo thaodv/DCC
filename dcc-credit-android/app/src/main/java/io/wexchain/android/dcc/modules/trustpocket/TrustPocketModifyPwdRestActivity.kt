@@ -8,30 +8,26 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.checkWeak
-import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
 import io.wexchain.android.common.tools.rsa.EncryptUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.ScfOperations
-import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.passwordview.PassWordLayout
 import io.wexchain.dcc.R
+import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigInteger
 import java.security.MessageDigest
 
-class TrustPocketOpenStep2Activity : BaseCompatActivity() {
+class TrustPocketModifyPwdRestActivity : BaseCompatActivity() {
 
     lateinit var pwdFirst: String
 
-    private val salt get() = intent.getStringExtra("salt")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_trust_pocket_open_step2)
+        setContentView(R.layout.activity_trust_pocket_modify_pwd_rest)
         initToolbar()
 
         val tvTip1 = findViewById<TextView>(R.id.tv_tip1)
@@ -83,8 +79,7 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
             override fun onFinished(pwd: String) {
                 Log.e("onFinished:", pwd)
                 if (pwd == pwdFirst) {
-                    val enpwd = EncryptUtils.getInstance().encode(BigInteger(MessageDigest.getInstance(ScfOperations.DIGEST).digest(pwd.toByteArray(Charsets.UTF_8))).toString(16) + salt, ShareUtils.getString(Extras.SP_TRUST_PUBKEY))
-                    bindHostingWallet(enpwd, salt)
+                    prepareInputPwd(pwd)
                 } else {
                     toast("请重新设置")
                     val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -96,22 +91,42 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
                 }
             }
         })
-
     }
 
-    private fun bindHostingWallet(pwd: String, salt: String) {
+    private fun prepareInputPwd(pwd: String) {
         GardenOperations
                 .refreshToken {
-                    App.get().marketingApi.bindHostingWallet(it, pwd, salt).check()
+                    App.get().marketingApi.prepareInputPwd(it).check()
                 }
                 .doMain()
                 .withLoading()
                 .subscribe({
-                    Log.e("result:", it.mobileUserId)
-                    navigateTo(TrustOpenSuccessActivity::class.java)
-                    finish()
+                    initialPaymentPassword(pwd, it.pubKey, it.salt)
                 }, {
                     toast(it.message.toString())
                 })
     }
+
+    private fun initialPaymentPassword(pwd: String, pubKey: String, salt: String) {
+
+        val enpwd = EncryptUtils.getInstance().encode(BigInteger(MessageDigest.getInstance(ScfOperations.DIGEST).digest(pwd.toByteArray(Charsets.UTF_8))).toString(16) + salt, pubKey)
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.initialPaymentPassword(it, enpwd, salt)
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    if (it.systemCode == Result.SUCCESS && it.businessCode == Result.SUCCESS) {
+                        finish()
+                    }else{
+                        toast(it.message.toString())
+                    }
+
+                }, {
+                    toast(it.message.toString())
+                })
+
+    }
+
 }

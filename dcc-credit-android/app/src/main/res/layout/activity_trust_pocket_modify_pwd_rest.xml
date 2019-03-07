@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#F5F5FD"
     android:orientation="vertical"
-    tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenStep2Activity">
+    tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPwdRestActivity">
 
     <include layout="@layout/include_toolbar"/>
 
