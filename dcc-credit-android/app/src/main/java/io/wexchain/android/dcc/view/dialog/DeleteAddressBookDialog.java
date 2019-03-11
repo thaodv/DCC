@@ -21,7 +21,7 @@ public class DeleteAddressBookDialog extends Dialog implements View.OnClickListe
     public TextView mTvText;
     public TextView mTvTips;
     private TextView mBtCancel;
-    private TextView mBtSure;
+    public TextView mBtSure;
     
     private OnClickListener mOnClickListener;
     

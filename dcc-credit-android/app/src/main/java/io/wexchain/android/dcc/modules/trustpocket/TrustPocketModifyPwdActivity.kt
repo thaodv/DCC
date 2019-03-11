@@ -2,14 +2,19 @@ package io.wexchain.android.dcc.modules.trustpocket
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.widget.TextView
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.common.tools.rsa.EncryptUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.view.passwordview.PassWordLayout
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.domain.Result
@@ -47,6 +52,13 @@ class TrustPocketModifyPwdActivity : BaseCompatActivity() {
                 }
             }
         })
+
+        findViewById<TextView>(R.id.tv_forget).onClick {
+            navigateTo(TrustPocketModifyPhoneActivity::class.java) {
+                putExtra("source", "forget")
+            }
+        }
+
     }
 
     private fun createPayPwdSecurityContext() {
@@ -94,8 +106,36 @@ class TrustPocketModifyPwdActivity : BaseCompatActivity() {
                     if (it.result == ValidatePaymentPasswordBean.Status.PASSED) {
                         navigateTo(TrustPocketModifyPwdRestActivity::class.java)
                         finish()
+                    } else if (it.result == ValidatePaymentPasswordBean.Status.REJECTED) {
+                        val deleteDialog = DeleteAddressBookDialog(this)
+                        deleteDialog.mTvText.text = "密码输入错误，超过3次将被锁定3小时，您还有${it.remainValidateTimes}次机会"
+                        deleteDialog.mTvText.gravity = Gravity.LEFT
+                        deleteDialog.setBtnText("确定", "")
+                        deleteDialog.mBtSure.visibility = View.GONE
+                        deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
+                            override fun cancel() {}
+
+                            override fun sure() {
+
+                            }
+                        })
+                        deleteDialog.show()
+                    } else if (it.result == ValidatePaymentPasswordBean.Status.LOCKED) {
+                        val deleteDialog = DeleteAddressBookDialog(this)
+                        deleteDialog.mTvText.text = "您的密码已被暂时锁定，请等待解锁"
+                        deleteDialog.mTvText.gravity = Gravity.LEFT
+                        deleteDialog.setBtnText("确定", "")
+                        deleteDialog.mBtSure.visibility = View.GONE
+                        deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
+                            override fun cancel() {}
+
+                            override fun sure() {
+
+                            }
+                        })
+                        deleteDialog.show()
                     } else {
-                        toast(it.remainValidateTimes + "")
+                        toast("系统错误")
                     }
                 }, {
                     toast(it.message.toString())

@@ -23,7 +23,9 @@ class TrustPocketSettingsActivity : BindActivity<ActivityTrustPocketSettingsBind
         initToolbar()
 
         binding.rlChangePhone.setOnClickListener {
-            navigateTo(TrustPocketModifyPhoneActivity::class.java)
+            navigateTo(TrustPocketModifyPhoneActivity::class.java){
+                putExtra("source", "modify")
+            }
         }
 
         binding.rlModifyPwd.setOnClickListener {

@@ -76,6 +76,7 @@ class TrustPocketOpenStep1Activity : BindActivity<ActivityTrustPocketOpenStep1Bi
 
                     navigateTo(TrustPocketOpenStep2Activity::class.java) {
                         putExtra("salt", it.salt)
+                        putExtra("use", "open")
                     }
                     finish()
                 }, {

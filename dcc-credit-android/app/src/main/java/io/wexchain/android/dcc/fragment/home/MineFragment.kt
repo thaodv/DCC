@@ -119,6 +119,9 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
         binding.tvModifyPassportPassword.onClick {
             navigateTo(ModifyPassportPasswordActivity::class.java)
         }
+        binding.tvDigestPocketSetting.onClick {
+            navigateTo(ModifyPassportPasswordActivity::class.java)
+        }
         binding.tvTrustPocketSetting.onClick {
             navigateTo(TrustPocketSettingsActivity::class.java)
         }

@@ -332,7 +332,8 @@ interface MarketingApi {
     @POST("bemember/wallet/mobileUser/updateMobile")
     @FormUrlEncoded
     fun updateMobile(@Header(HEADER_TOKEN) token: String,
-                     @Field("mobile") mobile: String): Single<Result<String>>
+                     @Field("mobile") mobile: String,
+                     @Field("code") code: String): Single<Result<String>>
 
     /**
      * 查询手机用户
@@ -340,6 +341,93 @@ interface MarketingApi {
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/mobileUser/getMobileUser")
     fun getMobileUser(@Header(HEADER_TOKEN) token: String): Single<Result<GetMobileUserBean>>
+
+    /**
+     * 查询充值订单分页
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/pay/queryDepositOrderPage")
+    @FormUrlEncoded
+    fun queryDepositOrderPage(@Header(HEADER_TOKEN) token: String,
+                              @Field("assetCode") assetCode: String): Single<Result<PagedList<QueryDepositOrderPageBean>>>
+
+    /**
+     * 查询单笔充值订单
+     */
+    // todo urlerror
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/pay/queryDepositOrderPage")
+    @FormUrlEncoded
+    fun querySingleDepositOrderPage(@Header(HEADER_TOKEN) token: String,
+                                    @Field("id") id: String): Single<Result<QueryDepositOrderPageBean>>
+
+    /**
+     * 查询取现订单分页
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/pay/queryWithdrawOrderPage")
+    @FormUrlEncoded
+    fun queryWithdrawOrderPage(@Header(HEADER_TOKEN) token: String,
+                               @Field("assetCode") assetCode: String,
+                               @Field("startTime") startTime: String,
+                               @Field("endTime") endTime: String): Single<Result<PagedList<QueryWithdrawOrderPageBean>>>
+
+    /**
+     * 查询单笔取现订单
+     */
+    // todo urlerror
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/pay/queryWithdrawOrderPage")
+    @FormUrlEncoded
+    fun querySingleWithdrawOrderPage(@Header(HEADER_TOKEN) token: String,
+                                     @Field("sourceCode") sourceCode: String,
+                                     @Field("requestNo") requestNo: String): Single<Result<QueryWithdrawOrderPageBean>>
+
+    /**
+     * 取现
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/pay/withdraw")
+    @FormUrlEncoded
+    fun withdraw(@Header(HEADER_TOKEN) token: String,
+                 @Field("assetCode") assetCode: String,
+                 @Field("amount") amount: String,
+                 @Field("receiverAddress") receiverAddress: String): Single<Result<WithdrawBean>>
+
+    /**
+     * 转账
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/pay/transfer")
+    @FormUrlEncoded
+    fun transfer(@Header(HEADER_TOKEN) token: String,
+                 @Field("assetCode") assetCode: String,
+                 @Field("amount") amount: String,
+                 @Field("receiverMobileUserId") receiverMobileUserId: String,
+                 @Field("senderMobileUserId") senderMobileUserId: String): Single<Result<TransferBean>>
+
+    /**
+     * 查询单笔转账
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/pay/getTransferOrder")
+    @FormUrlEncoded
+    fun getTransferOrder(@Header(HEADER_TOKEN) token: String,
+                         @Field("sourceCode") sourceCode: String,
+                         @Field("requestNo") requestNo: String): Single<Result<TransferBean>>
+
+    /**
+     * 查询转账分页
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/pay/queryTransferOrderPage")
+    @FormUrlEncoded
+    fun queryTransferOrderPage(@Header(HEADER_TOKEN) token: String,
+                               @Field("assetCode") assetCode: String,
+                               @Field("startTime") startTime: String,
+                               @Field("endTime") endTime: String,
+                               @Field("payeeUid") payeeUid: String,
+                               @Field("payerUid") payerUid: String): Single<Result<PagedList<TransferBean>>>
 
 
     companion object {

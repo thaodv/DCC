@@ -11,6 +11,7 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initToolbar()
 
     }
 }

@@ -313,12 +313,10 @@
             android:label="开通托管钱包">
         </activity>
         <activity
-            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenStep2Activity"
-            android:label="开通托管钱包">
+            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenStep2Activity">
         </activity>
         <activity
-            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneActivity"
-            android:label="修改绑定手机">
+            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneActivity">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneBindActivity"

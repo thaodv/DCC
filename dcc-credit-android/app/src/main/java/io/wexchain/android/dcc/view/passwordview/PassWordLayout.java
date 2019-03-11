@@ -26,13 +26,25 @@ import io.wexchain.dcc.R;
  */
 public class PassWordLayout extends LinearLayout {
     
-    private int maxLength = 6; //密码长度
+    /**
+     * 密码长度
+     */
+    private int maxLength = 6;
     
-    private int inputIndex = 0; //设置子View状态index
+    /**
+     * 设置子View状态index
+     */
+    private int inputIndex = 0;
     
-    private List<String> mPassList;//储存密码
+    /**
+     * 储存密码
+     */
+    private List<String> mPassList;
     
-    private pwdChangeListener pwdChangeListener;//密码状态改变监听
+    /**
+     * 密码状态改变监听
+     */
+    private pwdChangeListener pwdChangeListener;
     
     
     private Context mContext;
@@ -76,10 +88,14 @@ public class PassWordLayout extends LinearLayout {
         mContext = context;
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.PassWordLayoutStyle);
         
-        mInputColor = ta.getResourceId(R.styleable.PassWordLayoutStyle_box_input_color, R.color.pass_view_rect_input);
-        mNoinputColor = ta.getResourceId(R.styleable.PassWordLayoutStyle_box_no_input_color, R.color.regi_line_color);
-        mLineColor = ta.getResourceId(R.styleable.PassWordLayoutStyle_input_line_color, R.color.pass_view_rect_input);
-        mTxtInputColor = ta.getResourceId(R.styleable.PassWordLayoutStyle_text_input_color, R.color.pass_view_rect_input);
+        mInputColor = ta.getResourceId(R.styleable.PassWordLayoutStyle_box_input_color, R.color
+                .pass_view_rect_input);
+        mNoinputColor = ta.getResourceId(R.styleable.PassWordLayoutStyle_box_no_input_color, R.color
+                .regi_line_color);
+        mLineColor = ta.getResourceId(R.styleable.PassWordLayoutStyle_input_line_color, R.color
+                .pass_view_rect_input);
+        mTxtInputColor = ta.getResourceId(R.styleable.PassWordLayoutStyle_text_input_color, R.color
+                .pass_view_rect_input);
         mDrawType = ta.getInt(R.styleable.PassWordLayoutStyle_box_draw_type, 0);
         mInterval = ta.getDimensionPixelOffset(R.styleable.PassWordLayoutStyle_interval_width, 4);
         maxLength = ta.getInt(R.styleable.PassWordLayoutStyle_pass_leng, 6);
@@ -97,33 +113,29 @@ public class PassWordLayout extends LinearLayout {
         setGravity(Gravity.CENTER);
         
         //设置点击时弹出输入法
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setFocusable(true);
-                setFocusableInTouchMode(true);
-                requestFocus();
-                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(PassWordLayout.this, InputMethodManager.SHOW_IMPLICIT);
-            }
+        setOnClickListener(view -> {
+            setFocusable(true);
+            setFocusableInTouchMode(true);
+            requestFocus();
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context
+                    .INPUT_METHOD_SERVICE);
+            imm.showSoftInput(PassWordLayout.this, InputMethodManager.SHOW_IMPLICIT);
         });
-        this.setOnKeyListener(new MyKeyListener());//按键监听
+        //按键监听
+        this.setOnKeyListener(new MyKeyListener());
         
-        setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    PassWordView passWordView = (PassWordView) getChildAt(inputIndex);
-                    if (passWordView != null) {
-                        passWordView.setmIsShowRemindLine(mIsShowInputLine);
-                        passWordView.startInputState();
-                    }
-                } else {
-                    PassWordView passWordView = (PassWordView) getChildAt(inputIndex);
-                    if (passWordView != null) {
-                        passWordView.setmIsShowRemindLine(false);
-                        passWordView.updateInputState(false);
-                    }
+        setOnFocusChangeListener((view, b) -> {
+            if (b) {
+                PassWordView passWordView = (PassWordView) getChildAt(inputIndex);
+                if (passWordView != null) {
+                    passWordView.setmIsShowRemindLine(mIsShowInputLine);
+                    passWordView.startInputState();
+                }
+            } else {
+                PassWordView passWordView = (PassWordView) getChildAt(inputIndex);
+                if (passWordView != null) {
+                    passWordView.setmIsShowRemindLine(false);
+                    passWordView.updateInputState(false);
                 }
             }
         });
@@ -138,7 +150,8 @@ public class PassWordLayout extends LinearLayout {
         for (int i = 0; i < maxLength; i++) {
             PassWordView passWordView = new PassWordView(context);
             LayoutParams params = new LayoutParams(mItemWidth, mItemHeight);
-            if (i > 0) {                                       //第一个和最后一个子View不添加边距
+            //第一个和最后一个子View不添加边距
+            if (i > 0) {
                 params.leftMargin = mInterval;
             }
             
@@ -159,8 +172,8 @@ public class PassWordLayout extends LinearLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        
-        if (getChildCount() == 0) {     //判断 子View宽+边距是否超过了父布局 超过了则重置宽高
+        //判断 子View宽+边距是否超过了父布局 超过了则重置宽高
+        if (getChildCount() == 0) {
             if ((maxLength * mItemWidth + (maxLength - 1) * mInterval) > getMeasuredWidth()) {
                 mItemWidth = (getMeasuredWidth() - (maxLength - 1) * mInterval) / maxLength;
                 mItemHeight = mItemWidth;
@@ -224,13 +237,11 @@ public class PassWordLayout extends LinearLayout {
                         passWordView.startInputState();
                     }
                 }
-                
             }
             
             mPassList.clear();
             inputIndex = 0;
         }
-        
         
         if (pwdChangeListener != null) {
             pwdChangeListener.onNull();
@@ -309,17 +320,32 @@ public class PassWordLayout extends LinearLayout {
     
     
     public interface pwdChangeListener {
-        void onChange(String pwd);//密码改变
         
-        void onNull();  //密码删除为空
+        /**
+         * 密码改变
+         *
+         * @param pwd
+         */
+        void onChange(String pwd);
         
-        void onFinished(String pwd);//密码长度已经达到最大值
+        /**
+         * 密码删除为空
+         */
+        void onNull();
+        
+        /**
+         * 密码长度已经达到最大值
+         *
+         * @param pwd
+         */
+        void onFinished(String pwd);
     }
     
     
     @Override
     public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-        outAttrs.inputType = InputType.TYPE_CLASS_NUMBER;          //显示数字键盘
+        //显示数字键盘
+        outAttrs.inputType = InputType.TYPE_CLASS_NUMBER;
         outAttrs.imeOptions = EditorInfo.IME_FLAG_NO_EXTRACT_UI;
         return new ZanyInputConnection(this, false);
     }
@@ -345,7 +371,8 @@ public class PassWordLayout extends LinearLayout {
         @Override
         public boolean deleteSurroundingText(int beforeLength, int afterLength) {
             if (beforeLength == 1 && afterLength == 0) {
-                return sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL)) && sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL));
+                return sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL)) &&
+                        sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL));
             }
             
             return super.deleteSurroundingText(beforeLength, afterLength);
@@ -360,20 +387,24 @@ public class PassWordLayout extends LinearLayout {
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                if (event.isShiftPressed()) {//处理*#等键
+                //处理*#等键
+                if (event.isShiftPressed()) {
                     return false;
                 }
-                if (keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9) {//处理数字
-                    addPwd(keyCode - 7 + "");              //点击添加密码
+                //处理数字
+                if (keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9) {
+                    //点击添加密码
+                    addPwd(keyCode - 7 + "");
                     return true;
                 }
-                
-                if (keyCode == KeyEvent.KEYCODE_DEL) {       //点击删除
+                //点击删除
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
                     removePwd();
                     return true;
                 }
                 
-                InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context
+                        .INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 return true;
             }
@@ -414,7 +445,11 @@ public class PassWordLayout extends LinearLayout {
         
     }
     
-    //保存状态
+    /**
+     * 保存状态
+     *
+     * @return
+     */
     @Override
     protected Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();

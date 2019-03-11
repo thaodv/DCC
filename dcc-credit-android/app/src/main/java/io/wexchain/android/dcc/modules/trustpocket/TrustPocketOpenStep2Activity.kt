@@ -19,6 +19,7 @@ import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.passwordview.PassWordLayout
 import io.wexchain.dcc.R
+import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -28,11 +29,18 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
     lateinit var pwdFirst: String
 
     private val salt get() = intent.getStringExtra("salt")
+    private val mUse get() = intent.getStringExtra("use")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trust_pocket_open_step2)
         initToolbar()
+
+        if ("open" == mUse) {
+            title = "开通托管钱包"
+        } else {
+            title = "设置新密码"
+        }
 
         val tvTip1 = findViewById<TextView>(R.id.tv_tip1)
         val tvTip2 = findViewById<TextView>(R.id.tv_tip2)
@@ -83,8 +91,12 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
             override fun onFinished(pwd: String) {
                 Log.e("onFinished:", pwd)
                 if (pwd == pwdFirst) {
-                    val enpwd = EncryptUtils.getInstance().encode(BigInteger(MessageDigest.getInstance(ScfOperations.DIGEST).digest(pwd.toByteArray(Charsets.UTF_8))).toString(16) + salt, ShareUtils.getString(Extras.SP_TRUST_PUBKEY))
-                    bindHostingWallet(enpwd, salt)
+
+                    if ("open" == mUse) {
+                        bindHostingWallet(pwd, salt)
+                    } else {
+                        initialPaymentPassword(pwd, salt)
+                    }
                 } else {
                     toast("请重新设置")
                     val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -100,9 +112,11 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
     }
 
     private fun bindHostingWallet(pwd: String, salt: String) {
+
+        val enpwd = EncryptUtils.getInstance().encode(BigInteger(MessageDigest.getInstance(ScfOperations.DIGEST).digest(pwd.toByteArray(Charsets.UTF_8))).toString(16) + salt, ShareUtils.getString(Extras.SP_TRUST_PUBKEY))
         GardenOperations
                 .refreshToken {
-                    App.get().marketingApi.bindHostingWallet(it, pwd, salt).check()
+                    App.get().marketingApi.bindHostingWallet(it, enpwd, salt).check()
                 }
                 .doMain()
                 .withLoading()
@@ -113,5 +127,27 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
                 }, {
                     toast(it.message.toString())
                 })
+    }
+
+    private fun initialPaymentPassword(pwd: String, salt: String) {
+
+        val enpwd = EncryptUtils.getInstance().encode(BigInteger(MessageDigest.getInstance(ScfOperations.DIGEST).digest(pwd.toByteArray(Charsets.UTF_8))).toString(16) + salt, ShareUtils.getString(Extras.SP_TRUST_PUBKEY))
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.initialPaymentPassword(it, enpwd, salt)
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    if (it.systemCode == Result.SUCCESS && it.businessCode == Result.SUCCESS) {
+                        finish()
+                    } else {
+                        toast(it.message.toString())
+                    }
+
+                }, {
+                    toast(it.message.toString())
+                })
+
     }
 }

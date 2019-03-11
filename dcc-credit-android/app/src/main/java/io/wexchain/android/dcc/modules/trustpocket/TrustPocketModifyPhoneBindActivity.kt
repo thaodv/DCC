@@ -53,15 +53,15 @@ class TrustPocketModifyPhoneBindActivity : BindActivity<ActivityTrustPocketModif
             if ("" == checkCodeValue) {
                 toast("请输入验证码")
             } else {
-                checkCode(binding.etPhone.text.toString(), checkCodeValue)
+                updateMobile(binding.etPhone.text.toString(), checkCodeValue)
             }
         }
     }
 
-    private fun checkCode(mobile: String, code: String) {
+    private fun updateMobile(mobile: String, code: String) {
         GardenOperations
                 .refreshToken {
-                    App.get().marketingApi.changeValidateSmsCode(it, mobile, code)
+                    App.get().marketingApi.updateMobile(it, mobile, code)
                 }
                 .doMain()
                 .withLoading()
