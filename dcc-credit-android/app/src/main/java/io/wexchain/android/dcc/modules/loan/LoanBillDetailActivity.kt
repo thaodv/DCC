@@ -1,9 +1,9 @@
 package io.wexchain.android.dcc.modules.loan
 
 import android.os.Bundle
-import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.base.BindActivity
-import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.common.constant.Extras
+import io.wexchain.android.common.postOnMainThread
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityLoanBillDetailBinding
 import io.wexchain.dccchainservice.domain.LoanReport

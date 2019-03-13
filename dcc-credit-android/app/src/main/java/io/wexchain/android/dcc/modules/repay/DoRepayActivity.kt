@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.App
-import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.chain.ScfOperations
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.domain.LoanRepaymentBill
 

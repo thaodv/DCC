@@ -40,7 +40,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/tv_total"
-                android:src="@drawable/img_node_green"/>
+                tools:src="@drawable/icon_asset_show"/>
 
             <ImageView
                 android:id="@+id/iv_scan"
@@ -49,7 +49,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/toolbar_add"/>
+                android:src="@drawable/icon_scan"/>
 
         </RelativeLayout>
 
@@ -96,8 +96,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:padding="10dp"
-                android:visibility="gone"
-                android:src="@drawable/arrow_right"/>
+                android:src="@drawable/arrow_right"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/bt_open"
@@ -109,8 +109,8 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="立即开通"
-                android:visibility="gone"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                android:visibility="gone"/>
 
             <View
                 style="@style/DividerHorizontal"

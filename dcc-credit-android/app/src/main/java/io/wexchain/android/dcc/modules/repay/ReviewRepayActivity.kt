@@ -3,12 +3,12 @@ package io.wexchain.android.dcc.modules.repay
 import android.os.Bundle
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.Pop
+import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.dcc.App
-import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.chain.ScfOperations
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.db.CurrencyMeta
 import io.wexchain.android.dcc.tools.MultiChainHelper

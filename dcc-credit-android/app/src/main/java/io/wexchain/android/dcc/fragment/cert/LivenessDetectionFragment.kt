@@ -7,12 +7,12 @@ import android.view.View
 import com.google.gson.Gson
 import com.megvii.livenesslib.LivenessActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.wexmarket.android.passport.ResultCodes
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.base.BindFragment
+import io.wexchain.android.common.constant.ResultCodes
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.common.base.BindFragment
-import io.wexchain.android.dcc.constant.RequestCodes
+import io.wexchain.android.common.constant.RequestCodes
 import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.android.idverify.domain.LivenessResult

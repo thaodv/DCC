@@ -4,7 +4,7 @@ import android.support.annotation.MainThread
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.EthsTransaction
 import io.wexchain.digitalwallet.EthsTransactionScratch

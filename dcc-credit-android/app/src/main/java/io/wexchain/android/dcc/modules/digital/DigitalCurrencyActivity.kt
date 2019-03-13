@@ -9,12 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
+import io.wexchain.android.common.constant.RequestCodes
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
-import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.modules.passport.PassportAddressActivity
 import io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity
 import io.wexchain.android.dcc.tools.NoDoubleClickListener
@@ -94,6 +94,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
                 override fun cancel() {
                     dialog.dismiss()
                 }
+
                 override fun sure() {
                     dialog.dismiss()
                     it.second(true)
@@ -143,7 +144,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
         })
         binding.sectionTransactions!!.rvTransactions.adapter = bottomMoreItemsAdapter
         txListVm.list.observe(this, Observer {
-          //  Log.e("sssssssssssssss", "txListVm " + it?.size)
+            //  Log.e("sssssssssssssss", "txListVm " + it?.size)
             val list3 = it?.subList(0, minOf(it.size, 3)) ?: emptyList()
             adapter.setList(list3)
             txListVm.empty.set(list3.isEmpty())

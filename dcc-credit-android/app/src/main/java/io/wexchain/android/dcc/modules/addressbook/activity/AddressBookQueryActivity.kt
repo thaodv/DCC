@@ -10,12 +10,12 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.dcc.modules.trans.activity.CreateTransactionActivity
-import io.wexchain.android.common.base.BaseCompatActivity
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.addressbook.vm.QueryBookAddressVm
+import io.wexchain.android.dcc.modules.trans.activity.CreateTransactionActivity
 import io.wexchain.android.dcc.repo.db.AddressBook
 import io.wexchain.android.dcc.view.ClearEditText
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
@@ -75,7 +75,7 @@ class AddressBookQueryActivity : BaseCompatActivity(), TextWatcher, ItemViewClic
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        var text = s.toString().trim()
+        val text = s.toString().trim()
         mEtSearch!!.setSelection(text.length)
         if (text.isEmpty()) {
             mRecyclerView!!.visibility = View.GONE

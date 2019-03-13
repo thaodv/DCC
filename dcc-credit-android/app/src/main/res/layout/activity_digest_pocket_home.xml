@@ -87,13 +87,13 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:drawableRight="@{assets.assetsFilter?@drawable/tv_state_enabled:@drawable/tv_state_disabled}"
                 android:drawablePadding="8dp"
+                android:drawableRight="@{assets.assetsFilter?@drawable/icon_zero_unshow:@drawable/icon_zero_show}"
                 android:onClick="@{(v)->assets.filter()}"
                 android:text="隐藏零资产币种"
                 android:textColor="#9B9B9B"
                 android:textSize="14sp"
-                tools:drawableRight="@drawable/tv_state_disabled"/>
+                tools:drawableRight="@drawable/icon_zero_show"/>
 
             <ImageView
                 android:id="@+id/digital_add"
@@ -102,7 +102,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/toolbar_add"/>
+                android:src="@drawable/icon_add"/>
 
             <ImageView
                 android:id="@+id/digital_select_node"

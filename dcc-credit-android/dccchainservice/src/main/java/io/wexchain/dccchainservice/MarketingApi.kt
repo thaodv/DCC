@@ -184,14 +184,14 @@ interface MarketingApi {
 
 
     /**
-     * 查询托管钱包
+     * 1.查询托管钱包
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/getHostingWallet")
     fun getHostingWallet(@Header(HEADER_TOKEN) token: String): Single<Result<BindHostingWalletBean>>
 
     /**
-     * 发送短信验证码
+     * 2.发送短信验证码
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/sendSmsCode")
@@ -199,7 +199,7 @@ interface MarketingApi {
     fun sendSmsCode(@Header(HEADER_TOKEN) token: String, @Field("mobile") mobile: String): Single<Result<String>>
 
     /**
-     * 验证短信验证码
+     * 3.验证短信验证码
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/validateSmsCode")
@@ -209,7 +209,7 @@ interface MarketingApi {
                         @Field("code") code: String): Single<Result<CheckCodeBean>>
 
     /**
-     * 绑定开通钱包
+     * 4.绑定开通钱包
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/bindHostingWallet")
@@ -219,24 +219,24 @@ interface MarketingApi {
                           @Field("salt") salt: String): Single<Result<BindHostingWalletBean>>
 
     /**
-     * 查询储值地址
+     * 5.查询储值地址
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/getDepositWallets")
     @FormUrlEncoded
     fun getDepositWallets(@Header(HEADER_TOKEN) token: String,
                           @Field("encPassword") encPassword: String,
-                          @Field("salt") salt: String): Single<Result<DepositWalletsBean>>
+                          @Field("salt") salt: String): Single<Result<List<DepositWalletsBean>>>
 
     /**
-     * 准备输入支付密码
+     * 6.准备输入支付密码
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/payPwd/prepareInputPwd")
     fun prepareInputPwd(@Header(HEADER_TOKEN) token: String): Single<Result<CheckCodeBean>>
 
     /**
-     * 验证支付密码
+     * 7.验证支付密码
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/payPwd/validatePaymentPassword")
@@ -246,14 +246,14 @@ interface MarketingApi {
                                 @Field("salt") salt: String): Single<Result<ValidatePaymentPasswordBean>>
 
     /**
-     * 密码锁定规则
+     * 8.密码锁定规则
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/payPwd/getLockRule")
     fun getLockRule(@Header(HEADER_TOKEN) token: String): Single<Result<String>>
 
     /**
-     * 创建验证密码上下文
+     * 9.创建验证密码上下文
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/payPwd/createPayPwdSecurityContext")
@@ -263,7 +263,7 @@ interface MarketingApi {
     ): Single<Result<String>>
 
     /**
-     * 设置支付密码
+     * 10.设置支付密码
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/payPwd/initialPaymentPassword")
@@ -273,7 +273,7 @@ interface MarketingApi {
                                @Field("salt") salt: String): Single<Result<String>>
 
     /**
-     * 查询支付密码状态
+     * 11.查询支付密码状态
      * @return UNLOCKED("未锁定"),LOCKED("已锁定"),BLANK("空白");
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
@@ -282,7 +282,7 @@ interface MarketingApi {
 
 
     /**
-     * 资产预览
+     * 12.资产预览
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/asset/getAssetOverview")
@@ -290,24 +290,24 @@ interface MarketingApi {
 
 
     /**
-     * 上架资产
+     * 13.上架资产
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/asset/listAsset")
-    fun listAsset(@Header(HEADER_TOKEN) token: String): Single<Result<String>>
+    fun listAsset(@Header(HEADER_TOKEN) token: String): Single<Result<List<TrustAssetBean>>>
 
     /**
-     * 搜索上架资产
+     * 14.搜索上架资产
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/asset/searchAssetList")
     @FormUrlEncoded
     fun searchAssetList(@Header(HEADER_TOKEN) token: String,
                         @Field("keyword") keyword: String,
-                        @Field("candidateSize") candidateSize: Int): Single<Result<String>>
+                        @Field("candidateSize") candidateSize: Int = 1): Single<Result<List<TrustAssetBean>>>
 
     /**
-     * 换绑手机发送短信验证码
+     * 15.换绑手机发送短信验证码
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/mobileUser/sendSmsCode")
@@ -316,7 +316,7 @@ interface MarketingApi {
                           @Field("mobile") mobile: String): Single<Result<String>>
 
     /**
-     * 验证换绑短信验证码
+     * 16.验证换绑短信验证码
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/mobileUser/validateSmsCode")
@@ -326,7 +326,7 @@ interface MarketingApi {
                               @Field("code") code: String): Single<Result<String>>
 
     /**
-     * 换绑手机
+     * 17.换绑手机
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/mobileUser/updateMobile")
@@ -336,55 +336,56 @@ interface MarketingApi {
                      @Field("code") code: String): Single<Result<String>>
 
     /**
-     * 查询手机用户
+     * 18.查询手机用户
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/mobileUser/getMobileUser")
     fun getMobileUser(@Header(HEADER_TOKEN) token: String): Single<Result<GetMobileUserBean>>
 
     /**
-     * 查询充值订单分页
+     * 19.查询充值订单分页
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/pay/queryDepositOrderPage")
     @FormUrlEncoded
     fun queryDepositOrderPage(@Header(HEADER_TOKEN) token: String,
-                              @Field("assetCode") assetCode: String): Single<Result<PagedList<QueryDepositOrderPageBean>>>
+                              @Field("assetCode") assetCode: String,
+                              @Field("number") number: String,
+                              @Field("size") size: String): Single<Result<PagedList<QueryDepositOrderPageBean>>>
 
     /**
-     * 查询单笔充值订单
+     * 20.查询单笔充值订单
      */
-    // todo urlerror
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
-    @POST("bemember/wallet/pay/queryDepositOrderPage")
+    @POST("bemember/wallet/pay/getDepositOrder")
     @FormUrlEncoded
-    fun querySingleDepositOrderPage(@Header(HEADER_TOKEN) token: String,
-                                    @Field("id") id: String): Single<Result<QueryDepositOrderPageBean>>
+    fun getDepositOrder(@Header(HEADER_TOKEN) token: String,
+                        @Field("id") id: String): Single<Result<QueryDepositOrderPageBean>>
 
     /**
-     * 查询取现订单分页
+     * 21.查询取现订单分页
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/pay/queryWithdrawOrderPage")
     @FormUrlEncoded
     fun queryWithdrawOrderPage(@Header(HEADER_TOKEN) token: String,
                                @Field("assetCode") assetCode: String,
+                               @Field("number") number: String,
+                               @Field("size") size: String,
                                @Field("startTime") startTime: String,
                                @Field("endTime") endTime: String): Single<Result<PagedList<QueryWithdrawOrderPageBean>>>
 
     /**
-     * 查询单笔取现订单
+     * 22.查询单笔取现订单
      */
-    // todo urlerror
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
-    @POST("bemember/wallet/pay/queryWithdrawOrderPage")
+    @POST("bemember/wallet/pay/getWithdrawOrder")
     @FormUrlEncoded
-    fun querySingleWithdrawOrderPage(@Header(HEADER_TOKEN) token: String,
-                                     @Field("sourceCode") sourceCode: String,
-                                     @Field("requestNo") requestNo: String): Single<Result<QueryWithdrawOrderPageBean>>
+    fun getWithdrawOrder(@Header(HEADER_TOKEN) token: String,
+                         @Field("requestNo") requestNo: String): Single<Result<QueryWithdrawOrderPageBean>>
 
     /**
-     * 取现
+     * 23.取现
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/pay/withdraw")
@@ -395,7 +396,7 @@ interface MarketingApi {
                  @Field("receiverAddress") receiverAddress: String): Single<Result<WithdrawBean>>
 
     /**
-     * 转账
+     * 24.转账
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/pay/transfer")
@@ -407,17 +408,16 @@ interface MarketingApi {
                  @Field("senderMobileUserId") senderMobileUserId: String): Single<Result<TransferBean>>
 
     /**
-     * 查询单笔转账
+     * 24.查询单笔转账
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/pay/getTransferOrder")
     @FormUrlEncoded
     fun getTransferOrder(@Header(HEADER_TOKEN) token: String,
-                         @Field("sourceCode") sourceCode: String,
                          @Field("requestNo") requestNo: String): Single<Result<TransferBean>>
 
     /**
-     * 查询转账分页
+     * 25.查询转账分页
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/pay/queryTransferOrderPage")
@@ -428,6 +428,33 @@ interface MarketingApi {
                                @Field("endTime") endTime: String,
                                @Field("payeeUid") payeeUid: String,
                                @Field("payerUid") payerUid: String): Single<Result<PagedList<TransferBean>>>
+
+    /**
+     * 26.查询会员信息和托管id
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/mobileUser/getMemberAndMobileUserInfo")
+    @FormUrlEncoded
+    fun getMemberAndMobileUserInfo(@Header(HEADER_TOKEN) token: String,
+                                   @Field("mobile") mobile: String): Single<Result<GetMemberAndMobileUserInfoBean>>
+
+    /**
+     * 27.查询余额
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/asset/getBalance")
+    @FormUrlEncoded
+    fun getBalance(@Header(HEADER_TOKEN) token: String,
+                   @Field("assetCode") assetCode: String): Single<Result<String>>
+
+    /**
+     * 26.查询单个币种储值地址
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/getDepositWallet")
+    @FormUrlEncoded
+    fun getDepositWallet(@Header(HEADER_TOKEN) token: String,
+                         @Field("assetCode") assetCode: String): Single<Result<DepositWalletsBean>>
 
 
     companion object {

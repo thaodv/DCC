@@ -8,13 +8,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.checkWeak
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
 import io.wexchain.android.common.tools.rsa.EncryptUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.ScfOperations
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.passwordview.PassWordLayout

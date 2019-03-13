@@ -11,6 +11,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportAddressBinding
 
 class PassportAddressActivity : BindActivity<ActivityPassportAddressBinding>() {
+
     override val contentLayoutId: Int = R.layout.activity_passport_address
 
     override fun onCreate(savedInstanceState: Bundle?) {

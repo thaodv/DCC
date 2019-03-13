@@ -3,12 +3,12 @@ package io.wexchain.android.dcc.fragment.home
 import android.arch.lifecycle.Observer
 import android.view.View
 import io.wexchain.android.common.base.BindFragment
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity
 import io.wexchain.android.dcc.modules.digestpocket.DigestPocketHomeActivity
 import io.wexchain.android.dcc.modules.digital.DigitalCurrencyActivity

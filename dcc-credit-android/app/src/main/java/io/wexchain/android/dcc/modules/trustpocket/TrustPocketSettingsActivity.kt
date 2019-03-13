@@ -2,11 +2,11 @@ package io.wexchain.android.dcc.modules.trustpocket
 
 import android.os.Bundle
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.cert.SubmitIdActivity
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check

@@ -6,15 +6,14 @@ import android.os.Bundle
 import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.transTips
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.ScfOperations
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.trans.vm.Private2PublicVm
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.view.dialog.Private2PublicConfirmDialogFragment
-import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPrivate2PublicBinding
 import io.wexchain.digitalwallet.DigitalCurrency

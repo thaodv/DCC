@@ -9,13 +9,13 @@ import android.widget.TextView
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
+import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.dp2px
 import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.ScfOperations
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.android.dcc.view.dialog.FullScreenDialog

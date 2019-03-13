@@ -18,16 +18,16 @@ import com.journeyapps.barcodescanner.DefaultDecoderFactory
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.wexmarket.android.barcode.decodeBitmapQr
 import com.wexmarket.android.barcode.getDecodeFriendlyBitmapFromUri
-import io.wexchain.android.dcc.constant.RequestCodes
-import io.wexchain.android.common.base.BindActivity
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
+import io.wexchain.android.common.constant.RequestCodes
 import io.wexchain.android.common.isOnMainThread
 import io.wexchain.android.common.setWindowExtended
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityQrScannerBinding
 import io.wexchain.digitalwallet.util.isEthAddress
@@ -64,7 +64,7 @@ class QrScannerActivity : BindActivity<ActivityQrScannerBinding>() {
                 it.barcodeView.stopDecoding()
                 it.postDelayed({
                     startScan()
-                },1500L)
+                }, 1500L)
             }
 
         }
@@ -178,7 +178,7 @@ class QrScannerActivity : BindActivity<ActivityQrScannerBinding>() {
                 }
             }
             RequestCodes.AUTHENTICATE -> {
-                resultWaiting.compareAndSet(true,false)
+                resultWaiting.compareAndSet(true, false)
                 if (resultCode == Activity.RESULT_OK) {
                     //auth request done successfully
                     finish()

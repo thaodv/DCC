@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import com.bumptech.glide.Glide
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.onLongSaveImageToGallery
 import io.wexchain.dcc.BuildConfig

@@ -6,11 +6,11 @@ import android.os.Bundle
 import com.android.databinding.library.baseAdapters.BR
 import io.reactivex.Single
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.android.dcc.vm.PagedVm

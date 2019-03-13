@@ -22,19 +22,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/include_toolbar"
-            />
+            layout="@layout/include_toolbar"/>
 
         <include
             android:id="@+id/section_currency_summary"
             layout="@layout/include_currency_summary"
-            app:vm="@{vm}"
-            />
+            app:vm="@{vm}"/>
 
         <View
             android:id="@+id/divider_h1"
@@ -46,6 +43,7 @@
         <include
             android:id="@+id/section_quote"
             layout="@layout/include_currency_quote"
+            android:visibility="gone"
             app:coinDetail="@{vm.coinDetail}"
             />
 
@@ -54,6 +52,7 @@
             style="@style/DividerHorizontal"
             android:layout_marginLeft="@dimen/content_padding_horizontal"
             android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:visibility="gone"
             />
 
         <include
@@ -66,28 +65,35 @@
             />
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal"
-                >
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_weight="1.2"
+                android:background="@drawable/bg_digest_button"
+                android:text="充到托管钱包"
+                android:textSize="16sp"/>
 
             <LinearLayout
-                    android:id="@+id/btn_to_transfer"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginLeft="@dimen/content_padding_horizontal"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:background="@drawable/background_button"
-                    >
+                android:id="@+id/btn_to_transfer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/bg_digest_button"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_transfer"
-                    />
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -95,28 +101,26 @@
                     android:layout_marginLeft="4dp"
                     android:text="@string/transfer"
                     android:textColor="@color/text_color_button"
-                    android:textSize="16sp"
-                    />
+                    android:textSize="16sp"/>
 
             </LinearLayout>
 
             <LinearLayout
-                    android:id="@+id/btn_to_collect"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="@dimen/content_padding_horizontal"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:background="@drawable/background_button"
-                    >
+                android:id="@+id/btn_to_collect"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/bg_digest_button"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_collect"
-                    />
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -124,8 +128,7 @@
                     android:layout_marginLeft="4dp"
                     android:text="@string/collect"
                     android:textColor="@color/text_color_button"
-                    android:textSize="16sp"
-                    />
+                    android:textSize="16sp"/>
 
             </LinearLayout>
 

@@ -1,10 +1,10 @@
 package io.wexchain.android.common.constant
 
-object Extras2 {
+object Extras {
     const val EXTRA_TITLE = "title"
 
-
     const val EXTRA_DIGITAL_CURRENCY = "digital_currency"
+    const val EXTRA_TRANSRECORE = "trans_record"
     const val EXTRA_DC_SELECTED = "digital_currency_selected"
     const val EXPECTED_SCAN_TYPE = "expected_scan_type"
     const val EXTRA_DIGITAL_TRANSACTION_ID = "digital_transaction_id"
@@ -27,4 +27,30 @@ object Extras2 {
     const val EXTRA_PDF_URL = "common_pdf_url"
     const val FROM_AUTH = "from_auth"
     const val FROM_IMPORT = "from_import"
+
+    const val NEEDSAVEPENDDING = "needsavependding"
+    const val SAVEDPENDDING = "savedpendding"
+    const val EXTRA_EDIT_TRANSACTION = "edit_transaction"
+
+    const val EXTRA_PICKAVATAR = "pick_avatar"
+    const val EXTRA_PICKAVATAR_BACK = "pick_avatar_back"
+
+    const val EXTRA_SELECT_ADDRESS = "select_address"
+    const val EXTRA_SELECT_TRANSRECORD = "select_trans_record"
+    const val EXTRA_PAY_MONEY = "pay_money"
+    const val EXTRA_CERT_TYPE = "cert_type"
+
+    const val EXTRA_REDPACKET_START_TIME = "redpacket_start_time"
+    const val EXTRA_REDPACKET_END_TIME = "redpacket_end_time"
+
+
+    const val Searchain_BASE = "http://www.searchain.io"
+    const val Searchain = "http://www.searchain.io/address?from=1000&address="
+
+    const val SP_SELECTED_NODE_FILE = "select_node_file"
+    const val SP_SELECTED_NODE = "select_node"
+    const val SP_VERSION_NAME = "version_name"
+    const val SP_TRUST_PUBKEY = "pubKey"
+    const val SP_TRUST_MOBILE_PHONE = "trust_mobile_phone"
+
 }

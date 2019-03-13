@@ -18,7 +18,7 @@ import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.ScfOperations
-import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.dcc.fragment.home.FindFragment
 import io.wexchain.android.dcc.fragment.home.MineFragment
 import io.wexchain.android.dcc.fragment.home.PocketFragment

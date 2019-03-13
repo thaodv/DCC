@@ -3,7 +3,8 @@ package io.wexchain.android.dcc.tools;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import io.wexchain.android.dcc.constant.Extras;
+import io.wexchain.android.common.constant.Extras;
+
 
 /**
  * @author Created by Wangpeng on 16/6/13.

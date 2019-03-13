@@ -39,6 +39,10 @@
                     android:host="bitexpress"
                     android:pathPrefix="/loadingactivity"
                     android:scheme="scheme"/>
+                <data
+                    android:host="bitexpress"
+                    android:pathPrefix="/be"
+                    android:scheme="launchapp"/>
             </intent-filter>
         </activity>
         <activity
@@ -312,11 +316,9 @@
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenStep1Activity"
             android:label="开通托管钱包">
         </activity>
-        <activity
-            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenStep2Activity">
+        <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenStep2Activity">
         </activity>
-        <activity
-            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneActivity">
+        <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneActivity">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneBindActivity"
@@ -333,6 +335,26 @@
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPwdRestActivity"
             android:label="设置新密码">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trustpocket.SearchAreaActivity"
+            android:label="选择国家/地区">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustRechargeActivity"
+            android:label="充币">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustChooseCoinActivity"
+            android:label="选择币种">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustWithdrawActivity"
+            android:label="提币">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustRechargeRecordsActivity"
+            android:label="充值记录">
         </activity>
     </application>
 

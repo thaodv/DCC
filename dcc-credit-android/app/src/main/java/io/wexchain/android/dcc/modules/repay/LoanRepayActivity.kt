@@ -4,13 +4,13 @@ import android.content.ClipData
 import android.os.Bundle
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.Pop
+import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.modules.trans.activity.CreateTransactionActivity
-import io.wexchain.android.common.base.BindActivity
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.android.dcc.repo.db.AddressBook
 import io.wexchain.android.dcc.repo.db.CurrencyMeta

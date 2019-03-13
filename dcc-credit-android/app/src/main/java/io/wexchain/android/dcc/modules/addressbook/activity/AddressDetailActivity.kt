@@ -4,10 +4,10 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.Gravity
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.repo.db.AddressBook
 import io.wexchain.android.dcc.repo.db.TransRecord
 import io.wexchain.android.dcc.tools.CommonUtils

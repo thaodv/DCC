@@ -14,7 +14,7 @@ import io.wexchain.android.common.fixPrice
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.dcc.view.dialog.BsxEthBuyConfirmDialogFragment
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.dcc.R

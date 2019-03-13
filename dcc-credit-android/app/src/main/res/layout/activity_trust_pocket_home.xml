@@ -96,7 +96,7 @@
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:src="@drawable/icon_trust_in"/>
+                    android:src="@drawable/icon_trust_in_white"/>
 
                 <TextView
                     android:layout_width="wrap_content"

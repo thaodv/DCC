@@ -2,11 +2,11 @@ package io.wexchain.android.dcc.modules.passport
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.home.HomeActivity
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.fragment.CreateProtectFragment

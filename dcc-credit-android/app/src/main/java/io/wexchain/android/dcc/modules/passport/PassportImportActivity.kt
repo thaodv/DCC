@@ -7,14 +7,14 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.*
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.modules.home.CreateScfAccountActivity
-import io.wexchain.android.dcc.modules.other.LoadingActivity
 import io.wexchain.android.dcc.chain.PassportOperations
 import io.wexchain.android.dcc.chain.ScfOperations
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.fragment.ewallet.PasteKeystoreFragment
 import io.wexchain.android.dcc.fragment.ewallet.PastePrivateKeyFragment
+import io.wexchain.android.dcc.modules.home.CreateScfAccountActivity
+import io.wexchain.android.dcc.modules.other.LoadingActivity
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPassportImportBinding

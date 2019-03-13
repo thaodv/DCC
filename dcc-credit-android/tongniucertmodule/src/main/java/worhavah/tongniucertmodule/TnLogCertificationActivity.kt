@@ -7,7 +7,7 @@ import com.githang.statusbar.StatusBarCompat
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.base.BindActivity
-import io.wexchain.android.common.constant.Extras2
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.dccchainservice.ChainGateway
 import worhavah.certs.tools.CertOperations
 import worhavah.certs.tools.CertOperations.saveTnLogCertExpired
@@ -46,7 +46,7 @@ class TnLogCertificationActivity : BindActivity<ActivityTncertificationDataCmBin
         })
         vm.showDataEvent.observe(this, Observer {
             navigateTo(TNCertDataActivity::class.java){
-                putExtra(Extras2.EXTRA_CERT_ORDER_ID,CertOperations.getTNCertOrderId())
+                putExtra(Extras.EXTRA_CERT_ORDER_ID,CertOperations.getTNCertOrderId())
             }
         })
         binding.vm = vm

@@ -5,11 +5,11 @@ import com.wexmarket.android.network.Networking
 import io.reactivex.Single
 import io.reactivex.rxkotlin.zipWith
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.modules.digital.DigitalCurrencyActivity
 import io.wexchain.android.dcc.modules.digital.SearchDigitalCurrencyActivity
 import io.wexchain.android.dcc.modules.selectnode.SelectNodeActivity

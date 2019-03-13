@@ -14,10 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindFragment
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm
 import io.wexchain.android.dcc.modules.bsx.BsxMarketActivity
 import io.wexchain.android.dcc.modules.cert.MyCreditActivity

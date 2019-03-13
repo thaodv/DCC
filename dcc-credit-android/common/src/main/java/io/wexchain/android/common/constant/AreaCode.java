@@ -6,41 +6,41 @@ package io.wexchain.android.common.constant;
  */
 public interface AreaCode {
     
-    String res = "[\n" + "{\"country_name\":\"阿富汗\",\"country_en\":\"Afghanistan\",\"country_code\":\"AF\"," +
-            "\"dial_code\":\"93\"},\n" + "{\"country_name\":\"阿尔巴尼亚\",\"country_en\":\"Albania\"," +
-            "\"country_code\":\"AL\",\"dial_code\":\"355\"},\n" + "{\"country_name\":\"阿尔及利亚\"," +
-            "\"country_en\":\"Algeria\",\"country_code\":\"DZ\",\"dial_code\":\"213\"},\n" +
-            "{\"country_name\":\"美属萨摩亚\",\"country_en\":\"American Samoa\",\"country_code\":\"AS\"," +
-            "\"dial_code\":\"1684\"},\n" + "{\"country_name\":\"安道尔\",\"country_en\":\"Andorra\"," +
-            "\"country_code\":\"AD\",\"dial_code\":\"376\"},\n" + "{\"country_name\":\"安哥拉\"," +
-            "\"country_en\":\"Angola\",\"country_code\":\"AO\",\"dial_code\":\"244\"},\n" +
-            "{\"country_name\":\"安圭拉\",\"country_en\":\"Anguilla\",\"country_code\":\"AI\"," +
-            "\"dial_code\":\"1264\"},\n" + "{\"country_name\":\"安提瓜和巴布达\",\"country_en\":\"Antigua and " +
-            "Barbuda\",\"country_code\":\"AG\",\"dial_code\":\"1268\"},\n" + "{\"country_name\":\"阿根廷\"," +
-            "\"country_en\":\"Argentina\",\"country_code\":\"AR\",\"dial_code\":\"54\"},\n" +
-            "{\"country_name\":\"亚美尼亚\",\"country_en\":\"Armenia\",\"country_code\":\"AM\"," +
-            "\"dial_code\":\"374\"},\n" + "{\"country_name\":\"阿鲁巴\",\"country_en\":\"Aruba\"," +
-            "\"country_code\":\"AW\",\"dial_code\":\"297\"},\n" + "{\"country_name\":\"澳大利亚\"," +
-            "\"country_en\":\"Australia\",\"country_code\":\"AU\",\"dial_code\":\"61\"},\n" +
-            "{\"country_name\":\"奥地利\",\"country_en\":\"Austria\",\"country_code\":\"AT\"," +
-            "\"dial_code\":\"43\"},\n" + "{\"country_name\":\"阿塞拜疆\",\"country_en\":\"Azerbaijan\"," +
-            "\"country_code\":\"AZ\",\"dial_code\":\"994\"},\n" + "{\"country_name\":\"巴哈马\"," +
-            "\"country_en\":\"Bahamas\",\"country_code\":\"BS\",\"dial_code\":\"1242\"},\n" +
-            "{\"country_name\":\"巴林\",\"country_en\":\"Bahrain\",\"country_code\":\"BH\"," +
-            "\"dial_code\":\"973\"},\n" + "{\"country_name\":\"孟加拉国\",\"country_en\":\"Bangladesh\"," +
-            "\"country_code\":\"BD\",\"dial_code\":\"880\"},\n" + "{\"country_name\":\"巴巴多斯\"," +
-            "\"country_en\":\"Barbados\",\"country_code\":\"BB\",\"dial_code\":\"1246\"},\n" +
-            "{\"country_name\":\"白俄罗斯\",\"country_en\":\"Belarus\",\"country_code\":\"BY\"," +
-            "\"dial_code\":\"375\"},\n" + "{\"country_name\":\"比利时\",\"country_en\":\"Belgium\"," +
-            "\"country_code\":\"BE\",\"dial_code\":\"32\"},\n" + "{\"country_name\":\"伯利兹\"," +
-            "\"country_en\":\"Belize\",\"country_code\":\"BZ\",\"dial_code\":\"501\"},\n" +
-            "{\"country_name\":\"贝宁\",\"country_en\":\"Benin\",\"country_code\":\"BJ\"," +
-            "\"dial_code\":\"229\"},\n" + "{\"country_name\":\"百慕大群岛\",\"country_en\":\"Bermuda\"," +
-            "\"country_code\":\"BM\",\"dial_code\":\"1441\"},\n" + "{\"country_name\":\"不丹\"," +
-            "\"country_en\":\"Bhutan\",\"country_code\":\"BT\",\"dial_code\":\"975\"},\n" +
-            "{\"country_name\":\"玻利维亚\",\"country_en\":\"Bolivia\",\"country_code\":\"BO\"," +
-            "\"dial_code\":\"591\"},\n" + "{\"country_name\":\"波斯尼亚和黑塞哥维那\",\"country_en\":\"Bosnia and " +
-            "Herzegovina\",\"country_code\":\"BA\",\"dial_code\":\"387\"},\n" +
+    String res = "{\"res\":[\n" + "{\"country_name\":\"阿富汗\",\"country_en\":\"Afghanistan\"," +
+            "\"country_code\":\"AF\",\"dial_code\":\"93\"},\n" + "{\"country_name\":\"阿尔巴尼亚\"," +
+            "\"country_en\":\"Albania\",\"country_code\":\"AL\",\"dial_code\":\"355\"},\n" +
+            "{\"country_name\":\"阿尔及利亚\",\"country_en\":\"Algeria\",\"country_code\":\"DZ\"," +
+            "\"dial_code\":\"213\"},\n" + "{\"country_name\":\"美属萨摩亚\",\"country_en\":\"American Samoa\"," +
+            "\"country_code\":\"AS\",\"dial_code\":\"1684\"},\n" + "{\"country_name\":\"安道尔\"," +
+            "\"country_en\":\"Andorra\",\"country_code\":\"AD\",\"dial_code\":\"376\"},\n" +
+            "{\"country_name\":\"安哥拉\",\"country_en\":\"Angola\",\"country_code\":\"AO\"," +
+            "\"dial_code\":\"244\"},\n" + "{\"country_name\":\"安圭拉\",\"country_en\":\"Anguilla\"," +
+            "\"country_code\":\"AI\",\"dial_code\":\"1264\"},\n" + "{\"country_name\":\"安提瓜和巴布达\"," +
+            "\"country_en\":\"Antigua and Barbuda\",\"country_code\":\"AG\",\"dial_code\":\"1268\"},\n" +
+            "{\"country_name\":\"阿根廷\",\"country_en\":\"Argentina\",\"country_code\":\"AR\"," +
+            "\"dial_code\":\"54\"},\n" + "{\"country_name\":\"亚美尼亚\",\"country_en\":\"Armenia\"," +
+            "\"country_code\":\"AM\",\"dial_code\":\"374\"},\n" + "{\"country_name\":\"阿鲁巴\"," +
+            "\"country_en\":\"Aruba\",\"country_code\":\"AW\",\"dial_code\":\"297\"},\n" +
+            "{\"country_name\":\"澳大利亚\",\"country_en\":\"Australia\",\"country_code\":\"AU\"," +
+            "\"dial_code\":\"61\"},\n" + "{\"country_name\":\"奥地利\",\"country_en\":\"Austria\"," +
+            "\"country_code\":\"AT\",\"dial_code\":\"43\"},\n" + "{\"country_name\":\"阿塞拜疆\"," +
+            "\"country_en\":\"Azerbaijan\",\"country_code\":\"AZ\",\"dial_code\":\"994\"},\n" +
+            "{\"country_name\":\"巴哈马\",\"country_en\":\"Bahamas\",\"country_code\":\"BS\"," +
+            "\"dial_code\":\"1242\"},\n" + "{\"country_name\":\"巴林\",\"country_en\":\"Bahrain\"," +
+            "\"country_code\":\"BH\",\"dial_code\":\"973\"},\n" + "{\"country_name\":\"孟加拉国\"," +
+            "\"country_en\":\"Bangladesh\",\"country_code\":\"BD\",\"dial_code\":\"880\"},\n" +
+            "{\"country_name\":\"巴巴多斯\",\"country_en\":\"Barbados\",\"country_code\":\"BB\"," +
+            "\"dial_code\":\"1246\"},\n" + "{\"country_name\":\"白俄罗斯\",\"country_en\":\"Belarus\"," +
+            "\"country_code\":\"BY\",\"dial_code\":\"375\"},\n" + "{\"country_name\":\"比利时\"," +
+            "\"country_en\":\"Belgium\",\"country_code\":\"BE\",\"dial_code\":\"32\"},\n" +
+            "{\"country_name\":\"伯利兹\",\"country_en\":\"Belize\",\"country_code\":\"BZ\"," +
+            "\"dial_code\":\"501\"},\n" + "{\"country_name\":\"贝宁\",\"country_en\":\"Benin\"," +
+            "\"country_code\":\"BJ\",\"dial_code\":\"229\"},\n" + "{\"country_name\":\"百慕大群岛\"," +
+            "\"country_en\":\"Bermuda\",\"country_code\":\"BM\",\"dial_code\":\"1441\"},\n" +
+            "{\"country_name\":\"不丹\",\"country_en\":\"Bhutan\",\"country_code\":\"BT\"," +
+            "\"dial_code\":\"975\"},\n" + "{\"country_name\":\"玻利维亚\",\"country_en\":\"Bolivia\"," +
+            "\"country_code\":\"BO\",\"dial_code\":\"591\"},\n" + "{\"country_name\":\"波斯尼亚和黑塞哥维那\"," +
+            "\"country_en\":\"Bosnia and Herzegovina\",\"country_code\":\"BA\",\"dial_code\":\"387\"},\n" +
             "{\"country_name\":\"博茨瓦纳\",\"country_en\":\"Botswana\",\"country_code\":\"BW\"," +
             "\"dial_code\":\"267\"},\n" + "{\"country_name\":\"巴西\",\"country_en\":\"Brazil\"," +
             "\"country_code\":\"BR\",\"dial_code\":\"55\"},\n" + "{\"country_name\":\"文莱\"," +
@@ -295,6 +295,6 @@ public interface AreaCode {
             "{\"country_name\":\"也门\",\"country_en\":\"Yemen\",\"country_code\":\"YE\"," +
             "\"dial_code\":\"967\"},\n" + "{\"country_name\":\"赞比亚\",\"country_en\":\"Zambia\"," +
             "\"country_code\":\"ZM\",\"dial_code\":\"260\"},\n" + "{\"country_name\":\"津巴布韦\"," +
-            "\"country_en\":\"Zimbabwe\",\"country_code\":\"ZW\",\"dial_code\":\"263\"}\n" + "]";
+            "\"country_en\":\"Zimbabwe\",\"country_code\":\"ZW\",\"dial_code\":\"263\"}\n" + "]}";
     
 }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.widget.TextView
 import com.githang.statusbar.StatusBarCompat
 import io.wexchain.android.common.base.BaseCompatActivity
-import io.wexchain.android.common.constant.Extras2
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.postOnMainThread
 import worhavah.certs.tools.CertOperations
 import worhavah.mobilecertmodule.R
@@ -12,7 +12,7 @@ import worhavah.mobilecertmodule.R
 class TNCertDataActivity : BaseCompatActivity() {
 
     private val orderId
-        get() = intent.getLongExtra(Extras2.EXTRA_CERT_ORDER_ID, -1L)
+        get() = intent.getLongExtra(Extras.EXTRA_CERT_ORDER_ID, -1L)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -4,11 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
+import io.wexchain.android.common.constant.RequestCodes
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.modules.other.QrScannerActivity
-import io.wexchain.android.dcc.constant.Extras
-import io.wexchain.android.dcc.constant.RequestCodes
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 import io.wexchain.android.dcc.tools.isAddressShortNameValid
 import io.wexchain.dcc.R

@@ -9,7 +9,7 @@ import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.CertOperations.saveCmLogCertExpired
 import io.wexchain.android.dcc.chain.PassportOperations
-import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.vm.CertificationDataVm
 import io.wexchain.android.dcc.vm.ViewModelHelper

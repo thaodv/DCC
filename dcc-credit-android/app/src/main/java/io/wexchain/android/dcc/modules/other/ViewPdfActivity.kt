@@ -4,10 +4,10 @@ import android.os.Bundle
 import com.github.barteksc.pdfviewer.PDFView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.dcc.R
 
 class ViewPdfActivity : BaseCompatActivity() {

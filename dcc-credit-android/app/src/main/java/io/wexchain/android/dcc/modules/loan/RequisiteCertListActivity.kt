@@ -7,13 +7,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.Pop
+import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
-import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.PassportOperations
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.modules.cert.SubmitBankCardActivity
 import io.wexchain.android.dcc.modules.cert.SubmitCommunicationLogActivity

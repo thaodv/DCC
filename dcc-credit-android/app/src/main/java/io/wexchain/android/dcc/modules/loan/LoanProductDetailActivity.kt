@@ -3,12 +3,12 @@ package io.wexchain.android.dcc.modules.loan
 import android.os.Bundle
 import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.toast
-import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityLoanProductDetailBinding

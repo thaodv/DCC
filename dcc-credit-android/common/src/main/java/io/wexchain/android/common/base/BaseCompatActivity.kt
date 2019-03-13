@@ -12,7 +12,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import io.reactivex.Single
 import io.wexchain.android.common.R
-import io.wexchain.android.common.constant.Extras2
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.view.FullScreenDialog
 
 abstract class BaseCompatActivity : AppCompatActivity() {
@@ -21,7 +21,7 @@ abstract class BaseCompatActivity : AppCompatActivity() {
     protected var toolbar: Toolbar? = null
 
     protected val intendedTitle: String?
-        get() = intent.getStringExtra(Extras2.EXTRA_TITLE)
+        get() = intent.getStringExtra(Extras.EXTRA_TITLE)
 
     protected val currentActivity: Activity
         get() = ActivityCollector.currentActivity

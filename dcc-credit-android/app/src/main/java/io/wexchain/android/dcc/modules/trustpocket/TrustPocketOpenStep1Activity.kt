@@ -1,14 +1,18 @@
 package io.wexchain.android.dcc.modules.trustpocket
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
+import com.google.gson.Gson
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.*
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
-import io.wexchain.android.dcc.constant.Extras
+import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.vm.TrustPocketOpenVm
@@ -25,6 +29,8 @@ class TrustPocketOpenStep1Activity : BindActivity<ActivityTrustPocketOpenStep1Bi
 
     var phoneNum: String = ""
 
+    var mDialCode: String = "86"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
@@ -39,6 +45,31 @@ class TrustPocketOpenStep1Activity : BindActivity<ActivityTrustPocketOpenStep1Bi
         }
 
         binding.vm = viewModel
+
+        val country = resources.configuration.locale.country
+
+        LogUtils.i("country", country)
+
+        val mDatas: AreaCodeBean = Gson().fromJson(AreaCode.res, AreaCodeBean::class.java)
+        val res = mDatas.res
+
+        for (item in res) {
+            if (item.country_code == country) {
+                mDialCode = item.dial_code
+            }
+        }
+
+        LogUtils.i("dialCode", mDialCode)
+        binding.tvArea.text = "+$mDialCode"
+
+        binding.tvArea.onClick {
+            startActivityForResult(
+                    Intent(this, SearchAreaActivity::class.java),
+                    RequestCodes.CHOOSE_DIAL_CODE
+            )
+
+        }
+
         binding.btGet.setOnClickListener {
             viewModel.code.set("")
             val phoneNum = binding.etPhone.text.toString()
@@ -102,5 +133,17 @@ class TrustPocketOpenStep1Activity : BindActivity<ActivityTrustPocketOpenStep1Bi
                 }, {
                     toast(it.message.toString())
                 })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            RequestCodes.CHOOSE_DIAL_CODE -> {
+                if (resultCode == ResultCodes.RESULT_OK) {
+                    mDialCode = data!!.getStringExtra("dialCode")
+                    binding.tvArea.text = "+$mDialCode"
+                }
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 }

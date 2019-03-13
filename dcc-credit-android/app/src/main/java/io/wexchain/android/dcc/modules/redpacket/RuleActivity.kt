@@ -7,9 +7,9 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Button
 import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.chain.GardenOperations
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.util.DateUtil
 

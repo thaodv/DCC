@@ -12,8 +12,8 @@ import android.widget.RadioGroup
 import com.wexmarket.android.network.Networking
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.dcc.App
-import io.wexchain.android.dcc.constant.Extras
 import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.dcc.R
