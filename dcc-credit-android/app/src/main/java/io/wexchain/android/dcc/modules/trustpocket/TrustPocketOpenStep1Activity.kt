@@ -76,7 +76,7 @@ class TrustPocketOpenStep1Activity : BindActivity<ActivityTrustPocketOpenStep1Bi
             if ("" == phoneNum) {
                 toast("请输入手机号码")
             } else {
-                requestReSendSmsCode(phoneNum)
+                requestReSendSmsCode("+$mDialCode$phoneNum")
             }
         }
 
@@ -87,7 +87,7 @@ class TrustPocketOpenStep1Activity : BindActivity<ActivityTrustPocketOpenStep1Bi
             if ("" == checkCodeValue) {
                 toast("请输入验证码")
             } else {
-                checkCode(binding.etPhone.text.toString(), checkCodeValue)
+                checkCode("+" + mDialCode + binding.etPhone.text.toString(), checkCodeValue)
             }
         }
     }

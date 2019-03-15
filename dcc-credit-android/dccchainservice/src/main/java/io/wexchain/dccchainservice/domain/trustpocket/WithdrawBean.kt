@@ -7,9 +7,9 @@ import com.google.gson.annotations.SerializedName
  * usage:
  */
 data class WithdrawBean(
-        @SerializedName("amount") val amount: String,
-        @SerializedName("mobileUserId") val mobileUserId: String,
+        @SerializedName("amount") val amount: AmountBean,
         @SerializedName("status") val status: Status,
+        @SerializedName("assetCode") val assetCode: String,
         @SerializedName("receiverAddress") val receiverAddress: String,
         @SerializedName("requestIdentity") val requestIdentity: RequestIdentity
 ) {
@@ -18,6 +18,10 @@ data class WithdrawBean(
         FAILED, //("失败")
         PROCESSING //("处理中")
     }
+
+    data class AmountBean(
+            @SerializedName("decimalValue") val decimalValue: String
+    )
 
     data class RequestIdentity(
             @SerializedName("sourceCode") val sourceCode: String,

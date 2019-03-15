@@ -18,6 +18,7 @@ import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.*
+import io.wexchain.dccchainservice.domain.trustpocket.QueryDepositOrderPageBean
 import io.wexchain.dccchainservice.util.DateUtil
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
@@ -688,6 +689,18 @@ object ViewModelHelper {
         }
     }
 
+    @JvmStatic
+    fun showTrustRechargeStatus(status: QueryDepositOrderPageBean.Status): String {
+
+        return when (status) {
+            QueryDepositOrderPageBean.Status.ACCEPTED -> "已接受"
+            QueryDepositOrderPageBean.Status.REJECTED -> "已拒绝"
+            QueryDepositOrderPageBean.Status.FAILURE -> "失败"
+            else -> {
+                "成功"
+            }
+        }
+    }
 
 }
 

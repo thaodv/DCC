@@ -1,7 +1,10 @@
 package io.wexchain.android.dcc.fragment.home
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.view.View
+import io.reactivex.rxkotlin.Singles
+import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.getViewModel
@@ -15,11 +18,13 @@ import io.wexchain.android.dcc.modules.digital.DigitalCurrencyActivity
 import io.wexchain.android.dcc.modules.trans.activity.DccExchangeActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustPocketHomeActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenTipActivity
+import io.wexchain.android.dcc.tools.StringUtils
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.DigitalAssetsAdapter
 import io.wexchain.android.dcc.vm.DigitalAssetsVm
 import io.wexchain.android.dcc.vm.ViewModelHelper
+import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentPocketBinding
 import io.wexchain.digitalwallet.Chain
@@ -27,6 +32,7 @@ import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 /**
  *Created by liuyang on 2018/9/27.
@@ -38,8 +44,10 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
 
     override val contentLayoutId: Int get() = R.layout.fragment_pocket
 
-    var isOpenTrustPocket:Boolean = false
+    var isOpenTrustPocket: Boolean = false
 
+
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
 
@@ -70,9 +78,68 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                 adapter.setList(tmp)
             }
         })
+
         binding.assets = assetsVm
         adapter.assetsVm = assetsVm
         binding.rvAssets.adapter = adapter
+
+
+        Singles.zip(
+                GardenOperations.refreshToken {
+                    App.get().marketingApi.getAssetOverview(it).check()
+                },
+                GardenOperations.refreshToken {
+                    App.get().marketingApi.getHostingWallet(it).check()
+                },
+                App.get().scfApi.getHoldingSum(App.get().passportRepository.currPassport.value!!.address).check())
+                .doMain()
+                .withLoading()
+                .subscribeBy(onSuccess = {
+
+                    val trustAmount = it.first.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal())
+
+                    binding.tvTrustAmount.text = "≈￥" + trustAmount.currencyToDisplayStr()
+
+                    val bsxAccount = if (null == it.third.corpus) {
+                        "0"
+                    } else StringUtils.keep4double(it.third.corpus)
+
+                    binding.tvBsx.text = "≈￥$bsxAccount"
+
+                    val digestAccountRnb = binding.tvDigestRnb.text.toString()
+
+                    var res = BigDecimal.ZERO
+
+                    if ("" == digestAccountRnb) {
+                        res = BigDecimal.ZERO
+                    } else {
+                        res = digestAccountRnb.toBigDecimal()
+                    }
+
+                    binding.assetsAmountValue.text = "￥" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).currencyToDisplayStr()
+                    binding.tvTotalUsdt.text = "≈" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).divide(App.get().mUsdtquote.toBigDecimal(), 4, RoundingMode.DOWN).currencyToDisplayStr() + " USDT"
+
+
+                    // 已开户
+                    if (it.second.mobileUserId != null) {
+                        isOpenTrustPocket = true
+                        binding.ivNext.visibility = View.VISIBLE
+                        binding.btOpen.visibility = View.GONE
+                        App.get().mobileUserId = it.second.mobileUserId
+
+                    } else {
+                        isOpenTrustPocket = false
+                        binding.ivNext.visibility = View.GONE
+                        binding.btOpen.visibility = View.VISIBLE
+                    }
+
+                }, onError = {
+                    // 未开户
+                    isOpenTrustPocket = false
+                    binding.ivNext.visibility = View.GONE
+                    binding.btOpen.visibility = View.VISIBLE
+                })
+
 
         GardenOperations
                 .refreshToken {
@@ -82,19 +149,21 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                 .withLoading()
                 .subscribe({
                     // 已开户
-                    if (it?.mobileUserId != null){
+                    if (it?.mobileUserId != null) {
                         isOpenTrustPocket = true
-                        binding.ivNext.visibility= View.VISIBLE
+                        binding.ivNext.visibility = View.VISIBLE
                         binding.btOpen.visibility = View.GONE
-                    }else{
+                        App.get().mobileUserId = it.mobileUserId
+
+                    } else {
                         isOpenTrustPocket = false
-                        binding.ivNext.visibility= View.GONE
+                        binding.ivNext.visibility = View.GONE
                         binding.btOpen.visibility = View.VISIBLE
                     }
                 }, {
                     // 未开户
                     isOpenTrustPocket = false
-                    binding.ivNext.visibility= View.GONE
+                    binding.ivNext.visibility = View.GONE
                     binding.btOpen.visibility = View.VISIBLE
                 })
 
@@ -104,11 +173,17 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
 
         binding.rlTrustPocket.onClick {
 
-            if(isOpenTrustPocket){
+            if (isOpenTrustPocket) {
                 navigateTo(TrustPocketHomeActivity::class.java)
-            }else{
+            } else {
                 navigateTo(TrustPocketOpenTipActivity::class.java)
             }
+        }
+
+        // todo change
+        binding.btOpen.onClick {
+            //navigateTo(TrustPocketOpenTipActivity::class.java)
+            navigateTo(TrustPocketHomeActivity::class.java)
         }
 
         binding.rlDigestPocket.onClick {

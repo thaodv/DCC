@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="14dp"
                     android:layout_marginRight="14dp"
-                    android:textColor="#4A4A4A"
+                    android:textColor="#fa4a82"
                     android:textSize="16sp"
                     tools:text="+86"/>
 
@@ -61,7 +61,7 @@
                     android:background="@null"
                     android:hint="请输入手机号"
                     android:inputType="phone"
-                    android:maxLength="11"
+                    android:maxLength="15"
                     android:maxLines="1"
                     android:text="@{vm.phoneNo}"
                     android:textColor="#9B9B9B"

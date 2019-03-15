@@ -15,6 +15,7 @@ import io.wexchain.digitalwallet.api.domain.front.CoinDetail
 import io.wexchain.digitalwallet.util.toBigDecimalSafe
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.math.RoundingMode
 
 /**
  * Created by sisel on 2018/1/23.
@@ -28,6 +29,8 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
     }
 
     val assetsSumValue = ObservableField<String>()
+    val assetsSumValue2 = ObservableField<String>()
+    val assetsSumValue3 = ObservableField<String>()
 
     val assetsFilter = ObservableField<Boolean>()
     val filterEvent = SingleLiveEvent<Void>()
@@ -65,9 +68,21 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
                         }
                     }
                     .fold(BigDecimal.ZERO) { acc, v -> acc + v }
-            "≈¥${sum.currencyToDisplayStr()}"
+            sum.currencyToDisplayStr()
         }
-        assetsSumValue.set(sumString)
+
+        assetsSumValue.set(if ("" == sumString) {
+            ""
+        } else {
+            "≈¥$sumString"
+        })
+        assetsSumValue2.set(if ("" == sumString) {
+            ""
+        } else {
+            "≈" + sumString.toBigDecimal().divide(App.get().mUsdtquote.toBigDecimal(), 4, RoundingMode.DOWN).currencyToDisplayStr() + " USDT"
+        })
+
+        assetsSumValue3.set(sumString)
     }
 
     /*fun updateHoldingAndQuote(list: List<DigitalCurrency>? = assets.value) {

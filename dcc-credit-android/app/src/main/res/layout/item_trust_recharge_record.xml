@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
+        <variable
+            name="bean"
+            type="io.wexchain.dccchainservice.domain.trustpocket.QueryDepositOrderPageBean"/>
+
+    </data>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:paddingTop="14dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="充币"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:paddingBottom="14dp"
+            android:text="@{bean.amount.decimalValue}"
+            android:textColor="#9B9B9B"
+            android:textSize="14sp"
+            tools:text="1000"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@+id/tv_account"
+            android:paddingBottom="14dp"
+            android:text="@{bean.assetCode}"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            tools:text="DCC"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@{ViewModelHelper.showTrustRechargeStatus(bean.status)}"
+            android:textColor="#FF4A4A4A"
+            android:textSize="14sp"
+            tools:text="待领取"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:paddingBottom="14dp"
+            android:text="@{ViewModelHelper.showRedPacketInviteTime(bean.createdTime)}"
+            android:textColor="#9B9B9B"
+            android:textSize="14sp"
+            tools:text="2018-08-08 08:08:08"/>
+
+        <View
+            style="@style/DividerHorizontal"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+</layout>

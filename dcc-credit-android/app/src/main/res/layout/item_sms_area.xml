@@ -2,6 +2,7 @@
 <layout>
 
     <data>
+
         <variable
             name="area"
             type="io.wexchain.android.common.constant.AreaCodeBean.AreaCodeItemBean"/>
@@ -35,6 +36,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:text="@{area.dial_code}"
+            android:textColor="#fa4a82"
             tools:text="86"/>
 
         <TextView
@@ -43,7 +45,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/tv_code"
-            android:text="+"/>
+            android:text="+"
+            android:textColor="#fa4a82"/>
 
         <View
             style="@style/DividerHorizontal"

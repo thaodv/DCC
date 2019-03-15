@@ -460,4 +460,9 @@
 
     <string name="redpacket_tip">“阳光可以领取糖果奖励，\n参与知识问答PK！”</string>
 
+    <string name="trust_transfer_tip">注：\n使用转账功能会转入对方的托管钱包，如要转到自己或他人的数字钱包，请使用<font color='#6144CC'>提币</font>功能
+
+</string>
+    <string name="title_activity_trust_coin_detail">TrustCoinDetailActivity</string>
+
 </resources>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33000000"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_delete_address_book"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_this_week"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:minHeight="30dp"
+            android:text="@string/this_week"
+            android:textColor="#FF404040"
+            android:textSize="18sp"/>
+
+        <View
+            style="@style/DividerHorizontal"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+
+        <TextView
+            android:id="@+id/tv_this_month"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:minHeight="30dp"
+            android:text="@string/this_month"
+            android:textColor="#FF404040"
+            android:textSize="18sp"/>
+
+        <View
+            style="@style/DividerHorizontal"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/tv_start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="#FFCECDD2"
+                android:gravity="center"
+                android:minWidth="90dp"
+                android:padding="5dp"
+                android:textColor="#FF404040"
+                android:textSize="13sp"
+                tools:text="2018/04/01"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="—"/>
+
+            <TextView
+                android:id="@+id/tv_end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="#FFCECDD2"
+                android:gravity="center"
+                android:minWidth="90dp"
+                android:padding="5dp"
+                android:textColor="#FF404040"
+                android:textSize="13sp"
+                tools:text="2018/04/01"/>
+
+            <Button
+                android:id="@+id/bt_sure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginLeft="15dp"
+                android:background="#FF6766CC"
+                android:minWidth="64dp"
+                android:text="@string/sure"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

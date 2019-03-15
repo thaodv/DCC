@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.resultOk
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
@@ -85,12 +86,30 @@ class TrustChooseCoinActivity : BaseCompatActivity(), TextWatcher, ItemViewClick
         if ("recharge" == mUse) {
             navigateTo(TrustRechargeActivity::class.java) {
                 putExtra("code", item!!.cryptoAssetConfig.code)
-                putExtra("url", item.url)
+                putExtra("url", if (null == item.url) "" else item.url)
             }
         } else if ("withdraw" == mUse) {
             navigateTo(TrustWithdrawActivity::class.java) {
                 putExtra("code", item!!.cryptoAssetConfig.code)
-                putExtra("url", item.url)
+                putExtra("url", if (null == item.url) "" else item.url)
+            }
+        } /*else if ("transfer" == mUse) {
+            navigateTo(TrustTransferCheckActivity::class.java) {
+                putExtra("code", item!!.cryptoAssetConfig.code)
+            }
+        }*/ else if ("reRecharge" == mUse) {
+            resultOk {
+                putExtra("code", item!!.cryptoAssetConfig.code)
+                putExtra("url", if (null == item.url) "" else item.url)
+            }
+        } else if ("reWithdraw" == mUse) {
+            resultOk {
+                putExtra("code", item!!.cryptoAssetConfig.code)
+                putExtra("url", if (null == item.url) "" else item.url)
+            }
+        } else if ("reTransfer" == mUse) {
+            resultOk {
+                putExtra("code", item!!.cryptoAssetConfig.code)
             }
         }
     }

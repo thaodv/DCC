@@ -204,20 +204,24 @@
         <attr name="draw_box_line_size" format="dimension"/>//输入线条大小
         <attr name="is_show_input_line" format="boolean"/>//是否显示输入线
         <attr name="pass_inputed_type">//密码输入显示内容
-            <flag name="circle" value="0" />
-            <flag name="stars" value="1" />
-            <flag name="text" value="2" />
+            <flag name="circle" value="0"/>
+            <flag name="stars" value="1"/>
+            <flag name="text" value="2"/>
         </attr>
         <attr name="box_draw_type">//密码框形状
-            <flag name="rect" value="0" />
-            <flag name="circle" value="1" />
-            <flag name="line" value="2" />
+            <flag name="rect" value="0"/>
+            <flag name="circle" value="1"/>
+            <flag name="line" value="2"/>
         </attr>
         <attr name="pass_leng">//密码长度 只考虑4 6 8
-            <flag name="four" value="4" />
-            <flag name="six" value="6" />
-            <flag name="eight" value="8" />
+            <flag name="four" value="4"/>
+            <flag name="six" value="6"/>
+            <flag name="eight" value="8"/>
         </attr>
     </declare-styleable>
+
+    <style name="DccLightTheme.App.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="DccLightTheme.App.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 </resources>

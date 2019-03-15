@@ -7,12 +7,19 @@ import com.google.gson.annotations.SerializedName
  * usage: 充值订单
  */
 data class QueryDepositOrderPageBean(
-        @SerializedName("amount") val amount: String,
+        @SerializedName("amount") val amount: AmountBean,
         @SerializedName("mobileUserId") val mobileUserId: String,
         @SerializedName("status") val status: Status,
         @SerializedName("id") val id: String,
-        @SerializedName("assetCode") val assetCode: String
+        @SerializedName("assetCode") val assetCode: String,
+        @SerializedName("createdTime") val createdTime: Long
+
 ) {
+
+    data class AmountBean(
+            @SerializedName("decimalValue") val decimalValue: String
+    )
+
     enum class Status {
         ACCEPTED,//"已接受"
         REJECTED, //"已拒绝"

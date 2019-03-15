@@ -4,8 +4,11 @@ import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
 import io.wexchain.dccchainservice.domain.redpacket.*
 import io.wexchain.dccchainservice.domain.trustpocket.*
+import io.wexchain.dccchainservice.util.DateUtil
 import retrofit2.Response
 import retrofit2.http.*
+import java.math.BigDecimal
+import java.text.SimpleDateFormat
 
 interface MarketingApi {
 
@@ -286,7 +289,7 @@ interface MarketingApi {
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/asset/getAssetOverview")
-    fun getAssetOverview(@Header(HEADER_TOKEN) token: String): Single<Result<String>>
+    fun getAssetOverview(@Header(HEADER_TOKEN) token: String): Single<Result<GetAssetOverviewBean>>
 
 
     /**
@@ -350,8 +353,10 @@ interface MarketingApi {
     @FormUrlEncoded
     fun queryDepositOrderPage(@Header(HEADER_TOKEN) token: String,
                               @Field("assetCode") assetCode: String,
-                              @Field("number") number: String,
-                              @Field("size") size: String): Single<Result<PagedList<QueryDepositOrderPageBean>>>
+                              @Field("number") number: Int,
+                              @Field("size") size: Int,
+                              @Field("startTime") startTime: String = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd")),
+                              @Field("endTime") endTime: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd"))): Single<Result<PagedList<QueryDepositOrderPageBean>>>
 
     /**
      * 20.查询单笔充值订单
@@ -372,8 +377,8 @@ interface MarketingApi {
                                @Field("assetCode") assetCode: String,
                                @Field("number") number: String,
                                @Field("size") size: String,
-                               @Field("startTime") startTime: String,
-                               @Field("endTime") endTime: String): Single<Result<PagedList<QueryWithdrawOrderPageBean>>>
+                               @Field("startTime") startTime: String = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd")),
+                               @Field("endTime") endTime: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd"))): Single<Result<PagedList<QueryWithdrawOrderPageBean>>>
 
     /**
      * 22.查询单笔取现订单
@@ -392,7 +397,7 @@ interface MarketingApi {
     @FormUrlEncoded
     fun withdraw(@Header(HEADER_TOKEN) token: String,
                  @Field("assetCode") assetCode: String,
-                 @Field("amount") amount: String,
+                 @Field("amount") amount: BigDecimal,
                  @Field("receiverAddress") receiverAddress: String): Single<Result<WithdrawBean>>
 
     /**
@@ -403,9 +408,8 @@ interface MarketingApi {
     @FormUrlEncoded
     fun transfer(@Header(HEADER_TOKEN) token: String,
                  @Field("assetCode") assetCode: String,
-                 @Field("amount") amount: String,
-                 @Field("receiverMobileUserId") receiverMobileUserId: String,
-                 @Field("senderMobileUserId") senderMobileUserId: String): Single<Result<TransferBean>>
+                 @Field("amount") amount: BigDecimal,
+                 @Field("receiverMobileUserId") receiverMobileUserId: String): Single<Result<TransferBean>>
 
     /**
      * 24.查询单笔转账
@@ -436,7 +440,7 @@ interface MarketingApi {
     @POST("bemember/wallet/mobileUser/getMemberAndMobileUserInfo")
     @FormUrlEncoded
     fun getMemberAndMobileUserInfo(@Header(HEADER_TOKEN) token: String,
-                                   @Field("mobile") mobile: String): Single<Result<GetMemberAndMobileUserInfoBean>>
+                                   @Field("mobileOrAddress") mobileOrAddress: String): Single<Result<GetMemberAndMobileUserInfoBean>>
 
     /**
      * 27.查询余额
@@ -445,16 +449,44 @@ interface MarketingApi {
     @POST("bemember/wallet/asset/getBalance")
     @FormUrlEncoded
     fun getBalance(@Header(HEADER_TOKEN) token: String,
-                   @Field("assetCode") assetCode: String): Single<Result<String>>
+                   @Field("assetCode") assetCode: String): Single<Result<GetBalanceBean>>
 
     /**
-     * 26.查询单个币种储值地址
+     * 28.查询单个币种储值地址
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/getDepositWallet")
     @FormUrlEncoded
     fun getDepositWallet(@Header(HEADER_TOKEN) token: String,
                          @Field("assetCode") assetCode: String): Single<Result<DepositWalletsBean>>
+
+    /**
+     * 29.查询提现手续费
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/pay/getWithdrawFee")
+    @FormUrlEncoded
+    fun getWithdrawFee(@Header(HEADER_TOKEN) token: String,
+                       @Field("assetCode") assetCode: String,
+                       @Field("receiverAddress") receiverAddress: String,
+                       @Field("amount") amount: String): Single<Result<GetWithdrawFeeBean>>
+
+    /**
+     * 30.查询最小起提金额
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/asset/getAssetConfigMinAmountByCode")
+    @FormUrlEncoded
+    fun getAssetConfigMinAmountByCode(@Header(HEADER_TOKEN) token: String,
+                                      @Field("assetCode") assetCode: String,
+                                      @Field("type") type: String = "WITHDRAW_MIN_AMT"): Single<Result<String>>
+
+    /**
+     * 31.汇率查询
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/quote/getUsdtCnyQuote")
+    fun getUsdtCnyQuote(@Header(HEADER_TOKEN) token: String): Single<Result<String>>
 
 
     companion object {

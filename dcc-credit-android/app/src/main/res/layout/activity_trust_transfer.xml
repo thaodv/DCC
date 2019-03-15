@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="url"
+            type="String"/>
+
+        <variable
+            name="nickName"
+            type="String"/>
+
+        <variable
+            name="mobile"
+            type="String"/>
+
+        <variable
+            name="address"
+            type="String"/>
+
+        <variable
+            name="avaiableAccount"
+            type="String"/>
+
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F5F5FD"
+        android:orientation="vertical"
+        tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustTransferActivity">
+
+        <include layout="@layout/include_toolbar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="请确认对方信息是否正确！"
+                android:textColor="#FFED3735"
+                android:textSize="14sp"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical">
+
+                <io.wexchain.android.dcc.view.RoundImageView
+                    errorRes="@{@drawable/mine_user_avatar}"
+                    imageUrl="@{url}"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="20dp"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/mine_user_avatar"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{nickName}"
+                    android:textColor="#4A4A4A"
+                    android:textSize="14sp"
+                    tools:text="昵称：\nxxxxxxxxx"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收款手机"
+                    android:textColor="#4A4A4A"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="@{mobile}"
+                    android:textColor="#4A4A4A"
+                    android:textSize="14sp"
+                    tools:text="185****9999"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收款地址"
+                    android:textColor="#4A4A4A"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="@{address}"
+                    android:textColor="#4A4A4A"
+                    android:textSize="14sp"
+                    tools:text="0x1234****01234567890"/>
+
+            </LinearLayout>
+
+            <View
+                style="@style/DividerHorizontal"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_choose"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="转账币种"
+                    android:textColor="#4A4A4A"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="26dp"
+                    android:text="请选择"
+                    android:textColor="#4A4A4A"
+                    android:textSize="16sp"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/arrow_right"/>
+
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_alignParentBottom="true"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="14dp"
+                    android:text="转账数量"
+                    android:textColor="#4A4A4A"
+                    android:textSize="16sp"
+                    />
+
+                <EditText
+                    android:id="@+id/et_account"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="请输入转账数量"
+                    android:textColorHint="#9B9B9B"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <View
+                style="@style/DividerHorizontal"
+                android:layout_alignParentBottom="true"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:text="可用数量"
+                    android:textColorHint="#9B9B9B"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/tv_tip"
+                    android:background="@null"
+                    android:text="@{avaiableAccount}"
+                    android:textColorHint="#9B9B9B"
+                    android:textSize="14sp"
+                    tools:text="10000ETH"/>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/bt_transfer"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="15dp"
+                android:text="转账"
+                android:textColor="@color/white"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

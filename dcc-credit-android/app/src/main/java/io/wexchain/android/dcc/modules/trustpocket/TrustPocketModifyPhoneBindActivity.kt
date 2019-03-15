@@ -1,13 +1,21 @@
 package io.wexchain.android.dcc.modules.trustpocket
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
+import com.google.gson.Gson
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.AreaCode
+import io.wexchain.android.common.constant.AreaCodeBean
+import io.wexchain.android.common.constant.RequestCodes
+import io.wexchain.android.common.constant.ResultCodes
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
+import io.wexchain.android.dcc.tools.LogUtils
 import io.wexchain.android.dcc.vm.TrustPocketOpenVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustPocketModifyPhoneBindBinding
@@ -21,6 +29,8 @@ class TrustPocketModifyPhoneBindActivity : BindActivity<ActivityTrustPocketModif
     var smsUpTimeStamp: Long = 0
 
     var phoneNum: String = ""
+
+    var mDialCode: String = "86"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +46,38 @@ class TrustPocketModifyPhoneBindActivity : BindActivity<ActivityTrustPocketModif
         }
 
         binding.vm = viewModel
+
+        val country = resources.configuration.locale.country
+
+        LogUtils.i("country", country)
+
+        val mDatas: AreaCodeBean = Gson().fromJson(AreaCode.res, AreaCodeBean::class.java)
+        val res = mDatas.res
+
+        for (item in res) {
+            if (item.country_code == country) {
+                mDialCode = item.dial_code
+            }
+        }
+
+        LogUtils.i("dialCode", mDialCode)
+        binding.tvArea.text = "+$mDialCode"
+
+        binding.tvArea.onClick {
+            startActivityForResult(
+                    Intent(this, SearchAreaActivity::class.java),
+                    RequestCodes.CHOOSE_DIAL_CODE
+            )
+
+        }
+
         binding.btGet.setOnClickListener {
             viewModel.code.set("")
             val phoneNum = binding.etPhone.text.toString()
             if ("" == phoneNum) {
                 toast("请输入手机号码")
             } else {
-                requestReSendSmsCode(phoneNum)
+                requestReSendSmsCode("+$mDialCode$phoneNum")
             }
         }
 
@@ -53,7 +88,7 @@ class TrustPocketModifyPhoneBindActivity : BindActivity<ActivityTrustPocketModif
             if ("" == checkCodeValue) {
                 toast("请输入验证码")
             } else {
-                updateMobile(binding.etPhone.text.toString(), checkCodeValue)
+                updateMobile("+" + mDialCode + binding.etPhone.text.toString(), checkCodeValue)
             }
         }
     }
@@ -96,6 +131,18 @@ class TrustPocketModifyPhoneBindActivity : BindActivity<ActivityTrustPocketModif
                 }, {
                     toast(it.message.toString())
                 })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            RequestCodes.CHOOSE_DIAL_CODE -> {
+                if (resultCode == ResultCodes.RESULT_OK) {
+                    mDialCode = data!!.getStringExtra("dialCode")
+                    binding.tvArea.text = "+$mDialCode"
+                }
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
 }

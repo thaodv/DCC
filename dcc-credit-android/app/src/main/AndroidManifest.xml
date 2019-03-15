@@ -356,6 +356,28 @@
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustRechargeRecordsActivity"
             android:label="充值记录">
         </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustTradeDetailActivity"
+            android:label="交易明细">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustTransferCheckActivity"
+            android:label="转账">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustTransferActivity"
+            android:label="转账">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustRechargeDetailActivity">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustTransferDetailActivity">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustTransferSuccessActivity">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustWithdrawSuccessActivity">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustCoinDetailActivity">
+        </activity>
     </application>
 
 </manifest>

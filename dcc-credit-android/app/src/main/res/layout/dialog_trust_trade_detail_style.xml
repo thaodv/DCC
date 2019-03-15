@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33000000"
+    android:gravity="bottom">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_delete_address_book"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:minHeight="30dp"
+            android:text="充币"
+            android:textColor="#FF404040"
+            android:textSize="18sp"/>
+
+        <View
+            style="@style/DividerHorizontal"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+
+        <TextView
+            android:id="@+id/tv_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:minHeight="30dp"
+            android:text="提币"
+            android:textColor="#FF404040"
+            android:textSize="18sp"/>
+
+        <View
+            style="@style/DividerHorizontal"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+
+        <TextView
+            android:id="@+id/tv_myin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:minHeight="30dp"
+            android:text="我的收款"
+            android:textColor="#FF404040"
+            android:textSize="18sp"/>
+
+        <View
+            style="@style/DividerHorizontal"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+
+        <TextView
+            android:id="@+id/tv_myout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:minHeight="30dp"
+            android:text="我的付款"
+            android:textColor="#FF404040"
+            android:textSize="18sp"/>
+
+        <View
+            style="@style/DividerHorizontal"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:minHeight="30dp"
+            android:text="取消"
+            android:textColor="#FF404040"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

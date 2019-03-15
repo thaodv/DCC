@@ -1,10 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustWithdrawActivity">
+<layout>
 
-</android.support.constraint.ConstraintLayout>
+    <data>
+
+        <variable
+            name="url"
+            type="String"/>
+
+        <variable
+            name="name"
+            type="String"/>
+
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F5F5FD"
+        android:orientation="vertical"
+        tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustWithdrawActivity">
+
+        <include layout="@layout/include_toolbar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp">
+
+            <RelativeLayout
+                android:id="@+id/rl_choose"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="币种"
+                    android:textColor="#4A4A4A"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="26dp"
+                    android:text="@{name}"
+                    android:textColor="#4A4A4A"
+                    android:textSize="16sp"
+                    tools:text="DCC"
+                    />
+
+                <ImageView
+                    errorRes="@{@drawable/ethereum}"
+                    imageUrl="@{url}"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/tv_name"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/ethereum"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/arrow_right"/>
+
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_alignParentBottom="true"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="提币到"
+                android:textColor="#4A4A4A"
+                android:textSize="16sp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/et_address"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="扫一扫或从地址簿中选取"
+                    android:textColorHint="#9B9B9B"
+                    android:textSize="14sp"/>
+
+                <ImageView
+                    android:id="@+id/iv_scan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/icon_scan"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:background="#EFEFEF"/>
+
+                <ImageView
+                    android:id="@+id/iv_shoose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/icon_address_book_pick"/>
+
+            </LinearLayout>
+
+            <View
+                style="@style/DividerHorizontal"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="14dp"
+                    android:text="提币数量:"
+                    android:textColor="#4A4A4A"
+                    android:textSize="16sp"
+                    />
+
+                <EditText
+                    android:id="@+id/et_account"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:textColorHint="#9B9B9B"
+                    android:textSize="14sp"
+                    tools:hint="最低50.00个起提"/>
+
+            </LinearLayout>
+
+            <View
+                style="@style/DividerHorizontal"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:text="可用数量"
+                    android:textColorHint="#9B9B9B"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/tv_tip"
+                    android:background="@null"
+                    android:textColorHint="#9B9B9B"
+                    android:textSize="14sp"
+                    tools:text="10000ETH"/>
+
+                <TextView
+                    android:id="@+id/tv_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="全部"
+                    android:textColor="#6144CC"
+                    android:textSize="16sp"/>
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="60dp"
+                android:textColor="#4A4A4A"
+                android:textSize="16sp"
+                tools:text="手续费(0.05%)  50 ETH "
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:text="到账数"
+                    android:textColor="#4A4A4A"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_toAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#01B5B7"
+                    android:textSize="16sp"
+                    tools:text="100"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_assetCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="#4A4A4A"
+                    android:textSize="16sp"
+                    tools:text="ETH"
+                    />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_withdraw"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="15dp"
+                android:text="提现"
+                android:textColor="@color/white"
+                android:textSize="15sp"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

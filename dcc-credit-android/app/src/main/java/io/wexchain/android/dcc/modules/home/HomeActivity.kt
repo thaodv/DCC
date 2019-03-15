@@ -9,6 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.commitTransaction
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.installApk
 import io.wexchain.android.common.toast
 import io.wexchain.android.common.tools.EventMsg
@@ -18,12 +19,12 @@ import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.ScfOperations
-import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.dcc.fragment.home.FindFragment
 import io.wexchain.android.dcc.fragment.home.MineFragment
 import io.wexchain.android.dcc.fragment.home.PocketFragment
 import io.wexchain.android.dcc.fragment.home.ServiceFragment
 import io.wexchain.android.dcc.tools.ShareUtils
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.tools.reName
 import io.wexchain.android.dcc.view.bottomnavigation.BottomNavigationBar
@@ -33,6 +34,7 @@ import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
+import io.wexchain.ipfs.utils.doMain
 import kotlinx.android.synthetic.main.activity_home.*
 import org.jetbrains.anko.doAsync
 import zlc.season.rxdownload3.core.Mission
@@ -84,6 +86,21 @@ class HomeActivity : BaseCompatActivity() {
     override fun onResume() {
         super.onResume()
         checkUpgrade()
+        getUsdtCnyQuote()
+    }
+
+    fun getUsdtCnyQuote() {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getUsdtCnyQuote(it).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    App.get().mUsdtquote = it
+                }, {
+                    toast(it.message.toString())
+                })
     }
 
     private fun showRedeemToken(redeemToken: RedeemToken) {

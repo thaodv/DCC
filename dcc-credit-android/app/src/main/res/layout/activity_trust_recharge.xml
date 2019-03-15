@@ -106,6 +106,7 @@
                     tools:src="@mipmap/ic_app_dcc"/>
 
                 <Button
+                    android:id="@+id/bt_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -137,6 +138,7 @@
                 </LinearLayout>
 
                 <Button
+                    android:id="@+id/bt_copy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

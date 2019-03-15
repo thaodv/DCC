@@ -59,7 +59,7 @@
             android:layout_height="120dp"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
-            android:background="#f00"
+            android:background="@drawable/img_bg_trust_pocket_holding"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -67,10 +67,18 @@
                 android:id="@+id/assets_amount_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/content_padding_horizontal"
                 android:text="@{assets.assetsSumValue}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/white"
+                android:textSize="18sp"
+                tools:text="≈￥43681365.43159"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@{assets.assetsSumValue2}"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 tools:text="≈￥43681365.43159"/>
 
         </LinearLayout>

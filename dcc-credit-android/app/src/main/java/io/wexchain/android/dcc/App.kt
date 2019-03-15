@@ -40,6 +40,7 @@ import io.wexchain.ipfs.core.IpfsCore
 import worhavah.regloginlib.Net.Networkutils
 import zlc.season.rxdownload3.core.DownloadConfig
 import java.lang.ref.WeakReference
+import java.math.BigDecimal
 import java.math.BigInteger
 
 /**
@@ -79,6 +80,9 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
     lateinit var nodeList: List<NodeBean>
 
     var userInfo: UserInfo? = null
+
+    lateinit var mobileUserId: String
+    var mUsdtquote: String = BigDecimal.ONE.toPlainString()
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
@@ -295,6 +299,7 @@ class App : BaseApplication(), Thread.UncaughtExceptionHandler {
         private lateinit var instance: WeakReference<App>
         @JvmStatic
         fun get(): App = instance.get()!!
+
     }
 
 }

@@ -155,6 +155,15 @@ fun View.onLongSaveImageToGallery(root: View, onError: (Throwable) -> Unit, onSu
         true
     }
 }
+fun View.onSaveImageToGallery(root: View, onError: (Throwable) -> Unit, onSuccess: (String) -> Unit) {
+    this.setOnClickListener { view ->
+        val cacheView = root
+        cacheView.getViewBitmap().saveImageToGallery(context)
+                .io_main()
+                .subscribeBy(onError, onSuccess)
+        true
+    }
+}
 
 fun View.getViewBitmap(): Bitmap {
     val bitmap = when {

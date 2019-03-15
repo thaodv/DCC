@@ -11,5 +11,6 @@ data class GetMemberAndMobileUserInfoBean(
         @SerializedName("memberId") val memberId: String,
         @SerializedName("photoUrl") val photoUrl: String,
         @SerializedName("nickName") val nickName: String,
-        @SerializedName("mobile") val mobile: String
+        @SerializedName("mobile") val mobile: String,
+        @SerializedName("address") val address: String
 ) {}

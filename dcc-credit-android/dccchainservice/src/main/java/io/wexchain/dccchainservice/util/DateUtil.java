@@ -20,10 +20,11 @@ public class DateUtil {
     
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
     // public static SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
-
-    public static String dateFormatString="yyyy-MM-dd";
-    public static String dateFormatStringChi="MM月dd日HH:mm:ss";
-    public static String dateFormatStringChi2="";
+    
+    public static String dateFormatString = "yyyy-MM-dd";
+    public static String dateFormatStringChi = "MM月dd日HH:mm:ss";
+    public static String dateFormatStringChi2 = "";
+    
     /**
      * 倒计时
      *
@@ -253,6 +254,24 @@ public class DateUtil {
     }
     
     /**
+     * 获得当前月--结束日期
+     *
+     * @param dateFormat
+     * @return
+     */
+    public static String getMaxMonthDate(SimpleDateFormat dateFormat) {
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendar.setTime(dateFormat.parse(getCurrentDate(dateFormat)));
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+            return dateFormat.format(calendar.getTime());
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    /**
      * 获取前2月的开始时间
      *
      * @return
@@ -270,6 +289,23 @@ public class DateUtil {
     }
     
     /**
+     * 获取前1月的开始时间
+     *
+     * @return
+     */
+    public static String getPre1Month(SimpleDateFormat dateFormat) {
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendar.setTime(dateFormat.parse(getCurrentDate(dateFormat)));
+            calendar.add(Calendar.MONTH, -1);
+            return dateFormat.format(calendar.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    /**
      * 获取当前的日期
      *
      * @return
@@ -278,6 +314,12 @@ public class DateUtil {
         Date date = new Date();
         return dateFormat.format(date);
     }
+    
+    public static String getCurrentDate(SimpleDateFormat dateFormat) {
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+    
     /**
      * 获取当前的日期
      *
