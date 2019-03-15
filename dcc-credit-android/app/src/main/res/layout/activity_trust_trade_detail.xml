@@ -24,14 +24,9 @@
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/srl_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             >
-
-            <com.scwang.smartrefresh.layout.header.ClassicsHeader
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_list"
@@ -40,11 +35,6 @@
                 android:layout_height="match_parent"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_trust_recharge_record"/>
-
-            <com.scwang.smartrefresh.layout.footer.ClassicsFooter
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
 
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

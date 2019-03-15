@@ -7,6 +7,7 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustTransferDetailBinding
 import io.wexchain.ipfs.utils.doMain
@@ -33,11 +34,11 @@ class TrustTransferDetailActivity : BindActivity<ActivityTrustTransferDetailBind
                 .doMain()
                 .withLoading()
                 .subscribe({
-                    binding.tvAmount.text = "+ "
-                    binding.tvStatus.text = ""
-                    binding.tvOrderId.text = ""
-                    binding.tvAccount.text = ""
-                    binding.tvTime.text = ""
+                    binding.tvAmount.text = "+ " + it.amount.decimalValue + it.assetCode
+                    binding.tvStatus.text = ViewModelHelper.showTrustTransferStatus(it.status)
+                    binding.tvOrderId.text = it.id
+                    binding.tvAccount.text = it.mobile
+                    binding.tvTime.text = ViewModelHelper.showRedPacketInviteTime(it.createdTime)
 
                 }, {
                     toast(it.message.toString())

@@ -378,6 +378,8 @@
         </activity>
         <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustCoinDetailActivity">
         </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustWithdrawDetailActivity">
+        </activity>
     </application>
 
 </manifest>

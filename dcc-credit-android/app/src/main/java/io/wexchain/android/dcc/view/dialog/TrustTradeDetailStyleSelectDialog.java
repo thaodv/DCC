@@ -67,7 +67,6 @@ public class TrustTradeDetailStyleSelectDialog extends Dialog implements View.On
                 dismiss();
                 break;
             case R.id.tv_cancel:
-                mOnClickListener.cancel();
                 dismiss();
                 break;
             default:
@@ -84,8 +83,6 @@ public class TrustTradeDetailStyleSelectDialog extends Dialog implements View.On
         void myin();
         
         void myout();
-        
-        void cancel();
         
     }
     

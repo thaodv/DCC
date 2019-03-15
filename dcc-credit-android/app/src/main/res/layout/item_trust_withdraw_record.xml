@@ -7,7 +7,7 @@
 
         <variable
             name="bean"
-            type="io.wexchain.dccchainservice.domain.trustpocket.QueryDepositOrderPageBean"/>
+            type="io.wexchain.dccchainservice.domain.trustpocket.QueryWithdrawOrderPageBean"/>
 
     </data>
 
@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="充币"
+            android:text="提币"
             android:textColor="#000000"
             android:textSize="14sp"
             />
@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="@{ViewModelHelper.showTrustRechargeStatus(bean.status)}"
+            android:text="@{ViewModelHelper.showTrustWithdrawStatus(bean.status)}"
             android:textColor="#FF4A4A4A"
             android:textSize="14sp"
             tools:text="待领取"

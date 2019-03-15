@@ -1,38 +1,81 @@
 package io.wexchain.android.dcc.modules.trustpocket
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import com.android.databinding.library.baseAdapters.BR
 import io.reactivex.Single
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.getViewModel
+import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
+import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.android.dcc.view.dialog.TrustTradeDetailStyleSelectDialog
 import io.wexchain.android.dcc.view.dialog.TrustTradeDetailTimeSelectDialog
 import io.wexchain.android.dcc.vm.PagedVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustTradeDetailBinding
+import io.wexchain.dcc.databinding.ItemTrustRechargeRecordBinding
 import io.wexchain.dccchainservice.domain.PagedList
 import io.wexchain.dccchainservice.domain.trustpocket.QueryDepositOrderPageBean
+import io.wexchain.dccchainservice.util.DateUtil
 
-class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>() {
+class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>(), ItemViewClickListener<QueryDepositOrderPageBean> {
+
+    override fun onItemClick(item: QueryDepositOrderPageBean?, position: Int, viewId: Int) {
+        navigateTo(TrustRechargeDetailActivity::class.java) {
+            putExtra("id", item!!.id)
+        }
+    }
 
     override val contentLayoutId: Int get() = R.layout.activity_trust_trade_detail
+
+    internal var mYear: Int = 0
+    internal var mMonth: Int = 0
+    internal var mDay: Int = 0
+
+    private val adapter = SimpleDataBindAdapter<ItemTrustRechargeRecordBinding, QueryDepositOrderPageBean>(
+            layoutId = R.layout.item_trust_recharge_record,
+            variableId = BR.bean,
+            itemViewClickListener = this@TrustTradeDetailActivity
+    )
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
 
+        val vm = getViewModel<TradeDetailVm>()
+        val srl = binding.srlList
+
+        srl.setOnRefreshListener { sr ->
+            vm.refresh { sr.finishRefresh() }
+        }
+        srl.setOnLoadMoreListener { sr ->
+            vm.loadNext { sr.finishLoadMore() }
+        }
+
+        binding.rvList.adapter = adapter
+        binding.vm = vm
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.srlList.autoRefresh()
     }
 
     class TradeDetailVm : PagedVm<QueryDepositOrderPageBean>() {
         override fun loadPage(page: Int): Single<PagedList<QueryDepositOrderPageBean>> {
 
             return GardenOperations.refreshToken {
-                App.get().marketingApi.queryDepositOrderPage(it, "", page, 20).check()
+                App.get().marketingApi.queryDepositOrderPage(it, "ETH", page, 20).check()
             }
-
         }
     }
 
@@ -50,45 +93,29 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
                 trustTradeDetailTimeSelectDialog.setOnClickListener(object : TrustTradeDetailTimeSelectDialog.OnClickListener {
 
                     override fun week() {
-                        /*vm!!.startTime = DateUtil.getCurrentMonday()
-                        vm!!.endTime = DateUtil.getCurrentSunday()
-
-                        vm!!.refresh {}
-                        binding.tvTip.text = resources.getString(R.string.this_week)
-                        startTime = DateUtil.getCurrentMonday()
-                        endTime = DateUtil.getCurrentSunday()
-                        queryExchangeAmount()*/
                     }
 
                     override fun month() {
-                        /*vm!!.startTime = DateUtil.getMinMonthDate()
-                        vm!!.endTime = DateUtil.getMaxMonthDate()
-
-                        vm!!.refresh {}
-                        binding.tvTip.text = resources.getString(R.string.this_month)
-                        startTime = DateUtil.getMinMonthDate()
-                        endTime = DateUtil.getMaxMonthDate()
-                        queryExchangeAmount()*/
                     }
 
                     override fun startTime() {
 
-                        /*val datePickerDialog = DatePickerDialog(this@AcrossTransRecordActivity, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                        val datePickerDialog = DatePickerDialog(this@TrustTradeDetailActivity, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                             mYear = year
                             mMonth = month
                             mDay = dayOfMonth
 
                             if (month >= 9) {
                                 if (mDay >= 10) {
-                                    accrossTransRecordSelectDialog.mTvStartTime.text = StringBuffer().append(mYear).append("/").append(mMonth + 1).append("/").append(mDay).toString()
+                                    trustTradeDetailTimeSelectDialog.mTvStartTime.text = StringBuffer().append(mYear).append("/").append(mMonth + 1).append("/").append(mDay).toString()
                                 } else {
-                                    accrossTransRecordSelectDialog.mTvStartTime.text = StringBuffer().append(mYear).append("/").append(mMonth + 1).append("/0").append(mDay).toString()
+                                    trustTradeDetailTimeSelectDialog.mTvStartTime.text = StringBuffer().append(mYear).append("/").append(mMonth + 1).append("/0").append(mDay).toString()
                                 }
                             } else {
                                 if (mDay >= 10) {
-                                    accrossTransRecordSelectDialog.mTvStartTime.text = StringBuffer().append(mYear).append("/0").append(mMonth + 1).append("/").append(mDay).toString()
+                                    trustTradeDetailTimeSelectDialog.mTvStartTime.text = StringBuffer().append(mYear).append("/0").append(mMonth + 1).append("/").append(mDay).toString()
                                 } else {
-                                    accrossTransRecordSelectDialog.mTvStartTime.text = StringBuffer().append(mYear).append("/0").append(mMonth + 1).append("/0").append(mDay).toString()
+                                    trustTradeDetailTimeSelectDialog.mTvStartTime.text = StringBuffer().append(mYear).append("/0").append(mMonth + 1).append("/0").append(mDay).toString()
                                 }
                             }
 
@@ -98,12 +125,12 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
                         val datePicker = datePickerDialog.datePicker
                         datePicker.minDate = DateUtil.getLongTime("2018/07/20", "yyyy/MM/dd")
                         datePicker.maxDate = System.currentTimeMillis()
-                        datePickerDialog.show()*/
+                        datePickerDialog.show()
 
                     }
 
                     override fun endTime() {
-                        /*val datePickerDialog = DatePickerDialog(this@AcrossTransRecordActivity, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                        val datePickerDialog = DatePickerDialog(this@TrustTradeDetailActivity, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                             mYear = year
                             mMonth = month
                             mDay = dayOfMonth
@@ -111,15 +138,15 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
                             if (month >= 9) {
 
                                 if (mDay >= 10) {
-                                    accrossTransRecordSelectDialog.mTvEndTime.text = StringBuffer().append(mYear).append("/").append(mMonth + 1).append("/").append(mDay).toString()
+                                    trustTradeDetailTimeSelectDialog.mTvEndTime.text = StringBuffer().append(mYear).append("/").append(mMonth + 1).append("/").append(mDay).toString()
                                 } else {
-                                    accrossTransRecordSelectDialog.mTvEndTime.text = StringBuffer().append(mYear).append("/").append(mMonth + 1).append("/0").append(mDay).toString()
+                                    trustTradeDetailTimeSelectDialog.mTvEndTime.text = StringBuffer().append(mYear).append("/").append(mMonth + 1).append("/0").append(mDay).toString()
                                 }
                             } else {
                                 if (mDay >= 10) {
-                                    accrossTransRecordSelectDialog.mTvEndTime.text = StringBuffer().append(mYear).append("/0").append(mMonth + 1).append("/").append(mDay).toString()
+                                    trustTradeDetailTimeSelectDialog.mTvEndTime.text = StringBuffer().append(mYear).append("/0").append(mMonth + 1).append("/").append(mDay).toString()
                                 } else {
-                                    accrossTransRecordSelectDialog.mTvEndTime.text = StringBuffer().append(mYear).append("/0").append(mMonth + 1).append("/0").append(mDay).toString()
+                                    trustTradeDetailTimeSelectDialog.mTvEndTime.text = StringBuffer().append(mYear).append("/0").append(mMonth + 1).append("/0").append(mDay).toString()
                                 }
                             }
 
@@ -128,31 +155,31 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
                         val datePicker = datePickerDialog.datePicker
                         datePicker.minDate = DateUtil.getLongTime("2018/07/20", "yyyy/MM/dd")
                         datePicker.maxDate = System.currentTimeMillis()
-                        datePickerDialog.show()*/
+                        datePickerDialog.show()
                     }
 
                     override fun sure() {
 
-                        /*if (DateUtil.isRightSelect(accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", ""), accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", ""), "yyyyMMdd")) {
+                        if (DateUtil.isRightSelect(trustTradeDetailTimeSelectDialog.mTvStartTime.text.toString().replace("/", ""), trustTradeDetailTimeSelectDialog.mTvEndTime.text.toString().replace("/", ""), "yyyyMMdd")) {
                             toast("结束时间不能小于起始时间")
                             return
                         }
 
-                        if (DateUtil.beyond90day(accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", ""), accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", ""), "yyyyMMdd")) {
+                        if (DateUtil.beyond90day(trustTradeDetailTimeSelectDialog.mTvStartTime.text.toString().replace("/", ""), trustTradeDetailTimeSelectDialog.mTvEndTime.text.toString().replace("/", ""), "yyyyMMdd")) {
 
-                            vm!!.startTime = accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", "")
-                            vm!!.endTime = accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", "")
+                            /*vm!!.startTime = trustTradeDetailTimeSelectDialog.mTvStartTime.text.toString().replace("/", "")
+                            vm!!.endTime = trustTradeDetailTimeSelectDialog.mTvEndTime.text.toString().replace("/", "")
 
                             vm!!.refresh {}
 
-                            binding.tvTip.text = accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", "") + "~" + accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", "")
-                            startTime = accrossTransRecordSelectDialog.mTvStartTime.text.toString().replace("/", "")
-                            endTime = accrossTransRecordSelectDialog.mTvEndTime.text.toString().replace("/", "")
-                            queryExchangeAmount()
+                            binding.tvTip.text = trustTradeDetailTimeSelectDialog.mTvStartTime.text.toString().replace("/", "") + "~" + trustTradeDetailTimeSelectDialog.mTvEndTime.text.toString().replace("/", "")
+                            startTime = trustTradeDetailTimeSelectDialog.mTvStartTime.text.toString().replace("/", "")
+                            endTime = trustTradeDetailTimeSelectDialog.mTvEndTime.text.toString().replace("/", "")
+                            queryExchangeAmount()*/
 
                         } else {
                             toast("日期跨度不能超过3个月")
-                        }*/
+                        }
                     }
 
                 })
@@ -174,11 +201,6 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
 
                     override fun myout() {
                     }
-
-                    override fun cancel() {
-                    }
-
-
                 })
                 trustTradeDetailStyleSelectDialog.show()
                 true

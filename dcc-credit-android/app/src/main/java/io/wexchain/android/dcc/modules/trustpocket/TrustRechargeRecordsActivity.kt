@@ -65,7 +65,6 @@ class TrustRechargeRecordsActivity : BindActivity<ActivityTrustRechargeRecordsBi
             return GardenOperations.refreshToken {
                 App.get().marketingApi.queryDepositOrderPage(it, mCode, page, 20).check()
             }
-
         }
     }
 

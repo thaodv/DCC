@@ -21,6 +21,7 @@ class TrustRechargeDetailActivity : BindActivity<ActivityTrustRechargeDetailBind
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
+        title = ""
 
         getDepositOrder(mId)
     }
@@ -37,7 +38,7 @@ class TrustRechargeDetailActivity : BindActivity<ActivityTrustRechargeDetailBind
                     binding.tvAmount.text = "+ " + it.amount.decimalValue + it.assetCode
                     binding.tvStatus.text = ViewModelHelper.showTrustRechargeStatus(it.status)
                     binding.tvOrderId.text = it.id
-                    binding.tvAddress.text = ""
+                    binding.tvAddress.text = it.depositWalletAddress
                     binding.tvHash.text = ""
                     binding.tvTime.text = ViewModelHelper.showRedPacketInviteTime(it.createdTime)
 

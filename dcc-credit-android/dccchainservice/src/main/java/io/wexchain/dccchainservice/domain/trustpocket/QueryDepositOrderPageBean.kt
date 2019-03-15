@@ -12,6 +12,7 @@ data class QueryDepositOrderPageBean(
         @SerializedName("status") val status: Status,
         @SerializedName("id") val id: String,
         @SerializedName("assetCode") val assetCode: String,
+        @SerializedName("depositWalletAddress") val depositWalletAddress: String,
         @SerializedName("createdTime") val createdTime: Long
 
 ) {

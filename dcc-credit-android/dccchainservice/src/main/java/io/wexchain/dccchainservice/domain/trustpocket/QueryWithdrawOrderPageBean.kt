@@ -7,11 +7,15 @@ import com.google.gson.annotations.SerializedName
  * usage:
  */
 data class QueryWithdrawOrderPageBean(
-        @SerializedName("amount") val amount: String,
-        @SerializedName("mobileUserId") val mobileUserId: String,
+        @SerializedName("id") val id: String,
+        @SerializedName("assetCode") val assetCode: String,
         @SerializedName("status") val status: Status,
+        @SerializedName("fee") val fee: FeeBean,
         @SerializedName("receiverAddress") val receiverAddress: String,
-        @SerializedName("requestIdentity") val requestIdentity: RequestIdentity
+        @SerializedName("createdTime") val createdTime: Long,
+        @SerializedName("requestIdentity") val requestIdentity: RequestIdentity,
+        @SerializedName("amount") val amount: AmountBean
+
 ) {
     enum class Status {
         SUCCESS, //("成功")
@@ -19,8 +23,16 @@ data class QueryWithdrawOrderPageBean(
         PROCESSING //("处理中")
     }
 
+    data class FeeBean(
+            @SerializedName("decimalValue") val decimalValue: String
+    )
+
     data class RequestIdentity(
             @SerializedName("sourceCode") val sourceCode: String,
             @SerializedName("requestNo") val requestNo: String
+    )
+
+    data class AmountBean(
+            @SerializedName("decimalValue") val decimalValue: String
     )
 }
