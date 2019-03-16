@@ -11,7 +11,7 @@ data class GetTransferOrderBean(
         @SerializedName("createdTime") val createdTime: Long,
         @SerializedName("mobile") val mobile: String,
         @SerializedName("assetCode") val assetCode: String,
-        @SerializedName("assetCode") val amount: AmountBean,
+        @SerializedName("amount") val amount: AmountBean,
         @SerializedName("status") val status: Status
 ) {
 

@@ -4,8 +4,8 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import com.android.databinding.library.baseAdapters.BR
 import io.reactivex.Single
+import io.wexchain.android.common.BR
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
@@ -20,16 +20,34 @@ import io.wexchain.android.dcc.view.dialog.TrustTradeDetailTimeSelectDialog
 import io.wexchain.android.dcc.vm.PagedVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustTradeDetailBinding
-import io.wexchain.dcc.databinding.ItemTrustRechargeRecordBinding
+import io.wexchain.dcc.databinding.ItemTrustTradeDetailBinding
 import io.wexchain.dccchainservice.domain.PagedList
-import io.wexchain.dccchainservice.domain.trustpocket.QueryDepositOrderPageBean
+import io.wexchain.dccchainservice.domain.trustpocket.QueryOrderPageBean
 import io.wexchain.dccchainservice.util.DateUtil
+import java.text.SimpleDateFormat
 
-class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>(), ItemViewClickListener<QueryDepositOrderPageBean> {
+class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>(), ItemViewClickListener<QueryOrderPageBean> {
 
-    override fun onItemClick(item: QueryDepositOrderPageBean?, position: Int, viewId: Int) {
-        navigateTo(TrustRechargeDetailActivity::class.java) {
-            putExtra("id", item!!.id)
+    override fun onItemClick(item: QueryOrderPageBean?, position: Int, viewId: Int) {
+
+        if ("DEPOSIT" == item!!.kind) {
+            navigateTo(TrustRechargeDetailActivity::class.java) {
+                putExtra("id", item!!.id)
+            }
+        } else if ("WITHDRAW" == item.kind) {
+            navigateTo(TrustWithdrawDetailActivity::class.java) {
+                putExtra("id", item!!.requestIdentity.requestNo)
+            }
+        } else if ("TRANSFER-IN" == item.kind) {
+            navigateTo(TrustTransferDetailActivity::class.java) {
+                putExtra("id", item!!.requestIdentity.requestNo)
+                putExtra("type", "1")
+            }
+        } else {
+            navigateTo(TrustTransferDetailActivity::class.java) {
+                putExtra("id", item!!.requestIdentity.requestNo)
+                putExtra("type", "2")
+            }
         }
     }
 
@@ -39,25 +57,30 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
     internal var mMonth: Int = 0
     internal var mDay: Int = 0
 
-    private val adapter = SimpleDataBindAdapter<ItemTrustRechargeRecordBinding, QueryDepositOrderPageBean>(
-            layoutId = R.layout.item_trust_recharge_record,
+    var vm: TradeDetailVm? = null
+
+    var mStartTime: String = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd"))
+    var mEndTime: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd"))
+    var mType: String = "DEPOSIT"
+
+    private val adapter = SimpleDataBindAdapter<ItemTrustTradeDetailBinding, QueryOrderPageBean>(
+            layoutId = R.layout.item_trust_trade_detail,
             variableId = BR.bean,
             itemViewClickListener = this@TrustTradeDetailActivity
     )
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
 
-        val vm = getViewModel<TradeDetailVm>()
+        vm = getViewModel()
         val srl = binding.srlList
 
         srl.setOnRefreshListener { sr ->
-            vm.refresh { sr.finishRefresh() }
+            vm!!.refresh { sr.finishRefresh() }
         }
         srl.setOnLoadMoreListener { sr ->
-            vm.loadNext { sr.finishLoadMore() }
+            vm!!.loadNext { sr.finishLoadMore() }
         }
 
         binding.rvList.adapter = adapter
@@ -70,11 +93,16 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
         binding.srlList.autoRefresh()
     }
 
-    class TradeDetailVm : PagedVm<QueryDepositOrderPageBean>() {
-        override fun loadPage(page: Int): Single<PagedList<QueryDepositOrderPageBean>> {
+    class TradeDetailVm : PagedVm<QueryOrderPageBean>() {
+
+        var startTimeV: String = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd"))
+        var endTimeV: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd"))
+        var typeV: String = "DEPOSIT"
+
+        override fun loadPage(page: Int): Single<PagedList<QueryOrderPageBean>> {
 
             return GardenOperations.refreshToken {
-                App.get().marketingApi.queryDepositOrderPage(it, "ETH", page, 20).check()
+                App.get().marketingApi.queryOrderPage(it, "ETH", page, 20, startTime = startTimeV, endTime = endTimeV, type = typeV).check()
             }
         }
     }
@@ -93,9 +121,21 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
                 trustTradeDetailTimeSelectDialog.setOnClickListener(object : TrustTradeDetailTimeSelectDialog.OnClickListener {
 
                     override fun week() {
+                        vm!!.startTimeV = DateUtil.getCurrentMonday(SimpleDateFormat("yyyy/MM/dd"))
+                        mStartTime = DateUtil.getCurrentMonday(SimpleDateFormat("yyyy/MM/dd"))
+                        vm!!.endTimeV = DateUtil.getCurrentSunday(SimpleDateFormat("yyyy/MM/dd"))
+                        mEndTime = DateUtil.getCurrentSunday(SimpleDateFormat("yyyy/MM/dd"))
+                        vm!!.typeV = mType
+                        vm!!.refresh {}
                     }
 
                     override fun month() {
+                        vm!!.startTimeV = DateUtil.getMinMonthDate(SimpleDateFormat("yyyy/MM/dd"))
+                        mStartTime = DateUtil.getMinMonthDate(SimpleDateFormat("yyyy/MM/dd"))
+                        vm!!.endTimeV = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd"))
+                        mEndTime = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd"))
+                        vm!!.typeV = mType
+                        vm!!.refresh {}
                     }
 
                     override fun startTime() {
@@ -123,7 +163,7 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
                         }, mYear, mMonth, mDay)
 
                         val datePicker = datePickerDialog.datePicker
-                        datePicker.minDate = DateUtil.getLongTime("2018/07/20", "yyyy/MM/dd")
+                        datePicker.minDate = DateUtil.getLongTime("2019/03/10", "yyyy/MM/dd")
                         datePicker.maxDate = System.currentTimeMillis()
                         datePickerDialog.show()
 
@@ -153,7 +193,7 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
                         }, mYear, mMonth, mDay)
 
                         val datePicker = datePickerDialog.datePicker
-                        datePicker.minDate = DateUtil.getLongTime("2018/07/20", "yyyy/MM/dd")
+                        datePicker.minDate = DateUtil.getLongTime("2019/03/10", "yyyy/MM/dd")
                         datePicker.maxDate = System.currentTimeMillis()
                         datePickerDialog.show()
                     }
@@ -167,18 +207,15 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
 
                         if (DateUtil.beyond90day(trustTradeDetailTimeSelectDialog.mTvStartTime.text.toString().replace("/", ""), trustTradeDetailTimeSelectDialog.mTvEndTime.text.toString().replace("/", ""), "yyyyMMdd")) {
 
-                            /*vm!!.startTime = trustTradeDetailTimeSelectDialog.mTvStartTime.text.toString().replace("/", "")
-                            vm!!.endTime = trustTradeDetailTimeSelectDialog.mTvEndTime.text.toString().replace("/", "")
+                            vm!!.startTimeV = trustTradeDetailTimeSelectDialog.mTvStartTime.text.toString()
+                            mStartTime = trustTradeDetailTimeSelectDialog.mTvStartTime.text.toString()
+                            vm!!.endTimeV = trustTradeDetailTimeSelectDialog.mTvEndTime.text.toString()
+                            mEndTime = trustTradeDetailTimeSelectDialog.mTvEndTime.text.toString()
 
                             vm!!.refresh {}
 
-                            binding.tvTip.text = trustTradeDetailTimeSelectDialog.mTvStartTime.text.toString().replace("/", "") + "~" + trustTradeDetailTimeSelectDialog.mTvEndTime.text.toString().replace("/", "")
-                            startTime = trustTradeDetailTimeSelectDialog.mTvStartTime.text.toString().replace("/", "")
-                            endTime = trustTradeDetailTimeSelectDialog.mTvEndTime.text.toString().replace("/", "")
-                            queryExchangeAmount()*/
-
                         } else {
-                            toast("日期跨度不能超过3个月")
+                            toast("日期跨度不能超过1个月")
                         }
                     }
 
@@ -190,16 +227,35 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
                 val trustTradeDetailStyleSelectDialog = TrustTradeDetailStyleSelectDialog(this)
                 trustTradeDetailStyleSelectDialog.setOnClickListener(object : TrustTradeDetailStyleSelectDialog.OnClickListener {
                     override fun in1() {
-
+                        vm!!.startTimeV = mStartTime
+                        vm!!.endTimeV = mEndTime
+                        vm!!.typeV = "DEPOSIT"
+                        mType = "DEPOSIT"
+                        vm!!.refresh {}
                     }
 
                     override fun out() {
+                        vm!!.startTimeV = mStartTime
+                        vm!!.endTimeV = mEndTime
+                        vm!!.typeV = "WITHDRAW"
+                        mType = "WITHDRAW"
+                        vm!!.refresh {}
                     }
 
                     override fun myin() {
+                        vm!!.startTimeV = mStartTime
+                        vm!!.endTimeV = mEndTime
+                        vm!!.typeV = "TRANSFER-IN"
+                        mType = "TRANSFER-IN"
+                        vm!!.refresh {}
                     }
 
                     override fun myout() {
+                        vm!!.startTimeV = mStartTime
+                        vm!!.endTimeV = mEndTime
+                        vm!!.typeV = "TRANSFER-OUT"
+                        mType = "TRANSFER-OUT"
+                        vm!!.refresh {}
                     }
                 })
                 trustTradeDetailStyleSelectDialog.show()

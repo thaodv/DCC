@@ -15,14 +15,25 @@ import io.wexchain.ipfs.utils.doMain
 class TrustTransferDetailActivity : BindActivity<ActivityTrustTransferDetailBinding>() {
 
     private val mId get() = intent.getStringExtra("id")
+    private val mType get() = intent.getStringExtra("type")
+
+    lateinit var tag: String
 
     override val contentLayoutId: Int get() = R.layout.activity_trust_transfer_detail
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
+        title = ""
 
         getTransferOrder(mId)
+
+        if ("1" == mType) {
+            tag = "+ "
+        } else {
+            tag = "- "
+        }
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -34,7 +45,7 @@ class TrustTransferDetailActivity : BindActivity<ActivityTrustTransferDetailBind
                 .doMain()
                 .withLoading()
                 .subscribe({
-                    binding.tvAmount.text = "+ " + it.amount.decimalValue + it.assetCode
+                    binding.tvAmount.text = tag + it.amount.decimalValue + it.assetCode
                     binding.tvStatus.text = ViewModelHelper.showTrustTransferStatus(it.status)
                     binding.tvOrderId.text = it.id
                     binding.tvAccount.text = it.mobile

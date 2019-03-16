@@ -20,6 +20,7 @@ import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.*
 import io.wexchain.dccchainservice.domain.trustpocket.GetTransferOrderBean
 import io.wexchain.dccchainservice.domain.trustpocket.QueryDepositOrderPageBean
+import io.wexchain.dccchainservice.domain.trustpocket.QueryOrderPageBean
 import io.wexchain.dccchainservice.domain.trustpocket.QueryWithdrawOrderPageBean
 import io.wexchain.dccchainservice.util.DateUtil
 import io.wexchain.digitalwallet.Currencies
@@ -721,12 +722,38 @@ object ViewModelHelper {
     fun showTrustWithdrawStatus(status: QueryWithdrawOrderPageBean.Status): String {
 
         return when (status) {
-            QueryWithdrawOrderPageBean.Status.SUCCESS -> "成功"
             QueryWithdrawOrderPageBean.Status.FAILED -> "失败"
             QueryWithdrawOrderPageBean.Status.PROCESSING -> "处理中"
             else -> {
                 "成功"
             }
+        }
+    }
+
+    @JvmStatic
+    fun showTrustTradeDetailStatus(status: QueryOrderPageBean.Status): String {
+
+        return when (status) {
+            QueryOrderPageBean.Status.FAILED -> "失败"
+            QueryOrderPageBean.Status.PROCESSING -> "处理中"
+            else -> {
+                "成功"
+            }
+        }
+    }
+
+    @JvmStatic
+    fun showTradeDetailName(kind: String): String {
+        if ("DEPOSIT" == kind) {
+            return "充币"
+        } else if ("WITHDRAW" == kind) {
+            return "提币"
+        } else if ("TRANSFER-OUT" == kind) {
+            return "我的付款"
+        } else if ("TRANSFER-IN" == kind) {
+            return "我的收款"
+        } else {
+            return ""
         }
     }
 

@@ -435,20 +435,6 @@ interface MarketingApi {
                                @Field("out") out: String): Single<Result<PagedList<QueryTransferOrderPageBean>>>
 
     /**
-     * 25.查询转账分页
-     */
-    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
-    @POST("bemember/wallet/pay/queryOrderPage")
-    @FormUrlEncoded
-    fun queryOrderPage(@Header(HEADER_TOKEN) token: String,
-                       @Field("assetCode") assetCode: String,
-                       @Field("number") number: String,
-                       @Field("size") size: String,
-                       @Field("startTime") startTime: String = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd")),
-                       @Field("endTime") endTime: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd")),
-                       @Field("out") out: String): Single<Result<PagedList<QueryOrderPageBean>>>
-
-    /**
      * 26.查询会员信息和托管id
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
@@ -502,6 +488,20 @@ interface MarketingApi {
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/quote/getUsdtCnyQuote")
     fun getUsdtCnyQuote(@Header(HEADER_TOKEN) token: String): Single<Result<String>>
+
+    /**
+     * 32.综合分页查询
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/pay/queryOrderPage")
+    @FormUrlEncoded
+    fun queryOrderPage(@Header(HEADER_TOKEN) token: String,
+                       @Field("assetCode") assetCode: String,
+                       @Field("number") number: Int,
+                       @Field("size") size: Int,
+                       @Field("startTime") startTime: String = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd")),
+                       @Field("endTime") endTime: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd")),
+                       @Field("type") type: String = "DEPOSIT"): Single<Result<PagedList<QueryOrderPageBean>>>
 
 
     companion object {

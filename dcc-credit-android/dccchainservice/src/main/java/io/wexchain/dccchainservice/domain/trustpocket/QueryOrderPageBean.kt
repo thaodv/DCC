@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName
  * usage:
  */
 data class QueryOrderPageBean(
+        @SerializedName("id") val id: String,
         @SerializedName("status") val status: Status,
         @SerializedName("assetValue") val assetValue: AssetValueBean,
         @SerializedName("requestIdentity") val requestIdentity: RequestIdentity,
@@ -26,7 +27,7 @@ data class QueryOrderPageBean(
     )
 
     data class AssetValueBean(
-            @SerializedName("assetCode") val sourceCode: String,
-            @SerializedName("amount") val requestNo: String
+            @SerializedName("assetCode") val assetCode: String,
+            @SerializedName("amount") val amount: String
     )
 }

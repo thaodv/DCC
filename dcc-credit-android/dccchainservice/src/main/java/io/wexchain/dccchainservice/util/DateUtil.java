@@ -125,6 +125,19 @@ public class DateUtil {
         long day = temp / 86400000;
         return day < 90 ? true : false;
     }
+    /**
+     * 判断两个时间是否在30天之内
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @param format    时间格式
+     * @return
+     */
+    public static boolean beyond30day(String startTime, String endTime, String format) {
+        long temp = getLongTime(endTime, format) - getLongTime(startTime, format);
+        long day = temp / 86400000;
+        return day < 30 ? true : false;
+    }
     
     /**
      * 判断endTime大于startTime
@@ -169,6 +182,20 @@ public class DateUtil {
         String preMonday = dateFormat.format(monday);
         return preMonday;
     }
+    /**
+     * 获得当前周- 周一的日期
+     *
+     * @return
+     */
+    public static String getCurrentMonday(SimpleDateFormat dateFormat) {
+        int mondayPlus = getMondayPlus();
+        GregorianCalendar currentDate = new GregorianCalendar();
+        currentDate.add(GregorianCalendar.DATE, mondayPlus);
+        Date monday = currentDate.getTime();
+        DateFormat df = DateFormat.getDateInstance();
+        String preMonday = dateFormat.format(monday);
+        return preMonday;
+    }
     
     /**
      * 获得当前周- 周一的日期
@@ -202,6 +229,20 @@ public class DateUtil {
         String preMonday = dateFormat.format(monday);
         return preMonday;
     }
+    /**
+     * 获得当前周- 周日  的日期
+     *
+     * @return
+     */
+    public static String getCurrentSunday(SimpleDateFormat dateFormat) {
+        int mondayPlus = getMondayPlus();
+        GregorianCalendar currentDate = new GregorianCalendar();
+        currentDate.add(GregorianCalendar.DATE, mondayPlus + 6);
+        Date monday = currentDate.getTime();
+        DateFormat df = DateFormat.getDateInstance();
+        String preMonday = dateFormat.format(monday);
+        return preMonday;
+    }
     
     /**
      * 获得当前周- 周日  的日期
@@ -228,6 +269,22 @@ public class DateUtil {
         Calendar calendar = Calendar.getInstance();
         try {
             calendar.setTime(dateFormat.parse(getCurrentDate()));
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+            return dateFormat.format(calendar.getTime());
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * 获得当前月--开始日期
+     *
+     * @return
+     */
+    public static String getMinMonthDate(SimpleDateFormat dateFormat) {
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendar.setTime(dateFormat.parse(getCurrentDate(dateFormat)));
             calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
             return dateFormat.format(calendar.getTime());
         } catch (java.text.ParseException e) {
