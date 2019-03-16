@@ -167,7 +167,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
                     binding.tvToAccount.text = mToAccount
 
                 }, {
-                    toast(it.message.toString())
+                    //toast(it.message.toString())
                 })
     }
 

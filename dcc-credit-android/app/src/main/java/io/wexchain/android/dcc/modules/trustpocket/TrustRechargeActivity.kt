@@ -66,7 +66,7 @@ class TrustRechargeActivity : BindActivity<ActivityTrustRechargeBinding>() {
 
     }
 
-    fun getDepositWallet(code: String) {
+    private fun getDepositWallet(code: String) {
         GardenOperations
                 .refreshToken {
                     App.get().marketingApi.getDepositWallet(it, code).check()

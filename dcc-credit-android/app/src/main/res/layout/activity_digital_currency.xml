@@ -71,6 +71,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/bt_trust"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/content_padding_horizontal"

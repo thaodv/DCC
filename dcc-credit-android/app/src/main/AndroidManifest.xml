@@ -380,6 +380,10 @@
         </activity>
         <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustWithdrawDetailActivity">
         </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.trustpocket.TrustGetmoneyActivity"
+            android:label="收币">
+        </activity>
     </application>
 
 </manifest>

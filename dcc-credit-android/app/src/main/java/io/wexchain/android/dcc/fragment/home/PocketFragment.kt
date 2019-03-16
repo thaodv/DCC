@@ -86,17 +86,18 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
 
         Singles.zip(
                 GardenOperations.refreshToken {
-                    App.get().marketingApi.getAssetOverview(it).check()
-                },
-                GardenOperations.refreshToken {
                     App.get().marketingApi.getHostingWallet(it).check()
                 },
+                GardenOperations.refreshToken {
+                    App.get().marketingApi.getAssetOverview(it).check()
+                },
+
                 App.get().scfApi.getHoldingSum(App.get().passportRepository.currPassport.value!!.address).check())
                 .doMain()
                 .withLoading()
                 .subscribeBy(onSuccess = {
 
-                    val trustAmount = it.first.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal())
+                    val trustAmount = it.second.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal())
 
                     binding.tvTrustAmount.text = "≈￥" + trustAmount.currencyToDisplayStr()
 
@@ -121,7 +122,7 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
 
 
                     // 已开户
-                    if (it.second.mobileUserId != null) {
+                    if (it.first.mobileUserId != null) {
                         isOpenTrustPocket = true
                         binding.ivNext.visibility = View.VISIBLE
                         binding.btOpen.visibility = View.GONE
@@ -139,35 +140,6 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                     binding.ivNext.visibility = View.GONE
                     binding.btOpen.visibility = View.VISIBLE
                 })
-
-
-        GardenOperations
-                .refreshToken {
-                    App.get().marketingApi.getHostingWallet(it).check()
-                }
-                .doMain()
-                .withLoading()
-                .subscribe({
-                    // 已开户
-                    if (it?.mobileUserId != null) {
-                        isOpenTrustPocket = true
-                        binding.ivNext.visibility = View.VISIBLE
-                        binding.btOpen.visibility = View.GONE
-                        App.get().mobileUserId = it.mobileUserId
-
-                    } else {
-                        isOpenTrustPocket = false
-                        binding.ivNext.visibility = View.GONE
-                        binding.btOpen.visibility = View.VISIBLE
-                    }
-                }, {
-                    // 未开户
-                    isOpenTrustPocket = false
-                    binding.ivNext.visibility = View.GONE
-                    binding.btOpen.visibility = View.VISIBLE
-                })
-
-
 
         binding.assets!!.updateHoldingAndQuote()
 

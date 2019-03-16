@@ -58,6 +58,12 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
         binding.llDetail.onClick {
             navigateTo(TrustTradeDetailActivity::class.java)
         }
+
+        binding.ivQuery.onClick {
+            navigateTo(TrustChooseCoinActivity::class.java) {
+                putExtra("use", "search")
+            }
+        }
     }
 
     private fun getConinData() {
@@ -102,7 +108,13 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
     }
 
     override fun onItemClick(item: ResultAssetBean?, position: Int, viewId: Int) {
-
+        navigateTo(TrustCoinDetailActivity::class.java) {
+            putExtra("url", if (null == item!!.url) "" else item.url)
+            putExtra("code", item.code)
+            putExtra("name", item.name)
+            putExtra("value", item.value)
+            putExtra("value2", item.value2)
+        }
     }
 
     class ResultAssetAdapter(

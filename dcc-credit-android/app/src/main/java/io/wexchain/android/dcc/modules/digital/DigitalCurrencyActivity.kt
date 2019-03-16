@@ -13,12 +13,18 @@ import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.constant.RequestCodes
 import io.wexchain.android.common.getViewModel
+import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.modules.passport.PassportAddressActivity
 import io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity
+import io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenTipActivity
+import io.wexchain.android.dcc.modules.trustpocket.TrustRechargeActivity
 import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.tools.SharedPreferenceUtil
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.adapter.BottomMoreItemsAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.TransactionRecordAdapter
@@ -34,6 +40,7 @@ import io.wexchain.digitalwallet.Chain
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.EthsTransaction
+import io.wexchain.ipfs.utils.doMain
 
 /**
  * Digital currency detail
@@ -43,11 +50,47 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
 
     override val contentLayoutId: Int = R.layout.activity_digital_currency
 
+    var isOpenTrustPocket: Boolean = false
+    var isSupportTrust: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar(true)
         initVm()
         initBtn()
+
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getHostingWallet(it).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    // 已开户
+                    if (it?.mobileUserId != null) {
+                        isOpenTrustPocket = true
+                        App.get().mobileUserId = it.mobileUserId
+
+                    } else {
+                        isOpenTrustPocket = false
+                    }
+                }, {
+                    // 未开户
+                    isOpenTrustPocket = false
+                })
+
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getDepositWallet(it, getDc().symbol).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    isSupportTrust = true
+                }, {
+                    isSupportTrust = false
+                })
+
     }
 
     override fun onItemClick(item: EthsTransaction?, position: Int, viewId: Int) {
@@ -198,6 +241,23 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
                 startActivity(Intent(this@DigitalCurrencyActivity, PassportAddressActivity::class.java))
             }
         })
+
+        binding.btTrust.onClick {
+            if (isOpenTrustPocket) {
+
+                if (isSupportTrust) {
+                    navigateTo(TrustRechargeActivity::class.java) {
+                        putExtra("code", getDc().symbol)
+                        putExtra("url", if (null == getDc().icon) "" else getDc().icon)
+                    }
+                } else {
+                    toast("托管钱包暂不支持该币种")
+                }
+            } else {
+                navigateTo(TrustPocketOpenTipActivity::class.java)
+            }
+        }
+
     }
 
     private fun toCreateTransaction() {

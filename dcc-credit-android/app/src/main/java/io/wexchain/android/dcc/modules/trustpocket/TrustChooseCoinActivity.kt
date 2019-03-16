@@ -15,10 +15,12 @@ import io.wexchain.android.dcc.view.ClearEditText
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.itemDiffCallback
+import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ItemTrustCoinQueryBinding
 import io.wexchain.dccchainservice.domain.trustpocket.TrustAssetBean
 import io.wexchain.ipfs.utils.doMain
+import java.math.RoundingMode
 
 class TrustChooseCoinActivity : BaseCompatActivity(), TextWatcher, ItemViewClickListener<TrustAssetBean> {
 
@@ -111,7 +113,32 @@ class TrustChooseCoinActivity : BaseCompatActivity(), TextWatcher, ItemViewClick
             resultOk {
                 putExtra("code", item!!.cryptoAssetConfig.code)
             }
+        } else if ("search" == mUse) {
+            getBalance(item!!.cryptoAssetConfig.code, if (null == item.url) "" else item.url, item.cryptoAssetConfig.name)
         }
+    }
+
+    private fun getBalance(code: String, url: String, name: String) {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getBalance(it, code).check()
+                }
+                .doMain()
+                .subscribe({
+                    /*mTotalAccount = it.availableAmount.assetValue.amount
+                    binding.tvAccount.text = mTotalAccount + " " + it.availableAmount.assetValue.assetCode*/
+
+                    navigateTo(TrustCoinDetailActivity::class.java) {
+                        putExtra("url", url)
+                        putExtra("code", code)
+                        putExtra("name", name)
+                        putExtra("value", it.availableAmount.assetValue.amount.toBigDecimal().currencyToDisplayStr())
+                        putExtra("value2", "≈￥" + it.availableAmount.legalTenderPrice.amount.toBigDecimal().divide(App.get().mUsdtquote.toBigDecimal(), 4, RoundingMode.DOWN).toPlainString())
+                    }
+
+                }, {
+                    toast(it.message.toString())
+                })
     }
 
     class AssetAdapter(

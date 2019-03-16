@@ -1,10 +1,299 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustCoinDetailActivity">
+<layout>
 
-</android.support.constraint.ConstraintLayout>
+    <data>
+
+        <variable
+            name="assetCode"
+            type="String"/>
+
+        <variable
+            name="name"
+            type="String"/>
+
+        <variable
+            name="url"
+            type="String"/>
+
+        <variable
+            name="holding"
+            type="String"/>
+
+        <variable
+            name="holdingValue"
+            type="String"/>
+
+        <variable
+            name="vm"
+            type="io.wexchain.android.dcc.modules.trustpocket.TrustCoinDetailActivity.TradeDetailVm"/>
+
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustCoinDetailActivity">
+
+        <include layout="@layout/include_toolbar"/>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:id="@+id/iv_currency_logo"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:padding="6dp"
+                app:errorRes="@{@drawable/ethereum}"
+                app:imageUrl="@{url}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                tools:src="@drawable/ethereum"
+                />
+
+            <TextView
+                android:id="@+id/tv_currency_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@{assetCode}"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
+                app:layout_constraintBottom_toTopOf="@id/tv_currency_description"
+                app:layout_constraintLeft_toRightOf="@id/iv_currency_logo"
+                app:layout_constraintTop_toTopOf="@id/iv_currency_logo"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="ETH"
+                />
+
+            <TextView
+                android:id="@+id/tv_currency_chain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{name}"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                app:layout_constraintBottom_toBottomOf="@id/iv_currency_logo"
+                app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol"
+                app:layout_constraintTop_toBottomOf="@id/tv_currency_description"
+                tools:text="\@DCC"
+                />
+
+            <TextView
+                android:id="@+id/tv_currency_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/tv_currency_chain"
+                app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol"
+                app:layout_constraintTop_toBottomOf="@id/tv_currency_symbol"
+                tools:text="Ethereum Foundation"
+                />
+
+            <TextView
+                android:id="@+id/tv_holding_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_marginTop="4dp"
+                android:text="@{holding}"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:textColor="#FB0288"
+                android:textSize="28sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_currency_logo"
+                tools:text="1341343.5938"
+                />
+
+            <TextView
+                android:id="@+id/tv_approx_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/content_padding_horizontal"
+                android:layout_marginRight="@dimen/content_padding_horizontal"
+                android:layout_marginTop="4dp"
+                android:gravity="center_horizontal"
+                android:minWidth="150dp"
+                android:text="@{holdingValue}"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:textColor="#4A4A4A"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_holding_value"
+                tools:text="~$317395.4382"
+                />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingTop="12dp">
+
+            <LinearLayout
+                android:id="@+id/ll_in"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_trust_pocket_home_in"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/icon_trust_in_white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="充币"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_get"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/icon_trust_get"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="收币"
+                    android:textColor="#4A4A4A"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_out"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/icon_trust_out"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="提币"
+                    android:textColor="#4A4A4A"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_trans"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/icon_trust_trans"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="转账"
+                    android:textColor="#4A4A4A"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="交易记录"
+                android:textColor="#FF333333"
+                android:textSize="17sp"/>
+
+            <ImageButton
+                android:id="@+id/ibt_detail"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_trust_trade_detail_choose"/>
+
+            <ImageButton
+                android:id="@+id/ibt_time"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/ibt_detail"
+                android:src="@drawable/img_select_time"/>
+
+        </RelativeLayout>
+
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/srl_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp">
+
+            <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_list"
+                dataList="@{vm.records}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_trust_recharge_record"/>
+
+            <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    </LinearLayout>
+</layout>

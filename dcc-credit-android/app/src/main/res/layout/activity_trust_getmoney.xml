@@ -22,10 +22,10 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="#F5F5FD"
         android:orientation="vertical"
-        tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustRechargeActivity">
+        tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustGetmoneyActivity">
 
         <include layout="@layout/include_toolbar"/>
 
@@ -65,7 +65,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="14dp"
-                        android:layout_marginRight="40dp"
+                        android:layout_marginRight="14dp"
                         android:text="@{name}"
                         android:textColor="#4A4A4A"
                         android:textSize="16sp"
@@ -83,14 +83,6 @@
                         tools:src="@drawable/ethereum"
                         />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="14dp"
-                        android:src="@drawable/arrow_right"/>
-
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_alignParentBottom="true"
@@ -98,6 +90,16 @@
                         android:layout_marginRight="14dp"/>
 
                 </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="扫一扫"
+                    android:textColor="#4A4A4A"
+                    android:textSize="16sp"
+                    />
 
                 <ImageView
                     android:id="@+id/iv_passport_qr"
@@ -116,7 +118,7 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="10dp"
-                    android:text="保存图片"/>
+                    android:text="分享图片"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -149,32 +151,6 @@
                     android:paddingRight="20dp"
                     android:paddingTop="10dp"
                     android:text="复制地址"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_recharge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="从数字钱包充币"
-                        android:textColor="#FF6144CC"
-                        android:textSize="14sp"
-                        />
-
-                    <TextView
-                        android:id="@+id/tv_blance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="#78000000"
-                        android:textSize="14sp"
-                        tools:text="余额666.66ETH"
-                        />
-
-                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_mark"
