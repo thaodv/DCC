@@ -38,6 +38,7 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
     val txVm = TransactionVm()
 
     private val addr get() = intent.getSerializableExtra(Extras.EXTRA_SELECT_ADDRESS) as? AddressBook
+    private val trustAddress get() = intent.getStringExtra("address")
     private val transRecord get() = intent.getSerializableExtra(Extras.EXTRA_SELECT_TRANSRECORD) as? TransRecord
     private val money get() = intent.getStringExtra(Extras.EXTRA_PAY_MONEY)
     private val isRepayment get() = intent.getIntExtra("is_repayment", 0)
@@ -91,6 +92,10 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
 
         if (null != money) {
             txVm.amount.set(money)
+        }
+
+        if (null != trustAddress) {
+            txVm.toAddress.set(trustAddress)
         }
 
     }

@@ -161,8 +161,8 @@
                         android:id="@+id/tv_recharge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="从数字钱包充币"
-                        android:textColor="#FF6144CC"
+                        android:text="@string/trust_recharge_from_digest"
+                        android:textColor="#6144CC"
                         android:textSize="14sp"
                         />
 
