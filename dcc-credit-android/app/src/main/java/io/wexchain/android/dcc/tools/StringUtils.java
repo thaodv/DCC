@@ -120,6 +120,17 @@ public class StringUtils {
             return res.toString();
         }
     }
+    public static String keep2double(String source) {
+        
+        if (null == source) {
+            return "";
+        } else {
+            double money = Double.parseDouble(source);
+            
+            BigDecimal res = new BigDecimal(money).setScale(2, BigDecimal.ROUND_DOWN);
+            return res.toString();
+        }
+    }
     
     public static String keep0double(String source) {
         

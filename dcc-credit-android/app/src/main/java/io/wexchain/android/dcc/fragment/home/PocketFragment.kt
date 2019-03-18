@@ -25,7 +25,7 @@ import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.DigitalAssetsAdapter
 import io.wexchain.android.dcc.vm.DigitalAssetsVm
 import io.wexchain.android.dcc.vm.ViewModelHelper
-import io.wexchain.android.dcc.vm.currencyToDisplayStr
+import io.wexchain.android.dcc.vm.currencyToDisplayRMBStr
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentPocketBinding
 import io.wexchain.digitalwallet.Chain
@@ -100,11 +100,11 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
 
                     val trustAmount = it.second.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal())
 
-                    binding.tvTrustAmount.text = "≈￥" + trustAmount.currencyToDisplayStr()
+                    binding.tvTrustAmount.text = "≈￥" + trustAmount.currencyToDisplayRMBStr()
 
                     val bsxAccount = if (null == it.third.corpus) {
                         "0"
-                    } else StringUtils.keep4double(it.third.corpus)
+                    } else StringUtils.keep2double(it.third.corpus)
 
                     binding.tvBsx.text = "≈￥$bsxAccount"
 
@@ -118,8 +118,8 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                         res = digestAccountRnb.toBigDecimal()
                     }
 
-                    binding.assetsAmountValue.text = "￥" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).currencyToDisplayStr()
-                    binding.tvTotalUsdt.text = "≈" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).divide(App.get().mUsdtquote.toBigDecimal(), 4, RoundingMode.DOWN).currencyToDisplayStr() + " USDT"
+                    binding.assetsAmountValue.text = "￥" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).currencyToDisplayRMBStr()
+                    binding.tvTotalUsdt.text = "≈" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setScale(8, RoundingMode.DOWN) + " USDT"
 
 
                     // 已开户

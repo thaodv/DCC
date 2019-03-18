@@ -13,12 +13,14 @@ import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.itemDiffCallback
+import io.wexchain.android.dcc.vm.currencyToDisplayRMBStr
 import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustPocketHomeBinding
 import io.wexchain.dcc.databinding.ItemTrustPocketHomeBinding
 import io.wexchain.dccchainservice.domain.trustpocket.ResultAssetBean
 import io.wexchain.ipfs.utils.doMain
+import java.math.RoundingMode
 import java.util.*
 
 class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), ItemViewClickListener<ResultAssetBean> {
@@ -77,9 +79,9 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
                 .doMain()
                 .withLoading()
                 .subscribeBy(onSuccess = {
-                    binding.totalPrice2 = "≈" + it.first.totalPrice.amount + " " + it.first.totalPrice.assetCode
+                    binding.totalPrice2 = "≈" + it.first.totalPrice.amount.toBigDecimal().setScale(8, RoundingMode.DOWN) + " " + it.first.totalPrice.assetCode
 
-                    binding.totalPrice = "≈￥" + it.first.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).currencyToDisplayStr()
+                    binding.totalPrice = "≈￥" + it.first.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).currencyToDisplayRMBStr()
 
                     val holdingList = it.first.assetList
 

@@ -68,7 +68,7 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
                         }
                     }
                     .fold(BigDecimal.ZERO) { acc, v -> acc + v }
-            sum.currencyToDisplayStr()
+            sum.currencyToDisplayRMBStr()
         }
 
         assetsSumValue.set(if ("" == sumString) {
@@ -79,7 +79,7 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
         assetsSumValue2.set(if ("" == sumString) {
             ""
         } else {
-            "≈" + sumString.toBigDecimal().divide(App.get().mUsdtquote.toBigDecimal(), 4, RoundingMode.DOWN).currencyToDisplayStr() + " USDT"
+            "≈" + sumString.toBigDecimal().divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setScale(8, RoundingMode.DOWN) + " USDT"
         })
 
         assetsSumValue3.set(sumString)

@@ -762,6 +762,9 @@ object ViewModelHelper {
 fun BigDecimal.currencyToDisplayStr(): String {
     return this.setScale(4, RoundingMode.DOWN).toPlainString()
 }
+fun BigDecimal.currencyToDisplayRMBStr(): String {
+    return this.setScale(2, RoundingMode.DOWN).toPlainString()
+}
 
 
 
