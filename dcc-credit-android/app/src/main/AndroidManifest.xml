@@ -77,6 +77,10 @@
             android:label=""
             android:theme="@style/DccLightTheme.App.Transparent"/>
         <activity
+            android:name="io.wexchain.android.dcc.modules.other.QrScannerPocketActivity"
+            android:label=""
+            android:theme="@style/DccLightTheme.App.Transparent"/>
+        <activity
             android:name="io.wexchain.android.dcc.modules.passport.PassportAddressActivity"
             android:label="@string/passport_address"/>
         <activity

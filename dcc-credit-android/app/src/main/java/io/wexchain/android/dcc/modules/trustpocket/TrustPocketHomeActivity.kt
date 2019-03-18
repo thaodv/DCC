@@ -85,17 +85,27 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
 
                     val assetList = it.second
 
-                    for (item in assetList) {
-                        for (it in holdingList) {
-                            val res: ResultAssetBean
-                            if (it.assetValue.assetCode == item.cryptoAssetConfig.code) {
-                                res = ResultAssetBean(item.url, item.cryptoAssetConfig.code, item.cryptoAssetConfig.name, it.assetValue.amount.toBigDecimal().currencyToDisplayStr(), "≈￥" + it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).toPlainString().toBigDecimal().currencyToDisplayStr())
-                            } else {
-                                res = ResultAssetBean(item.url, item.cryptoAssetConfig.code, item.cryptoAssetConfig.name, "0.000", "--")
-                            }
+                    var res: ResultAssetBean
+                    if (null == holdingList || holdingList.isEmpty()) {
+                        for (item in assetList) {
+                            res = ResultAssetBean(item.url, item.cryptoAssetConfig.code, item.cryptoAssetConfig.name, "0.000", "--")
                             resultAsset.add(res)
                         }
+                    } else {
+                        for (item in assetList) {
+                            for (it in holdingList) {
+
+                                if (it.assetValue.assetCode == item.cryptoAssetConfig.code) {
+                                    res = ResultAssetBean(item.url, item.cryptoAssetConfig.code, item.cryptoAssetConfig.name, it.assetValue.amount.toBigDecimal().currencyToDisplayStr(), "≈￥" + it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).toPlainString().toBigDecimal().currencyToDisplayStr())
+                                } else {
+                                    res = ResultAssetBean(item.url, item.cryptoAssetConfig.code, item.cryptoAssetConfig.name, "0.000", "--")
+                                }
+                                resultAsset.add(res)
+                            }
+                        }
                     }
+
+
                     LogUtils.i("res:", resultAsset.toString())
 
                     val adapter = ResultAssetAdapter(this)

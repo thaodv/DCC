@@ -55,7 +55,6 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
             tvTip2.text = "密码不能为连续、重复数字"
         }
 
-
         passwd1.setPwdChangeListener(object : PassWordLayout.pwdChangeListener {
             override fun onChange(pwd: String) {
                 Log.e("onChange:", pwd)

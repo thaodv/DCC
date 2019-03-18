@@ -80,7 +80,7 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
                             navigateTo(TrustPocketModifyPhoneBindActivity::class.java)
                             finish()
                         } else {
-                            checkHasReal()
+                            createPayPwdSecurityContext()
                         }
                     } else {
                         toast(it.message.toString())
@@ -100,13 +100,31 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
                     // 未实名
                     if ("" == it.content.digest1) {
                         //navigateTo()
-                        prepareInputPwd()
+                        createPayPwdSecurityContext()
                     } else {
                         navigateTo(SubmitIdActivity::class.java)
                         finish()
                     }
                 }, {
 
+                })
+    }
+
+    private fun createPayPwdSecurityContext() {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.createPayPwdSecurityContext(it)
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    if (it.systemCode == Result.SUCCESS && it.businessCode == Result.SUCCESS) {
+                        prepareInputPwd()
+                    } else {
+                        toast(it.message.toString())
+                    }
+                }, {
+                    toast(it.message.toString())
                 })
     }
 
@@ -122,7 +140,7 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
                     ShareUtils.setString(Extras.SP_TRUST_PUBKEY, it.pubKey)
                     navigateTo(TrustPocketOpenStep2Activity::class.java) {
                         putExtra("salt", it.salt)
-                        putExtra("use","forget")
+                        putExtra("use", "forget")
                     }
                     finish()
 

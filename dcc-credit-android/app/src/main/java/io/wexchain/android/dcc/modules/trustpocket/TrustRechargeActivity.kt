@@ -75,8 +75,6 @@ class TrustRechargeActivity : BindActivity<ActivityTrustRechargeBinding>() {
                 .withLoading()
                 .subscribe({
                     binding.address = it.address
-
-
                 }, {
                     toast(it.message.toString())
                 })

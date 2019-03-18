@@ -110,7 +110,7 @@ class TrustPocketModifyPwdActivity : BaseCompatActivity() {
                         val deleteDialog = DeleteAddressBookDialog(this)
                         deleteDialog.mTvText.text = "密码输入错误，超过3次将被锁定3小时，您还有${it.remainValidateTimes}次机会"
                         deleteDialog.mTvText.gravity = Gravity.LEFT
-                        deleteDialog.setBtnText("确定", "")
+                        deleteDialog.setBtnText("", "确定")
                         deleteDialog.mBtSure.visibility = View.GONE
                         deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                             override fun cancel() {}
@@ -124,7 +124,7 @@ class TrustPocketModifyPwdActivity : BaseCompatActivity() {
                         val deleteDialog = DeleteAddressBookDialog(this)
                         deleteDialog.mTvText.text = "您的密码已被暂时锁定，请等待解锁"
                         deleteDialog.mTvText.gravity = Gravity.LEFT
-                        deleteDialog.setBtnText("确定", "")
+                        deleteDialog.setBtnText("", "确定")
                         deleteDialog.mBtSure.visibility = View.GONE
                         deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                             override fun cancel() {}
@@ -140,7 +140,6 @@ class TrustPocketModifyPwdActivity : BaseCompatActivity() {
                 }, {
                     toast(it.message.toString())
                 })
-
     }
 
 }

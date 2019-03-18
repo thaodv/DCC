@@ -15,6 +15,7 @@ import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity
 import io.wexchain.android.dcc.modules.digestpocket.DigestPocketHomeActivity
 import io.wexchain.android.dcc.modules.digital.DigitalCurrencyActivity
+import io.wexchain.android.dcc.modules.other.QrScannerPocketActivity
 import io.wexchain.android.dcc.modules.trans.activity.DccExchangeActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustPocketHomeActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenTipActivity
@@ -152,10 +153,8 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
             }
         }
 
-        // todo change
         binding.btOpen.onClick {
-            //navigateTo(TrustPocketOpenTipActivity::class.java)
-            navigateTo(TrustPocketHomeActivity::class.java)
+            navigateTo(TrustPocketOpenTipActivity::class.java)
         }
 
         binding.rlDigestPocket.onClick {
@@ -164,6 +163,10 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
 
         binding.rlInvest.onClick {
             navigateTo(BsxHoldingActivity::class.java)
+        }
+
+        binding.ivScan.onClick {
+            navigateTo(QrScannerPocketActivity::class.java)
         }
 
     }

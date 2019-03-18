@@ -16,52 +16,32 @@ import io.wexchain.dcc.R;
  * @author Created by Wangpeng on 2018/7/16 20:04.
  * usage:
  */
-public class TrustWithdrawDialog extends Dialog implements View.OnClickListener {
+public class QScanResultNotAddressDialog extends Dialog implements View.OnClickListener {
     
     public ImageButton mIbtClose;
     public TextView mTvAddress;
-    public TextView mTvAccount;
-    public TextView mTvFee;
-    public TextView mTvToAccount;
-    public TextView mTvHolding;
-    public Button mBtSure;
+    public Button mBtCopy;
     
     
-    public TrustWithdrawDialog(@NonNull Context context) {
+    public QScanResultNotAddressDialog(@NonNull Context context) {
         super(context, R.style.deleteAddressBookDialog);
         WindowManager.LayoutParams attributes = getWindow().getAttributes();
-        attributes.gravity = Gravity.BOTTOM | Gravity.LEFT | Gravity.RIGHT;
+        attributes.gravity = Gravity.BOTTOM | Gravity.LEFT | Gravity.RIGHT | Gravity.TOP;
         getWindow().setAttributes(attributes);
-        setContentView(R.layout.dialog_trust_withdraw);
+        setContentView(R.layout.dialog_qscan_result_not_address);
         
         getWindow().setBackgroundDrawableResource(R.color.white);
         
         mIbtClose = findViewById(R.id.ibt_close);
         mTvAddress = findViewById(R.id.tv_address);
-        mTvAccount = findViewById(R.id.tv_account);
-        mTvFee = findViewById(R.id.tv_fee);
-        mTvToAccount = findViewById(R.id.tv_toAccount);
-        mTvHolding = findViewById(R.id.tv_holding);
-        mBtSure = findViewById(R.id.bt_sure);
+        mBtCopy = findViewById(R.id.btn_copy);
         
         mIbtClose.setOnClickListener(this);
-        mBtSure.setOnClickListener(this);
-        
+        mBtCopy.setOnClickListener(this);
     }
     
-    /**
-     * @param address
-     * @param account
-     * @param fee
-     * @param toAccount
-     * @param holding
-     */
-    public void setParameters(String address, String account, String fee, String toAccount, String holding) {
+    public void setParameters(String address) {
         mTvAddress.setText(address);
-        mTvAccount.setText(account);
-        mTvFee.setText(fee);
-        mTvToAccount.setText(toAccount);
-        mTvHolding.setText(holding);
     }
     
     @Override
@@ -70,9 +50,9 @@ public class TrustWithdrawDialog extends Dialog implements View.OnClickListener 
             case R.id.ibt_close:
                 dismiss();
                 break;
-            case R.id.bt_sure:
-                mOnClickListener.sure();
+            case R.id.btn_copy:
                 dismiss();
+                mOnClickListener.copy();
                 break;
             default:
                 break;
@@ -80,7 +60,7 @@ public class TrustWithdrawDialog extends Dialog implements View.OnClickListener 
     }
     
     public interface OnClickListener {
-        void sure();
+        void copy();
     }
     
     private OnClickListener mOnClickListener;
