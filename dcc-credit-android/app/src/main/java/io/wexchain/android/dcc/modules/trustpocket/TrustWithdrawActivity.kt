@@ -32,9 +32,12 @@ import io.wexchain.dcc.databinding.ActivityTrustWithdrawBinding
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.trustpocket.ValidatePaymentPasswordBean
 import io.wexchain.dccchainservice.domain.trustpocket.WithdrawBean
+import io.wexchain.digitalwallet.util.isBtcAddress
+import io.wexchain.digitalwallet.util.isEthAddress
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.math.RoundingMode
 import java.security.MessageDigest
 
 class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), TextWatcher {
@@ -121,16 +124,21 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
             } else if (mAccount.toBigDecimal().subtract(mTotalAccount.toBigDecimal()) > BigDecimal.ZERO) {
                 toast("超过可提总量")
             } else {
-                trustWithdrawDialog = TrustWithdrawDialog(this)
 
-                trustWithdrawDialog.setParameters(mAddress, mAccount + "" + mCode, "$mFee $mCode", "$mToAccount $mCode", "$mTotalAccount $mCode")
+                if (isEthAddress(mAddress!!) || isBtcAddress(mAddress!!)) {
+                    trustWithdrawDialog = TrustWithdrawDialog(this)
 
-                trustWithdrawDialog.setOnClickListener(object : TrustWithdrawDialog.OnClickListener {
-                    override fun sure() {
-                        checkPasswd()
-                    }
-                })
-                trustWithdrawDialog.show()
+                    trustWithdrawDialog.setParameters(mAddress, mAccount + "" + mCode, "$mFee $mCode", "$mToAccount $mCode", "$mTotalAccount $mCode")
+
+                    trustWithdrawDialog.setOnClickListener(object : TrustWithdrawDialog.OnClickListener {
+                        override fun sure() {
+                            checkPasswd()
+                        }
+                    })
+                    trustWithdrawDialog.show()
+                } else {
+                    toast("地址错误")
+                }
             }
         }
 
@@ -165,7 +173,6 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
                 }
             }
         })
-
     }
 
     private fun withdraw(address: String, account: String) {
@@ -180,7 +187,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
                         trustWithdrawDialog.dismiss()
                         navigateTo(TrustWithdrawSuccessActivity::class.java) {
                             putExtra("address", it.receiverAddress)
-                            putExtra("account", it.amount.decimalValue + " " + it.assetCode)
+                            putExtra("account", it.amount.decimalValue.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString() + " " + it.assetCode)
                         }
                         finish()
                     } else {
@@ -189,7 +196,6 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
                 }, {
                     toast(it.message.toString())
                 })
-
     }
 
     override fun afterTextChanged(s: Editable?) {
@@ -217,11 +223,11 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
                 }
                 .doMain()
                 .subscribe({
-                    mFee = it.decimalValue.toBigDecimal().toPlainString()
+                    mFee = it.decimalValue.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString()
 
                     binding.tvFee.text = "手续费$mFee $mCode"
 
-                    mToAccount = amount.toBigDecimal().subtract(it.decimalValue.toBigDecimal()).toPlainString()
+                    mToAccount = amount.toBigDecimal().subtract(it.decimalValue.toBigDecimal()).setScale(8, RoundingMode.DOWN).toPlainString()
 
                     binding.tvToAccount.text = mToAccount
 
@@ -238,7 +244,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
                 .doMain()
                 .withLoading()
                 .subscribe({
-                    mTotalAccount = it.availableAmount.assetValue.amount
+                    mTotalAccount = it.availableAmount.assetValue.amount.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString()
                     binding.tvAccount.text = mTotalAccount + " " + it.availableAmount.assetValue.assetCode
                 }, {
                     toast(it.message.toString())

@@ -17,6 +17,7 @@ import io.wexchain.dcc.databinding.ActivityTrustTransferBinding
 import io.wexchain.dccchainservice.domain.trustpocket.TransferBean
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 class TrustTransferActivity : BindActivity<ActivityTrustTransferBinding>() {
 
@@ -93,7 +94,6 @@ class TrustTransferActivity : BindActivity<ActivityTrustTransferBinding>() {
                             putExtra("account", it.amount.decimalValue + " " + mCode)
                         }
                     }
-
                 }, {
                     toast(it.message.toString())
                 })
@@ -106,7 +106,7 @@ class TrustTransferActivity : BindActivity<ActivityTrustTransferBinding>() {
                 }
                 .doMain()
                 .subscribe({
-                    mTotalAccount = it.availableAmount.assetValue.amount
+                    mTotalAccount = it.availableAmount.assetValue.amount.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString()
                     binding.tvAccount.text = mTotalAccount + " " + it.availableAmount.assetValue.assetCode
                 }, {
                     toast(it.message.toString())

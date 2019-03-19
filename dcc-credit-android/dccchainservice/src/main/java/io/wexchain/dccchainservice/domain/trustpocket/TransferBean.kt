@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
  */
 class TransferBean(
         @SerializedName("amount") val amount: AmountBean,
-        @SerializedName("assetCode") val assetCode: AmountBean,
+        @SerializedName("assetCode") val assetCode: String,
         @SerializedName("status") val status: Status
 ) {
     enum class Status {

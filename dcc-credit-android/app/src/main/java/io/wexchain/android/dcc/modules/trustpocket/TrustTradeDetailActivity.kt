@@ -118,6 +118,10 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
             R.id.time -> {
 
                 val trustTradeDetailTimeSelectDialog = TrustTradeDetailTimeSelectDialog(this)
+
+                trustTradeDetailTimeSelectDialog.mTvStartTime.text = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd"))
+                trustTradeDetailTimeSelectDialog.mTvEndTime.text = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd"))
+
                 trustTradeDetailTimeSelectDialog.setOnClickListener(object : TrustTradeDetailTimeSelectDialog.OnClickListener {
 
                     override fun week() {
@@ -163,8 +167,8 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
                         }, mYear, mMonth, mDay)
 
                         val datePicker = datePickerDialog.datePicker
-                        datePicker.minDate = DateUtil.getLongTime("2019/03/10", "yyyy/MM/dd")
-                        datePicker.maxDate = System.currentTimeMillis()
+                        datePicker.minDate = DateUtil.getLongTime(DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd")), "yyyy/MM/dd")
+                        datePicker.maxDate = DateUtil.getLongTime(DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd")), "yyyy/MM/dd")
                         datePickerDialog.show()
 
                     }
@@ -193,8 +197,8 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
                         }, mYear, mMonth, mDay)
 
                         val datePicker = datePickerDialog.datePicker
-                        datePicker.minDate = DateUtil.getLongTime("2019/03/10", "yyyy/MM/dd")
-                        datePicker.maxDate = System.currentTimeMillis()
+                        datePicker.minDate = DateUtil.getLongTime(DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd")), "yyyy/MM/dd")
+                        datePicker.maxDate = DateUtil.getLongTime(DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd")), "yyyy/MM/dd")
                         datePickerDialog.show()
                     }
 
