@@ -38,6 +38,12 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
     fun filter() {
         filterEvent.call()
     }
+    val assetsFilter2 = ObservableField<Boolean>()
+    val filterEvent2 = SingleLiveEvent<Void>()
+
+    fun filter2() {
+        filterEvent2.call()
+    }
 
     val assets = Transformations.map(assetsRepository.displayCurrencies) {
         updateHoldingAndQuote(it)

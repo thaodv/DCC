@@ -32,7 +32,8 @@ import java.math.BigDecimal
 class DigestPocketHomeActivity : BindActivity<ActivityDigestPocketHomeBinding>(), ItemViewClickListener<DigitalCurrency> {
 
     private var tmpList: List<DigitalCurrency>? = null
-    private val adapter = DigitalAssetsAdapter(this)
+
+    private var adapter = DigitalAssetsAdapter(this)
 
     override val contentLayoutId: Int get() = R.layout.activity_digest_pocket_home
 
@@ -90,11 +91,19 @@ class DigestPocketHomeActivity : BindActivity<ActivityDigestPocketHomeBinding>()
                         }
                     }
                 }
+
                 adapter.setList(tmp)
             }
-
-
         })
+        assetsVm.assetsFilter2.set(false)
+        assetsVm.filterEvent2.observe(this, Observer {
+            val b = assetsVm.assetsFilter2.get()!!
+            assetsVm.assetsFilter2.set(!b)
+            adapter.isShow = b
+            //adapter.setList(tmpList)
+            adapter.notifyDataSetChanged()
+        })
+
         binding.assets = assetsVm
         adapter.assetsVm = assetsVm
         binding.rvAssets.adapter = adapter

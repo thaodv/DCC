@@ -236,6 +236,16 @@ object ViewModelHelper {
     }
 
     @JvmStatic
+    fun isShowBlanceStr(isShow: Boolean, res: String): String {
+
+        return if (isShow) {
+            res
+        } else {
+            "****"
+        }
+    }
+
+    @JvmStatic
     fun getApproxValueStr(dc: DigitalCurrency, holding: BigInteger?, quote: Quote?): String {
         if (holding != null && quote?.price != null) {
             val price = quote.price!!.toBigDecimalSafe()
@@ -762,6 +772,7 @@ object ViewModelHelper {
 fun BigDecimal.currencyToDisplayStr(): String {
     return this.setScale(4, RoundingMode.DOWN).toPlainString()
 }
+
 fun BigDecimal.currencyToDisplayRMBStr(): String {
     return this.setScale(2, RoundingMode.DOWN).toPlainString()
 }

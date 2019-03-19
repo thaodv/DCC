@@ -16,18 +16,23 @@ class DigitalAssetsAdapter(itemViewClickListener: ItemViewClickListener<DigitalC
         ) {
     internal lateinit var assetsVm: DigitalAssetsVm
 
+    var isShow: Boolean = true
+
     init {
         setHasStableIds(true)
     }
 
+
     override fun bindData(binding: ItemDigitalCurrencySummaryBinding, item: DigitalCurrency?) {
         binding.holdingMap = assetsVm.holding
         binding.quoteMap = assetsVm.quote
+        binding.isShow = isShow
         binding.dc = item
     }
 
     override fun getItemId(position: Int): Long {
         return getItem(position)?.id() ?: super.getItemId(position)
     }
+
 
 }

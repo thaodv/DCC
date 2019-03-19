@@ -218,12 +218,12 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:drawablePadding="8dp"
-                android:drawableRight="@{assets.assetsFilter?@drawable/tv_state_enabled:@drawable/tv_state_disabled}"
+                android:drawableRight="@{assets.assetsFilter?@drawable/icon_zero_unshow:@drawable/icon_zero_show}"
                 android:onClick="@{(v)->assets.filter()}"
                 android:text="隐藏零资产币种"
                 android:textColor="#9B9B9B"
                 android:textSize="14sp"
-                tools:drawableRight="@drawable/tv_state_disabled"/>
+                tools:drawableRight="@drawable/icon_zero_show"/>
 
             <ImageView
                 android:id="@+id/iv_query"

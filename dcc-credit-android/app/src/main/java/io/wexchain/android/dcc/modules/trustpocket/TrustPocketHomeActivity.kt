@@ -66,6 +66,11 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
                 putExtra("use", "search")
             }
         }
+
+        binding.tvStatus.onClick {
+
+        }
+
     }
 
     private fun getConinData() {
@@ -79,7 +84,7 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
                 .doMain()
                 .withLoading()
                 .subscribeBy(onSuccess = {
-                    binding.totalPrice2 = "≈" + it.first.totalPrice.amount.toBigDecimal().setScale(8, RoundingMode.DOWN) + " " + it.first.totalPrice.assetCode
+                    binding.totalPrice2 = "≈" + it.first.totalPrice.amount.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString() + " " + it.first.totalPrice.assetCode
 
                     binding.totalPrice = "≈￥" + it.first.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).currencyToDisplayRMBStr()
 
