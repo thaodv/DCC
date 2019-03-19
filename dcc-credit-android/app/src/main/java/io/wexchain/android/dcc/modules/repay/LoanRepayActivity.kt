@@ -32,8 +32,7 @@ class LoanRepayActivity : BindActivity<ActivityLoanRepayBinding>() {
 
     lateinit var currencyMeta: CurrencyMeta
 
-    override val contentLayoutId: Int
-        get() = R.layout.activity_loan_repay
+    override val contentLayoutId: Int get() = R.layout.activity_loan_repay
 
     private val repayBill
         get() = intent.getSerializableExtra(Extras.EXTRA_LOAN_REPAY_BILL) as? LoanRepaymentBill
@@ -69,6 +68,7 @@ class LoanRepayActivity : BindActivity<ActivityLoanRepayBinding>() {
                         putExtra(Extras.EXTRA_SELECT_ADDRESS, AddressBook(it.repaymentAddress, "") as Serializable)
                         putExtra(Extras.EXTRA_PAY_MONEY, it.noPayAmount.toString())
                         putExtra("is_repayment", 1)
+                        putExtra("use", "repay")
                     }
                 } else {
                     val p = App.get().passportRepository.getCurrentPassport()!!
@@ -82,6 +82,7 @@ class LoanRepayActivity : BindActivity<ActivityLoanRepayBinding>() {
                                 putExtra(Extras.EXTRA_SELECT_ADDRESS, AddressBook(bill_temp.repaymentAddress, "") as Serializable)
                                 putExtra(Extras.EXTRA_PAY_MONEY, bill_temp.noPayAmount.toString())
                                 putExtra("is_repayment", 1)
+                                putExtra("use", "repay")
                             }
                         } else {
                             val waitTransDialog = WaitTransDialog(this)

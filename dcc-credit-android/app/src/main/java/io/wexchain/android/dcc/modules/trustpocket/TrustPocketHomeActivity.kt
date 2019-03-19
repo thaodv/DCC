@@ -90,7 +90,7 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
                     var res: ResultAssetBean
                     if (null == holdingList || holdingList.isEmpty()) {
                         for (item in assetList) {
-                            res = ResultAssetBean(item.url, item.cryptoAssetConfig.code, item.cryptoAssetConfig.name, "0.000", "--")
+                            res = ResultAssetBean(item.url, item.cryptoAssetConfig.code, item.cryptoAssetConfig.name, "0.000", "--", item.rank)
                             resultAsset.add(res)
                         }
                     } else {
@@ -98,15 +98,16 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
                             for (it in holdingList) {
 
                                 if (it.assetValue.assetCode == item.cryptoAssetConfig.code) {
-                                    res = ResultAssetBean(item.url, item.cryptoAssetConfig.code, item.cryptoAssetConfig.name, it.assetValue.amount.toBigDecimal().currencyToDisplayStr(), "≈￥" + it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).toPlainString().toBigDecimal().currencyToDisplayStr())
+                                    res = ResultAssetBean(item.url, item.cryptoAssetConfig.code, item.cryptoAssetConfig.name, it.assetValue.amount.toBigDecimal().currencyToDisplayStr(), "≈￥" + it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).toPlainString().toBigDecimal().currencyToDisplayStr(), item.rank)
                                 } else {
-                                    res = ResultAssetBean(item.url, item.cryptoAssetConfig.code, item.cryptoAssetConfig.name, "0.000", "--")
+                                    res = ResultAssetBean(item.url, item.cryptoAssetConfig.code, item.cryptoAssetConfig.name, "0.000", "--", item.rank)
                                 }
                                 resultAsset.add(res)
                             }
                         }
                     }
 
+                    resultAsset.sort()
 
                     LogUtils.i("res:", resultAsset.toString())
 

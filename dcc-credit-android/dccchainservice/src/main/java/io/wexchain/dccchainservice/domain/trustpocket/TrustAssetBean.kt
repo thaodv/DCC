@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 data class TrustAssetBean(
         @SerializedName("id") val id: String,
         @SerializedName("url") val url: String,
-        @SerializedName("rank") val rank: String,
+        @SerializedName("rank") val rank: Int,
         @SerializedName("cryptoAssetConfig") val cryptoAssetConfig: CryptoAssetConfigBean
 ) {
     data class CryptoAssetConfigBean(

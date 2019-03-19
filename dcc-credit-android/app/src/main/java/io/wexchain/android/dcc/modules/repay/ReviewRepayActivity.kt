@@ -29,8 +29,7 @@ class ReviewRepayActivity : BindActivity<ActivityReviewRepayBinding>() {
 
     lateinit var currencyMeta: CurrencyMeta
 
-    override val contentLayoutId: Int
-        get() = R.layout.activity_review_repay
+    override val contentLayoutId: Int get() = R.layout.activity_review_repay
 
     private val loanOrderId
         get() = intent.getLongExtra(Extras.EXTRA_LOAN_CHAIN_ORDER_ID, -1L)

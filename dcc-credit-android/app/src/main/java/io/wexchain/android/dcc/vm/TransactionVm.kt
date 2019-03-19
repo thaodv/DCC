@@ -87,11 +87,11 @@ class TransactionVm {
     }
 
     fun ensureDigitalCurrency(dc: DigitalCurrency, feeRate: String?) {
-        if (this::currency.isInitialized) {
+        /*if (this::currency.isInitialized) {
             if (currency != dc) {
                 throw IllegalStateException()
             }
-        } else {
+        } else {*/
             if (isEdit && null != tx) {
                 // amount=tx.amount
             }
@@ -117,7 +117,7 @@ class TransactionVm {
                     this.transferFeeHintText.set(dccFeeHint)
                 }
             }
-        }
+       // }
     }
 
     private fun updateGasPrice() {

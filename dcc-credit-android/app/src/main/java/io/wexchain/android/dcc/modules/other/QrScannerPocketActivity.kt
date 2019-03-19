@@ -28,6 +28,7 @@ import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.constant.RequestCodes
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
+import io.wexchain.android.dcc.modules.trans.activity.CreateTransactionActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustTransferActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustWithdrawActivity
 import io.wexchain.android.dcc.tools.check
@@ -172,7 +173,9 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                             }
 
                             override fun digestTransfer() {
-
+                                navigateTo(CreateTransactionActivity::class.java){
+                                    putExtra("address",text)
+                                }
                             }
 
                             override fun trustWithdraw() {

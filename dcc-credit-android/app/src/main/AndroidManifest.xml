@@ -73,6 +73,9 @@
         <activity android:name="io.wexchain.android.dcc.modules.digital.DigitalTransactionsActivity"/>
         <activity android:name="io.wexchain.android.dcc.modules.trans.activity.CreateTransactionActivity"/>
         <activity
+            android:name="io.wexchain.android.dcc.modules.trans.activity.QScanCreateTransactionActivity"
+            android:label="转账"/>
+        <activity
             android:name="io.wexchain.android.dcc.modules.other.QrScannerActivity"
             android:label=""
             android:theme="@style/DccLightTheme.App.Transparent"/>
@@ -387,6 +390,10 @@
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustGetmoneyActivity"
             android:label="收币">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.digestpocket.ChooseDigestActivity"
+            android:label="选择币种">
         </activity>
     </application>
 

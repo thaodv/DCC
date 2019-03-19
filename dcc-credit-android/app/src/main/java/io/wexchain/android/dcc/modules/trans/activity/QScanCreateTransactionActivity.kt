@@ -7,98 +7,63 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.constant.RequestCodes
 import io.wexchain.android.common.constant.ResultCodes
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
-import io.wexchain.android.common.transTips
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.modules.digestpocket.ChooseDigestActivity
 import io.wexchain.android.dcc.modules.other.QrScannerActivity
 import io.wexchain.android.dcc.repo.db.AddressBook
-import io.wexchain.android.dcc.repo.db.TransRecord
-import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.android.dcc.view.dialog.CustomDialog
 import io.wexchain.android.dcc.view.dialog.TransactionConfirmDialogFragment
 import io.wexchain.android.dcc.vm.TransactionVm
-import io.wexchain.android.dcc.vm.ViewModelHelper
-import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.dcc.R
-import io.wexchain.dcc.databinding.ActivityCreateTransactionBinding
-import io.wexchain.digitalwallet.*
+import io.wexchain.dcc.databinding.ActivityQscanCreateTransactionBinding
+import io.wexchain.digitalwallet.DigitalCurrency
+import io.wexchain.digitalwallet.EthsTransactionScratch
 
-class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>() {
+class QScanCreateTransactionActivity : BindActivity<ActivityQscanCreateTransactionBinding>() {
 
-    override val contentLayoutId: Int = R.layout.activity_create_transaction
-    var isEdit = false//是否是编辑转账
+    override val contentLayoutId: Int = R.layout.activity_qscan_create_transaction
     val txVm = TransactionVm()
 
-    private val addr get() = intent.getSerializableExtra(Extras.EXTRA_SELECT_ADDRESS) as? AddressBook
-    private val trustAddress get() = intent?.getStringExtra("address")
-    private val transRecord get() = intent.getSerializableExtra(Extras.EXTRA_SELECT_TRANSRECORD) as? TransRecord
+    /*private val trustAddress get() = intent.getStringExtra("address")
     private val money get() = intent.getStringExtra(Extras.EXTRA_PAY_MONEY)
-    private val isRepayment get() = intent.getIntExtra("is_repayment", 0)
-    private val mUse get() = intent?.getStringExtra("use")
-
-    val feeRate = intent?.getStringExtra(Extras.EXTRA_FTC_TRANSFER_FEE_RATE)
-
-    private var dc: DigitalCurrency? = null
+    private val isRepayment get() = intent.getIntExtra("is_repayment", 0)*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar(true)
 
-        dc = intent.getSerializableExtra(Extras.EXTRA_DIGITAL_CURRENCY) as? DigitalCurrency
-
         binding.rlChoose.onClick {
-
-            startActivityForResult(
-                    Intent(this, ChooseDigestActivity::class.java),
-                    RequestCodes.CHOOSE_DIGEST_COIN
-            )
+            navigateTo(ChooseDigestActivity::class.java)
         }
 
-        val tx = intent.getSerializableExtra(Extras.EXTRA_EDIT_TRANSACTION) as? EthsTransaction
 
-        if (null != dc) {
-            if (dc!!.chain == Chain.JUZIX_PRIVATE) {
-                binding.rlChoose.visibility = View.GONE
-            }
-            initParameters(dc!!)
-        }
+        /*var dc = intent.getSerializableExtra(Extras.EXTRA_DIGITAL_CURRENCY) as? DigitalCurrency
+        val feeRate = intent.getStringExtra(Extras.EXTRA_FTC_TRANSFER_FEE_RATE)
 
-        if (null != mUse) {
-            binding.rlChoose.visibility = View.GONE
-        }
+        binding.tvTransSymbol.text = dc!!.symbol
+        App.get().assetsRepository.getBalance(dc, App.get().passportRepository.currPassport.value!!.address)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy {
+                    binding.btAll.isClickable = true
+                    binding.etInputAmount.isEnabled = true
+                    val balance = ViewModelHelper.getBalanceStr(dc, it)
 
-        if (null != tx) {
-            isEdit = true
-            txVm.isEdit = true
-            txVm.tx = tx
-            dc = tx.digitalCurrency
-            binding.etInputAmount.setText(tx.digitalCurrency.toDecimalAmount(tx.amount).currencyToDisplayStr())
-            txVm.toAddress.set(tx.to)
-            txVm.amount.set(tx.digitalCurrency.toDecimalAmount(tx.amount).currencyToDisplayStr())
-            //   binding.etInputAddress.setText(tx.to)
-            /*  binding.etInputGasPrice.setText(tx.digitalCurrency.toDecimalAmount(tx.gasPrice).currencyToDisplayStr())
-           txVm.gasPrice.set(tx.digitalCurrency.toDecimalAmount(tx.gasPrice).currencyToDisplayStr())*/
-            binding.etInputGasLimit.setText("" + tx.gas)
-            txVm.gasLimit.set("" + tx.gas)
+                    binding.tvTransCount.text = if (balance == "--") "0.0000" else balance
+                    binding.etInputAmount.transTips(binding.tvTransCount,
+                            showTips = ::showTips,
+                            hidTips = ::hidTips)
+                }
 
-        }
-
+        title = ("${dc.symbol} " + getString(R.string.transfer))
+        setupEvents(dc, feeRate)
         setupButtons()
-
-        if (null != addr) {
-            txVm.toAddress.set(addr!!.address)
-        }
-        if (null != transRecord) {
-            txVm.toAddress.set(transRecord!!.address)
-        }
 
         if (null != money) {
             txVm.amount.set(money)
@@ -106,7 +71,7 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
 
         if (null != trustAddress) {
             txVm.toAddress.set(trustAddress)
-        }
+        }*/
 
     }
 
@@ -131,48 +96,8 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
                     }
                 }
             }
-            RequestCodes.CHOOSE_DIGEST_COIN -> {
-
-                if (resultCode == ResultCodes.RESULT_OK) {
-                    dc = data?.getSerializableExtra(Extras.EXTRA_DIGITAL_CURRENCY) as DigitalCurrency
-
-                    if ("DCC" == dc!!.symbol) {
-                        dc = MultiChainHelper.dispatch(Currencies.DCC).first { it.chain == Chain.publicEthChain }
-                    }
-
-                    initParameters(dc!!)
-                    /*if (txVm != null && ba != null) {
-                        txVm.toAddress.set(ba.address)
-                        binding.executePendingBindings()
-                        binding.etInputAddress.setSelection(ba.address.length)
-                    }*/
-                }
-            }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
-    }
-
-    private fun initParameters(dc: DigitalCurrency) {
-        binding.name = dc.symbol
-        binding.url = if (null == dc.icon) "" else dc.icon
-
-        title = ("${dc.symbol} " + getString(R.string.transfer))
-
-        binding.tvTransSymbol.text = dc.symbol
-        App.get().assetsRepository.getBalance(dc, App.get().passportRepository.currPassport.value!!.address)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy {
-                    binding.btAll.isClickable = true
-                    binding.etInputAmount.isEnabled = true
-                    val balance = ViewModelHelper.getBalanceStr(dc, it)
-
-                    binding.tvTransCount.text = if (balance == "--") "0.0000" else balance
-                    binding.etInputAmount.transTips(binding.tvTransCount,
-                            showTips = ::showTips,
-                            hidTips = ::hidTips)
-                }
-
-        setupEvents(dc, feeRate)
     }
 
     private fun setupButtons() {
@@ -212,15 +137,15 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
         }
         binding.tx = txVm.apply {
             ensureDigitalCurrency(dc, feeRate)
-            this.txProceedEvent.observe(this@CreateTransactionActivity, observer)
-            this.inputNotSatisfiedEvent.observe(this@CreateTransactionActivity, Observer {
+            this.txProceedEvent.observe(this@QScanCreateTransactionActivity, observer)
+            this.inputNotSatisfiedEvent.observe(this@QScanCreateTransactionActivity, Observer {
                 it?.let {
-                    CustomDialog(this@CreateTransactionActivity).apply {
+                    CustomDialog(this@QScanCreateTransactionActivity).apply {
                         textContent = it
                     }.assembleAndShow()
                 }
             })
-            this.dataInvalidatedEvent.observe(this@CreateTransactionActivity, Observer {
+            this.dataInvalidatedEvent.observe(this@QScanCreateTransactionActivity, Observer {
                 binding.executePendingBindings()
             })
         }
@@ -235,7 +160,7 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
     }
 
     private fun showConfirmDialog(ethsTransactionScratch: EthsTransactionScratch) {
-        TransactionConfirmDialogFragment.create(ethsTransactionScratch, isEdit, isRepayment = isRepayment)
+        TransactionConfirmDialogFragment.create(ethsTransactionScratch)
                 .show(supportFragmentManager, null)
     }
 
