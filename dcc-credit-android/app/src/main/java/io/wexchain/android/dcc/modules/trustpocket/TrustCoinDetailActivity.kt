@@ -13,12 +13,15 @@ import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.android.dcc.view.dialog.TrustTradeDetailStyleSelectDialog
 import io.wexchain.android.dcc.view.dialog.TrustTradeDetailTimeSelectDialog
 import io.wexchain.android.dcc.vm.PagedVm
+import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustCoinDetailBinding
 import io.wexchain.dcc.databinding.ItemTrustTradeDetailBinding
 import io.wexchain.dccchainservice.domain.PagedList
 import io.wexchain.dccchainservice.domain.trustpocket.QueryOrderPageBean
 import io.wexchain.dccchainservice.util.DateUtil
+import io.wexchain.ipfs.utils.doMain
+import java.math.RoundingMode
 import java.text.SimpleDateFormat
 
 class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), ItemViewClickListener<QueryOrderPageBean> {
@@ -277,6 +280,23 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
     override fun onResume() {
         super.onResume()
         binding.srlList.autoRefresh()
+        getBalance(mCode)
+    }
+
+    private fun getBalance(code: String) {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getBalance(it, code).check()
+                }
+                .doMain()
+                .subscribe({
+
+                    binding.holding = it.availableAmount.assetValue.amount.toBigDecimal().currencyToDisplayStr()
+                    binding.holdingValue = "≈￥" + it.availableAmount.legalTenderPrice.amount.toBigDecimal().divide(App.get().mUsdtquote.toBigDecimal(), 4, RoundingMode.DOWN).toPlainString()
+
+                }, {
+                    toast(it.message.toString())
+                })
     }
 
     class TradeDetailVm : PagedVm<QueryOrderPageBean>() {

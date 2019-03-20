@@ -102,7 +102,7 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
         override fun loadPage(page: Int): Single<PagedList<QueryOrderPageBean>> {
 
             return GardenOperations.refreshToken {
-                App.get().marketingApi.queryOrderPage(it, "ETH", page, 20, startTime = startTimeV, endTime = endTimeV, type = typeV).check()
+                App.get().marketingApi.queryOrderPage(it, "", page, 20, startTime = startTimeV, endTime = endTimeV, type = typeV).check()
             }
         }
     }

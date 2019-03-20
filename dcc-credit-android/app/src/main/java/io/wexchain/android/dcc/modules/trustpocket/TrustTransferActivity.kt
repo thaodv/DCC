@@ -15,6 +15,7 @@ import io.wexchain.android.dcc.view.dialog.TrustTransferDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustTransferBinding
 import io.wexchain.dccchainservice.domain.trustpocket.TransferBean
+import io.wexchain.digitalwallet.util.isNumberkeep8
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -65,15 +66,20 @@ class TrustTransferActivity : BindActivity<ActivityTrustTransferBinding>() {
             } else if (account.toBigDecimal().subtract(mTotalAccount.toBigDecimal()) > BigDecimal.ZERO) {
                 toast("超过可提总量")
             } else {
-                trustTransferDialog = TrustTransferDialog(this)
-                trustTransferDialog.setParameters(mobile, address, "$account $mCode", "$mTotalAccount $mCode")
 
-                trustTransferDialog.setOnClickListener(object : TrustTransferDialog.OnClickListener {
-                    override fun transfer() {
-                        transfer(account, mobileUserId)
-                    }
-                })
-                trustTransferDialog.show()
+                if (isNumberkeep8(account)) {
+                    trustTransferDialog = TrustTransferDialog(this)
+                    trustTransferDialog.setParameters(mobile, address, "$account $mCode", "$mTotalAccount $mCode")
+
+                    trustTransferDialog.setOnClickListener(object : TrustTransferDialog.OnClickListener {
+                        override fun transfer() {
+                            transfer(account, mobileUserId)
+                        }
+                    })
+                    trustTransferDialog.show()
+                } else {
+                    toast("最多小数点后面8位")
+                }
             }
         }
     }

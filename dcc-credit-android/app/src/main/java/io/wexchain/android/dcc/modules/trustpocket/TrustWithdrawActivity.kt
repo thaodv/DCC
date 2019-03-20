@@ -34,6 +34,7 @@ import io.wexchain.dccchainservice.domain.trustpocket.ValidatePaymentPasswordBea
 import io.wexchain.dccchainservice.domain.trustpocket.WithdrawBean
 import io.wexchain.digitalwallet.util.isBtcAddress
 import io.wexchain.digitalwallet.util.isEthAddress
+import io.wexchain.digitalwallet.util.isNumberkeep8
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -115,6 +116,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
         binding.btWithdraw.onClick {
             mAddress = binding.etAddress.text.trim().toString()
             mAccount = binding.etAccount.text.trim().toString()
+
             if (null != mAddress && "" == mAddress) {
                 toast("提币地址不能为空")
             } else if ("" == mAccount) {
@@ -126,16 +128,21 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
             } else {
 
                 if (isEthAddress(mAddress!!) || isBtcAddress(mAddress!!)) {
-                    trustWithdrawDialog = TrustWithdrawDialog(this)
 
-                    trustWithdrawDialog.setParameters(mAddress, mAccount + "" + mCode, "$mFee $mCode", "$mToAccount $mCode", "$mTotalAccount $mCode")
+                    if (isNumberkeep8(mAccount)) {
+                        trustWithdrawDialog = TrustWithdrawDialog(this)
 
-                    trustWithdrawDialog.setOnClickListener(object : TrustWithdrawDialog.OnClickListener {
-                        override fun sure() {
-                            checkPasswd()
-                        }
-                    })
-                    trustWithdrawDialog.show()
+                        trustWithdrawDialog.setParameters(mAddress, mAccount + "" + mCode, "$mFee $mCode", "$mToAccount $mCode", "$mTotalAccount $mCode")
+
+                        trustWithdrawDialog.setOnClickListener(object : TrustWithdrawDialog.OnClickListener {
+                            override fun sure() {
+                                checkPasswd()
+                            }
+                        })
+                        trustWithdrawDialog.show()
+                    } else {
+                        toast("最多小数点后面8位")
+                    }
                 } else {
                     toast("地址错误")
                 }

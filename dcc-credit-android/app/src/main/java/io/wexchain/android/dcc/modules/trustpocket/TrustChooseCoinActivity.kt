@@ -125,9 +125,6 @@ class TrustChooseCoinActivity : BaseCompatActivity(), TextWatcher, ItemViewClick
                 }
                 .doMain()
                 .subscribe({
-                    /*mTotalAccount = it.availableAmount.assetValue.amount
-                    binding.tvAccount.text = mTotalAccount + " " + it.availableAmount.assetValue.assetCode*/
-
                     navigateTo(TrustCoinDetailActivity::class.java) {
                         putExtra("url", url)
                         putExtra("code", code)

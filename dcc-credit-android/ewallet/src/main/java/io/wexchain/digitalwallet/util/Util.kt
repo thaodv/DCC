@@ -13,9 +13,16 @@ import java.util.regex.Pattern
 val ethAddressPattern: Pattern = Pattern.compile("^(ethereum:)?(0x)?[0-9a-fA-F]{40}$")
 val btcAddressPattern: Pattern = Pattern.compile("^(ethereum:)?(0x)?[0-9a-fA-F]{32}$")
 
+val number8bit = Pattern.compile("^\\d+\\.?\\d{0,8}$")
+
+fun isNumberkeep8(text: String): Boolean {
+    return number8bit.matcher(text).matches()
+}
+
 fun isEthAddress(text: String): Boolean {
     return ethAddressPattern.matcher(text).matches()
 }
+
 fun isBtcAddress(text: String): Boolean {
     return btcAddressPattern.matcher(text).matches()
 }

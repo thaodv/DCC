@@ -38,7 +38,7 @@
         app:box_draw_type="rect"
         app:interval_width="0dp"
         app:item_height="50dp"
-        app:item_width="60dp"
+        app:item_width="100dp"
         app:pass_inputed_type="stars"
         app:pass_leng="six"/>
 
@@ -52,7 +52,7 @@
         app:box_draw_type="rect"
         app:interval_width="0dp"
         app:item_height="50dp"
-        app:item_width="60dp"
+        app:item_width="100dp"
         app:pass_inputed_type="stars"
         app:pass_leng="six"/>
 
