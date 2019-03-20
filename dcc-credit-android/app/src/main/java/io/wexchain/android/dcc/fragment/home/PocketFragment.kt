@@ -47,6 +47,11 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
 
     var isOpenTrustPocket: Boolean = false
 
+    var mValue1: String = ""
+    var mValue2: String = ""
+    var mTrustValue: String = ""
+    var mBsxValue: String = ""
+
 
     @SuppressLint("SetTextI18n")
     override fun onResume() {
@@ -80,6 +85,29 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
             }
         })
 
+        assetsVm.assetsFilter5.set(false)
+        assetsVm.filterEvent5.observe(this, Observer {
+            val b = assetsVm.assetsFilter5.get()!!
+            assetsVm.assetsFilter5.set(!b)
+            if (b) {
+
+                binding.assetsAmountValue.text = mValue1
+                binding.tvTotalUsdt.text = mValue2
+                binding.tvTrustAmount.text = mTrustValue
+                binding.tvDigestValue.text = assetsVm.assetsSumValue.get()
+                binding.tvBsx.text = mBsxValue
+
+
+            } else {
+                binding.assetsAmountValue.text = "****"
+                binding.tvTotalUsdt.text = "****"
+                binding.tvTrustAmount.text = "****"
+                binding.tvDigestValue.text = "****"
+                binding.tvBsx.text = "****"
+
+            }
+        })
+
         binding.assets = assetsVm
         adapter.assetsVm = assetsVm
         binding.rvAssets.adapter = adapter
@@ -100,13 +128,16 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
 
                     val trustAmount = it.second.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal())
 
-                    binding.tvTrustAmount.text = "≈￥" + trustAmount.currencyToDisplayRMBStr()
+                    mTrustValue = "≈￥" + trustAmount.currencyToDisplayRMBStr()
+                    binding.tvTrustAmount.text = mTrustValue
 
                     val bsxAccount = if (null == it.third.corpus) {
                         "0"
                     } else StringUtils.keep2double(it.third.corpus)
 
-                    binding.tvBsx.text = "≈￥$bsxAccount"
+                    mBsxValue = "≈￥$bsxAccount"
+
+                    binding.tvBsx.text = mBsxValue
 
                     val digestAccountRnb = binding.tvDigestRnb.text.toString()
 
@@ -118,8 +149,11 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                         res = digestAccountRnb.toBigDecimal()
                     }
 
-                    binding.assetsAmountValue.text = "￥" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).currencyToDisplayRMBStr()
-                    binding.tvTotalUsdt.text = "≈" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setScale(8, RoundingMode.DOWN) + " USDT"
+                    mValue1 = "￥" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).currencyToDisplayRMBStr()
+                    mValue2 = "≈" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setScale(8, RoundingMode.DOWN) + " USDT"
+
+                    binding.assetsAmountValue.text = mValue1
+                    binding.tvTotalUsdt.text = mValue2
 
 
                     // 已开户

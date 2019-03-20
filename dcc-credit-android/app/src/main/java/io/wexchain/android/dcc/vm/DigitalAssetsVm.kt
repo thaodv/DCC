@@ -38,11 +38,33 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
     fun filter() {
         filterEvent.call()
     }
+
     val assetsFilter2 = ObservableField<Boolean>()
     val filterEvent2 = SingleLiveEvent<Void>()
 
     fun filter2() {
         filterEvent2.call()
+    }
+
+    val assetsFilter3 = ObservableField<Boolean>()
+    val filterEvent3 = SingleLiveEvent<Void>()
+
+    fun filter3() {
+        filterEvent3.call()
+    }
+
+    val assetsFilter4 = ObservableField<Boolean>()
+    val filterEvent4 = SingleLiveEvent<Void>()
+
+    fun filter4() {
+        filterEvent4.call()
+    }
+
+    val assetsFilter5 = ObservableField<Boolean>()
+    val filterEvent5 = SingleLiveEvent<Void>()
+
+    fun filter5() {
+        filterEvent5.call()
     }
 
     val assets = Transformations.map(assetsRepository.displayCurrencies) {

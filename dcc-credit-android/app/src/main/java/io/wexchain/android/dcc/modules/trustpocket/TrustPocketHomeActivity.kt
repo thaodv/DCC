@@ -1,11 +1,14 @@
 package io.wexchain.android.dcc.modules.trustpocket
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.tools.LogUtils
@@ -13,6 +16,7 @@ import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.itemDiffCallback
+import io.wexchain.android.dcc.vm.DigitalAssetsVm
 import io.wexchain.android.dcc.vm.currencyToDisplayRMBStr
 import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.dcc.R
@@ -29,11 +33,14 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
 
     var resultAsset: MutableList<ResultAssetBean> = ArrayList()
 
+    val adapter = ResultAssetAdapter(this)
+
+    var mValue1: String = ""
+    var mValue2: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-
-        getConinData()
 
         binding.ivBack.onClick {
             finish()
@@ -67,10 +74,50 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
             }
         }
 
-        binding.tvStatus.onClick {
+        val assetsVm = getViewModel<DigitalAssetsVm>()
+        assetsVm.assetsFilter3.set(false)
+        assetsVm.filterEvent3.observe(this, Observer {
+            val b = assetsVm.assetsFilter3.get()!!
+            assetsVm.assetsFilter3.set(!b)
+            if (b) {
+                adapter.setList(resultAsset)
+            } else {
+                val tmp = mutableListOf<ResultAssetBean>()
+                resultAsset!!.forEach {
+                    if (it.value != "0.0000") {
+                        tmp.add(it)
+                    }
+                }
+                adapter.setList(tmp)
+            }
+        })
 
-        }
+        assetsVm.assetsFilter4.set(false)
+        assetsVm.filterEvent4.observe(this, Observer {
+            val b = assetsVm.assetsFilter4.get()!!
+            assetsVm.assetsFilter4.set(!b)
 
+            if (b) {
+                adapter.isShow = true
+                binding.totalPrice = mValue1
+                binding.totalPrice2 = mValue2
+
+            } else {
+                adapter.isShow = false
+                binding.totalPrice = "****"
+                binding.totalPrice2 = "****"
+            }
+            adapter.notifyDataSetChanged()
+        })
+
+
+        binding.assets = assetsVm
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getConinData()
     }
 
     private fun getConinData() {
@@ -84,44 +131,70 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
                 .doMain()
                 .withLoading()
                 .subscribeBy(onSuccess = {
-                    binding.totalPrice2 = "≈" + it.first.totalPrice.amount.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString() + " " + it.first.totalPrice.assetCode
 
-                    binding.totalPrice = "≈￥" + it.first.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).currencyToDisplayRMBStr()
+                    mValue1 = "≈￥" + it.first.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).currencyToDisplayRMBStr()
+                    mValue2 = "≈" + it.first.totalPrice.amount.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString() + " " + it.first.totalPrice.assetCode
+
+                    binding.totalPrice = mValue1
+                    binding.totalPrice2 = mValue2
 
                     val holdingList = it.first.assetList
 
                     val assetList = it.second
 
-                    var res: ResultAssetBean
+
                     if (null == holdingList || holdingList.isEmpty()) {
                         for (item in assetList) {
-                            res = ResultAssetBean(item.url, item.cryptoAssetConfig.code, item.cryptoAssetConfig.name, "0.000", "--", item.rank)
+                            val res = ResultAssetBean()
+                            res.url = item.url
+                            res.code = item.cryptoAssetConfig.code
+                            res.name = item.cryptoAssetConfig.name
+                            res.value = "0.0000"
+                            res.value2 = "--"
+                            res.rank = item.rank
+
                             resultAsset.add(res)
                         }
                     } else {
                         for (item in assetList) {
+
+                            val tempCode = item.cryptoAssetConfig.code
+                            val res = ResultAssetBean()
+                            res.url = item.url
+                            res.code = tempCode
+                            res.name = item.cryptoAssetConfig.name
+                            res.rank = item.rank
+
+
                             for (it in holdingList) {
 
-                                if (it.assetValue.assetCode == item.cryptoAssetConfig.code) {
-                                    res = ResultAssetBean(item.url, item.cryptoAssetConfig.code, item.cryptoAssetConfig.name, it.assetValue.amount.toBigDecimal().currencyToDisplayStr(), "≈￥" + it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).toPlainString().toBigDecimal().currencyToDisplayStr(), item.rank)
-                                } else {
-                                    res = ResultAssetBean(item.url, item.cryptoAssetConfig.code, item.cryptoAssetConfig.name, "0.000", "--", item.rank)
+                                if (tempCode == it.assetValue.assetCode) {
+
+                                    res.value = it.assetValue.amount.toBigDecimal().currencyToDisplayStr()
+                                    res.value2 = "≈￥" + it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).toPlainString().toBigDecimal().currencyToDisplayStr()
+                                    res.value3 = it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal())
+
                                 }
-                                resultAsset.add(res)
+                                if (resultAsset.contains(res)) {
+
+                                } else {
+                                    resultAsset.add(res)
+                                }
+                                /*resultAsset.add(res)*/
                             }
                         }
                     }
 
                     resultAsset.sort()
 
-                    LogUtils.i("res:", resultAsset.toString())
+                    LogUtils.i("resultAsset-res:", resultAsset.toString())
 
-                    val adapter = ResultAssetAdapter(this)
+
                     adapter.setList(resultAsset)
                     binding.rvAssets.adapter = adapter
 
                 }, onError = {
-
+                    toast(it.message.toString())
                 })
     }
 
@@ -142,9 +215,11 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
             itemDiffCallback = itemDiffCallback({ a, b -> a.code == b.code }),
             itemViewClickListener = itemViewClickListener
     ) {
+        var isShow: Boolean = true
 
         override fun bindData(binding: ItemTrustPocketHomeBinding, item: ResultAssetBean?) {
             binding.res = item
+            binding.isShow = isShow
         }
     }
 

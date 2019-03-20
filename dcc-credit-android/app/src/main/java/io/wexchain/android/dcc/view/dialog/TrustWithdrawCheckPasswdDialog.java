@@ -37,6 +37,7 @@ public class TrustWithdrawCheckPasswdDialog extends Dialog implements View.OnCli
         mPassword = findViewById(R.id.password);
         
         mIbtClose.setOnClickListener(this);
+        mTvForget.setOnClickListener(this);
         
     }
     

@@ -29,9 +29,13 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
+                android:drawablePadding="8dp"
+                android:drawableRight="@{assets.assetsFilter5?@drawable/icon_asset_unshow:@drawable/icon_asset_show}"
+                android:onClick="@{(v)->assets.filter5()}"
                 android:text="总资产"
                 android:textColor="#4A4A4A"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                tools:drawableRight="@drawable/icon_asset_show"/>
 
             <ImageView
                 android:id="@+id/iv_show"
@@ -40,6 +44,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/tv_total"
+                android:visibility="gone"
                 tools:src="@drawable/icon_asset_show"/>
 
             <ImageView
@@ -199,6 +204,7 @@
                     android:textSize="17sp"/>
 
                 <TextView
+                    android:id="@+id/tv_digest_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"

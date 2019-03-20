@@ -184,12 +184,13 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
                 .withLoading()
                 .subscribe({
                     if (it.status == WithdrawBean.Status.PROCESSING || it.status == WithdrawBean.Status.PROCESSING) {
-                        trustWithdrawDialog.dismiss()
+
                         navigateTo(TrustWithdrawSuccessActivity::class.java) {
                             putExtra("address", it.receiverAddress)
                             putExtra("account", it.amount.decimalValue.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString() + " " + it.assetCode)
                         }
                         finish()
+                        trustWithdrawDialog.dismiss()
                     } else {
                         toast("系统错误")
                     }
@@ -274,7 +275,6 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
                     App.get().marketingApi.createPayPwdSecurityContext(it)
                 }
                 .doMain()
-                .withLoading()
                 .subscribe({
                     if (it.systemCode == Result.SUCCESS && it.businessCode == Result.SUCCESS) {
                         prepareInputPwd(pwd)
@@ -292,7 +292,6 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
                     App.get().marketingApi.prepareInputPwd(it).check()
                 }
                 .doMain()
-                .withLoading()
                 .subscribe({
                     validatePaymentPassword(it.pubKey, it.salt, pwd)
                 }, {
@@ -308,7 +307,6 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
                     App.get().marketingApi.validatePaymentPassword(it, enpwd, salt).check()
                 }
                 .doMain()
-                .withLoading()
                 .subscribe({
                     if (it.result == ValidatePaymentPasswordBean.Status.PASSED) {
                         trustWithdrawCheckPasswdDialog.dismiss()

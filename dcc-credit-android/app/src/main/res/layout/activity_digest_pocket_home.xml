@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
         <variable
             name="assets"
             type="io.wexchain.android.dcc.vm.DigitalAssetsVm"/>
@@ -39,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:drawablePadding="8dp"
-                android:drawableRight="@{assets.assetsFilter2?@drawable/icon_zero_unshow:@drawable/icon_zero_show}"
+                android:drawableRight="@{assets.assetsFilter2?@drawable/icon_asset_unshow:@drawable/icon_asset_show}"
                 android:onClick="@{(v)->assets.filter2()}"
                 android:text="数字钱包总资产"
                 android:textColor="#4A4A4A"
@@ -78,6 +80,7 @@
                 tools:text="≈￥43681365.43159"/>
 
             <TextView
+                android:id="@+id/assets_amount_value2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

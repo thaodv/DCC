@@ -47,9 +47,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:drawablePadding="8dp"
+                android:drawableRight="@{assets.assetsFilter4?@drawable/icon_asset_unshow:@drawable/icon_asset_show}"
+                android:onClick="@{(v)->assets.filter4()}"
                 android:text="托管钱包总资产"
                 android:textColor="#4A4A4A"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                tools:drawableRight="@drawable/icon_asset_show"/>
 
             <ImageView
                 android:id="@+id/iv_show"
@@ -58,6 +62,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/tv_title"
+                android:visibility="gone"
                 tools:src="@drawable/icon_asset_show"/>
 
         </RelativeLayout>
@@ -218,8 +223,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:drawablePadding="8dp"
-                android:drawableRight="@{assets.assetsFilter?@drawable/icon_zero_unshow:@drawable/icon_zero_show}"
-                android:onClick="@{(v)->assets.filter()}"
+                android:drawableRight="@{assets.assetsFilter3?@drawable/icon_zero_unshow:@drawable/icon_zero_show}"
+                android:onClick="@{(v)->assets.filter3()}"
                 android:text="隐藏零资产币种"
                 android:textColor="#9B9B9B"
                 android:textSize="14sp"

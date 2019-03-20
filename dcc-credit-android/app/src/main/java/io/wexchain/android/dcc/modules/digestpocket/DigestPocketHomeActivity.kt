@@ -73,6 +73,7 @@ class DigestPocketHomeActivity : BindActivity<ActivityDigestPocketHomeBinding>()
             tmpList = it
             adapter.setList(it)
         })
+
         assetsVm.assetsFilter.set(false)
         assetsVm.filterEvent.observe(this, Observer {
             val b = assetsVm.assetsFilter.get()!!
@@ -95,11 +96,24 @@ class DigestPocketHomeActivity : BindActivity<ActivityDigestPocketHomeBinding>()
                 adapter.setList(tmp)
             }
         })
+
         assetsVm.assetsFilter2.set(false)
         assetsVm.filterEvent2.observe(this, Observer {
             val b = assetsVm.assetsFilter2.get()!!
             assetsVm.assetsFilter2.set(!b)
-            adapter.isShow = b
+
+            if (b) {
+                adapter.isShow = true
+                binding.assetsAmountValue.text = assetsVm.assetsSumValue.get()
+                binding.assetsAmountValue2.text = assetsVm.assetsSumValue2.get()
+
+            } else {
+                adapter.isShow = false
+                binding.assetsAmountValue.text = "****"
+                binding.assetsAmountValue2.text = "****"
+            }
+
+            //adapter.isShow = b
             //adapter.setList(tmpList)
             adapter.notifyDataSetChanged()
         })
