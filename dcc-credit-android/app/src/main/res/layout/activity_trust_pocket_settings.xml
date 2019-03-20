@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="fingerPrintAvailable"
+            type="boolean"/>
+
+        <!--<variable
+            name="fingerPrintEnrolled"
+            type="boolean"/>-->
+
+    </data>
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -180,7 +194,8 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:visibility="@{fingerPrintAvailable?View.VISIBLE:View.GONE}">
 
             <TextView
                 android:id="@+id/tv_pay"
@@ -203,12 +218,13 @@
                 android:textSize="14sp"/>
 
             <io.wexchain.android.dcc.view.SwitchButton
-                android:id="@+id/tv_passport_protect_status"
+                android:id="@+id/tv_finger_pay_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="14dp"/>
+                android:layout_marginRight="14dp"
+                />
 
         </RelativeLayout>
 

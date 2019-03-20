@@ -107,7 +107,7 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
         assetsSumValue2.set(if ("" == sumString) {
             ""
         } else {
-            "≈" + sumString.toBigDecimal().divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setScale(8, RoundingMode.DOWN) + " USDT"
+            "≈" + sumString.toBigDecimal().divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setScale(8, RoundingMode.DOWN).toPlainString() + " USDT"
         })
 
         assetsSumValue3.set(sumString)

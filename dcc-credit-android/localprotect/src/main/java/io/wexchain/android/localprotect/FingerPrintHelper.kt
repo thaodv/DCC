@@ -18,7 +18,7 @@ import java.security.spec.X509EncodedKeySpec
  * Created by lulingzhi on 2017/12/13.
  */
 object FingerPrintHelper {
-    private const val KEY_NAME = "ec_local_protect_instance"
+    const val KEY_NAME = "ec_local_protect_instance"
 
     @RequiresApi(Build.VERSION_CODES.M)
     @JvmStatic

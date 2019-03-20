@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.view.View
 import io.reactivex.rxkotlin.Singles
-import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.getViewModel
@@ -124,8 +123,7 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                 App.get().scfApi.getHoldingSum(App.get().passportRepository.currPassport.value!!.address).check())
                 .doMain()
                 .withLoading()
-                .subscribeBy(onSuccess = {
-
+                .subscribe({
                     val trustAmount = it.second.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal())
 
                     mTrustValue = "≈￥" + trustAmount.currencyToDisplayRMBStr()
@@ -168,8 +166,7 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                         binding.ivNext.visibility = View.GONE
                         binding.btOpen.visibility = View.VISIBLE
                     }
-
-                }, onError = {
+                }, {
                     // 未开户
                     isOpenTrustPocket = false
                     binding.ivNext.visibility = View.GONE

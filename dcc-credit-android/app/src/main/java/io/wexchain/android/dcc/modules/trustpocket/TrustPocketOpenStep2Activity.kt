@@ -67,7 +67,7 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
             override fun onFinished(pwd: String) {
                 Log.e("onFinished:", pwd)
                 if (pwd.checkWeak()) {
-                    tvTip2.text = "密码不能为连续、重复数字"
+                    toast("密码不能是连续数字！密码不能是重复数字！")
                 } else if (pwd.length == 6) {
                     pwdFirst = pwd
                     val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -97,7 +97,7 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
                         initialPaymentPassword(pwd, salt)
                     }
                 } else {
-                    toast("请重新设置")
+                    toast("两次密码不一致")
                     val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.hideSoftInputFromWindow(passwd2.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
                     passwd1.visibility = View.VISIBLE

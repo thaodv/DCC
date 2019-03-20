@@ -1,13 +1,22 @@
 package io.wexchain.android.dcc.modules.trustpocket
 
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
+import android.app.KeyguardManager
 import android.content.Intent
+import android.hardware.fingerprint.FingerprintManager
+import android.os.Build
 import android.os.Bundle
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
+import android.support.annotation.RequiresApi
+import android.support.v4.app.FragmentManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.widget.Toast
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.constant.RequestCodes
@@ -22,11 +31,11 @@ import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.modules.other.QrScannerActivity
 import io.wexchain.android.dcc.repo.db.AddressBook
+import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check
-import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
-import io.wexchain.android.dcc.view.dialog.TrustWithdrawCheckPasswdDialog
-import io.wexchain.android.dcc.view.dialog.TrustWithdrawDialog
+import io.wexchain.android.dcc.view.dialog.*
 import io.wexchain.android.dcc.view.passwordview.PassWordLayout
+import io.wexchain.android.localprotect.FingerPrintHelper
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustWithdrawBinding
 import io.wexchain.dccchainservice.domain.Result
@@ -39,11 +48,21 @@ import io.wexchain.ipfs.utils.doMain
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
+import java.security.KeyStore
 import java.security.MessageDigest
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
 
+@RequiresApi(Build.VERSION_CODES.M)
 class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), TextWatcher {
 
     override val contentLayoutId: Int get() = R.layout.activity_trust_withdraw
+
+    lateinit var keyStore: KeyStore
+
+    lateinit var mFragmentManager: FragmentManager
+
 
     private var mCode: String? = null
     private var mUrl: String? = null
@@ -60,13 +79,18 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
 
     private lateinit var trustWithdrawCheckPasswdDialog: TrustWithdrawCheckPasswdDialog
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
 
+
         mCode = intent.getStringExtra("code")
         mUrl = intent.getStringExtra("url")
         mAddress = intent.getStringExtra("address")
+
+
+
 
         if (null != mAddress) {
             binding.etAddress.setText(mAddress)
@@ -135,8 +159,21 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
                         trustWithdrawDialog.setParameters(mAddress, mAccount + "" + mCode, "$mFee $mCode", "$mToAccount $mCode", "$mTotalAccount $mCode")
 
                         trustWithdrawDialog.setOnClickListener(object : TrustWithdrawDialog.OnClickListener {
+                            @RequiresApi(Build.VERSION_CODES.M)
                             override fun sure() {
-                                checkPasswd()
+
+                                val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
+
+                                if (fingerPayStatus) {
+                                    if (supportFingerprint()) {
+                                        initKey()
+                                        initCipher()
+                                    } else {
+                                        checkPasswd()
+                                    }
+                                } else {
+                                    checkPasswd()
+                                }
                             }
                         })
                         trustWithdrawDialog.show()
@@ -198,6 +235,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
                         }
                         finish()
                         trustWithdrawDialog.dismiss()
+
                     } else {
                         toast("系统错误")
                     }
@@ -398,4 +436,93 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
     }
+
+
+    @TargetApi(23)
+    private fun initKey() {
+        try {
+            keyStore = KeyStore.getInstance("AndroidKeyStore")
+            keyStore.load(null)
+            val keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES,
+                    "AndroidKeyStore")
+            val builder = KeyGenParameterSpec.Builder(FingerPrintHelper.KEY_NAME,
+                    KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT).setBlockModes(KeyProperties.BLOCK_MODE_CBC).setUserAuthenticationRequired(true)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+            keyGenerator.init(builder.build())
+            keyGenerator.generateKey()
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+
+    }
+
+    fun supportFingerprint(): Boolean {
+        if (Build.VERSION.SDK_INT < 23) {
+            Toast.makeText(this, "您的系统版本过低，不支持指纹功能", Toast.LENGTH_SHORT).show()
+            return false
+        } else {
+            val keyguardManager = getSystemService(KeyguardManager::class.java)
+            val fingerprintManager = getSystemService(FingerprintManager::class.java)
+            if (!fingerprintManager!!.isHardwareDetected) {
+                Toast.makeText(this, "您的手机不支持指纹功能", Toast.LENGTH_SHORT).show()
+                return false
+            } else if (!keyguardManager!!.isKeyguardSecure) {
+                Toast.makeText(this, "您还未设置锁屏，请先设置锁屏并添加一个指纹", Toast.LENGTH_SHORT).show()
+                return false
+            } else if (!fingerprintManager.hasEnrolledFingerprints()) {
+                Toast.makeText(this, "您至少需要在系统设置中添加一个指纹", Toast.LENGTH_SHORT).show()
+                return false
+            }
+        }
+        return true
+    }
+
+    @TargetApi(23)
+    private fun initCipher() {
+        try {
+            val key = keyStore.getKey(FingerPrintHelper.KEY_NAME, null) as SecretKey
+            val cipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/" + KeyProperties
+                    .BLOCK_MODE_CBC + "/" + KeyProperties.ENCRYPTION_PADDING_PKCS7)
+            cipher.init(Cipher.ENCRYPT_MODE, key)
+            showFingerPrintDialog(cipher)
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+    }
+
+    private fun showFingerPrintDialog(cipher: Cipher) {
+
+        val fragment = FingerCheckDialog()
+        fragment.setCipher(cipher)
+        mFragmentManager = supportFragmentManager
+        fragment.show(mFragmentManager, "")
+
+        fragment.setOnCallBack(object : FingerCheckDialog.onCallBack {
+            override fun onAuthenticated() {
+                withdraw(mAddress!!, mAccount)
+            }
+        })
+
+        fragment.setOnClickListener(object : FingerCheckDialog.OnClickListener {
+            override fun cancel() {
+                val getRedpacketDialog = GetRedpacketDialog(this@TrustWithdrawActivity)
+                getRedpacketDialog.setTitle("提示")
+                getRedpacketDialog.setIbtCloseVisble(View.GONE)
+                getRedpacketDialog.setText("确定要退出吗？")
+                getRedpacketDialog.setBtnText("输入密码", "退出")
+                getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
+                    override fun cancel() {
+                        checkPasswd()
+                    }
+
+                    override fun sure() {
+
+                    }
+                })
+                getRedpacketDialog.show()
+            }
+        })
+    }
 }
+
+

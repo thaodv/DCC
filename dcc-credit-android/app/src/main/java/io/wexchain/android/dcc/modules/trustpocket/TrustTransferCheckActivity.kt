@@ -130,7 +130,7 @@ class TrustTransferCheckActivity : BaseCompatActivity() {
                         //putExtra("code", mCode)
                     }
                 }, {
-                    toast(it.message.toString())
+                    toast("该钱包地址不存在，请检查后重试")
                 })
     }
 

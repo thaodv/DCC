@@ -19,9 +19,9 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.modules.passport.PassportAddressActivity
+import io.wexchain.android.dcc.modules.trans.activity.CreateTransactionActivity
 import io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenTipActivity
-import io.wexchain.android.dcc.modules.trustpocket.TrustRechargeActivity
 import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.tools.SharedPreferenceUtil
 import io.wexchain.android.dcc.tools.check
@@ -53,6 +53,8 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
     var isOpenTrustPocket: Boolean = false
     var isSupportTrust: Boolean = false
 
+    lateinit var mTrustAddress: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar(true)
@@ -79,6 +81,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
                     isOpenTrustPocket = false
                 })
 
+
         GardenOperations
                 .refreshToken {
                     App.get().marketingApi.getDepositWallet(it, getDc().symbol).check()
@@ -87,6 +90,8 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
                 .withLoading()
                 .subscribe({
                     isSupportTrust = true
+
+                    mTrustAddress = it.address
                 }, {
                     isSupportTrust = false
                 })
@@ -246,10 +251,16 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
             if (isOpenTrustPocket) {
 
                 if (isSupportTrust) {
-                    navigateTo(TrustRechargeActivity::class.java) {
+                    /*navigateTo(TrustRechargeActivity::class.java) {
                         putExtra("code", getDc().symbol)
                         putExtra("url", if (null == getDc().icon) "" else getDc().icon)
-                    }
+                    }*/
+
+                    startActivity(Intent(this, CreateTransactionActivity::class.java).apply {
+                        putExtra(Extras.EXTRA_DIGITAL_CURRENCY, getDc())
+                        putExtra("address", mTrustAddress)
+                    })
+
                 } else {
                     toast("托管钱包暂不支持该币种")
                 }
@@ -257,7 +268,6 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
                 navigateTo(TrustPocketOpenTipActivity::class.java)
             }
         }
-
     }
 
     private fun toCreateTransaction() {

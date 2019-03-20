@@ -24,6 +24,7 @@ import io.wexchain.dcc.databinding.ActivityTrustPocketHomeBinding
 import io.wexchain.dcc.databinding.ItemTrustPocketHomeBinding
 import io.wexchain.dccchainservice.domain.trustpocket.ResultAssetBean
 import io.wexchain.ipfs.utils.doMain
+import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
 
@@ -84,7 +85,7 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
             } else {
                 val tmp = mutableListOf<ResultAssetBean>()
                 resultAsset!!.forEach {
-                    if (it.value != "0.0000") {
+                    if (it.value != "0.0000" && (it.value3.compareTo(BigDecimal.ZERO) != 0)) {
                         tmp.add(it)
                     }
                 }
@@ -107,6 +108,7 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
                 binding.totalPrice = "****"
                 binding.totalPrice2 = "****"
             }
+
             adapter.notifyDataSetChanged()
         })
 

@@ -52,5 +52,6 @@ object Extras {
     const val SP_VERSION_NAME = "version_name"
     const val SP_TRUST_PUBKEY = "pubKey"
     const val SP_TRUST_MOBILE_PHONE = "trust_mobile_phone"
+    const val SP_TRUST_FINGER_PAY_STATUS = "trust_finger_pay_status"
 
 }
