@@ -258,12 +258,14 @@
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/icon_trust_trade_detail_choose"/>
+                android:src="@drawable/icon_trust_trade_detail_choose"
+                android:visibility="gone"/>
 
             <ImageButton
                 android:id="@+id/ibt_time"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:layout_toLeftOf="@+id/ibt_detail"
@@ -271,29 +273,164 @@
 
         </RelativeLayout>
 
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/srl_list"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white">
 
-            <com.scwang.smartrefresh.layout.header.ClassicsHeader
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_list"
-                dataList="@{vm.records}"
+                <TextView
+                    android:id="@+id/tv_in"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="充币"
+                    android:textColor="#6144CC"
+                    android:textSize="16sp"/>
+
+                <View
+                    android:id="@+id/v_in_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#6144CC"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_out"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="提币"
+                    android:textColor="#9B9B9B"
+                    android:textSize="16sp"/>
+
+                <View
+                    android:id="@+id/v_out_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#6144CC"
+                    android:visibility="invisible"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_my_in"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="我的收款"
+                    android:textColor="#9B9B9B"
+                    android:textSize="16sp"/>
+
+                <View
+                    android:id="@+id/v_my_in_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#6144CC"
+                    android:visibility="invisible"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_my_out"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="我的付款"
+                    android:textColor="#9B9B9B"
+                    android:textSize="16sp"/>
+
+                <View
+                    android:id="@+id/v_my_out_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#6144CC"
+                    android:visibility="invisible"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                android:id="@+id/srl_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_trust_recharge_record"/>
+                android:layout_marginTop="10dp">
 
-            <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_list"
+                    dataList="@{vm.records}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_trust_recharge_record"/>
+
+                <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_empty"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent"
+                android:background="#F5F5FD"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="100dp"
+                    android:background="@drawable/img_empty"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="38dp"
+                    android:text="暂无记录"
+                    android:textColor="#FF4A4A4A"
+                    android:textSize="15sp"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </LinearLayout>
 </layout>

@@ -12,6 +12,8 @@ abstract class PagedVm<T> : ViewModel() {
 
     val records = ObservableField<List<T>>()
 
+    var hasDatas = ObservableField<List<T>>()
+
     val loadFailEvent = SingleLiveEvent<String>()
 
     //Check that the data is empty and return View.GONE
@@ -56,6 +58,7 @@ abstract class PagedVm<T> : ViewModel() {
     }
 
     private fun mergeList(list: List<T>?, page: Int) {
+        hasDatas.set(list)
         if (list == null) {
             if (page == 0) {
                 checkData.postValue(View.VISIBLE)

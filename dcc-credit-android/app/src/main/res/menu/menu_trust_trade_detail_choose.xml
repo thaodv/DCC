@@ -6,9 +6,9 @@
         android:icon="@drawable/img_select_time"
         android:title="充值记录"
         app:showAsAction="ifRoom"/>
-    <item
+    <!--<item
         android:id="@+id/choose"
         android:icon="@drawable/icon_trust_trade_detail_choose"
         android:title="充值记录"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"/>-->
 </menu>

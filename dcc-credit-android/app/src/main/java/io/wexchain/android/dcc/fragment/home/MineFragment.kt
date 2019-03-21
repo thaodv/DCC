@@ -19,9 +19,12 @@ import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.modules.mine.ModifyPassportPasswordActivity
 import io.wexchain.android.dcc.modules.mine.SettingActivity
 import io.wexchain.android.dcc.modules.passport.PassportExportActivity
+import io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenTipActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustPocketSettingsActivity
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentMineBinding
+import io.wexchain.ipfs.utils.doMain
 import io.wexchain.ipfs.utils.io_main
 
 /**
@@ -32,6 +35,8 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
     private val passport by lazy {
         App.get().passportRepository
     }
+
+    var isOpenTrustPocket: Boolean = false
 
     override val contentLayoutId: Int get() = R.layout.fragment_mine
 
@@ -51,6 +56,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
         super.onResume()
         checkBoundWechat()
         getCloudToken()
+        getHostingWallet()
     }
 
     private fun checkBoundWechat() {
@@ -60,6 +66,29 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                 toast(it)
             }
         }
+    }
+
+    private fun getHostingWallet() {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getHostingWallet(it).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    // 已开户
+                    if (it?.mobileUserId != null) {
+                        isOpenTrustPocket = true
+                        App.get().mobileUserId = it.mobileUserId
+
+                    } else {
+                        isOpenTrustPocket = false
+                    }
+                }, {
+                    // 未开户
+                    isOpenTrustPocket = false
+                    toast(it.message.toString())
+                })
     }
 
     private fun getCloudToken() {
@@ -123,7 +152,11 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
             navigateTo(ModifyPassportPasswordActivity::class.java)
         }
         binding.tvTrustPocketSetting.onClick {
-            navigateTo(TrustPocketSettingsActivity::class.java)
+            if (isOpenTrustPocket) {
+                navigateTo(TrustPocketSettingsActivity::class.java)
+            } else {
+                navigateTo(TrustPocketOpenTipActivity::class.java)
+            }
         }
     }
 

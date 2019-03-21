@@ -14,6 +14,8 @@ import io.wexchain.dcc.R
 
 class TrustOpenSuccessActivity : BaseCompatActivity() {
 
+    private val mMobile get() = intent.getStringExtra("mobile")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trust_open_success)
@@ -23,24 +25,33 @@ class TrustOpenSuccessActivity : BaseCompatActivity() {
 
         val btRealName = findViewById<Button>(R.id.bt_realname)
 
-        // 已经实名认证
-        if (CertOperations.getCertStatus(CertificationType.ID) == UserCertStatus.DONE) {
+        if (mMobile.startsWith("+86")) {
+            // 已经实名认证
+            if (CertOperations.getCertStatus(CertificationType.ID) == UserCertStatus.DONE) {
+                btDone.text = "完成"
+                tvRealTip.visibility = View.GONE
+                btRealName.visibility = View.GONE
+            } else {
+                btDone.text = "跳过"
+                tvRealTip.visibility = View.VISIBLE
+                btRealName.visibility = View.VISIBLE
+            }
+        } else {
             btDone.text = "完成"
             tvRealTip.visibility = View.GONE
             btRealName.visibility = View.GONE
-        } else {
-            btDone.text = "跳过"
-            tvRealTip.visibility = View.VISIBLE
-            btRealName.visibility = View.VISIBLE
         }
 
-
         btRealName.setOnClickListener {
-            // 已经实名认证
-            if (CertOperations.getCertStatus(CertificationType.ID) == UserCertStatus.DONE) {
-                finish()
+            if (mMobile.startsWith("+86")) {
+                // 已经实名认证
+                if (CertOperations.getCertStatus(CertificationType.ID) == UserCertStatus.DONE) {
+                    finish()
+                } else {
+                    navigateTo(SubmitIdActivity::class.java)
+                    finish()
+                }
             } else {
-                navigateTo(SubmitIdActivity::class.java)
                 finish()
             }
         }

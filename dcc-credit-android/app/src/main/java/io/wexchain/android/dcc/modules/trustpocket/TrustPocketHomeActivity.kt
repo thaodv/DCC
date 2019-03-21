@@ -18,7 +18,7 @@ import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.itemDiffCallback
 import io.wexchain.android.dcc.vm.DigitalAssetsVm
 import io.wexchain.android.dcc.vm.currencyToDisplayRMBStr
-import io.wexchain.android.dcc.vm.currencyToDisplayStr
+import io.wexchain.android.dcc.vm.currencyToDisplayStr8
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustPocketHomeBinding
 import io.wexchain.dcc.databinding.ItemTrustPocketHomeBinding
@@ -151,7 +151,7 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
                             res.url = item.url
                             res.code = item.cryptoAssetConfig.code
                             res.name = item.cryptoAssetConfig.name
-                            res.value = "0.0000"
+                            res.value = "0.00000000"
                             res.value2 = "--"
                             res.rank = item.rank
 
@@ -172,17 +172,15 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
 
                                 if (tempCode == it.assetValue.assetCode) {
 
-                                    res.value = it.assetValue.amount.toBigDecimal().currencyToDisplayStr()
-                                    res.value2 = "≈￥" + it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).toPlainString().toBigDecimal().currencyToDisplayStr()
+                                    res.value = it.assetValue.amount.toBigDecimal().currencyToDisplayStr8()
+                                    res.value2 = "≈￥" + it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).toPlainString().toBigDecimal().currencyToDisplayStr8()
                                     res.value3 = it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal())
-
                                 }
                                 if (resultAsset.contains(res)) {
 
                                 } else {
                                     resultAsset.add(res)
                                 }
-                                /*resultAsset.add(res)*/
                             }
                         }
                     }

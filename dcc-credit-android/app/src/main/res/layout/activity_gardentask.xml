@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="io.wexchain.android.dcc.modules.garden.activity.GardenTaskActivity">
 
     <data>
 
         <variable
             name="vm"
-            type="io.wexchain.android.dcc.modules.garden.vm.GardenTaskVm" />
+            type="io.wexchain.android.dcc.modules.garden.vm.GardenTaskVm"/>
 
-        <import type="io.wexchain.android.dcc.modules.garden.TaskHelper" />
+        <import type="io.wexchain.android.dcc.modules.garden.TaskHelper"/>
 
     </data>
 
@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/include_toolbar" />
+        <include layout="@layout/include_toolbar"/>
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/srl_list"
@@ -48,7 +48,7 @@
                             android:src="@drawable/garden_img1"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"/>
 
                         <TextView
                             android:id="@+id/task_tv1"
@@ -60,7 +60,7 @@
                             android:textColor="@color/FF4A4A4A"
                             android:textSize="16sp"
                             app:layout_constraintLeft_toRightOf="@id/task_img1"
-                            app:layout_constraintTop_toTopOf="@id/task_img1" />
+                            app:layout_constraintTop_toTopOf="@id/task_img1"/>
 
                         <TextView
                             android:id="@+id/garden_balance"
@@ -72,7 +72,7 @@
                             android:textSize="18sp"
                             app:layout_constraintLeft_toLeftOf="@id/task_tv1"
                             app:layout_constraintTop_toBottomOf="@id/task_tv1"
-                            tools:text="1000" />
+                            tools:text="1000"/>
 
                         <TextView
                             android:id="@+id/task_sign"
@@ -89,7 +89,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:background="@drawable/background_splash"
-                            tools:text="签到" />
+                            tools:text="签到"/>
 
                         <TextView
                             android:id="@+id/task_tv2"
@@ -100,7 +100,7 @@
                             android:textColor="@color/FF4A4A4A"
                             android:textSize="13sp"
                             app:layout_constraintRight_toLeftOf="@id/task_sign"
-                            app:layout_constraintTop_toTopOf="@id/task_img1" />
+                            app:layout_constraintTop_toTopOf="@id/task_img1"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
                             android:textSize="14sp"
                             app:layout_constraintLeft_toLeftOf="@id/task_tv2"
                             app:layout_constraintTop_toBottomOf="@id/task_tv1"
-                            tools:text="已签到7天" />
+                            tools:text="已签到7天"/>
 
                     </android.support.constraint.ConstraintLayout>
 
@@ -138,7 +138,7 @@
                                 android:textSize="13sp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"/>
 
                             <TextView
                                 android:id="@+id/task_day1"
@@ -154,7 +154,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 tools:background="@drawable/background_task"
-                                tools:text="+10" />
+                                tools:text="+10"/>
 
 
                             <View
@@ -164,7 +164,7 @@
                                 android:background="#80000000"
                                 app:layout_constraintLeft_toRightOf="@id/task_day1"
                                 app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="@id/task_day1" />
+                                app:layout_constraintTop_toTopOf="@id/task_day1"/>
 
                         </android.support.constraint.ConstraintLayout>
 
@@ -182,7 +182,7 @@
                                 android:textSize="13sp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"/>
 
                             <TextView
                                 android:id="@+id/task_day2"
@@ -197,7 +197,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                tools:background="@drawable/background_task" />
+                                tools:background="@drawable/background_task"/>
 
                             <View
                                 android:layout_width="0dp"
@@ -206,7 +206,7 @@
                                 android:background="#80000000"
                                 app:layout_constraintLeft_toRightOf="@id/task_day2"
                                 app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="@id/task_day2" />
+                                app:layout_constraintTop_toTopOf="@id/task_day2"/>
 
                             <View
                                 android:layout_width="0dp"
@@ -215,7 +215,7 @@
                                 android:background="#80000000"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintRight_toLeftOf="@id/task_day2"
-                                app:layout_constraintTop_toTopOf="@id/task_day2" />
+                                app:layout_constraintTop_toTopOf="@id/task_day2"/>
 
                         </android.support.constraint.ConstraintLayout>
 
@@ -233,7 +233,7 @@
                                 android:textSize="13sp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"/>
 
                             <TextView
                                 android:id="@+id/task_day3"
@@ -248,7 +248,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                tools:background="@drawable/background_task" />
+                                tools:background="@drawable/background_task"/>
 
                             <View
                                 android:layout_width="0dp"
@@ -257,7 +257,7 @@
                                 android:background="#80000000"
                                 app:layout_constraintLeft_toRightOf="@id/task_day3"
                                 app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="@id/task_day3" />
+                                app:layout_constraintTop_toTopOf="@id/task_day3"/>
 
                             <View
                                 android:layout_width="0dp"
@@ -266,7 +266,7 @@
                                 android:background="#80000000"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintRight_toLeftOf="@id/task_day3"
-                                app:layout_constraintTop_toTopOf="@id/task_day3" />
+                                app:layout_constraintTop_toTopOf="@id/task_day3"/>
 
                         </android.support.constraint.ConstraintLayout>
 
@@ -284,7 +284,7 @@
                                 android:textSize="13sp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"/>
 
                             <TextView
                                 android:id="@+id/task_day4"
@@ -299,7 +299,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                tools:background="@drawable/background_task" />
+                                tools:background="@drawable/background_task"/>
 
                             <View
                                 android:layout_width="0dp"
@@ -308,7 +308,7 @@
                                 android:background="#80000000"
                                 app:layout_constraintLeft_toRightOf="@id/task_day4"
                                 app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="@id/task_day4" />
+                                app:layout_constraintTop_toTopOf="@id/task_day4"/>
 
                             <View
                                 android:layout_width="0dp"
@@ -317,7 +317,7 @@
                                 android:background="#80000000"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintRight_toLeftOf="@id/task_day4"
-                                app:layout_constraintTop_toTopOf="@id/task_day4" />
+                                app:layout_constraintTop_toTopOf="@id/task_day4"/>
 
                         </android.support.constraint.ConstraintLayout>
 
@@ -335,7 +335,7 @@
                                 android:textSize="13sp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"/>
 
                             <TextView
                                 android:id="@+id/task_day5"
@@ -350,7 +350,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                tools:background="@drawable/background_task" />
+                                tools:background="@drawable/background_task"/>
 
                             <View
                                 android:layout_width="0dp"
@@ -359,7 +359,7 @@
                                 android:background="#80000000"
                                 app:layout_constraintLeft_toRightOf="@id/task_day5"
                                 app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="@id/task_day5" />
+                                app:layout_constraintTop_toTopOf="@id/task_day5"/>
 
                             <View
                                 android:layout_width="0dp"
@@ -368,7 +368,7 @@
                                 android:background="#80000000"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintRight_toLeftOf="@id/task_day5"
-                                app:layout_constraintTop_toTopOf="@id/task_day5" />
+                                app:layout_constraintTop_toTopOf="@id/task_day5"/>
 
                         </android.support.constraint.ConstraintLayout>
 
@@ -386,7 +386,7 @@
                                 android:textSize="13sp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"/>
 
                             <TextView
                                 android:id="@+id/task_day6"
@@ -401,7 +401,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                tools:background="@drawable/background_task" />
+                                tools:background="@drawable/background_task"/>
 
                             <View
                                 android:layout_width="0dp"
@@ -410,7 +410,7 @@
                                 android:background="#80000000"
                                 app:layout_constraintLeft_toRightOf="@id/task_day6"
                                 app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="@id/task_day6" />
+                                app:layout_constraintTop_toTopOf="@id/task_day6"/>
 
                             <View
                                 android:layout_width="0dp"
@@ -419,7 +419,7 @@
                                 android:background="#80000000"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintRight_toLeftOf="@id/task_day6"
-                                app:layout_constraintTop_toTopOf="@id/task_day6" />
+                                app:layout_constraintTop_toTopOf="@id/task_day6"/>
 
                         </android.support.constraint.ConstraintLayout>
 
@@ -437,7 +437,7 @@
                                 android:textSize="13sp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"/>
 
                             <TextView
                                 android:id="@+id/task_day7"
@@ -452,7 +452,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                tools:background="@drawable/background_task" />
+                                tools:background="@drawable/background_task"/>
 
                             <View
                                 android:layout_width="0dp"
@@ -461,7 +461,7 @@
                                 android:background="#80000000"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintRight_toLeftOf="@id/task_day7"
-                                app:layout_constraintTop_toTopOf="@id/task_day7" />
+                                app:layout_constraintTop_toTopOf="@id/task_day7"/>
 
                         </android.support.constraint.ConstraintLayout>
 
@@ -472,7 +472,7 @@
                         style="@style/DividerHorizontal"
                         android:layout_height="10dp"
                         android:layout_marginTop="20dp"
-                        android:background="#F8F8FF" />
+                        android:background="#F8F8FF"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -486,7 +486,7 @@
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
                             android:text="每日任务"
                             android:textColor="#000"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -495,7 +495,7 @@
                             android:layout_marginLeft="30dp"
                             android:text="次数无上限 奖励无上限"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"/>
 
 
                     </LinearLayout>
@@ -510,7 +510,7 @@
                             android:layout_height="20dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_sign" />
+                            android:src="@drawable/task_sign"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -520,7 +520,7 @@
                             android:layout_weight="1"
                             android:text="每日签到"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -531,7 +531,7 @@
                             android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[0].taskList[0])}"
                             android:textSize="14sp"
                             tools:text="+10~+90 阳光"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -539,7 +539,7 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -552,7 +552,7 @@
                             android:layout_height="20dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_invitation" />
+                            android:src="@drawable/task_invitation"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -562,7 +562,7 @@
                             android:layout_weight="1"
                             android:text="邀请好友助力"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -571,7 +571,7 @@
                             android:text="@{vm.taskList[0].taskList[1].bonus}"
                             android:textColor="#7B40FF"
                             android:textSize="14sp"
-                            tools:text="+10阳光" />
+                            tools:text="+10阳光"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -580,7 +580,7 @@
                             android:layout_marginRight="@dimen/activity_horizontal_margin"
                             android:text=" 〉"
                             android:textColor="#7B40FF"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"/>
 
                     </LinearLayout>
 
@@ -588,7 +588,7 @@
                         style="@style/DividerHorizontal"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        android:visibility="gone" />
+                        android:visibility="gone"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -601,7 +601,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_order" />
+                            android:src="@drawable/task_order"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -611,7 +611,7 @@
                             android:layout_weight="1"
                             android:text="商户接受订单"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -622,7 +622,7 @@
                             android:textColor="#7B40FF"
                             android:textSize="14sp"
                             tools:text="+1 阳光"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -630,7 +630,7 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -642,7 +642,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_currency" />
+                            android:src="@drawable/task_currency"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -652,7 +652,7 @@
                             android:layout_weight="1"
                             android:text="放币成功"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -663,7 +663,7 @@
                             android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[0].taskList[2])}"
                             android:textSize="14sp"
                             tools:text="+20 阳光"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -671,7 +671,7 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -683,7 +683,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_repay" />
+                            android:src="@drawable/task_repay"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -693,7 +693,7 @@
                             android:layout_weight="1"
                             android:text="还币成功"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -704,7 +704,7 @@
                             android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[0].taskList[3])}"
                             android:textSize="14sp"
                             tools:text="+40 阳光"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -713,7 +713,7 @@
                         style="@style/DividerHorizontal"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        android:visibility="gone" />
+                        android:visibility="gone"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -726,7 +726,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_wallet" />
+                            android:src="@drawable/task_wallet"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -736,7 +736,7 @@
                             android:layout_weight="1"
                             android:text="邀请好友创建钱包"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -744,21 +744,21 @@
                             android:layout_gravity="center_vertical"
                             android:text="@{vm.taskList[0].taskList[4].bonus}"
                             android:textColor="#7B40FF"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"/>
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_cancel" />
+                            android:src="@drawable/task_cancel"/>
 
                     </LinearLayout>
 
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_height="10dp"
-                        android:background="#F8F8FF" />
+                        android:background="#F8F8FF"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -772,7 +772,7 @@
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
                             android:text="新手任务"
                             android:textColor="#000"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -781,7 +781,7 @@
                             android:layout_marginLeft="30dp"
                             android:text="动动手指 轻松获得阳光"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"/>
 
 
                     </LinearLayout>
@@ -796,7 +796,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_wechat" />
+                            android:src="@drawable/task_wechat"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -806,7 +806,7 @@
                             android:layout_weight="1"
                             android:text="微信授权"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -817,7 +817,7 @@
                             android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[1].taskList[0])}"
                             android:textSize="14sp"
                             tools:text="已完成"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -825,7 +825,7 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -837,7 +837,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_cret_wallet" />
+                            android:src="@drawable/task_cret_wallet"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -847,7 +847,7 @@
                             android:layout_weight="1"
                             android:text="创建钱包"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -858,7 +858,7 @@
                             android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[1].taskList[1])}"
                             android:textSize="14sp"
                             tools:text="已完成"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -866,7 +866,7 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -879,7 +879,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_cloud" />
+                            android:src="@drawable/task_cloud"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -889,7 +889,7 @@
                             android:layout_weight="1"
                             android:text="开通云存储"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -900,7 +900,7 @@
                             android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[1].taskList[2])}"
                             android:textSize="14sp"
                             tools:text="已完成"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -909,7 +909,7 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_height="10dp"
-                        android:background="#F8F8FF" />
+                        android:background="#F8F8FF"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -923,7 +923,7 @@
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
                             android:text="认证任务"
                             android:textColor="#000"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -932,7 +932,7 @@
                             android:layout_marginLeft="30dp"
                             android:text="完成认证 获取阳光"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"/>
 
 
                     </LinearLayout>
@@ -948,7 +948,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_id" />
+                            android:src="@drawable/task_id"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -958,7 +958,7 @@
                             android:layout_weight="1"
                             android:text="实名认证"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -969,7 +969,7 @@
                             android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[2].taskList[0])}"
                             android:textSize="14sp"
                             tools:text="已完成"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -977,7 +977,7 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -990,7 +990,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_bank" />
+                            android:src="@drawable/task_bank"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -1000,7 +1000,7 @@
                             android:layout_weight="1"
                             android:text="银行卡认证"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -1011,7 +1011,7 @@
                             android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[2].taskList[1])}"
                             android:textSize="14sp"
                             tools:text="已完成"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -1019,7 +1019,7 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1032,7 +1032,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_phone" />
+                            android:src="@drawable/task_phone"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -1042,7 +1042,7 @@
                             android:layout_weight="1"
                             android:text="运营商认证"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -1053,7 +1053,7 @@
                             android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[2].taskList[2])}"
                             android:textSize="14sp"
                             tools:text="已完成"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -1061,20 +1061,22 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:visibility="gone"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:onClick="@{(v)->vm.tnCert(vm.taskList[2].taskList[3])}"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_tn" />
+                            android:src="@drawable/task_tn"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -1084,7 +1086,7 @@
                             android:layout_weight="1"
                             android:text="同牛运营商认证"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -1095,7 +1097,7 @@
                             android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[2].taskList[3])}"
                             android:textSize="14sp"
                             tools:text="已完成"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -1103,7 +1105,7 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_height="10dp"
-                        android:background="#F8F8FF" />
+                        android:background="#F8F8FF"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1117,7 +1119,7 @@
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
                             android:text="备份任务"
                             android:textColor="#000"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -1126,7 +1128,7 @@
                             android:layout_marginLeft="30dp"
                             android:text="备份数据 获取阳光"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"/>
 
                     </LinearLayout>
 
@@ -1141,7 +1143,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_bk_id" />
+                            android:src="@drawable/task_bk_id"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -1151,7 +1153,7 @@
                             android:layout_weight="1"
                             android:text="备份实名认证数据 "
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -1162,7 +1164,7 @@
                             android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[3].taskList[0])}"
                             android:textSize="14sp"
                             tools:text="已完成"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -1170,7 +1172,7 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1183,7 +1185,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_bk_bank" />
+                            android:src="@drawable/task_bk_bank"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -1193,7 +1195,7 @@
                             android:layout_weight="1"
                             android:text="备份银行卡认证数据"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -1204,7 +1206,7 @@
                             android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[3].taskList[1])}"
                             android:textSize="14sp"
                             tools:text="已完成"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -1212,7 +1214,7 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1225,7 +1227,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_bk_phone" />
+                            android:src="@drawable/task_bk_phone"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -1235,7 +1237,7 @@
                             android:layout_weight="1"
                             android:text="备份运营商认证数据"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -1246,7 +1248,7 @@
                             android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[3].taskList[2])}"
                             android:textSize="14sp"
                             tools:text="已完成"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -1254,20 +1256,22 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:visibility="gone"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:onClick="@{(v)->vm.syncIpfs(vm.taskList[3].taskList[3])}"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/task_bk_tn" />
+                            android:src="@drawable/task_bk_tn"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -1277,7 +1281,7 @@
                             android:layout_weight="1"
                             android:text="备份同牛认证数据"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -1288,7 +1292,7 @@
                             android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[3].taskList[3])}"
                             android:textSize="14sp"
                             tools:text="已完成"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -1296,7 +1300,7 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1309,7 +1313,7 @@
                             android:layout_height="20dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                            android:src="@drawable/backup_wallet" />
+                            android:src="@drawable/backup_wallet"/>
 
                         <TextView
                             android:layout_width="0dp"
@@ -1319,7 +1323,7 @@
                             android:layout_weight="1"
                             android:text="备份钱包"
                             android:textColor="@color/FF4A4A4A"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -1330,7 +1334,7 @@
                             android:textColor="@{TaskHelper.getStatusColor(context,vm.taskList[3].taskList[4])}"
                             android:textSize="14sp"
                             tools:text="已完成"
-                            tools:textColor="#7B40FF" />
+                            tools:textColor="#7B40FF"/>
 
 
                     </LinearLayout>
@@ -1338,7 +1342,7 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_height="30dp"
-                        android:background="#F8F8FF" />
+                        android:background="#F8F8FF"/>
 
                 </LinearLayout>
 

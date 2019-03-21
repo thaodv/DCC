@@ -12,6 +12,7 @@ import android.security.keystore.KeyProperties
 import android.support.annotation.RequiresApi
 import android.support.v4.app.FragmentManager
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
@@ -24,6 +25,7 @@ import io.wexchain.android.common.constant.ResultCodes
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
+import io.wexchain.android.common.tools.EditInputFilter
 import io.wexchain.android.common.tools.rsa.EncryptUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
@@ -89,9 +91,6 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
         mUrl = intent.getStringExtra("url")
         mAddress = intent.getStringExtra("address")
 
-
-
-
         if (null != mAddress) {
             binding.etAddress.setText(mAddress)
             binding.etAddress.setSelection(mAddress!!.length)
@@ -107,6 +106,10 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
 
             binding.tvAssetCode.text = mCode
         }
+
+        val filters = arrayOf<InputFilter>(EditInputFilter())
+
+        binding.etAccount.filters = filters
 
         binding.rlChoose.onClick {
             startActivityForResult(

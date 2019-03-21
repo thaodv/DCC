@@ -10,6 +10,7 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.support.annotation.RequiresApi
 import android.support.v4.app.FragmentManager
+import android.text.InputFilter
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -21,6 +22,7 @@ import io.wexchain.android.common.constant.ResultCodes
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
+import io.wexchain.android.common.tools.EditInputFilter
 import io.wexchain.android.common.tools.rsa.EncryptUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
@@ -84,6 +86,10 @@ class TrustTransferActivity : BindActivity<ActivityTrustTransferBinding>() {
                     RequestCodes.CHOOSE_TRANSFER_CODE
             )
         }
+
+        val filters = arrayOf<InputFilter>(EditInputFilter())
+
+        binding.etAccount.filters = filters
 
         binding.url = photoUrl
         binding.nickName = "昵称:\n$nickName"

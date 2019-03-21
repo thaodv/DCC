@@ -26,8 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="40dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/background_holding"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical|right"
             android:text="@{ViewModelHelper.isShowBlanceStr(isShow,res.value)}"
             android:textColor="#6766cc"
@@ -41,8 +40,9 @@
             android:layout_height="wrap_content"
             android:text="@{res.code}"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_currency_amount"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/iv_currency_logo"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="spread"
             tools:text="ETH"/>
 
@@ -53,7 +53,8 @@
             android:padding="6dp"
             app:errorRes="@{@drawable/ethereum}"
             app:imageUrl="@{res.url}"
-            app:layout_constraintTop_toTopOf="@id/tv_currency_amount"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ethereum"/>
 
         <TextView
@@ -63,6 +64,7 @@
             android:layout_marginTop="4dp"
             android:text="@{res.name}"
             android:textColor="@color/text_dark_alpha"
+            android:visibility="gone"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_currency_approx"
             app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol"
             tools:text="Ethereum Foundation"/>
@@ -72,10 +74,11 @@
             android:id="@+id/tv_currency_approx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="45dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="40dp"
             android:text="@{ViewModelHelper.isShowBlanceStr(isShow,res.value2)}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_currency_amount"
             tools:text="~$4371538.38"/>
 
         <ImageView
@@ -91,6 +94,7 @@
             style="@style/DividerHorizontal"
             android:layout_width="0dp"
             android:layout_marginTop="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/iv_currency_logo"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_currency_approx"/>

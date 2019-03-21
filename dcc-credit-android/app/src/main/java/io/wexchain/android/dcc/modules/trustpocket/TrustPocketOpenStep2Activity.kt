@@ -30,6 +30,7 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
 
     private val salt get() = intent.getStringExtra("salt")
     private val mUse get() = intent.getStringExtra("use")
+    private val mMobile get() = intent?.getStringExtra("mobile")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +75,8 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
                     inputMethodManager.hideSoftInputFromWindow(passwd1.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
                     passwd1.visibility = View.GONE
                     passwd2.visibility = View.VISIBLE
+                    tvTip1.text = "请再次确认支付密码"
+                    tvTip2.text = "请再次输入密码"
                 }
             }
         })
@@ -102,12 +105,13 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
                     inputMethodManager.hideSoftInputFromWindow(passwd2.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
                     passwd1.visibility = View.VISIBLE
                     passwd2.visibility = View.GONE
+                    tvTip1.text = "请设置交易密码"
+                    tvTip2.text = "密码不能为连续、重复数字"
                     passwd1.removeAllPwd()
                     passwd2.removeAllPwd()
                 }
             }
         })
-
     }
 
     private fun bindHostingWallet(pwd: String, salt: String) {
@@ -121,7 +125,9 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
                 .withLoading()
                 .subscribe({
                     Log.e("result:", it.mobileUserId)
-                    navigateTo(TrustOpenSuccessActivity::class.java)
+                    navigateTo(TrustOpenSuccessActivity::class.java) {
+                        putExtra("mobile", mMobile)
+                    }
                     finish()
                 }, {
                     toast(it.message.toString())

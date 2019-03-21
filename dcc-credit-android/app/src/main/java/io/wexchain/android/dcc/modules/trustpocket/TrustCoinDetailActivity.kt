@@ -1,7 +1,9 @@
 package io.wexchain.android.dcc.modules.trustpocket
 
 import android.app.DatePickerDialog
+import android.arch.lifecycle.Observer
 import android.os.Bundle
+import android.view.View
 import io.reactivex.Single
 import io.wexchain.android.common.*
 import io.wexchain.android.common.base.BindActivity
@@ -95,6 +97,13 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
             vm!!.loadNext { sr.finishLoadMore() }
         }
 
+        vm!!.checkData.observe(this, Observer {
+            val status = binding.llEmpty.visibility
+            if (status != it!!) {
+                binding.llEmpty.visibility = it
+            }
+        })
+
         binding.rvList.adapter = adapter
         binding.vm = vm
 
@@ -125,6 +134,86 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
             navigateTo(TrustTransferCheckActivity::class.java)
         }
 
+        binding.tvIn.onClick {
+
+            binding.tvIn.setTextColor(resources.getColor(R.color.FF6144CC))
+            binding.vInTip.visibility = View.VISIBLE
+            binding.tvOut.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vOutTip.visibility = View.INVISIBLE
+            binding.tvMyIn.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vMyInTip.visibility = View.INVISIBLE
+            binding.tvMyOut.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vMyOutTip.visibility = View.INVISIBLE
+
+            vm!!.startTimeV = mStartTime
+            vm!!.endTimeV = mEndTime
+            vm!!.typeV = "DEPOSIT"
+            mType = "DEPOSIT"
+
+            binding.srlList.autoRefresh()
+
+        }
+
+        binding.tvOut.onClick {
+
+            binding.tvIn.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vInTip.visibility = View.INVISIBLE
+            binding.tvOut.setTextColor(resources.getColor(R.color.FF6144CC))
+            binding.vOutTip.visibility = View.VISIBLE
+            binding.tvMyIn.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vMyInTip.visibility = View.INVISIBLE
+            binding.tvMyOut.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vMyOutTip.visibility = View.INVISIBLE
+
+            vm!!.startTimeV = mStartTime
+            vm!!.endTimeV = mEndTime
+            vm!!.typeV = "WITHDRAW"
+            mType = "WITHDRAW"
+
+            binding.srlList.autoRefresh()
+
+        }
+
+        binding.tvMyIn.onClick {
+
+            binding.tvIn.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vInTip.visibility = View.INVISIBLE
+            binding.tvOut.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vOutTip.visibility = View.INVISIBLE
+            binding.tvMyIn.setTextColor(resources.getColor(R.color.FF6144CC))
+            binding.vMyInTip.visibility = View.VISIBLE
+            binding.tvMyOut.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vMyOutTip.visibility = View.INVISIBLE
+
+            vm!!.startTimeV = mStartTime
+            vm!!.endTimeV = mEndTime
+            vm!!.typeV = "TRANSFER-IN"
+            mType = "TRANSFER-IN"
+
+            binding.srlList.autoRefresh()
+
+        }
+
+        binding.tvMyOut.onClick {
+
+            binding.tvIn.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vInTip.visibility = View.INVISIBLE
+            binding.tvOut.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vOutTip.visibility = View.INVISIBLE
+            binding.tvMyIn.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vMyInTip.visibility = View.INVISIBLE
+            binding.tvMyOut.setTextColor(resources.getColor(R.color.FF6144CC))
+            binding.vMyOutTip.visibility = View.VISIBLE
+
+            vm!!.startTimeV = mStartTime
+            vm!!.endTimeV = mEndTime
+            vm!!.typeV = "TRANSFER-OUT"
+            mType = "TRANSFER-OUT"
+
+            binding.srlList.autoRefresh()
+
+        }
+
         binding.ibtTime.onClick {
             val trustTradeDetailTimeSelectDialog = TrustTradeDetailTimeSelectDialog(this)
 
@@ -139,7 +228,7 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
                     vm!!.endTimeV = DateUtil.getCurrentSunday(SimpleDateFormat("yyyy/MM/dd"))
                     mEndTime = DateUtil.getCurrentSunday(SimpleDateFormat("yyyy/MM/dd"))
                     vm!!.typeV = mType
-                    vm!!.refresh {}
+                    binding.srlList.autoRefresh()
                 }
 
                 override fun month() {
@@ -148,7 +237,7 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
                     vm!!.endTimeV = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd"))
                     mEndTime = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd"))
                     vm!!.typeV = mType
-                    vm!!.refresh {}
+                    binding.srlList.autoRefresh()
                 }
 
                 override fun startTime() {
@@ -227,7 +316,7 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
                         vm!!.endTimeV = trustTradeDetailTimeSelectDialog.mTvEndTime.text.toString()
                         mEndTime = trustTradeDetailTimeSelectDialog.mTvEndTime.text.toString()
 
-                        vm!!.refresh {}
+                        binding.srlList.autoRefresh()
 
                     } else {
                         toast("日期跨度不能超过1个月")

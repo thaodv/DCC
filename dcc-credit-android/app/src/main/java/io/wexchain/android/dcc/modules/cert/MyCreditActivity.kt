@@ -10,7 +10,7 @@ import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
 import io.wexchain.android.common.base.BindActivity
-import io.wexchain.android.dcc.*
+import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
@@ -42,7 +42,6 @@ import worhavah.certs.tools.CertOperations.saveTnLogCertExpired
 import worhavah.regloginlib.Net.Networkutils
 import worhavah.tongniucertmodule.SubmitTNLogActivity
 import worhavah.tongniucertmodule.TnLogCertificationActivity
-import java.math.BigDecimal
 import java.util.*
 
 
@@ -68,7 +67,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
         }
     }
 
-    val totalCerts = 4
+    val totalCerts = 3
     var certDoneNum = 0
     var lastper = -1
     fun setVM() {
@@ -80,7 +79,20 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
         binding.asTongniuVm = obtainAuthStatus(CertificationType.TONGNIU)
         binding.asLoanVm = obtainAuthStatus(CertificationType.LOANREPORT)
 
-        var per = BigDecimal(certDoneNum * 100 / totalCerts).toBigInteger().toInt()
+        //var per = BigDecimal(certDoneNum * 100 / totalCerts).toBigInteger().toInt()
+
+        var per: Int
+
+        if (1 == certDoneNum) {
+            per = 33
+        } else if (2 == certDoneNum) {
+            per = 67
+        } else if (3 == certDoneNum) {
+            per = 100
+        } else {
+            per = 0
+        }
+
         runOnMainThread {
             if (per != lastper) {
                 lastper = per

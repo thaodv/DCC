@@ -107,16 +107,13 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
             qScanResultNotAddressDialog.show()
         }
 
-
-        /*when (scanType) {
-            SCAN_TYPE_ADDRESS -> {*/
-        if (isEthAddress(text)) {
+        /*if (isEthAddress(text)) {
             getMemberAndMobileUserInfo(text)
         } else if (isBtcAddress(text)) {
 
         } else {
 
-        }
+        }*/
     }
 
     private fun getMemberAndMobileUserInfo(text: String) {

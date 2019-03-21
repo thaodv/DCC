@@ -11,7 +11,7 @@ public class ResultAssetBean implements Comparable<ResultAssetBean> {
     public String url;
     public String code;
     public String name;
-    public String value = "0.0000";
+    public String value = "0.00000000";
     public String value2 = "--";
     public BigDecimal value3 = BigDecimal.ZERO;
     public int rank;

@@ -23,8 +23,7 @@ import io.wexchain.ipfs.utils.doMain
  */
 class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
 
-    override val contentLayoutId: Int
-        get() = R.layout.activity_opencloud
+    override val contentLayoutId: Int get() = R.layout.activity_opencloud
 
     private val passport by lazy {
         App.get().passportRepository

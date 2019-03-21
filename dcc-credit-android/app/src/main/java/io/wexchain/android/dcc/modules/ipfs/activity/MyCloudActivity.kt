@@ -49,8 +49,7 @@ import java.util.concurrent.TimeUnit
  */
 class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
 
-    override val contentLayoutId: Int
-        get() = R.layout.activity_my_cloud
+    override val contentLayoutId: Int get() = R.layout.activity_my_cloud
 
     private var ID_Token = ""
     private var Bank_Token = ""
