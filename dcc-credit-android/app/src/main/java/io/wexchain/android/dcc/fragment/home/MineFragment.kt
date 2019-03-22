@@ -87,7 +87,6 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                 }, {
                     // 未开户
                     isOpenTrustPocket = false
-                    toast(it.message.toString())
                 })
     }
 

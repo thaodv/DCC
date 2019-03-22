@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.view.dialog;
+package io.wexchain.android.dcc.view.dialog.qrcode;
 
 import android.app.Dialog;
 import android.content.Context;

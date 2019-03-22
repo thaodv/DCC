@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
+    </data>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/FF6144CC"
+        android:padding="14dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_created_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF9B9B9B"
+            android:textSize="14sp"
+            tools:text="2018-02-02 13:00:00"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/FF9B9B9B"
+            android:textSize="14sp"
+            tools:text="已过期"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawableLeft="@drawable/icon_payment_down"
+            android:drawablePadding="5dp"
+            android:textColor="@color/FF9B9B9B"
+            android:textSize="14sp"
+            tools:text="3天"/>
+
+        <View
+            android:id="@+id/v_line"
+            style="@style/DividerHorizontal"
+            android:layout_below="@+id/tv_created_time"
+            android:layout_marginTop="5dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/v_line"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/payment_item_order_title"
+                android:textColor="#FF4A4A4A"
+                android:textSize="17sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FF4A4A4A"
+                android:textSize="17sp"
+                tools:text="嘻嘻哈哈"
+                />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</layout>

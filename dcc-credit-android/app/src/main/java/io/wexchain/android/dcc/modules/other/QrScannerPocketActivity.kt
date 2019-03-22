@@ -32,8 +32,8 @@ import io.wexchain.android.dcc.modules.trans.activity.CreateTransactionActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustTransferActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustWithdrawActivity
 import io.wexchain.android.dcc.tools.check
-import io.wexchain.android.dcc.view.dialog.QScanResultIsAddressDialog
-import io.wexchain.android.dcc.view.dialog.QScanResultNotAddressDialog
+import io.wexchain.android.dcc.view.dialog.qrcode.QScanResultIsAddressDialog
+import io.wexchain.android.dcc.view.dialog.qrcode.QScanResultNotAddressDialog
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityQrScannerBinding
 import io.wexchain.digitalwallet.util.isBtcAddress

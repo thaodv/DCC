@@ -30,6 +30,8 @@ import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.dialog.*
+import io.wexchain.android.dcc.view.dialog.trustpocket.TrustTransferDialog
+import io.wexchain.android.dcc.view.dialog.trustpocket.TrustWithdrawCheckPasswdDialog
 import io.wexchain.android.dcc.view.passwordview.PassWordLayout
 import io.wexchain.android.localprotect.FingerPrintHelper
 import io.wexchain.dcc.R

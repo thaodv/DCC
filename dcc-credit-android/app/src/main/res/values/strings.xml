@@ -463,4 +463,26 @@
     <string name="trust_transfer_tip">注：\n使用转账功能会转入对方的托管钱包，如要转到自己或他人的数字钱包，请使用<font color='#6144CC'>提币</font>功能</string>
     <string name="trust_recharge_from_digest"><u>从数字钱包充币</u></string>
 
+
+    <string name="payment_pay_dialog_title">确认付款</string>
+    <string name="payment_pay_dialog_text1">收款标题</string>
+    <string name="payment_pay_dialog_text2">订单编号</string>
+    <string name="payment_pay_dialog_text3">付款方式</string>
+    <string name="payment_pay_dialog_pay">立即付款</string>
+    <string name="payment_pay_dialog_tip">您的钱包余额不足，请<font color='#6144CC'>充币</font>到钱包</string>
+    <string name="payment_pay_dialog_close">关闭订单</string>
+    <string name="payment_balance">余额</string>
+    <string name="unit_ge">个</string>
+    <string name="unit_day">天</string>
+    <string name="unit_bi">笔</string>
+    <string name="payment_quick_receipt">快捷收款</string>
+    <string name="trans_records">交易记录</string>
+    <string name="payment_my_receipt">我的收款</string>
+    <string name="payment_history_receipt">历史收款</string>
+    <string name="payment_add">新增</string>
+    <string name="payment_item_order_timeout">已过期</string>
+    <string name="payment_item_order_title">收款标题：</string>
+    <string name="payment_item_order_description">收款说明:</string>
+    <string name="payment_item_order_today_count">今日收款</string>
+
 </resources>

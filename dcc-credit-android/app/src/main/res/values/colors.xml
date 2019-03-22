@@ -35,7 +35,10 @@
     <color name="FFD90C0C">#D90C0C</color>
     <color name="FF000000">#000000</color>
     <color name="FF6144CC">#6144CC</color>
+    <color name="common_7F6144CC">#7F6144CC</color>
     <color name="FF9B9B9B">#9B9B9B</color>
+    <color name="FFF5F5FD">#F5F5FD</color>
+    <color name="FFFA4A82">#FA4A82</color>
 
     <color name="pass_view_rect_input">#3DA3FF</color>
     <color name="regi_line_color">#c8c8c8</color>

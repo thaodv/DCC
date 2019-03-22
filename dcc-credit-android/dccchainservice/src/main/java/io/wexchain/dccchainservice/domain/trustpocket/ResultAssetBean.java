@@ -28,7 +28,7 @@ public class ResultAssetBean implements Comparable<ResultAssetBean> {
     @Override
     public int compareTo(ResultAssetBean o) {
         
-        if (this.value3.subtract(o.value3) == BigDecimal.ZERO) {
+        if (this.value3.compareTo(o.value3) == 0) {
             return this.rank - o.rank;
         } else {
             return o.value3.compareTo(this.value3);

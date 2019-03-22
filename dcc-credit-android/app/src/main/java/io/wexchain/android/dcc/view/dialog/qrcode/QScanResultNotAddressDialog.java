@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.view.dialog;
+package io.wexchain.android.dcc.view.dialog.qrcode;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -6,39 +6,42 @@ import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import io.wexchain.android.dcc.view.passwordview.PassWordLayout;
 import io.wexchain.dcc.R;
 
 /**
  * @author Created by Wangpeng on 2018/7/16 20:04.
  * usage:
  */
-public class TrustWithdrawCheckPasswdDialog extends Dialog implements View.OnClickListener {
+public class QScanResultNotAddressDialog extends Dialog implements View.OnClickListener {
     
     public ImageButton mIbtClose;
-    public TextView mTvForget;
-    public PassWordLayout mPassword;
+    public TextView mTvAddress;
+    public Button mBtCopy;
     
     
-    public TrustWithdrawCheckPasswdDialog(@NonNull Context context) {
+    public QScanResultNotAddressDialog(@NonNull Context context) {
         super(context, R.style.deleteAddressBookDialog);
         WindowManager.LayoutParams attributes = getWindow().getAttributes();
-        attributes.gravity = Gravity.BOTTOM | Gravity.LEFT | Gravity.RIGHT;
+        attributes.gravity = Gravity.BOTTOM | Gravity.LEFT | Gravity.RIGHT | Gravity.TOP;
         getWindow().setAttributes(attributes);
-        setContentView(R.layout.dialog_trust_withdraw_check_passwd);
+        setContentView(R.layout.dialog_qscan_result_not_address);
         
         getWindow().setBackgroundDrawableResource(R.color.white);
         
         mIbtClose = findViewById(R.id.ibt_close);
-        mTvForget = findViewById(R.id.tv_forget);
-        mPassword = findViewById(R.id.password);
+        mTvAddress = findViewById(R.id.tv_address);
+        mBtCopy = findViewById(R.id.btn_copy);
         
         mIbtClose.setOnClickListener(this);
-        mTvForget.setOnClickListener(this);
-        
+        mBtCopy.setOnClickListener(this);
+    }
+    
+    public void setParameters(String address) {
+        mTvAddress.setText(address);
     }
     
     @Override
@@ -47,9 +50,9 @@ public class TrustWithdrawCheckPasswdDialog extends Dialog implements View.OnCli
             case R.id.ibt_close:
                 dismiss();
                 break;
-            case R.id.tv_forget:
-                mOnClickListener.forget();
+            case R.id.btn_copy:
                 dismiss();
+                mOnClickListener.copy();
                 break;
             default:
                 break;
@@ -57,7 +60,7 @@ public class TrustWithdrawCheckPasswdDialog extends Dialog implements View.OnCli
     }
     
     public interface OnClickListener {
-        void forget();
+        void copy();
     }
     
     private OnClickListener mOnClickListener;

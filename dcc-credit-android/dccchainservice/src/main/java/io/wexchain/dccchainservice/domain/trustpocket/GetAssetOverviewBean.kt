@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 data class GetAssetOverviewBean(
         @SerializedName("mobileUserId") val mobileUserId: String,
         @SerializedName("totalPrice") val totalPrice: TotalPriceBean,
-        @SerializedName("assetList") val assetList: List<AssetListBean>
+        @SerializedName("assetList") val assetList: List<AssetListBean>?
 ) {
     data class TotalPriceBean(
             @SerializedName("assetCode") val assetCode: String,

@@ -149,7 +149,7 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                     }
 
                     mValue1 = CommonUtils.showCurrencySymbol() + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).currencyToDisplayRMBStr()
-                    mValue2 = "≈" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setScale(8, RoundingMode.DOWN) + " USDT"
+                    mValue2 = "≈" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setScale(8, RoundingMode.DOWN).toPlainString() + " USDT"
 
                     binding.assetsAmountValue.text = mValue1
                     binding.tvTotalUsdt.text = mValue2

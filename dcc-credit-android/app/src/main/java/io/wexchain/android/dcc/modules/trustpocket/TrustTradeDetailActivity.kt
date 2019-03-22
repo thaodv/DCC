@@ -14,7 +14,7 @@ import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
-import io.wexchain.android.dcc.view.dialog.TrustTradeDetailTimeSelectDialog
+import io.wexchain.android.dcc.view.dialog.trustpocket.TrustTradeDetailTimeSelectDialog
 import io.wexchain.android.dcc.vm.PagedVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustTradeDetailBinding

@@ -189,7 +189,6 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
 
                     LogUtils.i("resultAsset-res:", resultAsset.toString())
 
-
                     adapter.setList(resultAsset)
                     binding.rvAssets.adapter = adapter
 

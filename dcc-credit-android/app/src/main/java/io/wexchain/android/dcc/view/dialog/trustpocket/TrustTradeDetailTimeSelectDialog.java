@@ -1,4 +1,4 @@
-package io.wexchain.android.dcc.view.dialog;
+package io.wexchain.android.dcc.view.dialog.trustpocket;
 
 import android.app.Dialog;
 import android.content.Context;

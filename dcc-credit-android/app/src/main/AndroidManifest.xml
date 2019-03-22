@@ -395,6 +395,9 @@
             android:name="io.wexchain.android.dcc.modules.digestpocket.ChooseDigestActivity"
             android:label="选择币种">
         </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.paymentcode.RepaymentQuickReceiptActivity"
+            android:label="@string/payment_quick_receipt">
+        </activity>
     </application>
 
 </manifest>

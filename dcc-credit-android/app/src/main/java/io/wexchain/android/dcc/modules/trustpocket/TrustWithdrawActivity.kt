@@ -1,7 +1,6 @@
 package io.wexchain.android.dcc.modules.trustpocket
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.app.KeyguardManager
 import android.content.Intent
 import android.hardware.fingerprint.FingerprintManager
@@ -35,7 +34,11 @@ import io.wexchain.android.dcc.modules.other.QrScannerActivity
 import io.wexchain.android.dcc.repo.db.AddressBook
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check
-import io.wexchain.android.dcc.view.dialog.*
+import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
+import io.wexchain.android.dcc.view.dialog.FingerCheckDialog
+import io.wexchain.android.dcc.view.dialog.GetRedpacketDialog
+import io.wexchain.android.dcc.view.dialog.trustpocket.TrustWithdrawCheckPasswdDialog
+import io.wexchain.android.dcc.view.dialog.trustpocket.TrustWithdrawDialog
 import io.wexchain.android.dcc.view.passwordview.PassWordLayout
 import io.wexchain.android.localprotect.FingerPrintHelper
 import io.wexchain.dcc.R
@@ -43,8 +46,6 @@ import io.wexchain.dcc.databinding.ActivityTrustWithdrawBinding
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.trustpocket.ValidatePaymentPasswordBean
 import io.wexchain.dccchainservice.domain.trustpocket.WithdrawBean
-import io.wexchain.digitalwallet.util.isBtcAddress
-import io.wexchain.digitalwallet.util.isEthAddress
 import io.wexchain.digitalwallet.util.isNumberkeep8
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigDecimal
@@ -81,11 +82,9 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
 
     private lateinit var trustWithdrawCheckPasswdDialog: TrustWithdrawCheckPasswdDialog
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-
 
         mCode = intent.getStringExtra("code")
         mUrl = intent.getStringExtra("url")
@@ -120,7 +119,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
 
         binding.ivScan.onClick {
             startActivityForResult(Intent(this, QrScannerActivity::class.java).apply {
-                putExtra(Extras.EXPECTED_SCAN_TYPE, QrScannerActivity.SCAN_TYPE_ADDRESS)
+                putExtra(Extras.EXPECTED_SCAN_TYPE, QrScannerActivity.SCAN_TYPE_UNSPECIFIED)
             }, RequestCodes.SCAN)
         }
 
@@ -154,37 +153,31 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
                 toast("超过可提总量")
             } else {
 
-                if (isEthAddress(mAddress!!) || isBtcAddress(mAddress!!)) {
+                if (isNumberkeep8(mAccount)) {
+                    trustWithdrawDialog = TrustWithdrawDialog(this)
 
-                    if (isNumberkeep8(mAccount)) {
-                        trustWithdrawDialog = TrustWithdrawDialog(this)
+                    trustWithdrawDialog.setParameters(mAddress, mAccount + "" + mCode, "$mFee $mCode", "$mToAccount $mCode", "$mTotalAccount $mCode")
 
-                        trustWithdrawDialog.setParameters(mAddress, mAccount + "" + mCode, "$mFee $mCode", "$mToAccount $mCode", "$mTotalAccount $mCode")
+                    trustWithdrawDialog.setOnClickListener(object : TrustWithdrawDialog.OnClickListener {
+                        override fun sure() {
 
-                        trustWithdrawDialog.setOnClickListener(object : TrustWithdrawDialog.OnClickListener {
-                            @RequiresApi(Build.VERSION_CODES.M)
-                            override fun sure() {
+                            val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
 
-                                val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
-
-                                if (fingerPayStatus) {
-                                    if (supportFingerprint()) {
-                                        initKey()
-                                        initCipher()
-                                    } else {
-                                        checkPasswd()
-                                    }
+                            if (fingerPayStatus) {
+                                if (supportFingerprint()) {
+                                    initKey()
+                                    initCipher()
                                 } else {
                                     checkPasswd()
                                 }
+                            } else {
+                                checkPasswd()
                             }
-                        })
-                        trustWithdrawDialog.show()
-                    } else {
-                        toast("最多小数点后面8位")
-                    }
+                        }
+                    })
+                    trustWithdrawDialog.show()
                 } else {
-                    toast("地址错误")
+                    toast("最多小数点后面8位")
                 }
             }
         }
@@ -441,7 +434,6 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
     }
 
 
-    @TargetApi(23)
     private fun initKey() {
         try {
             keyStore = KeyStore.getInstance("AndroidKeyStore")
@@ -480,7 +472,6 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
         return true
     }
 
-    @TargetApi(23)
     private fun initCipher() {
         try {
             val key = keyStore.getKey(FingerPrintHelper.KEY_NAME, null) as SecretKey
