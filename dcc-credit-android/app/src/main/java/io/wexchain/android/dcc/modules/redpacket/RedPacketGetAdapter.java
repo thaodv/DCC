@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import io.wexchain.android.common.tools.CommonUtils;
 import io.wexchain.dcc.R;
 import io.wexchain.dccchainservice.domain.redpacket.GetRecordBean;
 import io.wexchain.dccchainservice.util.DateUtil;
@@ -40,13 +41,13 @@ public class RedPacketGetAdapter extends RecyclerView.Adapter<RedPacketGetAdapte
         
         if (mDataBeanList.size() > 6) {
             holder.tv_nick_name.setText(mDataBeanList.get(position % mDataBeanList.size()).getNickName());
-            holder.tv_amount.setText("￥" + mDataBeanList.get(position % mDataBeanList.size()).getAmount() +
+            holder.tv_amount.setText(CommonUtils.showCurrencySymbol() + mDataBeanList.get(position % mDataBeanList.size()).getAmount() +
                     " 红包");
             holder.tv_time.setText(DateUtil.getStringTime(mDataBeanList.get(position % mDataBeanList.size()
             ).getReceiveTime(), "MM-dd HH:mm:ss"));
         } else {
             holder.tv_nick_name.setText(mDataBeanList.get(position).getNickName());
-            holder.tv_amount.setText("￥" + mDataBeanList.get(position).getAmount() + " 红包");
+            holder.tv_amount.setText(CommonUtils.showCurrencySymbol() + mDataBeanList.get(position).getAmount() + " 红包");
             holder.tv_time.setText(DateUtil.getStringTime(mDataBeanList.get(position % mDataBeanList.size()
             ).getReceiveTime(), "MM-dd HH:mm:ss"));
         }

@@ -1,7 +1,9 @@
 package io.wexchain.android.common.tools;
 
+import java.math.BigDecimal;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.Locale;
 
 /**
  * @author Created by Wangpeng on 2018/10/24 15:37.
@@ -40,5 +42,27 @@ public class CommonUtils {
         }
         return macAddress;
     }
+    
+    public static BigDecimal showMoney(BigDecimal bigDecimal, BigDecimal exchangeRate, int scale, int
+            roundingMode) {
+        if (isRMB()) {
+            return bigDecimal;
+        } else {
+            return bigDecimal.divide(exchangeRate, scale, roundingMode);
+        }
+    }
+    
+    public static String showCurrencySymbol() {
+        return isRMB() ? "￥" : "$";
+    }
+    
+    public static boolean isRMB() {
+        if ("zh".equals(Locale.getDefault().getLanguage())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     
 }

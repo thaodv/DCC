@@ -10,6 +10,7 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import io.wexchain.android.common.checkLanguage
+import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.common.versionInfo
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
@@ -635,7 +636,7 @@ object ViewModelHelper {
 
     @JvmStatic
     fun showRedPacketGetMoney(count: String): String {
-        return "￥" + count + "红包"
+        return CommonUtils.showCurrencySymbol() + count + "红包"
     }
 
     @JvmStatic

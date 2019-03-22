@@ -9,6 +9,7 @@ import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
+import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.modules.bsx.BsxHoldingActivity
@@ -147,7 +148,7 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                         res = digestAccountRnb.toBigDecimal()
                     }
 
-                    mValue1 = "￥" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).currencyToDisplayRMBStr()
+                    mValue1 = CommonUtils.showCurrencySymbol() + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).currencyToDisplayRMBStr()
                     mValue2 = "≈" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setScale(8, RoundingMode.DOWN) + " USDT"
 
                     binding.assetsAmountValue.text = mValue1
