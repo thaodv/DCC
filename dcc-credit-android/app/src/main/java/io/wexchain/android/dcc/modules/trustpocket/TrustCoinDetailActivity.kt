@@ -381,7 +381,7 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
                 .subscribe({
 
                     binding.holding = it.availableAmount.assetValue.amount.toBigDecimal().currencyToDisplayStr()
-                    binding.holdingValue = "≈￥" + it.availableAmount.legalTenderPrice.amount.toBigDecimal().divide(App.get().mUsdtquote.toBigDecimal(), 4, RoundingMode.DOWN).toPlainString()
+                    binding.holdingValue = "≈￥" + it.availableAmount.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).setScale(8, RoundingMode.DOWN).toPlainString()
 
                 }, {
                     toast(it.message.toString())

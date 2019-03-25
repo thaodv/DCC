@@ -482,7 +482,49 @@
     <string name="payment_add">新增</string>
     <string name="payment_item_order_timeout">已过期</string>
     <string name="payment_item_order_title">收款标题：</string>
-    <string name="payment_item_order_description">收款说明:</string>
+    <string name="payment_item_order_description">收款说明：</string>
     <string name="payment_item_order_today_count">今日收款</string>
+
+    <string name="payment_add_title">新增收款</string>
+    <string name="payment_add_title_hint">收款标题，最多30个字符</string>
+    <string name="payment_add_description_hint">收款说明，最多200个字符</string>
+    <string name="payment_add_coin_type">收款币种</string>
+    <string name="payment_add_amount">金额</string>
+    <string name="payment_add_amount_style1">固定金额</string>
+    <string name="payment_add_amount_style2">付款人自定义</string>
+    <string name="payment_add_deadtime">到期时间</string>
+    <string name="payment_add_deadtime_v">长期有效</string>
+    <string name="payment_add_fee_rate">手续费率</string>
+    <string name="payment_add_create">创建</string>
+    <string name="payment_add_bigger">需大于</string>
+    <string name="payment_add_smallest">最少</string>
+
+    <string name="payment_trans_detail_page_title">交易详情</string>
+    <string name="payment_trans_detail_status1">支付成功</string>
+    <string name="payment_trans_detail_title">收款标题</string>
+    <string name="payment_trans_detail_mark">收款备注</string>
+    <string name="payment_trans_detail_transtime">交易时间</string>
+    <string name="payment_trans_detail_transtid">订单编号</string>
+    <string name="payment_trans_detail_user_mark">用户备注</string>
+    <string name="payment_trans_detail_account">付款金额</string>
+    <string name="payment_trans_detail_fee">收款手续费</string>
+    <string name="payment_trans_detail_toaccount">实际到账</string>
+
+    <string name="payment_receipt_detail_page_title">收款详情</string>
+    <string name="payment_receipt_detail_trans_records">交易记录</string>
+    <string name="payment_receipt_detail_total_trans">总交易</string>
+    <string name="payment_receipt_detail_total_trans1">总交易共</string>
+    <string name="payment_receipt_detail_total_trans2">总收入</string>
+    <string name="payment_receipt_detail_total_trans3">今日收款</string>
+    <string name="payment_receipt_detail_total_unit">笔，共收款</string>
+    <string name="payment_receipt_detail_receipt_info">收款信息</string>
+    <string name="payment_receipt_detail_title">收款标题</string>
+    <string name="payment_receipt_detail_descript">收款描述</string>
+    <string name="payment_receipt_detail_coin">收款币种</string>
+    <string name="payment_receipt_detail_account">金    额</string>
+    <string name="payment_receipt_detail_deadtime">到期时间</string>
+    <string name="payment_receipt_detail_status">状    态</string>
+    <string name="payment_receipt_detail_fee">手续费率</string>
+
 
 </resources>

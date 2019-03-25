@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_fix"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/iv_fix"
+            android:layout_width="20dip"
+            android:layout_height="20dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dip"
+            android:src="@drawable/icon_payment_normal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dip"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:text="@string/payment_add_amount_style1"
+            android:textColor="@color/FF4A4A4A"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/et_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/bg_payment_fix_amount"
+            android:gravity="center_vertical"
+            android:textColor="@color/FF9B9B9B"
+            android:textSize="12sp"
+            tools:hint="需大于0.00000001"/>
+
+        <TextView
+            android:id="@+id/tv_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textColor="#FF4A4A4A"
+            android:textSize="14sp"
+            tools:text="ETH"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_self"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/iv_self"
+            android:layout_width="20dip"
+            android:layout_height="20dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dip"
+            android:src="@drawable/icon_payment_normal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dip"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:text="@string/payment_add_amount_style2"
+            android:textColor="@color/FF4A4A4A"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:id="@+id/iv_question"
+            android:layout_width="20dip"
+            android:layout_height="20dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dip"
+            android:src="@drawable/icon_payment_question"/>
+
+        <TextView
+            android:id="@+id/tv_min_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:textColor="#FF9B9B9B"
+            android:textSize="12sp"
+            tools:text="最少0.00000001 ETH"/>
+
+    </LinearLayout>
+
+</LinearLayout>

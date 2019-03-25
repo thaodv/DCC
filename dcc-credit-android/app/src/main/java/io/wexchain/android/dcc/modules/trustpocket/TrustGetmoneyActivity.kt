@@ -51,7 +51,7 @@ class TrustGetmoneyActivity : BindActivity<ActivityTrustGetmoneyBinding>() {
                 .withLoading()
                 .subscribe({
                     binding.address = it.address
-                    binding.name = it.chainCode
+                    binding.name = it.assetCode
 
                 }, {
                     toast(it.message.toString())

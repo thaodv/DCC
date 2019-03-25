@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:layout_marginBottom="10dp"
-        android:background="@color/FF6144CC"
+        android:background="@color/white"
         android:padding="14dp"
         >
 
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:drawableLeft="@drawable/icon_payment_down"
+            android:drawableLeft="@drawable/icon_payment_time"
             android:drawablePadding="5dp"
             android:textColor="@color/FF9B9B9B"
             android:textSize="14sp"
@@ -52,6 +52,7 @@
             android:layout_marginTop="5dp"/>
 
         <LinearLayout
+            android:id="@+id/ll_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/v_line"
@@ -75,6 +76,94 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/ll_title"
+            android:layout_marginTop="8dp"
+            android:gravity="bottom"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/img_payment_quick_item_logo"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFA4A82"
+                android:textSize="40sp"
+                tools:text="1.01"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFA4A82"
+                android:textSize="14sp"
+                tools:text="ETH"
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_item_order_today_count"
+                    android:textColor="#FF4A4A4A"
+                    android:textSize="14sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FA4A82"
+                    android:textSize="14sp"
+                    tools:text="3"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/unit_bi"
+                    android:textColor="#FF4A4A4A"
+                    android:textSize="14sp"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/payment_item_order_description"
+                android:textColor="@color/FF9B9B9B"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/FF9B9B9B"
+                android:textSize="14sp"
+                tools:text="仅卖一天，打钱后自动发货"
+                />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

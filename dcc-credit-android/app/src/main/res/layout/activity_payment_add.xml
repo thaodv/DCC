@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="name"
+            type="String"/>
+
+        <variable
+            name="url"
+            type="String"/>
+
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/FFF5F5FD"
+        android:orientation="vertical"
+        tools:context="io.wexchain.android.dcc.modules.paymentcode.PaymentAddActivity">
+
+        <include layout="@layout/include_toolbar"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp">
+
+                <EditText
+                    android:id="@+id/et_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@null"
+                    android:hint="@string/payment_add_title_hint"
+                    android:textColor="#FF9F9F9F"
+                    android:textSize="16sp"/>
+
+                <View
+                    style="@style/DividerHorizontal"/>
+
+                <EditText
+                    android:id="@+id/et_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:background="@null"
+                    android:gravity="left"
+                    android:hint="@string/payment_add_description_hint"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:textColor="#FF9F9F9F"
+                    android:textSize="16sp"/>
+
+                <View
+                    style="@style/DividerHorizontal"/>
+
+                <RelativeLayout
+                    android:id="@+id/rl_choose"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/payment_add_coin_type"
+                        android:textColor="#4A4A4A"
+                        android:textSize="16sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginRight="26dp"
+                        android:text="@{name}"
+                        android:textColor="#4A4A4A"
+                        android:textSize="16sp"
+                        tools:text="DCC"
+                        />
+
+                    <ImageView
+                        errorRes="@{@drawable/ethereum}"
+                        imageUrl="@{url}"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/tv_name"
+                        android:scaleType="centerCrop"
+                        tools:src="@drawable/ethereum"
+                        />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/arrow_right"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerHorizontal"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/payment_add_amount"
+                        android:textColor="#FF4A4A4A"
+                        android:textSize="16sp"
+                        />
+
+                    <io.wexchain.android.dcc.view.payment.PaymentAddAmountStyle
+                        android:id="@+id/paystyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"/>
+
+                </LinearLayout>
+
+                <View
+                    style="@style/DividerHorizontal"/>
+
+                <RelativeLayout
+                    android:id="@+id/rl_choose_deadtime"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <TextView
+                        android:id="@+id/tv_deadtime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/payment_add_deadtime"
+                        android:textColor="#4A4A4A"
+                        android:textSize="16sp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_question"
+                        android:layout_width="20dip"
+                        android:layout_height="20dip"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dip"
+                        android:layout_toRightOf="@+id/tv_deadtime"
+                        android:src="@drawable/icon_payment_question"/>
+
+                    <TextView
+                        android:id="@+id/tv_deadtime_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginRight="26dp"
+                        android:textColor="#4A4A4A"
+                        android:textSize="14sp"
+                        tools:text="长期有效"
+                        />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/arrow_right"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerHorizontal"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/payment_add_fee_rate"
+                        android:textColor="#FF4A4A4A"
+                        android:textSize="14sp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_question2"
+                        android:layout_width="20dip"
+                        android:layout_height="20dip"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:src="@drawable/icon_payment_question"/>
+
+                    <TextView
+                        android:id="@+id/tv_rate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FF4A4A4A"
+                        android:textSize="14sp"
+                        tools:text="1%"/>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/bt_create"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/payment_add_create"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

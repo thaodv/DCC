@@ -8,5 +8,6 @@ import com.google.gson.annotations.SerializedName
  */
 data class DepositWalletsBean(
         @SerializedName("address") val address: String,
-        @SerializedName("chainCode") val chainCode: String
+        @SerializedName("chainCode") val chainCode: String,
+        @SerializedName("assetCode") val assetCode: String
 )

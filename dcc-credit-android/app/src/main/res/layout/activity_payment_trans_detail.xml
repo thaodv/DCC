@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        tools:context="io.wexchain.android.dcc.modules.paymentcode.PaymentTransDetailActivity">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#FA4A82">
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="10dp"
+                android:src="@drawable/arrow_left_white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/payment_trans_detail_page_title"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FA4A82"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/tv_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    tools:text="+ 9.5555 EOS"/>
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    tools:text="支付成功"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="14dp"
+                android:gravity="center_vertical"
+                android:paddingRight="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_trans_detail_title"
+                    android:textColor="#ABABAB"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="100dp"
+                    android:gravity="right"
+                    android:textColor="#4a4a4a"
+                    android:textSize="14sp"
+                    tools:text="1234567890"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="14dp"
+                android:gravity="center_vertical"
+                android:paddingRight="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_trans_detail_mark"
+                    android:textColor="#ABABAB"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_mark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="100dp"
+                    android:gravity="right"
+                    android:textColor="#4a4a4a"
+                    android:textSize="14sp"
+                    tools:text="1234567890"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="14dp"
+                android:gravity="center_vertical"
+                android:paddingRight="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_trans_detail_transtime"
+                    android:textColor="#ABABAB"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="100dp"
+                    android:gravity="right"
+                    android:textColor="#4a4a4a"
+                    android:textSize="14sp"
+                    tools:text="1234567890"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="14dp"
+                android:gravity="center_vertical"
+                android:paddingRight="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_trans_detail_transtid"
+                    android:textColor="#ABABAB"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="100dp"
+                    android:gravity="right"
+                    android:textColor="#4a4a4a"
+                    android:textSize="14sp"
+                    tools:text="1234567890"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="14dp"
+                android:gravity="center_vertical"
+                android:paddingRight="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_trans_detail_user_mark"
+                    android:textColor="#ABABAB"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_user_mark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="100dp"
+                    android:gravity="right"
+                    android:textColor="#4a4a4a"
+                    android:textSize="14sp"
+                    tools:text="1234567890"/>
+
+            </RelativeLayout>
+
+            <View
+                style="@style/DividerHorizontal"
+                android:layout_margin="14dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="14dp"
+                android:gravity="center_vertical"
+                android:paddingRight="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_trans_detail_account"
+                    android:textColor="#ABABAB"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_account2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="100dp"
+                    android:gravity="right"
+                    android:textColor="#4a4a4a"
+                    android:textSize="14sp"
+                    tools:text="1234567890"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="14dp"
+                android:gravity="center_vertical"
+                android:paddingRight="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_trans_detail_fee"
+                    android:textColor="#ABABAB"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="100dp"
+                    android:gravity="right"
+                    android:textColor="#4a4a4a"
+                    android:textSize="14sp"
+                    tools:text="1234567890"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="14dp"
+                android:gravity="center_vertical"
+                android:paddingRight="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_trans_detail_toaccount"
+                    android:textColor="#ABABAB"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_to_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="100dp"
+                    android:gravity="right"
+                    android:textColor="#4a4a4a"
+                    android:textSize="14sp"
+                    tools:text="1234567890"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

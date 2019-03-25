@@ -172,6 +172,20 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                     isOpenTrustPocket = false
                     binding.ivNext.visibility = View.GONE
                     binding.btOpen.visibility = View.VISIBLE
+
+                    val digestAccountRnb = binding.tvDigestRnb.text.toString()
+
+                    var res = BigDecimal.ZERO
+
+                    if ("" == digestAccountRnb) {
+                        res = BigDecimal.ZERO
+                    } else {
+                        res = digestAccountRnb.toBigDecimal()
+                    }
+
+                    mValue1 = CommonUtils.showCurrencySymbol() + res.currencyToDisplayRMBStr()
+                    mValue2 = "≈" + res.divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setScale(8, RoundingMode.DOWN).toPlainString() + " USDT"
+
                 })
 
         binding.assets!!.updateHoldingAndQuote()

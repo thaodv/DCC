@@ -269,7 +269,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
 
                     binding.tvFee.text = "手续费$mFee $mCode"
 
-                    mToAccount = amount.toBigDecimal().subtract(it.decimalValue.toBigDecimal()).setScale(8, RoundingMode.DOWN).toPlainString()
+                    mToAccount = amount.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString()
 
                     binding.tvToAccount.text = mToAccount
 

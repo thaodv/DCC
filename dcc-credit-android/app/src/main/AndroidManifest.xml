@@ -395,8 +395,23 @@
             android:name="io.wexchain.android.dcc.modules.digestpocket.ChooseDigestActivity"
             android:label="选择币种">
         </activity>
-        <activity android:name="io.wexchain.android.dcc.modules.paymentcode.RepaymentQuickReceiptActivity"
+        <activity
+            android:name="io.wexchain.android.dcc.modules.paymentcode.RepaymentQuickReceiptActivity"
             android:label="@string/payment_quick_receipt">
+        </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.paymentcode.PaymentAddActivity"
+            android:label="@string/payment_add_title">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.paymentcode.PaymentTransRecordsActivity">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.paymentcode.PaymentTransDetailActivity">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.paymentcode.PaymentReceiptDetailActivity">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.paymentcode.PaymentReceiptDetailTimeoutActivity">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.paymentcode.PaymentShareActivity">
         </activity>
     </application>
 
