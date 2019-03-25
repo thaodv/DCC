@@ -111,14 +111,13 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
 
             adapter.notifyDataSetChanged()
         })
-
-
         binding.assets = assetsVm
 
     }
 
     override fun onResume() {
         super.onResume()
+        resultAsset.clear()
         getConinData()
     }
 

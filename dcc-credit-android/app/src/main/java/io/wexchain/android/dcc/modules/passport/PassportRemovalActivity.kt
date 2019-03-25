@@ -144,6 +144,7 @@ class PassportRemovalActivity : BaseCompatActivity() {
             App.get().scfTokenManager.scfToken = null
             App.get().gardenTokenManager.gardenToken = null
             App.get().userInfo = null
+            App.get().passportRepository.deleteAllAddressBook()
             SharedPreferenceUtil.save(Extras.NEEDSAVEPENDDING, Extras.SAVEDPENDDING, null)
         }
                 .doOnSubscribe {

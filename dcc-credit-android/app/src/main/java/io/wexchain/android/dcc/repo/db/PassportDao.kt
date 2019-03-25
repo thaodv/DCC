@@ -101,4 +101,7 @@ abstract class PassportDao {
     @Delete
     abstract fun removeAddressBook(addressBook: AddressBook)
 
+    @Query("DELETE FROM ${AddressBook.TABLE_NAME}")
+    abstract fun deleteAllAddressBook()
+
 }
