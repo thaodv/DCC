@@ -123,16 +123,24 @@ class LoadingActivity : BaseCompatActivity() {
 
     private fun delayedStart() {
         if (App.get().passportRepository.passportExists) {
-            Single.timer(1500, TimeUnit.MILLISECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeBy {
-                        atLeastCreated {
-                            navigateTo(HomeActivity::class.java) {
-                                putExtras(intent)
+
+            val data = intent.data
+            val orderId = data?.getQueryParameter("orderId")
+
+            if(null == orderId){
+                Single.timer(1500, TimeUnit.MILLISECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeBy {
+                            atLeastCreated {
+                                navigateTo(HomeActivity::class.java) {
+                                    putExtras(intent)
+                                }
+                                finish()
                             }
-                            finish()
                         }
-                    }
+            }else{
+
+            }
         } else {
             val animation = AnimationUtils.loadAnimation(this, R.anim.splash_logo)
             iv_logo.startAnimation(animation)

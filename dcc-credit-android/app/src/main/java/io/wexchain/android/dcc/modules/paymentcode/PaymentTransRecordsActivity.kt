@@ -1,13 +1,16 @@
 package io.wexchain.android.dcc.modules.paymentcode
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import io.wexchain.android.common.base.BindActivity
 import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityPaymentTransRecordsBinding
 
-class PaymentTransRecordsActivity : AppCompatActivity() {
+class PaymentTransRecordsActivity : BindActivity<ActivityPaymentTransRecordsBinding>() {
+
+    override val contentLayoutId: Int get() = R.layout.activity_payment_trans_records
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_payment_trans_records)
+        initToolbar()
     }
 }
