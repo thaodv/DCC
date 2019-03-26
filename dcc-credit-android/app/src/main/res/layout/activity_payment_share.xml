@@ -3,6 +3,9 @@
 
     <data>
 
+        <variable
+            name="address"
+            type="String"/>
 
     </data>
 
@@ -38,6 +41,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/rl_title"
@@ -62,16 +66,14 @@
                     android:layout_marginLeft="10dp"
                     android:text="BitEXPRESS"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
-                    />
-
+                    android:textSize="12sp"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_first"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="200dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="130dp"
@@ -111,6 +113,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
                 android:layout_below="@+id/ll_first"
                 android:layout_marginBottom="30dp"
                 android:layout_marginLeft="30dp"
@@ -127,12 +130,12 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_user"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#FF000000"
                         android:textSize="18sp"
-                        tools:text="130****1234的收款码"
-                        />
+                        tools:text="130****1234的收款码"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -146,10 +149,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:text="@string/payment_share_text2"
                             android:textColor="@color/white"
-                            android:textSize="12sp"
-                            tools:text="扫一扫，向我付钱"
-                            />
+                            android:textSize="12sp"/>
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -171,11 +173,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
-                        android:layout_margin="10dp"
-                        android:src="@mipmap/ic_app_dcc"/>
+                        android:layout_margin="5dp"
+                        app:qrContent="@{address}"
+                        tools:src="@mipmap/ic_app_dcc"/>
 
                 </RelativeLayout>
-
 
             </LinearLayout>
 

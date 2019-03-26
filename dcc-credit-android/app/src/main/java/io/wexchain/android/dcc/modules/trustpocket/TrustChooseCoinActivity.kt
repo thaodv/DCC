@@ -113,6 +113,11 @@ class TrustChooseCoinActivity : BaseCompatActivity(), TextWatcher, ItemViewClick
             resultOk {
                 putExtra("code", item!!.cryptoAssetConfig.code)
             }
+        } else if ("paymentChoose" == mUse) {
+            resultOk {
+                putExtra("code", item!!.cryptoAssetConfig.code)
+                putExtra("url", if (null == item.url) "" else item.url)
+            }
         } else if ("search" == mUse) {
             getBalance(item!!.cryptoAssetConfig.code, if (null == item.url) "" else item.url, item.cryptoAssetConfig.name)
         }

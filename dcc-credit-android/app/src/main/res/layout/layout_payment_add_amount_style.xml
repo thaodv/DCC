@@ -4,23 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
     android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <LinearLayout
         android:id="@+id/ll_fix"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:minHeight="40dp">
 
         <ImageView
             android:id="@+id/iv_fix"
             android:layout_width="20dip"
             android:layout_height="20dip"
-            android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dip"
-            android:src="@drawable/icon_payment_normal"/>
+            tools:src="@drawable/icon_payment_normal"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,11 +35,12 @@
 
         <EditText
             android:id="@+id/et_amount"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:background="@drawable/bg_payment_fix_amount"
             android:gravity="center_vertical"
+            android:inputType="numberDecimal"
             android:textColor="@color/FF9B9B9B"
             android:textSize="12sp"
             tools:hint="需大于0.00000001"/>
@@ -50,8 +52,7 @@
             android:layout_marginLeft="10dp"
             android:textColor="#FF4A4A4A"
             android:textSize="14sp"
-            tools:text="ETH"
-            />
+            tools:text="ETH"/>
 
     </LinearLayout>
 
@@ -60,15 +61,16 @@
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_marginTop="10dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:minHeight="40dp">
 
         <ImageView
             android:id="@+id/iv_self"
             android:layout_width="20dip"
             android:layout_height="20dip"
-            android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dip"
-            android:src="@drawable/icon_payment_normal"/>
+            tools:src="@drawable/icon_payment_normal"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -84,7 +86,6 @@
             android:id="@+id/iv_question"
             android:layout_width="20dip"
             android:layout_height="20dip"
-            android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dip"
             android:src="@drawable/icon_payment_question"/>
 

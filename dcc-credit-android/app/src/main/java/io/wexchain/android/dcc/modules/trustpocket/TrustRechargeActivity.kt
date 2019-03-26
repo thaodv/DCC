@@ -159,8 +159,6 @@ class TrustRechargeActivity : BindActivity<ActivityTrustRechargeBinding>() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.menu_trust_recharge, menu)
-
-
         return true
     }
 

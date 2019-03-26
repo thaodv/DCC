@@ -28,7 +28,8 @@ object RequestCodes {
     const val CHOOSE_RECHARGE_CODE = 0x5010
     const val CHOOSE_WITHDRAW_CODE = 0x5011
     const val CHOOSE_TRANSFER_CODE = 0x5012
+    const val CHOOSE_PAYMENT_CODE = 0x5013
 
 
-    const val CHOOSE_DIGEST_COIN = 0x5013
+    const val CHOOSE_DIGEST_COIN = 0x5014
 }

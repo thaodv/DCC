@@ -494,6 +494,12 @@ interface MarketingApi {
     fun getUsdtCnyQuote(@Header(HEADER_TOKEN) token: String): Single<Result<String>>
 
     /**
+     * 37.查询费率接口
+     */
+    @GET("quote")
+    fun quote(@Query("pair") pair: String): Single<Result<String>>
+
+    /**
      * 32.综合分页查询
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
@@ -527,9 +533,9 @@ interface MarketingApi {
     @POST("bemember/wallet/goods/createGoods")
     @FormUrlEncoded
     fun createGoods(@Header(HEADER_TOKEN) token: String,
-                    @Field("assetCode") status: String,
-                    @Field("amount") number: BigDecimal,
-                    @Field("name") size: String,
+                    @Field("assetCode") assetCode: String,
+                    @Field("amount") amount: BigDecimal,
+                    @Field("name") name: String,
                     @Field("description") description: String,
                     @Field("expiredTime") expiredTime: String = ""): Single<Result<CreateGoodsBean>>
 
@@ -540,8 +546,7 @@ interface MarketingApi {
     @POST("bemember/wallet/goods/getGoods")
     @FormUrlEncoded
     fun getGoods(@Header(HEADER_TOKEN) token: String,
-                 @Field("goodsId") goodsId: String,
-                 @Field("mobileUserId") mobileUserId: String): Single<Result<GetGoodsBean>>
+                 @Field("goodsId") goodsId: String): Single<Result<GetGoodsBean>>
 
     /**
      * 5,关闭商品

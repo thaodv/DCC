@@ -1,6 +1,8 @@
 package io.wexchain.android.dcc.view.payment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.InputFilter;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import io.wexchain.android.common.tools.EditInputFilter;
 import io.wexchain.dcc.R;
 
 /**
@@ -59,7 +62,7 @@ public class PaymentAddAmountStyle extends LinearLayout implements View.OnClickL
         mLlSelf.setOnClickListener(this);
         mIvQuestion.setOnClickListener(this);
         
-        
+        mEtAmount.setFilters(new InputFilter[]{new EditInputFilter()});
     }
     
     public void setFixChecked() {
@@ -82,10 +85,20 @@ public class PaymentAddAmountStyle extends LinearLayout implements View.OnClickL
         return mEtAmount.getText().toString().trim();
     }
     
+    @SuppressLint("SetTextI18n")
     public void setParameters(String minAmount, String code) {
         mEtAmount.setHint(getResources().getText(R.string.payment_add_bigger) + minAmount);
         mTvCode.setText(code);
-        mTvMinAmount.setText(getResources().getString(R.string.payment_add_smallest) + " " + code);
+        mTvMinAmount.setText(getResources().getString(R.string.payment_add_smallest) + minAmount + " " +
+                code);
+    }
+    
+    public void setEtAmount(String minAmount) {
+        mEtAmount.setHint(getResources().getText(R.string.payment_add_bigger) + minAmount);
+    }
+    
+    public String getEtAmount() {
+        return mEtAmount.getText().toString().trim();
     }
     
     @Override

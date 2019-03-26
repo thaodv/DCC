@@ -10,8 +10,8 @@ import java.util.Locale;
  */
 public class DateFormatUtils {
     
-    private static final String DATE_FORMAT_PATTERN_YMD = "yyyy-MM-dd";
-    private static final String DATE_FORMAT_PATTERN_YMD_HM = "yyyy-MM-dd HH:mm";
+    private static final String DATE_FORMAT_PATTERN_YMD = "yyyy/MM/dd";
+    private static final String DATE_FORMAT_PATTERN_YMD_HM = "yyyy/MM/dd HH:mm";
     
     /**
      * 时间戳转字符串
