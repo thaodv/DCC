@@ -2,6 +2,10 @@ package io.wexchain.dccchainservice
 
 import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
+import io.wexchain.dccchainservice.domain.payment.CloseGoodsBean
+import io.wexchain.dccchainservice.domain.payment.CreateGoodsBean
+import io.wexchain.dccchainservice.domain.payment.GetGoodsBean
+import io.wexchain.dccchainservice.domain.payment.QueryGoodsViewPageBean
 import io.wexchain.dccchainservice.domain.redpacket.*
 import io.wexchain.dccchainservice.domain.trustpocket.*
 import io.wexchain.dccchainservice.util.DateUtil
@@ -502,6 +506,51 @@ interface MarketingApi {
                        @Field("startTime") startTime: String = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd")),
                        @Field("endTime") endTime: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd")),
                        @Field("type") type: String = "DEPOSIT"): Single<Result<PagedList<QueryOrderPageBean>>>
+
+    /**
+     * 2,查询商品统计列表
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/goods/queryGoodsViewPage")
+    @FormUrlEncoded
+    fun queryGoodsViewPage(@Header(HEADER_TOKEN) token: String,
+                           @Field("status") status: String,
+                           @Field("number") number: Int,
+                           @Field("size") size: Int,
+                           @Field("startTime") startTime: String = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd")),
+                           @Field("endTime") endTime: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd"))): Single<Result<PagedList<QueryGoodsViewPageBean>>>
+
+    /**
+     * 3,创建商品
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/goods/createGoods")
+    @FormUrlEncoded
+    fun createGoods(@Header(HEADER_TOKEN) token: String,
+                    @Field("assetCode") status: String,
+                    @Field("amount") number: BigDecimal,
+                    @Field("name") size: String,
+                    @Field("description") description: String,
+                    @Field("expiredTime") expiredTime: String = ""): Single<Result<CreateGoodsBean>>
+
+    /**
+     * 4,查询商品
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/goods/getGoods")
+    @FormUrlEncoded
+    fun getGoods(@Header(HEADER_TOKEN) token: String,
+                 @Field("goodsId") goodsId: String,
+                 @Field("mobileUserId") mobileUserId: String): Single<Result<GetGoodsBean>>
+
+    /**
+     * 5,关闭商品
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/goods/closeGoods")
+    @FormUrlEncoded
+    fun closeGoods(@Header(HEADER_TOKEN) token: String,
+                   @Field("goodsId") goodsId: String): Single<Result<CloseGoodsBean>>
 
 
     companion object {

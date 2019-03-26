@@ -28,6 +28,7 @@ import io.wexchain.android.dcc.modules.loan.LoanActivity
 import io.wexchain.android.dcc.modules.loan.LoanProductDetailActivity
 import io.wexchain.android.dcc.modules.passport.PassportActivity
 import io.wexchain.android.dcc.modules.passport.PassportAddressActivity
+import io.wexchain.android.dcc.modules.paymentcode.PaymentUnOpenActivity
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.BindingViewHolder
 import io.wexchain.android.dcc.view.adapter.ClickAwareHolder
@@ -97,6 +98,9 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
     private fun cardClick(type: CardType) {
         when (type) {
+            CardType.PAYMENT -> {
+                navigateTo(PaymentUnOpenActivity::class.java)
+            }
             CardType.BSX -> {
                 navigateTo(BsxMarketActivity::class.java)
             }
@@ -117,6 +121,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
     private fun getImg(type: CardType): Drawable? {
         return when (type) {
+            CardType.PAYMENT -> ContextCompat.getDrawable(activity!!, R.drawable.icon_payment_enter)
             CardType.BSX -> ContextCompat.getDrawable(activity!!, R.drawable.service_bsx)
             CardType.TOKENPLUS -> ContextCompat.getDrawable(activity!!, R.drawable.service_tokenplus)
             CardType.ECOLOGY -> ContextCompat.getDrawable(activity!!, R.drawable.service_ecology)
@@ -127,6 +132,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
     private fun getMessage(type: CardType): String? {
         return when (type) {
+            CardType.PAYMENT -> "无需开发、易操作、方便快捷"
             CardType.BSX -> "极低风险跨市套利让你持币有红利"
             CardType.TOKENPLUS -> "专为数字货币持有者提供高效的套利服务"
             CardType.ECOLOGY -> "对DCC链上数据做出贡献的奖励！"
@@ -137,6 +143,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
     private fun getTitle(type: CardType): String? {
         return when (type) {
+            CardType.PAYMENT -> "你最方便的收钱工具"
             CardType.BSX -> getString(R.string.service_bsx_title)
             CardType.TOKENPLUS -> "TokenPlus套利神器"
             CardType.ECOLOGY -> "DCC奖励"
@@ -147,6 +154,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
     private fun getName(type: CardType): String {
         return when (type) {
+            CardType.PAYMENT -> "收款码服务"
             CardType.BSX -> "币生息"
             CardType.TOKENPLUS -> "资产套利"
             CardType.ECOLOGY -> "生态奖励"
@@ -157,6 +165,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
     private fun initVm() {
         binding.viewCardPassport.passport = passport
+        binding.payment = getCardVm(CardType.PAYMENT)
         binding.bsx = getCardVm(CardType.BSX)
         binding.tokenplus = getCardVm(CardType.TOKENPLUS)
         binding.certification = getCardVm(CardType.CERTIFICATION)

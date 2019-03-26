@@ -16,4 +16,8 @@
     <color name="gray_line">#0f000000</color>
     <color name="light_dim">#c8c8ff</color>
     <color name="gray_bgbt">#f0f0f0</color>
+
+    <color name="date_picker_text_light">#59B29C</color>
+    <color name="date_picker_text_dark">#333333</color>
+
 </resources>

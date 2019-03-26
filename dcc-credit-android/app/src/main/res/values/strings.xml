@@ -526,5 +526,15 @@
     <string name="payment_receipt_detail_status">状    态</string>
     <string name="payment_receipt_detail_fee">手续费率</string>
 
+    <string name="payment_share_page_title">分享</string>
+
+    <string name="payment_unopen_page_title">收款码服务</string>
+    <string name="payment_unopen_text">你最方便的收钱工具</string>
+    <string name="payment_unopen_text1">支持主流币种</string>
+    <string name="payment_unopen_text2">自定义收款标题和金额</string>
+    <string name="payment_unopen_text3">付款人可填写备注</string>
+    <string name="payment_unopen_text4">可设置到期时间</string>
+    <string name="payment_unopen_text5">立即使用</string>
+
 
 </resources>

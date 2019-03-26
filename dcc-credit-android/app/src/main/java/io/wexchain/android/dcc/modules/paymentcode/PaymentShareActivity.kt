@@ -1,13 +1,20 @@
 package io.wexchain.android.dcc.modules.paymentcode
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.onClick
 import io.wexchain.dcc.R
+import io.wexchain.dcc.databinding.ActivityPaymentShareBinding
 
-class PaymentShareActivity : AppCompatActivity() {
+class PaymentShareActivity : BindActivity<ActivityPaymentShareBinding>() {
+
+    override val contentLayoutId: Int get() = R.layout.activity_payment_share
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_payment_share)
+
+        binding.ivClose.onClick {
+            finish()
+        }
     }
 }

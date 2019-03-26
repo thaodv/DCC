@@ -44,6 +44,7 @@
                     android:layout_height="60dp"
                     android:background="@null"
                     android:hint="@string/payment_add_title_hint"
+                    android:maxLength="30"
                     android:textColor="#FF9F9F9F"
                     android:textSize="16sp"/>
 
@@ -57,6 +58,7 @@
                     android:background="@null"
                     android:gravity="left"
                     android:hint="@string/payment_add_description_hint"
+                    android:maxLength="200"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:textColor="#FF9F9F9F"
@@ -224,7 +226,7 @@
                 <Button
                     android:id="@+id/bt_create"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/payment_add_create"
                     android:textColor="@color/white"

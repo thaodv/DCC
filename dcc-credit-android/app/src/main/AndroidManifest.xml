@@ -413,6 +413,10 @@
         </activity>
         <activity android:name="io.wexchain.android.dcc.modules.paymentcode.PaymentShareActivity">
         </activity>
+        <activity
+            android:name="io.wexchain.android.dcc.modules.paymentcode.PaymentUnOpenActivity"
+            android:label="@string/payment_unopen_page_title">
+        </activity>
     </application>
 
 </manifest>

@@ -26,6 +26,7 @@
     <color name="trans">@android:color/transparent</color>
 
     <color name="FF4A4A4A">#4A4A4A</color>
+    <color name="common_7F4A4A4A">#7F4A4A4A</color>
     <color name="FFED190F">#ED190F</color>
     <color name="FF7ED321">#7ED321</color>
     <color name="FF333333">#333333</color>
