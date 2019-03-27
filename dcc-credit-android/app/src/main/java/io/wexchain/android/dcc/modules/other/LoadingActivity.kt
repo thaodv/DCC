@@ -12,20 +12,22 @@ import android.widget.TextView
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
-import io.wexchain.android.common.atLeastCreated
+import io.wexchain.android.common.*
 import io.wexchain.android.common.base.BaseCompatActivity
-import io.wexchain.android.common.navigateTo
-import io.wexchain.android.common.noStatusBar
-import io.wexchain.android.common.onClick
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.modules.home.CreatePassportActivity
 import io.wexchain.android.dcc.modules.home.HomeActivity
 import io.wexchain.android.dcc.modules.passport.PassportImportActivity
 import io.wexchain.android.dcc.tools.PermissionHelper
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.checkXPosed
 import io.wexchain.android.dcc.tools.isRoot
+import io.wexchain.android.dcc.view.dialog.paymentcode.PaymentCodePayDialog
 import io.wexchain.dcc.R
+import io.wexchain.ipfs.utils.doMain
 import kotlinx.android.synthetic.main.activity_loading.*
+import java.math.RoundingMode
 import java.util.concurrent.TimeUnit
 
 class LoadingActivity : BaseCompatActivity() {
@@ -127,7 +129,7 @@ class LoadingActivity : BaseCompatActivity() {
             val data = intent.data
             val orderId = data?.getQueryParameter("orderId")
 
-            if(null == orderId){
+            if (null == orderId) {
                 Single.timer(1500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy {
@@ -138,8 +140,8 @@ class LoadingActivity : BaseCompatActivity() {
                                 finish()
                             }
                         }
-            }else{
-
+            } else {
+                cashierContent(orderId)
             }
         } else {
             val animation = AnimationUtils.loadAnimation(this, R.anim.splash_logo)
@@ -155,4 +157,49 @@ class LoadingActivity : BaseCompatActivity() {
             }
         }
     }
+
+    private fun cashierContent(id: String) {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.cashierContent(it, id).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    getBalance(it.assetCode, it.id, it.amount, it.name)
+                }, {
+                    toast(it.message.toString())
+                })
+    }
+
+    private fun getBalance(code: String, id: String, amount: String, title: String) {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getBalance(it, code).check()
+                }
+                .doMain()
+                .subscribe({
+                    val res = it.availableAmount.assetValue.amount.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString()
+
+                    val paymentCodePayDialog = PaymentCodePayDialog(this)
+
+                    paymentCodePayDialog.setParameters(amount, title, id, "", code, res)
+
+                    paymentCodePayDialog.setOnClickListener(object : PaymentCodePayDialog.OnClickListener {
+                        override fun trustRecharge() {
+
+                        }
+
+                        override fun sure() {
+
+                        }
+                    })
+                    paymentCodePayDialog.show()
+
+
+                }, {
+                    toast(it.message.toString())
+                })
+    }
+
 }

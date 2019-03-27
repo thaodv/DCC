@@ -19,7 +19,6 @@ import io.wexchain.android.dcc.view.payment.PaymentAddAmountStyle
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPaymentAddBinding
 import io.wexchain.ipfs.utils.doMain
-import java.math.BigDecimal
 
 class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
 
@@ -87,18 +86,22 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
                     if ("" == binding.paystyle.etAmount) {
                         toast("请输入金额")
                     } else {
-                        mAmount = binding.paystyle.etAmount
-                        createGoods(binding.tvName.text.toString(), mAmount.toBigDecimal(), binding.etTitle.text.toString(), binding.etDescription.text.toString())
+                        if (binding.paystyle.etAmount.toBigDecimal().compareTo("0.00000001".toBigDecimal()) == -1) {
+                            toast("最少0.00000001")
+                        } else {
+                            mAmount = binding.paystyle.etAmount
+                            createGoods(binding.tvName.text.toString(), mAmount, binding.etTitle.text.toString(), binding.etDescription.text.toString())
+                        }
                     }
                 } else {
                     mAmount = ""
-                    createGoods(binding.tvName.text.toString(), mAmount.toBigDecimal(), binding.etTitle.text.toString(), binding.etDescription.text.toString())
+                    createGoods(binding.tvName.text.toString(), mAmount, binding.etTitle.text.toString(), binding.etDescription.text.toString())
                 }
             }
         }
     }
 
-    private fun createGoods(assetCode: String, amount: BigDecimal, title: String, description: String) {
+    private fun createGoods(assetCode: String, amount: String, title: String, description: String) {
         GardenOperations
                 .refreshToken {
                     App.get().marketingApi.createGoods(it, assetCode, amount, title, description, mExpiredTimeValue).check()
@@ -132,6 +135,8 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
                     binding.url = mUrl
                     binding.name = mCode
 
+                    binding.paystyle.setParameters("0.00000001", mCode)
+
 
                 }
             }
@@ -140,10 +145,9 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
     }
 
     private fun initTimerPicker() {
-        val beginTime = "2018/01/01 00:00"
-        //String endTime = DateFormatUtils.long2Str(System.currentTimeMillis(), true);
-        val currentTime = DateFormatUtils.long2Str(System.currentTimeMillis(), true)
-        val endTime = "2049/12/31 00:00"
+        val beginTime = DateFormatUtils.long2Str(System.currentTimeMillis(), true)
+
+        val endTime = DateFormatUtils.getFetureDate(7)
 
 
         // 通过日期字符串初始化日期，格式请用：yyyy/MM/dd HH:mm

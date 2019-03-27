@@ -49,6 +49,7 @@ class PaymentShareActivity : BindActivity<ActivityPaymentShareBinding>() {
     private fun quote(pair: String) {
         App.get().marketingApi.quote(pair).check()
                 .doMain()
+                .withLoading()
                 .subscribe({
                     getGoods(mId, it)
                 }, {
@@ -67,7 +68,11 @@ class PaymentShareActivity : BindActivity<ActivityPaymentShareBinding>() {
                 .subscribe({
                     binding.tvTitle.text = it.name
                     binding.tvDescription.text = it.description
-                    binding.tvAccount.text = CommonUtils.showCurrencySymbol() + " " + it.amount.toBigDecimal().multiply(rate.toBigDecimal()).setScale(4, RoundingMode.DOWN).toPlainString() + " " + mCode
+
+                    if (null != it.amount) {
+                        binding.tvAccount.text = CommonUtils.showCurrencySymbol() + " " + it.amount!!.toBigDecimal().multiply(rate.toBigDecimal()).setScale(4, RoundingMode.DOWN).toPlainString() + " " + mCode
+                    }
+
                     binding.tvUser.text = it.mobile + resources.getString(R.string.payment_share_text1)
                     binding.address = "http://func.bitexpress.io/hosting-wallet-website/goods.html#/goods?goodsId=" + it.id
 

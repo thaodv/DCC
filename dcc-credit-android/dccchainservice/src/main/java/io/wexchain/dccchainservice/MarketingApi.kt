@@ -532,7 +532,7 @@ interface MarketingApi {
     @FormUrlEncoded
     fun createGoods(@Header(HEADER_TOKEN) token: String,
                     @Field("assetCode") assetCode: String,
-                    @Field("amount") amount: BigDecimal,
+                    @Field("amount") amount: String,
                     @Field("name") name: String,
                     @Field("description") description: String,
                     @Field("expiredTime") expiredTime: String = ""): Single<Result<CreateGoodsBean>>
@@ -563,6 +563,14 @@ interface MarketingApi {
     @FormUrlEncoded
     fun getGoodsView(@Header(HEADER_TOKEN) token: String,
                    @Field("goodsId") goodsId: String): Single<Result<GetGoodsViewBean>>
+    /**
+     * 10.查询收银台订单
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/acquire/cashierContent")
+    @FormUrlEncoded
+    fun cashierContent(@Header(HEADER_TOKEN) token: String,
+                   @Field("id") goodsId: String): Single<Result<CashierContentBean>>
 
 
     companion object {

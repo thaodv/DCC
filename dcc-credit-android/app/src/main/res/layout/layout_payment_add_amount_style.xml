@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
             android:textColor="#FF9B9B9B"
-            android:textSize="12sp"
+            android:textSize="10sp"
             tools:text="最少0.00000001 ETH"/>
 
     </LinearLayout>

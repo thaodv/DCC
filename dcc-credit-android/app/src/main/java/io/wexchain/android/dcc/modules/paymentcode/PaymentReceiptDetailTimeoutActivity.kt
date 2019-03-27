@@ -1,6 +1,5 @@
 package io.wexchain.android.dcc.modules.paymentcode
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.onClick
@@ -29,7 +28,6 @@ class PaymentReceiptDetailTimeoutActivity : BindActivity<ActivityPaymentReceiptD
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun getGoodsView(id: String) {
         GardenOperations
                 .refreshToken {

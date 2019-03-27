@@ -3,6 +3,7 @@ package io.wexchain.android.dcc.modules.paymentcode
 import android.annotation.SuppressLint
 import android.os.Bundle
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
@@ -16,6 +17,8 @@ import io.wexchain.ipfs.utils.doMain
 class PaymentReceiptDetailActivity : BindActivity<ActivityPaymentReceiptDetailBinding>() {
 
     private val mId get() = intent.getStringExtra("id")
+
+    private lateinit var mCode: String
 
     override val contentLayoutId: Int get() = R.layout.activity_payment_receipt_detail
 
@@ -32,6 +35,12 @@ class PaymentReceiptDetailActivity : BindActivity<ActivityPaymentReceiptDetailBi
             closeGoods(mId)
         }
 
+        binding.ivShare.onClick {
+            navigateTo(PaymentShareActivity::class.java) {
+                putExtra("id", mId)
+                putExtra("code", mCode)
+            }
+        }
 
     }
 
@@ -44,6 +53,7 @@ class PaymentReceiptDetailActivity : BindActivity<ActivityPaymentReceiptDetailBi
                 .doMain()
                 .withLoading()
                 .subscribe({
+                    mCode = it.goods.assetCode
                     binding.tvNum.text = it.todayStats.orderNumber
                     binding.tvAccount.text = it.todayStats.orderAmount
 

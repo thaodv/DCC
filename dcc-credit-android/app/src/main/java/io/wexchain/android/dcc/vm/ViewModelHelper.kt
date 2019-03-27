@@ -19,7 +19,6 @@ import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.*
-import io.wexchain.dccchainservice.domain.payment.GetGoodsViewBean
 import io.wexchain.dccchainservice.domain.payment.QueryGoodsViewPageBean
 import io.wexchain.dccchainservice.domain.trustpocket.GetTransferOrderBean
 import io.wexchain.dccchainservice.domain.trustpocket.QueryDepositOrderPageBean
@@ -774,6 +773,17 @@ object ViewModelHelper {
     fun isGoodsActive(stats: QueryGoodsViewPageBean.GoodsBean.Status): Boolean {
         return stats == QueryGoodsViewPageBean.GoodsBean.Status.ACTIVE
     }
+
+    @JvmStatic
+    fun showGoodsDay(day: String?): String {
+
+        if (null != day) {
+            return day + getString(R.string.unit_day)
+        } else {
+            return ""
+        }
+    }
+
 
 }
 

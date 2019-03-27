@@ -1,6 +1,7 @@
 package io.wexchain.android.common.view.datepicker;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -53,6 +54,15 @@ public class DateFormatUtils {
         } else {
             return DATE_FORMAT_PATTERN_YMD;
         }
+    }
+    
+    public static String getFetureDate(int past) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + past);
+        Date today = calendar.getTime();
+        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_PATTERN_YMD_HM);
+        String result = format.format(today);
+        return result;
     }
     
 }

@@ -16,6 +16,8 @@ import java.math.RoundingMode;
 
 import io.wexchain.dcc.R;
 
+import static io.wexchain.android.dcc.tools.ApiKt.getString;
+
 /**
  * @author Created by Wangpeng on 2018/7/16 20:04.
  * usage:
@@ -70,8 +72,8 @@ public class PaymentCodePayDialog extends Dialog implements View.OnClickListener
         mTvAccount.setText(accountValue.toPlainString() + " " + coinType);
         mTvPaymentTitle.setText(title);
         mTvOrderId.setText(orderId);
-        mTvPayStyle.setText(coinType + "(" + getContext().getResources().getString(R.string
-                .payment_balance) + balanceValue.toPlainString() + ")");
+        mTvPayStyle.setText(coinType + "(" + getString(R.string.payment_balance) + balanceValue
+                .toPlainString() + getString(R.string.unit_ge) + ")");
         
         if (accountValue.compareTo(balanceValue) < 1) {
             mTvTrustRecharge.setVisibility(View.GONE);

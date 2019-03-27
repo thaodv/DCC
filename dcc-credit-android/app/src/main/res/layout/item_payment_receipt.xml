@@ -27,7 +27,7 @@
             android:id="@+id/tv_created_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{ViewModelHelper.showRedPacketInviteTime(bean.goods.expiredTime)}"
+            android:text="@{ViewModelHelper.showRedPacketInviteTime(bean.goods.createdTime)}"
             android:textColor="#FF9B9B9B"
             android:textSize="14sp"
             tools:text="2018-02-02 13:00:00"/>
@@ -36,10 +36,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:text="@string/payment_item_order_timeout"
             android:textColor="@color/FF9B9B9B"
             android:textSize="14sp"
-            android:visibility="@{ViewModelHelper.isGoodsActive(bean.goods.status)?View.GONE:View.VISIBLE}"
-            tools:text="已过期"/>
+            android:visibility="@{ViewModelHelper.isGoodsActive(bean.goods.status)?View.GONE:View.VISIBLE}"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
             android:layout_alignParentRight="true"
             android:drawableLeft="@drawable/icon_payment_time"
             android:drawablePadding="5dp"
-            android:text="@{bean.validDays}"
+            android:text="@{ViewModelHelper.showGoodsDay(bean.validDays)}"
             android:textColor="@color/FF9B9B9B"
             android:textSize="14sp"
             android:visibility="@{ViewModelHelper.isGoodsActive(bean.goods.status)?View.VISIBLE:View.GONE}"

@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 data class GetGoodsBean(
         @SerializedName("id") val id: String,
         @SerializedName("assetCode") val assetCode: String,
-        @SerializedName("amount") val amount: String,
+        @SerializedName("amount") val amount: String?,
         @SerializedName("name") val name: String,
         @SerializedName("description") val description: String,
         @SerializedName("expiredTime") val expiredTime: Long,
