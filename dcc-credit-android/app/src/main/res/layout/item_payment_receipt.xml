@@ -3,7 +3,13 @@
 
     <data>
 
+        <import type="android.view.View"/>
+
         <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
+        <variable
+            name="bean"
+            type="io.wexchain.dccchainservice.domain.payment.QueryGoodsViewPageBean"/>
 
     </data>
 
@@ -15,17 +21,16 @@
         android:layout_height="180dp"
         android:layout_marginBottom="10dp"
         android:background="@color/white"
-        android:padding="14dp"
-        >
+        android:padding="14dp">
 
         <TextView
             android:id="@+id/tv_created_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{ViewModelHelper.showRedPacketInviteTime(bean.goods.expiredTime)}"
             android:textColor="#FF9B9B9B"
             android:textSize="14sp"
-            tools:text="2018-02-02 13:00:00"
-            />
+            tools:text="2018-02-02 13:00:00"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,6 +38,7 @@
             android:layout_alignParentRight="true"
             android:textColor="@color/FF9B9B9B"
             android:textSize="14sp"
+            android:visibility="@{ViewModelHelper.isGoodsActive(bean.goods.status)?View.GONE:View.VISIBLE}"
             tools:text="已过期"/>
 
         <TextView
@@ -41,8 +47,10 @@
             android:layout_alignParentRight="true"
             android:drawableLeft="@drawable/icon_payment_time"
             android:drawablePadding="5dp"
+            android:text="@{bean.validDays}"
             android:textColor="@color/FF9B9B9B"
             android:textSize="14sp"
+            android:visibility="@{ViewModelHelper.isGoodsActive(bean.goods.status)?View.VISIBLE:View.GONE}"
             tools:text="3天"/>
 
         <View
@@ -69,6 +77,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{bean.goods.name}"
                 android:textColor="#FF4A4A4A"
                 android:textSize="17sp"
                 tools:text="嘻嘻哈哈"
@@ -94,6 +103,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{bean.goods.amount}"
                 android:textColor="#FFFA4A82"
                 android:textSize="40sp"
                 tools:text="1.01"
@@ -102,6 +112,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{bean.goods.assetCode}"
                 android:textColor="#FFFA4A82"
                 android:textSize="14sp"
                 tools:text="ETH"
@@ -111,7 +122,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="right|center_vertical">
+                android:gravity="right|center_vertical"
+                android:visibility="@{ViewModelHelper.isGoodsActive(bean.goods.status)?View.VISIBLE:View.GONE}">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -124,6 +136,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{bean.todayStats.orderNumber}"
                     android:textColor="#FA4A82"
                     android:textSize="14sp"
                     tools:text="3"
@@ -158,6 +171,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{bean.goods.description}"
                 android:textColor="@color/FF9B9B9B"
                 android:textSize="14sp"
                 tools:text="仅卖一天，打钱后自动发货"

@@ -19,6 +19,7 @@ import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.*
+import io.wexchain.dccchainservice.domain.payment.QueryGoodsViewPageBean
 import io.wexchain.dccchainservice.domain.trustpocket.GetTransferOrderBean
 import io.wexchain.dccchainservice.domain.trustpocket.QueryDepositOrderPageBean
 import io.wexchain.dccchainservice.domain.trustpocket.QueryOrderPageBean
@@ -766,6 +767,11 @@ object ViewModelHelper {
         } else {
             return ""
         }
+    }
+
+    @JvmStatic
+    fun isGoodsActive(stats: QueryGoodsViewPageBean.GoodsBean.Status): Boolean {
+        return stats == QueryGoodsViewPageBean.GoodsBean.Status.ACTIVE
     }
 
 }

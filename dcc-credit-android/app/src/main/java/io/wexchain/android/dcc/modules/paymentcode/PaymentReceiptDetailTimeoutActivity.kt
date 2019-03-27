@@ -8,6 +8,8 @@ import io.wexchain.dcc.databinding.ActivityPaymentReceiptDetailTimeoutBinding
 
 class PaymentReceiptDetailTimeoutActivity : BindActivity<ActivityPaymentReceiptDetailTimeoutBinding>() {
 
+    private val mId get() = intent.getStringExtra("id")
+
     override val contentLayoutId: Int get() = R.layout.activity_payment_receipt_detail_timeout
 
     override fun onCreate(savedInstanceState: Bundle?) {

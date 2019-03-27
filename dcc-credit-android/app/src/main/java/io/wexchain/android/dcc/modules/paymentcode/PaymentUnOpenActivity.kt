@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.modules.paymentcode
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.TextView
 import io.wexchain.android.common.base.BaseCompatActivity
@@ -15,7 +16,10 @@ class PaymentUnOpenActivity : BaseCompatActivity() {
         initToolbar()
 
         findViewById<TextView>(R.id.tv_use).onClick {
+            val sp = getSharedPreferences("setting", Context.MODE_PRIVATE)
+            sp.edit().putBoolean("payment_first_into", false).commit()
             navigateTo(RepaymentQuickReceiptActivity::class.java)
+            finish()
         }
 
     }

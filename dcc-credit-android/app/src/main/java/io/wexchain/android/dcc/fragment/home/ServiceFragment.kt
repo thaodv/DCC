@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.fragment.home
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.drawable.Drawable
@@ -29,6 +30,7 @@ import io.wexchain.android.dcc.modules.loan.LoanProductDetailActivity
 import io.wexchain.android.dcc.modules.passport.PassportActivity
 import io.wexchain.android.dcc.modules.passport.PassportAddressActivity
 import io.wexchain.android.dcc.modules.paymentcode.PaymentUnOpenActivity
+import io.wexchain.android.dcc.modules.paymentcode.RepaymentQuickReceiptActivity
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.BindingViewHolder
 import io.wexchain.android.dcc.view.adapter.ClickAwareHolder
@@ -99,7 +101,13 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
     private fun cardClick(type: CardType) {
         when (type) {
             CardType.PAYMENT -> {
-                navigateTo(PaymentUnOpenActivity::class.java)
+
+                val sp = activity!!.getSharedPreferences("setting", Context.MODE_PRIVATE)
+                if (sp.getBoolean("payment_first_into", true)) {
+                    navigateTo(PaymentUnOpenActivity::class.java)
+                } else {
+                    navigateTo(RepaymentQuickReceiptActivity::class.java)
+                }
             }
             CardType.BSX -> {
                 navigateTo(BsxMarketActivity::class.java)

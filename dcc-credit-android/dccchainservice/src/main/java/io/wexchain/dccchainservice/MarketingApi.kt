@@ -515,6 +515,7 @@ interface MarketingApi {
 
     /**
      * 2,查询商品统计列表
+     * @param status  ACTIVE "有效" CLOSED "已关闭"
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/goods/queryGoodsViewPage")
