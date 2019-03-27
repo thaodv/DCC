@@ -20,6 +20,7 @@ data class QueryWithdrawOrderPageBean(
     enum class Status {
         SUCCESS, //("成功")
         FAILED, //("失败")
+        REJECTED,
         PROCESSING //("处理中")
     }
 

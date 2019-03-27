@@ -37,7 +37,7 @@
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                tools:src="@drawable/dcc_logo"/>
+                tools:src="@mipmap/ic_app_dcc"/>
 
             <TextView
                 android:id="@+id/tv_name"

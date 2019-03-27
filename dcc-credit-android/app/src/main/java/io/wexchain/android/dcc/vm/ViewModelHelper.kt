@@ -19,6 +19,7 @@ import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.*
+import io.wexchain.dccchainservice.domain.payment.GetGoodsViewBean
 import io.wexchain.dccchainservice.domain.payment.QueryGoodsViewPageBean
 import io.wexchain.dccchainservice.domain.trustpocket.GetTransferOrderBean
 import io.wexchain.dccchainservice.domain.trustpocket.QueryDepositOrderPageBean
@@ -761,9 +762,9 @@ object ViewModelHelper {
         } else if ("WITHDRAW" == kind) {
             return "提币"
         } else if ("TRANSFER-OUT" == kind) {
-            return "我的付款"
+            return "付款"
         } else if ("TRANSFER-IN" == kind) {
-            return "我的收款"
+            return "收款"
         } else {
             return ""
         }

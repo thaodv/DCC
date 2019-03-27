@@ -17,7 +17,7 @@
         android:id="@+id/iv_logo"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/logo_bitexpress"
+        android:src="@mipmap/ic_app_dcc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

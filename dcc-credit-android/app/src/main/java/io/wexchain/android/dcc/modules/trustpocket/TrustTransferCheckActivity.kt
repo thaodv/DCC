@@ -47,14 +47,14 @@ class TrustTransferCheckActivity : BaseCompatActivity() {
         mllAddress.visibility = View.GONE
         mllMobile.visibility = View.VISIBLE
 
-        mBtChoose.text = "通过地址转账"
+        mBtChoose.text = "通过账户地址转账"
         mBtChoose.onClick {
             if (mllMobile.visibility == View.VISIBLE) {
                 mBtChoose.text = "通过手机号转账"
                 mllAddress.visibility = View.VISIBLE
                 mllMobile.visibility = View.GONE
             } else {
-                mBtChoose.text = "通过地址转账"
+                mBtChoose.text = "通过账户地址转账"
                 mllAddress.visibility = View.GONE
                 mllMobile.visibility = View.VISIBLE
             }
@@ -104,7 +104,7 @@ class TrustTransferCheckActivity : BaseCompatActivity() {
                 val address = etAddress.text.trim().toString()
 
                 if ("" == address) {
-                    toast("请输入对方钱包地址")
+                    toast("请输入对方账户地址")
                 } else {
                     getMemberAndMobileUserInfo(address)
                 }

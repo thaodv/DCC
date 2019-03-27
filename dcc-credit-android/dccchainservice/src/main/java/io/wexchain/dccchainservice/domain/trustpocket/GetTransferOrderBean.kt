@@ -18,6 +18,8 @@ data class GetTransferOrderBean(
     enum class Status {
         SUCCESS, //("成功")
         FAILED, //("失败")
+        ACCEPTED,
+        REJECTED,
         PROCESSING //("处理中")
     }
 

@@ -36,6 +36,7 @@
                 android:textSize="16sp"/>
 
             <TextView
+                android:id="@+id/tv_trans_records"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -231,6 +232,7 @@
                             android:textSize="16sp"/>
 
                         <TextView
+                            android:id="@+id/tv_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/FF4A4A4A"
@@ -255,6 +257,7 @@
                             android:textSize="16sp"/>
 
                         <TextView
+                            android:id="@+id/tv_description"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/FF4A4A4A"
@@ -279,6 +282,7 @@
                             android:textSize="16sp"/>
 
                         <TextView
+                            android:id="@+id/tv_code3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/FF4A4A4A"
@@ -303,6 +307,7 @@
                             android:textSize="16sp"/>
 
                         <TextView
+                            android:id="@+id/tv_account3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/FF4A4A4A"
@@ -327,6 +332,7 @@
                             android:textSize="16sp"/>
 
                         <TextView
+                            android:id="@+id/tv_deadtime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/FF4A4A4A"
@@ -351,6 +357,7 @@
                             android:textSize="16sp"/>
 
                         <TextView
+                            android:id="@+id/tv_fee"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/FF4A4A4A"

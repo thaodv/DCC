@@ -2,10 +2,7 @@ package io.wexchain.dccchainservice
 
 import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
-import io.wexchain.dccchainservice.domain.payment.CloseGoodsBean
-import io.wexchain.dccchainservice.domain.payment.CreateGoodsBean
-import io.wexchain.dccchainservice.domain.payment.GetGoodsBean
-import io.wexchain.dccchainservice.domain.payment.QueryGoodsViewPageBean
+import io.wexchain.dccchainservice.domain.payment.*
 import io.wexchain.dccchainservice.domain.redpacket.*
 import io.wexchain.dccchainservice.domain.trustpocket.*
 import io.wexchain.dccchainservice.util.DateUtil
@@ -557,6 +554,15 @@ interface MarketingApi {
     @FormUrlEncoded
     fun closeGoods(@Header(HEADER_TOKEN) token: String,
                    @Field("goodsId") goodsId: String): Single<Result<CloseGoodsBean>>
+
+    /**
+     * 13.查询单个收款码统计
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/goods/getGoodsView")
+    @FormUrlEncoded
+    fun getGoodsView(@Header(HEADER_TOKEN) token: String,
+                   @Field("goodsId") goodsId: String): Single<Result<GetGoodsViewBean>>
 
 
     companion object {
