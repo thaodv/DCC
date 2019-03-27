@@ -9,10 +9,6 @@
             name="fingerPrintAvailable"
             type="boolean"/>
 
-        <!--<variable
-            name="fingerPrintEnrolled"
-            type="boolean"/>-->
-
     </data>
 
     <LinearLayout

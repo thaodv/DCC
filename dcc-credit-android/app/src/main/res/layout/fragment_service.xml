@@ -84,6 +84,106 @@
                     android:layout_height="10dp"
                     android:background="#F8F8FF"/>
 
+                <LinearLayout
+                    android:id="@+id/ll_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/card_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#fff"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingTop="5dp"
+                        android:text="抽奖中心"
+                        android:textColor="#000"
+                        android:textSize="17sp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="6dp"
+                        android:paddingLeft="14dp"
+                        android:paddingRight="14dp">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_open"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="14dp"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/tv_te1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="发起抽奖"
+                                android:textColor="#FF4A4A4A"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/tv_te1"
+                                android:layout_marginTop="2dp"
+                                android:text="币小二来了"
+                                android:textColor="#FFBAC0C5"
+                                android:textSize="12sp"/>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/img_service_te1"/>
+
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:background="#EFEFEF"/>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_participate"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="14dp"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/tv_te2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="参与抽奖"
+                                android:textColor="#FF4A4A4A"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/tv_te2"
+                                android:layout_marginTop="2dp"
+                                android:text="抽奖享不停"
+                                android:textColor="#FFBAC0C5"
+                                android:textSize="12sp"/>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/img_service_te2"/>
+
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
                 <include
                     layout="@layout/include_service_card"
                     app:vm="@{payment}"/>

@@ -1,35 +1,65 @@
 package io.wexchain.android.dcc.fragment.home
 
+import android.app.KeyguardManager
 import android.arch.lifecycle.Observer
+import android.hardware.fingerprint.FingerprintManager
+import android.os.Build
 import android.os.Bundle
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
+import android.support.annotation.RequiresApi
+import android.support.v4.app.FragmentManager
+import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.animation.AnimationUtils
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindFragment
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
+import io.wexchain.android.common.tools.rsa.EncryptUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.chain.IpfsOperations.checkKey
+import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity
 import io.wexchain.android.dcc.modules.ipfs.activity.OpenCloudActivity
 import io.wexchain.android.dcc.modules.mine.ModifyPassportPasswordActivity
 import io.wexchain.android.dcc.modules.mine.SettingActivity
 import io.wexchain.android.dcc.modules.passport.PassportExportActivity
+import io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenTipActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustPocketSettingsActivity
+import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.view.SwitchButton
+import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
+import io.wexchain.android.dcc.view.dialog.FingerCheckDialog
+import io.wexchain.android.dcc.view.dialog.GetRedpacketDialog
+import io.wexchain.android.dcc.view.dialog.trustpocket.TrustWithdrawCheckPasswdDialog
+import io.wexchain.android.dcc.view.passwordview.PassWordLayout
+import io.wexchain.android.localprotect.FingerPrintHelper
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentMineBinding
+import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.dccchainservice.domain.trustpocket.ValidatePaymentPasswordBean
 import io.wexchain.ipfs.utils.doMain
 import io.wexchain.ipfs.utils.io_main
+import java.math.BigInteger
+import java.security.KeyStore
+import java.security.MessageDigest
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
 
 /**
  *Created by liuyang on 2018/9/18.
  */
+@RequiresApi(Build.VERSION_CODES.M)
 class MineFragment : BindFragment<FragmentMineBinding>() {
 
     private val passport by lazy {
@@ -39,6 +69,11 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
     var isOpenTrustPocket: Boolean = false
 
     override val contentLayoutId: Int get() = R.layout.fragment_mine
+
+    lateinit var keyStore: KeyStore
+    lateinit var mFragmentManager: FragmentManager
+
+    private lateinit var trustWithdrawCheckPasswdDialog: TrustWithdrawCheckPasswdDialog
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -80,13 +115,16 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                     if (it?.mobileUserId != null) {
                         isOpenTrustPocket = true
                         App.get().mobileUserId = it.mobileUserId
+                        binding.rlTePay.visibility = View.VISIBLE
 
                     } else {
                         isOpenTrustPocket = false
+                        binding.rlTePay.visibility = View.GONE
                     }
                 }, {
                     // 未开户
                     isOpenTrustPocket = false
+                    binding.rlTePay.visibility = View.GONE
                 })
     }
 
@@ -157,6 +195,220 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                 navigateTo(TrustPocketOpenTipActivity::class.java)
             }
         }
+
+        binding.tvFingerPayStatus.setOnCheckedChangeListener(object : SwitchButton.OnCheckedChangeListener {
+            override fun onCheckedChanged(view: SwitchButton?, isChecked: Boolean) {
+                val res = isChecked
+
+                val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
+
+                if (fingerPayStatus) {
+                    if (supportFingerprint()) {
+                        initKey()
+                        initCipher()
+                    } else {
+                        checkPasswd()
+                    }
+                } else {
+                    checkPasswd()
+                }
+            }
+        })
+
+    }
+
+    private fun initKey() {
+        try {
+            keyStore = KeyStore.getInstance("AndroidKeyStore")
+            keyStore.load(null)
+            val keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES,
+                    "AndroidKeyStore")
+            val builder = KeyGenParameterSpec.Builder(FingerPrintHelper.KEY_NAME,
+                    KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT).setBlockModes(KeyProperties.BLOCK_MODE_CBC).setUserAuthenticationRequired(true)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+            keyGenerator.init(builder.build())
+            keyGenerator.generateKey()
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+
+    }
+
+    fun supportFingerprint(): Boolean {
+        if (Build.VERSION.SDK_INT < 23) {
+            toast("您的系统版本过低，不支持指纹功能")
+            return false
+        } else {
+            val keyguardManager = activity!!.getSystemService(KeyguardManager::class.java)
+            val fingerprintManager = activity!!.getSystemService(FingerprintManager::class.java)
+            if (!fingerprintManager!!.isHardwareDetected) {
+                toast("您的手机不支持指纹功能")
+                return false
+            } else if (!keyguardManager!!.isKeyguardSecure) {
+                toast("您还未设置锁屏，请先设置锁屏并添加一个指纹")
+                return false
+            } else if (!fingerprintManager.hasEnrolledFingerprints()) {
+                toast("您至少需要在系统设置中添加一个指纹")
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun checkPasswd() {
+        trustWithdrawCheckPasswdDialog = TrustWithdrawCheckPasswdDialog(activity!!)
+
+        trustWithdrawCheckPasswdDialog.setOnClickListener(object : TrustWithdrawCheckPasswdDialog.OnClickListener {
+            override fun forget() {
+                navigateTo(TrustPocketModifyPhoneActivity::class.java) {
+                    putExtra("source", "forget")
+                }
+            }
+        })
+        trustWithdrawCheckPasswdDialog.show()
+
+        trustWithdrawCheckPasswdDialog.mPassword.setPwdChangeListener(object : PassWordLayout.pwdChangeListener {
+            override fun onChange(pwd: String) {
+                Log.e("onChange:", pwd)
+            }
+
+            override fun onNull() {
+
+            }
+
+            override fun onFinished(pwd: String) {
+                Log.e("onFinished:", pwd)
+                if (pwd.length == 6) {
+                    createPayPwdSecurityContext(pwd)
+                }
+            }
+        })
+    }
+
+    private fun createPayPwdSecurityContext(pwd: String) {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.createPayPwdSecurityContext(it)
+                }
+                .doMain()
+                .subscribe({
+                    if (it.systemCode == Result.SUCCESS && it.businessCode == Result.SUCCESS) {
+                        prepareInputPwd(pwd)
+                    } else {
+                        toast(it.message.toString())
+                    }
+                }, {
+                    toast(it.message.toString())
+                })
+    }
+
+    private fun prepareInputPwd(pwd: String) {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.prepareInputPwd(it).check()
+                }
+                .doMain()
+                .subscribe({
+                    validatePaymentPassword(it.pubKey, it.salt, pwd)
+                }, {
+                    toast(it.message.toString())
+                })
+    }
+
+    private fun validatePaymentPassword(pubKey: String, salt: String, pwd: String) {
+
+        val enpwd = EncryptUtils.getInstance().encode(BigInteger(MessageDigest.getInstance(ScfOperations.DIGEST).digest(pwd.toByteArray(Charsets.UTF_8))).toString(16) + salt, pubKey)
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.validatePaymentPassword(it, enpwd, salt).check()
+                }
+                .doMain()
+                .subscribe({
+                    if (it.result == ValidatePaymentPasswordBean.Status.PASSED) {
+                        trustWithdrawCheckPasswdDialog.dismiss()
+                        // todo
+
+
+                    } else if (it.result == ValidatePaymentPasswordBean.Status.REJECTED) {
+                        val deleteDialog = DeleteAddressBookDialog(activity!!)
+                        deleteDialog.mTvText.text = "密码输入错误，超过3次将被锁定3小时，您还有${it.remainValidateTimes}次机会"
+                        deleteDialog.mTvText.gravity = Gravity.LEFT
+                        deleteDialog.setBtnText("", "确定")
+                        deleteDialog.mBtSure.visibility = View.GONE
+                        deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
+                            override fun cancel() {}
+
+                            override fun sure() {
+
+                            }
+                        })
+                        deleteDialog.show()
+                    } else if (it.result == ValidatePaymentPasswordBean.Status.LOCKED) {
+                        val deleteDialog = DeleteAddressBookDialog(activity!!)
+                        deleteDialog.mTvText.text = "您的密码已被暂时锁定，请等待解锁"
+                        deleteDialog.mTvText.gravity = Gravity.LEFT
+                        deleteDialog.setBtnText("", "确定")
+                        deleteDialog.mBtSure.visibility = View.GONE
+                        deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
+                            override fun cancel() {}
+
+                            override fun sure() {
+
+                            }
+                        })
+                        deleteDialog.show()
+                    } else {
+                        toast("系统错误")
+                    }
+                }, {
+                    toast(it.message.toString())
+                })
+    }
+
+    private fun initCipher() {
+        try {
+            val key = keyStore.getKey(FingerPrintHelper.KEY_NAME, null) as SecretKey
+            val cipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/" + KeyProperties
+                    .BLOCK_MODE_CBC + "/" + KeyProperties.ENCRYPTION_PADDING_PKCS7)
+            cipher.init(Cipher.ENCRYPT_MODE, key)
+            showFingerPrintDialog(cipher)
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+    }
+
+    private fun showFingerPrintDialog(cipher: Cipher) {
+
+        val fragment = FingerCheckDialog()
+        fragment.setCipher(cipher)
+        mFragmentManager = childFragmentManager
+        fragment.show(mFragmentManager, "")
+
+        fragment.setOnCallBack(object : FingerCheckDialog.onCallBack {
+            override fun onAuthenticated() {
+
+            }
+        })
+
+        fragment.setOnClickListener(object : FingerCheckDialog.OnClickListener {
+            override fun cancel() {
+                val getRedpacketDialog = GetRedpacketDialog(activity!!)
+                getRedpacketDialog.setTitle("提示")
+                getRedpacketDialog.setIbtCloseVisble(View.GONE)
+                getRedpacketDialog.setText("确定要退出吗？")
+                getRedpacketDialog.setBtnText("输入密码", "退出")
+                getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
+                    override fun cancel() {
+                        checkPasswd()
+                    }
+
+                    override fun sure() {
+
+                    }
+                })
+                getRedpacketDialog.show()
+            }
+        })
     }
 
 }

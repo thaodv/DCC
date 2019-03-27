@@ -138,11 +138,41 @@
                     android:text="托管钱包设置"
                     app:layout_constraintTop_toBottomOf="@id/tv_passport_backup"/>
 
+                <RelativeLayout
+                    android:id="@+id/rl_te_pay"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/tv_trust_pocket_setting">
+
+                    <TextView
+                        android:id="@+id/tv_pay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="Telegram免密支付"
+                        android:textColor="?android:textColorPrimary"
+                        android:textSize="17sp"/>
+
+                    <io.wexchain.android.dcc.view.SwitchButton
+                        android:id="@+id/tv_finger_pay_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        />
+
+                </RelativeLayout>
+
                 <TextView
                     android:id="@+id/tv_digest_pocket_setting"
                     style="@style/TextActionLine"
                     android:text="数字钱包设置"
-                    app:layout_constraintTop_toBottomOf="@id/tv_trust_pocket_setting"/>
+                    app:layout_constraintTop_toBottomOf="@id/rl_te_pay"/>
 
                 <TextView
                     android:id="@+id/tv_address_book"
