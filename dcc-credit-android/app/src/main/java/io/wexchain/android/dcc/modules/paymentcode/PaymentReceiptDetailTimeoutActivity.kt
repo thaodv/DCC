@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.modules.paymentcode
 
 import android.os.Bundle
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
@@ -25,6 +26,12 @@ class PaymentReceiptDetailTimeoutActivity : BindActivity<ActivityPaymentReceiptD
 
         binding.ivClose.onClick {
             finish()
+        }
+
+        binding.tvTransRecords.onClick {
+            navigateTo(PaymentTransRecordsActivity::class.java) {
+                putExtra("goodsId", mId)
+            }
         }
     }
 

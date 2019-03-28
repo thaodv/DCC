@@ -7,9 +7,11 @@ import com.google.gson.annotations.SerializedName
  * usage:
  */
 data class CashierContentBean(
-        @SerializedName("assetCode") val assetCode: String,
-        @SerializedName("name") val name: String,
-        @SerializedName("amount") val amount: String,
-        @SerializedName("id") val id: String
+        @SerializedName("order") val order: OrderBean
 ) {
+    data class OrderBean(
+            @SerializedName("id") val id: String,
+            @SerializedName("name") val name: String,
+            @SerializedName("amount") val amount: String,
+            @SerializedName("assetCode") val assetCode: String)
 }

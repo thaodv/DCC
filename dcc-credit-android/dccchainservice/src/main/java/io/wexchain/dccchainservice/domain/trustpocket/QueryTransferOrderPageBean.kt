@@ -14,7 +14,13 @@ data class QueryTransferOrderPageBean(
     enum class Status {
         SUCCESS, //("成功")
         FAILED, //("失败")
-        PROCESSING //("处理中")
+        PROCESSING, //("处理中")
+        PAID, //已付款
+        CANCELD, //已取消
+        CLOSED, //已关闭
+        ACCEPTED, //已接受
+        REJECTED, //已拒绝
+        FAILURE //失败
     }
 
     data class RequestIdentityBean(

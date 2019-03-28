@@ -506,6 +506,7 @@
     <string name="payment_trans_detail_transtime">交易时间</string>
     <string name="payment_trans_detail_transtid">订单编号</string>
     <string name="payment_trans_detail_user_mark">用户备注</string>
+    <string name="payment_trans_detail_user_mark1">用户备注：</string>
     <string name="payment_trans_detail_account">付款金额</string>
     <string name="payment_trans_detail_fee">收款手续费</string>
     <string name="payment_trans_detail_toaccount">实际到账</string>

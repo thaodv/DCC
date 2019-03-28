@@ -42,6 +42,12 @@ class PaymentReceiptDetailActivity : BindActivity<ActivityPaymentReceiptDetailBi
             }
         }
 
+        binding.tvTransRecords.onClick {
+            navigateTo(PaymentTransRecordsActivity::class.java) {
+                putExtra("goodsId", mId)
+            }
+        }
+
     }
 
     @SuppressLint("SetTextI18n")

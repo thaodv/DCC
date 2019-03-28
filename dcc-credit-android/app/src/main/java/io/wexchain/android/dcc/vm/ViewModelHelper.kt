@@ -780,10 +780,19 @@ object ViewModelHelper {
         if (null != day) {
             return day + getString(R.string.unit_day)
         } else {
-            return ""
+            return getString(R.string.payment_add_deadtime_v)
         }
     }
 
+    @JvmStatic
+    fun showGoodsAccountCode(account: String, code: String): String {
+        return account + " " + code
+    }
+
+    @JvmStatic
+    fun showGoodsUserMark(text: String?): String {
+        return getString(R.string.payment_trans_detail_user_mark1) + (text ?: "")
+    }
 
 }
 

@@ -562,7 +562,8 @@ interface MarketingApi {
     @POST("bemember/wallet/goods/getGoodsView")
     @FormUrlEncoded
     fun getGoodsView(@Header(HEADER_TOKEN) token: String,
-                   @Field("goodsId") goodsId: String): Single<Result<GetGoodsViewBean>>
+                     @Field("goodsId") goodsId: String): Single<Result<GetGoodsViewBean>>
+
     /**
      * 10.查询收银台订单
      */
@@ -570,7 +571,30 @@ interface MarketingApi {
     @POST("bemember/wallet/acquire/cashierContent")
     @FormUrlEncoded
     fun cashierContent(@Header(HEADER_TOKEN) token: String,
-                   @Field("id") goodsId: String): Single<Result<CashierContentBean>>
+                       @Field("id") id: String): Single<Result<CashierContentBean>>
+
+
+    /**
+     * 36.app支付
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/acquire/selectOption")
+    @FormUrlEncoded
+    fun selectOption(@Header(HEADER_TOKEN) token: String,
+                     @Field("id") id: String): Single<Result<SelectOptionBean>>
+
+    /**
+     * 8.查询订单分页
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/goodsorder/queryGoodsOrderPage")
+    @FormUrlEncoded
+    fun queryGoodsOrderPage(@Header(HEADER_TOKEN) token: String,
+                            @Field("goodsId") goodsId: String,
+                            @Field("number") number: Int,
+                            @Field("size") size: Int,
+                            @Field("startTime") startTime: String = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd")),
+                            @Field("endTime") endTime: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd"))): Single<Result<PagedList<QueryGoodsOrderPageBean>>>
 
 
     companion object {

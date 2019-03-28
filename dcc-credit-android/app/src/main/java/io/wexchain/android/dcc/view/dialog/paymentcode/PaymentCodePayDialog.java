@@ -33,7 +33,7 @@ public class PaymentCodePayDialog extends Dialog implements View.OnClickListener
     public Button mBtSure;
     
     public PaymentCodePayDialog(@NonNull Context context) {
-        super(context, R.style.deleteAddressBookDialog);
+        super(context, R.style.deleteAddressBookDialog2);
         WindowManager.LayoutParams attributes = getWindow().getAttributes();
         attributes.gravity = Gravity.BOTTOM | Gravity.LEFT | Gravity.RIGHT;
         getWindow().setAttributes(attributes);
@@ -89,6 +89,7 @@ public class PaymentCodePayDialog extends Dialog implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ibt_close:
+                mOnClickListener.cancel();
                 dismiss();
                 break;
             case R.id.tv_trust_recharge:
@@ -97,7 +98,6 @@ public class PaymentCodePayDialog extends Dialog implements View.OnClickListener
                 break;
             case R.id.bt_sure:
                 mOnClickListener.sure();
-                dismiss();
                 break;
             default:
                 break;
@@ -109,6 +109,8 @@ public class PaymentCodePayDialog extends Dialog implements View.OnClickListener
         void trustRecharge();
         
         void sure();
+        
+        void cancel();
     }
     
     private OnClickListener mOnClickListener;

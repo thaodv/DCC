@@ -42,6 +42,11 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="14dp"
+                android:background="@drawable/bg_payment_trade_records"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="2dp"
                 android:text="@string/payment_receipt_detail_trans_records"
                 android:textColor="@color/white"
                 android:textSize="16sp"/>
