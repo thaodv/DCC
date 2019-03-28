@@ -17,7 +17,7 @@ data class GetGoodsViewBean(
             @SerializedName("amount") val amount: String,
             @SerializedName("name") val name: String,
             @SerializedName("description") val description: String,
-            @SerializedName("expiredTime") val expiredTime: Long,
+            @SerializedName("expiredTime") val expiredTime: Long?,
             @SerializedName("status") val status: Status
     ) {
         enum class Status {

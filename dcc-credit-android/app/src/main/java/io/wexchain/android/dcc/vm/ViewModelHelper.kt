@@ -19,6 +19,7 @@ import io.wexchain.android.dcc.vm.domain.UserCertStatus
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.*
+import io.wexchain.dccchainservice.domain.payment.QueryGoodsOrderPageBean
 import io.wexchain.dccchainservice.domain.payment.QueryGoodsViewPageBean
 import io.wexchain.dccchainservice.domain.trustpocket.GetTransferOrderBean
 import io.wexchain.dccchainservice.domain.trustpocket.QueryDepositOrderPageBean
@@ -792,6 +793,15 @@ object ViewModelHelper {
     @JvmStatic
     fun showGoodsUserMark(text: String?): String {
         return getString(R.string.payment_trans_detail_user_mark1) + (text ?: "")
+    }
+
+    @JvmStatic
+    fun showPaymentTradeStaus(status: QueryGoodsOrderPageBean.Status): String {
+        return when (status) {
+            QueryGoodsOrderPageBean.Status.CREATED -> "支付中"
+            QueryGoodsOrderPageBean.Status.SUCCESS -> "支付成功"
+            QueryGoodsOrderPageBean.Status.FAILURE -> "支付失败"
+        }
     }
 
 }

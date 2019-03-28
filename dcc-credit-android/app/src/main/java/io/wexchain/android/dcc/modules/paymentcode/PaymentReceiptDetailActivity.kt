@@ -72,9 +72,13 @@ class PaymentReceiptDetailActivity : BindActivity<ActivityPaymentReceiptDetailBi
                     binding.tvTitle.text = it.goods.name
                     binding.tvDescription.text = it.goods.description
                     binding.tvCode3.text = it.goods.assetCode
-                    binding.tvAccount3.text = it.goods.amount
-                    binding.tvDeadtime.text = ViewModelHelper.showRedPacketInviteTime(it.goods.expiredTime)
+                    binding.tvAccount3.text = it.totalStats.orderAmount + " " + it.goods.assetCode
 
+                    if (null == it.goods.expiredTime) {
+                        binding.tvDeadtime.text = getString(R.string.payment_add_deadtime_v)
+                    } else {
+                        binding.tvDeadtime.text = ViewModelHelper.showRedPacketInviteTime(it.goods.expiredTime!!)
+                    }
 
                 }, {
                     toast(it.message.toString())

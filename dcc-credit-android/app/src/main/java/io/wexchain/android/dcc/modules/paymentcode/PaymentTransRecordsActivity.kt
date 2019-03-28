@@ -6,6 +6,7 @@ import io.reactivex.Single
 import io.wexchain.android.common.BR
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getViewModel
+import io.wexchain.android.common.navigateTo
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.tools.check
@@ -21,11 +22,12 @@ import io.wexchain.dccchainservice.domain.payment.QueryGoodsOrderPageBean
 class PaymentTransRecordsActivity : BindActivity<ActivityPaymentTransRecordsBinding>(), ItemViewClickListener<QueryGoodsOrderPageBean> {
 
     override fun onItemClick(item: QueryGoodsOrderPageBean?, position: Int, viewId: Int) {
-
+        navigateTo(PaymentTransDetailActivity::class.java) {
+            putExtra("id", item!!.id)
+        }
     }
 
     override val contentLayoutId: Int get() = R.layout.activity_payment_trans_records
-
 
     private val adapter = SimpleDataBindAdapter<ItemPaymentTransDetailBinding, QueryGoodsOrderPageBean>(
             layoutId = R.layout.item_payment_trans_detail,

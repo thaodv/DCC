@@ -596,6 +596,15 @@ interface MarketingApi {
                             @Field("startTime") startTime: String = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd")),
                             @Field("endTime") endTime: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd"))): Single<Result<PagedList<QueryGoodsOrderPageBean>>>
 
+    /**
+     * 8.查询订单分页
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/goodsorder/getGoodsOrder")
+    @FormUrlEncoded
+    fun getGoodsOrder(@Header(HEADER_TOKEN) token: String,
+                      @Field("goodsId") goodsId: String): Single<Result<QueryGoodsOrderPageBean>>
+
 
     companion object {
         const val HEADER_TOKEN = "x-auth-token"

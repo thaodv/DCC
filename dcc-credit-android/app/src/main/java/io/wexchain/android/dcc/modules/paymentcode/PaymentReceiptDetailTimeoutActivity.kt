@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.modules.paymentcode
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.navigateTo
@@ -35,6 +36,7 @@ class PaymentReceiptDetailTimeoutActivity : BindActivity<ActivityPaymentReceiptD
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getGoodsView(id: String) {
         GardenOperations
                 .refreshToken {
@@ -52,11 +54,15 @@ class PaymentReceiptDetailTimeoutActivity : BindActivity<ActivityPaymentReceiptD
 
                     binding.tvTitle.text = it.goods.name
                     binding.tvDescription.text = it.goods.description
-                    binding.tvAccount2.text = it.goods.amount
+                    binding.tvAccount2.text = it.totalStats.orderAmount + " " + it.goods.assetCode
 
                     binding.tvStatus.text = "已关闭"
 
-                    binding.tvDeadtime.text = ViewModelHelper.showRedPacketInviteTime(it.goods.expiredTime)
+                    if (null == it.goods.expiredTime) {
+                        binding.tvDeadtime.text = getString(R.string.payment_add_deadtime_v)
+                    } else {
+                        binding.tvDeadtime.text = ViewModelHelper.showRedPacketInviteTime(it.goods.expiredTime!!)
+                    }
 
                 }, {
                     toast(it.message.toString())
