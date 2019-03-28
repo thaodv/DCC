@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.modules.paymentcode
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.constant.RequestCodes
@@ -15,6 +16,7 @@ import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.modules.trustpocket.TrustChooseCoinActivity
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.dialog.CustomDatePicker
+import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.view.payment.PaymentAddAmountStyle
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPaymentAddBinding
@@ -98,6 +100,41 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
                     createGoods(binding.tvName.text.toString(), mAmount, binding.etTitle.text.toString(), binding.etDescription.text.toString())
                 }
             }
+        }
+
+        binding.llQuestion.setOnClickListener {
+
+            val deleteDialog = DeleteAddressBookDialog(this)
+            deleteDialog.mTvTips.text = "到期时间"
+            deleteDialog.mTvText.text = "默认长期有效，可以选择7天内的时间，到期后其他人无法通过链接付款"
+            deleteDialog.mTvText.gravity = Gravity.LEFT
+            deleteDialog.setBtnText("", "确定")
+            deleteDialog.mBtSure.visibility = View.GONE
+            deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
+                override fun cancel() {}
+
+                override fun sure() {
+
+                }
+            })
+            deleteDialog.show()
+        }
+
+        binding.ivQuestion2.onClick {
+            val deleteDialog = DeleteAddressBookDialog(this)
+            deleteDialog.mTvTips.text = "手续费"
+            deleteDialog.mTvText.text = "您的收入金额为订单金额*（1-手续费率）；手续费率可能根据实际情况调整，具体请关注官网信息"
+            deleteDialog.mTvText.gravity = Gravity.LEFT
+            deleteDialog.setBtnText("", "确定")
+            deleteDialog.mBtSure.visibility = View.GONE
+            deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
+                override fun cancel() {}
+
+                override fun sure() {
+
+                }
+            })
+            deleteDialog.show()
         }
     }
 

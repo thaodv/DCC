@@ -87,7 +87,8 @@
             android:layout_width="20dip"
             android:layout_height="20dip"
             android:layout_marginLeft="10dip"
-            android:src="@drawable/icon_payment_question"/>
+            android:src="@drawable/icon_payment_question"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tv_min_amount"
@@ -95,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
             android:textColor="#FF9B9B9B"
-            android:textSize="10sp"
+            android:textSize="12sp"
             tools:text="最少0.00000001 ETH"/>
 
     </LinearLayout>

@@ -525,6 +525,7 @@
     <string name="payment_receipt_detail_account">金    额</string>
     <string name="payment_receipt_detail_deadtime">到期时间</string>
     <string name="payment_receipt_detail_status">状    态</string>
+    <string name="payment_receipt_detail_status_closed">已关闭</string>
     <string name="payment_receipt_detail_fee">手续费率</string>
 
     <string name="payment_share_page_title">分享</string>

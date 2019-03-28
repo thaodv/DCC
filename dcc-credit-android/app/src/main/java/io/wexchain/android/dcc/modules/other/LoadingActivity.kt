@@ -33,6 +33,7 @@ import io.wexchain.android.dcc.modules.home.CreatePassportActivity
 import io.wexchain.android.dcc.modules.home.HomeActivity
 import io.wexchain.android.dcc.modules.passport.PassportImportActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneActivity
+import io.wexchain.android.dcc.modules.trustpocket.TrustRechargeActivity
 import io.wexchain.android.dcc.tools.*
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.view.dialog.FingerCheckDialog
@@ -233,21 +234,39 @@ class LoadingActivity : BaseCompatActivity() {
 
                     paymentCodePayDialog.setOnClickListener(object : PaymentCodePayDialog.OnClickListener {
                         override fun trustRecharge() {
-
+                            navigateTo(TrustRechargeActivity::class.java) {
+                                putExtra("code", code)
+                                putExtra("url", "")
+                            }
                         }
 
                         override fun sure() {
-                            val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
 
-                            if (fingerPayStatus) {
-                                if (supportFingerprint()) {
-                                    initKey()
-                                    initCipher()
+                            if (paymentCodePayDialog.getIsOk()) {
+
+                                val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
+
+                                if (fingerPayStatus) {
+                                    if (supportFingerprint()) {
+                                        initKey()
+                                        initCipher()
+                                    } else {
+                                        checkPasswd()
+                                    }
                                 } else {
                                     checkPasswd()
                                 }
                             } else {
-                                checkPasswd()
+                                Single.timer(1500, TimeUnit.MILLISECONDS)
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribeBy {
+                                            atLeastCreated {
+                                                navigateTo(HomeActivity::class.java) {
+                                                    putExtras(intent)
+                                                }
+                                                finish()
+                                            }
+                                        }
                             }
                         }
 

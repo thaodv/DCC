@@ -56,7 +56,7 @@ class PaymentReceiptDetailTimeoutActivity : BindActivity<ActivityPaymentReceiptD
                     binding.tvDescription.text = it.goods.description
                     binding.tvAccount2.text = it.totalStats.orderAmount + " " + it.goods.assetCode
 
-                    binding.tvStatus.text = "已关闭"
+                    binding.tvStatus.text = getString(R.string.payment_receipt_detail_status_closed)
 
                     if (null == it.goods.expiredTime) {
                         binding.tvDeadtime.text = getString(R.string.payment_add_deadtime_v)

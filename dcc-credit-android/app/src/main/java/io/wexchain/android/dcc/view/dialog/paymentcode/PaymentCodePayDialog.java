@@ -32,6 +32,8 @@ public class PaymentCodePayDialog extends Dialog implements View.OnClickListener
     public TextView mTvTrustRecharge;
     public Button mBtSure;
     
+    public boolean isOk;
+    
     public PaymentCodePayDialog(@NonNull Context context) {
         super(context, R.style.deleteAddressBookDialog2);
         WindowManager.LayoutParams attributes = getWindow().getAttributes();
@@ -78,12 +80,17 @@ public class PaymentCodePayDialog extends Dialog implements View.OnClickListener
         if (accountValue.compareTo(balanceValue) < 1) {
             mTvTrustRecharge.setVisibility(View.GONE);
             mBtSure.setText(getContext().getResources().getString(R.string.payment_pay_dialog_pay));
+            isOk = true;
         } else {
             mTvTrustRecharge.setVisibility(View.VISIBLE);
             mBtSure.setText(getContext().getResources().getString(R.string.payment_pay_dialog_close));
+            isOk = false;
         }
     }
     
+    public boolean getIsOk() {
+        return isOk;
+    }
     
     @Override
     public void onClick(View v) {
