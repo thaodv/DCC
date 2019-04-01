@@ -57,8 +57,9 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 
+@SuppressLint("SetTextI18n")
 @RequiresApi(Build.VERSION_CODES.M)
-class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), TextWatcher {
+class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
 
     override val contentLayoutId: Int get() = R.layout.activity_trust_withdraw
 
@@ -104,6 +105,8 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
             binding.name = mCode
 
             binding.tvAssetCode.text = mCode
+
+            binding.tvFee.text = "手续费0 $mCode"
         }
 
         val filters = arrayOf<InputFilter>(EditInputFilter())
@@ -182,7 +185,50 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
             }
         }
 
-        binding.etAccount.addTextChangedListener(this)
+        binding.etAccount.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val text = s.toString().trim()
+                if (null == mCode) {
+                    toast("请先选择币种")
+                } else {
+                    if ("" != text) {
+                        getWithdrawFee(mCode!!, binding.etAddress.text.trim().toString(), text)
+                    } else {
+                        binding.tvFee.text = "手续费0 $mCode"
+                        binding.tvToAccount.text = "0"
+                    }
+                }
+            }
+        })
+
+        binding.etAddress.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val text = s.toString().trim()
+                if (null == mCode) {
+                    toast("请先选择币种")
+                } else {
+                    if ("" != text) {
+                        getWithdrawFee(mCode!!, text, binding.etAccount.text.trim().toString())
+                    } else {
+                        binding.tvFee.text = "手续费0 $mCode"
+                        binding.tvToAccount.text = "0"
+                    }
+                }
+            }
+        })
     }
 
     private fun checkPasswd() {
@@ -240,24 +286,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>(), Text
                 })
     }
 
-    override fun afterTextChanged(s: Editable?) {
-    }
 
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-    }
-
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        val text = s.toString().trim()
-        if (null == mCode) {
-            toast("请先选择币种")
-        } else {
-            if ("" != text) {
-                getWithdrawFee(mCode!!, binding.etAddress.text.trim().toString(), text)
-            }
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
     private fun getWithdrawFee(code: String, address: String, amount: String) {
         GardenOperations
                 .refreshToken {

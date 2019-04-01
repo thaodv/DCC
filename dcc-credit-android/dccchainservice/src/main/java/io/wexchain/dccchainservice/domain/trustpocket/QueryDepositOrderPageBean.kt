@@ -13,6 +13,7 @@ data class QueryDepositOrderPageBean(
         @SerializedName("id") val id: String,
         @SerializedName("assetCode") val assetCode: String,
         @SerializedName("depositWalletAddress") val depositWalletAddress: String,
+        @SerializedName("txHash") val txHash: String,
         @SerializedName("createdTime") val createdTime: Long
 
 ) {

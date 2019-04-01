@@ -77,8 +77,10 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initToolbar()
-        title = ""
+
+        binding.ivClose.onClick {
+            finish()
+        }
 
         binding.url = mUrl
         binding.name = mName

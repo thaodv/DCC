@@ -39,7 +39,7 @@ class TrustRechargeDetailActivity : BindActivity<ActivityTrustRechargeDetailBind
                     binding.tvStatus.text = ViewModelHelper.showTrustRechargeStatus(it.status)
                     binding.tvOrderId.text = it.id
                     binding.tvAddress.text = it.depositWalletAddress
-                    binding.tvHash.text = ""
+                    binding.tvHash.text = it.txHash
                     binding.tvTime.text = ViewModelHelper.showRedPacketInviteTime(it.createdTime)
 
                 }, {

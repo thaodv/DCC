@@ -120,6 +120,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:text="地址"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
@@ -129,7 +130,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="100dp"
+                android:layout_marginTop="5dp"
                 android:gravity="right"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"
@@ -144,7 +147,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="14dp"
             android:gravity="center_vertical"
             android:paddingRight="14dp">
@@ -152,6 +155,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:text="TxHash"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
@@ -161,11 +165,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="100dp"
+                android:layout_marginTop="5dp"
                 android:gravity="right"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"
-                tools:text="0x605c1af6c86817d4c258490dda02c0d9b8094b37"/>
+                tools:text="0x02854e68ee0b9057e6ff9c7f66dd6193e331527138be3c29a3e0bab08127329e"/>
 
         </RelativeLayout>
 

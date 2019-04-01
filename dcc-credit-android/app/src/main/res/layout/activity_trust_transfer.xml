@@ -114,7 +114,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="收款地址"
+                    android:text="钱包地址"
                     android:textColor="#4A4A4A"
                     android:textSize="14sp"/>
 

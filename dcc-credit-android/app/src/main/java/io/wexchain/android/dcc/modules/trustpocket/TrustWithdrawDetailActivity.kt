@@ -37,7 +37,7 @@ class TrustWithdrawDetailActivity : BindActivity<ActivityTrustWithdrawDetailBind
                 .subscribe({
                     binding.tvAmount.text = "- " + it.amount.decimalValue + it.assetCode
                     binding.tvStatus.text = ViewModelHelper.showTrustWithdrawStatus(it.status)
-                    binding.tvOrderId.text = it.id
+                    binding.tvOrderId.text = it.requestIdentity.requestNo
                     binding.tvFee.text = it.fee.decimalValue.toBigDecimal().toPlainString() + " " + it.assetCode
                     binding.tvAccount.text = it.amount.decimalValue + " " + it.assetCode
                     binding.tvAddress.text = it.receiverAddress

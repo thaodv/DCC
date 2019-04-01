@@ -47,7 +47,7 @@ class TrustTransferDetailActivity : BindActivity<ActivityTrustTransferDetailBind
                 .subscribe({
                     binding.tvAmount.text = tag + it.amount.decimalValue + it.assetCode
                     binding.tvStatus.text = ViewModelHelper.showTrustTransferStatus(it.status)
-                    binding.tvOrderId.text = it.id
+                    binding.tvOrderId.text = mId
                     binding.tvAccount.text = it.mobile
                     binding.tvTime.text = ViewModelHelper.showRedPacketInviteTime(it.createdTime)
 

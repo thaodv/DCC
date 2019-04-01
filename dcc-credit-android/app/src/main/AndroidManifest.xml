@@ -85,7 +85,7 @@
             android:theme="@style/DccLightTheme.App.Transparent"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.passport.PassportAddressActivity"
-            android:label="@string/passport_address"/>
+            android:label="我的账户"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.cert.IdCertificationActivity"
             android:label="@string/title_id_certification_data"/>
