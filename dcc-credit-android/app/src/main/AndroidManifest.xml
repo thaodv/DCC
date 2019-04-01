@@ -403,7 +403,8 @@
             android:name="io.wexchain.android.dcc.modules.paymentcode.PaymentAddActivity"
             android:label="@string/payment_add_title">
         </activity>
-        <activity android:name="io.wexchain.android.dcc.modules.paymentcode.PaymentTransRecordsActivity"
+        <activity
+            android:name="io.wexchain.android.dcc.modules.paymentcode.PaymentTransRecordsActivity"
             android:label="@string/payment_receipt_detail_trans_records">
         </activity>
         <activity android:name="io.wexchain.android.dcc.modules.paymentcode.PaymentTransDetailActivity">
@@ -417,6 +418,8 @@
         <activity
             android:name="io.wexchain.android.dcc.modules.paymentcode.PaymentUnOpenActivity"
             android:label="@string/payment_unopen_page_title">
+        </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.paymentcode.PaymentSuccessActivity">
         </activity>
     </application>
 

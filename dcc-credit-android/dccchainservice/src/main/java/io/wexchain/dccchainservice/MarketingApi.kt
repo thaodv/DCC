@@ -571,7 +571,7 @@ interface MarketingApi {
     @POST("bemember/wallet/acquire/cashierContent")
     @FormUrlEncoded
     fun cashierContent(@Header(HEADER_TOKEN) token: String,
-                       @Field("id") id: String): Single<Result<CashierContentBean>>
+                       @Field("appPayToken") appPayToken: String): Single<Result<CashierContentBean>>
 
 
     /**
@@ -581,7 +581,9 @@ interface MarketingApi {
     @POST("bemember/wallet/acquire/selectOption")
     @FormUrlEncoded
     fun selectOption(@Header(HEADER_TOKEN) token: String,
-                     @Field("id") id: String): Single<Result<SelectOptionBean>>
+                     @Field("appPayToken") appPayToken: String,
+                     @Field("encPassword") encPassword: String,
+                     @Field("salt") salt: String): Single<Result<SelectOptionBean>>
 
     /**
      * 8.查询订单分页

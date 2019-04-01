@@ -24,7 +24,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
 import io.wexchain.android.common.base.BaseCompatActivity
-import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.tools.rsa.EncryptUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
@@ -32,9 +31,13 @@ import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.modules.home.CreatePassportActivity
 import io.wexchain.android.dcc.modules.home.HomeActivity
 import io.wexchain.android.dcc.modules.passport.PassportImportActivity
+import io.wexchain.android.dcc.modules.paymentcode.PaymentSuccessActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustRechargeActivity
-import io.wexchain.android.dcc.tools.*
+import io.wexchain.android.dcc.tools.PermissionHelper
+import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.tools.checkXPosed
+import io.wexchain.android.dcc.tools.isRoot
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.view.dialog.FingerCheckDialog
 import io.wexchain.android.dcc.view.dialog.GetRedpacketDialog
@@ -67,6 +70,7 @@ class LoadingActivity : BaseCompatActivity() {
     lateinit var mFragmentManager: FragmentManager
 
     lateinit var mOrderId: String
+    private var mAppToken: String? = null
 
     private lateinit var trustWithdrawCheckPasswdDialog: TrustWithdrawCheckPasswdDialog
 
@@ -162,9 +166,9 @@ class LoadingActivity : BaseCompatActivity() {
         if (App.get().passportRepository.passportExists) {
 
             val data = intent.data
-            val orderId = data?.getQueryParameter("orderId")
+            mAppToken = data?.getQueryParameter("orderId")
 
-            if (null == orderId) {
+            if (null == mAppToken) {
                 Single.timer(1500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy {
@@ -176,7 +180,7 @@ class LoadingActivity : BaseCompatActivity() {
                             }
                         }
             } else {
-                cashierContent(orderId)
+                cashierContent(mAppToken!!)
             }
         } else {
             val animation = AnimationUtils.loadAnimation(this, R.anim.splash_logo)
@@ -244,7 +248,7 @@ class LoadingActivity : BaseCompatActivity() {
 
                             if (paymentCodePayDialog.getIsOk()) {
 
-                                val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
+                                /*val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
 
                                 if (fingerPayStatus) {
                                     if (supportFingerprint()) {
@@ -255,7 +259,8 @@ class LoadingActivity : BaseCompatActivity() {
                                     }
                                 } else {
                                     checkPasswd()
-                                }
+                                }*/
+                                checkPasswd()
                             } else {
                                 Single.timer(1500, TimeUnit.MILLISECONDS)
                                         .observeOn(AndroidSchedulers.mainThread())
@@ -302,18 +307,24 @@ class LoadingActivity : BaseCompatActivity() {
     }
 
 
-    private fun selectOption(id: String) {
+    private fun selectOption(id: String, encPasswd: String, salt: String) {
         GardenOperations
                 .refreshToken {
-                    App.get().marketingApi.selectOption(it, id).check()
+                    App.get().marketingApi.selectOption(it, id, encPasswd, salt).check()
                 }
                 .doMain()
                 .withLoading()
                 .subscribe({
-
+                    navigateTo(PaymentSuccessActivity::class.java) {
+                        putExtra("title", it.payOptionData.order.name)
+                        putExtra("id", it.payOptionData.order.id)
+                        putExtra("amount", it.payOptionData.order.amount)
+                        putExtra("assetCode", it.payOptionData.order.assetCode)
+                    }
 
                 }, {
                     toast(it.message.toString())
+
                 })
     }
 
@@ -376,7 +387,7 @@ class LoadingActivity : BaseCompatActivity() {
 
         fragment.setOnCallBack(object : FingerCheckDialog.onCallBack {
             override fun onAuthenticated() {
-                selectOption(mOrderId)
+                //selectOption(mOrderId)
             }
         })
 
@@ -455,7 +466,10 @@ class LoadingActivity : BaseCompatActivity() {
                 }
                 .doMain()
                 .subscribe({
-                    validatePaymentPassword(it.pubKey, it.salt, pwd)
+                    val enpwd = EncryptUtils.getInstance().encode(BigInteger(MessageDigest.getInstance(ScfOperations.DIGEST).digest(pwd.toByteArray(Charsets.UTF_8))).toString(16) + it.salt, it.pubKey)
+                    //validatePaymentPassword(it.pubKey, it.salt, pwd)
+
+                    selectOption(mAppToken!!, enpwd, it.salt)
                 }, {
                     toast(it.message.toString())
                 })
@@ -472,7 +486,7 @@ class LoadingActivity : BaseCompatActivity() {
                 .subscribe({
                     if (it.result == ValidatePaymentPasswordBean.Status.PASSED) {
                         trustWithdrawCheckPasswdDialog.dismiss()
-                        selectOption(mOrderId)
+                        //selectOption(mOrderId)
 
                     } else if (it.result == ValidatePaymentPasswordBean.Status.REJECTED) {
                         val deleteDialog = DeleteAddressBookDialog(this)
