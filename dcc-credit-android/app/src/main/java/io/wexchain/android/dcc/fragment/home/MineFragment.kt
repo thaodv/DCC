@@ -36,6 +36,7 @@ import io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenTipActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustPocketSettingsActivity
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.tools.switchStatus
 import io.wexchain.android.dcc.view.SwitchButton
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.view.dialog.FingerCheckDialog
@@ -73,6 +74,8 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
     lateinit var keyStore: KeyStore
     lateinit var mFragmentManager: FragmentManager
 
+    var mOpen: Boolean = false
+
     private lateinit var trustWithdrawCheckPasswdDialog: TrustWithdrawCheckPasswdDialog
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -92,6 +95,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
         checkBoundWechat()
         getCloudToken()
         getHostingWallet()
+        getTelegramUser()
     }
 
     private fun checkBoundWechat() {
@@ -198,7 +202,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
 
         binding.tvFingerPayStatus.setOnCheckedChangeListener(object : SwitchButton.OnCheckedChangeListener {
             override fun onCheckedChanged(view: SwitchButton?, isChecked: Boolean) {
-                val res = isChecked
+                mOpen = isChecked
 
                 val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
 
@@ -214,7 +218,36 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                 }
             }
         })
+    }
 
+    private fun getTelegramUser() {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getTelegramUser(it).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    binding.tvFingerPayStatus.switchStatus = it.enableEntrust
+                    binding.tvFingerPayStatus.isChecked = it.enableEntrust
+                }, {
+                    binding.tvFingerPayStatus.switchStatus = false
+                    binding.tvFingerPayStatus.isChecked = false
+                })
+    }
+
+    private fun updateEntrustStatus(open: Boolean) {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.updateEntrustStatus(it, open).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+
+                }, {
+                    //binding.tvFingerPayStatus.switchStatus = false
+                })
     }
 
     private fun initKey() {
@@ -326,8 +359,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                 .subscribe({
                     if (it.result == ValidatePaymentPasswordBean.Status.PASSED) {
                         trustWithdrawCheckPasswdDialog.dismiss()
-                        // todo
-
+                        updateEntrustStatus(mOpen)
 
                     } else if (it.result == ValidatePaymentPasswordBean.Status.REJECTED) {
                         val deleteDialog = DeleteAddressBookDialog(activity!!)
@@ -386,7 +418,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
 
         fragment.setOnCallBack(object : FingerCheckDialog.onCallBack {
             override fun onAuthenticated() {
-
+                updateEntrustStatus(mOpen)
             }
         })
 

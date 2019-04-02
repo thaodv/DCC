@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -235,6 +236,20 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
                             }
                         }, {})
                     }
+                } else if (getDc().chain == Chain.JUZIX_PRIVATE) {
+                    val deleteDialog = DeleteAddressBookDialog(this@DigitalCurrencyActivity)
+                    deleteDialog.mTvText.text = "私链转账功能暂不可使用，如需转出请转到您的公链地址"
+                    deleteDialog.mTvText.gravity = Gravity.LEFT
+                    deleteDialog.setBtnText("", "确定")
+                    deleteDialog.mBtSure.visibility = View.GONE
+                    deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
+                        override fun cancel() {}
+
+                        override fun sure() {
+
+                        }
+                    })
+                    deleteDialog.show()
                 } else {
                     toCreateTransaction()
                 }

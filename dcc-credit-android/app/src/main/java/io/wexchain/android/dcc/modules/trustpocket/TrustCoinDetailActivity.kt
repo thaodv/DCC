@@ -70,7 +70,7 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
     var mType: String = "DEPOSIT"
 
     private val adapter = SimpleDataBindAdapter<ItemTrustTradeDetailBinding, GetBalanceLogBean>(
-            layoutId = R.layout.item_trust_trade_detail,
+            layoutId = R.layout.item_trust_coin_detail,
             variableId = BR.bean,
             itemViewClickListener = this@TrustCoinDetailActivity
     )

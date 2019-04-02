@@ -4,6 +4,7 @@ import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
 import io.wexchain.dccchainservice.domain.payment.*
 import io.wexchain.dccchainservice.domain.redpacket.*
+import io.wexchain.dccchainservice.domain.telegram.GetTelegramUserBean
 import io.wexchain.dccchainservice.domain.trustpocket.*
 import io.wexchain.dccchainservice.util.DateUtil
 import retrofit2.Response
@@ -508,7 +509,7 @@ interface MarketingApi {
                        @Field("size") size: Int,
                        @Field("startTime") startTime: String = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd")),
                        @Field("endTime") endTime: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd")),
-                       @Field("type") type: String = "ALL"): Single<Result<PagedList<QueryOrderPageBean>>>
+                       @Field("type") type: String = "DEPOSIT"): Single<Result<PagedList<QueryOrderPageBean>>>
 
     /**
      * 38.查询余额流水接口
@@ -522,7 +523,7 @@ interface MarketingApi {
                       @Field("size") size: Int,
                       @Field("startTime") startTime: String = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd")),
                       @Field("endTime") endTime: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd")),
-                      @Field("type") type: String = "DEPOSIT"): Single<Result<PagedList<GetBalanceLogBean>>>
+                      @Field("type") type: String = "ALL"): Single<Result<PagedList<GetBalanceLogBean>>>
 
     /**
      * 2,查询商品统计列表
@@ -613,13 +614,29 @@ interface MarketingApi {
                             @Field("endTime") endTime: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd"))): Single<Result<PagedList<QueryGoodsOrderPageBean>>>
 
     /**
-     * 8.查询订单分页
+     * 7.查询订单
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
     @POST("bemember/wallet/goodsorder/getGoodsOrder")
     @FormUrlEncoded
     fun getGoodsOrder(@Header(HEADER_TOKEN) token: String,
                       @Field("goodsId") goodsId: String): Single<Result<QueryGoodsOrderPageBean>>
+
+    /**
+     * 40. 获取TelegramUser
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/mobileUser/getTelegramUser")
+    fun getTelegramUser(@Header(HEADER_TOKEN) token: String): Single<Result<GetTelegramUserBean>>
+
+    /**
+     * 41.更新代扣状态
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/mobileUser/updateEntrustStatus")
+    @FormUrlEncoded
+    fun updateEntrustStatus(@Header(HEADER_TOKEN) token: String,
+                            @Field("open") open: Boolean): Single<Result<String>>
 
 
     companion object {

@@ -1,8 +1,10 @@
 package io.wexchain.android.dcc.modules.home
 
 import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -44,6 +46,7 @@ import java.io.File
 /**
  *Created by liuyang on 2018/9/18.
  */
+@RequiresApi(Build.VERSION_CODES.M)
 class HomeActivity : BaseCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,7 +92,7 @@ class HomeActivity : BaseCompatActivity() {
         getUsdtCnyQuote()
     }
 
-    fun getUsdtCnyQuote() {
+    private fun getUsdtCnyQuote() {
         GardenOperations
                 .refreshToken {
                     App.get().marketingApi.getUsdtCnyQuote(it).check()
@@ -150,10 +153,11 @@ class HomeActivity : BaseCompatActivity() {
             addItem(BottomNavigationItem(R.drawable.tab_activity_find, "发现").setInactiveIconResource(R.drawable.tab_find).setActiveColorResource(R.color.main_tab))
             addItem(BottomNavigationItem(R.drawable.tab_activity_digital, "钱包").setInactiveIconResource(R.drawable.tab_digital).setActiveColorResource(R.color.main_tab))
             addItem(BottomNavigationItem(R.drawable.tab_activity_mine, "我的").setInactiveIconResource(R.drawable.tab_mine).setActiveColorResource(R.color.main_tab))
-            setFirstSelectedPosition(1)
+            setFirstSelectedPosition(0)
             initialise()
         }
-        replaceFragment(FindFragment.getInstance(intent.getStringExtra("data")))
+        //replaceFragment(FindFragment.getInstance(intent.getStringExtra("data")))
+        replaceFragment(ServiceFragment())
     }
 
     private fun initPhototTask() {
