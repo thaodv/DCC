@@ -273,7 +273,6 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
 
                 }, {
                     toast(it.message.toString())
-
                 })
     }
 

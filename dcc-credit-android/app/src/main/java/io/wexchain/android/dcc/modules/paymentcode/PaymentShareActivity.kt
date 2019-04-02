@@ -74,7 +74,7 @@ class PaymentShareActivity : BindActivity<ActivityPaymentShareBinding>() {
                     }
 
                     binding.tvUser.text = it.mobile + resources.getString(R.string.payment_share_text1)
-                    binding.address = "http://func.bitexpress.io/hosting-wallet-website/goods.html#/goods?goodsId=" + it.id
+                    binding.address = it.url
 
                 }, {
                     toast(it.message.toString())

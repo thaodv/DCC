@@ -75,9 +75,9 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
 
     private lateinit var mMinAccount: String
 
-    private lateinit var mTotalAccount: String
+    private var mTotalAccount: String = BigDecimal.ZERO.toPlainString()
     private lateinit var mFee: String
-    private lateinit var mToAccount: String
+    private var mToAccount: String = BigDecimal.ZERO.toPlainString()
 
     private lateinit var trustWithdrawDialog: TrustWithdrawDialog
 
@@ -138,7 +138,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
             if ("" == address) {
                 toast("提币地址不能为空")
             } else {
-                binding.etAccount.setText(mTotalAccount)
+                getWithdrawFee2(mCode!!, address, mTotalAccount)
             }
         }
 
@@ -191,7 +191,6 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
-
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val text = s.toString().trim()
@@ -299,6 +298,37 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
                     binding.tvFee.text = "手续费$mFee $mCode"
 
                     mToAccount = amount.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString()
+
+                    binding.tvToAccount.text = mToAccount
+
+                }, {
+                    //toast(it.message.toString())
+                })
+    }
+
+    private fun getWithdrawFee2(code: String, address: String, amount: String) {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getWithdrawFee(it, code, address, amount).check()
+                }
+                .doMain()
+                .subscribe({
+                    val res = mTotalAccount.toBigDecimal().subtract(it.decimalValue.toBigDecimal()).setScale(8, RoundingMode.DOWN)
+
+                    var result: String = BigDecimal.ZERO.toPlainString()
+                    if (res > BigDecimal.ZERO) {
+                        result = res.toPlainString()
+                    } else {
+                        result = BigDecimal.ZERO.toPlainString()
+                    }
+
+                    binding.etAccount.setText(result)
+
+                    mFee = it.decimalValue.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString()
+
+                    binding.tvFee.text = "手续费$mFee $mCode"
+
+                    mToAccount = result
 
                     binding.tvToAccount.text = mToAccount
 

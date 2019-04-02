@@ -14,6 +14,7 @@ data class GetGoodsBean(
         @SerializedName("description") val description: String,
         @SerializedName("expiredTime") val expiredTime: Long,
         @SerializedName("status") val status: Status,
+        @SerializedName("url") val url: String,
         @SerializedName("mobile") val mobile: String) {
     enum class Status {
         ACTIVE, CLOSED
