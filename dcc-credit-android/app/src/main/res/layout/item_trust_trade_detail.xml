@@ -7,7 +7,7 @@
 
         <variable
             name="bean"
-            type="io.wexchain.dccchainservice.domain.trustpocket.QueryOrderPageBean"/>
+            type="io.wexchain.dccchainservice.domain.trustpocket.GetBalanceLogBean"/>
 
     </data>
 
@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{ViewModelHelper.showTradeDetailName(bean.kind)}"
+            android:text="@{bean.summary}"
             android:textColor="#000000"
             android:textSize="14sp"
             />
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:paddingBottom="14dp"
-            android:text="@{bean.assetValue.amount}"
+            android:text="@{ViewModelHelper.showBlanceLogTip(bean.type,bean.amount)}"
             android:textColor="#9B9B9B"
             android:textSize="14sp"
             tools:text="1000"
@@ -49,7 +49,7 @@
             android:layout_marginLeft="2dp"
             android:layout_toRightOf="@+id/tv_account"
             android:paddingBottom="14dp"
-            android:text="@{bean.assetValue.assetCode}"
+            android:text="@{bean.assetCode}"
             android:textColor="#000000"
             android:textSize="14sp"
             tools:text="DCC"
@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="@{ViewModelHelper.showTrustTradeDetailStatus(bean.status)}"
+            android:text="成功"
             android:textColor="#FF4A4A4A"
             android:textSize="14sp"
             tools:text="待领取"

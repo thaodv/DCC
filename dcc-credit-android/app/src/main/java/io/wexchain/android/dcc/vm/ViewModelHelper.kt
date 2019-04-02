@@ -21,10 +21,7 @@ import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.*
 import io.wexchain.dccchainservice.domain.payment.QueryGoodsOrderPageBean
 import io.wexchain.dccchainservice.domain.payment.QueryGoodsViewPageBean
-import io.wexchain.dccchainservice.domain.trustpocket.GetTransferOrderBean
-import io.wexchain.dccchainservice.domain.trustpocket.QueryDepositOrderPageBean
-import io.wexchain.dccchainservice.domain.trustpocket.QueryOrderPageBean
-import io.wexchain.dccchainservice.domain.trustpocket.QueryWithdrawOrderPageBean
+import io.wexchain.dccchainservice.domain.trustpocket.*
 import io.wexchain.dccchainservice.util.DateUtil
 import io.wexchain.digitalwallet.Currencies
 import io.wexchain.digitalwallet.DigitalCurrency
@@ -767,6 +764,15 @@ object ViewModelHelper {
             return "收款"
         } else {
             return ""
+        }
+    }
+
+    @JvmStatic
+    fun showBlanceLogTip(type: GetBalanceLogBean.TypeBean, amount: String): String {
+        if (GetBalanceLogBean.TypeBean.IN == type) {
+            return "+$amount"
+        } else {
+            return "-$amount"
         }
     }
 

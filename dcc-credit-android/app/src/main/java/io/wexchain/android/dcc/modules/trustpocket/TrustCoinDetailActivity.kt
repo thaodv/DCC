@@ -20,13 +20,13 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustCoinDetailBinding
 import io.wexchain.dcc.databinding.ItemTrustTradeDetailBinding
 import io.wexchain.dccchainservice.domain.PagedList
-import io.wexchain.dccchainservice.domain.trustpocket.QueryOrderPageBean
+import io.wexchain.dccchainservice.domain.trustpocket.GetBalanceLogBean
 import io.wexchain.dccchainservice.util.DateUtil
 import io.wexchain.ipfs.utils.doMain
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
 
-class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), ItemViewClickListener<QueryOrderPageBean> {
+class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), ItemViewClickListener<GetBalanceLogBean> {
 
     val mUrl get() = intent.getStringExtra("url")
     val mCode get() = intent.getStringExtra("code")
@@ -34,9 +34,9 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
     val mValue get() = intent.getStringExtra("value")
     val mValue2 get() = intent.getStringExtra("value2")
 
-    override fun onItemClick(item: QueryOrderPageBean?, position: Int, viewId: Int) {
+    override fun onItemClick(item: GetBalanceLogBean?, position: Int, viewId: Int) {
 
-        if ("DEPOSIT" == item!!.kind) {
+        /*if ("DEPOSIT" == item!!.kind) {
             navigateTo(TrustRechargeDetailActivity::class.java) {
                 putExtra("id", item!!.id)
             }
@@ -54,7 +54,7 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
                 putExtra("id", item!!.requestIdentity.requestNo)
                 putExtra("type", "2")
             }
-        }
+        }*/
     }
 
     override val contentLayoutId: Int get() = R.layout.activity_trust_coin_detail
@@ -69,7 +69,7 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
     var mEndTime: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd"))
     var mType: String = "DEPOSIT"
 
-    private val adapter = SimpleDataBindAdapter<ItemTrustTradeDetailBinding, QueryOrderPageBean>(
+    private val adapter = SimpleDataBindAdapter<ItemTrustTradeDetailBinding, GetBalanceLogBean>(
             layoutId = R.layout.item_trust_trade_detail,
             variableId = BR.bean,
             itemViewClickListener = this@TrustCoinDetailActivity
@@ -136,21 +136,37 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
             navigateTo(TrustTransferCheckActivity::class.java)
         }
 
+        binding.tvAll.onClick {
+
+            binding.tvAll.setTextColor(resources.getColor(R.color.FF6144CC))
+            binding.vAllTip.visibility = View.VISIBLE
+            binding.tvIn.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vInTip.visibility = View.INVISIBLE
+            binding.tvOut.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vOutTip.visibility = View.INVISIBLE
+
+            vm!!.startTimeV = mStartTime
+            vm!!.endTimeV = mEndTime
+            vm!!.typeV = "ALL"
+            mType = "ALL"
+
+            binding.srlList.autoRefresh()
+
+        }
+
         binding.tvIn.onClick {
 
+            binding.tvAll.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vAllTip.visibility = View.INVISIBLE
             binding.tvIn.setTextColor(resources.getColor(R.color.FF6144CC))
             binding.vInTip.visibility = View.VISIBLE
             binding.tvOut.setTextColor(resources.getColor(R.color.FF9B9B9B))
             binding.vOutTip.visibility = View.INVISIBLE
-            binding.tvMyIn.setTextColor(resources.getColor(R.color.FF9B9B9B))
-            binding.vMyInTip.visibility = View.INVISIBLE
-            binding.tvMyOut.setTextColor(resources.getColor(R.color.FF9B9B9B))
-            binding.vMyOutTip.visibility = View.INVISIBLE
 
             vm!!.startTimeV = mStartTime
             vm!!.endTimeV = mEndTime
-            vm!!.typeV = "DEPOSIT"
-            mType = "DEPOSIT"
+            vm!!.typeV = "IN"
+            mType = "IN"
 
             binding.srlList.autoRefresh()
 
@@ -158,45 +174,23 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
 
         binding.tvOut.onClick {
 
+            binding.tvAll.setTextColor(resources.getColor(R.color.FF9B9B9B))
+            binding.vAllTip.visibility = View.INVISIBLE
             binding.tvIn.setTextColor(resources.getColor(R.color.FF9B9B9B))
             binding.vInTip.visibility = View.INVISIBLE
             binding.tvOut.setTextColor(resources.getColor(R.color.FF6144CC))
             binding.vOutTip.visibility = View.VISIBLE
-            binding.tvMyIn.setTextColor(resources.getColor(R.color.FF9B9B9B))
-            binding.vMyInTip.visibility = View.INVISIBLE
-            binding.tvMyOut.setTextColor(resources.getColor(R.color.FF9B9B9B))
-            binding.vMyOutTip.visibility = View.INVISIBLE
 
             vm!!.startTimeV = mStartTime
             vm!!.endTimeV = mEndTime
-            vm!!.typeV = "WITHDRAW"
-            mType = "WITHDRAW"
+            vm!!.typeV = "OUT"
+            mType = "OUT"
 
             binding.srlList.autoRefresh()
 
         }
 
-        binding.tvMyIn.onClick {
-
-            binding.tvIn.setTextColor(resources.getColor(R.color.FF9B9B9B))
-            binding.vInTip.visibility = View.INVISIBLE
-            binding.tvOut.setTextColor(resources.getColor(R.color.FF9B9B9B))
-            binding.vOutTip.visibility = View.INVISIBLE
-            binding.tvMyIn.setTextColor(resources.getColor(R.color.FF6144CC))
-            binding.vMyInTip.visibility = View.VISIBLE
-            binding.tvMyOut.setTextColor(resources.getColor(R.color.FF9B9B9B))
-            binding.vMyOutTip.visibility = View.INVISIBLE
-
-            vm!!.startTimeV = mStartTime
-            vm!!.endTimeV = mEndTime
-            vm!!.typeV = "TRANSFER-IN"
-            mType = "TRANSFER-IN"
-
-            binding.srlList.autoRefresh()
-
-        }
-
-        binding.tvMyOut.onClick {
+        /*binding.tvMyOut.onClick {
 
             binding.tvIn.setTextColor(resources.getColor(R.color.FF9B9B9B))
             binding.vInTip.visibility = View.INVISIBLE
@@ -214,7 +208,7 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
 
             binding.srlList.autoRefresh()
 
-        }
+        }*/
 
         binding.ibtTime.onClick {
             val trustTradeDetailTimeSelectDialog = TrustTradeDetailTimeSelectDialog(this)
@@ -390,17 +384,17 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
                 })
     }
 
-    class TradeDetailVm : PagedVm<QueryOrderPageBean>() {
+    class TradeDetailVm : PagedVm<GetBalanceLogBean>() {
 
         var startTimeV: String = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd"))
         var endTimeV: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd"))
-        var typeV: String = "DEPOSIT"
+        var typeV: String = "ALL"
         var assCode: String = "ETH"
 
-        override fun loadPage(page: Int): Single<PagedList<QueryOrderPageBean>> {
+        override fun loadPage(page: Int): Single<PagedList<GetBalanceLogBean>> {
 
             return GardenOperations.refreshToken {
-                App.get().marketingApi.queryOrderPage(it, assCode, page, 20, startTime = startTimeV, endTime = endTimeV, type = typeV).check()
+                App.get().marketingApi.getBalanceLog(it, assCode, page, 20, startTime = startTimeV, endTime = endTimeV, type = typeV).check()
             }
         }
     }

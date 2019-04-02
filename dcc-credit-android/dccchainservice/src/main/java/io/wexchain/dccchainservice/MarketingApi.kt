@@ -508,7 +508,21 @@ interface MarketingApi {
                        @Field("size") size: Int,
                        @Field("startTime") startTime: String = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd")),
                        @Field("endTime") endTime: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd")),
-                       @Field("type") type: String = "DEPOSIT"): Single<Result<PagedList<QueryOrderPageBean>>>
+                       @Field("type") type: String = "ALL"): Single<Result<PagedList<QueryOrderPageBean>>>
+
+    /**
+     * 38.查询余额流水接口
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/asset/getBalanceLog")
+    @FormUrlEncoded
+    fun getBalanceLog(@Header(HEADER_TOKEN) token: String,
+                      @Field("assetCode") assetCode: String,
+                      @Field("number") number: Int,
+                      @Field("size") size: Int,
+                      @Field("startTime") startTime: String = DateUtil.getPre1Month(SimpleDateFormat("yyyy/MM/dd")),
+                      @Field("endTime") endTime: String = DateUtil.getCurrentDate(SimpleDateFormat("yyyy/MM/dd")),
+                      @Field("type") type: String = "DEPOSIT"): Single<Result<PagedList<GetBalanceLogBean>>>
 
     /**
      * 2,查询商品统计列表
