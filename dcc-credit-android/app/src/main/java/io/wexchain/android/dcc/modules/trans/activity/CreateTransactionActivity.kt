@@ -106,6 +106,8 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
 
         if (null != trustAddress) {
             txVm.toAddress.set(trustAddress)
+
+            binding.tx = txVm.apply {  }
         }
 
     }
