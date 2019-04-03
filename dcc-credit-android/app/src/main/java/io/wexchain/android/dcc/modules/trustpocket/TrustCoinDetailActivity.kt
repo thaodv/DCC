@@ -15,7 +15,7 @@ import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.android.dcc.view.dialog.trustpocket.TrustTradeDetailStyleSelectDialog
 import io.wexchain.android.dcc.view.dialog.trustpocket.TrustTradeDetailTimeSelectDialog
 import io.wexchain.android.dcc.vm.PagedVm
-import io.wexchain.android.dcc.vm.currencyToDisplayStr
+import io.wexchain.android.dcc.vm.currencyToDisplayStr8
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustCoinDetailBinding
 import io.wexchain.dcc.databinding.ItemTrustTradeDetailBinding
@@ -376,8 +376,8 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
                 .doMain()
                 .subscribe({
 
-                    binding.holding = it.availableAmount.assetValue.amount.toBigDecimal().currencyToDisplayStr()
-                    binding.holdingValue = "≈￥" + it.availableAmount.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).setScale(8, RoundingMode.DOWN).toPlainString()
+                    binding.holding = it.availableAmount.assetValue.amount.toBigDecimal().currencyToDisplayStr8()
+                    binding.holdingValue = "≈￥" + it.availableAmount.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).setScale(2, RoundingMode.DOWN).toPlainString()
 
                 }, {
                     toast(it.message.toString())

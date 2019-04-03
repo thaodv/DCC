@@ -32,6 +32,7 @@ import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigDecimal
 
+@SuppressLint("SetTextI18n")
 class TrustRechargeActivity : BindActivity<ActivityTrustRechargeBinding>() {
 
     override val contentLayoutId: Int get() = R.layout.activity_trust_recharge
@@ -151,7 +152,7 @@ class TrustRechargeActivity : BindActivity<ActivityTrustRechargeBinding>() {
                 .subscribe({
                     binding.tvMark.text = "最小充值金额：" + it.depositMinAmt + code + "，小于最小金额的充值将不会上账且无法退回。请勿向上述地址充值任何非" + code + "资产，否则资产将不可找回。"
 
-                    binding.tvMark2.text = "您充值至上述地址后，" + it.confirmedBlockNumber + "次网络确认后到账。"
+                    binding.tvMark2.text = "您充值至上述地址后，" + (if (null == it.confirmedBlockNumber) "" else it.confirmedBlockNumber) + "次网络确认后到账。"
 
                 }, {
                 })

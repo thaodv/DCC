@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
  * usage:
  */
 data class GetDepositParamBean(
-        @SerializedName("confirmedBlockNumber") val confirmedBlockNumber: String,
+        @SerializedName("confirmedBlockNumber") val confirmedBlockNumber: String?,
         @SerializedName("depositMinAmt") val depositMinAmt: String
 ) {
 }
