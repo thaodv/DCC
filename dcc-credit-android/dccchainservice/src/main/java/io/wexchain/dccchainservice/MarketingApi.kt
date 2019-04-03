@@ -596,9 +596,9 @@ interface MarketingApi {
     @POST("bemember/wallet/acquire/selectOption")
     @FormUrlEncoded
     fun selectOption(@Header(HEADER_TOKEN) token: String,
-                     @Field("appPayToken") appPayToken: String,
+                     @Field("appPayToken") appPayToken: String/*,
                      @Field("encPassword") encPassword: String,
-                     @Field("salt") salt: String): Single<Result<SelectOptionBean>>
+                     @Field("salt") salt: String*/): Single<Result<SelectOptionBean>>
 
     /**
      * 8.查询订单分页
@@ -637,6 +637,15 @@ interface MarketingApi {
     @FormUrlEncoded
     fun updateEntrustStatus(@Header(HEADER_TOKEN) token: String,
                             @Field("open") open: Boolean): Single<Result<String>>
+
+    /**
+     * 43.查询充值参数接口
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/getDepositParam")
+    @FormUrlEncoded
+    fun getDepositParam(@Header(HEADER_TOKEN) token: String,
+                        @Field("assetCode") assetCode: String): Single<Result<GetDepositParamBean>>
 
 
     companion object {

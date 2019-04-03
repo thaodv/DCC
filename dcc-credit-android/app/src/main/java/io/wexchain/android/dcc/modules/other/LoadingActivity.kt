@@ -24,6 +24,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
 import io.wexchain.android.common.base.BaseCompatActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.tools.rsa.EncryptUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
@@ -34,10 +35,7 @@ import io.wexchain.android.dcc.modules.passport.PassportImportActivity
 import io.wexchain.android.dcc.modules.paymentcode.PaymentSuccessActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustRechargeActivity
-import io.wexchain.android.dcc.tools.PermissionHelper
-import io.wexchain.android.dcc.tools.check
-import io.wexchain.android.dcc.tools.checkXPosed
-import io.wexchain.android.dcc.tools.isRoot
+import io.wexchain.android.dcc.tools.*
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.view.dialog.FingerCheckDialog
 import io.wexchain.android.dcc.view.dialog.GetRedpacketDialog
@@ -248,7 +246,7 @@ class LoadingActivity : BaseCompatActivity() {
 
                             if (paymentCodePayDialog.getIsOk()) {
 
-                                /*val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
+                                val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
 
                                 if (fingerPayStatus) {
                                     if (supportFingerprint()) {
@@ -259,8 +257,7 @@ class LoadingActivity : BaseCompatActivity() {
                                     }
                                 } else {
                                     checkPasswd()
-                                }*/
-                                checkPasswd()
+                                }
                             } else {
                                 Single.timer(1500, TimeUnit.MILLISECONDS)
                                         .observeOn(AndroidSchedulers.mainThread())
@@ -307,10 +304,10 @@ class LoadingActivity : BaseCompatActivity() {
     }
 
 
-    private fun selectOption(id: String, encPasswd: String, salt: String) {
+    private fun selectOption(id: String) {
         GardenOperations
                 .refreshToken {
-                    App.get().marketingApi.selectOption(it, id, encPasswd, salt).check()
+                    App.get().marketingApi.selectOption(it, id).check()
                 }
                 .doMain()
                 .withLoading()
@@ -387,7 +384,7 @@ class LoadingActivity : BaseCompatActivity() {
 
         fragment.setOnCallBack(object : FingerCheckDialog.onCallBack {
             override fun onAuthenticated() {
-                //selectOption(mOrderId)
+                selectOption(mAppToken!!)
             }
         })
 
@@ -466,10 +463,7 @@ class LoadingActivity : BaseCompatActivity() {
                 }
                 .doMain()
                 .subscribe({
-                    val enpwd = EncryptUtils.getInstance().encode(BigInteger(MessageDigest.getInstance(ScfOperations.DIGEST).digest(pwd.toByteArray(Charsets.UTF_8))).toString(16) + it.salt, it.pubKey)
-                    //validatePaymentPassword(it.pubKey, it.salt, pwd)
-
-                    selectOption(mAppToken!!, enpwd, it.salt)
+                    validatePaymentPassword(it.pubKey, it.salt, pwd)
                 }, {
                     toast(it.message.toString())
                 })
@@ -486,7 +480,7 @@ class LoadingActivity : BaseCompatActivity() {
                 .subscribe({
                     if (it.result == ValidatePaymentPasswordBean.Status.PASSED) {
                         trustWithdrawCheckPasswdDialog.dismiss()
-                        //selectOption(mOrderId)
+                        selectOption(mAppToken!!)
 
                     } else if (it.result == ValidatePaymentPasswordBean.Status.REJECTED) {
                         val deleteDialog = DeleteAddressBookDialog(this)

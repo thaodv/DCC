@@ -47,6 +47,7 @@ class TrustRechargeActivity : BindActivity<ActivityTrustRechargeBinding>() {
         mUrl = intent.getStringExtra("url")
 
         getDepositWallet(mCode)
+        getDepositParam(mCode)
 
         getHolding(getDigitalCurrencyByCode(mCode))
 
@@ -134,8 +135,25 @@ class TrustRechargeActivity : BindActivity<ActivityTrustRechargeBinding>() {
                 .withLoading()
                 .subscribe({
                     binding.address = it.address
+                    binding.tvAddress.text = it.address
                 }, {
                     toast(it.message.toString())
+                })
+    }
+
+    private fun getDepositParam(code: String) {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getDepositParam(it, code).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    binding.tvMark.text = "最小充值金额：" + it.depositMinAmt + code + "，小于最小金额的充值将不会上账且无法退回。请勿向上述地址充值任何非" + code + "资产，否则资产将不可找回。"
+
+                    binding.tvMark2.text = "您充值至上述地址后，" + it.confirmedBlockNumber + "次网络确认后到账。"
+
+                }, {
                 })
     }
 
@@ -148,6 +166,7 @@ class TrustRechargeActivity : BindActivity<ActivityTrustRechargeBinding>() {
 
                     getDepositWallet(mCode)
                     getHolding(getDigitalCurrencyByCode(mCode))
+                    getDepositParam(mCode)
                     binding.url = mUrl
                     binding.name = mCode
                 }

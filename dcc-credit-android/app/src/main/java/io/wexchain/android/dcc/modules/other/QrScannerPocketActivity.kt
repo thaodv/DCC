@@ -2,15 +2,21 @@ package io.wexchain.android.dcc.modules.other
 
 import android.Manifest
 import android.app.Activity
+import android.app.KeyguardManager
 import android.content.ClipData
 import android.content.Intent
 import android.graphics.Bitmap
+import android.hardware.fingerprint.FingerprintManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
+import android.support.annotation.RequiresApi
+import android.support.v4.app.FragmentManager
 import android.util.Log
-import android.view.KeyEvent
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
+import android.widget.Toast
 import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.client.android.BeepManager
@@ -38,23 +44,34 @@ import io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneActivit
 import io.wexchain.android.dcc.modules.trustpocket.TrustRechargeActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustTransferActivity
 import io.wexchain.android.dcc.modules.trustpocket.TrustWithdrawActivity
+import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
+import io.wexchain.android.dcc.view.dialog.FingerCheckDialog
+import io.wexchain.android.dcc.view.dialog.GetRedpacketDialog
 import io.wexchain.android.dcc.view.dialog.paymentcode.PaymentCodePayDialog
 import io.wexchain.android.dcc.view.dialog.qrcode.QScanResultIsAddressDialog
 import io.wexchain.android.dcc.view.dialog.qrcode.QScanResultNotAddressDialog
 import io.wexchain.android.dcc.view.dialog.trustpocket.TrustWithdrawCheckPasswdDialog
 import io.wexchain.android.dcc.view.passwordview.PassWordLayout
+import io.wexchain.android.localprotect.FingerPrintHelper
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityQrScannerBinding
 import io.wexchain.dccchainservice.domain.Result
+import io.wexchain.dccchainservice.domain.trustpocket.ValidatePaymentPasswordBean
 import io.wexchain.digitalwallet.util.isBtcAddress
 import io.wexchain.digitalwallet.util.isEthAddress
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigInteger
 import java.math.RoundingMode
+import java.security.KeyStore
 import java.security.MessageDigest
 import java.util.concurrent.atomic.AtomicBoolean
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
 
+@RequiresApi(Build.VERSION_CODES.M)
 class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
 
     companion object {
@@ -77,6 +94,10 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
     lateinit var mOrderId: String
 
     private var mAppToken: String? = null
+
+    lateinit var keyStore: KeyStore
+
+    lateinit var mFragmentManager: FragmentManager
 
     private lateinit var trustWithdrawCheckPasswdDialog: TrustWithdrawCheckPasswdDialog
 
@@ -178,7 +199,18 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                         override fun sure() {
 
                             if (paymentCodePayDialog.getIsOk()) {
-                                checkPasswd()
+                                val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
+
+                                if (fingerPayStatus) {
+                                    if (supportFingerprint()) {
+                                        initKey()
+                                        initCipher()
+                                    } else {
+                                        checkPasswd()
+                                    }
+                                } else {
+                                    checkPasswd()
+                                }
                             } else {
                             }
                         }
@@ -192,6 +224,90 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                 }, {
                     toast(it.message.toString())
                 })
+    }
+
+    private fun initKey() {
+        try {
+            keyStore = KeyStore.getInstance("AndroidKeyStore")
+            keyStore.load(null)
+            val keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES,
+                    "AndroidKeyStore")
+            val builder = KeyGenParameterSpec.Builder(FingerPrintHelper.KEY_NAME,
+                    KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT).setBlockModes(KeyProperties.BLOCK_MODE_CBC).setUserAuthenticationRequired(true)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+            keyGenerator.init(builder.build())
+            keyGenerator.generateKey()
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+
+    }
+
+    fun supportFingerprint(): Boolean {
+        if (Build.VERSION.SDK_INT < 23) {
+            Toast.makeText(this, "您的系统版本过低，不支持指纹功能", Toast.LENGTH_SHORT).show()
+            return false
+        } else {
+            val keyguardManager = getSystemService(KeyguardManager::class.java)
+            val fingerprintManager = getSystemService(FingerprintManager::class.java)
+            if (!fingerprintManager!!.isHardwareDetected) {
+                Toast.makeText(this, "您的手机不支持指纹功能", Toast.LENGTH_SHORT).show()
+                return false
+            } else if (!keyguardManager!!.isKeyguardSecure) {
+                Toast.makeText(this, "您还未设置锁屏，请先设置锁屏并添加一个指纹", Toast.LENGTH_SHORT).show()
+                return false
+            } else if (!fingerprintManager.hasEnrolledFingerprints()) {
+                Toast.makeText(this, "您至少需要在系统设置中添加一个指纹", Toast.LENGTH_SHORT).show()
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun initCipher() {
+        try {
+            val key = keyStore.getKey(FingerPrintHelper.KEY_NAME, null) as SecretKey
+            val cipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/" + KeyProperties
+                    .BLOCK_MODE_CBC + "/" + KeyProperties.ENCRYPTION_PADDING_PKCS7)
+            cipher.init(Cipher.ENCRYPT_MODE, key)
+            showFingerPrintDialog(cipher)
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+    }
+
+    private fun showFingerPrintDialog(cipher: Cipher) {
+
+        val fragment = FingerCheckDialog()
+        fragment.setCipher(cipher)
+        mFragmentManager = supportFragmentManager
+        fragment.show(mFragmentManager, "")
+
+        fragment.setOnCallBack(object : FingerCheckDialog.onCallBack {
+            override fun onAuthenticated() {
+                selectOption(mAppToken!!)
+            }
+        })
+
+        fragment.setOnClickListener(object : FingerCheckDialog.OnClickListener {
+            override fun cancel() {
+                val getRedpacketDialog = GetRedpacketDialog(this@QrScannerPocketActivity)
+                getRedpacketDialog.setTitle("提示")
+                getRedpacketDialog.setIbtCloseVisble(View.GONE)
+                getRedpacketDialog.setText("确定要退出吗？")
+                getRedpacketDialog.setBtnText("输入密码", "退出")
+                getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
+                    override fun cancel() {
+                        checkPasswd()
+                    }
+
+                    override fun sure() {
+
+                    }
+                })
+                getRedpacketDialog.show()
+            }
+        })
     }
 
     private fun checkPasswd() {
@@ -248,18 +364,65 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                 }
                 .doMain()
                 .subscribe({
-                    val enpwd = EncryptUtils.getInstance().encode(BigInteger(MessageDigest.getInstance(ScfOperations.DIGEST).digest(pwd.toByteArray(Charsets.UTF_8))).toString(16) + it.salt, it.pubKey)
-
-                    selectOption(mAppToken!!, enpwd, it.salt)
+                    validatePaymentPassword(it.pubKey, it.salt, pwd)
                 }, {
                     toast(it.message.toString())
                 })
     }
 
-    private fun selectOption(id: String, encPasswd: String, salt: String) {
+    private fun validatePaymentPassword(pubKey: String, salt: String, pwd: String) {
+
+        val enpwd = EncryptUtils.getInstance().encode(BigInteger(MessageDigest.getInstance(ScfOperations.DIGEST).digest(pwd.toByteArray(Charsets.UTF_8))).toString(16) + salt, pubKey)
         GardenOperations
                 .refreshToken {
-                    App.get().marketingApi.selectOption(it, id, encPasswd, salt).check()
+                    App.get().marketingApi.validatePaymentPassword(it, enpwd, salt).check()
+                    }
+                            .doMain()
+                            .subscribe({
+                                if (it.result == ValidatePaymentPasswordBean.Status.PASSED) {
+                                    trustWithdrawCheckPasswdDialog.dismiss()
+                        selectOption(mAppToken!!)
+
+                    } else if (it.result == ValidatePaymentPasswordBean.Status.REJECTED) {
+                        val deleteDialog = DeleteAddressBookDialog(this)
+                        deleteDialog.mTvText.text = "密码输入错误，超过3次将被锁定3小时，您还有${it.remainValidateTimes}次机会"
+                        deleteDialog.mTvText.gravity = Gravity.LEFT
+                        deleteDialog.setBtnText("", "确定")
+                        deleteDialog.mBtSure.visibility = View.GONE
+                        deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
+                            override fun cancel() {}
+
+                            override fun sure() {
+
+                            }
+                        })
+                        deleteDialog.show()
+                    } else if (it.result == ValidatePaymentPasswordBean.Status.LOCKED) {
+                        val deleteDialog = DeleteAddressBookDialog(this)
+                        deleteDialog.mTvText.text = "您的密码已被暂时锁定，请等待解锁"
+                        deleteDialog.mTvText.gravity = Gravity.LEFT
+                        deleteDialog.setBtnText("", "确定")
+                        deleteDialog.mBtSure.visibility = View.GONE
+                        deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
+                            override fun cancel() {}
+
+                            override fun sure() {
+
+                            }
+                        })
+                        deleteDialog.show()
+                    } else {
+                        toast("系统错误")
+                    }
+                }, {
+                    toast(it.message.toString())
+                })
+    }
+
+    private fun selectOption(id: String) {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.selectOption(it, id).check()
                 }
                 .doMain()
                 .withLoading()

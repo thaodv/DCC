@@ -333,7 +333,9 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
                     binding.tvToAccount.text = mToAccount
 
                 }, {
-                    //toast(it.message.toString())
+                    binding.tvFee.text = "手续费0 $mCode"
+                    binding.etAccount.setText(BigDecimal.ZERO.toPlainString())
+                    binding.tvToAccount.text = "0"
                 })
     }
 
