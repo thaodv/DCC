@@ -1,11 +1,9 @@
 package io.wexchain.android.dcc.modules.paymentcode
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
-import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.tools.check
@@ -14,7 +12,6 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPaymentShareBinding
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.ipfs.utils.doMain
-import java.math.RoundingMode
 
 class PaymentShareActivity : BindActivity<ActivityPaymentShareBinding>() {
 
@@ -30,10 +27,7 @@ class PaymentShareActivity : BindActivity<ActivityPaymentShareBinding>() {
             finish()
         }
 
-        val res = if (CommonUtils.isRMB()) "CNY" else "USDT"
-        "$mCode-$res"
-
-        quote("$mCode-$res")
+        getGoods(mId)
 
         binding.ivSave.onSaveImageToGallery(binding.rlContent,
                 onError = {
@@ -46,19 +40,7 @@ class PaymentShareActivity : BindActivity<ActivityPaymentShareBinding>() {
                 })
     }
 
-    private fun quote(pair: String) {
-        App.get().marketingApi.quote(pair).check()
-                .doMain()
-                .withLoading()
-                .subscribe({
-                    getGoods(mId, it)
-                }, {
-
-                })
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun getGoods(id: String, rate: String) {
+    private fun getGoods(id: String) {
         GardenOperations
                 .refreshToken {
                     App.get().marketingApi.getGoods(it, id).check()
@@ -70,7 +52,7 @@ class PaymentShareActivity : BindActivity<ActivityPaymentShareBinding>() {
                     binding.tvDescription.text = it.description
 
                     if (null != it.amount) {
-                        binding.tvAccount.text = CommonUtils.showCurrencySymbol() + " " + it.amount!!.toBigDecimal().multiply(rate.toBigDecimal()).setScale(4, RoundingMode.DOWN).toPlainString() + " " + mCode
+                        binding.tvAccount.text = it.amount!! + " " + mCode
                     }
 
                     binding.tvUser.text = it.mobile + resources.getString(R.string.payment_share_text1)

@@ -54,7 +54,7 @@ class PaymentReceiptDetailTimeoutActivity : BindActivity<ActivityPaymentReceiptD
 
                     binding.tvTitle.text = it.goods.name
                     binding.tvDescription.text = it.goods.description
-                    binding.tvAccount2.text = it.totalStats.orderAmount + " " + it.goods.assetCode
+                    binding.tvAccount2.text = (if (null == it.goods.amount) "" else it.goods.amount) + " " + it.goods.assetCode
 
                     binding.tvStatus.text = getString(R.string.payment_receipt_detail_status_closed)
 
