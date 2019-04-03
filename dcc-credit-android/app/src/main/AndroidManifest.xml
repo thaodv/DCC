@@ -421,6 +421,8 @@
         </activity>
         <activity android:name="io.wexchain.android.dcc.modules.paymentcode.PaymentSuccessActivity">
         </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.other.StaticHtmlActivity">
+        </activity>
     </application>
 
 </manifest>

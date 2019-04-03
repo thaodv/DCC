@@ -18,7 +18,9 @@ import io.wexchain.android.common.base.BindFragment
 import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
+import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm
 import io.wexchain.android.dcc.modules.bsx.BsxMarketActivity
 import io.wexchain.android.dcc.modules.cert.MyCreditActivity
@@ -27,10 +29,12 @@ import io.wexchain.android.dcc.modules.home.MarketingScenariosActivity
 import io.wexchain.android.dcc.modules.home.TokenPlusActivity
 import io.wexchain.android.dcc.modules.loan.LoanActivity
 import io.wexchain.android.dcc.modules.loan.LoanProductDetailActivity
+import io.wexchain.android.dcc.modules.other.StaticHtmlActivity
 import io.wexchain.android.dcc.modules.passport.PassportActivity
 import io.wexchain.android.dcc.modules.passport.PassportAddressActivity
 import io.wexchain.android.dcc.modules.paymentcode.PaymentUnOpenActivity
 import io.wexchain.android.dcc.modules.paymentcode.RepaymentQuickReceiptActivity
+import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.BindingViewHolder
 import io.wexchain.android.dcc.view.adapter.ClickAwareHolder
@@ -40,6 +44,8 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentServiceBinding
 import io.wexchain.dcc.databinding.ItemServiceLoanBinding
 import io.wexchain.dccchainservice.domain.LoanProduct
+import io.wexchain.ipfs.utils.doMain
+
 
 /**
  *Created by liuyang on 2018/9/18.
@@ -47,6 +53,9 @@ import io.wexchain.dccchainservice.domain.LoanProduct
 class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
     override val contentLayoutId: Int get() = R.layout.fragment_service
+
+    var isOpenTrustPocket: Boolean = false
+    var isBindTelegram: Boolean = false
 
     private val passport by lazy {
         App.get().passportRepository.getCurrentPassport()
@@ -62,6 +71,12 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
         initClick()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getHostingWallet()
+        getTelegramUser()
+    }
+
     private fun getCardVm(type: CardType): ServiceCardVm {
         return ViewModelProviders.of(this)[type.name, ServiceCardVm::class.java].apply {
             name.set(getName(type))
@@ -75,6 +90,41 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
                 cardClick(type)
             })
         }
+    }
+
+    private fun getHostingWallet() {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getHostingWallet(it).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    // 已开户
+                    if (it?.mobileUserId != null) {
+                        isOpenTrustPocket = true
+                        App.get().mobileUserId = it.mobileUserId
+                    } else {
+                        isOpenTrustPocket = false
+                    }
+                }, {
+                    // 未开户
+                    isOpenTrustPocket = false
+                })
+    }
+
+    private fun getTelegramUser() {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getTelegramUser(it).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    isBindTelegram = true
+                }, {
+                    isBindTelegram = false
+                })
     }
 
     private fun getBtnTxt(type: CardType): String {
@@ -200,6 +250,38 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
             intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.bitexpress_info_mail_address)))
             startActivity(Intent.createChooser(intent, "发送邮件"))
         }
+
+        binding.rlOpen.onClick {
+
+            if (isOpenTrustPocket && isBindTelegram) {
+                val packageManager = context!!.packageManager
+                var intent: Intent? = packageManager.getLaunchIntentForPackage("org.telegram.messenger")
+                if (intent == null) {
+                    toast("未安装")
+                } else {
+                    startActivity(intent)
+                }
+            } else {
+                startActivity(StaticHtmlActivity.getResultIntent(context, "如何发起", "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay"))
+            }
+        }
+
+        binding.rlParticipate.onClick {
+            if (isOpenTrustPocket && isBindTelegram) {
+                val packageManager = context!!.packageManager
+                var intent: Intent? = packageManager.getLaunchIntentForPackage("org.telegram.messenger")
+                if (intent == null) {
+                    toast("未安装")
+                } else {
+                    startActivity(intent)
+                }
+            } else {
+
+
+                startActivity(StaticHtmlActivity.getResultIntent(context, "如何参与", "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay"))
+            }
+        }
+
     }
 
     private fun initView() {
