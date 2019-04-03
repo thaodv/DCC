@@ -9,8 +9,6 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
-import io.reactivex.internal.operators.single.SingleToFlowable
-import io.reactivex.rxkotlin.toFlowable
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.common.filter
 import io.wexchain.android.common.observing
@@ -334,7 +332,7 @@ class TransactionListVm(application: Application) : AndroidViewModel(application
 
         @JvmStatic
         fun txValue(ownerAddress: String, tx: EthsTransaction): String {
-            val txAmountStr = tx.digitalCurrency.toDecimalAmount(tx.amount).currencyToDisplayStr()
+            val txAmountStr = tx.digitalCurrency.toDecimalAmount(tx.amount).setSelfScale(4)
             return when (ownerAddress) {
                 tx.from -> "-$txAmountStr ${tx.digitalCurrency.symbol}"
                 tx.to -> "+$txAmountStr ${tx.digitalCurrency.symbol}"

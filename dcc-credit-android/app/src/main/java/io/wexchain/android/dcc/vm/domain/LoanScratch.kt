@@ -1,7 +1,7 @@
 package io.wexchain.android.dcc.vm.domain
 
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
-import io.wexchain.android.dcc.vm.currencyToDisplayStr
+import io.wexchain.android.dcc.vm.setSelfScale
 import io.wexchain.dccchainservice.domain.LoanProduct
 import java.math.BigDecimal
 
@@ -14,7 +14,7 @@ data class LoanScratch (
     val createTime:Long=System.currentTimeMillis()
 ){
     fun getAmountStr(): String {
-        return "${amount.currencyToDisplayStr()} ${product.currency.symbol}"
+        return "${amount.setSelfScale(4)} ${product.currency.symbol}"
     }
 
 }

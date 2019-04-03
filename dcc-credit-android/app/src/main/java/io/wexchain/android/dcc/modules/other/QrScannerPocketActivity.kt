@@ -54,6 +54,7 @@ import io.wexchain.android.dcc.view.dialog.qrcode.QScanResultIsAddressDialog
 import io.wexchain.android.dcc.view.dialog.qrcode.QScanResultNotAddressDialog
 import io.wexchain.android.dcc.view.dialog.trustpocket.TrustWithdrawCheckPasswdDialog
 import io.wexchain.android.dcc.view.passwordview.PassWordLayout
+import io.wexchain.android.dcc.vm.setSelfScale
 import io.wexchain.android.localprotect.FingerPrintHelper
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityQrScannerBinding
@@ -63,7 +64,6 @@ import io.wexchain.digitalwallet.util.isBtcAddress
 import io.wexchain.digitalwallet.util.isEthAddress
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigInteger
-import java.math.RoundingMode
 import java.security.KeyStore
 import java.security.MessageDigest
 import java.util.concurrent.atomic.AtomicBoolean
@@ -92,6 +92,8 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
     override val contentLayoutId: Int = R.layout.activity_qr_scanner
 
     lateinit var mOrderId: String
+    lateinit var mOrderAssetCode: String
+    lateinit var mOrderAmount: String
 
     private var mAppToken: String? = null
 
@@ -102,6 +104,7 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
     private lateinit var trustWithdrawCheckPasswdDialog: TrustWithdrawCheckPasswdDialog
 
     private lateinit var qScanResultIsAddressDialog: QScanResultIsAddressDialog
+    private lateinit var paymentCodePayDialog: PaymentCodePayDialog
 
     private val callback = object : BarcodeCallback {
         override fun barcodeResult(result: BarcodeResult?) {
@@ -167,12 +170,14 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                 .withLoading()
                 .subscribe({
                     mOrderId = it.order.id
-
-                    getBalance(it.order.assetCode, mOrderId, it.order.amount, it.order.name)
+                    mOrderAssetCode = it.order.assetCode
+                    mOrderAmount = it.order.amount
+                    getBalance(it.order.assetCode, mOrderId, mOrderAmount, it.order.name)
                 }, {
                     toast(it.message.toString())
                 })
     }
+
 
     private fun getBalance(code: String, id: String, amount: String, title: String) {
         GardenOperations
@@ -182,9 +187,9 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                 .doMain()
                 .withLoading()
                 .subscribe({
-                    val res = it.availableAmount.assetValue.amount.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString()
+                    val res = it.availableAmount.assetValue.amount.toBigDecimal().setSelfScale(8)
 
-                    val paymentCodePayDialog = PaymentCodePayDialog(this)
+                    paymentCodePayDialog = PaymentCodePayDialog(this)
 
                     paymentCodePayDialog.setParameters(amount, title, id, "", code, res)
 
@@ -220,6 +225,21 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                     })
                     paymentCodePayDialog.show()
 
+
+                }, {
+                    toast(it.message.toString())
+                })
+    }
+
+    private fun getBalance2(code: String) {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getBalance(it, code).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    paymentCodePayDialog.refrestStatus(mOrderAmount, it.availableAmount.assetValue.amount.toBigDecimal().setSelfScale(8))
 
                 }, {
                     toast(it.message.toString())
@@ -376,11 +396,11 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
         GardenOperations
                 .refreshToken {
                     App.get().marketingApi.validatePaymentPassword(it, enpwd, salt).check()
-                    }
-                            .doMain()
-                            .subscribe({
-                                if (it.result == ValidatePaymentPasswordBean.Status.PASSED) {
-                                    trustWithdrawCheckPasswdDialog.dismiss()
+                }
+                .doMain()
+                .subscribe({
+                    if (it.result == ValidatePaymentPasswordBean.Status.PASSED) {
+                        trustWithdrawCheckPasswdDialog.dismiss()
                         selectOption(mAppToken!!)
 
                     } else if (it.result == ValidatePaymentPasswordBean.Status.REJECTED) {
@@ -635,6 +655,8 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                         finish()
                     }
                 }
+
+        getBalance2(mOrderAssetCode)
     }
 
     override fun onPause() {

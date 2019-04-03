@@ -17,15 +17,13 @@ import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.itemDiffCallback
 import io.wexchain.android.dcc.vm.DigitalAssetsVm
-import io.wexchain.android.dcc.vm.currencyToDisplayRMBStr
-import io.wexchain.android.dcc.vm.currencyToDisplayStr8
+import io.wexchain.android.dcc.vm.setSelfScale
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustPocketHomeBinding
 import io.wexchain.dcc.databinding.ItemTrustPocketHomeBinding
 import io.wexchain.dccchainservice.domain.trustpocket.ResultAssetBean
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigDecimal
-import java.math.RoundingMode
 import java.util.*
 
 class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), ItemViewClickListener<ResultAssetBean> {
@@ -133,8 +131,8 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
                 .withLoading()
                 .subscribeBy(onSuccess = {
 
-                    mValue1 = "≈￥" + it.first.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).currencyToDisplayRMBStr()
-                    mValue2 = "≈" + it.first.totalPrice.amount.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString() + " " + it.first.totalPrice.assetCode
+                    mValue1 = "≈￥" + it.first.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).setSelfScale(2)
+                    mValue2 = "≈" + it.first.totalPrice.amount.toBigDecimal().setSelfScale(8) + " " + it.first.totalPrice.assetCode
 
                     binding.totalPrice = mValue1
                     binding.totalPrice2 = mValue2
@@ -171,8 +169,8 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
 
                                 if (tempCode == it.assetValue.assetCode) {
 
-                                    res.value = it.assetValue.amount.toBigDecimal().currencyToDisplayStr8()
-                                    res.value2 = "≈￥" + it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).toPlainString().toBigDecimal().currencyToDisplayRMBStr()
+                                    res.value = it.assetValue.amount.toBigDecimal().setSelfScale(8)
+                                    res.value2 = "≈￥" + it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).toPlainString().toBigDecimal().setSelfScale(2)
                                     res.value3 = it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal())
                                 }
                                 if (resultAsset.contains(res)) {

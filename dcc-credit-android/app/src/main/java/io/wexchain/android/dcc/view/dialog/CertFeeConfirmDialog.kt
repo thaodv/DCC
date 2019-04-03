@@ -8,7 +8,7 @@ import android.support.v4.app.DialogFragment
 import android.view.*
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.dcc.vm.CertFeeConfirmVm
-import io.wexchain.android.dcc.vm.currencyToDisplayStr
+import io.wexchain.android.dcc.vm.setSelfScale
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.DialogCertFeeBinding
 import io.wexchain.digitalwallet.Currencies
@@ -27,7 +27,7 @@ class CertFeeConfirmDialog : DialogFragment() {
                 onConfirm?.invoke()
                 dismiss()
             })
-            val feeStr = "${Currencies.DCC.toDecimalAmount(BigInteger.valueOf(this@CertFeeConfirmDialog.fee)).currencyToDisplayStr()} DCC"
+            val feeStr = "${Currencies.DCC.toDecimalAmount(BigInteger.valueOf(this@CertFeeConfirmDialog.fee)).setSelfScale(4)} DCC"
             fee.set(feeStr)
             loadHolding()
         }

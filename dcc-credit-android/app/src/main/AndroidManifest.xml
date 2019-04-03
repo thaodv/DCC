@@ -315,13 +315,13 @@
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketSettingsActivity"
-            android:label="托管钱包设置">
+            android:label="@string/trust_pocket_setting_title">
         </activity>
         <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenTipActivity">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenStep1Activity"
-            android:label="开通托管钱包">
+            android:label="@string/trust_pocket_open_title">
         </activity>
         <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenStep2Activity">
         </activity>
@@ -329,7 +329,7 @@
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneBindActivity"
-            android:label="修改绑定手机">
+            android:label="@string/trust_pocket_modify_bind_phone">
         </activity>
         <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustOpenSuccessActivity">
         </activity>
@@ -337,43 +337,43 @@
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPwdActivity"
-            android:label="修改支付密码">
+            android:label="@string/trust_pocket_modify_pay_passwd">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPwdRestActivity"
-            android:label="设置新密码">
+            android:label="@string/trust_pocket_set_new_passwd">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.SearchAreaActivity"
-            android:label="选择国家/地区">
+            android:label="@string/trust_pocket_search_area_title">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustRechargeActivity"
-            android:label="充币">
+            android:label="@string/trust_pocket_recharge">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustChooseCoinActivity"
-            android:label="选择币种">
+            android:label="@string/trust_pocket_choose_coin">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustWithdrawActivity"
-            android:label="提币">
+            android:label="@string/trust_pocket_withdraw">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustRechargeRecordsActivity"
-            android:label="充值记录">
+            android:label="@string/trust_pocket_recharge_records">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustTradeDetailActivity"
-            android:label="交易明细">
+            android:label="@string/trust_pocket_trade_detail">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustTransferCheckActivity"
-            android:label="转账">
+            android:label="@string/transfer">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustTransferActivity"
-            android:label="转账">
+            android:label="@string/transfer">
         </activity>
         <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustRechargeDetailActivity">
         </activity>
@@ -389,11 +389,11 @@
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.trustpocket.TrustGetmoneyActivity"
-            android:label="收币">
+            android:label="@string/trust_pocket_get">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.digestpocket.ChooseDigestActivity"
-            android:label="选择币种">
+            android:label="@string/trust_pocket_choose_coin">
         </activity>
         <activity
             android:name="io.wexchain.android.dcc.modules.paymentcode.RepaymentQuickReceiptActivity"

@@ -42,6 +42,7 @@ import io.wexchain.android.dcc.view.dialog.GetRedpacketDialog
 import io.wexchain.android.dcc.view.dialog.paymentcode.PaymentCodePayDialog
 import io.wexchain.android.dcc.view.dialog.trustpocket.TrustWithdrawCheckPasswdDialog
 import io.wexchain.android.dcc.view.passwordview.PassWordLayout
+import io.wexchain.android.dcc.vm.setSelfScale
 import io.wexchain.android.localprotect.FingerPrintHelper
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.domain.Result
@@ -228,7 +229,7 @@ class LoadingActivity : BaseCompatActivity() {
                 }
                 .doMain()
                 .subscribe({
-                    val res = it.availableAmount.assetValue.amount.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString()
+                    val res = it.availableAmount.assetValue.amount.toBigDecimal().setSelfScale(8)
 
                     val paymentCodePayDialog = PaymentCodePayDialog(this)
 

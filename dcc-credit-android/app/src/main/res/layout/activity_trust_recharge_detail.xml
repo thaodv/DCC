@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="类型"
+                android:text="@string/type"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
 
@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="充币"
+                android:text="@string/trust_pocket_recharge"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
 
@@ -60,7 +60,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="状态"
+                android:text="@string/status"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
 
@@ -90,7 +90,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="订单号"
+                android:text="@string/order_number"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
 
@@ -121,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="地址"
+                android:text="@string/address1"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
 
@@ -190,7 +190,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="时间"
+                android:text="@string/time"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
 

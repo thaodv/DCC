@@ -40,6 +40,7 @@ import io.wexchain.android.dcc.view.dialog.GetRedpacketDialog
 import io.wexchain.android.dcc.view.dialog.trustpocket.TrustWithdrawCheckPasswdDialog
 import io.wexchain.android.dcc.view.dialog.trustpocket.TrustWithdrawDialog
 import io.wexchain.android.dcc.view.passwordview.PassWordLayout
+import io.wexchain.android.dcc.vm.setSelfScale
 import io.wexchain.android.localprotect.FingerPrintHelper
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustWithdrawBinding
@@ -272,7 +273,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
 
                         navigateTo(TrustWithdrawSuccessActivity::class.java) {
                             putExtra("address", it.receiverAddress)
-                            putExtra("account", it.amount.decimalValue.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString() + " " + it.assetCode)
+                            putExtra("account", it.amount.decimalValue.toBigDecimal().setSelfScale(8) + " " + it.assetCode)
                         }
                         finish()
                         trustWithdrawDialog.dismiss()
@@ -293,11 +294,11 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
                 }
                 .doMain()
                 .subscribe({
-                    mFee = it.decimalValue.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString()
+                    mFee = it.decimalValue.toBigDecimal().setSelfScale(8)
 
                     binding.tvFee.text = "手续费$mFee $mCode"
 
-                    mToAccount = amount.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString()
+                    mToAccount = amount.toBigDecimal().setSelfScale(8)
 
                     binding.tvToAccount.text = mToAccount
 
@@ -324,7 +325,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
 
                     binding.etAccount.setText(result)
 
-                    mFee = it.decimalValue.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString()
+                    mFee = it.decimalValue.toBigDecimal().setSelfScale(8)
 
                     binding.tvFee.text = "手续费$mFee $mCode"
 
@@ -347,7 +348,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
                 .doMain()
                 .withLoading()
                 .subscribe({
-                    mTotalAccount = it.availableAmount.assetValue.amount.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString()
+                    mTotalAccount = it.availableAmount.assetValue.amount.toBigDecimal().setSelfScale(8)
                     binding.tvAccount.text = mTotalAccount + " " + it.availableAmount.assetValue.assetCode
                 }, {
                     toast(it.message.toString())

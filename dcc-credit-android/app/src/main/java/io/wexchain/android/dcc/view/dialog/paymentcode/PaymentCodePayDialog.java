@@ -88,6 +88,20 @@ public class PaymentCodePayDialog extends Dialog implements View.OnClickListener
         }
     }
     
+    public void refrestStatus(String account, String balance) {
+        BigDecimal accountValue = new BigDecimal(account).setScale(8, RoundingMode.DOWN);
+        BigDecimal balanceValue = new BigDecimal(balance).setScale(8, RoundingMode.DOWN);
+        if (accountValue.compareTo(balanceValue) < 1) {
+            mTvTrustRecharge.setVisibility(View.GONE);
+            mBtSure.setText(getContext().getResources().getString(R.string.payment_pay_dialog_pay));
+            isOk = true;
+        } else {
+            mTvTrustRecharge.setVisibility(View.VISIBLE);
+            mBtSure.setText(getContext().getResources().getString(R.string.payment_pay_dialog_close));
+            isOk = false;
+        }
+    }
+    
     public boolean getIsOk() {
         return isOk;
     }
@@ -101,7 +115,6 @@ public class PaymentCodePayDialog extends Dialog implements View.OnClickListener
                 break;
             case R.id.tv_trust_recharge:
                 mOnClickListener.trustRecharge();
-                dismiss();
                 break;
             case R.id.bt_sure:
                 mOnClickListener.sure();

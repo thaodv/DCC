@@ -22,7 +22,7 @@ import io.wexchain.android.dcc.modules.trans.activity.CreateTransactionActivity
 import io.wexchain.android.dcc.tools.MultiChainHelper
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.onSaveImageToGallery
-import io.wexchain.android.dcc.vm.currencyToDisplayStr
+import io.wexchain.android.dcc.vm.setSelfScale
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustRechargeBinding
 import io.wexchain.dccchainservice.DccChainServiceException
@@ -83,6 +83,7 @@ class TrustRechargeActivity : BindActivity<ActivityTrustRechargeBinding>() {
                 putExtra(Extras.EXTRA_DIGITAL_CURRENCY, getDigitalCurrencyByCode(mCode))
                 putExtra("address", binding.tvAddress.text.toString())
             })
+            finish()
         }
     }
 
@@ -117,7 +118,7 @@ class TrustRechargeActivity : BindActivity<ActivityTrustRechargeBinding>() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         if (it.toBigDecimal().subtract("0.001".toBigDecimal()) >= BigDecimal.ZERO) {
-                            binding.tvBlance.text = "余额" + digitalCurrency.toDecimalAmount(it).currencyToDisplayStr() + mCode
+                            binding.tvBlance.text = getString(R.string.payment_balance) + digitalCurrency.toDecimalAmount(it).setSelfScale(4) + mCode
                         } else {
                             binding.tvRecharge.visibility = View.GONE
                             binding.tvBlance.visibility = View.GONE

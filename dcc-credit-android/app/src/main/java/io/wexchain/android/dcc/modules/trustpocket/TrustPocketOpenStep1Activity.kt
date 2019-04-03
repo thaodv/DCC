@@ -74,7 +74,7 @@ class TrustPocketOpenStep1Activity : BindActivity<ActivityTrustPocketOpenStep1Bi
             viewModel.code.set("")
             val phoneNum = binding.etPhone.text.toString()
             if ("" == phoneNum) {
-                toast("请输入手机号码")
+                toast(getString(R.string.trust_pocket_open_hint1))
             } else {
                 requestReSendSmsCode("+$mDialCode$phoneNum")
             }
@@ -85,7 +85,7 @@ class TrustPocketOpenStep1Activity : BindActivity<ActivityTrustPocketOpenStep1Bi
             val checkCodeValue = binding.etCheckCode.text.toString()
 
             if ("" == checkCodeValue) {
-                toast("请输入验证码")
+                toast(getString(R.string.trust_pocket_open_hint2))
             } else {
                 checkCode("+" + mDialCode + binding.etPhone.text.toString(), checkCodeValue)
             }
@@ -125,7 +125,7 @@ class TrustPocketOpenStep1Activity : BindActivity<ActivityTrustPocketOpenStep1Bi
                 .withLoading()
                 .subscribe({
                     if (it.systemCode == Result.SUCCESS && it.businessCode == Result.SUCCESS) {
-                        toast("已发验证码")
+                        toast(getString(R.string.hasSend))
                         smsUpTimeStamp = SystemClock.uptimeMillis()
                         binding.vm?.upTimeStamp?.value = smsUpTimeStamp
                     } else {

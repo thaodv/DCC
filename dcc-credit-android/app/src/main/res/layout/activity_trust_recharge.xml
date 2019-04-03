@@ -37,8 +37,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:paddingBottom="30dp"
                 android:background="@color/white"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
@@ -53,10 +54,9 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="14dp"
-                        android:text="币种"
+                        android:text="@string/coin_type"
                         android:textColor="#4A4A4A"
-                        android:textSize="16sp"
-                        />
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:id="@+id/tv_name"
@@ -69,8 +69,7 @@
                         android:text="@{name}"
                         android:textColor="#4A4A4A"
                         android:textSize="16sp"
-                        tools:text="DCC"
-                        />
+                        tools:text="DCC"/>
 
                     <ImageView
                         errorRes="@{@drawable/ethereum}"
@@ -80,8 +79,7 @@
                         android:layout_centerVertical="true"
                         android:layout_toLeftOf="@+id/tv_name"
                         android:scaleType="centerCrop"
-                        tools:src="@drawable/ethereum"
-                        />
+                        tools:src="@drawable/ethereum"/>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -116,7 +114,7 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="10dp"
-                    android:text="保存图片"/>
+                    android:text="@string/save_image"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -148,7 +146,7 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="10dp"
-                    android:text="复制地址"/>
+                    android:text="@string/copy_address"/>
 
                 <LinearLayout
                     android:id="@+id/ll_go_digest"
@@ -163,8 +161,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/trust_recharge_from_digest"
                         android:textColor="#6144CC"
-                        android:textSize="14sp"
-                        />
+                        android:textSize="14sp"/>
 
                     <TextView
                         android:id="@+id/tv_blance"
@@ -172,8 +169,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="#78000000"
                         android:textSize="14sp"
-                        tools:text="余额666.66ETH"
-                        />
+                        tools:text="余额666.66ETH"/>
 
                 </LinearLayout>
 
@@ -182,7 +178,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginLeft="14dp"
-                    android:text="备注："
+                    android:text="@string/mark2"
                     android:textColor="#4A4A4A"
                     android:textSize="14sp"/>
 
@@ -207,8 +203,7 @@
                     android:layout_marginTop="14dp"
                     android:textColor="#4A4A4A"
                     android:textSize="14sp"
-                    tools:text="最小充值金额："/>
-
+                    tools:text="最小充值金额：\ndfdfd\nfdfdfd\nfdfdf\nfdfd\nfdfdfdf\nfdfdfdf"/>
 
             </LinearLayout>
 

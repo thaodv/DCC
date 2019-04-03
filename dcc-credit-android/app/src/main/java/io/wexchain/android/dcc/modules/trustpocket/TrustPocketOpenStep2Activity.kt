@@ -38,9 +38,9 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
         initToolbar()
 
         if ("open" == mUse) {
-            title = "开通托管钱包"
+            title = getString(R.string.trust_pocket_open_title)
         } else {
-            title = "设置新密码"
+            title = getString(R.string.trust_pocket_pwd_set_new)
         }
 
         val tvTip1 = findViewById<TextView>(R.id.tv_tip1)
@@ -49,11 +49,11 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
         val passwd2 = findViewById<PassWordLayout>(R.id.password2)
 
         if (passwd2.visibility == View.VISIBLE) {
-            tvTip1.text = "请再次确认支付密码"
-            tvTip2.text = "请再次输入密码"
+            tvTip1.text = getString(R.string.trust_pocket_open_pwd_tip1)
+            tvTip2.text = getString(R.string.trust_pocket_open_pwd_tip2)
         } else {
-            tvTip1.text = "请设置交易密码"
-            tvTip2.text = "密码不能为连续、重复数字"
+            tvTip1.text = getString(R.string.trust_pocket_open_pwd_tip3)
+            tvTip2.text = getString(R.string.trust_pocket_open_pwd_tip4)
         }
 
         passwd1.setPwdChangeListener(object : PassWordLayout.pwdChangeListener {
@@ -68,15 +68,15 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
             override fun onFinished(pwd: String) {
                 Log.e("onFinished:", pwd)
                 if (pwd.checkWeak()) {
-                    toast("密码不能是连续数字！密码不能是重复数字！")
+                    toast(getString(R.string.trust_pocket_open_pwd_tip5))
                 } else if (pwd.length == 6) {
                     pwdFirst = pwd
                     val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.hideSoftInputFromWindow(passwd1.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
                     passwd1.visibility = View.GONE
                     passwd2.visibility = View.VISIBLE
-                    tvTip1.text = "请再次确认支付密码"
-                    tvTip2.text = "请再次输入密码"
+                    tvTip1.text = getString(R.string.trust_pocket_open_pwd_tip1)
+                    tvTip2.text = getString(R.string.trust_pocket_open_pwd_tip2)
                 }
             }
         })
@@ -100,13 +100,13 @@ class TrustPocketOpenStep2Activity : BaseCompatActivity() {
                         initialPaymentPassword(pwd, salt)
                     }
                 } else {
-                    toast("两次密码不一致")
+                    toast(getString(R.string.trust_pocket_open_pwd_tip6))
                     val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.hideSoftInputFromWindow(passwd2.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
                     passwd1.visibility = View.VISIBLE
                     passwd2.visibility = View.GONE
-                    tvTip1.text = "请设置交易密码"
-                    tvTip2.text = "密码不能为连续、重复数字"
+                    tvTip1.text = getString(R.string.trust_pocket_open_pwd_tip3)
+                    tvTip2.text = getString(R.string.trust_pocket_open_pwd_tip4)
                     passwd1.removeAllPwd()
                     passwd2.removeAllPwd()
                 }

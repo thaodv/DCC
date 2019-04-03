@@ -9,12 +9,12 @@ import com.megvii.livenesslib.LivenessActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.base.BindFragment
+import io.wexchain.android.common.constant.RequestCodes
 import io.wexchain.android.common.constant.ResultCodes
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.common.constant.RequestCodes
 import io.wexchain.android.dcc.tools.NoDoubleClickListener
-import io.wexchain.android.dcc.vm.currencyToDisplayStr
+import io.wexchain.android.dcc.vm.setSelfScale
 import io.wexchain.android.idverify.domain.LivenessResult
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentLivenessDetectionBinding
@@ -54,7 +54,7 @@ class LivenessDetectionFragment : BindFragment<FragmentLivenessDetectionBinding>
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
                     val fee = it.toLong()
-                    binding.certFee = getString(R.string.cost_of_verification) + Currencies.DCC.toDecimalAmount(BigInteger.valueOf(fee)).currencyToDisplayStr() + "DCC"
+                    binding.certFee = getString(R.string.cost_of_verification) + Currencies.DCC.toDecimalAmount(BigInteger.valueOf(fee)).setSelfScale(4) + "DCC"
                 }
     }
 

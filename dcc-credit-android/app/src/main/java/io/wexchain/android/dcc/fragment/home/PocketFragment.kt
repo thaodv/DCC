@@ -25,7 +25,7 @@ import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapters.DigitalAssetsAdapter
 import io.wexchain.android.dcc.vm.DigitalAssetsVm
 import io.wexchain.android.dcc.vm.ViewModelHelper
-import io.wexchain.android.dcc.vm.currencyToDisplayRMBStr
+import io.wexchain.android.dcc.vm.setSelfScale
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentPocketBinding
 import io.wexchain.digitalwallet.Chain
@@ -127,7 +127,7 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                 .subscribe({
                     val trustAmount = it.second.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal())
 
-                    mTrustValue = "≈￥" + trustAmount.currencyToDisplayRMBStr()
+                    mTrustValue = "≈￥" + trustAmount.setSelfScale(2)
                     binding.tvTrustAmount.text = mTrustValue
 
                     val bsxAccount = if (null == it.third.corpus) {
@@ -148,8 +148,8 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                         res = digestAccountRnb.toBigDecimal()
                     }
 
-                    mValue1 = CommonUtils.showCurrencySymbol() + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).currencyToDisplayRMBStr()
-                    mValue2 = "≈" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setScale(8, RoundingMode.DOWN).toPlainString() + " USDT"
+                    mValue1 = CommonUtils.showCurrencySymbol() + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).setSelfScale(2)
+                    mValue2 = "≈" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setSelfScale(8) + " USDT"
 
                     binding.assetsAmountValue.text = mValue1
                     binding.tvTotalUsdt.text = mValue2
@@ -183,8 +183,8 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                         res = digestAccountRnb.toBigDecimal()
                     }
 
-                    mValue1 = CommonUtils.showCurrencySymbol() + res.currencyToDisplayRMBStr()
-                    mValue2 = "≈" + res.divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setScale(8, RoundingMode.DOWN).toPlainString() + " USDT"
+                    mValue1 = CommonUtils.showCurrencySymbol() + res.setSelfScale(2)
+                    mValue2 = "≈" + res.divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setSelfScale(8) + " USDT"
 
                 })
 

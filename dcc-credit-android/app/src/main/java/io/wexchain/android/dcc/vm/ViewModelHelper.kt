@@ -200,7 +200,7 @@ object ViewModelHelper {
     @JvmStatic
     fun Context.smsTimeText2(resend: Long?): String? {
         if (canResendSms(resend)) {
-            return "发送"
+            return getString(R.string.send)
         } else {
             return "$resend s"
         }
@@ -224,14 +224,14 @@ object ViewModelHelper {
     fun getDccStr(holding: BigInteger?): String? {
         return holding?.let {
             val holdingStr = Currencies.DCC.toDecimalAmount(it)
-                    .currencyToDisplayStr()
+                    .setSelfScale(4)
             "$holdingStr DCC"
         } ?: ""
     }
 
     @JvmStatic
     fun getBalanceStr(dc: DigitalCurrency?, holding: BigInteger?): String {
-        return holding?.let { dc!!.toDecimalAmount(it).currencyToDisplayStr() }
+        return holding?.let { dc!!.toDecimalAmount(it).setSelfScale(4) }
                 ?: "--"
     }
 
@@ -251,7 +251,7 @@ object ViewModelHelper {
             val price = quote.price!!.toBigDecimalSafe()
             val value = dc.toDecimalAmount(holding) * price
             if (value.signum() != 0) {
-                return "~${quote.currencySymbol}${value.currencyToDisplayStr()}"
+                return "~${quote.currencySymbol}${value.setSelfScale(4)}"
             }
         }
         return "--"
@@ -263,7 +263,7 @@ object ViewModelHelper {
             val price = quote.price!!.toBigDecimalSafe()
             val value = dc.toDecimalAmount(holding) * price
             if (value.signum() != 0) {
-                return "~¥${value.currencyToDisplayStr()}"
+                return "~¥${value.setSelfScale(4)}"
             }
         }
         return "--"
@@ -272,13 +272,13 @@ object ViewModelHelper {
     @JvmStatic
     fun formatCurrencyValue(value: String?): String {
         value ?: return ""
-        return value.toBigDecimalSafe().currencyToDisplayStr()
+        return value.toBigDecimalSafe().setSelfScale(4)
     }
 
     @JvmStatic
     fun formatCurrencyValue(value: BigDecimal?): String {
         value ?: return ""
-        return value.currencyToDisplayStr()
+        return value.setSelfScale(4)
     }
 
     @JvmStatic
@@ -503,7 +503,7 @@ object ViewModelHelper {
         redeemToken ?: return ""
         val amount = redeemToken.amount
         amount ?: return ""
-        return Currencies.DCC.toDecimalAmount(amount).currencyToDisplayStr() + Currencies.DCC.symbol
+        return Currencies.DCC.toDecimalAmount(amount).setSelfScale(4) + Currencies.DCC.symbol
     }
 
     @JvmStatic
@@ -516,7 +516,7 @@ object ViewModelHelper {
     fun ecoBonusRewardAmountStr(ecoBonus: EcoBonus?): CharSequence? {
         val amount = ecoBonus?.amount
         amount ?: return null
-        return "${Currencies.DCC.toDecimalAmount(amount).currencyToDisplayStr()}DCC"
+        return "${Currencies.DCC.toDecimalAmount(amount).setSelfScale(4)}DCC"
     }
 
     @JvmStatic
@@ -547,7 +547,7 @@ object ViewModelHelper {
     @JvmStatic
     fun mineRewardAmountStr(mineCandy: MineCandy?): CharSequence? {
         mineCandy ?: return null
-        return "+${Currencies.DCC.toDecimalAmount(mineCandy.amount).currencyToDisplayStr()}${Currencies.DCC.symbol}"
+        return "+${Currencies.DCC.toDecimalAmount(mineCandy.amount).setSelfScale(4)}${Currencies.DCC.symbol}"
     }
 
     @JvmStatic
@@ -755,13 +755,13 @@ object ViewModelHelper {
     @JvmStatic
     fun showTradeDetailName(kind: String): String {
         if ("DEPOSIT" == kind) {
-            return "充币"
+            return getString(R.string.trust_pocket_recharge)
         } else if ("WITHDRAW" == kind) {
-            return "提币"
+            return getString(R.string.trust_pocket_withdraw)
         } else if ("TRANSFER-OUT" == kind) {
-            return "付款"
+            return getString(R.string.trust_pay)
         } else if ("TRANSFER-IN" == kind) {
-            return "收款"
+            return getString(R.string.trust_get)
         } else {
             return ""
         }
@@ -793,7 +793,7 @@ object ViewModelHelper {
 
     @JvmStatic
     fun showGoodsAccountCode(account: String, code: String): String {
-        return account + " " + code
+        return "$account $code"
     }
 
     @JvmStatic
@@ -812,17 +812,10 @@ object ViewModelHelper {
 
 }
 
-fun BigDecimal.currencyToDisplayStr(): String {
-    return this.setScale(4, RoundingMode.DOWN).toPlainString()
+/**
+ * @param num 保留位数
+ * @param mode 取舍模式（默认舍位）
+ */
+fun BigDecimal.setSelfScale(num: Int, mode: RoundingMode = RoundingMode.DOWN): String {
+    return this.setScale(num, mode).toPlainString()
 }
-
-fun BigDecimal.currencyToDisplayStr8(): String {
-    return this.setScale(8, RoundingMode.DOWN).toPlainString()
-}
-
-fun BigDecimal.currencyToDisplayRMBStr(): String {
-    return this.setScale(2, RoundingMode.DOWN).toPlainString()
-}
-
-
-

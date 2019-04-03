@@ -18,8 +18,8 @@ import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.SimpleDataBindAdapter
 import io.wexchain.android.dcc.vm.InputBankCardInfoVm
-import io.wexchain.android.dcc.vm.currencyToDisplayStr
 import io.wexchain.android.dcc.vm.domain.BankCardInfo
+import io.wexchain.android.dcc.vm.setSelfScale
 import io.wexchain.dcc.BR
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentInputBankCardBinding
@@ -89,7 +89,7 @@ class InputBankCardInfoFragment : BindFragment<FragmentInputBankCardBinding>(), 
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { it ->
                     val fee = it.toLong()
-                    viewModel.certFee.set("${getString(R.string.cost_of_verification)}${Currencies.DCC.toDecimalAmount(BigInteger.valueOf(fee)).currencyToDisplayStr()} DCC")
+                    viewModel.certFee.set("${getString(R.string.cost_of_verification)}${Currencies.DCC.toDecimalAmount(BigInteger.valueOf(fee)).setSelfScale(4)} DCC")
                 }
     }
 

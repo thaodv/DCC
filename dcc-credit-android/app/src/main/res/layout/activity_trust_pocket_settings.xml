@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="14dp"
-                    android:text="手机号"
+                    android:text="@string/phone_num"
                     android:textColor="#4A4A4A"
                     android:textSize="16sp"/>
 
@@ -71,7 +71,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toLeftOf="@+id/iv_phone"
-                    android:text="换绑"
+                    android:text="@string/change_bind"
                     android:textColor="#4A4A4A"
                     android:textSize="16sp"/>
 
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="14dp"
-                    android:text="支付密码"
+                    android:text="@string/pay_passwd"
                     android:textColor="#4A4A4A"
                     android:textSize="16sp"/>
 
@@ -105,7 +105,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/tv_pay_passwd"
-                    android:text="保障交易安全"
+                    android:text="@string/trust_pocket_setting_tip1"
                     android:textColor="#9B9B9B"
                     android:textSize="14sp"/>
 
@@ -124,7 +124,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toLeftOf="@+id/iv_pay_passwd"
-                    android:text="修改"
+                    android:text="@string/modify"
                     android:textColor="#4A4A4A"
                     android:textSize="16sp"/>
 
@@ -148,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="14dp"
-                    android:text="实名认证"
+                    android:text="@string/id_verification"
                     android:textColor="#4A4A4A"
                     android:textSize="16sp"/>
 
@@ -158,7 +158,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/tv_real"
-                    android:text="便于账号找回"
+                    android:text="@string/trust_pocket_setting_tip2"
                     android:textColor="#9B9B9B"
                     android:textSize="14sp"/>
 
@@ -177,7 +177,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toLeftOf="@+id/iv_real"
-                    android:text="去认证"
+                    android:text="@string/verify"
                     android:textColor="#4A4A4A"
                     android:textSize="16sp"/>
 
@@ -199,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="14dp"
-                android:text="指纹支付"
+                android:text="@string/finger_pay"
                 android:textColor="#4A4A4A"
                 android:textSize="16sp"/>
 
@@ -209,7 +209,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:layout_toRightOf="@+id/tv_pay"
-                android:text="替代支付密码"
+                android:text="@string/trust_pocket_setting_tip3"
                 android:textColor="#9B9B9B"
                 android:textSize="14sp"/>
 
@@ -219,8 +219,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="14dp"
-                />
+                android:layout_marginRight="14dp"/>
 
         </RelativeLayout>
 

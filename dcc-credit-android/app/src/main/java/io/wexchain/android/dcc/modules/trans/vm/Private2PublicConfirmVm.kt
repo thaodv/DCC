@@ -18,7 +18,7 @@ import io.wexchain.android.dcc.repo.db.TransRecord
 import io.wexchain.android.dcc.tools.RetryWithDelay
 import io.wexchain.android.dcc.tools.SharedPreferenceUtil
 import io.wexchain.android.dcc.tools.TransHelper
-import io.wexchain.android.dcc.vm.currencyToDisplayStr
+import io.wexchain.android.dcc.vm.setSelfScale
 import io.wexchain.android.localprotect.LocalProtectType
 import io.wexchain.android.localprotect.UseProtect
 import io.wexchain.digitalwallet.Chain
@@ -78,7 +78,7 @@ class Private2PublicConfirmVm(
                         val amount = dc.toDecimalAmount(t1)
                         val ethAmount = ethereum.toDecimalAmount(t2)
                         checkFunds(amount, ethAmount)
-                        "${amount.currencyToDisplayStr()}${dc.symbol}\n${ethAmount.currencyToDisplayStr()}${ethereum.symbol}"
+                        "${amount.setSelfScale(4)}${dc.symbol}\n${ethAmount.setSelfScale(4)}${ethereum.symbol}"
                     }
             )
         } else {
@@ -91,7 +91,7 @@ class Private2PublicConfirmVm(
                         } else {
                             checkErc20JuzixFunds(amount)
                         }
-                        "${amount.currencyToDisplayStr()}${dc.symbol}"
+                        "${amount.setSelfScale(4)}${dc.symbol}"
                     }
         }.observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

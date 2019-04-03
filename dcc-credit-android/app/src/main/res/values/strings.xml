@@ -221,6 +221,7 @@
     <string name="gender">性别</string>
     <string name="ethnicity">民族</string>
     <string name="address">住址</string>
+    <string name="address1">地址</string>
     <string name="issuer">签发机构</string>
     <string name="expires_on">有效期限</string>
     <string name="next">下一步</string>
@@ -541,5 +542,65 @@
     <string name="payment_unopen_text4">可设置到期时间</string>
     <string name="payment_unopen_text5">立即使用</string>
 
+    <string name="trust_pocket">托管钱包</string>
+    <string name="trust_pocket_search_area_title">选择国家/地区</string>
+    <string name="trust_pocket_open_title">开通托管钱包</string>
+    <string name="trust_pocket_open_hint1">请输入手机号</string>
+    <string name="trust_pocket_open_hint2">请输入验证码</string>
+    <string name="trust_pocket_open_tip">如您已开启过托管钱包，直接输入原手机号即可</string>
+    <string name="trust_pocket_open_tip1">您还未开通托管钱包</string>
+    <string name="trust_pocket_open_tip2">您的Token金融管家</string>
+    <string name="trust_pocket_open_tip3">场景丰富</string>
+    <string name="trust_pocket_open_tip4">灵活存取</string>
+    <string name="trust_pocket_open_tip5">获取收益</string>
+    <string name="trust_pocket_open_tip6">账户保障\n放心使用</string>
+    <string name="trust_pocket_open_tip7">服务多样\n方便好用</string>
+    <string name="trust_pocket_open_tip8">简洁易用\n容易上手</string>
+    <string name="trust_pocket_open_pwd_tip1">请再次确认支付密码</string>
+    <string name="trust_pocket_open_pwd_tip2">请再次输入密码</string>
+    <string name="trust_pocket_open_pwd_tip3">请设置交易密码</string>
+    <string name="trust_pocket_open_pwd_tip4">密码不能为连续、重复数字</string>
+    <string name="trust_pocket_open_pwd_tip5">密码不能是连续数字！密码不能是重复数字！</string>
+    <string name="trust_pocket_open_pwd_tip6">两次密码不一致</string>
+    <string name="check_code">验证码</string>
+    <string name="send">发送</string>
+    <string name="hasSend">已发验证码</string>
+    <string name="quick_open">立即开通</string>
+    <string name="consume">消费</string>
+    <string name="invest">投资</string>
+    <string name="goodness">优势</string>
+    <string name="safe">安全</string>
+    <string name="quick">便捷</string>
+    <string name="simple">简单</string>
+    <string name="change_bind">换绑</string>
+    <string name="pay_passwd">支付密码</string>
+    <string name="modify">修改</string>
+    <string name="finger_pay">指纹支付</string>
+    <string name="coin_type">币种</string>
+    <string name="save_image">保存图片</string>
+    <string name="copy_address">复制地址</string>
+    <string name="mark1">备注</string>
+    <string name="mark2">备注：</string>
+    <string name="trust_pocket_recharge">充币</string>
+    <string name="trust_pocket_get">收币</string>
+    <string name="trust_pocket_withdraw">提币</string>
+    <string name="trust_pocket_choose_coin">选择币种</string>
+    <string name="trust_pocket_recharge_records">充值记录</string>
+    <string name="trust_pocket_trade_detail">交易明细</string>
+    <string name="trust_pocket_modify_bind_phone">修改绑定手机</string>
+    <string name="trust_pocket_modify_pay_passwd">修改支付密码</string>
+    <string name="trust_pocket_set_new_passwd">设置新密码</string>
+    <string name="trust_pocket_setting_title">托管钱包设置</string>
+
+    <string name="type">类型</string>
+    <string name="time">时间</string>
+    <string name="trust_pay">付款</string>
+    <string name="trust_get">收款</string>
+
+    <string name="trust_pocket_setting_tip1">保障交易安全</string>
+    <string name="trust_pocket_setting_tip2">便于账号找回</string>
+    <string name="trust_pocket_setting_tip3">替代支付密码</string>
+
+    <string name="trust_pocket_pwd_set_new">设置新密码</string>
 
 </resources>

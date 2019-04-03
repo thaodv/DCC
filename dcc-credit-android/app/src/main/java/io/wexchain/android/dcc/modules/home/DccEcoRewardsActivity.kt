@@ -17,7 +17,7 @@ import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.view.adapter.MultiTypeListAdapter
 import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback
 import io.wexchain.android.dcc.view.adapter.multitype.BindingTypeViewBinder
-import io.wexchain.android.dcc.vm.currencyToDisplayStr
+import io.wexchain.android.dcc.vm.setSelfScale
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityDccEcoRewardsBinding
 import io.wexchain.dcc.databinding.ItemEcoRewardRuleBinding
@@ -53,7 +53,7 @@ class DccEcoRewardsActivity : BindActivity<ActivityDccEcoRewardsBinding>() {
                 .subscribe({ income ->
                     binding.incomePtStr = (income.yesterdayAmount ?: BigDecimal.ZERO).toPlainString()
                     binding.incomeAmountStr = "${Currencies.DCC.toDecimalAmount(income.amount
-                            ?: BigInteger.ZERO).currencyToDisplayStr()}DCC"
+                            ?: BigInteger.ZERO).setSelfScale(4)}DCC"
                 }, {
                     val e = it.cause ?: it
                     if (e is DccChainServiceException && e.businessCode == BusinessCodes.INVALID_STATUS) {

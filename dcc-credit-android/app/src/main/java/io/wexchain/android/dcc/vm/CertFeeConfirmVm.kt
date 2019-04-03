@@ -20,7 +20,7 @@ class CertFeeConfirmVm : ViewModel() {
     fun loadHolding() {
         ScfOperations.loadHolding()
                 .subscribe { value ->
-                    holding.set("${value.currencyToDisplayStr()} DCC")
+                    holding.set("${value.setSelfScale(4)} DCC")
                 }
     }
 }

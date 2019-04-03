@@ -83,6 +83,7 @@
     <string name="gender">Gender</string>
     <string name="ethnicity">Ethnicity </string>
     <string name="address">Address</string>
+    <string name="address1">Address</string>
     <string name="issuer">Issuer</string>
     <string name="expires_on">Expires on</string>
     <string name="next">Next</string>

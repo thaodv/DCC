@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
-                android:text="您还未开通托管钱包"
+                android:text="@string/trust_pocket_open_tip1"
                 android:textColor="#FFFFFFFF"
                 android:textSize="14sp"/>
 
@@ -36,7 +36,7 @@
                 android:layout_width="200dp"
                 android:layout_height="40dp"
                 android:background="@drawable/bg_trust_pocket_open_tip"
-                android:text="立即开通"
+                android:text="@string/quick_open"
                 android:textColor="#7B40FF"
                 android:textSize="15sp"/>
         </LinearLayout>
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
-            android:text="您的Token金融管家"
+            android:text="@string/trust_pocket_open_tip2"
             android:textColor="@color/white"
             android:textSize="24sp"/>
 
@@ -72,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="消费"
+                    android:text="@string/consume"
                     android:textColor="#FFFFBB00"
                     android:textSize="16sp"/>
 
@@ -80,7 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:text="场景丰富"
+                    android:text="@string/trust_pocket_open_tip3"
                     android:textColor="@color/white"
                     android:textSize="14sp"/>
 
@@ -102,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="转账"
+                    android:text="@string/transfer"
                     android:textColor="#FFFFBB00"
                     android:textSize="16sp"/>
 
@@ -110,7 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:text="灵活存取"
+                    android:text="@string/trust_pocket_open_tip4"
                     android:textColor="@color/white"
                     android:textSize="14sp"/>
 
@@ -132,7 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="投资"
+                    android:text="@string/invest"
                     android:textColor="#FFFFBB00"
                     android:textSize="16sp"/>
 
@@ -140,7 +140,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:text="获取收益"
+                    android:text="@string/trust_pocket_open_tip5"
                     android:textColor="@color/white"
                     android:textSize="14sp"/>
 
@@ -166,7 +166,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="优势"
+                android:text="@string/goodness"
                 android:textColor="@color/white"
                 android:textSize="16sp"/>
 
@@ -196,7 +196,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="安全"
+                    android:text="@string/safe"
                     android:textColor="@color/white"
                     android:textSize="14sp"/>
 
@@ -204,7 +204,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="账户保障\n放心使用"
+                    android:text="@string/trust_pocket_open_tip6"
                     android:textColor="@color/white"
                     android:textSize="12sp"/>
 
@@ -220,7 +220,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="便捷"
+                    android:text="@string/quick"
                     android:textColor="@color/white"
                     android:textSize="14sp"/>
 
@@ -228,7 +228,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="服务多样\n方便好用"
+                    android:text="@string/trust_pocket_open_tip7"
                     android:textColor="@color/white"
                     android:textSize="12sp"/>
 
@@ -244,7 +244,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="简单"
+                    android:text="@string/simple"
                     android:textColor="@color/white"
                     android:textSize="14sp"/>
 
@@ -252,7 +252,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="简洁易用\n容易上手"
+                    android:text="@string/trust_pocket_open_tip8"
                     android:textColor="@color/white"
                     android:textSize="12sp"/>
 

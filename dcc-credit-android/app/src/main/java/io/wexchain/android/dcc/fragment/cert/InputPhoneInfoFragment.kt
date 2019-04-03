@@ -12,7 +12,7 @@ import io.wexchain.android.dcc.tools.NoDoubleClickListener
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.tools.isPhoneNumValid
 import io.wexchain.android.dcc.vm.InputPhoneInfoVm
-import io.wexchain.android.dcc.vm.currencyToDisplayStr
+import io.wexchain.android.dcc.vm.setSelfScale
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentSubmitCommunicationLogBinding
 import io.wexchain.dccchainservice.ChainGateway
@@ -56,7 +56,7 @@ class InputPhoneInfoFragment : BindFragment<FragmentSubmitCommunicationLogBindin
                 .checkonMain()
                 .subscribeBy {
                     val fee = it.toLong()
-                    vm.certFee.set("${getString(R.string.cost_of_verification)}${Currencies.DCC.toDecimalAmount(BigInteger.valueOf(fee)).currencyToDisplayStr()} DCC")
+                    vm.certFee.set("${getString(R.string.cost_of_verification)}${Currencies.DCC.toDecimalAmount(BigInteger.valueOf(fee)).setSelfScale(4)} DCC")
                 }
     }
 

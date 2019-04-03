@@ -15,7 +15,7 @@ import io.wexchain.android.dcc.view.ClearEditText
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
 import io.wexchain.android.dcc.view.adapter.itemDiffCallback
-import io.wexchain.android.dcc.vm.currencyToDisplayStr
+import io.wexchain.android.dcc.vm.setSelfScale
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ItemTrustCoinQueryBinding
 import io.wexchain.dccchainservice.domain.trustpocket.TrustAssetBean
@@ -134,7 +134,7 @@ class TrustChooseCoinActivity : BaseCompatActivity(), TextWatcher, ItemViewClick
                         putExtra("url", url)
                         putExtra("code", code)
                         putExtra("name", name)
-                        putExtra("value", it.availableAmount.assetValue.amount.toBigDecimal().currencyToDisplayStr())
+                        putExtra("value", it.availableAmount.assetValue.amount.toBigDecimal().setSelfScale(4))
                         putExtra("value2", "≈￥" + it.availableAmount.legalTenderPrice.amount.toBigDecimal().divide(App.get().mUsdtquote.toBigDecimal(), 4, RoundingMode.DOWN).toPlainString())
                     }
 

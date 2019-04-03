@@ -126,11 +126,11 @@ class DigitalCurrencyVm(application: Application) : AndroidViewModel(application
     private fun updateHoldingStr(coinDetail: CoinDetail?, amount: BigInteger?) {
         amount ?: return
         val c = dc.get()!!
-        holdingStr.set(c.toDecimalAmount(amount).currencyToDisplayStr())
+        holdingStr.set(c.toDecimalAmount(amount).setSelfScale(4))
         if (coinDetail?.price == null) {
             holdingValueStr.set("--")
         } else {
-            holdingValueStr.set("≈¥${(c.toDecimalAmount(amount) * coinDetail.price!!.toBigDecimalSafe()).currencyToDisplayStr()}")
+            holdingValueStr.set("≈¥${(c.toDecimalAmount(amount) * coinDetail.price!!.toBigDecimalSafe()).setSelfScale(4)}")
         }
     }
 

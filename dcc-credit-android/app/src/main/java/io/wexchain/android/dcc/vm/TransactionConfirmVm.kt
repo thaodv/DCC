@@ -8,9 +8,9 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.common.base.ActivityCollector
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.stackTrace
 import io.wexchain.android.dcc.App
-import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.dcc.domain.Passport
 import io.wexchain.android.dcc.modules.trans.activity.SelectTransStyleActivity
 import io.wexchain.android.dcc.repo.AssetsRepository
@@ -78,7 +78,7 @@ class TransactionConfirmVm(
                         val amount = dc.toDecimalAmount(t1)
                         val ethAmount = ethereum.toDecimalAmount(t2)
                         checkFunds(amount, ethAmount)
-                        "${amount.currencyToDisplayStr()}${dc.symbol}\n${ethAmount.currencyToDisplayStr()}${ethereum.symbol}"
+                        "${amount.setSelfScale(4)}${dc.symbol}\n${ethAmount.setSelfScale(4)}${ethereum.symbol}"
                     }
             )
         } else {
@@ -91,8 +91,8 @@ class TransactionConfirmVm(
                         } else {
                             checkErc20JuzixFunds(amount)
                         }
-                        currentBanance = amount.currencyToDisplayStr()
-                        "${amount.currencyToDisplayStr()}${dc.symbol}"
+                        currentBanance = amount.setSelfScale(4)
+                        "${amount.setSelfScale(4)}${dc.symbol}"
                     }
         }.observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
