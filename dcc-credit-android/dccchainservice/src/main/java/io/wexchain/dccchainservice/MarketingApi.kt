@@ -251,6 +251,24 @@ interface MarketingApi {
                                 @Field("salt") salt: String): Single<Result<ValidatePaymentPasswordBean>>
 
     /**
+     * 7.发送改密验证码
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/payPwd/sendSmsCode")
+    @FormUrlEncoded
+    fun sendSmsCode2(@Header(HEADER_TOKEN) token: String, @Field("mobile") mobile: String): Single<Result<String>>
+
+    /**
+     * 8.验证改密验证码
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/payPwd/validateSmsCode")
+    @FormUrlEncoded
+    fun validateSmsCode2(@Header(HEADER_TOKEN) token: String,
+                        @Field("mobile") mobile: String,
+                        @Field("code") code: String): Single<Result<CheckCodeBean>>
+
+    /**
      * 8.密码锁定规则
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")

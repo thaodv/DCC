@@ -9,14 +9,12 @@ import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
-import io.wexchain.android.dcc.modules.cert.SubmitIdActivity
 import io.wexchain.android.dcc.tools.CommonUtils
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.vm.TrustPocketOpenVm
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustPocketModifyPhoneBinding
-import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.ipfs.utils.doMain
 
@@ -40,7 +38,6 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
             title = "忘记密码"
         }
 
-
         smsUpTimeStamp = if (binding.etCheckCode.text.toString() == "") 0 else binding.etCheckCode.text.toString().toLong()
 
         binding.tvPhone.text = CommonUtils.phone(phoneNum)
@@ -52,7 +49,11 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
         binding.vm = viewModel
         binding.btGet.setOnClickListener {
             viewModel.code.set("")
-            requestReSendSmsCode(phoneNum)
+            if (mSource == "modify") {
+                requestReSendSmsCode(phoneNum)
+            } else {
+                createPayPwdSecurityContext(phoneNum)
+            }
         }
 
         binding.btNext.setOnClickListener {
@@ -62,7 +63,11 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
             if ("" == checkCodeValue) {
                 toast("请输入验证码")
             } else {
-                checkCode(phoneNum, checkCodeValue)
+                if (mSource == "modify") {
+                    checkCode(phoneNum, checkCodeValue)
+                } else {
+                    validateSmsCode2(phoneNum, checkCodeValue)
+                }
             }
         }
     }
@@ -76,12 +81,8 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
                 .withLoading()
                 .subscribe({
                     if (it.systemCode == Result.SUCCESS && it.businessCode == Result.SUCCESS) {
-                        if (mSource == "modify") {
-                            navigateTo(TrustPocketModifyPhoneBindActivity::class.java)
-                            finish()
-                        } else {
-                            createPayPwdSecurityContext()
-                        }
+                        navigateTo(TrustPocketModifyPhoneBindActivity::class.java)
+                        finish()
                     } else {
                         toast(it.message.toString())
                     }
@@ -90,27 +91,7 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
                 })
     }
 
-    private fun checkHasReal() {
-
-        App.get().chainGateway.getCertData(App.get().passportRepository.getCurrentPassport()!!.address, ChainGateway.BUSINESS_ID)
-                .check()
-                .doMain()
-                .withLoading()
-                .subscribe({
-                    // 未实名
-                    if ("" == it.content.digest1) {
-                        //navigateTo()
-                        createPayPwdSecurityContext()
-                    } else {
-                        navigateTo(SubmitIdActivity::class.java)
-                        finish()
-                    }
-                }, {
-
-                })
-    }
-
-    private fun createPayPwdSecurityContext() {
+    private fun createPayPwdSecurityContext(phoneNum: String) {
         GardenOperations
                 .refreshToken {
                     App.get().marketingApi.createPayPwdSecurityContext(it)
@@ -119,7 +100,45 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
                 .withLoading()
                 .subscribe({
                     if (it.systemCode == Result.SUCCESS && it.businessCode == Result.SUCCESS) {
+                        sendSmsCode2(phoneNum)
+                    } else {
+                        toast(it.message.toString())
+                    }
+                }, {
+                    toast(it.message.toString())
+                })
+    }
+
+    private fun validateSmsCode2(mobile: String, code: String) {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.validateSmsCode2(it, mobile, code)
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    if (it.systemCode == Result.SUCCESS && it.businessCode == Result.SUCCESS) {
                         prepareInputPwd()
+                    } else {
+                        toast(it.message.toString())
+                    }
+                }, {
+                    toast(it.message.toString())
+                })
+    }
+
+    private fun sendSmsCode2(phoneNum: String) {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.sendSmsCode2(it, phoneNum)
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    if (it.systemCode == Result.SUCCESS && it.businessCode == Result.SUCCESS) {
+                        toast("已发验证码")
+                        smsUpTimeStamp = SystemClock.uptimeMillis()
+                        binding.vm?.upTimeStamp?.value = smsUpTimeStamp
                     } else {
                         toast(it.message.toString())
                     }
