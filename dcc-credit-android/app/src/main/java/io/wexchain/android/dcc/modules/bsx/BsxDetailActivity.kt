@@ -66,51 +66,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
 
         if ("DCC" == assetCode) {
             bussiness = StringUtils.getBsxName(name)
-
-            /*if ("1" == name) {
-                bussiness = IpfsApi.BSX_DCC_01
-            } else if ("2" == name) {
-                bussiness = IpfsApi.BSX_DCC_02
-            } else if ("3" == name) {
-                bussiness = IpfsApi.BSX_DCC_03
-            } else if ("4" == name) {
-                bussiness = IpfsApi.BSX_DCC_04
-            } else if ("5" == name) {
-                bussiness = IpfsApi.BSX_DCC_05
-            } else if ("6" == name) {
-                bussiness = IpfsApi.BSX_DCC_06
-            } else if ("7" == name) {
-                bussiness = IpfsApi.BSX_DCC_07
-            } else if ("8" == name) {
-                bussiness = IpfsApi.BSX_DCC_08
-            } else if ("9" == name) {
-                bussiness = IpfsApi.BSX_DCC_09
-            } else if ("10" == name) {
-                bussiness = IpfsApi.BSX_DCC_10
-            } else if ("11" == name) {
-                bussiness = IpfsApi.BSX_DCC_11
-            } else if ("12" == name) {
-                bussiness = IpfsApi.BSX_DCC_12
-            } else if ("13" == name) {
-                bussiness = IpfsApi.BSX_DCC_13
-            } else if ("14" == name) {
-                bussiness = IpfsApi.BSX_DCC_14
-            } else if ("15" == name) {
-                bussiness = IpfsApi.BSX_DCC_15
-            } else if ("16" == name) {
-                bussiness = IpfsApi.BSX_DCC_16
-            } else if ("17" == name) {
-                bussiness = IpfsApi.BSX_DCC_17
-            } else if ("18" == name) {
-                bussiness = IpfsApi.BSX_DCC_18
-            } else if ("19" == name) {
-                bussiness = IpfsApi.BSX_DCC_19
-            } else if ("20" == name) {
-                bussiness = IpfsApi.BSX_DCC_20
-            }*/
-        } /*else if ("ETH" == assetCode) {
-            bussiness = ""
-        }*/
+        }
 
         binding.btBuy.setOnClickListener {
             if (canBuy) {
@@ -130,13 +86,11 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
 
     override fun onResume() {
         super.onResume()
-
         getBsxSaleInfo()
-
     }
 
     private fun getBsxSaleInfo() {
-        var ss: Single<EthJsonRpcResponse<String>>
+        val ss: Single<EthJsonRpcResponse<String>>
 
         if ("DCC" == assetCode) {
             ss = BsxOperations.getBsxSaleInfo(bussiness)
@@ -150,7 +104,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
                 }.doFinally {
                     hideLoadingDialog()
                 }.subscribe({
-                    var ss = BytesUtils.encodeString(it.result)//.replace(" ","")
+                    val ss = BytesUtils.encodeString(it.result)//.replace(" ","")
                     saleInfo = ss.toBean(SaleInfo::class.java)
                     binding.saleInfo = saleInfo
                     getBsxMinAmountPerHando()
@@ -161,7 +115,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
 
     private fun getBsxMinAmountPerHando() {
 
-        var ss: Single<EthJsonRpcResponse<String>>
+        val ss: Single<EthJsonRpcResponse<String>>
 
         if ("DCC" == assetCode) {
             ss = BsxOperations.getBsxMinAmountPerHand(bussiness)
@@ -194,7 +148,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
 
     private fun getBsxInvestCeilAmount() {
 
-        var ss: Single<EthJsonRpcResponse<String>>
+        val ss: Single<EthJsonRpcResponse<String>>
 
         if ("DCC" == assetCode) {
             ss = BsxOperations.getBsxInvestCeilAmount(bussiness)
@@ -224,7 +178,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
 
     private fun getbiInvestedTotalAmount() {
 
-        var ss: Single<EthJsonRpcResponse<String>>
+        val ss: Single<EthJsonRpcResponse<String>>
 
         if ("DCC" == assetCode) {
             ss = BsxOperations.investedBsxTotalAmount(bussiness)
@@ -262,7 +216,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
 
     private fun getBsxStatus() {
 
-        var ss: Single<EthJsonRpcResponse<String>>
+        val ss: Single<EthJsonRpcResponse<String>>
 
         if ("DCC" == assetCode) {
             ss = BsxOperations.getBsxStatus(bussiness)
@@ -276,7 +230,7 @@ class BsxDetailActivity : BindActivity<ActivityBsxDetailBinding>() {
                 }.doFinally {
                     hideLoadingDialog()
                 }.subscribe({
-                    var mystatu = BytesUtils.encodeStringstatu(it.result)
+                    val mystatu = BytesUtils.encodeStringstatu(it.result)
 
                     if (mystatu != 1) {
                         statu = "已结束"

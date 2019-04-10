@@ -63,7 +63,7 @@ class CreateProtectFragment : DialogFragment(),
     private fun onProtectSuccessfullySet(type: LocalProtectType, param: String) {
         dismiss()
 
-        var second: String
+        val second: String
 
         if (LocalProtectType.FINGER_PRINT == type) {
             second = param
