@@ -398,6 +398,7 @@
     <string name="across_trans_tip_2">表示DCC从公链转移至私链；</string>
     <string name="across_trans_count">转移数量</string>
     <string name="across_trans_count1">可用数量:</string>
+    <string name="across_trans_count2">可用数量</string>
     <string name="across_trans_private_count">私链数量:</string>
     <string name="across_trans_public_count">公链数量:</string>
     <string name="across_trans_private_tip"><font color="#ED190F">数量已超过私链数量</font></string>
@@ -584,6 +585,7 @@
     <string name="trust_pocket_recharge">充币</string>
     <string name="trust_pocket_get">收币</string>
     <string name="trust_pocket_withdraw">提币</string>
+    <string name="trust_pocket_withdraw_to">提币到</string>
     <string name="trust_pocket_choose_coin">选择币种</string>
     <string name="trust_pocket_recharge_records">充值记录</string>
     <string name="trust_pocket_trade_detail">交易明细</string>
@@ -594,13 +596,53 @@
 
     <string name="type">类型</string>
     <string name="time">时间</string>
+    <string name="account">账户</string>
     <string name="trust_pay">付款</string>
     <string name="trust_get">收款</string>
+    <string name="nick_name">昵称</string>
+    <string name="nick_name1">昵称：</string>
+    <string name="done">完成</string>
+    <string name="transfer_success">转账成功</string>
+    <string name="transfer_success1">转账成功！</string>
+
+    <string name="receive_mobile">收款手机</string>
+    <string name="transfer_count">转账数量</string>
+    <string name="withdraw_count">提币数量</string>
+    <string name="withdraw_count1">提币数量：</string>
+    <string name="to_account_count">到账数</string>
+    <string name="to_account_money">到账金额</string>
+    <string name="withdraw_address">提币地址</string>
+
+    <string name="withdraw">提现</string>
+    <string name="minimum">最低</string>
+    <string name="transfer_coin_type">转账币种</string>
 
     <string name="trust_pocket_setting_tip1">保障交易安全</string>
     <string name="trust_pocket_setting_tip2">便于账号找回</string>
     <string name="trust_pocket_setting_tip3">替代支付密码</string>
 
     <string name="trust_pocket_pwd_set_new">设置新密码</string>
+
+    <string name="trust_pocket_transfer_text1">对方账户</string>
+    <string name="trust_pocket_transfer_text2">通过账户地址转账</string>
+    <string name="trust_pocket_transfer_text3">通过手机号转账</string>
+    <string name="trust_pocket_transfer_text4">请输入对方手机号</string>
+    <string name="trust_pocket_transfer_text5">请输入对方账户地址</string>
+    <string name="trust_pocket_transfer_text6">该钱包地址不存在，请检查后重试</string>
+    <string name="trust_pocket_transfer_text7">超过可提总量</string>
+    <string name="trust_pocket_transfer_text8">请确认对方信息是否正确！</string>
+
+
+
+    <string name="please_choose_coin_type">请选择币种</string>
+    <string name="please_input_transfer_count">请输入转账数量</string>
+
+    <string name="trust_pocket_withdraw_hint">扫一扫或从地址簿中选取</string>
+    <string name="trust_pocket_withdraw_tip1">提币地址不能为空</string>
+    <string name="trust_pocket_withdraw_tip2">提币数量不能为空</string>
+    <string name="trust_pocket_withdraw_tip3">个起提</string>
+    <string name="trust_pocket_withdraw_tip4">请先选择币种</string>
+    <string name="trust_pocket_withdraw_tip5">提币申请提交成功！请耐心等待到账</string>
+
 
 </resources>

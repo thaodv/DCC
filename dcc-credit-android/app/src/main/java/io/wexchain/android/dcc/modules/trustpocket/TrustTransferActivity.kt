@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.modules.trustpocket
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.KeyguardManager
 import android.content.Intent
@@ -29,7 +30,9 @@ import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check
-import io.wexchain.android.dcc.view.dialog.*
+import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
+import io.wexchain.android.dcc.view.dialog.FingerCheckDialog
+import io.wexchain.android.dcc.view.dialog.GetRedpacketDialog
 import io.wexchain.android.dcc.view.dialog.trustpocket.TrustTransferDialog
 import io.wexchain.android.dcc.view.dialog.trustpocket.TrustWithdrawCheckPasswdDialog
 import io.wexchain.android.dcc.view.passwordview.PassWordLayout
@@ -44,7 +47,6 @@ import io.wexchain.digitalwallet.util.isNumberkeep8
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.math.RoundingMode
 import java.security.KeyStore
 import java.security.MessageDigest
 import javax.crypto.Cipher
@@ -95,7 +97,7 @@ class TrustTransferActivity : BindActivity<ActivityTrustTransferBinding>() {
         binding.etAccount.filters = filters
 
         binding.url = photoUrl
-        binding.nickName = "昵称:\n$nickName"
+        binding.nickName = getString(R.string.nick_name1) + "\n$nickName"
         binding.mobile = mobile
         binding.address = address
 
@@ -103,12 +105,12 @@ class TrustTransferActivity : BindActivity<ActivityTrustTransferBinding>() {
             val code = binding.tvName.text
             mAccount = binding.etAccount.text.trim().toString()
 
-            if ("请选择" == code) {
-                toast("请选择币种")
+            if (getString(R.string.please_select) == code) {
+                toast(getString(R.string.please_choose_coin_type))
             } else if ("" == mAccount) {
-                toast("请输入转账数量")
+                toast(getString(R.string.please_input_transfer_count))
             } else if (mAccount.toBigDecimal().subtract(mTotalAccount.toBigDecimal()) > BigDecimal.ZERO) {
-                toast("超过可提总量")
+                toast(getString(R.string.trust_pocket_transfer_text7))
             } else {
 
                 if (isNumberkeep8(mAccount)) {
@@ -218,7 +220,7 @@ class TrustTransferActivity : BindActivity<ActivityTrustTransferBinding>() {
                         val deleteDialog = DeleteAddressBookDialog(this)
                         deleteDialog.mTvText.text = "密码输入错误，超过3次将被锁定3小时，您还有${it.remainValidateTimes}次机会"
                         deleteDialog.mTvText.gravity = Gravity.LEFT
-                        deleteDialog.setBtnText("", "确定")
+                        deleteDialog.setBtnText("", getString(R.string.confirm))
                         deleteDialog.mBtSure.visibility = View.GONE
                         deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                             override fun cancel() {}
@@ -232,7 +234,7 @@ class TrustTransferActivity : BindActivity<ActivityTrustTransferBinding>() {
                         val deleteDialog = DeleteAddressBookDialog(this)
                         deleteDialog.mTvText.text = "您的密码已被暂时锁定，请等待解锁"
                         deleteDialog.mTvText.gravity = Gravity.LEFT
-                        deleteDialog.setBtnText("", "确定")
+                        deleteDialog.setBtnText("", getString(R.string.confirm))
                         deleteDialog.mBtSure.visibility = View.GONE
                         deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                             override fun cancel() {}
@@ -271,6 +273,7 @@ class TrustTransferActivity : BindActivity<ActivityTrustTransferBinding>() {
                 })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getBalance(code: String) {
         GardenOperations
                 .refreshToken {

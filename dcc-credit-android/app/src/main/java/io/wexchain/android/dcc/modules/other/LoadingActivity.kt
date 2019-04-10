@@ -50,7 +50,6 @@ import io.wexchain.dccchainservice.domain.trustpocket.ValidatePaymentPasswordBea
 import io.wexchain.ipfs.utils.doMain
 import kotlinx.android.synthetic.main.activity_loading.*
 import java.math.BigInteger
-import java.math.RoundingMode
 import java.security.KeyStore
 import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
@@ -167,7 +166,7 @@ class LoadingActivity : BaseCompatActivity() {
             val data = intent.data
             mAppToken = data?.getQueryParameter("orderId")
 
-            if (null == mAppToken) {
+            if (null == mAppToken || ""== mAppToken) {
                 Single.timer(1500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy {

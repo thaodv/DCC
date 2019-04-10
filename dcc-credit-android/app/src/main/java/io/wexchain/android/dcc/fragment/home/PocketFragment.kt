@@ -115,7 +115,7 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
 
         Singles.zip(
                 GardenOperations.refreshToken {
-                    App.get().marketingApi.getHostingWallet(it).check()
+                    App.get().marketingApi.getHostingWallet(it)
                 },
                 GardenOperations.refreshToken {
                     App.get().marketingApi.getAssetOverview(it).check()
@@ -156,17 +156,24 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
 
 
                     // 已开户
-                    if (it.first.mobileUserId != null) {
-                        isOpenTrustPocket = true
-                        binding.ivNext.visibility = View.VISIBLE
-                        binding.btOpen.visibility = View.GONE
-                        App.get().mobileUserId = it.second.mobileUserId
-
-                    } else {
+                    if(null == it.first.result){
                         isOpenTrustPocket = false
                         binding.ivNext.visibility = View.GONE
                         binding.btOpen.visibility = View.VISIBLE
+                    }else{
+                        if (it.first.result!!.mobileUserId != null) {
+                            isOpenTrustPocket = true
+                            binding.ivNext.visibility = View.VISIBLE
+                            binding.btOpen.visibility = View.GONE
+                            App.get().mobileUserId = it.second.mobileUserId
+
+                        } else {
+                            isOpenTrustPocket = false
+                            binding.ivNext.visibility = View.GONE
+                            binding.btOpen.visibility = View.VISIBLE
+                        }
                     }
+
                 }, {
                     // 未开户
                     isOpenTrustPocket = false

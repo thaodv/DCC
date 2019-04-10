@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.fragment.home
 
+import android.annotation.SuppressLint
 import android.app.KeyguardManager
 import android.arch.lifecycle.Observer
 import android.hardware.fingerprint.FingerprintManager
@@ -37,7 +38,6 @@ import io.wexchain.android.dcc.modules.trustpocket.TrustPocketSettingsActivity
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.switchStatus
-import io.wexchain.android.dcc.view.SwitchButton
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.view.dialog.FingerCheckDialog
 import io.wexchain.android.dcc.view.dialog.GetRedpacketDialog
@@ -68,6 +68,8 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
     }
 
     var isOpenTrustPocket: Boolean = false
+    var hasBindTele: Boolean = false
+    var bindStatus: Boolean = false
 
     override val contentLayoutId: Int get() = R.layout.fragment_mine
 
@@ -80,7 +82,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupClicks()
+
         initVm()
     }
 
@@ -96,6 +98,8 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
         getCloudToken()
         getHostingWallet()
         getTelegramUser()
+
+        setupClicks()
     }
 
     private fun checkBoundWechat() {
@@ -119,16 +123,16 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                     if (it?.mobileUserId != null) {
                         isOpenTrustPocket = true
                         App.get().mobileUserId = it.mobileUserId
-                        binding.rlTePay.visibility = View.VISIBLE
+                        binding.llTePay.visibility = View.VISIBLE
 
                     } else {
                         isOpenTrustPocket = false
-                        binding.rlTePay.visibility = View.GONE
+                        binding.llTePay.visibility = View.GONE
                     }
                 }, {
                     // 未开户
                     isOpenTrustPocket = false
-                    binding.rlTePay.visibility = View.GONE
+                    binding.llTePay.visibility = View.GONE
                 })
     }
 
@@ -200,26 +204,34 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
             }
         }
 
-        binding.tvFingerPayStatus.setOnCheckedChangeListener(object : SwitchButton.OnCheckedChangeListener {
-            override fun onCheckedChanged(view: SwitchButton?, isChecked: Boolean) {
-                mOpen = isChecked
+        binding.vSwitch.onClick {
+            if (hasBindTele) {
 
-                val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
+                // 已经开启
+                if (bindStatus) {
+                    updateEntrustStatus(false)
+                } else {
+                    mOpen = !bindStatus
 
-                if (fingerPayStatus) {
-                    if (supportFingerprint()) {
-                        initKey()
-                        initCipher()
+                    val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
+
+                    if (fingerPayStatus) {
+                        if (supportFingerprint()) {
+                            initKey()
+                            initCipher()
+                        } else {
+                            checkPasswd()
+                        }
                     } else {
                         checkPasswd()
                     }
-                } else {
-                    checkPasswd()
                 }
             }
-        })
+        }
+
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getTelegramUser() {
         GardenOperations
                 .refreshToken {
@@ -228,11 +240,16 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                 .doMain()
                 .withLoading()
                 .subscribe({
-                    binding.tvFingerPayStatus.switchStatus = it.enableEntrust
-                    binding.tvFingerPayStatus.isChecked = it.enableEntrust
+                    binding.llTePay.visibility = View.VISIBLE
+                    hasBindTele = true
+                    bindStatus = it.enableEntrust
+                    binding.tvFingerPayStatus.switchStatus = bindStatus
+                    binding.tvTelName.text = "Telegram用户名：" + if (null == it.userName) "" else it.userName
+
                 }, {
+                    binding.llTePay.visibility = View.GONE
+                    hasBindTele = false
                     binding.tvFingerPayStatus.switchStatus = false
-                    binding.tvFingerPayStatus.isChecked = false
                 })
     }
 
@@ -244,7 +261,11 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                 .doMain()
                 .withLoading()
                 .subscribe({
-
+                    if (it.enableEntrust) {
+                        toast("开启成功")
+                    }
+                    bindStatus = it.enableEntrust
+                    binding.tvFingerPayStatus.switchStatus = bindStatus
                 }, {
                     //binding.tvFingerPayStatus.switchStatus = false
                 })
@@ -267,7 +288,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
 
     }
 
-    fun supportFingerprint(): Boolean {
+    private fun supportFingerprint(): Boolean {
         if (Build.VERSION.SDK_INT < 23) {
             toast("您的系统版本过低，不支持指纹功能")
             return false

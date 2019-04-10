@@ -47,14 +47,14 @@ class TrustTransferCheckActivity : BaseCompatActivity() {
         mllAddress.visibility = View.GONE
         mllMobile.visibility = View.VISIBLE
 
-        mBtChoose.text = "通过账户地址转账"
+        mBtChoose.text = getString(R.string.trust_pocket_transfer_text2)
         mBtChoose.onClick {
             if (mllMobile.visibility == View.VISIBLE) {
-                mBtChoose.text = "通过手机号转账"
+                mBtChoose.text = getString(R.string.trust_pocket_transfer_text3)
                 mllAddress.visibility = View.VISIBLE
                 mllMobile.visibility = View.GONE
             } else {
-                mBtChoose.text = "通过账户地址转账"
+                mBtChoose.text = getString(R.string.trust_pocket_transfer_text2)
                 mllAddress.visibility = View.GONE
                 mllMobile.visibility = View.VISIBLE
             }
@@ -96,7 +96,7 @@ class TrustTransferCheckActivity : BaseCompatActivity() {
                 val address = etPhone.text.trim().toString()
 
                 if ("" == address) {
-                    toast("请输入对方手机号")
+                    toast(getString(R.string.trust_pocket_transfer_text4))
                 } else {
                     getMemberAndMobileUserInfo("+$mDialCode$address")
                 }
@@ -104,7 +104,7 @@ class TrustTransferCheckActivity : BaseCompatActivity() {
                 val address = etAddress.text.trim().toString()
 
                 if ("" == address) {
-                    toast("请输入对方账户地址")
+                    toast(getString(R.string.trust_pocket_transfer_text5))
                 } else {
                     getMemberAndMobileUserInfo(address)
                 }
@@ -130,7 +130,7 @@ class TrustTransferCheckActivity : BaseCompatActivity() {
                         //putExtra("code", mCode)
                     }
                 }, {
-                    toast("该钱包地址不存在，请检查后重试")
+                    toast(getString(R.string.trust_pocket_transfer_text6))
                 })
     }
 

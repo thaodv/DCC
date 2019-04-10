@@ -107,7 +107,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
 
             binding.tvAssetCode.text = mCode
 
-            binding.tvFee.text = "手续费0 $mCode"
+            binding.tvFee.text = getString(R.string.across_trans_poundage) + "0 $mCode"
         }
 
         val filters = arrayOf<InputFilter>(EditInputFilter())
@@ -137,7 +137,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
         binding.tvAll.onClick {
             val address = binding.etAddress.text.trim().toString()
             if ("" == address) {
-                toast("提币地址不能为空")
+                toast(getString(R.string.trust_pocket_withdraw_tip1))
             } else {
                 getWithdrawFee2(mCode!!, address, mTotalAccount)
             }
@@ -148,13 +148,13 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
             mAccount = binding.etAccount.text.trim().toString()
 
             if (null != mAddress && "" == mAddress) {
-                toast("提币地址不能为空")
+                toast(getString(R.string.trust_pocket_withdraw_tip1))
             } else if ("" == mAccount) {
-                toast("提币数量不能为空")
+                toast(getString(R.string.trust_pocket_withdraw_tip2))
             } else if (mAccount.toBigDecimal().subtract(mMinAccount.toBigDecimal()) < BigDecimal.ZERO) {
-                toast("最低" + mMinAccount + "个起提")
+                toast(getString(R.string.minimum) + mMinAccount + getString(R.string.trust_pocket_withdraw_tip3))
             } else if (mAccount.toBigDecimal().subtract(mTotalAccount.toBigDecimal()) > BigDecimal.ZERO) {
-                toast("超过可提总量")
+                toast(getString(R.string.trust_pocket_transfer_text7))
             } else {
 
                 if (isNumberkeep8(mAccount)) {
@@ -196,12 +196,12 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val text = s.toString().trim()
                 if (null == mCode) {
-                    toast("请先选择币种")
+                    toast(getString(R.string.trust_pocket_withdraw_tip4))
                 } else {
                     if ("" != text) {
                         getWithdrawFee(mCode!!, binding.etAddress.text.trim().toString(), text)
                     } else {
-                        binding.tvFee.text = "手续费0 $mCode"
+                        binding.tvFee.text = getString(R.string.across_trans_poundage) + "0 $mCode"
                         binding.tvToAccount.text = "0"
                     }
                 }
@@ -218,12 +218,12 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val text = s.toString().trim()
                 if (null == mCode) {
-                    toast("请先选择币种")
+                    toast(getString(R.string.trust_pocket_withdraw_tip4))
                 } else {
                     if ("" != text) {
                         getWithdrawFee(mCode!!, text, binding.etAccount.text.trim().toString())
                     } else {
-                        binding.tvFee.text = "手续费0 $mCode"
+                        binding.tvFee.text = getString(R.string.across_trans_poundage) + "0 $mCode"
                         binding.tvToAccount.text = "0"
                     }
                 }
@@ -296,7 +296,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
                 .subscribe({
                     mFee = it.decimalValue.toBigDecimal().setSelfScale(8)
 
-                    binding.tvFee.text = "手续费$mFee $mCode"
+                    binding.tvFee.text = getString(R.string.across_trans_poundage) + "$mFee $mCode"
 
                     mToAccount = amount.toBigDecimal().setSelfScale(8)
 
@@ -327,14 +327,14 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
 
                     mFee = it.decimalValue.toBigDecimal().setSelfScale(8)
 
-                    binding.tvFee.text = "手续费$mFee $mCode"
+                    binding.tvFee.text = getString(R.string.across_trans_poundage) + "$mFee $mCode"
 
                     mToAccount = result
 
                     binding.tvToAccount.text = mToAccount
 
                 }, {
-                    binding.tvFee.text = "手续费0 $mCode"
+                    binding.tvFee.text = getString(R.string.across_trans_poundage) + "0 $mCode"
                     binding.etAccount.setText(BigDecimal.ZERO.toPlainString())
                     binding.tvToAccount.text = "0"
                 })
@@ -365,7 +365,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
                 .withLoading()
                 .subscribe({
                     mMinAccount = it
-                    binding.etAccount.hint = "最低" + it + "个起提"
+                    binding.etAccount.hint = getString(R.string.minimum) + it + getString(R.string.trust_pocket_withdraw_tip3)
                 }, {
                     toast(it.message.toString())
                 })
@@ -432,7 +432,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
                         val deleteDialog = DeleteAddressBookDialog(this)
                         deleteDialog.mTvText.text = "您的密码已被暂时锁定，请等待解锁"
                         deleteDialog.mTvText.gravity = Gravity.LEFT
-                        deleteDialog.setBtnText("", "确定")
+                        deleteDialog.setBtnText("", getString(R.string.confirm))
                         deleteDialog.mBtSure.visibility = View.GONE
                         deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                             override fun cancel() {}

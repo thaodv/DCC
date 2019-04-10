@@ -57,6 +57,7 @@ class TrustPocketModifyPwdActivity : BaseCompatActivity() {
             navigateTo(TrustPocketModifyPhoneActivity::class.java) {
                 putExtra("source", "forget")
             }
+            finish()
         }
 
     }

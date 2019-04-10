@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName
  * usage:
  */
 data class GetTelegramUserBean(
-        @SerializedName("enableEntrust") val enableEntrust: Boolean
+        @SerializedName("enableEntrust") val enableEntrust: Boolean,
+        @SerializedName("userName") val userName: String?
 ) {
 }

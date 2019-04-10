@@ -158,7 +158,7 @@ class PassportRemovalActivity : BaseCompatActivity() {
                 }
     }
 
-    fun finishAllAndRestart() {
+    private fun finishAllAndRestart() {
         val intent = Intent(this, LoadingActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)

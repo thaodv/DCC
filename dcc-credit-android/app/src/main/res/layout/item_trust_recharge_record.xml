@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="充币"
+            android:text="@string/trust_pocket_recharge"
             android:textColor="#000000"
             android:textSize="14sp"
             />

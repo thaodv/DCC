@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.modules.trustpocket
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.arch.lifecycle.Observer
 import android.os.Bundle
@@ -24,6 +25,7 @@ import io.wexchain.dccchainservice.domain.trustpocket.QueryOrderPageBean
 import io.wexchain.dccchainservice.util.DateUtil
 import java.text.SimpleDateFormat
 
+@SuppressLint("SimpleDateFormat")
 class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>(), ItemViewClickListener<QueryOrderPageBean> {
 
     override fun onItemClick(item: QueryOrderPageBean?, position: Int, viewId: Int) {
@@ -307,49 +309,10 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
                             toast("日期跨度不能超过1个月")
                         }
                     }
-
                 })
                 trustTradeDetailTimeSelectDialog.show()
                 true
             }
-        /*R.id.choose -> {
-            val trustTradeDetailStyleSelectDialog = TrustTradeDetailStyleSelectDialog(this)
-            trustTradeDetailStyleSelectDialog.setOnClickListener(object : TrustTradeDetailStyleSelectDialog.OnClickListener {
-                override fun in1() {
-                    vm!!.startTimeV = mStartTime
-                    vm!!.endTimeV = mEndTime
-                    vm!!.typeV = "DEPOSIT"
-                    mType = "DEPOSIT"
-                    vm!!.refresh {}
-                }
-
-                override fun out() {
-                    vm!!.startTimeV = mStartTime
-                    vm!!.endTimeV = mEndTime
-                    vm!!.typeV = "WITHDRAW"
-                    mType = "WITHDRAW"
-                    vm!!.refresh {}
-                }
-
-                override fun myin() {
-                    vm!!.startTimeV = mStartTime
-                    vm!!.endTimeV = mEndTime
-                    vm!!.typeV = "TRANSFER-IN"
-                    mType = "TRANSFER-IN"
-                    vm!!.refresh {}
-                }
-
-                override fun myout() {
-                    vm!!.startTimeV = mStartTime
-                    vm!!.endTimeV = mEndTime
-                    vm!!.typeV = "TRANSFER-OUT"
-                    mType = "TRANSFER-OUT"
-                    vm!!.refresh {}
-                }
-            })
-            trustTradeDetailStyleSelectDialog.show()
-            true
-        }*/
             else -> super.onOptionsItemSelected(item)
         }
     }

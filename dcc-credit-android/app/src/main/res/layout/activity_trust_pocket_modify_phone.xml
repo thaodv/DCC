@@ -111,7 +111,7 @@
             android:layout_height="40dp"
             android:layout_margin="15dp"
             android:background="#6144CC"
-            android:text="下一步"
+            android:text="@string/next"
             android:textColor="@color/white"
             android:textSize="15sp"/>
 

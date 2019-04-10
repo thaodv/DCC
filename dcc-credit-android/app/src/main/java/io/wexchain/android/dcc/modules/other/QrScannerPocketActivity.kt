@@ -104,7 +104,6 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
     private lateinit var trustWithdrawCheckPasswdDialog: TrustWithdrawCheckPasswdDialog
 
     private lateinit var qScanResultIsAddressDialog: QScanResultIsAddressDialog
-    private lateinit var paymentCodePayDialog: PaymentCodePayDialog
 
     private val callback = object : BarcodeCallback {
         override fun barcodeResult(result: BarcodeResult?) {
@@ -189,7 +188,7 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                 .subscribe({
                     val res = it.availableAmount.assetValue.amount.toBigDecimal().setSelfScale(8)
 
-                    paymentCodePayDialog = PaymentCodePayDialog(this)
+                    val paymentCodePayDialog = PaymentCodePayDialog(this)
 
                     paymentCodePayDialog.setParameters(amount, title, id, "", code, res)
 
@@ -225,21 +224,6 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                     })
                     paymentCodePayDialog.show()
 
-
-                }, {
-                    toast(it.message.toString())
-                })
-    }
-
-    private fun getBalance2(code: String) {
-        GardenOperations
-                .refreshToken {
-                    App.get().marketingApi.getBalance(it, code).check()
-                }
-                .doMain()
-                .withLoading()
-                .subscribe({
-                    paymentCodePayDialog.refrestStatus(mOrderAmount, it.availableAmount.assetValue.amount.toBigDecimal().setSelfScale(8))
 
                 }, {
                     toast(it.message.toString())
@@ -656,7 +640,6 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                     }
                 }
 
-        getBalance2(mOrderAssetCode)
     }
 
     override fun onPause() {

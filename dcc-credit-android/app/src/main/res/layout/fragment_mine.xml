@@ -138,41 +138,72 @@
                     android:text="托管钱包设置"
                     app:layout_constraintTop_toBottomOf="@id/tv_passport_backup"/>
 
-                <RelativeLayout
-                    android:id="@+id/rl_te_pay"
+                <LinearLayout
+                    android:id="@+id/ll_te_pay"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:background="@color/white"
+                    android:orientation="vertical"
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/tv_trust_pocket_setting">
 
+                    <RelativeLayout
+                        android:id="@+id/rl_te_pay"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@color/white">
+
+                        <TextView
+                            android:id="@+id/tv_pay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="14dp"
+                            android:text="Telegram免密支付"
+                            android:textColor="?android:textColorPrimary"
+                            android:textSize="17sp"/>
+
+                        <io.wexchain.android.dcc.view.SwitchButton
+                            android:id="@+id/tv_finger_pay_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginRight="14dp"/>
+
+                        <View
+                            android:id="@+id/v_switch"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="14dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"/>
+
+                    </RelativeLayout>
+
                     <TextView
-                        android:id="@+id/tv_pay"
+                        android:id="@+id/tv_tel_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="10dp"
                         android:layout_marginLeft="14dp"
-                        android:text="Telegram免密支付"
-                        android:textColor="?android:textColorPrimary"
-                        android:textSize="17sp"/>
+                        android:textColor="#FF4A4A4A"
+                        android:textSize="12sp"
+                        tools:text="Telegram用户名：firstname"/>
 
-                    <io.wexchain.android.dcc.view.SwitchButton
-                        android:id="@+id/tv_finger_pay_status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="14dp"
-                        />
-
-                </RelativeLayout>
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_digest_pocket_setting"
                     style="@style/TextActionLine"
                     android:text="数字钱包设置"
-                    app:layout_constraintTop_toBottomOf="@id/rl_te_pay"/>
+                    app:layout_constraintTop_toBottomOf="@id/ll_te_pay"/>
 
                 <TextView
                     android:id="@+id/tv_address_book"

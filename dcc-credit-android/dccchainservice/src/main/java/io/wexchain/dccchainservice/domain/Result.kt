@@ -56,7 +56,7 @@ data class Result<out T>(
             }
         }
 
-        fun <T> checkToken():SingleTransformer<Result<T>, T> {
+        fun <T> checkToken(): SingleTransformer<Result<T>, T> {
             return SingleTransformer { upstream ->
                 return@SingleTransformer upstream
                         .flatMap { resp ->

@@ -1,5 +1,6 @@
 package io.wexchain.dccchainservice
 
+import android.annotation.SuppressLint
 import io.reactivex.Single
 import io.wexchain.dccchainservice.domain.*
 import io.wexchain.dccchainservice.domain.payment.*
@@ -12,6 +13,7 @@ import retrofit2.http.*
 import java.math.BigDecimal
 import java.text.SimpleDateFormat
 
+@SuppressLint("SimpleDateFormat")
 interface MarketingApi {
 
     /**
@@ -654,7 +656,7 @@ interface MarketingApi {
     @POST("bemember/wallet/mobileUser/updateEntrustStatus")
     @FormUrlEncoded
     fun updateEntrustStatus(@Header(HEADER_TOKEN) token: String,
-                            @Field("open") open: Boolean): Single<Result<String>>
+                            @Field("open") open: Boolean): Single<Result<GetTelegramUserBean>>
 
     /**
      * 43.查询充值参数接口

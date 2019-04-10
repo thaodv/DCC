@@ -2,6 +2,8 @@ package io.wexchain.android.dcc.modules.paymentcode
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import io.reactivex.Single
@@ -110,6 +112,24 @@ class RepaymentQuickReceiptActivity : BindActivity<ActivityRepaymentQuickReceipt
             return GardenOperations.refreshToken {
                 App.get().marketingApi.queryGoodsViewPage(it, status, page, 20).check()
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.menu_payment_trans_records, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.trade_records -> {
+                navigateTo(PaymentTransRecordsActivity::class.java) {
+                    putExtra("goodsId", "")
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

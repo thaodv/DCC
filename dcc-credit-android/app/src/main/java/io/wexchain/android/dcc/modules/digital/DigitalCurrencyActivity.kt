@@ -114,7 +114,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
                 //toCreateTransaction()
             } else {
                 val p = App.get().passportRepository.getCurrentPassport()!!
-                var agent = App.get().assetsRepository.getDigitalCurrencyAgent(getDc())
+                val agent = App.get().assetsRepository.getDigitalCurrencyAgent(getDc())
                 agent.getNonce(p.address).observeOn(AndroidSchedulers.mainThread()).subscribe({
                     if (it > eth.nonce) {
                         // toCreateTransaction()
@@ -124,6 +124,10 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
                     }
                 }, {})
             }
+        } else if (getDc().chain == Chain.JUZIX_PRIVATE) {
+            binding.btTrust.visibility = View.GONE
+            binding.btnToTransfer.visibility = View.GONE
+            binding.btnToCollect.visibility = View.GONE
         }
 
         val dc = getDc()
@@ -224,7 +228,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
                     } else {
                         val p = App.get().passportRepository.getCurrentPassport()!!
 
-                        var agent = App.get().assetsRepository.getDigitalCurrencyAgent(getDc())
+                        val agent = App.get().assetsRepository.getDigitalCurrencyAgent(getDc())
 
                         agent.getNonce(p.address).observeOn(AndroidSchedulers.mainThread()).subscribe({
                             if (it > eth.nonce) {

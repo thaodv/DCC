@@ -43,10 +43,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="币种"
+                    android:text="@string/coin_type"
                     android:textColor="#4A4A4A"
-                    android:textSize="16sp"
-                    />
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/tv_name"
@@ -59,8 +58,7 @@
                     android:text="@{name}"
                     android:textColor="#4A4A4A"
                     android:textSize="16sp"
-                    tools:text="DCC"
-                    />
+                    tools:text="DCC"/>
 
                 <ImageView
                     errorRes="@{@drawable/ethereum}"
@@ -70,8 +68,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/tv_name"
                     android:scaleType="centerCrop"
-                    tools:src="@drawable/ethereum"
-                    />
+                    tools:src="@drawable/ethereum"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -90,10 +87,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="提币到"
+                android:text="@string/trust_pocket_withdraw_to"
                 android:textColor="#4A4A4A"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -106,7 +102,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="扫一扫或从地址簿中选取"
+                    android:hint="@string/trust_pocket_withdraw_hint"
                     android:textColorHint="#9B9B9B"
                     android:textSize="14sp"/>
 
@@ -145,10 +141,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="14dp"
-                    android:text="提币数量:"
+                    android:text="@string/withdraw_count1"
                     android:textColor="#4A4A4A"
-                    android:textSize="16sp"
-                    />
+                    android:textSize="16sp"/>
 
                 <EditText
                     android:id="@+id/et_account"
@@ -176,7 +171,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:text="可用数量"
+                    android:text="@string/across_trans_count2"
                     android:textColorHint="#9B9B9B"
                     android:textSize="14sp"/>
 
@@ -196,7 +191,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="全部"
+                    android:text="@string/all"
                     android:textColor="#6144CC"
                     android:textSize="16sp"/>
 
@@ -211,8 +206,7 @@
                 android:layout_marginTop="60dp"
                 android:textColor="#4A4A4A"
                 android:textSize="16sp"
-                tools:text="手续费(0.05%)  50 ETH "
-                />
+                tools:text="手续费(0.05%)  50 ETH "/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -224,10 +218,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
-                    android:text="到账数"
+                    android:text="@string/to_account_count"
                     android:textColor="#4A4A4A"
-                    android:textSize="16sp"
-                    />
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/tv_toAccount"
@@ -235,8 +228,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#01B5B7"
                     android:textSize="16sp"
-                    tools:text="100"
-                    />
+                    tools:text="100"/>
 
                 <TextView
                     android:id="@+id/tv_assetCode"
@@ -245,8 +237,7 @@
                     android:layout_marginLeft="8dp"
                     android:textColor="#4A4A4A"
                     android:textSize="16sp"
-                    tools:text="ETH"
-                    />
+                    tools:text="ETH"/>
 
             </LinearLayout>
 
@@ -255,7 +246,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="15dp"
-                android:text="提现"
+                android:text="@string/withdraw"
                 android:textColor="@color/white"
                 android:textSize="15sp"/>
 

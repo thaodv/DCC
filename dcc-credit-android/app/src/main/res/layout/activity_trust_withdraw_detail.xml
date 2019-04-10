@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="类型"
+                android:text="@string/type"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
 
@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="提币"
+                android:text="@string/trust_pocket_withdraw"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
 
@@ -60,7 +60,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="状态"
+                android:text="@string/status"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
 
@@ -90,7 +90,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="订单号"
+                android:text="@string/order_number"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
 
@@ -120,7 +120,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="手续费"
+                android:text="@string/across_trans_poundage"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
 
@@ -150,7 +150,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="到账金额"
+                android:text="@string/to_account_money"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
 
@@ -180,7 +180,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="提币地址"
+                android:text="@string/withdraw_address"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
 
@@ -212,7 +212,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="时间"
+                android:text="@string/time"
                 android:textColor="#4a4a4a"
                 android:textSize="16sp"/>
 

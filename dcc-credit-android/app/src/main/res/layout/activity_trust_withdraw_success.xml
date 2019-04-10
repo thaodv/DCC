@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="提币申请提交成功！请耐心等待到账"
+                android:text="@string/trust_pocket_withdraw_tip5"
                 android:textColor="#4A4A4A"
                 android:textSize="16sp"/>
 
@@ -46,7 +46,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="收币地址"
+                        android:text="@string/receive_address"
                         android:textColor="#9B9B9B"
                         android:textSize="16sp"/>
 
@@ -73,7 +73,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="到账数量"
+                        android:text="@string/across_trans_toaccount_num"
                         android:textColor="#9B9B9B"
                         android:textSize="16sp"/>
 
@@ -101,7 +101,7 @@
             android:background="@color/trans"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:text="完成"
+            android:text="@string/done"
             android:textColor="#4A4A4A"
             android:textSize="16sp"/>
 

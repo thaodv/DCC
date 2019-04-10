@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:text="请确认对方信息是否正确！"
+                android:text="@string/trust_pocket_transfer_text8"
                 android:textColor="#FFED3735"
                 android:textSize="14sp"
                 />
@@ -90,7 +90,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="收款手机"
+                    android:text="@string/receive_mobile"
                     android:textColor="#4A4A4A"
                     android:textSize="14sp"/>
 
@@ -114,7 +114,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="钱包地址"
+                    android:text="@string/address_of_collection_wallet"
                     android:textColor="#4A4A4A"
                     android:textSize="14sp"/>
 
@@ -141,7 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="转账币种"
+                    android:text="@string/transfer_coin_type"
                     android:textColor="#4A4A4A"
                     android:textSize="16sp"
                     />
@@ -154,7 +154,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="14dp"
                     android:layout_marginRight="26dp"
-                    android:text="请选择"
+                    android:text="@string/please_select"
                     android:textColor="#4A4A4A"
                     android:textSize="16sp"
                     />
@@ -181,7 +181,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="14dp"
-                    android:text="转账数量"
+                    android:text="@string/transfer_count"
                     android:textColor="#4A4A4A"
                     android:textSize="16sp"
                     />
@@ -192,7 +192,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="请输入转账数量"
+                    android:hint="@string/please_input_transfer_count"
                     android:inputType="numberDecimal"
                     android:textColorHint="#9B9B9B"
                     android:textSize="14sp"/>
@@ -213,7 +213,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:text="可用数量"
+                    android:text="@string/across_trans_count2"
                     android:textColorHint="#9B9B9B"
                     android:textSize="14sp"/>
 
@@ -236,7 +236,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="15dp"
-                android:text="转账"
+                android:text="@string/transfer"
                 android:textColor="@color/white"
                 android:textSize="15sp"/>
 

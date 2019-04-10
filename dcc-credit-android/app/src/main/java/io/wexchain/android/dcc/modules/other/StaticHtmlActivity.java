@@ -110,7 +110,7 @@ public class StaticHtmlActivity extends AppCompatActivity {
         
         //支持所有标签
         settings.setDomStorageEnabled(true);
-        //mContent.addJavascriptInterface(new JavaScriptObjectUtils(this), "js");
+        mContent.addJavascriptInterface(new JavaScriptObjectUtils(this), "BitExpress");
         mContent.loadUrl(mUrlValue);
         mContent.setWebChromeClient(new WebChromeClient() {
             @Override

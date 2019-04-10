@@ -73,8 +73,23 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
     override fun onResume() {
         super.onResume()
+        getUsdtCnyQuote()
         getHostingWallet()
         getTelegramUser()
+    }
+
+    private fun getUsdtCnyQuote() {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getUsdtCnyQuote(it)
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    App.get().mUsdtquote = it.result.toString()
+                }, {
+                    // toast(it.message.toString())
+                })
     }
 
     private fun getCardVm(type: CardType): ServiceCardVm {
@@ -262,7 +277,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
                     startActivity(intent)
                 }
             } else {
-                startActivity(StaticHtmlActivity.getResultIntent(context, "如何发起", "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay"))
+                startActivity(StaticHtmlActivity.getResultIntent(context, "如何发起", "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress"))
             }
         }
 
@@ -276,9 +291,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
                     startActivity(intent)
                 }
             } else {
-
-
-                startActivity(StaticHtmlActivity.getResultIntent(context, "如何参与", "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay"))
+                startActivity(StaticHtmlActivity.getResultIntent(context, "如何参与", "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress"))
             }
         }
 

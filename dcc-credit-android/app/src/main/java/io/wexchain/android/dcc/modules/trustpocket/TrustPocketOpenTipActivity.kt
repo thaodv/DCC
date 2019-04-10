@@ -19,6 +19,5 @@ class TrustPocketOpenTipActivity : BaseCompatActivity() {
             finish()
         }
 
-
     }
 }

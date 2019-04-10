@@ -26,7 +26,6 @@ import io.wexchain.android.dcc.fragment.home.MineFragment
 import io.wexchain.android.dcc.fragment.home.PocketFragment
 import io.wexchain.android.dcc.fragment.home.ServiceFragment
 import io.wexchain.android.dcc.tools.ShareUtils
-import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.tools.reName
 import io.wexchain.android.dcc.view.bottomnavigation.BottomNavigationBar
@@ -36,7 +35,6 @@ import io.wexchain.android.dcc.view.dialog.BonusDialog
 import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.domain.CheckUpgrade
 import io.wexchain.dccchainservice.domain.RedeemToken
-import io.wexchain.ipfs.utils.doMain
 import kotlinx.android.synthetic.main.activity_home.*
 import org.jetbrains.anko.doAsync
 import zlc.season.rxdownload3.core.Mission
@@ -89,21 +87,6 @@ class HomeActivity : BaseCompatActivity() {
     override fun onResume() {
         super.onResume()
         checkUpgrade()
-        getUsdtCnyQuote()
-    }
-
-    private fun getUsdtCnyQuote() {
-        GardenOperations
-                .refreshToken {
-                    App.get().marketingApi.getUsdtCnyQuote(it).check()
-                }
-                .doMain()
-                .withLoading()
-                .subscribe({
-                    App.get().mUsdtquote = it
-                }, {
-                    toast(it.message.toString())
-                })
     }
 
     private fun showRedeemToken(redeemToken: RedeemToken) {

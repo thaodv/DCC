@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.modules.paymentcode
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.Gravity
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
@@ -9,6 +10,7 @@ import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.tools.check
+import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
 import io.wexchain.android.dcc.vm.ViewModelHelper
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPaymentReceiptDetailBinding
@@ -32,7 +34,21 @@ class PaymentReceiptDetailActivity : BindActivity<ActivityPaymentReceiptDetailBi
         }
 
         binding.ivDelete.onClick {
-            closeGoods(mId)
+
+
+            val deleteDialog = DeleteAddressBookDialog(this)
+            deleteDialog.mTvText.text = "确认关闭吗？关闭后他人无法向该笔收款发起付款？"
+            deleteDialog.mTvText.gravity = Gravity.CENTER_HORIZONTAL
+            deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
+                override fun cancel() {}
+
+                override fun sure() {
+                    closeGoods(mId)
+                }
+            })
+            deleteDialog.show()
+
+
         }
 
         binding.ivShare.onClick {

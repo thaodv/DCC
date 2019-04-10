@@ -136,7 +136,7 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
                 .withLoading()
                 .subscribe({
                     if (it.systemCode == Result.SUCCESS && it.businessCode == Result.SUCCESS) {
-                        toast("已发验证码")
+                        toast(getString(R.string.hasSend))
                         smsUpTimeStamp = SystemClock.uptimeMillis()
                         binding.vm?.upTimeStamp?.value = smsUpTimeStamp
                     } else {
@@ -162,7 +162,6 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
                         putExtra("use", "forget")
                     }
                     finish()
-
                 }, {
                     toast(it.message.toString())
                 })
@@ -177,7 +176,7 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
                 .withLoading()
                 .subscribe({
                     if (it.systemCode == Result.SUCCESS && it.businessCode == Result.SUCCESS) {
-                        toast("已发验证码")
+                        toast(getString(R.string.hasSend))
                         smsUpTimeStamp = SystemClock.uptimeMillis()
                         binding.vm?.upTimeStamp?.value = smsUpTimeStamp
                     } else {
