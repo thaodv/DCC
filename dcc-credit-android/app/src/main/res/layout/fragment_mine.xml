@@ -24,8 +24,9 @@
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
             android:text="我的"
-            android:textColor="@color/main_tab"
-            android:textSize="17sp"/>
+            android:textColor="#4A4A4A"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <ScrollView
             android:layout_width="match_parent"

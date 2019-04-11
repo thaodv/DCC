@@ -441,9 +441,7 @@ object CertOperations {
                 )
                 )
         ).compose(Result.checked())
-
     }
-
 
     fun getCommunicationLogReport(passport: Passport): Single<CmLogReportData> {
         require(passport.authKey != null)
@@ -481,14 +479,13 @@ object CertOperations {
                         txHash
                     }
                     .retryWhen(RetryWithDelay.createSimple(4, 5000L))
+        }.flatMap {
+            api.getOrdersByTx(it, business)
+                    .compose(Result.checked())
+                    .map {
+                        it.first()
+                    }
         }
-                .flatMap {
-                    api.getOrdersByTx(it, business)
-                            .compose(Result.checked())
-                            .map {
-                                it.first()
-                            }
-                }
     }
 
     fun getCompletedCerts(): List<String> {

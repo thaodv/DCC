@@ -40,6 +40,7 @@ import io.wexchain.android.dcc.view.adapter.BindingViewHolder
 import io.wexchain.android.dcc.view.adapter.ClickAwareHolder
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback
+import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentServiceBinding
 import io.wexchain.dcc.databinding.ItemServiceLoanBinding
@@ -270,28 +271,31 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
             if (isOpenTrustPocket && isBindTelegram) {
                 val packageManager = context!!.packageManager
-                var intent: Intent? = packageManager.getLaunchIntentForPackage("org.telegram.messenger")
+                val intent: Intent? = packageManager.getLaunchIntentForPackage("org.telegram.messenger")
                 if (intent == null) {
                     toast("未安装")
                 } else {
                     startActivity(intent)
                 }
             } else {
-                startActivity(StaticHtmlActivity.getResultIntent(context, "如何发起", "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress"))
+
+                val url = if (BuildConfig.DEBUG) "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress" else "http://www.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress"
+                startActivity(StaticHtmlActivity.getResultIntent(context, "如何发起", url))
             }
         }
 
         binding.rlParticipate.onClick {
             if (isOpenTrustPocket && isBindTelegram) {
                 val packageManager = context!!.packageManager
-                var intent: Intent? = packageManager.getLaunchIntentForPackage("org.telegram.messenger")
+                val intent: Intent? = packageManager.getLaunchIntentForPackage("org.telegram.messenger")
                 if (intent == null) {
                     toast("未安装")
                 } else {
                     startActivity(intent)
                 }
             } else {
-                startActivity(StaticHtmlActivity.getResultIntent(context, "如何参与", "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress"))
+                val url = if (BuildConfig.DEBUG) "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress" else "http://www.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress"
+                startActivity(StaticHtmlActivity.getResultIntent(context, "如何参与", url))
             }
         }
 
