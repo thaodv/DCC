@@ -139,7 +139,12 @@ class TrustChooseCoinActivity : BaseCompatActivity(), TextWatcher, ItemViewClick
                     }
 
                 }, {
-                    toast(it.message.toString())
+                    if ("getBalance.arg0.mobileUserId:must not be null" == it.message.toString()) {
+                        navigateTo(TrustPocketOpenTipActivity::class.java)
+                        finish()
+                    } else {
+                        toast(it.message.toString())
+                    }
                 })
     }
 

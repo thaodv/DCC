@@ -3,10 +3,7 @@ package io.wexchain.android.dcc.chain
 import android.graphics.BitmapFactory
 import android.net.Uri
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram
-import com.tencent.mm.opensdk.modelmsg.SendAuth
-import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
-import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
-import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject
+import com.tencent.mm.opensdk.modelmsg.*
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
@@ -177,7 +174,7 @@ object GardenOperations {
         }
     }
 
-    fun startWechatCricket(success: () -> Unit={},error: (String) -> Unit) {
+    fun startWechatCricket(success: () -> Unit = {}, error: (String) -> Unit) {
         error.check {
             toWechat("/pages/cricket/cricket")
             success.invoke()
@@ -190,7 +187,7 @@ object GardenOperations {
         }
     }
 
-    private fun toWechat(path: String, debug:Boolean = BuildConfig.DEBUG,username: String = wechatName) {
+    private fun toWechat(path: String, debug: Boolean = BuildConfig.DEBUG, username: String = wechatName) {
         val req = WXLaunchMiniProgram.Req()
         req.userName = username
         req.path = path
@@ -239,6 +236,30 @@ object GardenOperations {
                     .apply {
                         setThumbImage(BitmapFactory.decodeResource(App.get().resources, R.drawable.img_wechat_redpacket))
                         title = "我正在抢微信现金红包，请给我助力吧，么么哒！"
+                        description = ""
+                    }
+
+            val req = SendMessageToWX.Req()
+                    .apply {
+                        transaction = buildTransaction("webpage", false)
+                        message = msg
+                        scene = SendMessageToWX.Req.WXSceneSession  // 目前支持会话
+                    }
+            WxApiManager.wxapi.sendReq(req)
+        }
+    }
+
+    fun shareWechatPayment(url: String, error: (String) -> Unit) {
+        error.check {
+            val wxwebpageobject = WXWebpageObject()
+                    .apply {
+                        webpageUrl = url
+                    }
+
+            val msg = WXMediaMessage(wxwebpageobject)
+                    .apply {
+                        setThumbImage(BitmapFactory.decodeResource(App.get().resources, R.mipmap.ic_app_dcc))
+                        title = "我的收款"
                         description = ""
                     }
 

@@ -20,6 +20,8 @@ class PaymentShareActivity : BindActivity<ActivityPaymentShareBinding>() {
 
     override val contentLayoutId: Int get() = R.layout.activity_payment_share
 
+    lateinit var mUrl: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,6 +40,12 @@ class PaymentShareActivity : BindActivity<ActivityPaymentShareBinding>() {
                 onSuccess = {
                     toast("保存成功")
                 })
+
+        binding.ivShare.onClick {
+            GardenOperations.shareWechatPayment(mUrl) {
+                toast(it)
+            }
+        }
     }
 
     private fun getGoods(id: String) {
@@ -56,7 +64,9 @@ class PaymentShareActivity : BindActivity<ActivityPaymentShareBinding>() {
                     }
 
                     binding.tvUser.text = it.mobile + resources.getString(R.string.payment_share_text1)
-                    binding.address = it.url
+                    mUrl = it.url
+                    binding.address = mUrl
+
 
                 }, {
                     toast(it.message.toString())

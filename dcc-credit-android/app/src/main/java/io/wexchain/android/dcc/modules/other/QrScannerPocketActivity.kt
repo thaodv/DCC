@@ -40,10 +40,7 @@ import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.modules.paymentcode.PaymentSuccessActivity
 import io.wexchain.android.dcc.modules.trans.activity.CreateTransactionActivity
-import io.wexchain.android.dcc.modules.trustpocket.TrustPocketModifyPhoneActivity
-import io.wexchain.android.dcc.modules.trustpocket.TrustRechargeActivity
-import io.wexchain.android.dcc.modules.trustpocket.TrustTransferActivity
-import io.wexchain.android.dcc.modules.trustpocket.TrustWithdrawActivity
+import io.wexchain.android.dcc.modules.trustpocket.*
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
@@ -226,7 +223,12 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
 
 
                 }, {
-                    toast(it.message.toString())
+                    if ("getBalance.arg0.mobileUserId:must not be null" == it.message.toString()) {
+                        navigateTo(TrustPocketOpenTipActivity::class.java)
+                        finish()
+                    } else {
+                        toast(it.message.toString())
+                    }
                 })
     }
 

@@ -351,7 +351,12 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
                     mTotalAccount = it.availableAmount.assetValue.amount.toBigDecimal().setSelfScale(8)
                     binding.tvAccount.text = mTotalAccount + " " + it.availableAmount.assetValue.assetCode
                 }, {
-                    toast(it.message.toString())
+                    if ("getBalance.arg0.mobileUserId:must not be null" == it.message.toString()) {
+                        navigateTo(TrustPocketOpenTipActivity::class.java)
+                        finish()
+                    } else {
+                        toast(it.message.toString())
+                    }
                 })
     }
 

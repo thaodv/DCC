@@ -810,6 +810,11 @@ object ViewModelHelper {
         }
     }
 
+    @JvmStatic
+    fun showFeeText(res1: String, res2: String): String {
+        return "$res1 $res2"
+    }
+
 }
 
 /**

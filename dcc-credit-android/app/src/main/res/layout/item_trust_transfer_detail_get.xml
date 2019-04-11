@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="io.wexchain.android.dcc.vm.ViewModelHelper"/>
+
+        <variable
+            name="bean"
+            type="io.wexchain.dccchainservice.domain.trustpocket.GetTransferOrderBean.SplitAmountDetailsBean"/>
+
+    </data>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="14dp"
+        android:paddingRight="14dp">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@{bean.memo}"
+            android:textColor="#4a4a4a"
+            android:textSize="16sp"
+            tools:text="Payer Fee"/>
+
+        <TextView
+            android:id="@+id/tv_fee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@{ViewModelHelper.showFeeText(bean.amount.decimalValue,bean.assetCode)}"
+            android:textColor="#4a4a4a"
+            android:textSize="16sp"
+            tools:text="2019-10-10 12:00:00"/>
+
+        <View
+            style="@style/DividerHorizontal"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+</layout>

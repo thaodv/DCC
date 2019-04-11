@@ -166,7 +166,7 @@ class LoadingActivity : BaseCompatActivity() {
             val data = intent.data
             mAppToken = data?.getQueryParameter("orderId")
 
-            if (null == mAppToken || ""== mAppToken) {
+            if (null == mAppToken || "" == mAppToken) {
                 Single.timer(1500, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy {
@@ -289,7 +289,13 @@ class LoadingActivity : BaseCompatActivity() {
 
 
                 }, {
-                    toast(it.message.toString())
+
+                    if ("getBalance.arg0.mobileUserId:must not be null" == it.message.toString()) {
+                        toast("请先开通托管钱包")
+                    } else {
+                        toast(it.message.toString())
+                    }
+
                     Single.timer(1500, TimeUnit.MILLISECONDS)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeBy {

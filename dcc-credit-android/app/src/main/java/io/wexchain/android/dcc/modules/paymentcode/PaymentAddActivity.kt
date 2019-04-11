@@ -14,6 +14,7 @@ import io.wexchain.android.common.view.datepicker.DateFormatUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.modules.trustpocket.TrustChooseCoinActivity
+import io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenTipActivity
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.dialog.CustomDatePicker
 import io.wexchain.android.dcc.view.dialog.DeleteAddressBookDialog
@@ -151,7 +152,13 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
                         putExtra("code", it.assetCode)
                     }
                 }, {
-                    toast(it.message.toString())
+                    if ("createGoods.arg0.mobileUserId:must not be null" == it.message.toString()) {
+                        toast("请先开通托管钱包")
+                        navigateTo(TrustPocketOpenTipActivity::class.java)
+                        finish()
+                    } else {
+                        toast(it.message.toString())
+                    }
                 })
     }
 

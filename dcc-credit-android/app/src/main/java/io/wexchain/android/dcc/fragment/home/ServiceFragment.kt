@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
@@ -34,13 +33,13 @@ import io.wexchain.android.dcc.modules.passport.PassportActivity
 import io.wexchain.android.dcc.modules.passport.PassportAddressActivity
 import io.wexchain.android.dcc.modules.paymentcode.PaymentUnOpenActivity
 import io.wexchain.android.dcc.modules.paymentcode.RepaymentQuickReceiptActivity
+import io.wexchain.android.dcc.modules.trustpocket.TrustPocketOpenTipActivity
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.tools.checkonMain
 import io.wexchain.android.dcc.view.adapter.BindingViewHolder
 import io.wexchain.android.dcc.view.adapter.ClickAwareHolder
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.defaultItemDiffCallback
-import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.FragmentServiceBinding
 import io.wexchain.dcc.databinding.ItemServiceLoanBinding
@@ -170,9 +169,17 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
 
                 val sp = activity!!.getSharedPreferences("setting", Context.MODE_PRIVATE)
                 if (sp.getBoolean("payment_first_into", true)) {
-                    navigateTo(PaymentUnOpenActivity::class.java)
+                    if (isOpenTrustPocket) {
+                        navigateTo(PaymentUnOpenActivity::class.java)
+                    } else {
+                        navigateTo(TrustPocketOpenTipActivity::class.java)
+                    }
                 } else {
-                    navigateTo(RepaymentQuickReceiptActivity::class.java)
+                    if (isOpenTrustPocket) {
+                        navigateTo(RepaymentQuickReceiptActivity::class.java)
+                    } else {
+                        navigateTo(TrustPocketOpenTipActivity::class.java)
+                    }
                 }
             }
             CardType.BSX -> {
@@ -260,12 +267,12 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
         binding.viewCardPassport.tvPassportAddress.onClick {
             navigateTo(PassportAddressActivity::class.java)
         }
-        binding.serviceMail.onClick {
+        /*binding.serviceMail.onClick {
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = Uri.parse("mailto:") // only email apps should handle this
             intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.bitexpress_info_mail_address)))
             startActivity(Intent.createChooser(intent, "发送邮件"))
-        }
+        }*/
 
         binding.rlOpen.onClick {
 
@@ -279,7 +286,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
                 }
             } else {
 
-                val url = if (BuildConfig.DEBUG) "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress" else "http://www.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress"
+                val url = /*if (BuildConfig.DEBUG) "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress" else*/ "http://www.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress"
                 startActivity(StaticHtmlActivity.getResultIntent(context, "如何发起", url))
             }
         }
@@ -294,7 +301,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
                     startActivity(intent)
                 }
             } else {
-                val url = if (BuildConfig.DEBUG) "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress" else "http://www.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress"
+                val url = /*if (BuildConfig.DEBUG) "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress" else*/ "http://www.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress"
                 startActivity(StaticHtmlActivity.getResultIntent(context, "如何参与", url))
             }
         }

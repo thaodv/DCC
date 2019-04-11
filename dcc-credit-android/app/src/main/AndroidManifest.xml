@@ -423,6 +423,8 @@
         </activity>
         <activity android:name="io.wexchain.android.dcc.modules.other.StaticHtmlActivity">
         </activity>
+        <activity android:name="io.wexchain.android.dcc.modules.trustpocket.TrustTransferGetDetailActivity">
+        </activity>
     </application>
 
 </manifest>

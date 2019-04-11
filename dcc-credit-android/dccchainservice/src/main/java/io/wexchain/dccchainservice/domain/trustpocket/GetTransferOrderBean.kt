@@ -12,7 +12,9 @@ data class GetTransferOrderBean(
         @SerializedName("mobile") val mobile: String,
         @SerializedName("assetCode") val assetCode: String,
         @SerializedName("amount") val amount: AmountBean,
-        @SerializedName("status") val status: Status
+        @SerializedName("status") val status: Status,
+        @SerializedName("memo") val memo: String,
+        @SerializedName("splitAmountDetails") val splitAmountDetails: List<SplitAmountDetailsBean>
 ) {
 
     enum class Status {
@@ -30,4 +32,16 @@ data class GetTransferOrderBean(
     data class AmountBean(
             @SerializedName("decimalValue") val decimalValue: String
     )
+
+    data class SplitAmountDetailsBean(
+
+            @SerializedName("memo") val memo: String,
+            @SerializedName("assetCode") val assetCode: String,
+            @SerializedName("amount") val amount: AmountBean) {
+
+        data class AmountBean(
+                @SerializedName("decimalValue") val decimalValue: String
+        )
+
+    }
 }

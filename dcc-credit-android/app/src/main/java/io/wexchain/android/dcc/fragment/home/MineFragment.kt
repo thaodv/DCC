@@ -123,16 +123,12 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                     if (it?.mobileUserId != null) {
                         isOpenTrustPocket = true
                         App.get().mobileUserId = it.mobileUserId
-                        binding.llTePay.visibility = View.VISIBLE
-
                     } else {
                         isOpenTrustPocket = false
-                        binding.llTePay.visibility = View.GONE
                     }
                 }, {
                     // 未开户
                     isOpenTrustPocket = false
-                    binding.llTePay.visibility = View.GONE
                 })
     }
 
@@ -244,7 +240,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                     hasBindTele = true
                     bindStatus = it.enableEntrust
                     binding.tvFingerPayStatus.switchStatus = bindStatus
-                    binding.tvTelName.text = "Telegram用户名：" + if (null == it.userName) "" else it.userName
+                    binding.tvTelName.text = "@" + if (null == it.userName) "" else it.userName
 
                 }, {
                     binding.llTePay.visibility = View.GONE

@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustTransferGetDetailActivity">
+
+        <include layout="@layout/include_toolbar"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="#404040"
+                    android:textSize="24sp"
+                    tools:text="+9 DCC"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="14dp"
+                    android:gravity="center_vertical"
+                    android:paddingRight="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/type"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="收单"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="14dp"
+                    android:gravity="center_vertical"
+                    android:paddingRight="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/status"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"
+                        tools:text="已完成"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="14dp"
+                    android:gravity="center_vertical"
+                    android:paddingRight="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/order_number"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_order_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="100dp"
+                        android:gravity="right"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"
+                        tools:text="1234567890"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="14dp"
+                    android:gravity="center_vertical"
+                    android:paddingRight="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/time"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"
+                        tools:text="2019-10-10 12:00:00"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_trust_transfer_detail_get"/>
+
+                <!--<RelativeLayout
+                    android:id="@+id/rl_PayerFee"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="14dp"
+                    android:gravity="center_vertical"
+                    android:paddingRight="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Payer Fee"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_PayerFee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"
+                        tools:text="2019-10-10 12:00:00"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="14dp"
+                    android:gravity="center_vertical"
+                    android:paddingRight="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Merchant Fee"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_MerchantFee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"
+                        tools:text="2019-10-10 12:00:00"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"/>-->
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="14dp"
+                    android:gravity="center_vertical"
+                    android:paddingRight="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="实际到账"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"
+                        tools:text="130****0000"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="14dp"
+                    android:gravity="center_vertical"
+                    android:paddingRight="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="备注"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="120dp"
+                        android:textColor="#4a4a4a"
+                        android:textSize="16sp"
+                        tools:text="130***rferwerwererwerrwerwerwerwerwerw*0000rerererererererererere"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/DividerHorizontal"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"/>
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+</layout>

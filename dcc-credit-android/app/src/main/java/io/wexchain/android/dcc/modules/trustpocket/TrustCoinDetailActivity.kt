@@ -380,7 +380,11 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
                     binding.holdingValue = "≈￥" + it.availableAmount.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).setScale(2, RoundingMode.DOWN).toPlainString()
 
                 }, {
-                    toast(it.message.toString())
+                    if ("getBalance.arg0.mobileUserId:must not be null" == it.message.toString()) {
+                        toast("请先开通托管钱包")
+                    } else {
+                        toast(it.message.toString())
+                    }
                 })
     }
 

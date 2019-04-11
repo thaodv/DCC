@@ -194,9 +194,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:layout_marginLeft="14dp"
-                        android:textColor="#FF4A4A4A"
+                        android:textColor="#666"
                         android:textSize="12sp"
-                        tools:text="Telegram用户名：firstname"/>
+                        tools:text=" @firstname"/>
 
                 </LinearLayout>
 
