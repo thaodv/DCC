@@ -45,6 +45,7 @@ import io.wexchain.dcc.databinding.FragmentServiceBinding
 import io.wexchain.dcc.databinding.ItemServiceLoanBinding
 import io.wexchain.dccchainservice.domain.LoanProduct
 import io.wexchain.ipfs.utils.doMain
+import io.wexchain.ipfs.utils.io_main
 
 
 /**
@@ -331,6 +332,9 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
                 .subscribeBy {
                     adapter.setList(it)
                 }
+        GardenOperations.loginWithCurrentPassport()
+                .io_main()
+                .withLoading().subscribe()
     }
 
     private class Adapter(val onPosClick: (Int, Int) -> Unit) :

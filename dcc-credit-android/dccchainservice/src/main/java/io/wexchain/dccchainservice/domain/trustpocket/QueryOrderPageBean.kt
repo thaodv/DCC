@@ -12,6 +12,7 @@ data class QueryOrderPageBean(
         @SerializedName("assetValue") val assetValue: AssetValueBean,
         @SerializedName("requestIdentity") val requestIdentity: RequestIdentity,
         @SerializedName("createdTime") val createdTime: Long,
+        @SerializedName("type") val type: String,
         @SerializedName("kind") val kind: String //  TRANSFER-IN TRANSFER-OUT WITHDRAW DEPOSIT
 ) {
 

@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.modules.paymentcode
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
@@ -39,6 +40,7 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
     private lateinit var mUrl: String
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
@@ -137,6 +139,17 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
             })
             deleteDialog.show()
         }
+
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getAcquireOrderPayeeFee(it).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    binding.tvRate.text = "$it%"
+                }, {
+                })
     }
 
     private fun createGoods(assetCode: String, amount: String, title: String, description: String) {

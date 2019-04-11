@@ -39,14 +39,27 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
                 putExtra("id", item!!.requestIdentity.requestNo)
             }
         } else if ("TRANSFER-IN" == item.kind) {
-            navigateTo(TrustTransferDetailActivity::class.java) {
-                putExtra("id", item!!.requestIdentity.requestNo)
-                putExtra("type", "1")
+
+            if("TRANSFER" == item.type){
+                navigateTo(TrustTransferDetailActivity::class.java) {
+                    putExtra("id", item!!.requestIdentity.requestNo)
+                    putExtra("type", "1")
+                }
+            }else{
+                navigateTo(TrustTransferGetDetailActivity::class.java) {
+                    putExtra("id", item!!.requestIdentity.requestNo)
+                }
             }
         } else {
-            navigateTo(TrustTransferDetailActivity::class.java) {
-                putExtra("id", item!!.requestIdentity.requestNo)
-                putExtra("type", "2")
+            if("TRANSFER" == item.type){
+                navigateTo(TrustTransferDetailActivity::class.java) {
+                    putExtra("id", item!!.requestIdentity.requestNo)
+                    putExtra("type", "2")
+                }
+            }else{
+                navigateTo(TrustTransferGetDetailActivity::class.java) {
+                    putExtra("id", item!!.requestIdentity.requestNo)
+                }
             }
         }
     }
