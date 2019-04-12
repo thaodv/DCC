@@ -213,6 +213,7 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                                     checkPasswd()
                                 }
                             } else {
+                                finish()
                             }
                         }
 

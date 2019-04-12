@@ -147,7 +147,7 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
                 .doMain()
                 .withLoading()
                 .subscribe({
-                    binding.tvRate.text = "$it%"
+                    binding.tvRate.text = (it.toFloat() * 100).toString() + "%"
                 }, {
                 })
     }

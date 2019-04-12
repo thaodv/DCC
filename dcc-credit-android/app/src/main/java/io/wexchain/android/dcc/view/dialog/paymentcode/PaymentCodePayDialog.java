@@ -118,6 +118,7 @@ public class PaymentCodePayDialog extends Dialog implements View.OnClickListener
                 break;
             case R.id.bt_sure:
                 mOnClickListener.sure();
+                dismiss();
                 break;
             default:
                 break;
