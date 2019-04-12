@@ -49,6 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
                 android:padding="10dp"
                 android:src="@drawable/arrow_left_white"/>
 
@@ -86,9 +87,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{name}"
-                    android:visibility="gone"
                     android:textColor="@color/white50"
                     android:textSize="14sp"
+                    android:visibility="gone"
                     tools:text="\@DCC"/>
 
             </LinearLayout>

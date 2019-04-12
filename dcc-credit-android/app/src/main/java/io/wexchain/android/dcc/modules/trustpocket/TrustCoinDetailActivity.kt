@@ -129,6 +129,7 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
             navigateTo(TrustWithdrawActivity::class.java) {
                 putExtra("code", mCode)
                 putExtra("url", mUrl)
+                putExtra("use", "1")
             }
         }
 

@@ -12,6 +12,7 @@ data class QueryGoodsOrderPageBean(
         @SerializedName("lastUpdatedTime") val lastUpdatedTime: Long,
         @SerializedName("payerMemo") val payerMemo: String,
         @SerializedName("amount") val amount: String,
+        @SerializedName("receivedAmount") val receivedAmount: String,
         @SerializedName("goods") val goods: GoodsBean,
         @SerializedName("status") val status: Status
 ) {

@@ -61,6 +61,7 @@
                     tools:text="DCC"/>
 
                 <ImageView
+                    android:id="@+id/iv_img"
                     errorRes="@{@drawable/ethereum}"
                     imageUrl="@{url}"
                     android:layout_width="24dp"

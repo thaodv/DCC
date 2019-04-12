@@ -9,6 +9,10 @@
             name="bean"
             type="io.wexchain.dccchainservice.domain.trustpocket.GetTransferOrderBean.SplitAmountDetailsBean"/>
 
+        <variable
+            name="assetCode"
+            type="String"/>
+
     </data>
 
     <RelativeLayout
@@ -36,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="@{ViewModelHelper.showFeeText(bean.amount.decimalValue,bean.assetCode)}"
+            android:text="@{ViewModelHelper.showFeeText(bean.amount.decimalValue,assetCode)}"
             android:textColor="#4a4a4a"
             android:textSize="16sp"
             tools:text="2019-10-10 12:00:00"/>

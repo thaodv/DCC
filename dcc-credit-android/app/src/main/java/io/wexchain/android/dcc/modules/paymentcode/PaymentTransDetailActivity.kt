@@ -46,8 +46,8 @@ class PaymentTransDetailActivity : BindActivity<ActivityPaymentTransDetailBindin
                     binding.tvId.text = it.id
                     binding.tvUserMark.text = it.payerMemo
                     binding.tvAccount2.text = it.amount + " " + it.goods.assetCode
-                    binding.tvFee.text = ""
-                    binding.tvToAccount.text = it.amount + " " + it.goods.assetCode
+                    binding.tvFee.text = it.amount.toBigDecimal().subtract(it.receivedAmount.toBigDecimal()).toPlainString() + " " + it.goods.assetCode
+                    binding.tvToAccount.text = it.receivedAmount + " " + it.goods.assetCode
 
                 }, {
                     toast(it.message.toString())

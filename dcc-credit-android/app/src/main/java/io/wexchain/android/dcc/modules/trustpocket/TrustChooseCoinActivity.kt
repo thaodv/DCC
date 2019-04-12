@@ -94,6 +94,7 @@ class TrustChooseCoinActivity : BaseCompatActivity(), TextWatcher, ItemViewClick
             navigateTo(TrustWithdrawActivity::class.java) {
                 putExtra("code", item!!.cryptoAssetConfig.code)
                 putExtra("url", if (null == item.url) "" else item.url)
+                putExtra("use", "1")
             }
         } /*else if ("transfer" == mUse) {
             navigateTo(TrustTransferCheckActivity::class.java) {

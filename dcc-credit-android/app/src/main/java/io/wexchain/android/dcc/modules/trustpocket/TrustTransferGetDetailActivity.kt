@@ -3,7 +3,7 @@ package io.wexchain.android.dcc.modules.trustpocket;
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
+import android.view.View
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
@@ -17,23 +17,33 @@ import io.wexchain.dcc.databinding.ActivityTrustTransferGetDetailBinding
 import io.wexchain.dcc.databinding.ItemTrustTransferDetailGetBinding
 import io.wexchain.dccchainservice.domain.trustpocket.GetTransferOrderBean
 import io.wexchain.ipfs.utils.doMain
+import java.math.BigDecimal
 
 class TrustTransferGetDetailActivity : BindActivity<ActivityTrustTransferGetDetailBinding>() {
 
     private val mId get() = intent.getStringExtra("id")
+    private val mType get() = intent.getStringExtra("type")
+
+    lateinit var tag: String
 
     override val contentLayoutId: Int get() = R.layout.activity_trust_transfer_get_detail
 
-    lateinit var mRvList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
         title = ""
 
-        mRvList = findViewById(R.id.rv_list)
-
         getTransferOrder(mId)
+
+        if ("1" == mType) {
+            tag = "+ "
+        } else {
+            tag = "- "
+            binding.rvList.visibility = View.GONE
+            binding.rlToAccount.visibility = View.GONE
+            binding.vLine.visibility = View.GONE
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -45,16 +55,33 @@ class TrustTransferGetDetailActivity : BindActivity<ActivityTrustTransferGetDeta
                 .doMain()
                 .withLoading()
                 .subscribe({
-                    binding.tvAmount.text = it.amount.decimalValue + it.assetCode
+                    binding.tvAmount.text = tag + it.amount.decimalValue + it.assetCode
                     binding.tvStatus.text = ViewModelHelper.showTrustTransferStatus(it.status)
                     binding.tvOrderId.text = mId
                     binding.tvTime.text = ViewModelHelper.showRedPacketInviteTime(it.createdTime)
 
-                    val adapter = FeeAdapter()
-                    adapter.setList(it.splitAmountDetails)
-                    mRvList.adapter = adapter
+                    if ("1" == mType) {
 
-                    binding.tvAccount.text = it.amount.decimalValue + it.assetCode
+                        val adapter = FeeAdapter(it.assetCode)
+                        adapter.setList(it.splitAmountDetails)
+                        binding.rvList.adapter = adapter
+
+                        var fee: BigDecimal = BigDecimal.ZERO
+
+                        if (null == it.splitAmountDetails) {
+
+                        } else {
+                            if (it.splitAmountDetails!!.isEmpty()) {
+
+                            } else {
+                                for (ss in it.splitAmountDetails!!) {
+                                    fee += ss.amount.decimalValue.toBigDecimal()
+                                }
+                            }
+                        }
+                        binding.tvAccount.text = it.amount.decimalValue.toBigDecimal().subtract(fee).toPlainString() + " " + it.assetCode
+                    }
+
                     binding.tvTitle.text = it.memo
 
                 }, {
@@ -62,13 +89,15 @@ class TrustTransferGetDetailActivity : BindActivity<ActivityTrustTransferGetDeta
                 })
     }
 
-    class FeeAdapter : DataBindAdapter<ItemTrustTransferDetailGetBinding, GetTransferOrderBean.SplitAmountDetailsBean>(
+    class FeeAdapter(assetCode: String) : DataBindAdapter<ItemTrustTransferDetailGetBinding, GetTransferOrderBean.SplitAmountDetailsBean>(
             layout = R.layout.item_trust_transfer_detail_get,
             itemDiffCallback = itemDiffCallback({ a, b -> a.memo == b.memo })
     ) {
+        val assetCode: String = assetCode
 
         override fun bindData(binding: ItemTrustTransferDetailGetBinding, item: GetTransferOrderBean.SplitAmountDetailsBean?) {
             binding.bean = item
+            binding.assetCode = assetCode
         }
     }
 

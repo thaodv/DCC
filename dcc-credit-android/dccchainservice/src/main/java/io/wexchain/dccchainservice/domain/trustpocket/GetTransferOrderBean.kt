@@ -14,7 +14,7 @@ data class GetTransferOrderBean(
         @SerializedName("amount") val amount: AmountBean,
         @SerializedName("status") val status: Status,
         @SerializedName("memo") val memo: String,
-        @SerializedName("splitAmountDetails") val splitAmountDetails: List<SplitAmountDetailsBean>
+        @SerializedName("splitAmountDetails") val splitAmountDetails: List<SplitAmountDetailsBean>?
 ) {
 
     enum class Status {
@@ -36,7 +36,6 @@ data class GetTransferOrderBean(
     data class SplitAmountDetailsBean(
 
             @SerializedName("memo") val memo: String,
-            @SerializedName("assetCode") val assetCode: String,
             @SerializedName("amount") val amount: AmountBean) {
 
         data class AmountBean(

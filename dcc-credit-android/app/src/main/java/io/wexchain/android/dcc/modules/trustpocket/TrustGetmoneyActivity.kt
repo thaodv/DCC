@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.modules.trustpocket
 
 import android.content.ClipData
 import android.os.Bundle
+import androidx.view.toBitmap
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.onClick
@@ -32,6 +33,11 @@ class TrustGetmoneyActivity : BindActivity<ActivityTrustGetmoneyBinding>() {
 
         binding.btSave.onClick {
             toast("分享")
+            val ss = binding.ivPassportQr.toBitmap()
+            GardenOperations.sharePic(ss) {
+                toast(it)
+            }
+
         }
 
         binding.btCopy.setOnClickListener {

@@ -69,6 +69,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
     lateinit var mFragmentManager: FragmentManager
 
 
+    private var mUse: String = "1"
     private var mCode: String? = null
     private var mUrl: String? = null
     private var mAddress: String? = null
@@ -91,6 +92,12 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
         mCode = intent.getStringExtra("code")
         mUrl = intent.getStringExtra("url")
         mAddress = intent.getStringExtra("address")
+        mUse = intent.getStringExtra("use")
+
+        if ("2" == mUse) {
+            binding.ivImg.visibility = View.INVISIBLE
+            binding.name = getString(R.string.please_select)
+        }
 
         if (null != mAddress) {
             binding.etAddress.setText(mAddress)
@@ -147,7 +154,9 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
             mAddress = binding.etAddress.text.trim().toString()
             mAccount = binding.etAccount.text.trim().toString()
 
-            if (null != mAddress && "" == mAddress) {
+            if (binding.tvName.text.toString() == getString(R.string.please_select)) {
+                toast(getString(R.string.please_choose_coin_type))
+            } else if (null != mAddress && "" == mAddress) {
                 toast(getString(R.string.trust_pocket_withdraw_tip1))
             } else if ("" == mAccount) {
                 toast(getString(R.string.trust_pocket_withdraw_tip2))
@@ -459,6 +468,11 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
         when (requestCode) {
             RequestCodes.CHOOSE_WITHDRAW_CODE -> {
                 if (resultCode == ResultCodes.RESULT_OK) {
+
+                    if ("2" == mUse) {
+                        binding.ivImg.visibility = View.VISIBLE
+                    }
+
                     mCode = data!!.getStringExtra("code")
                     mUrl = data!!.getStringExtra("url")
 

@@ -85,7 +85,7 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
             } else if ("" == binding.etDescription.text.toString()) {
                 toast("请填写说明")
             } else if ("请选择" == binding.tvName.text.toString()) {
-                toast("请选择币种")
+                toast(getString(R.string.please_choose_coin_type))
             } else {
                 if ("0" == mPayStyle) {
                     if ("" == binding.paystyle.etAmount) {

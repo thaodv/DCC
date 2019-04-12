@@ -508,6 +508,7 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                             override fun trustWithdraw() {
                                 navigateTo(TrustWithdrawActivity::class.java) {
                                     putExtra("address", qScanResultIsAddressDialog.mTvAddress.text.toString())
+                                    putExtra("use", "2")
                                 }
                                 finish()
                             }
@@ -532,6 +533,7 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                             override fun trustWithdraw() {
                                 navigateTo(TrustWithdrawActivity::class.java) {
                                     putExtra("address", qScanResultIsAddressDialog.mTvAddress.text.toString())
+                                    putExtra("use", "2")
                                 }
                                 finish()
                             }

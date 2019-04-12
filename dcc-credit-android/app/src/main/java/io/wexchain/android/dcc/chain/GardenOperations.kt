@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.chain
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram
@@ -29,6 +30,7 @@ import zlc.season.rxdownload3.RxDownload
 import zlc.season.rxdownload3.core.Mission
 import zlc.season.rxdownload3.core.Succeed
 import java.io.File
+
 
 /**
  *Created by liuyang on 2018/8/21.
@@ -266,6 +268,22 @@ object GardenOperations {
             val req = SendMessageToWX.Req()
                     .apply {
                         transaction = buildTransaction("webpage", false)
+                        message = msg
+                        scene = SendMessageToWX.Req.WXSceneSession  // 目前支持会话
+                    }
+            WxApiManager.wxapi.sendReq(req)
+        }
+    }
+
+    fun sharePic(bmp: Bitmap, error: (String) -> Unit) {
+        error.check {
+            val imgObj = WXImageObject(bmp)
+            val msg = WXMediaMessage()
+            msg.mediaObject = imgObj
+
+            val req = SendMessageToWX.Req()
+                    .apply {
+                        transaction = buildTransaction("img", false)
                         message = msg
                         scene = SendMessageToWX.Req.WXSceneSession  // 目前支持会话
                     }

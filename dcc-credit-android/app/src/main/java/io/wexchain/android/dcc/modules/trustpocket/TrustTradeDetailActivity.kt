@@ -48,6 +48,7 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
             }else{
                 navigateTo(TrustTransferGetDetailActivity::class.java) {
                     putExtra("id", item!!.requestIdentity.requestNo)
+                    putExtra("type", "1")
                 }
             }
         } else {
@@ -59,6 +60,7 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
             }else{
                 navigateTo(TrustTransferGetDetailActivity::class.java) {
                     putExtra("id", item!!.requestIdentity.requestNo)
+                    putExtra("type", "2")
                 }
             }
         }
