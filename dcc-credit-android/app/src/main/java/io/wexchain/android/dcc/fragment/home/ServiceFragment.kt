@@ -287,7 +287,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
                 }
             } else {
 
-                val url = /*if (BuildConfig.DEBUG) "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress" else*/ "http://www.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress"
+                val url = /*if (BuildConfig.DEBUG) "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress" else*/ "https://www.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress"
                 startActivity(StaticHtmlActivity.getResultIntent(context, "如何发起", url))
             }
         }
@@ -302,7 +302,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
                     startActivity(intent)
                 }
             } else {
-                val url = /*if (BuildConfig.DEBUG) "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress" else*/ "http://www.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress"
+                val url = /*if (BuildConfig.DEBUG) "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress" else*/ "https://www.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress"
                 startActivity(StaticHtmlActivity.getResultIntent(context, "如何参与", url))
             }
         }
