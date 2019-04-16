@@ -54,4 +54,8 @@ object Extras {
     const val SP_TRUST_MOBILE_PHONE = "trust_mobile_phone"
     const val SP_TRUST_FINGER_PAY_STATUS = "trust_finger_pay_status"
 
+    const val SP_CACHE_TRUST_AMOUNT="cache_trust_amount"
+    const val SP_CACHE_BSX_AMOUNT="cache_bsx_amount"
+    const val SP_CACHE_DIGEST_AMOUNT = "cache_digest_amount"
+
 }

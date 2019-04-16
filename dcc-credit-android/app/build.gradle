@@ -54,7 +54,7 @@ android {
         release {
             signingConfig signingConfigs.wexchain
 
-            //debuggable true
+            debuggable true
 
             minifyEnabled false
             zipAlignEnabled false

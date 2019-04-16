@@ -3,7 +3,6 @@ package io.wexchain.android.dcc.modules.repay
 import android.content.ClipData
 import android.os.Bundle
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.Pop
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.getClipboardManager
@@ -90,7 +89,7 @@ class LoanRepayActivity : BindActivity<ActivityLoanRepayBinding>() {
                             waitTransDialog.show()
                         }
                     }, {
-                        Pop.toast(it.message ?: "系统错误", this)
+                        toast(it.message ?: getString(R.string.system_error))
                     })
                 }
             }

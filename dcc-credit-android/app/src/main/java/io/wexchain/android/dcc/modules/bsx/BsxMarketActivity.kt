@@ -61,7 +61,7 @@ class BsxMarketActivity : BindActivity<ActivityBsxMarketBinding>(), ItemViewClic
 
                         },
                         onError = {
-                            toast(it.message ?: "系统错误")
+                            toast(it.message ?: getString(R.string.system_error))
                         })
     }
 

@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.fragment.home
 
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
+import android.os.Bundle
 import android.view.View
 import io.reactivex.rxkotlin.Singles
 import io.wexchain.android.common.base.BindFragment
@@ -38,6 +39,7 @@ import java.math.RoundingMode
 /**
  *Created by liuyang on 2018/9/27.
  */
+@SuppressLint("SetTextI18n")
 class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListener<DigitalCurrency> {
 
     private var tmpList: List<DigitalCurrency>? = null
@@ -52,8 +54,30 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
     var mTrustValue: String = ""
     var mBsxValue: String = ""
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        /*val cacheTrustAmount = ShareUtils.getString(Extras.SP_CACHE_TRUST_AMOUNT, "")
+        if ("" != cacheTrustAmount) {
+            binding.tvTrustAmount.text = "≈" + CommonUtils.showCurrencySymbol() + cacheTrustAmount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).setSelfScale(2)
+        }
 
-    @SuppressLint("SetTextI18n")
+        val cacheBsxAmount = ShareUtils.getString(Extras.SP_CACHE_BSX_AMOUNT, "")
+        if ("" != cacheBsxAmount) {
+            mBsxValue = "≈" + CommonUtils.showCurrencySymbol() + cacheBsxAmount
+        }*/
+
+        /*val cacheDigestAmount = ShareUtils.getString(Extras.SP_CACHE_DIGEST_AMOUNT, "")
+
+        var res = BigDecimal.ZERO
+
+        if ("" == cacheDigestAmount) {
+            res = BigDecimal.ZERO
+        } else {
+            res = cacheDigestAmount.toBigDecimal()
+        }*/
+
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -125,20 +149,30 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                 .doMain()
                 .withLoading()
                 .subscribe({
-                    val trustAmount = it.second.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal())
 
-                    mTrustValue = "≈￥" + trustAmount.setSelfScale(2)
+                    val tempTrustAmount = it.second.totalPrice.amount
+
+                    //ShareUtils.setString(Extras.SP_CACHE_TRUST_AMOUNT, tempTrustAmount)
+
+                    val trustAmount = tempTrustAmount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal())
+
+                    mTrustValue = "≈" + CommonUtils.showCurrencySymbol() + trustAmount.setSelfScale(2)
+
                     binding.tvTrustAmount.text = mTrustValue
 
                     val bsxAccount = if (null == it.third.corpus) {
                         "0"
                     } else StringUtils.keep2double(it.third.corpus)
 
-                    mBsxValue = "≈￥$bsxAccount"
+                    //ShareUtils.setString(Extras.SP_CACHE_BSX_AMOUNT, bsxAccount)
+
+                    mBsxValue = "≈" + CommonUtils.showCurrencySymbol() + bsxAccount
 
                     binding.tvBsx.text = mBsxValue
 
                     val digestAccountRnb = binding.tvDigestRnb.text.toString()
+
+                    //ShareUtils.setString(Extras.SP_CACHE_DIGEST_AMOUNT, digestAccountRnb)
 
                     var res = BigDecimal.ZERO
 
@@ -156,11 +190,11 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
 
 
                     // 已开户
-                    if(null == it.first.result){
+                    if (null == it.first.result) {
                         isOpenTrustPocket = false
                         binding.ivNext.visibility = View.GONE
                         binding.btOpen.visibility = View.VISIBLE
-                    }else{
+                    } else {
                         if (it.first.result!!.mobileUserId != null) {
                             isOpenTrustPocket = true
                             binding.ivNext.visibility = View.VISIBLE

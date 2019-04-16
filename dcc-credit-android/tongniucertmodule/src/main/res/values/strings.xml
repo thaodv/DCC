@@ -1,6 +1,6 @@
 <resources>
-    <string name="for_details">认证内容</string>
-    <string name="img_code1">请输入图形验证码</string>
+    <!--<string name="for_details">认证内容</string>-->
+    <!--<string name="img_code1">请输入图形验证码</string>-->
     <string name="cost_of_verification">认证费: </string>
     <string name="wrong_password">密码错误</string>
     <string name="verification_first">身份证认证未完成</string>

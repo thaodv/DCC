@@ -517,7 +517,7 @@ class LoadingActivity : BaseCompatActivity() {
                         })
                         deleteDialog.show()
                     } else {
-                        toast("系统错误")
+                        toast(getString(R.string.system_error))
                     }
                 }, {
                     toast(it.message.toString())

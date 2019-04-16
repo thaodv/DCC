@@ -56,7 +56,7 @@ class BsxHoldingActivity : BindActivity<ActivityBsxHoldingBinding>(), ItemViewCl
 
                         },
                         onError = {
-                            toast(it.message ?: "系统错误")
+                            toast(it.message ?: getString(R.string.system_error))
                         })
     }
 

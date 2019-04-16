@@ -46,6 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:text="@string/trust_pocket_open_tip2"
             android:textColor="@color/white"
             android:textSize="24sp"/>

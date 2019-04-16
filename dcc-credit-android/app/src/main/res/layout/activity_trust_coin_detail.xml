@@ -153,7 +153,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="充币"
+                    android:text="@string/trust_pocket_recharge"
                     android:textColor="#554E4E"
                     android:textSize="16sp"/>
 
@@ -176,7 +176,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="收币"
+                    android:text="@string/trust_pocket_get"
                     android:textColor="#554E4E"
                     android:textSize="16sp"/>
 
@@ -199,7 +199,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="提币"
+                    android:text="@string/trust_pocket_withdraw"
                     android:textColor="#554E4E"
                     android:textSize="16sp"/>
 
@@ -222,7 +222,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="转账"
+                    android:text="@string/transfer"
                     android:textColor="#554E4E"
                     android:textSize="16sp"/>
 
@@ -240,7 +240,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="交易记录"
+                android:text="@string/trans_records"
                 android:textColor="#FF333333"
                 android:textSize="17sp"/>
 
@@ -281,7 +281,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="全部"
+                    android:text="@string/all"
                     android:textColor="#6144CC"
                     android:textSize="16sp"/>
 
@@ -306,7 +306,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="收入"
+                    android:text="@string/received"
                     android:textColor="#9B9B9B"
                     android:textSize="16sp"/>
 
@@ -332,7 +332,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="支出"
+                    android:text="@string/payment"
                     android:textColor="#9B9B9B"
                     android:textSize="16sp"/>
 

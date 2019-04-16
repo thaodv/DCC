@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:background="@null"
-            android:hint="请输入搜索关键词"
+            android:hint="@string/enter_search_keywords"
             android:maxLines="1"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"

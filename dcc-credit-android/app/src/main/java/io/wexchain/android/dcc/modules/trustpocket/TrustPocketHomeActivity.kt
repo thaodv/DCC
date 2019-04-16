@@ -5,13 +5,16 @@ import android.os.Bundle
 import io.reactivex.rxkotlin.Singles
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
+import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.tools.LogUtils
+import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.tools.check
 import io.wexchain.android.dcc.view.adapter.DataBindAdapter
 import io.wexchain.android.dcc.view.adapter.ItemViewClickListener
@@ -40,6 +43,12 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
+
+        val cacheTrustAmount = ShareUtils.getString(Extras.SP_CACHE_TRUST_AMOUNT, "")
+        if ("" != cacheTrustAmount) {
+            binding.totalPrice = "≈" + CommonUtils.showCurrencySymbol() + cacheTrustAmount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).setSelfScale(2)
+            binding.totalPrice2 = "≈" + cacheTrustAmount.toBigDecimal().setSelfScale(8) + " USDT"
+        }
 
         binding.ivBack.onClick {
             finish()
@@ -131,7 +140,7 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
                 .withLoading()
                 .subscribeBy(onSuccess = {
 
-                    mValue1 = "≈￥" + it.first.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).setSelfScale(2)
+                    mValue1 = "≈" + CommonUtils.showCurrencySymbol() + it.first.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).setSelfScale(2)
                     mValue2 = "≈" + it.first.totalPrice.amount.toBigDecimal().setSelfScale(8) + " " + it.first.totalPrice.assetCode
 
                     binding.totalPrice = mValue1

@@ -2,11 +2,11 @@ package io.wexchain.android.dcc.modules.repay
 
 import android.os.Bundle
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.Pop
 import io.wexchain.android.common.base.BindActivity
 import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.ScfOperations
 import io.wexchain.android.dcc.repo.AssetsRepository
@@ -82,7 +82,7 @@ class ReviewRepayActivity : BindActivity<ActivityReviewRepayBinding>() {
                                 navigateTo(RepayingActivity::class.java)
                             }
                         }, {
-                            Pop.toast(it.message ?: "系统错误", this)
+                            toast(it.message ?: getString(R.string.system_error))
                         })
                     }
                 }
@@ -130,7 +130,7 @@ class ReviewRepayActivity : BindActivity<ActivityReviewRepayBinding>() {
 
 
                 }, {
-                    Pop.toast(it.message ?: "系统错误", this)
+                    toast(it.message ?: getString(R.string.system_error))
                 })
     }
 }

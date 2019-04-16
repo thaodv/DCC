@@ -259,7 +259,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                                                     })
                                                     getRedpacketDialog.show()
                                                 } else {
-                                                    toast(it.message ?: "系统错误")
+                                                    toast(it.message ?: getString(R.string.system_error))
                                                 }
 
                                             })
@@ -375,7 +375,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                             }
                         },
                         onError = {
-                            toast(it.message ?: "系统错误")
+                            toast(it.message ?: getString(R.string.system_error))
                         }
                 )
     }

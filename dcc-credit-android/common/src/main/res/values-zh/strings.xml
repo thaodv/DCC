@@ -215,6 +215,7 @@
     <string name="id_no_label_to">身份证号:</string>
     <string name="cert_expired_label">认证有效期</string>
     <string name="authenticator">认证方：云金融</string>
+    <string name="authenticator1">认证方：同牛</string>
     <string name="fill_info_warning">随意填写会对您的信用审核造成负面影响</string>
     <string name="provide_photos_of_both_sides">请拍摄身份证照片，系统自动识别：</string>
     <string name="please_try_ocr">请点击上方按钮拍照识别</string>
@@ -466,6 +467,19 @@
     <string name="trust_recharge_from_digest"><u>从数字钱包充币</u></string>
 
 
+    <string name="date_picker_longvaild">长期有效</string>
+    <string name="date_picker_title">请选择时间</string>
+    <string name="date_picker_confirm">确定</string>
+    <string name="date_picker_year">年</string>
+    <string name="date_picker_month">月</string>
+    <string name="date_picker_day">日</string>
+    <string name="date_picker_hour">时</string>
+    <string name="date_picker_minute">分</string>
+
+    <string name="img_code1">请输入图形验证码</string>
+
+    <string name="system_error">系统错误</string>
+
     <string name="payment_pay_dialog_title">确认付款</string>
     <string name="payment_pay_dialog_text1">收款标题</string>
     <string name="payment_pay_dialog_text2">订单编号</string>
@@ -642,6 +656,18 @@
     <string name="trust_pocket_withdraw_tip3">个起提</string>
     <string name="trust_pocket_withdraw_tip4">请先选择币种</string>
     <string name="trust_pocket_withdraw_tip5">提币申请提交成功！请耐心等待到账</string>
+
+    <string name="digest_pocket">数字钱包</string>
+    <string name="total_asset">总资产</string>
+    <string name="my_invest">我的投资</string>
+    <string name="trust_pocket_total_asset">托管钱包总资产</string>
+    <string name="detail">明细</string>
+    <string name="hide_zero_assets">隐藏零资产币种</string>
+    <string name="digest_pocket_total_assets">数字钱包总资产</string>
+    <string name="enter_search_keywords">请输入搜索关键词</string>
+
+    <string name="received">收入</string>
+    <string name="payment">支出</string>
 
 
 </resources>

@@ -183,7 +183,7 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
                     toast("提交贷款申请成功")
                     navigateTo(LoanSubmitResultActivity::class.java)
                 }, {
-                    Pop.toast(it.message ?: "系统错误", this)
+                    toast(it.message ?: getString(R.string.system_error))
                 })
     }
 
@@ -218,7 +218,7 @@ class StartLoanActivity : BindActivity<ActivityStartLoanBinding>() {
                     toast("取消成功")
                 }, {
                     if (it is DccChainServiceException) {
-                        Pop.toast(it.message ?: "系统错误", this)
+                        toast(it.message ?: getString(R.string.system_error))
                     }
                 })
     }

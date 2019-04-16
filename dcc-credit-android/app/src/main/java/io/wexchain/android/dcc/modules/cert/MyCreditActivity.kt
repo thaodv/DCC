@@ -8,8 +8,11 @@ import android.text.TextUtils
 import android.view.View
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
-import io.wexchain.android.common.*
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.navigateTo
+import io.wexchain.android.common.onClick
+import io.wexchain.android.common.runOnMainThread
+import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
@@ -216,7 +219,7 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
                                     }
                                 },
                                 onError = {
-                                    Pop.toast(it.message ?: "系统错误", this)
+                                    toast(it.message ?: getString(R.string.system_error))
                                 })
             }
         }

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.wexchain.android.common.Pop
 import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.navigateTo
@@ -81,7 +80,7 @@ class RequisiteCertListActivity : BaseCompatActivity() {
                                     }
                                 }
                             }, {
-                                Pop.toast(it.message ?: "系统错误", this)
+                                toast(it.message ?: getString(R.string.system_error))
                             })
                 }
             }

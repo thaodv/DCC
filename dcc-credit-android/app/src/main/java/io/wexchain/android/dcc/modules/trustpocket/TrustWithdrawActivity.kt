@@ -288,10 +288,10 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
                         trustWithdrawDialog.dismiss()
 
                     } else {
-                        toast("系统错误")
+                        toast(getString(R.string.system_error))
                     }
                 }, {
-                    toast(it.message.toString())
+                    toast(it.message ?: getString(R.string.system_error))
                 })
     }
 
@@ -457,10 +457,10 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
                         })
                         deleteDialog.show()
                     } else {
-                        toast("系统错误")
+                        toast(getString(R.string.system_error))
                     }
                 }, {
-                    toast(it.message.toString())
+                    toast(it.message ?: getString(R.string.system_error))
                 })
     }
 

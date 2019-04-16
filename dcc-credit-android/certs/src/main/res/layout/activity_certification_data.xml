@@ -41,7 +41,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:gravity="center_vertical"
-                        android:text="@string/authenticator"
+                        android:text="@string/authenticator1"
                         android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
                         app:layout_constraintTop_toTopOf="parent" />
 
