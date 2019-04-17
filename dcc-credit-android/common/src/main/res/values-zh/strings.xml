@@ -479,6 +479,7 @@
     <string name="img_code1">请输入图形验证码</string>
 
     <string name="system_error">系统错误</string>
+    <string name="select">请选择</string>
 
     <string name="payment_pay_dialog_title">确认付款</string>
     <string name="payment_pay_dialog_text1">收款标题</string>

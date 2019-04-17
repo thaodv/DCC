@@ -46,7 +46,7 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
         initToolbar()
         initTimerPicker()
 
-        binding.name = "请选择"
+        binding.name = getString(R.string.select)
         binding.tvDeadtimeValue.text = "长期有效"
 
         binding.paystyle.setFixChecked()
@@ -84,7 +84,7 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
                 toast("请填写标题")
             } else if ("" == binding.etDescription.text.toString()) {
                 toast("请填写说明")
-            } else if ("请选择" == binding.tvName.text.toString()) {
+            } else if (getString(R.string.select) == binding.tvName.text.toString()) {
                 toast(getString(R.string.please_choose_coin_type))
             } else {
                 if ("0" == mPayStyle) {
