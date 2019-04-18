@@ -1,9 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">DccChainService</string>
-    <string name="mortgage_loan">抵押借贷</string>
-    <string name="day">天</string>
-    <string name="id_verification">身份证认证</string>
-    <string name="bank_account_verification">银行卡认证</string>
-    <string name="carrier_verification">运营商认证</string>
-    <string name="ordinary_loan">普通借贷</string>
+
+    <string name="mortgage_loan">Mortgage loan</string>
+    <string name="day">Day</string>
+    <string name="ordinary_loan">Ordinary loan</string>
+
 </resources>

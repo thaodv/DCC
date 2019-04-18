@@ -1,48 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="enable_gesture_pattern">启用手势密码</string>
-    <string name="verify_gesture_pattern">验证手势密码</string>
-    <string name="enable_pin">启用数字密码</string>
-    <string name="repeat_pin">再次输入数字密码</string>
-    <string name="verify_pin">验证数字密码</string>
-    <string name="please_draw_pattern">请绘制解锁图案</string>
-    <string name="protect_enabled">已开启</string>
-    <string name="protect_not_enabled">未开启</string>
+
+    <string name="user_avatar">Profile photo</string>
+    <string name="user_nickname">Username</string>
+    <string name="save_changes">Save</string>
+    <string name="please_input_nickname">Please input nickname</string>
+    <string name="use_this_picture">使用</string>
+    <string name="passport_address">Address of collection wallet</string>
+    <string name="local_protect">Local security</string>
+    <string name="export_passport">Back up</string>
+    <string name="modify_passport_password">Change wallet password</string>
+    <string name="remove_passport">Delete the wallet (logout)</string>
+    <string name="check_update">Version update</string>
+    <string name="address_description">QR code showscontains yourthe wallet address, which could be used as collection address for ETH and DCC</string>
+    <string name="copy_passport_address">Copy the wallet address</string>
+    <string name="choose_protect_type">Choose method</string>
+    <string name="guesture_password">Guesture password</string>
+    <string name="digitalnumerical_password">Numerical password</string>
+    <string name="enable_gesture_pattern">Enable guesture password</string>
+    <string name="please_draw_pattern">Please draw here again</string>
+    <string name="enable_pin">Enable numerical password</string>
+    <string name="fingerprint_identification">Fingerprint identification</string>
+    <string name="skip">Skip</string>
+    <string name="verify_pin">Numrical code verification</string>
+    <string name="pin_incorrect_please_retry">Wrong code, please try again</string>
+    <string name="repeat_pin">Enter digit code again</string>
+    <string name="notice_gesture_at_least_4">Connect at least 4 dots, please try again</string>
+    <string name="gesture_password_not_match_please_retry">Different from last pattern, please try again</string>
+    <string name="protect_enabled">Able</string>
+    <string name="protect_not_enabled">Disabled</string>
+    <string name="please_draw_pattern_again">Please draw here again</string>
+    <string name="verify_gesture_pattern">Verifying hand sign ciphers</string>
+    <string name="gesture_password_error_please_retry">Wrong password!</string>
+    <string name="copy_succeed">Success</string>
+    <string name="input_back_cancel"><![CDATA[<Delete]]></string>
+
     <string name="verify_finger_print">验证指纹识别</string>
-    <string name="notice_gesture_at_least_4">最少连接四个点，请重新绘制</string>
-    <string name="gesture_password_not_match_please_retry">与上次绘制不一致，请重新绘制</string>
-    <string name="gesture_password_error_please_retry">手势密码错误，请重试</string>
-    <string name="pin_incorrect_please_retry">数字密码错误，请重试</string>
     <string name="pin_repeat_not_match">两次密码输入不一致</string>
     <string name="please_touch_finger_print_sensor">请将手指放于指纹在传感器上</string>
     <string name="local_protect_enabled">本地保护已开启</string>
-    <string name="choose_protect_type">选择验证方式</string>
-    <string name="skip">跳过</string>
-    <string name="cancel">取消</string>
-    <string name="input_back_cancel"><![CDATA[<删除]]></string>
-    <string name="address_description">二维码显示的是钱包地址,它可以作为以太坊及 DCC代币的接收地址</string>
-    <string name="copy_passport_address">复制钱包地址</string>
-    <string name="copy_succeed">复制成功</string>
-    <string name="user_avatar">头像</string>
-    <string name="user_nickname">昵称</string>
     <string name="edit_nickname">更改昵称</string>
-    <string name="save_changes">保存</string>
-    <string name="please_input_nickname">请输入昵称</string>
-    <string name="use_this_picture">使用</string>
-    <string name="passport_address">钱包地址</string>
     <string name="data_cloud_storage">数据云存储</string>
     <string name="start_in">立即启用</string>
     <string name="start_out">已启用，开始同步</string>
-    <string name="local_protect">本地安全保护</string>
-    <string name="export_passport">备份钱包</string>
-    <string name="modify_passport_password">修改钱包密码</string>
-    <string name="address_book">地址薄</string>
-    <string name="about_us">关于我们</string>
-    <string name="remove_passport">删除钱包(注销)</string>
-    <string name="check_update">版本更新</string>
-    <string name="guesture_password">手势密码</string>
-    <string name="digitalnumerical_password">数字密码</string>
-    <string name="fingerprint_identification">指纹识别</string>
-    <string name="please_draw_pattern_again">请再次绘制解锁图案</string>
 
 
 </resources>

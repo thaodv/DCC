@@ -1,0 +1,5 @@
+<resources>
+    <string name="mortgage_loan">抵押借贷</string>
+    <string name="day">天</string>
+    <string name="ordinary_loan">普通借贷</string>
+</resources>
