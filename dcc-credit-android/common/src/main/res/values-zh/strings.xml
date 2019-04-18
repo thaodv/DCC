@@ -27,7 +27,6 @@
     <string name="coming_soon">Coming soon</string>
     <string name="affiliate_description">总共可邀请5位好友加入BitEXPRESS，\n每邀请一位好友注册并实名后，\n您将获得额外奖励</string>
 
-
     <string name="confirm_repayment">确认还币</string>
     <string name="scan_the_qr">扫描二维码可获得还币地址</string>
     <string name="loan_submit_fee_colon">借款申请手续费:</string>
@@ -195,6 +194,7 @@
     <string name="title_import_wallet">导入已有钱包</string>
     <string name="title_id_certification">身份认证</string>
     <string name="rewards_collection_record">领取记录</string>
+
     <string name="accumulative_income">累计获得%1$s</string>
     <string name="eco_pointss_earnedfrom_yesterday">昨日获得生态值</string>
     <string name="rewardss">获得奖励</string>
@@ -229,6 +229,7 @@
     <string name="for_details">认证内容</string>
     <string name="update">更新</string>
     <string name="submit">提交</string>
+
     <string name="the_latest_update_on">报告更新时间 :</string>
     <string name="the_latest_update">更新报告</string>
     <string name="personal_information">个人基本信息</string>
@@ -258,6 +259,7 @@
     <string name="requiredinformation_verification">审核资料:</string>
     <string name="apply_for_loan">申请借币</string>
     <string name="other">其他金额</string>
+
     <string name="please_enterinputenter_your_desired_amount">请输入其他金额</string>
     <string name="handling_fee_of_loan">借币手续费</string>
     <string name="standard">标准模式 </string>
@@ -281,6 +283,7 @@
     <string name="please_enterinputenter">请输入收款地址</string>
     <string name="Please_set_the_notes">请设置备注</string>
     <string name="dcc_exchange_explain">DCC业务链上的token只能在DCC业务链钱包地址间互转，和以太坊业务链的钱包是通用的，若需要将DCC业务链上的token转入以太坊链，请使用跨链转移功能。</string>
+
     <string name="add_digital_asset">添加数字资产</string>
     <string name="submit_new_token">提交新token</string>
     <string name="verify_success2">审核成功</string>
@@ -302,6 +305,7 @@
     <string name="copy_the_keystore_text_messageinformation">复制KEYSTORE文本信息</string>
     <string name="wallet_password">钱包密码</string>
     <string name="ok_1">知道了</string>
+
     <string name="more_candies_are_coming">更多糖果 敬请期待</string>
     <string name="digging_mining">努力挖矿中…</string>
     <string name="reward_unavailable">暂无奖励</string>
@@ -330,6 +334,7 @@
     <string name="please_input_gaslimit">GasLimit不能为空</string>
     <string name="user_alias_changed">昵称修改成功</string>
     <string name="please_download_and_update">当前版本已无法正常使用，请下载更新</string>
+
     <string name="current_version">当前版本</string>
     <string name="enable_login">启用统一登录</string>
     <string name="disable_login">禁用统一登录</string>
@@ -347,6 +352,7 @@
     <string name="WeXCreatePassportViewController_description1">密码用于保护私钥和交易授权，强度非常重要\n应用提供方不存储密码，也无法帮您找回，请务必牢记</string>
     <string name="create_new_digital_wallet">新建数字钱包</string>
     <string name="enter_invitation_code">填写邀请码</string>
+
     <string name="verification_first">身份证认证未完成</string>
     <string name="correct_wallet_address">请输入有效的地址</string>
     <string name="correct_wallet">借款钱包:</string>
@@ -370,6 +376,7 @@
     <string name="for_questions_and_business_collaboration">商务合作 业务资讯</string>
     <string name="long_press_to_copy_new_invition_code">长按复制邀请码</string>
     <string name="modify_nickname">修改昵称</string>
+
     <string name="cost_of_verification">认证费: </string>
     <string name="cost_of_verification1">认证费: </string>
     <string name="balance">持有量: </string>
@@ -385,11 +392,9 @@
     <string name="add_new_address">添加收币地址</string>
     <string name="bank">开户行</string>
     <string name="copy">复制</string>
-    <!--<string name="please_transfer">①请将待还币金额 %.4f%@ 转入到下面的还币地址中</string>-->
     <string name="please_transfer"><![CDATA[请将待还币金额%1$s %2$s 转入到下面的还币地址中]]></string>
     <string name="result">还币结果</string>
     <string name="success4">还币成功</string>
-
 
     <string name="across_trans_record">跨链交易记录</string>
     <string name="across_trans">跨链交易</string>
@@ -465,7 +470,6 @@
 
     <string name="trust_transfer_tip">注：\n使用转账功能会转入对方的托管钱包，如要转到自己或他人的数字钱包，请使用<font color='#6144CC'>提币</font>功能</string>
     <string name="trust_recharge_from_digest"><u>从数字钱包充币</u></string>
-
 
     <string name="date_picker_longvaild">长期有效</string>
     <string name="date_picker_title">请选择时间</string>
@@ -647,7 +651,6 @@
     <string name="trust_pocket_transfer_text7">超过可提总量</string>
     <string name="trust_pocket_transfer_text8">请确认对方信息是否正确！</string>
 
-
     <string name="please_choose_coin_type">请选择币种</string>
     <string name="please_input_transfer_count">请输入转账数量</string>
 
@@ -669,6 +672,5 @@
 
     <string name="received">收入</string>
     <string name="payment">支出</string>
-
 
 </resources>
