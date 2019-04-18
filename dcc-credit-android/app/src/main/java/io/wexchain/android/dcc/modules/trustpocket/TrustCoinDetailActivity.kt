@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.modules.trustpocket
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.arch.lifecycle.Observer
 import android.os.Bundle
@@ -26,6 +27,7 @@ import io.wexchain.ipfs.utils.doMain
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
 
+@SuppressLint("SimpleDateFormat")
 class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), ItemViewClickListener<GetBalanceLogBean> {
 
     val mUrl get() = intent.getStringExtra("url")

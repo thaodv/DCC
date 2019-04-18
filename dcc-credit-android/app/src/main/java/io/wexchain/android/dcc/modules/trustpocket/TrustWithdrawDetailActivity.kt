@@ -1,8 +1,11 @@
 package io.wexchain.android.dcc.modules.trustpocket
 
 import android.annotation.SuppressLint
+import android.content.ClipData
 import android.os.Bundle
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.getClipboardManager
+import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
@@ -42,6 +45,16 @@ class TrustWithdrawDetailActivity : BindActivity<ActivityTrustWithdrawDetailBind
                     binding.tvAccount.text = it.amount.decimalValue + " " + it.assetCode
                     binding.tvAddress.text = it.receiverAddress
                     binding.tvTime.text = ViewModelHelper.showRedPacketInviteTime(it.createdTime)
+
+                    binding.tvOrderId.onClick {
+                        getClipboardManager().primaryClip = ClipData.newPlainText("passport address", it.requestIdentity.requestNo)
+                        toast(R.string.copy_succeed)
+                    }
+
+                    binding.tvAddress.onClick {
+                        getClipboardManager().primaryClip = ClipData.newPlainText("passport address", it.receiverAddress)
+                        toast(R.string.copy_succeed)
+                    }
 
                 }, {
                     toast(it.message.toString())

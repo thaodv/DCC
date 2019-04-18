@@ -189,30 +189,30 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                     binding.tvTotalUsdt.text = mValue2
 
 
-                    // 已开户
+                    // 未开户
                     if (null == it.first.result) {
                         isOpenTrustPocket = false
-                        binding.ivNext.visibility = View.GONE
                         binding.btOpen.visibility = View.VISIBLE
+                        binding.llTrustData.visibility = View.GONE
                     } else {
                         if (it.first.result!!.mobileUserId != null) {
                             isOpenTrustPocket = true
-                            binding.ivNext.visibility = View.VISIBLE
                             binding.btOpen.visibility = View.GONE
+                            binding.llTrustData.visibility = View.VISIBLE
                             App.get().mobileUserId = it.second.mobileUserId
 
                         } else {
                             isOpenTrustPocket = false
-                            binding.ivNext.visibility = View.GONE
                             binding.btOpen.visibility = View.VISIBLE
+                            binding.llTrustData.visibility = View.GONE
                         }
                     }
 
                 }, {
                     // 未开户
                     isOpenTrustPocket = false
-                    binding.ivNext.visibility = View.GONE
                     binding.btOpen.visibility = View.VISIBLE
+                    binding.llTrustData.visibility = View.GONE
 
                     val digestAccountRnb = binding.tvDigestRnb.text.toString()
 

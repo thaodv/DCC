@@ -15,116 +15,226 @@
             />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+
+    <!-- <android.support.constraint.ConstraintLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:paddingBottom="16dp"
+         android:paddingTop="8dp"
+         >
+
+         <ImageView
+             android:id="@+id/iv_currency_logo1"
+             android:layout_width="60dp"
+             android:layout_height="60dp"
+             android:layout_marginLeft="@dimen/content_padding_horizontal"
+             android:padding="6dp"
+             app:errorRes="@{@drawable/ethereum}"
+             app:imageUrl="@{vm.dc.icon}"
+             app:layout_constraintLeft_toLeftOf="parent"
+             tools:src="@drawable/ethereum"
+             />
+
+         <TextView
+             android:id="@+id/tv_currency_symbol1"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="8dp"
+             android:text="@{vm.dc.symbol}"
+             android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
+             app:layout_constraintBottom_toTopOf="@id/tv_currency_description1"
+             app:layout_constraintLeft_toRightOf="@id/iv_currency_logo1"
+             app:layout_constraintTop_toTopOf="@id/iv_currency_logo1"
+             app:layout_constraintVertical_chainStyle="packed"
+             tools:text="ETH"
+             />
+
+         <TextView
+             android:id="@+id/tv_currency_chain1"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@{vm.chainText}"
+             android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+             app:layout_constraintBottom_toBottomOf="@id/iv_currency_logo1"
+             app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol1"
+             app:layout_constraintTop_toBottomOf="@id/tv_currency_description1"
+             tools:text="\@DCC"
+             />
+
+         <TextView
+             android:id="@+id/tv_currency_description1"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@{vm.dc.description}"
+             android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+             android:visibility="gone"
+             app:layout_constraintBottom_toTopOf="@id/tv_currency_chain1"
+             app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol1"
+             app:layout_constraintTop_toBottomOf="@id/tv_currency_symbol1"
+             tools:text="Ethereum Foundation"
+             />
+
+
+         <ImageButton
+             android:id="@+id/ib_select"
+             style="@style/Base.Widget.AppCompat.Button.Borderless"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginRight="@dimen/content_padding_horizontal"
+             android:minWidth="60dp"
+             android:onClick="@{(v)->vm.switchSelected()}"
+             android:src="@{vm.selected?@drawable/ic_remove:@drawable/ic_add}"
+             android:visibility="@{vm.pinned?View.GONE:View.VISIBLE}"
+             app:layout_constraintRight_toRightOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/toolbar"
+             tools:src="@drawable/ic_add"
+             />
+
+         <TextView
+             android:id="@+id/tv_holding_value"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="@dimen/content_padding_horizontal"
+             android:layout_marginRight="@dimen/content_padding_horizontal"
+             android:layout_marginTop="8dp"
+             android:text="@{vm.holdingStr}"
+             android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+             android:textColor="#FB0288"
+             android:textSize="28sp"
+             app:layout_constraintLeft_toLeftOf="parent"
+             app:layout_constraintRight_toRightOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/iv_currency_logo1"
+             tools:text="1341343.5938"
+             />
+
+         <TextView
+             android:id="@+id/tv_approx_value"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="@dimen/content_padding_horizontal"
+             android:layout_marginRight="@dimen/content_padding_horizontal"
+             android:layout_marginTop="4dp"
+             android:gravity="center_horizontal"
+             android:minWidth="150dp"
+             android:text="@{vm.holdingValueStr}"
+             android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+             android:textColor="#4A4A4A"
+             android:textSize="18sp"
+             app:layout_constraintLeft_toLeftOf="parent"
+             app:layout_constraintRight_toRightOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/tv_holding_value"
+             tools:text="~$317395.4382"
+             />
+
+     </android.support.constraint.ConstraintLayout>-->
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
-        android:paddingTop="8dp"
-        >
+        android:layout_height="212dp"
+        android:background="@drawable/img_trust_pocket_coin_detail_bg">
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="10dp"
+            android:src="@drawable/arrow_left_white"/>
 
         <ImageView
             android:id="@+id/iv_currency_logo"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginLeft="@dimen/content_padding_horizontal"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="50dp"
             android:padding="6dp"
             app:errorRes="@{@drawable/ethereum}"
             app:imageUrl="@{vm.dc.icon}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            tools:src="@drawable/ethereum"
-            />
+            tools:src="@drawable/ethereum"/>
 
-        <TextView
-            android:id="@+id/tv_currency_symbol"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:text="@{vm.dc.symbol}"
-            android:textAppearance="@style/TextAppearance.AppCompat.DccTitle"
-            app:layout_constraintBottom_toTopOf="@id/tv_currency_description"
-            app:layout_constraintLeft_toRightOf="@id/iv_currency_logo"
-            app:layout_constraintTop_toTopOf="@id/iv_currency_logo"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="ETH"
-            />
+            android:layout_height="60dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="50dp"
+            android:layout_toRightOf="@id/iv_currency_logo"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_currency_chain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{vm.chainText}"
-            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-            app:layout_constraintBottom_toBottomOf="@id/iv_currency_logo"
-            app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol"
-            app:layout_constraintTop_toBottomOf="@id/tv_currency_description"
-            tools:text="\@DCC"
-            />
+            <TextView
+                android:id="@+id/tv_currency_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{vm.dc.symbol}"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                tools:text="ETH"/>
 
-        <TextView
-            android:id="@+id/tv_currency_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{vm.dc.description}"
-            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/tv_currency_chain"
-            app:layout_constraintLeft_toLeftOf="@id/tv_currency_symbol"
-            app:layout_constraintTop_toBottomOf="@id/tv_currency_symbol"
-            tools:text="Ethereum Foundation"
-            />
+            <TextView
+                android:id="@+id/tv_currency_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{vm.dc.description}"
+                android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
+                android:visibility="gone"
+                tools:text="Ethereum Foundation"/>
 
+            <TextView
+                android:id="@+id/tv_currency_chain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{vm.chainText}"
+                android:textColor="@color/white50"
+                android:textSize="14sp"
+                tools:text="\@DCC"/>
+
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/ib_select"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/content_padding_horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
             android:minWidth="60dp"
             android:onClick="@{(v)->vm.switchSelected()}"
             android:src="@{vm.selected?@drawable/ic_remove:@drawable/ic_add}"
             android:visibility="@{vm.pinned?View.GONE:View.VISIBLE}"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            tools:src="@drawable/ic_add"
-            />
+            tools:src="@drawable/ic_add"/>
 
-        <TextView
-            android:id="@+id/tv_holding_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/content_padding_horizontal"
-            android:layout_marginRight="@dimen/content_padding_horizontal"
-            android:layout_marginTop="8dp"
-            android:text="@{vm.holdingStr}"
-            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-            android:textColor="#FB0288"
-            android:textSize="28sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_currency_logo"
-            tools:text="1341343.5938"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
 
-        <TextView
-            android:id="@+id/tv_approx_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/content_padding_horizontal"
-            android:layout_marginRight="@dimen/content_padding_horizontal"
-            android:layout_marginTop="4dp"
-            android:gravity="center_horizontal"
-            android:minWidth="150dp"
-            android:text="@{vm.holdingValueStr}"
-            android:textAppearance="@style/TextAppearance.AppCompat.DccSubTitle"
-            android:textColor="#4A4A4A"
-            android:textSize="18sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_holding_value"
-            tools:text="~$317395.4382"
-            />
+            <TextView
+                android:id="@+id/tv_holding_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{vm.holdingStr}"
+                android:textColor="@color/white"
+                android:textSize="26sp"
+                tools:text="1341343.5938"/>
 
-    </android.support.constraint.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_approx_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@{vm.holdingValueStr}"
+                android:textColor="#BAA8FE"
+                android:textSize="16sp"
+                tools:text="~$317395.4382"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
 
 </layout>

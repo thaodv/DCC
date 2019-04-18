@@ -58,9 +58,13 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initToolbar(true)
+        //initToolbar(true)
         initVm()
         initBtn()
+
+        binding.sectionCurrencySummary.ivClose.onClick {
+            finish()
+        }
 
         GardenOperations
                 .refreshToken {

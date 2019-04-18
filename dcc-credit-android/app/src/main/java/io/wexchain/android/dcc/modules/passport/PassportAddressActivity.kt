@@ -49,7 +49,7 @@ class PassportAddressActivity : BindActivity<ActivityPassportAddressBinding>() {
 //    }
 
     private fun initView() {
-        binding.btnCopy.setOnClickListener {
+        binding.btnCopy.onClick {
             binding.address?.let {
                 getClipboardManager().primaryClip = ClipData.newPlainText("passport address", it)
                 toast(R.string.copy_succeed)

@@ -1,8 +1,10 @@
 package io.wexchain.android.dcc.modules.paymentcode
 
 import android.annotation.SuppressLint
+import android.content.ClipData
 import android.os.Bundle
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
@@ -48,6 +50,11 @@ class PaymentTransDetailActivity : BindActivity<ActivityPaymentTransDetailBindin
                     binding.tvAccount2.text = it.amount + " " + it.goods.assetCode
                     binding.tvFee.text = it.amount.toBigDecimal().subtract(it.receivedAmount.toBigDecimal()).toPlainString() + " " + it.goods.assetCode
                     binding.tvToAccount.text = it.receivedAmount + " " + it.goods.assetCode
+
+                    binding.rlOrderId.onClick {
+                        getClipboardManager().primaryClip = ClipData.newPlainText("passport address", it.id)
+                        toast(R.string.copy_succeed)
+                    }
 
                 }, {
                     toast(it.message.toString())

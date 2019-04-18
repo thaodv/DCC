@@ -38,7 +38,6 @@
         android:orientation="vertical"
         tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustCoinDetailActivity">
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="212dp"
@@ -240,7 +239,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/trans_records"
+                android:text="@string/trans_records1"
                 android:textColor="#FF333333"
                 android:textSize="17sp"/>
 

@@ -13,7 +13,7 @@ import io.wexchain.android.dcc.repo.AssetsRepository
 import io.wexchain.digitalwallet.Chain
 
 @Database(entities = [CaAuthRecord::class, AuthKeyChangeRecord::class, CurrencyMeta::class, BeneficiaryAddress::class, AddressBook::class, TransRecord::class],
-        version = PassportDatabase.VERSION_6
+        version = PassportDatabase.VERSION_7
 )
 @TypeConverters(Converters::class)
 abstract class PassportDatabase : RoomDatabase() {
@@ -28,6 +28,7 @@ abstract class PassportDatabase : RoomDatabase() {
         const val VERSION_4 = 4
         const val VERSION_5 = 5
         const val VERSION_6 = 6
+        const val VERSION_7 = 7
 
         private val migration_1_2 = object : Migration(VERSION_1, VERSION_2) {
             override fun migrate(database: SupportSQLiteDatabase) {
@@ -90,10 +91,27 @@ abstract class PassportDatabase : RoomDatabase() {
             }
         }
 
+        private val migration_6_7 = object : Migration(VERSION_6, VERSION_7) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+
+                val contentValues = ContentValues()
+                contentValues.put(CurrencyMeta.COLUMN_CHAIN, Chain.publicEthChain.name)
+                contentValues.put(CurrencyMeta.COLUMN_CONTRACT_ADDRESS, "0x8e870d67f660d95d5be530380d0ec0bd388289e1")
+                contentValues.put(CurrencyMeta.COLUMN_DECIMALS, 18)
+                contentValues.put(CurrencyMeta.COLUMN_SYMBOL, "PAX")
+                contentValues.put(CurrencyMeta.COLUMN_DESCRIPTION, "Paxos Standard")
+                contentValues.put(CurrencyMeta.COLUMN_ICON_URL, "https://open.dcc.finance/images/token_icon/PAX.png")
+                contentValues.put(CurrencyMeta.COLUMN_SELECTED, true)
+                contentValues.put(CurrencyMeta.COLUMN_SORT, 17)
+
+                database.insert(CurrencyMeta.TABLE_NAME, SQLiteDatabase.CONFLICT_REPLACE, contentValues)
+            }
+        }
+
         fun createDatabase(context: Context): PassportDatabase {
 
             return Room.databaseBuilder(context, PassportDatabase::class.java, DATABASE_NAME)
-                    .addMigrations(migration_1_2, migration_2_3, migration_3_4, migration_4_5, migration_5_6)
+                    .addMigrations(migration_1_2, migration_2_3, migration_3_4, migration_4_5, migration_5_6,migration_6_7)
                     .addCallback(object : RoomDatabase.Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)

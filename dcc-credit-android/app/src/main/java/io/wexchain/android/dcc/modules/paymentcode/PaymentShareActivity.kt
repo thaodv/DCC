@@ -1,7 +1,9 @@
 package io.wexchain.android.dcc.modules.paymentcode
 
+import android.content.ClipData
 import android.os.Bundle
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
@@ -31,7 +33,7 @@ class PaymentShareActivity : BindActivity<ActivityPaymentShareBinding>() {
 
         getGoods(mId)
 
-        binding.ivSave.onSaveImageToGallery(binding.rlContent,
+        binding.ivShare.onSaveImageToGallery(binding.rlContent,
                 onError = {
                     toast(if (it is DccChainServiceException)
                         it.message!!
@@ -41,9 +43,10 @@ class PaymentShareActivity : BindActivity<ActivityPaymentShareBinding>() {
                     toast("保存成功")
                 })
 
-        binding.ivShare.onClick {
-            GardenOperations.shareWechatPayment(mUrl) {
-                toast(it)
+        binding.ivSave.onClick {
+            binding.address?.let {
+                getClipboardManager().primaryClip = ClipData.newPlainText("passport address", it)
+                toast(R.string.copy_succeed)
             }
         }
     }

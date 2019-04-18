@@ -498,6 +498,7 @@
     <string name="unit_bi">笔</string>
     <string name="payment_quick_receipt">快捷收款</string>
     <string name="trans_records">交易记录</string>
+    <string name="trans_records1">账务明细</string>
     <string name="payment_my_receipt">我的收款</string>
     <string name="payment_history_receipt">历史收款</string>
     <string name="payment_add">新增</string>
@@ -553,6 +554,8 @@
     <string name="payment_share_page_title">分享</string>
     <string name="payment_share_text1">的收款码</string>
     <string name="payment_share_text2">扫一扫，向我付钱</string>
+    <string name="payment_share_image">分享图片</string>
+    <string name="payment_share_url">复制链接</string>
 
     <string name="payment_unopen_page_title">收款码服务</string>
     <string name="payment_unopen_text">你最方便的收钱工具</string>
@@ -672,5 +675,7 @@
 
     <string name="received">收入</string>
     <string name="payment">支出</string>
+    <string name="pocket">钱包</string>
+    <string name="recharge_to_trust_pocket">充到托管钱包</string>
 
 </resources>

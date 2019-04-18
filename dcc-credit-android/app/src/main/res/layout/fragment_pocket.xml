@@ -18,75 +18,80 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/digital_title"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="#fff">
+            android:layout_height="175dp"
+            android:background="@drawable/img_coin_detail_top">
 
-            <TextView
-                android:id="@+id/tv_total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:drawablePadding="8dp"
-                android:drawableRight="@{assets.assetsFilter5?@drawable/icon_asset_unshow:@drawable/icon_asset_show}"
-                android:onClick="@{(v)->assets.filter5()}"
-                android:text="@string/total_asset"
-                android:textColor="#4A4A4A"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:drawableRight="@drawable/icon_asset_show"/>
+            <RelativeLayout
+                android:id="@+id/digital_title"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
 
-            <ImageView
-                android:id="@+id/iv_show"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/tv_total"
-                android:visibility="gone"
-                tools:src="@drawable/icon_asset_show"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/pocket"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
 
-            <ImageView
-                android:id="@+id/iv_scan"
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/iv_scan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:src="@drawable/icon_scan"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_total"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:src="@drawable/icon_scan"/>
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="8dp"
+                    android:drawableRight="@{assets.assetsFilter5?@drawable/icon_asset_unshow:@drawable/icon_asset_show}"
+                    android:onClick="@{(v)->assets.filter5()}"
+                    android:text="@string/total_asset"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:drawableRight="@drawable/icon_asset_show"/>
+
+                <TextView
+                    android:id="@+id/assets_amount_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="28sp"
+                    tools:text="≈￥43681365.43159"/>
+
+                <TextView
+                    android:id="@+id/tv_total_usdt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="#BAA8FE"
+                    android:textSize="14sp"
+                    tools:text="≈￥43681365.43159"/>
+
+            </LinearLayout>
 
         </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_total"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="14dp"
-            android:background="@drawable/img_bg_trust_pocket_holding"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/assets_amount_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                tools:text="≈￥43681365.43159"/>
-
-            <TextView
-                android:id="@+id/tv_total_usdt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                tools:text="≈￥43681365.43159"/>
-
-        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/rl_trust_pocket"
@@ -101,6 +106,16 @@
                 android:layout_height="48dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/icon_trust"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/iv_trust"
+                android:text="@string/trust_pocket"
+                android:textColor="#FF4A4A4A"
+                android:textSize="17sp"/>
 
             <ImageView
                 android:id="@+id/iv_next"
@@ -133,25 +148,26 @@
                 android:layout_marginLeft="50dp"/>
 
             <LinearLayout
+                android:id="@+id/ll_trust_data"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="12dp"
-                android:layout_toRightOf="@id/iv_trust"
+                android:gravity="center|right"
                 android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/trust_pocket"
-                    android:textColor="#FF4A4A4A"
-                    android:textSize="17sp"/>
 
                 <TextView
                     android:id="@+id/tv_trust_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:textColor="#6144CC"
+                    android:textSize="14sp"
+                    tools:text="≈￥0"/>
+
+                <TextView
+                    android:id="@+id/tv_trust_amount_usdt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:textColor="#FF9B9B9B"
                     android:textSize="14sp"
                     tools:text="≈￥0"/>
@@ -174,13 +190,24 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/icon_digest"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/iv_digest"
+                android:text="@string/digest_pocket"
+                android:textColor="#FF4A4A4A"
+                android:textSize="17sp"/>
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:padding="10dp"
-                android:src="@drawable/arrow_right"/>
+                android:src="@drawable/arrow_right"
+                android:visibility="gone"/>
 
             <View
                 style="@style/DividerHorizontal"
@@ -192,24 +219,24 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="12dp"
-                android:layout_toRightOf="@id/iv_digest"
+                android:gravity="center|right"
                 android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/digest_pocket"
-                    android:textColor="#FF4A4A4A"
-                    android:textSize="17sp"/>
 
                 <TextView
                     android:id="@+id/tv_digest_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:text="@{assets.assetsSumValue}"
+                    android:textColor="#6144CC"
+                    android:textSize="14sp"
+                    tools:text="≈￥0"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{assets.assetsSumValue2}"
                     android:textColor="#FF9B9B9B"
                     android:textSize="14sp"
                     tools:text="≈￥0"/>
@@ -243,13 +270,24 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/icon_invest"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/iv_invest"
+                android:text="@string/my_invest"
+                android:textColor="#FF4A4A4A"
+                android:textSize="17sp"/>
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:padding="10dp"
-                android:src="@drawable/arrow_right"/>
+                android:src="@drawable/arrow_right"
+                android:visibility="gone"/>
 
             <View
                 style="@style/DividerHorizontal"
@@ -261,23 +299,23 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="12dp"
-                android:layout_toRightOf="@id/iv_invest"
+                android:gravity="center|right"
                 android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/my_invest"
-                    android:textColor="#FF4A4A4A"
-                    android:textSize="17sp"/>
 
                 <TextView
                     android:id="@+id/tv_bsx"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:textColor="#6144CC"
+                    android:textSize="14sp"
+                    tools:text="≈￥0"/>
+
+                <TextView
+                    android:id="@+id/tv_bsx_usdt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:textColor="#FF9B9B9B"
                     android:textSize="14sp"
                     tools:text="≈￥0"/>
