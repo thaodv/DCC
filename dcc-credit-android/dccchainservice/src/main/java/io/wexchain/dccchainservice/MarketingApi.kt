@@ -650,13 +650,6 @@ interface MarketingApi {
     fun getTelegramUser(@Header(HEADER_TOKEN) token: String): Single<Result<GetTelegramUserBean>>
 
     /**
-     * 44.查詢商戶手续费率
-     */
-    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
-    @POST("bemember/wallet/acquire/getAcquireOrderPayeeFee")
-    fun getAcquireOrderPayeeFee(@Header(HEADER_TOKEN) token: String): Single<Result<String>>
-
-    /**
      * 41.更新代扣状态
      */
     @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
@@ -673,6 +666,41 @@ interface MarketingApi {
     @FormUrlEncoded
     fun getDepositParam(@Header(HEADER_TOKEN) token: String,
                         @Field("assetCode") assetCode: String): Single<Result<GetDepositParamBean>>
+
+    /**
+     * 44.查詢商戶手续费率
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/acquire/getAcquireOrderPayeeFee")
+    fun getAcquireOrderPayeeFee(@Header(HEADER_TOKEN) token: String): Single<Result<String>>
+
+    /**
+     * 45.查询单个资产配置
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/asset/getAssetConfig")
+    @FormUrlEncoded
+    fun getAssetConfig(@Header(HEADER_TOKEN) token: String,
+                       @Field("assetCode") assetCode: String): Single<Result<GetAssetConfigBean>>
+
+    /**
+     * 46.扫码文本适配
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/scan/parse")
+    @FormUrlEncoded
+    fun parseText(@Header(HEADER_TOKEN) token: String,
+              @Field("text") text: String): Single<Result<ParseBean>>
+
+    /**
+     * 47.资产地址校验
+     */
+    @Headers("Content-Type:application/x-www-form-urlencoded;charset=utf-8")
+    @POST("bemember/wallet/scan/validateAddress")
+    @FormUrlEncoded
+    fun validateAddress(@Header(HEADER_TOKEN) token: String,
+                        @Field("text") text: String,
+                        @Field("assetCode") assetCode: String): Single<Result<Boolean>>
 
 
     companion object {
