@@ -2,6 +2,8 @@ package io.wexchain.android.dcc.modules.other;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
@@ -9,6 +11,7 @@ import android.widget.Toast;
  * @author Created by Wangpeng on 2019/4/10 10:57.
  * usage:
  */
+@RequiresApi(Build.VERSION_CODES.M)
 public class JavaScriptObjectUtils {
     private Activity mActivity;
     
@@ -29,5 +32,10 @@ public class JavaScriptObjectUtils {
             mActivity.startActivity(intent);
         }
         mActivity.finish();
+    }
+    
+    @JavascriptInterface
+    public void clientPay(String id){
+        //new QrScannerPocketActivity().cashierContent(id);
     }
 }

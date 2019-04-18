@@ -139,6 +139,9 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                 mAppToken = Gson().fromJson(text, AppPayTokenBean::class.java).appPayToken
                 cashierContent(mAppToken!!)
 
+            } else if (text.contains("http://") || text.contains("https://")) {
+                startActivity(StaticHtmlActivity.getResultIntent(this, "", text))
+                finish()
             } else {
                 val qScanResultNotAddressDialog = QScanResultNotAddressDialog(this)
 
@@ -157,7 +160,7 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
 
     }
 
-    private fun cashierContent(id: String) {
+    fun cashierContent(id: String) {
         GardenOperations
                 .refreshToken {
                     App.get().marketingApi.cashierContent(it, id).check()
@@ -552,6 +555,12 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
         setWindowExtended()
         beepManager = BeepManager(this)
         setupScan(binding.scanView)
+
+        mAppToken = intent?.getStringExtra("appToken")
+
+        if (null != mAppToken && "" != mAppToken) {
+            cashierContent(mAppToken!!)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

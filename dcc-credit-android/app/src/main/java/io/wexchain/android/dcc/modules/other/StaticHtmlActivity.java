@@ -3,6 +3,7 @@ package io.wexchain.android.dcc.modules.other;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,6 +37,8 @@ public class StaticHtmlActivity extends AppCompatActivity {
     
     private String mTitleValue = "";
     private String mUrlValue = "";
+    
+    private String mAppToken = null;
     
     public static Intent getResultIntent(Context context, String title, String url) {
         Intent intent = new Intent(context, StaticHtmlActivity.class);
@@ -76,7 +79,8 @@ public class StaticHtmlActivity extends AppCompatActivity {
         /*mIvShare.setVisibility(View.VISIBLE);
         mIvShare.setImageDrawable(getResources().getDrawable(R.drawable.ic_scan));
         mIvShare.setOnClickListener(v -> startActivityForResult(new Intent(this, QrScannerActivity.class).
-                putExtra(Extras.EXPECTED_SCAN_TYPE, QrScannerActivity.SCAN_TYPE_ADDRESS), RequestCodes.SCAN));*/
+                putExtra(Extras.EXPECTED_SCAN_TYPE, QrScannerActivity.SCAN_TYPE_ADDRESS), RequestCodes
+                .SCAN));*/
         
         mBtClose.setOnClickListener(v -> finish());
     }
@@ -151,7 +155,20 @@ public class StaticHtmlActivity extends AppCompatActivity {
             
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return super.shouldOverrideUrlLoading(view, url);
+                Uri uri = Uri.parse(url);
+                if ("launchapp".equals(uri.getScheme())) {
+                    mAppToken = uri.getQueryParameter("orderId");
+                    if (null == mAppToken || "" == mAppToken) {
+                        finish();
+                    } else {
+                        startActivity(new Intent(StaticHtmlActivity.this, QrScannerPocketActivity.class)
+                                .putExtra("appToken", mAppToken));
+                        finish();
+                    }
+                    return true;
+                } else {
+                    return super.shouldOverrideUrlLoading(view, url);
+                }
             }
             
         });
@@ -167,4 +184,6 @@ public class StaticHtmlActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+    
+    
 }
