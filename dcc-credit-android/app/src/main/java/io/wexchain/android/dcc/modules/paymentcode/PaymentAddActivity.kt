@@ -11,6 +11,7 @@ import io.wexchain.android.common.constant.ResultCodes
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
+import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.common.view.datepicker.DateFormatUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
@@ -39,6 +40,8 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
     private lateinit var mCode: String
     private lateinit var mUrl: String
 
+    private lateinit var mMinAmount: String
+
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +54,7 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
 
         binding.paystyle.setFixChecked()
         binding.paystyle.setSelfUnChecked()
-        binding.paystyle.etAmount = "0.00000001"
+        //binding.paystyle.etAmount = "0.00000001"
 
         binding.paystyle.setOnPaymentStyleClickLinester(object : PaymentAddAmountStyle.OnPaymentStyleClickLinester {
             override fun fix() {
@@ -91,8 +94,8 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
                     if ("" == binding.paystyle.etAmount) {
                         toast("请输入金额")
                     } else {
-                        if (binding.paystyle.etAmount.toBigDecimal().compareTo("0.00000001".toBigDecimal()) == -1) {
-                            toast("最少0.00000001")
+                        if (binding.paystyle.etAmount.toBigDecimal().compareTo(mMinAmount.toBigDecimal()) == -1) {
+                            toast("最少$mMinAmount")
                         } else {
                             mAmount = binding.paystyle.etAmount
                             createGoods(binding.tvName.text.toString(), mAmount, binding.etTitle.text.toString(), binding.etDescription.text.toString())
@@ -192,13 +195,28 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
                     binding.url = mUrl
                     binding.name = mCode
 
-                    binding.paystyle.setParameters("0.00000001", mCode)
-
-
+                    getAssetConfig(mCode)
                 }
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    private fun getAssetConfig(code: String) {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getAssetConfig(it, code).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    binding.paystyle.setDigit(it.digit)
+                    mMinAmount = CommonUtils.getMinDigit(it.digit)
+                    binding.paystyle.setParameters(mMinAmount, mCode)
+
+                }, {
+                    toast(it.message.toString())
+                })
     }
 
     private fun initTimerPicker() {

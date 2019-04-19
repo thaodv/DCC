@@ -1,6 +1,7 @@
 package io.wexchain.android.common.tools;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Locale;
@@ -64,5 +65,13 @@ public class CommonUtils {
         }
     }
     
+    public static String getLanguage() {
+        return isRMB() ? "cn" : "en";
+    }
+    
+    public static String getMinDigit(int n) {
+        return new BigDecimal("1").divide(new BigDecimal("10").pow(Math.abs(n)), Math.abs(n), RoundingMode
+                .DOWN).toPlainString();
+    }
     
 }

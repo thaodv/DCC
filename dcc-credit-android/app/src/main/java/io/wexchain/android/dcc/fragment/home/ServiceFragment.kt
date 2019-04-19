@@ -18,6 +18,7 @@ import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
+import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.fragment.home.vm.ServiceCardVm
@@ -287,7 +288,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
                 }
             } else {
 
-                val url = /*if (BuildConfig.DEBUG) "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress" else*/ "https://www.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress"
+                val url = /*if (BuildConfig.DEBUG) "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress" else*/ "https://www.bitexpress.io/hosting-wallet-website/lottery.html#/launchWay?env=BitExpress&lang=" + CommonUtils.getLanguage()
                 startActivity(StaticHtmlActivity.getResultIntent(context, "如何发起", url))
             }
         }
@@ -302,7 +303,7 @@ class ServiceFragment : BindFragment<FragmentServiceBinding>() {
                     startActivity(intent)
                 }
             } else {
-                val url = /*if (BuildConfig.DEBUG) "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress" else*/ "https://www.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress"
+                val url = /*if (BuildConfig.DEBUG) "http://func.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress" else*/ "https://www.bitexpress.io/hosting-wallet-website/lottery.html#/participateWay?env=BitExpress&lang=" + CommonUtils.getLanguage()
                 startActivity(StaticHtmlActivity.getResultIntent(context, "如何参与", url))
             }
         }

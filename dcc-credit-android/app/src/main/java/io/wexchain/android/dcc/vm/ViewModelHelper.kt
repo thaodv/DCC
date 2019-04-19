@@ -251,7 +251,7 @@ object ViewModelHelper {
             val price = quote.price!!.toBigDecimalSafe()
             val value = dc.toDecimalAmount(holding) * price
             if (value.signum() != 0) {
-                return "~${quote.currencySymbol}${value.setSelfScale(4)}"
+                return "≈${quote.currencySymbol}${value.setSelfScale(4)}"
             }
         }
         return "--"
@@ -263,7 +263,7 @@ object ViewModelHelper {
             val price = quote.price!!.toBigDecimalSafe()
             val value = dc.toDecimalAmount(holding) * price
             if (value.signum() != 0) {
-                return "~¥${value.setSelfScale(4)}"
+                return "≈¥${value.setSelfScale(4)}"
             }
         }
         return "--"

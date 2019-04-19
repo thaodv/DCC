@@ -9,7 +9,15 @@ import android.text.Spanned;
  */
 public class EditInputFilter implements InputFilter {
     
-    private final int decimalDigits = 8;
+    private int decimalDigits = 8;
+    
+    public EditInputFilter() {
+    
+    }
+    
+    public EditInputFilter(int decimalDigits) {
+        this.decimalDigits = decimalDigits;
+    }
     
     @Override
     public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {

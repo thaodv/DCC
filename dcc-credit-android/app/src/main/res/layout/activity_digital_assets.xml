@@ -83,7 +83,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/v_line"
-            tools:text="~$43681365.43159" />
+            tools:text="≈$43681365.43159" />
 
         <TextView
             android:id="@+id/tv_status"

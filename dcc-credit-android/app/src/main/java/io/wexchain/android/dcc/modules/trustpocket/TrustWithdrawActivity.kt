@@ -47,7 +47,6 @@ import io.wexchain.dcc.databinding.ActivityTrustWithdrawBinding
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.trustpocket.ValidatePaymentPasswordBean
 import io.wexchain.dccchainservice.domain.trustpocket.WithdrawBean
-import io.wexchain.digitalwallet.util.isNumberkeep8
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -106,7 +105,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
 
         if (null != mCode && null != mUrl) {
             getAssetConfigMinAmountByCode(mCode!!)
-
+            getAssetConfig(mCode!!)
             getBalance(mCode!!)
 
             binding.url = mUrl
@@ -117,9 +116,9 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
             binding.tvFee.text = getString(R.string.across_trans_poundage) + "0 $mCode"
         }
 
-        val filters = arrayOf<InputFilter>(EditInputFilter())
+        /*val filters = arrayOf<InputFilter>(EditInputFilter())
 
-        binding.etAccount.filters = filters
+        binding.etAccount.filters = filters*/
 
         binding.rlChoose.onClick {
             startActivityForResult(
@@ -164,34 +163,45 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
                 toast(getString(R.string.minimum) + mMinAccount + getString(R.string.trust_pocket_withdraw_tip3))
             } else if (mAccount.toBigDecimal().subtract(mTotalAccount.toBigDecimal()) > BigDecimal.ZERO) {
                 toast(getString(R.string.trust_pocket_transfer_text7))
+            } else if (mTotalAccount.toBigDecimal().subtract(mAccount.toBigDecimal().plus(mFee.toBigDecimal())) < BigDecimal.ZERO) {
+                toast(getString(R.string.trust_pocket_transfer_text9))
             } else {
 
-                if (isNumberkeep8(mAccount)) {
-                    trustWithdrawDialog = TrustWithdrawDialog(this)
-
-                    trustWithdrawDialog.setParameters(mAddress, mAccount + "" + mCode, "$mFee $mCode", "$mToAccount $mCode", "$mTotalAccount $mCode")
-
-                    trustWithdrawDialog.setOnClickListener(object : TrustWithdrawDialog.OnClickListener {
-                        override fun sure() {
-
-                            val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
-
-                            if (fingerPayStatus) {
-                                if (supportFingerprint()) {
-                                    initKey()
-                                    initCipher()
-                                } else {
-                                    checkPasswd()
-                                }
-                            } else {
-                                checkPasswd()
-                            }
+                GardenOperations
+                        .refreshToken {
+                            App.get().marketingApi.validateAddress(it, mAddress!!, mCode!!).check()
                         }
-                    })
-                    trustWithdrawDialog.show()
-                } else {
-                    toast("最多小数点后面8位")
-                }
+                        .doMain()
+                        .subscribe({
+                            if (it) {
+                                trustWithdrawDialog = TrustWithdrawDialog(this)
+
+                                trustWithdrawDialog.setParameters(mAddress, mAccount + "" + mCode, "$mFee $mCode", "$mToAccount $mCode", "$mTotalAccount $mCode")
+
+                                trustWithdrawDialog.setOnClickListener(object : TrustWithdrawDialog.OnClickListener {
+                                    override fun sure() {
+
+                                        val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
+
+                                        if (fingerPayStatus) {
+                                            if (supportFingerprint()) {
+                                                initKey()
+                                                initCipher()
+                                            } else {
+                                                checkPasswd()
+                                            }
+                                        } else {
+                                            checkPasswd()
+                                        }
+                                    }
+                                })
+                                trustWithdrawDialog.show()
+                            } else {
+                                toast(getString(R.string.trust_pocket_transfer_text10))
+                            }
+                        }, {
+                            toast(it.message ?: getString(R.string.system_error))
+                        })
             }
         }
 
@@ -326,10 +336,13 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
                     val res = mTotalAccount.toBigDecimal().subtract(it.decimalValue.toBigDecimal()).setScale(8, RoundingMode.DOWN)
 
                     var result: String = BigDecimal.ZERO.toPlainString()
+                    var result2: String = BigDecimal.ZERO.toPlainString()
                     if (res > BigDecimal.ZERO) {
                         result = res.toPlainString()
+                        result2 = res.toPlainString()
                     } else {
-                        result = BigDecimal.ZERO.toPlainString()
+                        result = mTotalAccount.toBigDecimal().toPlainString()
+                        result2 = BigDecimal.ZERO.toPlainString()
                     }
 
                     binding.etAccount.setText(result)
@@ -338,7 +351,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
 
                     binding.tvFee.text = getString(R.string.across_trans_poundage) + "$mFee $mCode"
 
-                    mToAccount = result
+                    mToAccount = result2
 
                     binding.tvToAccount.text = mToAccount
 
@@ -384,6 +397,21 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
                     toast(it.message.toString())
                 })
 
+    }
+
+    private fun getAssetConfig(code: String) {
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getAssetConfig(it, code).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    val filters = arrayOf<InputFilter>(EditInputFilter(it.digit))
+                    binding.etAccount.filters = filters
+                }, {
+                    toast(it.message.toString())
+                })
     }
 
     private fun createPayPwdSecurityContext(pwd: String) {
@@ -482,7 +510,7 @@ class TrustWithdrawActivity : BindActivity<ActivityTrustWithdrawBinding>() {
                     binding.tvAssetCode.text = mCode
 
                     getAssetConfigMinAmountByCode(mCode!!)
-
+                    getAssetConfig(mCode!!)
                     getBalance(mCode!!)
 
                     val account = binding.etAccount.text.trim().toString()

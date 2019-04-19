@@ -7,5 +7,5 @@ import com.google.gson.annotations.SerializedName
  * usage:
  */
 data class GetAssetConfigBean(
-        @SerializedName("digit") val digit: String) {
+        @SerializedName("digit") val digit: Int) {
 }

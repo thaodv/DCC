@@ -62,7 +62,6 @@ public class PaymentAddAmountStyle extends LinearLayout implements View.OnClickL
         mLlSelf.setOnClickListener(this);
         mIvQuestion.setOnClickListener(this);
         
-        mEtAmount.setFilters(new InputFilter[]{new EditInputFilter()});
     }
     
     public void setFixChecked() {
@@ -91,6 +90,10 @@ public class PaymentAddAmountStyle extends LinearLayout implements View.OnClickL
         mTvCode.setText(code);
         mTvMinAmount.setText(getResources().getString(R.string.payment_add_smallest) + minAmount + " " +
                 code);
+    }
+    
+    public void setDigit(int digit){
+        mEtAmount.setFilters(new InputFilter[]{new EditInputFilter(digit)});
     }
     
     public void setEtAmount(String minAmount) {
