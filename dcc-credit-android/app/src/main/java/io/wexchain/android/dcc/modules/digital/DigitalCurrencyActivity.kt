@@ -146,7 +146,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
             it ?: return@Observer
             val dialog = DeleteAddressBookDialog(this)
             dialog.setTvText(it.first.toString())
-            dialog.setBtnText("确认", "取消")
+            dialog.setBtnText("确认", getString(R.string.cancel))
             dialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                 override fun cancel() {
                     dialog.dismiss()
@@ -248,7 +248,7 @@ class DigitalCurrencyActivity : BindActivity<ActivityDigitalCurrencyBinding>(), 
                     val deleteDialog = DeleteAddressBookDialog(this@DigitalCurrencyActivity)
                     deleteDialog.mTvText.text = "私链转账功能暂不可使用，如需转出请转到您的公链地址"
                     deleteDialog.mTvText.gravity = Gravity.LEFT
-                    deleteDialog.setBtnText("", "确定")
+                    deleteDialog.setBtnText("", getString(R.string.confirm))
                     deleteDialog.mBtSure.visibility = View.GONE
                     deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                         override fun cancel() {}

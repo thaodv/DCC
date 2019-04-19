@@ -22,6 +22,7 @@
     <string name="enable_pin">Enable numerical password</string>
     <string name="fingerprint_identification">Fingerprint identification</string>
     <string name="skip">Skip</string>
+    <string name="skip1">Skip ></string>
     <string name="verify_pin">Numrical code verification</string>
     <string name="pin_incorrect_please_retry">Wrong code, please try again</string>
     <string name="repeat_pin">Enter digit code again</string>

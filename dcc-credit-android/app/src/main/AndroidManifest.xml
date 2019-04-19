@@ -265,7 +265,7 @@
             android:label="币生息持仓"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.mine.SettingActivity"
-            android:label="更多"/>
+            android:label="@string/more"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.home.TokenPlusActivity"
             android:label="Tokenplus介绍"/>

@@ -9,6 +9,7 @@ import android.os.Build
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import io.wexchain.dcc.R
 
 /**
  *Created by liuyang on 2018/8/27.
@@ -52,14 +53,14 @@ class PermissionHelper(private val activity: Activity) {
                 if (PackageManager.PERMISSION_GRANTED != grantResults[0]) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[0])) {
                         AlertDialog.Builder(activity).setTitle("权限申请").setMessage(findPermissionExplain(permissions[0]))
-                                .setPositiveButton("确定") { dialog, which -> applyPermissions() }
+                                .setPositiveButton(getString(R.string.confirm)) { dialog, which -> applyPermissions() }
                                 .setCancelable(false)
                                 .show()
                     } else {
                         AlertDialog.Builder(activity).setTitle("权限申请")
                                 .setMessage("请在打开的窗口的权限中开启" + findPermissionName(permissions[0]) + "权限，以正常使用本应用")
                                 .setPositiveButton("去设置") { dialog, which -> openApplicationSettings(REQUEST_OPEN_APPLICATION_SETTINGS_CODE) }
-                                .setNegativeButton("取消") { dialog, which -> activity.finish() }
+                                .setNegativeButton(getString(R.string.cancel)) { dialog, which -> activity.finish() }
                                 .setCancelable(false)
                                 .show()
                     }

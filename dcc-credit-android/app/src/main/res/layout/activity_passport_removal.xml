@@ -51,7 +51,7 @@
                 android:layout_marginRight="@dimen/content_padding_horizontal"
                 android:layout_weight="1"
                 android:padding="8dp"
-                android:text="备份数据"
+                android:text="@string/back_up_data"
                 android:textSize="17sp" />
 
         </LinearLayout>

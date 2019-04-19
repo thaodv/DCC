@@ -16,7 +16,6 @@ import android.support.annotation.RequiresApi
 import android.support.v4.app.FragmentManager
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.client.android.BeepManager
@@ -58,6 +57,7 @@ import io.wexchain.dcc.databinding.ActivityQrScannerBinding
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.trustpocket.ValidatePaymentPasswordBean
 import io.wexchain.ipfs.utils.doMain
+import org.jetbrains.anko.toast
 import java.math.BigInteger
 import java.security.KeyStore
 import java.security.MessageDigest
@@ -321,19 +321,19 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
 
     fun supportFingerprint(): Boolean {
         if (Build.VERSION.SDK_INT < 23) {
-            Toast.makeText(this, "您的系统版本过低，不支持指纹功能", Toast.LENGTH_SHORT).show()
+            toast(R.string.toast_msg2)
             return false
         } else {
             val keyguardManager = getSystemService(KeyguardManager::class.java)
             val fingerprintManager = getSystemService(FingerprintManager::class.java)
             if (!fingerprintManager!!.isHardwareDetected) {
-                Toast.makeText(this, "您的手机不支持指纹功能", Toast.LENGTH_SHORT).show()
+                toast(R.string.toast_msg3)
                 return false
             } else if (!keyguardManager!!.isKeyguardSecure) {
-                Toast.makeText(this, "您还未设置锁屏，请先设置锁屏并添加一个指纹", Toast.LENGTH_SHORT).show()
+                toast(R.string.toast_msg4)
                 return false
             } else if (!fingerprintManager.hasEnrolledFingerprints()) {
-                Toast.makeText(this, "您至少需要在系统设置中添加一个指纹", Toast.LENGTH_SHORT).show()
+                toast(R.string.toast_msg5)
                 return false
             }
         }
@@ -368,10 +368,10 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
         fragment.setOnClickListener(object : FingerCheckDialog.OnClickListener {
             override fun cancel() {
                 val getRedpacketDialog = GetRedpacketDialog(this@QrScannerPocketActivity)
-                getRedpacketDialog.setTitle("提示")
+                getRedpacketDialog.setTitle(getString(R.string.tips))
                 getRedpacketDialog.setIbtCloseVisble(View.GONE)
-                getRedpacketDialog.setText("确定要退出吗？")
-                getRedpacketDialog.setBtnText("输入密码", "退出")
+                getRedpacketDialog.setText(getString(R.string.trust_passwd_text2))
+                getRedpacketDialog.setBtnText(getString(R.string.trust_passwd_text3), getString(R.string.trust_passwd_text4))
                 getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
                     override fun cancel() {
                         checkPasswd()
@@ -461,9 +461,9 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
 
                     } else if (it.result == ValidatePaymentPasswordBean.Status.REJECTED) {
                         val deleteDialog = DeleteAddressBookDialog(this)
-                        deleteDialog.mTvText.text = "密码输入错误，超过3次将被锁定3小时，您还有${it.remainValidateTimes}次机会"
+                        deleteDialog.mTvText.text = getString(R.string.trust_passwd_text5) + it.remainValidateTimes + getString(R.string.trust_passwd_text6)
                         deleteDialog.mTvText.gravity = Gravity.LEFT
-                        deleteDialog.setBtnText("", "确定")
+                        deleteDialog.setBtnText("", getString(R.string.confirm))
                         deleteDialog.mBtSure.visibility = View.GONE
                         deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                             override fun cancel() {}
@@ -475,9 +475,9 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                         deleteDialog.show()
                     } else if (it.result == ValidatePaymentPasswordBean.Status.LOCKED) {
                         val deleteDialog = DeleteAddressBookDialog(this)
-                        deleteDialog.mTvText.text = "您的密码已被暂时锁定，请等待解锁"
+                        deleteDialog.mTvText.text = getString(R.string.trust_passwd_text1)
                         deleteDialog.mTvText.gravity = Gravity.LEFT
-                        deleteDialog.setBtnText("", "确定")
+                        deleteDialog.setBtnText("", getString(R.string.confirm))
                         deleteDialog.mBtSure.visibility = View.GONE
                         deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                             override fun cancel() {}

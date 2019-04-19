@@ -10,9 +10,9 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.wexchain.android.common.base.BindFragment
-import io.wexchain.android.dcc.modules.other.QrScannerActivity
 import io.wexchain.android.common.constant.RequestCodes
-import io.wexchain.android.dcc.tools.CommonUtils
+import io.wexchain.android.common.tools.CommonUtils
+import io.wexchain.android.dcc.modules.other.QrScannerActivity
 import io.wexchain.android.dcc.tools.isEcPrivateKeyValid
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.dcc.R

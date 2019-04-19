@@ -10,9 +10,9 @@ import io.wexchain.android.common.getViewModel
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.postOnMainThread
 import io.wexchain.android.common.toast
+import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.PassportOperations
-import io.wexchain.android.dcc.tools.CommonUtils
 import io.wexchain.android.dcc.tools.ShareUtils
 import io.wexchain.android.dcc.vm.InputPasswordVm
 import io.wexchain.dcc.R

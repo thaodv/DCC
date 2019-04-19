@@ -23,7 +23,7 @@
             android:background="#fff"
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
-            android:text="我的"
+            android:text="@string/main_tab_mine"
             android:textColor="#4A4A4A"
             android:textSize="16sp"
             android:textStyle="bold"/>
@@ -87,7 +87,7 @@
                 <TextView
                     android:id="@+id/tv_user_wechat"
                     style="@style/TextActionLine"
-                    android:text="绑定微信"
+                    android:text="@string/mine_bind_wx"
                     app:layout_constraintTop_toBottomOf="@id/tv_user_nickname"/>
 
                 <TextView
@@ -95,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="30dp"
-                    android:text="未授权"
+                    android:text="@string/mine_bind_wx_text2"
                     android:textColor="@color/FF4A4A4A"
                     android:textSize="17sp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/tv_user_wechat"
@@ -127,7 +127,7 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:paddingTop="2dp"
-                    android:text="重要"
+                    android:text="@string/important"
                     android:textColor="#fff"
                     android:textSize="12sp"
                     app:layout_constraintBaseline_toBaselineOf="@id/tv_passport_backup"
@@ -136,7 +136,7 @@
                 <TextView
                     android:id="@+id/tv_trust_pocket_setting"
                     style="@style/TextActionLine"
-                    android:text="托管钱包设置"
+                    android:text="@string/trust_pocket_setting_title"
                     app:layout_constraintTop_toBottomOf="@id/tv_passport_backup"/>
 
                 <LinearLayout
@@ -203,7 +203,7 @@
                 <TextView
                     android:id="@+id/tv_digest_pocket_setting"
                     style="@style/TextActionLine"
-                    android:text="数字钱包设置"
+                    android:text="@string/digest_setting"
                     app:layout_constraintTop_toBottomOf="@id/ll_te_pay"/>
 
                 <TextView
@@ -251,7 +251,7 @@
                     android:id="@+id/tv_setting"
                     style="@style/TextActionLine"
                     android:layout_marginTop="10dp"
-                    android:text="更多"
+                    android:text="@string/more"
                     app:layout_constraintTop_toBottomOf="@id/tv_data_cloud"/>
 
             </android.support.constraint.ConstraintLayout>

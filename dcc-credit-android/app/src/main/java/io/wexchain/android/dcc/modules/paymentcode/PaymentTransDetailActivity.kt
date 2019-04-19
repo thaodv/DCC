@@ -15,6 +15,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPaymentTransDetailBinding
 import io.wexchain.ipfs.utils.doMain
 
+@SuppressLint("SetTextI18n")
 class PaymentTransDetailActivity : BindActivity<ActivityPaymentTransDetailBinding>() {
 
     override val contentLayoutId: Int get() = R.layout.activity_payment_trans_detail
@@ -30,7 +31,6 @@ class PaymentTransDetailActivity : BindActivity<ActivityPaymentTransDetailBindin
         getGoodsOrder(mId)
     }
 
-    @SuppressLint("SetTextI18n")
     private fun getGoodsOrder(id: String) {
         GardenOperations
                 .refreshToken {

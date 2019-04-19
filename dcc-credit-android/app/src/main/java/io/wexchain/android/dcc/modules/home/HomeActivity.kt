@@ -132,10 +132,10 @@ class HomeActivity : BaseCompatActivity() {
         bottom_navigation_bar.apply {
             setMode(BottomNavigationBar.MODE_FIXED)
             setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC)
-            addItem(BottomNavigationItem(R.drawable.tab_activity_service, "服务").setInactiveIconResource(R.drawable.tab_service).setActiveColorResource(R.color.main_tab))
-            addItem(BottomNavigationItem(R.drawable.tab_activity_find, "发现").setInactiveIconResource(R.drawable.tab_find).setActiveColorResource(R.color.main_tab))
-            addItem(BottomNavigationItem(R.drawable.tab_activity_digital, "钱包").setInactiveIconResource(R.drawable.tab_digital).setActiveColorResource(R.color.main_tab))
-            addItem(BottomNavigationItem(R.drawable.tab_activity_mine, "我的").setInactiveIconResource(R.drawable.tab_mine).setActiveColorResource(R.color.main_tab))
+            addItem(BottomNavigationItem(R.drawable.tab_activity_service, getString(R.string.main_tab_service)).setInactiveIconResource(R.drawable.tab_service).setActiveColorResource(R.color.main_tab))
+            addItem(BottomNavigationItem(R.drawable.tab_activity_find, getString(R.string.main_tab_find)).setInactiveIconResource(R.drawable.tab_find).setActiveColorResource(R.color.main_tab))
+            addItem(BottomNavigationItem(R.drawable.tab_activity_digital, getString(R.string.main_tab_pocket)).setInactiveIconResource(R.drawable.tab_digital).setActiveColorResource(R.color.main_tab))
+            addItem(BottomNavigationItem(R.drawable.tab_activity_mine, getString(R.string.main_tab_mine)).setInactiveIconResource(R.drawable.tab_mine).setActiveColorResource(R.color.main_tab))
             setFirstSelectedPosition(0)
             initialise()
         }
@@ -222,7 +222,7 @@ class HomeActivity : BaseCompatActivity() {
                             BaseDialog(this).crateDownloadDialog(mission)
                         }
                     } else {
-                        toast("没有读写文件权限,请重新打开App授权")
+                        toast(getString(R.string.toast_msg1))
                         finish()
                     }
                 }

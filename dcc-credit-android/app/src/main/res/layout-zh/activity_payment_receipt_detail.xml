@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <layout>
 
-    <LinearLayout
+    <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -9,9 +10,10 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical"
-        tools:context="io.wexchain.android.dcc.modules.paymentcode.PaymentReceiptDetailTimeoutActivity">
+        tools:context="io.wexchain.android.dcc.modules.paymentcode.PaymentReceiptDetailActivity">
 
         <RelativeLayout
+            android:id="@+id/rl_title"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="#FA4A82">
@@ -53,16 +55,15 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rl_title">
 
-
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/ll_total"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#FA4A82"
@@ -77,7 +78,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/payment_receipt_detail_total_trans"
+                            android:text="@string/payment_receipt_detail_total_trans3"
                             android:textColor="@color/white"
                             android:textSize="14sp"/>
 
@@ -125,18 +126,96 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/payment_receipt_detail_total_trans1"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                android:id="@+id/tv_num2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginRight="4dp"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                tools:text="3"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/unit_bi"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"/>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@color/white"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/payment_receipt_detail_total_trans2"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                android:id="@+id/tv_account2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginRight="4dp"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                tools:text="3"/>
+
+                            <TextView
+                                android:id="@+id/tv_code2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                tools:text="EOS"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ll_total"
-                    android:layout_marginLeft="14dp"
-                    android:layout_marginRight="14dp"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="80dp"
                         android:layout_height="50dp"
                         android:gravity="center_vertical"
                         android:text="@string/payment_receipt_detail_receipt_info"
@@ -152,7 +231,7 @@
                         android:gravity="center_vertical">
 
                         <TextView
-                            android:layout_width="100dp"
+                            android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:text="@string/payment_receipt_detail_title"
                             android:textColor="@color/FF4A4A4A"
@@ -177,7 +256,7 @@
                         android:gravity="center_vertical">
 
                         <TextView
-                            android:layout_width="100dp"
+                            android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:text="@string/payment_receipt_detail_descript"
                             android:textColor="@color/FF4A4A4A"
@@ -202,14 +281,14 @@
                         android:gravity="center_vertical">
 
                         <TextView
-                            android:layout_width="100dp"
+                            android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:text="@string/payment_receipt_detail_coin"
                             android:textColor="@color/FF4A4A4A"
                             android:textSize="16sp"/>
 
                         <TextView
-                            android:id="@+id/tv_code2"
+                            android:id="@+id/tv_code3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/FF4A4A4A"
@@ -227,14 +306,14 @@
                         android:gravity="center_vertical">
 
                         <TextView
-                            android:layout_width="100dp"
+                            android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:text="@string/payment_receipt_detail_account"
                             android:textColor="@color/FF4A4A4A"
                             android:textSize="16sp"/>
 
                         <TextView
-                            android:id="@+id/tv_account2"
+                            android:id="@+id/tv_account3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/FF4A4A4A"
@@ -252,7 +331,7 @@
                         android:gravity="center_vertical">
 
                         <TextView
-                            android:layout_width="100dp"
+                            android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:text="@string/payment_receipt_detail_deadtime"
                             android:textColor="@color/FF4A4A4A"
@@ -260,31 +339,6 @@
 
                         <TextView
                             android:id="@+id/tv_deadtime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/FF4A4A4A"
-                            android:textSize="16sp"
-                            tools:text="快使用双截棍"/>
-
-                    </LinearLayout>
-
-                    <View
-                        style="@style/DividerHorizontal"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/payment_receipt_detail_status"
-                            android:textColor="@color/FF4A4A4A"
-                            android:textSize="16sp"/>
-
-                        <TextView
-                            android:id="@+id/tv_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/FF4A4A4A"
@@ -304,7 +358,7 @@
                         android:visibility="gone">
 
                         <TextView
-                            android:layout_width="100dp"
+                            android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:text="@string/payment_receipt_detail_fee"
                             android:textColor="@color/FF4A4A4A"
@@ -319,11 +373,29 @@
                             tools:text="快使用双截棍"/>
 
                     </LinearLayout>
-
                 </LinearLayout>
+            </LinearLayout>
 
-            </RelativeLayout>
         </ScrollView>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/icon_payment_delete"/>
+
+        <ImageView
+            android:id="@+id/iv_share"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@+id/iv_delete"
+            android:src="@drawable/icon_payment_share_image"/>
+    </RelativeLayout>
 </layout>

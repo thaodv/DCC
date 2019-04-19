@@ -1,5 +1,6 @@
 package io.wexchain.android.dcc.modules.trustpocket
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -23,6 +24,7 @@ import io.wexchain.ipfs.utils.doMain
 import java.math.BigInteger
 import java.security.MessageDigest
 
+@SuppressLint("SetTextI18n")
 class TrustPocketModifyPwdActivity : BaseCompatActivity() {
 
     lateinit var mOldPwd: String
@@ -109,9 +111,9 @@ class TrustPocketModifyPwdActivity : BaseCompatActivity() {
                         finish()
                     } else if (it.result == ValidatePaymentPasswordBean.Status.REJECTED) {
                         val deleteDialog = DeleteAddressBookDialog(this)
-                        deleteDialog.mTvText.text = "密码输入错误，超过3次将被锁定3小时，您还有${it.remainValidateTimes}次机会"
+                        deleteDialog.mTvText.text = getString(R.string.trust_passwd_text5) + it.remainValidateTimes + getString(R.string.trust_passwd_text6)
                         deleteDialog.mTvText.gravity = Gravity.LEFT
-                        deleteDialog.setBtnText("", "确定")
+                        deleteDialog.setBtnText("", getString(R.string.confirm))
                         deleteDialog.mBtSure.visibility = View.GONE
                         deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                             override fun cancel() {}
@@ -123,9 +125,9 @@ class TrustPocketModifyPwdActivity : BaseCompatActivity() {
                         deleteDialog.show()
                     } else if (it.result == ValidatePaymentPasswordBean.Status.LOCKED) {
                         val deleteDialog = DeleteAddressBookDialog(this)
-                        deleteDialog.mTvText.text = "您的密码已被暂时锁定，请等待解锁"
+                        deleteDialog.mTvText.text = getString(R.string.trust_passwd_text1)
                         deleteDialog.mTvText.gravity = Gravity.LEFT
-                        deleteDialog.setBtnText("", "确定")
+                        deleteDialog.setBtnText("", getString(R.string.confirm))
                         deleteDialog.mBtSure.visibility = View.GONE
                         deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                             override fun cancel() {}

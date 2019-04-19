@@ -4,11 +4,11 @@ import android.os.Bundle
 import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.*
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.chain.IpfsOperations
 import io.wexchain.android.dcc.modules.mine.SettingActivity
-import io.wexchain.android.dcc.tools.CommonUtils
 import io.wexchain.android.dcc.tools.isPasswordValid
 import io.wexchain.android.dcc.view.dialog.CloudstorageDialog
 import io.wexchain.android.dcc.vm.InputPasswordVm

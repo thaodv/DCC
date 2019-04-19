@@ -119,6 +119,7 @@
     <string name="remove_passport_description">删除钱包后，您只能通过导入钱包恢复当前钱包的使用。如果您未备份钱包，则无法继续使用当前钱包，如果未开启云存储功能，本地数据不会自动恢复。强烈建议您在删除钱包之前备份钱包，将数据备份到云。</string>
     <string name="title_remove_passport">删除钱包</string>
     <string name="back_up_wallet">备份钱包</string>
+    <string name="back_up_data">备份数据</string>
     <string name="please_input_current_passport_password">原钱包密码:</string>
     <string name="please_input_new_passport_password">新钱包密码:</string>
     <string name="export_keystore_description">二维码显示的是KeyStore信息,KEYSTORE是私钥的签名保护文件,通过钱包密码对KEYSTORE文件签名.单独拥有KEYSTORE文件或者钱包密码都无法使用钱包.而同时拥有KEYSTORE文件和钱包密码则可以再任何设备使用钱包.强烈建议您在使用钱包前做好备份</string>
@@ -540,6 +541,7 @@
     <string name="payment_receipt_detail_total_trans1">总交易共</string>
     <string name="payment_receipt_detail_total_trans2">总收入</string>
     <string name="payment_receipt_detail_total_trans3">今日收款</string>
+    <string name="payment_receipt_detail_total_trans4"> </string>
     <string name="payment_receipt_detail_total_unit">笔，共收款</string>
     <string name="payment_receipt_detail_receipt_info">收款信息</string>
     <string name="payment_receipt_detail_title">收款标题</string>
@@ -549,6 +551,7 @@
     <string name="payment_receipt_detail_deadtime">到期时间</string>
     <string name="payment_receipt_detail_status">状    态</string>
     <string name="payment_receipt_detail_status_closed">已关闭</string>
+    <string name="payment_receipt_detail_status_Active">开启</string>
     <string name="payment_receipt_detail_fee">手续费率</string>
 
     <string name="payment_share_page_title">分享</string>
@@ -666,6 +669,8 @@
     <string name="trust_pocket_withdraw_tip4">请先选择币种</string>
     <string name="trust_pocket_withdraw_tip5">提币申请提交成功！请耐心等待到账</string>
 
+    <string name="trust_pocket_phone_tip">手机号换绑成功！</string>
+
     <string name="digest_pocket">数字钱包</string>
     <string name="total_asset">总资产</string>
     <string name="my_invest">我的投资</string>
@@ -679,5 +684,32 @@
     <string name="payment">支出</string>
     <string name="pocket">钱包</string>
     <string name="recharge_to_trust_pocket">充到托管钱包</string>
+
+    <string name="main_tab_service">服务</string>
+    <string name="main_tab_find">发现</string>
+    <string name="main_tab_pocket">钱包</string>
+    <string name="main_tab_mine">我的</string>
+
+    <string name="mine_bind_wx">绑定微信</string>
+    <string name="mine_bind_wx_text1">已授权</string>
+    <string name="mine_bind_wx_text2">未授权</string>
+    <string name="important">重要</string>
+    <string name="digest_setting">数字钱包设置</string>
+
+    <string name="toast_msg1">没有读写文件权限,请重新打开App授权</string>
+    <string name="toast_msg2">您的系统版本过低，不支持指纹功能</string>
+    <string name="toast_msg3">您的手机不支持指纹功能</string>
+    <string name="toast_msg4">您还未设置锁屏，请先设置锁屏并添加一个指纹</string>
+    <string name="toast_msg5">您至少需要在系统设置中添加一个指纹</string>
+    <string name="toast_msg6">开启成功</string>
+    <string name="toast_msg7">日期跨度不能超过1个月</string>
+
+    <string name="trust_passwd_text1">您的密码已被暂时锁定，请等待解锁</string>
+    <string name="trust_passwd_text2">确定要退出吗？</string>
+    <string name="trust_passwd_text3">输入密码</string>
+    <string name="trust_passwd_text4">退出</string>
+    <string name="trust_passwd_text5">密码输入错误，超过3次将被锁定3小时，您还有</string>
+    <string name="trust_passwd_text6">次机会</string>
+
 
 </resources>

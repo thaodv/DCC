@@ -114,7 +114,7 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
             deleteDialog.mTvTips.text = "到期时间"
             deleteDialog.mTvText.text = "默认长期有效，可以选择7天内的时间，到期后其他人无法通过链接付款"
             deleteDialog.mTvText.gravity = Gravity.LEFT
-            deleteDialog.setBtnText("", "确定")
+            deleteDialog.setBtnText("", getString(R.string.confirm))
             deleteDialog.mBtSure.visibility = View.GONE
             deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                 override fun cancel() {}
@@ -131,7 +131,7 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
             deleteDialog.mTvTips.text = "手续费"
             deleteDialog.mTvText.text = "您的收入金额为订单金额*（1-手续费率）；手续费率可能根据实际情况调整，具体请关注官网信息"
             deleteDialog.mTvText.gravity = Gravity.LEFT
-            deleteDialog.setBtnText("", "确定")
+            deleteDialog.setBtnText("", getString(R.string.confirm))
             deleteDialog.mBtSure.visibility = View.GONE
             deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                 override fun cancel() {}

@@ -11,6 +11,7 @@ import io.wexchain.android.common.toast
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.dccchainservice.domain.Result
 import org.web3j.crypto.Credentials
+import wex.regloginlib.R
 import worhavah.regloginlib.AuthKey
 import worhavah.regloginlib.EthsHelper.createAndroidRSAKeyPair
 import worhavah.regloginlib.Net.Networkutils
@@ -57,7 +58,7 @@ object PassportOperations {
                 }, {
                     activity.toast("您当前使用的统一登录秘钥与链上不一致,请前往首页更新密钥")
                     CustomDialog(activity).apply {
-                        this.setTitle("提示")
+                        this.setTitle(activity.getString(R.string.tips))
                         textContent = it.message
                         withPositiveButton("更新") {
                             //  activity.navigateTo(AuthManageActivity::class.java)

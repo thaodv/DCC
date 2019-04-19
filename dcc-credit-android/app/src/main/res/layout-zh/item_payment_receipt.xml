@@ -125,6 +125,13 @@
                 android:gravity="right|center_vertical"
                 android:visibility="@{ViewModelHelper.isGoodsActive(bean.goods.status)?View.VISIBLE:View.GONE}">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_item_order_today_count"
+                    android:textColor="#FF4A4A4A"
+                    android:textSize="14sp"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -138,17 +145,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginRight="6dp"
                     android:text="@string/unit_bi"
-                    android:textColor="#FF4A4A4A"
-                    android:textSize="14sp"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/payment_item_order_today_count"
                     android:textColor="#FF4A4A4A"
                     android:textSize="14sp"
                     />

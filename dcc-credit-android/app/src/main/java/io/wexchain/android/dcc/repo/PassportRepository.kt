@@ -17,6 +17,7 @@ import io.wexchain.android.common.distinct
 import io.wexchain.android.common.map
 import io.wexchain.android.common.switchMap
 import io.wexchain.android.common.tools.AESSign
+import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.EthsHelper
 import io.wexchain.android.dcc.domain.AuthKey
@@ -358,7 +359,7 @@ class PassportRepository(
     }
 
     fun getEncryptKey(): String {
-        val packageName = CommonUtils.getPackageName()
+        val packageName = App.get().applicationInfo.packageName
         val macaddress = CommonUtils.getMacAddress()
         return packageName + macaddress
     }

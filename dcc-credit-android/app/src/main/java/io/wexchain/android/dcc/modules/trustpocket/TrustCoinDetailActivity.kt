@@ -319,7 +319,7 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
                         binding.srlList.autoRefresh()
 
                     } else {
-                        toast("日期跨度不能超过1个月")
+                        toast(getString(R.string.toast_msg7))
                     }
                 }
 

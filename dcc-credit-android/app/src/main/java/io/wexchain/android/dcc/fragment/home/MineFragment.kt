@@ -61,6 +61,7 @@ import javax.crypto.SecretKey
  *Created by liuyang on 2018/9/18.
  */
 @RequiresApi(Build.VERSION_CODES.M)
+@SuppressLint("SetTextI18n")
 class MineFragment : BindFragment<FragmentMineBinding>() {
 
     private val passport by lazy {
@@ -103,7 +104,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
     }
 
     private fun checkBoundWechat() {
-        binding.tvWechatStatus.text = if (GardenOperations.isBound()) "已授权" else "未授权"
+        binding.tvWechatStatus.text = if (GardenOperations.isBound()) getString(R.string.mine_bind_wx_text1) else getString(R.string.mine_bind_wx_text2)
         binding.tvUserWechat.onClick {
             GardenOperations.wechatLogin {
                 toast(it)
@@ -258,7 +259,7 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                 .withLoading()
                 .subscribe({
                     if (it.enableEntrust) {
-                        toast("开启成功")
+                        toast(getString(R.string.toast_msg6))
                     }
                     bindStatus = it.enableEntrust
                     binding.tvFingerPayStatus.switchStatus = bindStatus
@@ -286,19 +287,19 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
 
     private fun supportFingerprint(): Boolean {
         if (Build.VERSION.SDK_INT < 23) {
-            toast("您的系统版本过低，不支持指纹功能")
+            toast(getString(R.string.toast_msg2))
             return false
         } else {
             val keyguardManager = activity!!.getSystemService(KeyguardManager::class.java)
             val fingerprintManager = activity!!.getSystemService(FingerprintManager::class.java)
             if (!fingerprintManager!!.isHardwareDetected) {
-                toast("您的手机不支持指纹功能")
+                toast(getString(R.string.toast_msg3))
                 return false
             } else if (!keyguardManager!!.isKeyguardSecure) {
-                toast("您还未设置锁屏，请先设置锁屏并添加一个指纹")
+                toast(getString(R.string.toast_msg4))
                 return false
             } else if (!fingerprintManager.hasEnrolledFingerprints()) {
-                toast("您至少需要在系统设置中添加一个指纹")
+                toast(getString(R.string.toast_msg5))
                 return false
             }
         }
@@ -380,9 +381,9 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
 
                     } else if (it.result == ValidatePaymentPasswordBean.Status.REJECTED) {
                         val deleteDialog = DeleteAddressBookDialog(activity!!)
-                        deleteDialog.mTvText.text = "密码输入错误，超过3次将被锁定3小时，您还有${it.remainValidateTimes}次机会"
+                        deleteDialog.mTvText.text = getString(R.string.trust_passwd_text5) + it.remainValidateTimes + getString(R.string.trust_passwd_text6)
                         deleteDialog.mTvText.gravity = Gravity.LEFT
-                        deleteDialog.setBtnText("", "确定")
+                        deleteDialog.setBtnText("", getString(R.string.confirm))
                         deleteDialog.mBtSure.visibility = View.GONE
                         deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                             override fun cancel() {}
@@ -394,9 +395,9 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
                         deleteDialog.show()
                     } else if (it.result == ValidatePaymentPasswordBean.Status.LOCKED) {
                         val deleteDialog = DeleteAddressBookDialog(activity!!)
-                        deleteDialog.mTvText.text = "您的密码已被暂时锁定，请等待解锁"
+                        deleteDialog.mTvText.text = getString(R.string.trust_passwd_text1)
                         deleteDialog.mTvText.gravity = Gravity.LEFT
-                        deleteDialog.setBtnText("", "确定")
+                        deleteDialog.setBtnText("", getString(R.string.confirm))
                         deleteDialog.mBtSure.visibility = View.GONE
                         deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                             override fun cancel() {}
@@ -442,10 +443,10 @@ class MineFragment : BindFragment<FragmentMineBinding>() {
         fragment.setOnClickListener(object : FingerCheckDialog.OnClickListener {
             override fun cancel() {
                 val getRedpacketDialog = GetRedpacketDialog(activity!!)
-                getRedpacketDialog.setTitle("提示")
+                getRedpacketDialog.setTitle(getString(R.string.tips))
                 getRedpacketDialog.setIbtCloseVisble(View.GONE)
-                getRedpacketDialog.setText("确定要退出吗？")
-                getRedpacketDialog.setBtnText("输入密码", "退出")
+                getRedpacketDialog.setText(getString(R.string.trust_passwd_text2))
+                getRedpacketDialog.setBtnText(getString(R.string.trust_passwd_text3), getString(R.string.trust_passwd_text4))
                 getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
                     override fun cancel() {
                         checkPasswd()

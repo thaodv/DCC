@@ -88,7 +88,7 @@
             android:layout_marginTop="10dp"
             android:background="#7b40ff"
             android:gravity="center"
-            android:text="删除钱包"
+            android:text="@string/title_remove_passport"
             android:textColor="#fff"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent" />

@@ -85,7 +85,7 @@ class SelectNodeActivity : BaseCompatActivity() {
                         custom_loding.visibility = View.VISIBLE
                     }
                     .doOnError {
-                        CloudstorageDialog(this).createTipsDialog("提示", "自定义节点无法访问，将为您切换到默认节点", "确认")
+                        CloudstorageDialog(this).createTipsDialog(getString(R.string.tips), "自定义节点无法访问，将为您切换到默认节点", "确认")
                     }
                     .doFinally {
                         custom_loding.clearAnimation()

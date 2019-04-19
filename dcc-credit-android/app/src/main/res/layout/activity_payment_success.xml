@@ -46,7 +46,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="收款标题"
+                        android:text="@string/payment_pay_dialog_text1"
                         android:textColor="#9B9B9B"
                         android:textSize="16sp"/>
 
@@ -72,7 +72,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="订单编号"
+                        android:text="@string/payment_pay_dialog_text2"
                         android:textColor="#9B9B9B"
                         android:textSize="16sp"/>
 
@@ -128,7 +128,7 @@
             android:background="@color/trans"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:text="完成"
+            android:text="@string/done"
             android:textColor="#4A4A4A"
             android:textSize="16sp"/>
 

@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="手机号换绑成功！"
+            android:text="@string/trust_pocket_phone_tip"
             android:textColor="#4A4A4A"
             android:textSize="16sp"/>
 
@@ -39,7 +39,7 @@
         android:background="@color/trans"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:text="完成"
+        android:text="@string/done"
         android:textColor="#4A4A4A"
         android:textSize="16sp"/>
 

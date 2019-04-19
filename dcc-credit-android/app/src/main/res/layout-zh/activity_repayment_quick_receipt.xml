@@ -5,8 +5,7 @@
 
         <variable
             name="vm"
-            type="io.wexchain.android.dcc.modules.trustpocket.TrustTradeDetailActivity.TradeDetailVm"/>
-
+            type="io.wexchain.android.dcc.modules.paymentcode.RepaymentQuickReceiptActivity.QueryGoodsVm"/>
     </data>
 
     <LinearLayout
@@ -15,17 +14,16 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F5F5FD"
+        android:background="@color/FFF5F5FD"
         android:orientation="vertical"
-        tools:context="io.wexchain.android.dcc.modules.trustpocket.TrustTradeDetailActivity">
+        tools:context="io.wexchain.android.dcc.modules.paymentcode.RepaymentQuickReceiptActivity">
 
         <include layout="@layout/include_toolbar"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/white">
+            android:layout_margin="14dp">
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -33,20 +31,22 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/tv_in"
+                    android:id="@+id/tv_my_receipt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/trust_pocket_recharge"
-                    android:textColor="#6144CC"
-                    android:textSize="16sp"/>
+                    android:text="@string/payment_my_receipt"
+                    android:textColor="@color/FF6144CC"
+                    android:textSize="18sp"/>
 
                 <View
-                    android:id="@+id/v_in_tip"
-                    android:layout_width="match_parent"
+                    android:id="@+id/v_my_receipt"
+                    android:layout_width="80dp"
                     android:layout_height="2dp"
                     android:layout_alignParentBottom="true"
-                    android:background="#6144CC"/>
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/FF6144CC"
+                    android:visibility="visible"/>
 
             </RelativeLayout>
 
@@ -56,20 +56,21 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/tv_out"
+                    android:id="@+id/tv_history_receipt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/trust_pocket_withdraw"
-                    android:textColor="#9B9B9B"
-                    android:textSize="16sp"/>
+                    android:text="@string/payment_history_receipt"
+                    android:textColor="@color/common_7F6144CC"
+                    android:textSize="18sp"/>
 
                 <View
-                    android:id="@+id/v_out_tip"
-                    android:layout_width="match_parent"
+                    android:id="@+id/v_history_receipt"
+                    android:layout_width="80dp"
                     android:layout_height="2dp"
                     android:layout_alignParentBottom="true"
-                    android:background="#6144CC"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/FF6144CC"
                     android:visibility="invisible"/>
 
             </RelativeLayout>
@@ -77,48 +78,19 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_weight="1">
+                android:layout_weight="1.8">
 
                 <TextView
-                    android:id="@+id/tv_my_in"
+                    android:id="@+id/tv_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="@string/trust_get"
-                    android:textColor="#9B9B9B"
-                    android:textSize="16sp"/>
-
-                <View
-                    android:id="@+id/v_my_in_tip"
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="#6144CC"
-                    android:visibility="invisible"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/tv_my_out"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="@string/trust_pay"
-                    android:textColor="#9B9B9B"
-                    android:textSize="16sp"/>
-
-                <View
-                    android:id="@+id/v_my_out_tip"
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="#6144CC"
-                    android:visibility="invisible"/>
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/bg_payment_add_receipt"
+                    android:gravity="center"
+                    android:text="@string/payment_add"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"/>
 
             </RelativeLayout>
 
@@ -131,13 +103,11 @@
             <com.scwang.smartrefresh.layout.SmartRefreshLayout
                 android:id="@+id/srl_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
+                android:layout_height="match_parent">
 
                 <com.scwang.smartrefresh.layout.header.ClassicsHeader
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                    android:layout_height="wrap_content"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_list"
@@ -145,12 +115,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_trust_recharge_record"/>
+                    tools:listitem="@layout/item_payment_receipt"/>
 
                 <com.scwang.smartrefresh.layout.footer.ClassicsFooter
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                    android:layout_height="wrap_content"/>
 
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
@@ -176,7 +145,7 @@
                     android:layout_marginTop="38dp"
                     android:text="@string/data_unavailable"
                     android:textColor="#FF4A4A4A"
-                    android:textSize="15sp"/>
+                    android:textSize="16sp"/>
 
             </LinearLayout>
 

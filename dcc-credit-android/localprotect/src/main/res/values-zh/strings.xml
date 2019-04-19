@@ -22,6 +22,7 @@
     <string name="enable_pin">启用数字密码</string>
     <string name="fingerprint_identification">指纹识别</string>
     <string name="skip">跳过</string>
+    <string name="skip1">跳过 ></string>
     <string name="verify_pin">验证数字密码</string>
     <string name="pin_incorrect_please_retry">数字密码错误，请重试</string>
     <string name="repeat_pin">再次输入数字密码</string>

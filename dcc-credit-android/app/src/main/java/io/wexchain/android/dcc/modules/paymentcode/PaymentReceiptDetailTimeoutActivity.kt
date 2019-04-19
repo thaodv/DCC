@@ -14,6 +14,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPaymentReceiptDetailTimeoutBinding
 import io.wexchain.ipfs.utils.doMain
 
+@SuppressLint("SetTextI18n")
 class PaymentReceiptDetailTimeoutActivity : BindActivity<ActivityPaymentReceiptDetailTimeoutBinding>() {
 
     private val mId get() = intent.getStringExtra("id")
@@ -36,7 +37,6 @@ class PaymentReceiptDetailTimeoutActivity : BindActivity<ActivityPaymentReceiptD
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun getGoodsView(id: String) {
         GardenOperations
                 .refreshToken {

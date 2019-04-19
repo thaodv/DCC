@@ -5,12 +5,27 @@ import java.math.RoundingMode;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Created by Wangpeng on 2018/10/24 15:37.
  * usage:
  */
 public class CommonUtils {
+    
+    /**
+     * 校验密码 （字母数字特殊符号至少2种混合）
+     *
+     * @param password
+     * @return
+     */
+    public static boolean checkPassword(String password) {
+        String criteriaPassword = "^(?![\\d]+$)(?![a-zA-Z]+$)(?![^\\da-zA-Z]+$).{8,20}$";
+        Pattern pattern = Pattern.compile(criteriaPassword);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
     
     /**
      * 获取mac地址

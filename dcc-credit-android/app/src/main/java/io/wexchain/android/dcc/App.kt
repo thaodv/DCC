@@ -12,6 +12,7 @@ import io.wexchain.android.common.BaseApplication
 import io.wexchain.android.common.Pop
 import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.tools.AESSign
+import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.dcc.chain.CertOperations
 import io.wexchain.android.dcc.modules.selectnode.NodeBean
 import io.wexchain.android.dcc.network.CommonApi

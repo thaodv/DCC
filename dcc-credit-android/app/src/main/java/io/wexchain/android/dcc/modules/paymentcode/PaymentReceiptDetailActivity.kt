@@ -16,6 +16,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPaymentReceiptDetailBinding
 import io.wexchain.ipfs.utils.doMain
 
+@SuppressLint("SetTextI18n")
 class PaymentReceiptDetailActivity : BindActivity<ActivityPaymentReceiptDetailBinding>() {
 
     private val mId get() = intent.getStringExtra("id")
@@ -66,7 +67,6 @@ class PaymentReceiptDetailActivity : BindActivity<ActivityPaymentReceiptDetailBi
 
     }
 
-    @SuppressLint("SetTextI18n")
     private fun getGoodsView(id: String) {
         GardenOperations
                 .refreshToken {

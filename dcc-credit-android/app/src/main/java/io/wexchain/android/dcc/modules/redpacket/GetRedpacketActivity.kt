@@ -121,7 +121,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
             // 活动结束
             if (mActivityStatus == RedPacketActivityBean.Status.ENDED) {
                 val getRedpacketDialog = GetRedpacketDialog(this)
-                getRedpacketDialog.setTitle("提示")
+                getRedpacketDialog.setTitle(getString(R.string.tips))
                 getRedpacketDialog.setIbtCloseVisble(View.GONE)
                 getRedpacketDialog.setText("本次活动已结束。非常感谢您的参与和关注！")
                 getRedpacketDialog.setBtnText("我知道了", "")
@@ -140,10 +140,10 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                 // 未解锁
                 if (null == hasUnLock) {
                     val getRedpacketDialog = GetRedpacketDialog(this)
-                    getRedpacketDialog.setTitle("提示")
+                    getRedpacketDialog.setTitle(getString(R.string.tips))
                     getRedpacketDialog.setIbtCloseVisble(View.GONE)
                     getRedpacketDialog.setText("您还没有解锁的红包！\n邀请好友为您助力~")
-                    getRedpacketDialog.setBtnText("继续邀请", "取消")
+                    getRedpacketDialog.setBtnText("继续邀请", getString(R.string.cancel))
                     getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
                         override fun cancel() {
                             GardenOperations.shareWechatRedPacket {
@@ -164,10 +164,10 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                         // 无红包可领取
                         if (null == redPacketId) {
                             val getRedpacketDialog = GetRedpacketDialog(this)
-                            getRedpacketDialog.setTitle("提示")
+                            getRedpacketDialog.setTitle(getString(R.string.tips))
                             getRedpacketDialog.setIbtCloseVisble(View.GONE)
                             getRedpacketDialog.setText("每位用户限领1个红包！\n可领红包已领光！")
-                            getRedpacketDialog.setBtnText("继续邀请", "取消")
+                            getRedpacketDialog.setBtnText("继续邀请", getString(R.string.cancel))
                             getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
                                 override fun cancel() {
                                     GardenOperations.shareWechatRedPacket {
@@ -184,7 +184,7 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                         // 可领取
                         else {
                             val getRedpacketDialog = GetRedpacketDialog(this)
-                            getRedpacketDialog.setTitle("提示")
+                            getRedpacketDialog.setTitle(getString(R.string.tips))
                             getRedpacketDialog.setIbtCloseVisble(View.VISIBLE)
                             getRedpacketDialog.setText("每位用户限领1个红包！\n确认领取【$getMoney】元红包？")
                             getRedpacketDialog.setBtnText("继续邀请", "领取红包")
@@ -224,10 +224,10 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                                                 val err = it as DccChainServiceException
                                                 if (err.businessCode == "BONUS_IS_EMPTY") {
                                                     val getRedpacketDialog = GetRedpacketDialog(this@GetRedpacketActivity)
-                                                    getRedpacketDialog.setTitle("提示")
+                                                    getRedpacketDialog.setTitle(getString(R.string.tips))
                                                     getRedpacketDialog.setIbtCloseVisble(View.GONE)
                                                     getRedpacketDialog.setText("可领红包已领完")
-                                                    getRedpacketDialog.setBtnText("继续邀请", "取消")
+                                                    getRedpacketDialog.setBtnText("继续邀请", getString(R.string.cancel))
                                                     getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
                                                         override fun cancel() {
                                                             GardenOperations.shareWechatRedPacket {
@@ -242,10 +242,10 @@ class GetRedpacketActivity : BindActivity<ActivityGetRedpacketBinding>(), ItemVi
                                                     getRedpacketDialog.show()
                                                 } else if (err.businessCode == "REDPACKET_OPEN_ID_NOT_FOUND") {
                                                     val getRedpacketDialog = GetRedpacketDialog(this@GetRedpacketActivity)
-                                                    getRedpacketDialog.setTitle("提示")
+                                                    getRedpacketDialog.setTitle(getString(R.string.tips))
                                                     getRedpacketDialog.setIbtCloseVisble(View.GONE)
                                                     getRedpacketDialog.setText("需要登录BitExpress小程序，才可以领取红包！")
-                                                    getRedpacketDialog.setBtnText("去小程序", "取消")
+                                                    getRedpacketDialog.setBtnText("去小程序", getString(R.string.cancel))
                                                     getRedpacketDialog.setOnClickListener(object : GetRedpacketDialog.OnClickListener {
                                                         override fun cancel() {
                                                             GardenOperations.startWechatRedPacket {
