@@ -660,7 +660,7 @@
     <string name="trust_pocket_withdraw_hint">Scan or select from the address book</string>
     <string name="trust_pocket_withdraw_tip1">提币地址不能为空</string>
     <string name="trust_pocket_withdraw_tip2">提币数量不能为空</string>
-    <string name="trust_pocket_withdraw_tip3"></string>
+    <string name="trust_pocket_withdraw_tip3"> </string>
     <string name="trust_pocket_withdraw_tip4">请先选择币种</string>
     <string name="trust_pocket_withdraw_tip5">提币申请提交成功！请耐心等待到账</string>
 
