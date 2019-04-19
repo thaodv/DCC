@@ -179,7 +179,7 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
                                 if (tempCode == it.assetValue.assetCode) {
 
                                     res.value = it.assetValue.amount.toBigDecimal().setSelfScale(8)
-                                    res.value2 = "≈￥" + it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).toPlainString().toBigDecimal().setSelfScale(2)
+                                    res.value2 = "≈" + CommonUtils.showCurrencySymbol() + it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).toPlainString().toBigDecimal().setSelfScale(2)
                                     res.value3 = it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal())
                                 }
                                 if (resultAsset.contains(res)) {

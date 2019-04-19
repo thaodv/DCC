@@ -234,6 +234,7 @@
                     tools:text="≈￥0"/>
 
                 <TextView
+                    android:id="@+id/tv_digest_usdt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{assets.assetsSumValue2}"

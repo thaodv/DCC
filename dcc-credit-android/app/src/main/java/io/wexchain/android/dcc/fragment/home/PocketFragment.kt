@@ -52,7 +52,9 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
     var mValue1: String = ""
     var mValue2: String = ""
     var mTrustValue: String = ""
+    var mTrustValueUsdt: String = ""
     var mBsxValue: String = ""
+    var mBsxValueUsdt: String = ""
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -118,16 +120,22 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                 binding.assetsAmountValue.text = mValue1
                 binding.tvTotalUsdt.text = mValue2
                 binding.tvTrustAmount.text = mTrustValue
+                binding.tvTrustAmountUsdt.text = mTrustValueUsdt
                 binding.tvDigestValue.text = assetsVm.assetsSumValue.get()
+                binding.tvDigestUsdt.text = assetsVm.assetsSumValue2.get()
                 binding.tvBsx.text = mBsxValue
+                binding.tvBsxUsdt.text = mBsxValueUsdt
 
 
             } else {
                 binding.assetsAmountValue.text = "****"
                 binding.tvTotalUsdt.text = "****"
                 binding.tvTrustAmount.text = "****"
+                binding.tvTrustAmountUsdt.text = "****"
                 binding.tvDigestValue.text = "****"
+                binding.tvDigestUsdt.text = "****"
                 binding.tvBsx.text = "****"
+                binding.tvBsxUsdt.text = "****"
 
             }
         })
@@ -160,6 +168,10 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
 
                     binding.tvTrustAmount.text = mTrustValue
 
+                    mTrustValueUsdt = "≈" + tempTrustAmount.toBigDecimal().setScale(8, RoundingMode.DOWN).toPlainString() + " USDT"
+
+                    binding.tvTrustAmountUsdt.text = mTrustValueUsdt
+
                     val bsxAccount = if (null == it.third.corpus) {
                         "0"
                     } else StringUtils.keep2double(it.third.corpus)
@@ -169,6 +181,10 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                     mBsxValue = "≈" + CommonUtils.showCurrencySymbol() + bsxAccount
 
                     binding.tvBsx.text = mBsxValue
+
+                    mBsxValueUsdt = "≈" + bsxAccount.toBigDecimal().divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).toPlainString() + " USDT"
+
+                    binding.tvBsxUsdt.text = mBsxValueUsdt
 
                     val digestAccountRnb = binding.tvDigestRnb.text.toString()
 

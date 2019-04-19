@@ -8,6 +8,7 @@ import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.resultOk
 import io.wexchain.android.common.toast
+import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.tools.check
@@ -136,7 +137,7 @@ class TrustChooseCoinActivity : BaseCompatActivity(), TextWatcher, ItemViewClick
                         putExtra("code", code)
                         putExtra("name", name)
                         putExtra("value", it.availableAmount.assetValue.amount.toBigDecimal().setSelfScale(4))
-                        putExtra("value2", "≈￥" + it.availableAmount.legalTenderPrice.amount.toBigDecimal().divide(App.get().mUsdtquote.toBigDecimal(), 4, RoundingMode.DOWN).toPlainString())
+                        putExtra("value2", "≈" + CommonUtils.showCurrencySymbol() + it.availableAmount.legalTenderPrice.amount.toBigDecimal().divide(App.get().mUsdtquote.toBigDecimal(), 4, RoundingMode.DOWN).toPlainString())
                     }
 
                 }, {

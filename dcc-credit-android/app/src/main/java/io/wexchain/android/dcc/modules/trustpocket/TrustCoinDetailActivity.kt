@@ -8,6 +8,7 @@ import android.view.View
 import io.reactivex.Single
 import io.wexchain.android.common.*
 import io.wexchain.android.common.base.BindActivity
+import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.chain.GardenOperations
 import io.wexchain.android.dcc.tools.check
@@ -380,7 +381,7 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
                 .subscribe({
 
                     binding.holding = it.availableAmount.assetValue.amount.toBigDecimal().setSelfScale(8)
-                    binding.holdingValue = "≈￥" + it.availableAmount.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).setScale(2, RoundingMode.DOWN).toPlainString()
+                    binding.holdingValue = "≈" + CommonUtils.showCurrencySymbol() + it.availableAmount.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).setScale(2, RoundingMode.DOWN).toPlainString()
 
                 }, {
                     if ("getBalance.arg0.mobileUserId:must not be null" == it.message.toString()) {

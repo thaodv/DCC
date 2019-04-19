@@ -57,8 +57,6 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityQrScannerBinding
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.trustpocket.ValidatePaymentPasswordBean
-import io.wexchain.digitalwallet.util.isBtcAddress
-import io.wexchain.digitalwallet.util.isEthAddress
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigInteger
 import java.security.KeyStore
@@ -130,37 +128,105 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
     private fun onScanResult(text: String) {
         beepManager.playBeepSound()
 
-        if (text.contains("0x")) {
-            getMemberAndMobileUserInfo(text)
+        if (text.contains("http://") || text.contains("https://")) {
+            startActivity(StaticHtmlActivity.getResultIntent(this, "", text))
+            finish()
         } else {
-
             if (text.contains("appPayToken")) {
-
-                mAppToken = Gson().fromJson(text, AppPayTokenBean::class.java).appPayToken
-                cashierContent(mAppToken!!)
-
-            } else if (text.contains("http://") || text.contains("https://")) {
-                startActivity(StaticHtmlActivity.getResultIntent(this, "", text))
-                finish()
+                try {
+                    mAppToken = Gson().fromJson(text, AppPayTokenBean::class.java).appPayToken
+                    cashierContent(mAppToken!!)
+                } catch (e: Exception) {
+                    toast("不符合识别规范")
+                }
             } else {
-                val qScanResultNotAddressDialog = QScanResultNotAddressDialog(this)
+                GardenOperations
+                        .refreshToken {
+                            App.get().marketingApi.parseText(it, text).check()
+                        }
+                        .doMain()
+                        .withLoading()
+                        .subscribe({
+                            if (it.beMember) {
+                                getMemberAndMobileUserInfo(text)
+                            } else {
+                                if ("ETH" == it.chainCode) {
+                                    qScanResultIsAddressDialog = QScanResultIsAddressDialog(this)
 
-                qScanResultNotAddressDialog.setOnClickListener(object : QScanResultNotAddressDialog.OnClickListener {
-                    override fun copy() {
-                        getClipboardManager().primaryClip = ClipData.newPlainText("text", text)
-                        toast(R.string.copy_succeed)
-                    }
-                })
+                                    qScanResultIsAddressDialog.isTrust(false)
 
-                qScanResultNotAddressDialog.setParameters(text)
+                                    qScanResultIsAddressDialog.setParameter(text)
 
-                qScanResultNotAddressDialog.show()
+                                    qScanResultIsAddressDialog.setOnClickListener(object : QScanResultIsAddressDialog.OnClickListener {
+                                        override fun trustTransfer() {
+
+                                        }
+
+                                        override fun digestTransfer() {
+                                            navigateTo(CreateTransactionActivity::class.java) {
+                                                putExtra("address", text)
+                                            }
+                                            finish()
+                                        }
+
+                                        override fun trustWithdraw() {
+                                            navigateTo(TrustWithdrawActivity::class.java) {
+                                                putExtra("address", qScanResultIsAddressDialog.mTvAddress.text.toString())
+                                                putExtra("use", "2")
+                                            }
+                                            finish()
+                                        }
+                                    })
+                                    qScanResultIsAddressDialog.show()
+                                } else if ("ETC" == it.chainCode) {
+                                    qScanResultIsAddressDialog = QScanResultIsAddressDialog(this)
+
+                                    qScanResultIsAddressDialog.isBtc(true)
+
+                                    qScanResultIsAddressDialog.setParameter(text)
+
+                                    qScanResultIsAddressDialog.setOnClickListener(object : QScanResultIsAddressDialog.OnClickListener {
+                                        override fun trustTransfer() {
+
+                                        }
+
+                                        override fun digestTransfer() {
+
+                                        }
+
+                                        override fun trustWithdraw() {
+                                            navigateTo(TrustWithdrawActivity::class.java) {
+                                                putExtra("address", qScanResultIsAddressDialog.mTvAddress.text.toString())
+                                                putExtra("use", "2")
+                                            }
+                                            finish()
+                                        }
+                                    })
+                                    qScanResultIsAddressDialog.show()
+                                } else {
+                                    // Copy
+                                    val qScanResultNotAddressDialog = QScanResultNotAddressDialog(this)
+
+                                    qScanResultNotAddressDialog.setOnClickListener(object : QScanResultNotAddressDialog.OnClickListener {
+                                        override fun copy() {
+                                            getClipboardManager().primaryClip = ClipData.newPlainText("text", text)
+                                            toast(R.string.copy_succeed)
+                                        }
+                                    })
+
+                                    qScanResultNotAddressDialog.setParameters(text)
+
+                                    qScanResultNotAddressDialog.show()
+                                }
+                            }
+                        }, {
+                            toast(it.message.toString())
+                        })
             }
         }
-
     }
 
-    fun cashierContent(id: String) {
+    private fun cashierContent(id: String) {
         GardenOperations
                 .refreshToken {
                     App.get().marketingApi.cashierContent(it, id).check()
@@ -490,60 +556,7 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                     })
                     qScanResultIsAddressDialog.show()
                 }, {
-                    if (isEthAddress(text)) {
-                        qScanResultIsAddressDialog = QScanResultIsAddressDialog(this)
-
-                        qScanResultIsAddressDialog.isTrust(false)
-
-                        qScanResultIsAddressDialog.setParameter(text)
-
-                        qScanResultIsAddressDialog.setOnClickListener(object : QScanResultIsAddressDialog.OnClickListener {
-                            override fun trustTransfer() {
-
-                            }
-
-                            override fun digestTransfer() {
-                                navigateTo(CreateTransactionActivity::class.java) {
-                                    putExtra("address", text)
-                                }
-                                finish()
-                            }
-
-                            override fun trustWithdraw() {
-                                navigateTo(TrustWithdrawActivity::class.java) {
-                                    putExtra("address", qScanResultIsAddressDialog.mTvAddress.text.toString())
-                                    putExtra("use", "2")
-                                }
-                                finish()
-                            }
-                        })
-                        qScanResultIsAddressDialog.show()
-                    } else if (isBtcAddress(text)) {
-                        qScanResultIsAddressDialog = QScanResultIsAddressDialog(this)
-
-                        qScanResultIsAddressDialog.isBtc(true)
-
-                        qScanResultIsAddressDialog.setParameter(text)
-
-                        qScanResultIsAddressDialog.setOnClickListener(object : QScanResultIsAddressDialog.OnClickListener {
-                            override fun trustTransfer() {
-
-                            }
-
-                            override fun digestTransfer() {
-
-                            }
-
-                            override fun trustWithdraw() {
-                                navigateTo(TrustWithdrawActivity::class.java) {
-                                    putExtra("address", qScanResultIsAddressDialog.mTvAddress.text.toString())
-                                    putExtra("use", "2")
-                                }
-                                finish()
-                            }
-                        })
-                        qScanResultIsAddressDialog.show()
-                    }
+                    toast(it.message ?: getString(R.string.system_error))
                 })
     }
 
