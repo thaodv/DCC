@@ -15,6 +15,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustTransferDetailBinding
 import io.wexchain.ipfs.utils.doMain
 
+@SuppressLint("SetTextI18n")
 class TrustTransferDetailActivity : BindActivity<ActivityTrustTransferDetailBinding>() {
 
     private val mId get() = intent.getStringExtra("id")
@@ -39,7 +40,6 @@ class TrustTransferDetailActivity : BindActivity<ActivityTrustTransferDetailBind
 
     }
 
-    @SuppressLint("SetTextI18n")
     private fun getTransferOrder(id: String) {
         GardenOperations
                 .refreshToken {

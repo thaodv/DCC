@@ -2,10 +2,10 @@ package io.wexchain.android.dcc.modules.ipfs.activity
 
 import android.content.ClipData
 import android.os.Bundle
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
-import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
 import kotlinx.android.synthetic.main.activity_cloud_address.*
@@ -27,12 +27,12 @@ class CloudAddressActivity : BaseCompatActivity() {
     private fun initClick() {
         copy_hash.onClick {
             getClipboardManager().primaryClip = ClipData.newPlainText("Hash", cloud_address_hash.text)
-            toast("复制Hash成功")
+            toast(getString(R.string.toast_ipfs_msg7))
         }
 
         copy_address.onClick {
-            getClipboardManager().primaryClip = ClipData.newPlainText("地址", cloud_address_address.text)
-            toast("复制地址成功")
+            getClipboardManager().primaryClip = ClipData.newPlainText("address", cloud_address_address.text)
+            toast(getString(R.string.toast_ipfs_msg8))
         }
     }
 

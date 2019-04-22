@@ -22,6 +22,7 @@ import io.wexchain.dccchainservice.domain.trustpocket.GetTransferOrderBean
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigDecimal
 
+@SuppressLint("SetTextI18n")
 class TrustTransferGetDetailActivity : BindActivity<ActivityTrustTransferGetDetailBinding>() {
 
     private val mId get() = intent.getStringExtra("id")
@@ -49,7 +50,6 @@ class TrustTransferGetDetailActivity : BindActivity<ActivityTrustTransferGetDeta
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun getTransferOrder(id: String) {
         GardenOperations
                 .refreshToken {

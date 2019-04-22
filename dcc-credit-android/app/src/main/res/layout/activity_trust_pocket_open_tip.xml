@@ -203,6 +203,7 @@
                     android:textSize="14sp"/>
 
                 <TextView
+                    android:id="@+id/tv_chs1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
@@ -227,6 +228,7 @@
                     android:textSize="14sp"/>
 
                 <TextView
+                    android:id="@+id/tv_chs2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
@@ -251,6 +253,7 @@
                     android:textSize="14sp"/>
 
                 <TextView
+                    android:id="@+id/tv_chs3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"

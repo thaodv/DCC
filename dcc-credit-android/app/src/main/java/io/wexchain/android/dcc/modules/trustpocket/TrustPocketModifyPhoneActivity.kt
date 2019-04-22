@@ -24,7 +24,7 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
 
     private val mSource get() = intent.getStringExtra("source")
 
-    val phoneNum = ShareUtils.getString(Extras.SP_TRUST_MOBILE_PHONE)
+    var phoneNum = ""
 
     var smsUpTimeStamp: Long = 0
 
@@ -33,10 +33,23 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
         initToolbar()
 
         if (mSource == "modify") {
-            title = "修改绑定手机"
+            title = getString(R.string.trust_pocket_modify_bind_phone)
         } else {
-            title = "忘记密码"
+            title = getString(R.string.trust_forget_pwd)
         }
+
+        GardenOperations
+                .refreshToken {
+                    App.get().marketingApi.getMobileUser(it).check()
+                }
+                .doMain()
+                .withLoading()
+                .subscribe({
+                    phoneNum = it.mobile
+                    //binding.tvPhone.text = CommonUtils.phone(it.mobile)
+                }, {
+                    toast(it.message.toString())
+                })
 
         smsUpTimeStamp = if (binding.etCheckCode.text.toString() == "") 0 else binding.etCheckCode.text.toString().toLong()
 
@@ -61,7 +74,7 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
             val checkCodeValue = binding.etCheckCode.text.toString()
 
             if ("" == checkCodeValue) {
-                toast("请输入验证码")
+                toast(getString(R.string.trust_pocket_open_hint2))
             } else {
                 if (mSource == "modify") {
                     checkCode(phoneNum, checkCodeValue)

@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="提币"
+                android:text="@string/trust_pocket_withdraw"
                 android:textColor="#4A4A4A"
                 android:textSize="17sp"/>
 
@@ -43,7 +43,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="收币地址"
+                android:text="@string/receive_address"
                 android:textColor="#9B9B9B"
                 android:textSize="16sp"/>
 
@@ -68,7 +68,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="提币数量"
+                android:text="@string/withdraw_count"
                 android:textColor="#9B9B9B"
                 android:textSize="16sp"/>
 
@@ -92,7 +92,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="手续费"
+                android:text="@string/across_trans_poundage"
                 android:textColor="#9B9B9B"
                 android:textSize="16sp"/>
 
@@ -116,7 +116,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="到账数量"
+                android:text="@string/across_trans_toaccount_num"
                 android:textColor="#9B9B9B"
                 android:textSize="16sp"/>
 
@@ -140,7 +140,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="当前持有"
+                android:text="@string/current_holding"
                 android:textColor="#9B9B9B"
                 android:textSize="16sp"/>
 
@@ -161,7 +161,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="70dp"
-            android:text="确认"
+            android:text="@string/confirm2"
             android:textColor="@color/white"
             android:textSize="16sp"
             />

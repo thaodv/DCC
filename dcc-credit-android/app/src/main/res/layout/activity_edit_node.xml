@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent">
 
-    <include layout="@layout/include_toolbar" />
+    <include layout="@layout/include_toolbar"/>
 
     <LinearLayout
         android:id="@+id/ipfs_host_root"
@@ -14,14 +14,13 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_weight="1"
-            android:text="公网地址"
+            android:text="@string/edit_ipfs_text1"
             android:textColor="@color/FF4A4A4A"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <EditText
             android:id="@+id/ipfs_host"
@@ -30,19 +29,19 @@
             android:layout_weight="4"
             android:background="@null"
             android:gravity="center_vertical"
-            android:hint="请填写公网域名或IP"
+            android:hint="@string/edit_ipfs_text2"
             android:maxLength="63"
             android:maxLines="1"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:textColor="@color/text_min"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
     </LinearLayout>
 
     <View
         android:id="@+id/ipfs_host_line"
         style="@style/DividerHorizontal"
-        app:layout_constraintTop_toBottomOf="@id/ipfs_host_root" />
+        app:layout_constraintTop_toBottomOf="@id/ipfs_host_root"/>
 
     <LinearLayout
         android:id="@+id/ipfs_port_root"
@@ -52,14 +51,13 @@
         app:layout_constraintTop_toBottomOf="@id/ipfs_host_line">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_weight="1"
-            android:text="端口号"
+            android:text="@string/edit_ipfs_text3"
             android:textColor="@color/FF4A4A4A"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <EditText
             android:id="@+id/ipfs_port"
@@ -68,19 +66,19 @@
             android:layout_weight="4"
             android:background="@null"
             android:gravity="center_vertical"
-            android:hint="请填写端口号"
+            android:hint="@string/edit_ipfs_text4"
             android:inputType="number"
             android:maxLength="10"
             android:maxLines="1"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:textColor="@color/text_min"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
     </LinearLayout>
 
     <View
         style="@style/DividerHorizontal"
-        app:layout_constraintTop_toBottomOf="@id/ipfs_port_root" />
+        app:layout_constraintTop_toBottomOf="@id/ipfs_port_root"/>
 
     <Button
         android:id="@+id/ipfs_confirm"
@@ -91,8 +89,8 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="50dp"
         android:padding="10dp"
-        android:text="保存"
-        app:layout_constraintTop_toBottomOf="@id/ipfs_port_root" />
+        android:text="@string/edit_ipfs_text5"
+        app:layout_constraintTop_toBottomOf="@id/ipfs_port_root"/>
 
 
 </android.support.constraint.ConstraintLayout>

@@ -463,6 +463,8 @@
     <string name="skip_creat"><font color='#C009FF'>跳过</font></string>
     <string name="from_gallery"><font color='#C009FF'>相册</font></string>
 
+    <string name="skip">跳过</string>
+
     <string name="service_cash_title"> <font color='#7B40FF'>1000元</font> 现金立等可取</string>
     <string name="cash_loan_perfect">已完善</string>
     <string name="cash_loan_perfect_no">去完善</string>
@@ -522,6 +524,10 @@
     <string name="payment_add_bigger">需大于</string>
     <string name="payment_add_smallest">最少</string>
 
+    <string name="payment_add_toast_text1">请填写标题</string>
+    <string name="payment_add_toast_text2">请填写说明</string>
+    <string name="payment_add_toast_text3">请输入金额</string>
+
     <string name="payment_trans_detail_page_title">交易详情</string>
     <string name="payment_trans_detail_status1">支付成功</string>
     <string name="payment_trans_detail_title">收款标题</string>
@@ -531,6 +537,7 @@
     <string name="payment_trans_detail_user_mark">用户备注</string>
     <string name="payment_trans_detail_user_mark1">用户备注：</string>
     <string name="payment_trans_detail_account">付款金额</string>
+    <string name="payment_trans_detail_account1">支付金额</string>
     <string name="payment_trans_detail_fee">收款手续费</string>
     <!--<string name="payment_trans_detail_fee">Merchant Fee</string>-->
     <string name="payment_trans_detail_toaccount">实际到账</string>
@@ -603,6 +610,7 @@
     <string name="modify">修改</string>
     <string name="finger_pay">指纹支付</string>
     <string name="coin_type">币种</string>
+    <string name="scan">扫一扫</string>
     <string name="save_image">保存图片</string>
     <string name="copy_address">复制地址</string>
     <string name="mark1">备注</string>
@@ -619,10 +627,30 @@
     <string name="trust_pocket_set_new_passwd">设置新密码</string>
     <string name="trust_pocket_setting_title">托管钱包设置</string>
 
+    <string name="trust_pocket_success_text1">托管钱包开通成功！</string>
+    <string name="trust_pocket_success_text2">去实名认证</string>
+    <string name="trust_pocket_success_text3">为了保护账户安全，建议立即完成实名认证</string>
+
+    <string name="trust_forget_pwd">忘记密码</string>
+    <string name="trust_forget_pwd1">忘记密码？</string>
+
+    <string name="please_input_old_pwd">请输入原支付密码</string>
+
+    <string name="trust_change_text1">验证您现有手机号</string>
+
+    <string name="dialog_text1">请输入支付密码</string>
+    <string name="dialog_text2">结束时间不能小于起始时间</string>
+    <string name="dialog_text3">默认长期有效，可以选择7天内的时间，到期后其他人无法通过链接付款</string>
+    <string name="dialog_text4">您的收入金额为订单金额*（1-手续费率）；手续费率可能根据实际情况调整，具体请关注官网信息</string>
+    <string name="dialog_text5">确认关闭吗？关闭后他人无法向该笔收款发起付款？</string>
+    <string name="dialog_text6">您已在云端备份过实名认证数据，下载到本地后无需再次认证。</string>
+    <string name="dialog_text7">去下载</string>
+
     <string name="type">类型</string>
     <string name="time">时间</string>
     <string name="account">账户</string>
     <string name="trust_pay">付款</string>
+    <string name="trust_trade">收单</string>
     <string name="trust_get">收款</string>
     <string name="nick_name">昵称</string>
     <string name="nick_name1">昵称：</string>
@@ -703,6 +731,83 @@
     <string name="toast_msg5">您至少需要在系统设置中添加一个指纹</string>
     <string name="toast_msg6">开启成功</string>
     <string name="toast_msg7">日期跨度不能超过1个月</string>
+    <string name="toast_msg8">请先开通托管钱包</string>
+    <string name="toast_msg9">保存失败</string>
+    <string name="toast_msg10">保存成功</string>
+    <string name="toast_msg11">已保存至相册</string>
+    <string name="toast_msg12">保存失败，该节点没有响应</string>
+    <string name="toast_msg13">二维码保存失败</string>
+    <string name="toast_msg14">二维码已保存至:</string>
+    <string name="toast_msg15">长按保存海报</string>
+
+    <string name="toast_ipfs_msg1">输入云存储密码不符合要求,请检查</string>
+    <string name="toast_ipfs_msg2">密码输入有误</string>
+    <string name="toast_ipfs_msg3">同步失败</string>
+    <string name="toast_ipfs_msg4">请填写公网地址！</string>
+    <string name="toast_ipfs_msg5">请填写端口号！</string>
+    <string name="toast_ipfs_msg6">网址复制成功</string>
+    <string name="toast_ipfs_msg7">复制Hash成功</string>
+    <string name="toast_ipfs_msg8">复制地址成功</string>
+    <string name="toast_ipfs_msg9">实名认证信息上传失败</string>
+    <string name="toast_ipfs_msg10">银行卡认证信息上传失败</string>
+    <string name="toast_ipfs_msg11">运营商认证信息上传失败</string>
+    <string name="toast_ipfs_msg12">同牛认证信息上传失败</string>
+    <string name="toast_ipfs_msg13">云存储数据加密算法已升级，为确保该功能可以继续使用，请更新APP到最新版本。</string>
+
+    <string name="ipfs_help_text1">未选中</string>
+    <string name="ipfs_help_text2">等待下载</string>
+    <string name="ipfs_help_text3">等待上传</string>
+    <string name="ipfs_help_text4">上传中..</string>
+    <string name="ipfs_help_text5">下载中..</string>
+    <string name="ipfs_help_text6">已完成</string>
+    <string name="ipfs_help_text6_1">已完成</string>
+    <string name="ipfs_help_text7">可下载</string>
+    <string name="ipfs_help_text8">无可上传下载数据，建议重新认证</string>
+    <string name="ipfs_help_text9">本地和云端数据均为最新数据</string>
+    <string name="ipfs_help_text10">可上传</string>
+
+    <string name="my_ipfs_text1">实名认证数据</string>
+    <string name="my_ipfs_text2">银行卡认证数据</string>
+    <string name="my_ipfs_text3">运营商通讯记录</string>
+    <string name="my_ipfs_text4">同牛运营商通讯记录</string>
+    <string name="my_ipfs_text5">可同步数据</string>
+    <string name="my_ipfs_text6">开始同步</string>
+    <string name="my_ipfs_text7">更换云存储密码</string>
+    <string name="my_ipfs_text8">复制Hash</string>
+    <string name="my_ipfs_text9">复制Hash</string>
+    <string name="my_ipfs_text10">网关地址</string>
+    <string name="my_ipfs_text11">网关地址：</string>
+    <string name="my_ipfs_text12">数据加密存储在IPFS后会获得唯一Hash，可以根据Hash去访问及下载您存储的数据。</string>
+
+    <string name="edit_ipfs_text1">公网地址</string>
+    <string name="edit_ipfs_text2">请填写公网域名或IP</string>
+    <string name="edit_ipfs_text3">端口号</string>
+    <string name="edit_ipfs_text4">请填写端口号</string>
+    <string name="edit_ipfs_text5">保存</string>
+    <string name="edit_ipfs_text6">编辑节点</string>
+    <string name="edit_ipfs_text7">选择节点</string>
+
+    <string name="ipfs_dialog_text1">可同步数据</string>
+    <string name="ipfs_dialog_text2">目前仅支持认证数据同步到云端。若认证数据和链上最新记录一致，即可上传或下载，如不一致，即便本地或云端有数据，也无法上传或下载，建议重新认证后再上传。</string>
+    <string name="ipfs_dialog_text3">我知道了</string>
+
+    <string name="open_ipfs_text1">我的云存储</string>
+    <string name="open_ipfs_text2">请输入8-20位云存储密码</string>
+    <string name="open_ipfs_text3">您的钱包已开启数据云存储功能，请输入云存储密码以便将云端存储的数据下载到手机本地。</string>
+    <string name="open_ipfs_text4">忘记密码</string>
+    <string name="open_ipfs_text5">开启云存储</string>
+    <string name="open_ipfs_text6">设置8-20位云存储密码</string>
+    <string name="open_ipfs_text7">您需要设置云存储密码以开启数据备份功能。云存储密码丢失后无法找回，请妥善保管。</string>
+    <string name="open_ipfs_text8">了解更多</string>
+    <string name="open_ipfs_text9">云存储密码</string>
+    <string name="open_ipfs_text10">确认重置</string>
+    <string name="open_ipfs_text11">如忘记密码或想更换密码，您可以重置旧的密码并设置新的密码。\n\n重置密码后存储在云端的数据会被全部删除，您需要设置新的密码以开启云存储功能，请谨慎操作。</string>
+
+    <string name="ipfs_node_text1">尚未配置</string>
+    <string name="ipfs_node_text2">自定义节点无法访问，将为您切换到默认节点</string>
+    <string name="ipfs_node_text3">端口</string>
+    <string name="ipfs_node_text4">默认节点</string>
+    <string name="ipfs_node_text5">自定义节点</string>
 
     <string name="trust_passwd_text1">您的密码已被暂时锁定，请等待解锁</string>
     <string name="trust_passwd_text2">确定要退出吗？</string>
@@ -711,5 +816,8 @@
     <string name="trust_passwd_text5">密码输入错误，超过3次将被锁定3小时，您还有</string>
     <string name="trust_passwd_text6">次机会</string>
 
+    <string name="current_holding">当前持有</string>
+
+    <string name="be_cert_home_text1">认证数据云存储 ></string>
 
 </resources>

@@ -28,16 +28,16 @@ class TrustOpenSuccessActivity : BaseCompatActivity() {
         if (mMobile.startsWith("+86")) {
             // 已经实名认证
             if (CertOperations.getCertStatus(CertificationType.ID) == UserCertStatus.DONE) {
-                btDone.text = "完成"
+                btDone.text = getString(R.string.done)
                 tvRealTip.visibility = View.GONE
                 btRealName.visibility = View.GONE
             } else {
-                btDone.text = "跳过"
+                btDone.text = getString(R.string.skip)
                 tvRealTip.visibility = View.VISIBLE
                 btRealName.visibility = View.VISIBLE
             }
         } else {
-            btDone.text = "完成"
+            btDone.text = getString(R.string.done)
             tvRealTip.visibility = View.GONE
             btRealName.visibility = View.GONE
         }

@@ -41,9 +41,12 @@
     <string name="please_touch_finger_print_sensor">请将手指放于指纹在传感器上</string>
     <string name="local_protect_enabled">本地保护已开启</string>
     <string name="edit_nickname">更改昵称</string>
-    <string name="data_cloud_storage">数据云存储</string>
-    <string name="start_in">立即启用</string>
-    <string name="start_out">已启用，开始同步</string>
+    <string name="data_cloud_storage">Cloud Storage</string>
+    <string name="start_in">Get Started</string>
+    <string name="start_out">Synchronization is enabled</string>
 
+    <string name="ipfs_open_tip">1.What are the advantages of cloud storage?\n\tAfter starting cloud storage, the local authentication information of your mobile phone can be encrypted and uploaded to the cloud. When you delete your wallet and re-import or replace the device, you can synchronize the authentication information to the mobile phone without re-authentication.\n\n2.Where is the data stored?\n\tThe data is stored in IPFS, a network transmission protocol system for distributed storage and file sharing. Data will be stored in a decentralized way, which is more stable and efficient than the traditional way.\n\n3.Is cloud storage secure?\n\tYes, the data will be encrypted with AES - a symmetric encryption algorithm - and stored in IPFS. Only you can decrypt it with your own password.\n\n4.What's the use of cloud storage password?\n\tCloud storage password is used to unlock the encrypted personal data. The password is not stored by system. If it is lost then it cannot be retrieved, please keep it properly.\n\n</string>
+
+    <string name="ipfs_title1">Password Reset</string>
 
 </resources>

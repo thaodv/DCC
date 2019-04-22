@@ -3,6 +3,7 @@ package io.wexchain.android.dcc.modules.ipfs
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
+import io.wexchain.android.dcc.tools.getString
 import io.wexchain.dcc.R
 
 /**
@@ -66,18 +67,20 @@ object IpfsHelper {
 
     @JvmStatic
     fun getSeleTxt(status: IpfsStatus?, action: ActionType?, eventType: EventType?): String {
-        return if ((status == IpfsStatus.STATUS_DOWNLOAD || status == IpfsStatus.STATUS_UPLOAD) && action == ActionType.STATUS_NOSELECT&& eventType == EventType.STATUS_DEFAULT) {
-            "未选中"
-        } else if (status == IpfsStatus.STATUS_DOWNLOAD && action == ActionType.STATUS_SELECT&& eventType == EventType.STATUS_DEFAULT) {
-            "等待下载"
+        return if ((status == IpfsStatus.STATUS_DOWNLOAD || status == IpfsStatus.STATUS_UPLOAD) && action == ActionType.STATUS_NOSELECT && eventType == EventType.STATUS_DEFAULT) {
+            getString(R.string.ipfs_help_text1)
+        } else if (status == IpfsStatus.STATUS_DOWNLOAD && action == ActionType.STATUS_SELECT && eventType == EventType.STATUS_DEFAULT) {
+            getString(R.string.ipfs_help_text2)
         } else if (status == IpfsStatus.STATUS_UPLOAD && action == ActionType.STATUS_SELECT && eventType == EventType.STATUS_DEFAULT) {
-            "等待上传"
+            getString(R.string.ipfs_help_text3)
         } else if (eventType == EventType.STATUS_UPLOADING) {
-            "上传中.."
+            getString(R.string.ipfs_help_text4)
         } else if (eventType == EventType.STATUS_DOWNLOADING) {
-            "下载中.."
-        } else if (eventType == EventType.STATUS_COMPLETE) {
-            "已完成"
+            getString(R.string.ipfs_help_text5)
+        } else if (status == IpfsStatus.STATUS_UPLOAD && eventType == EventType.STATUS_COMPLETE) {
+            getString(R.string.ipfs_help_text6)
+        } else if (status == IpfsStatus.STATUS_DOWNLOAD && eventType == EventType.STATUS_COMPLETE) {
+            getString(R.string.ipfs_help_text6_1)
         } else {
             ""
         }
@@ -87,10 +90,10 @@ object IpfsHelper {
     fun getStatusTxt(status: IpfsStatus?): String {
         return status?.let {
             when (status) {
-                IpfsStatus.STATUS_DOWNLOAD -> "可下载"
-                IpfsStatus.STATUS_RECERTIFICATION -> "无可上传下载数据，建议重新认证"
-                IpfsStatus.STATUS_NEWEST -> "本地和云端数据均为最新数据"
-                IpfsStatus.STATUS_UPLOAD -> "可上传"
+                IpfsStatus.STATUS_DOWNLOAD -> getString(R.string.ipfs_help_text7)
+                IpfsStatus.STATUS_RECERTIFICATION -> getString(R.string.ipfs_help_text8)
+                IpfsStatus.STATUS_NEWEST -> getString(R.string.ipfs_help_text9)
+                IpfsStatus.STATUS_UPLOAD -> getString(R.string.ipfs_help_text10)
                 else -> ""
             }
         } ?: ""

@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:text="默认节点"
+            android:text="@string/ipfs_node_text4"
             android:textColor="@color/FF4A4A4A"
             android:textSize="16sp" />
     </LinearLayout>
@@ -75,7 +75,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/custom_img"
-            android:text="自定义节点"
+            android:text="@string/ipfs_node_text5"
             android:textColor="@color/FF4A4A4A"
             android:textSize="16sp" />
 
@@ -86,7 +86,7 @@
             android:layout_below="@id/custom_name"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_toRightOf="@id/custom_img"
-            android:text="尚未配置"
+            android:text="@string/ipfs_node_text1"
             android:textColor="@color/text_min"
             android:textSize="14sp" />
 
@@ -104,7 +104,6 @@
         android:id="@+id/custom_line"
         style="@style/DividerHorizontal"
         app:layout_constraintTop_toBottomOf="@id/custom_tag" />
-
 
     <TextView
         android:id="@+id/ipfs_node_tip"

@@ -48,7 +48,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="收单"
+                        android:text="@string/trust_trade"
                         android:textColor="#4a4a4a"
                         android:textSize="16sp"/>
 
@@ -169,7 +169,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="实际到账"
+                        android:text="@string/payment_trans_detail_toaccount"
                         android:textColor="#4a4a4a"
                         android:textSize="16sp"/>
 
@@ -200,7 +200,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="备注"
+                        android:text="@string/mark1"
                         android:textColor="#4a4a4a"
                         android:textSize="16sp"/>
 

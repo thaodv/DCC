@@ -62,14 +62,13 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:padding="14dp"
+                    android:padding="10dp"
                     android:src="@drawable/arrow_right"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
                     android:layout_toLeftOf="@+id/iv_phone"
                     android:text="@string/change_bind"
                     android:textColor="#4A4A4A"
@@ -103,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/tv_pay_passwd"
                     android:text="@string/trust_pocket_setting_tip1"
                     android:textColor="#9B9B9B"
@@ -115,14 +114,13 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:padding="14dp"
+                    android:padding="10dp"
                     android:src="@drawable/arrow_right"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
                     android:layout_toLeftOf="@+id/iv_pay_passwd"
                     android:text="@string/modify"
                     android:textColor="#4A4A4A"
@@ -168,14 +166,13 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:padding="14dp"
+                    android:padding="10dp"
                     android:src="@drawable/arrow_right"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
                     android:layout_toLeftOf="@+id/iv_real"
                     android:text="@string/verify"
                     android:textColor="#4A4A4A"

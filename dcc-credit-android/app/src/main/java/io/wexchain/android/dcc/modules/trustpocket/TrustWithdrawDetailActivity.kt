@@ -15,6 +15,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityTrustWithdrawDetailBinding
 import io.wexchain.ipfs.utils.doMain
 
+@SuppressLint("SetTextI18n")
 class TrustWithdrawDetailActivity : BindActivity<ActivityTrustWithdrawDetailBinding>() {
 
     private val mId get() = intent.getStringExtra("id")
@@ -29,7 +30,6 @@ class TrustWithdrawDetailActivity : BindActivity<ActivityTrustWithdrawDetailBind
         getWithdrawOrder(mId)
     }
 
-    @SuppressLint("SetTextI18n")
     private fun getWithdrawOrder(id: String) {
         GardenOperations
                 .refreshToken {

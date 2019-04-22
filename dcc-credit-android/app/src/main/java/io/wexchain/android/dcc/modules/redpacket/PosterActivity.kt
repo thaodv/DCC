@@ -36,10 +36,10 @@ class PosterActivity : BindActivity<ActivityPosterBinding>() {
                 onError = {
                     toast(if (it is DccChainServiceException)
                         it.message!!
-                    else "保存失败")
+                    else getString(R.string.toast_msg9))
                 },
                 onSuccess = {
-                    toast("已保存至相册")
+                    toast(getString(R.string.toast_msg11))
                 })
 
         App.get().marketingApi

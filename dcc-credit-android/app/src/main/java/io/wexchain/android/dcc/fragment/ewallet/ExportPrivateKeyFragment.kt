@@ -41,10 +41,10 @@ class ExportPrivateKeyFragment : BaseCompatFragment() {
                 onError = {
                     toast(if (it is DccChainServiceException)
                         it.message!!
-                    else "二维码保存失败")
+                    else getString(R.string.toast_msg13))
                 },
                 onSuccess = {
-                    toast("二维码已保存至: $it")
+                    toast(getString(R.string.toast_msg13)+" $it")
                 })
         binding.tvPrivateKey.setInterceptScroll()
         return binding.root

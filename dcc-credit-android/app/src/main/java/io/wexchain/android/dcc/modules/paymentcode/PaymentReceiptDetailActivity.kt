@@ -38,7 +38,7 @@ class PaymentReceiptDetailActivity : BindActivity<ActivityPaymentReceiptDetailBi
 
 
             val deleteDialog = DeleteAddressBookDialog(this)
-            deleteDialog.mTvText.text = "确认关闭吗？关闭后他人无法向该笔收款发起付款？"
+            deleteDialog.mTvText.text = getString(R.string.dialog_text5)
             deleteDialog.mTvText.gravity = Gravity.CENTER_HORIZONTAL
             deleteDialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
                 override fun cancel() {}

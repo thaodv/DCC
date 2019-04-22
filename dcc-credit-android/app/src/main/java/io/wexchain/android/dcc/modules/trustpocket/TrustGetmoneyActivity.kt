@@ -32,7 +32,7 @@ class TrustGetmoneyActivity : BindActivity<ActivityTrustGetmoneyBinding>() {
         getDepositWallet(mCode)
 
         binding.btSave.onClick {
-            toast("分享")
+            toast(getString(R.string.payment_share_page_title))
             val ss = binding.ivPassportQr.toBitmap()
             GardenOperations.sharePic(ss) {
                 toast(it)

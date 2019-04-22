@@ -16,6 +16,7 @@ import io.wexchain.android.dcc.tools.formatSize
 import io.wexchain.android.dcc.tools.toBean
 import io.wexchain.android.dcc.tools.toJson
 import io.wexchain.android.dcc.vm.ViewModelHelper
+import io.wexchain.dcc.R
 import io.wexchain.dccchainservice.ChainGateway
 import io.wexchain.dccchainservice.DccChainServiceException
 import io.wexchain.digitalwallet.Erc20Helper
@@ -235,7 +236,7 @@ class IpfsService : Service() {
                 .flatMap {
                     //获取nonce 和 token
                     if (IpfsOperations.VERSION.toInt() < (it[2] as Uint256).value.toInt()) {
-                        Single.error(DccChainServiceException("云存储数据加密算法已升级，为确保该功能可以继续使用，请更新APP到最新版本。"))
+                        Single.error(DccChainServiceException(getString(R.string.toast_ipfs_msg13)))
                     } else {
                         nonce = BigInteger((it[5] as DynamicBytes).value)
                         Single.just((it[4] as Utf8String).value)

@@ -219,17 +219,17 @@
             android:label="@string/title_open_cloud"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.ResetPasswordActivity"
-            android:label="重置密码"/>
+            android:label="@string/ipfs_title1"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.MyCloudActivity"
-            android:label="我的云存储"/>
+            android:label="@string/open_ipfs_text1"/>
         <activity android:name="io.wexchain.android.dcc.modules.ipfs.activity.CloudAddressActivity"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.SelectNodeActivity"
-            android:label="选择节点"/>
+            android:label="@string/edit_ipfs_text7"/>
         <activity
             android:name="io.wexchain.android.dcc.modules.ipfs.activity.EditNodeActivity"
-            android:label="编辑节点"/>
+            android:label="@string/edit_ipfs_text6"/>
 
         <service android:name="io.wexchain.android.dcc.modules.ipfs.service.IpfsService"/>
 

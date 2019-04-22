@@ -39,18 +39,18 @@ class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
 
         initToolbar()
         if (TYPE == SettingActivity.OPEN_CLOUD) {
-            title = "我的云存储"
-            hint = "请输入8-20位云存储密码"
-            binding.ivDescribe.text = "您的钱包已开启数据云存储功能，请输入云存储密码以便将云端存储的数据下载到手机本地。"
-            binding.tvLoadMore.text = "忘记密码"
+            title = getString(R.string.open_ipfs_text1)
+            hint = getString(R.string.open_ipfs_text2)
+            binding.ivDescribe.text = getString(R.string.open_ipfs_text3)
+            binding.tvLoadMore.text = getString(R.string.open_ipfs_text4)
             binding.tvLoadMore.onClick {
                 navigateTo(ResetPasswordActivity::class.java)
             }
         } else if (TYPE == SettingActivity.NOT_OPEN_CLOUD) {
-            title = "开启云存储"
-            hint = "设置8-20位云存储密码"
-            binding.ivDescribe.text = "您需要设置云存储密码以开启数据备份功能。云存储密码丢失后无法找回，请妥善保管。"
-            binding.tvLoadMore.text = "了解更多"
+            title = getString(R.string.open_ipfs_text5)
+            hint = getString(R.string.open_ipfs_text6)
+            binding.ivDescribe.text = getString(R.string.open_ipfs_text7)
+            binding.tvLoadMore.text = getString(R.string.open_ipfs_text8)
             binding.tvLoadMore.onClick {
                 CloudstorageDialog(this).createHelpDialog()
             }
@@ -67,13 +67,13 @@ class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
                 if (CommonUtils.checkPassword(pw)) {
                     createCloudPsw(pw)
                 } else {
-                    toast("输入云存储密码不符合要求,请检查")
+                    toast(getString(R.string.toast_ipfs_msg1))
                 }
             } else {
                 if (isPasswordValid(pw)) {
                     createCloudPsw(pw)
                 } else {
-                    toast("输入云存储密码不符合要求,请检查")
+                    toast(getString(R.string.toast_ipfs_msg1))
                 }
             }
 
@@ -92,7 +92,7 @@ class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
                     .filter {
                         val ipfsKey = passport.createIpfsKey(psw).toHex()
                         if (ipfsKey != it) {
-                            toast("密码输入有误")
+                            toast(getString(R.string.toast_ipfs_msg2))
                         } else {
                             val aesKey = passport.createIpfsAESKey(psw).toHex()
                             passport.setIpfsKeyHash(it)

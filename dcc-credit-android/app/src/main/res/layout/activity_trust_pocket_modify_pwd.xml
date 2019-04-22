@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="14dp"
-        android:text="请输入原支付密码"
+        android:text="@string/please_input_old_pwd"
         android:textColor="#4A4A4A"
         android:textSize="16sp"/>
 
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginRight="14dp"
-        android:text="忘记密码"
+        android:text="@string/trust_forget_pwd"
         android:textColor="#6144CC"
         android:textSize="14sp"/>
 

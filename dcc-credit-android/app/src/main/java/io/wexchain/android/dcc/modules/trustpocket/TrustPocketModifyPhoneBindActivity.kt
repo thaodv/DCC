@@ -75,7 +75,7 @@ class TrustPocketModifyPhoneBindActivity : BindActivity<ActivityTrustPocketModif
             viewModel.code.set("")
             val phoneNum = binding.etPhone.text.toString()
             if ("" == phoneNum) {
-                toast("请输入手机号码")
+                toast(getString(R.string.please_input_phone_no))
             } else {
                 requestReSendSmsCode("+$mDialCode$phoneNum")
             }
@@ -86,7 +86,7 @@ class TrustPocketModifyPhoneBindActivity : BindActivity<ActivityTrustPocketModif
             val checkCodeValue = binding.etCheckCode.text.toString()
 
             if ("" == checkCodeValue) {
-                toast("请输入验证码")
+                toast(getString(R.string.trust_pocket_open_hint2))
             } else {
                 updateMobile("+" + mDialCode + binding.etPhone.text.toString(), checkCodeValue)
             }

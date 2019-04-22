@@ -71,13 +71,13 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
         binding.apply {
             vm = getViewModel()
             asIdVm = getViewModel("ID")
-            asIdVm!!.name.set("实名认证数据")
+            asIdVm!!.name.set(getString(R.string.my_ipfs_text1))
             asBankVm = getViewModel("BANK")
-            asBankVm!!.name.set("银行卡认证数据")
+            asBankVm!!.name.set(getString(R.string.my_ipfs_text2))
             asCmVm = getViewModel("CM")
-            asCmVm!!.name.set("运营商通讯记录")
+            asCmVm!!.name.set(getString(R.string.my_ipfs_text3))
             asCmTnVm = getViewModel("CMTN")
-            asCmTnVm!!.name.set("同牛运营商通讯记录")
+            asCmTnVm!!.name.set(getString(R.string.my_ipfs_text4))
         }
     }
 
@@ -379,16 +379,16 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
     private fun errorStatus(b: String, t: Throwable) {
         when (b) {
             ChainGateway.BUSINESS_ID -> {
-                toast("实名认证信息上传失败")
+                toast(getString(R.string.toast_ipfs_msg9))
             }
             ChainGateway.BUSINESS_BANK_CARD -> {
-                toast("银行卡认证信息上传失败")
+                toast(getString(R.string.toast_ipfs_msg10))
             }
             ChainGateway.BUSINESS_COMMUNICATION_LOG -> {
-                toast("运营商认证信息上传失败")
+                toast(getString(R.string.toast_ipfs_msg11))
             }
             ChainGateway.TN_COMMUNICATION_LOG -> {
-                toast("同牛认证信息上传失败")
+                toast(getString(R.string.toast_ipfs_msg12))
             }
         }
     }
@@ -404,7 +404,7 @@ class MyCloudActivity : BindActivity<ActivityMyCloudBinding>() {
                     if (it is DccChainServiceException) {
                         toast(it.message!!)
                     } else {
-                        toast("同步失败")
+                        toast(getString(R.string.toast_ipfs_msg3))
                     }
                 })
     }

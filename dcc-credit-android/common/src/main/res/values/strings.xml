@@ -404,15 +404,15 @@
     <string name="across_trans_tip_1">表示DCC从私链转移至公链；</string>
     <string name="across_trans_tip_2">表示DCC从公链转移至私链；</string>
     <string name="across_trans_count">转移数量</string>
-    <string name="across_trans_count1">可用数量:</string>
-    <string name="across_trans_count2">可用数量</string>
+    <string name="across_trans_count1">Available:</string>
+    <string name="across_trans_count2">Available</string>
     <string name="across_trans_private_count">私链数量:</string>
     <string name="across_trans_public_count">公链数量:</string>
     <string name="across_trans_private_tip"><font color="#ED190F">数量已超过私链数量</font></string>
     <string name="across_trans_public_tip"><font color="#ED190F">数量已超过公链数量</font></string>
     <string name="across_trans_tip1"><font color="#ED190F">数量已超过可用数量</font></string>
-    <string name="across_trans_poundage">手续费</string>
-    <string name="across_trans_toaccount_num">到账数量</string>
+    <string name="across_trans_poundage">Fee</string>
+    <string name="across_trans_toaccount_num">Received</string>
     <string name="all">All</string>
     <string name="Maximum_absenteeism">最高旷工费</string>
 
@@ -427,7 +427,7 @@
 
     <string name="trans_count">转移数量:</string>
     <string name="across_trans_poundage2">手续费:</string>
-    <string name="to_account_num">到账数量:</string>
+    <string name="to_account_num">Received:</string>
 
     <string name="this_week">Current Week</string>
     <string name="this_month">Current Month</string>
@@ -453,9 +453,9 @@
     <string name="select_node_red"><font color='#9B9B9B'>（网络质量差）</font></string>
     <string name="select_node_timeout"><font color='#9B9B9B'>[连接失败]</font></string>
     <string name="title_open_cloud">开启云存储</string>
-    <string name="ipfs_select_node_tip">说明：\n
-云端数据默认存储在Bit Express提供的节点，您也可以自己搭建节点，选择把数据存储在自建节点上。
-        搭建节点教程可以访问 <u>https://open.dcc.finance/cn/sdk/ipfs.html</u></string>
+    <string name="ipfs_select_node_tip">Instruction：\n
+Cloud data is stored by default on the nodes provided by Bit Express. You can also build your own nodes and choose to store the data on your self-built nodes.
+       The Building Node Tutorial can be accessed at<u>https://open.dcc.finance/cn/sdk/ipfs.html</u></string>
     <string name="service_bsx_title">多币种预计年化 <font color='#ff0000'>10%-40%</font> </string>
 
     <string name="bsx_buy_again"><![CDATA[想再买点？去市场看看 >]]></string>
@@ -463,13 +463,15 @@
     <string name="skip_creat"><font color='#C009FF'>Skip</font></string>
     <string name="from_gallery"><font color='#C009FF'>Album</font></string>
 
+    <string name="skip">Skip</string>
+
     <string name="service_cash_title"> <font color='#7B40FF'>1000元</font> 现金立等可取</string>
     <string name="cash_loan_perfect">已完善</string>
     <string name="cash_loan_perfect_no">去完善</string>
 
     <string name="redpacket_tip">“阳光可以领取糖果奖励，\n参与知识问答PK！”</string>
 
-    <string name="trust_transfer_tip">注：\n使用转账功能会转入对方的托管钱包，如要转到自己或他人的数字钱包，请使用<font color='#6144CC'>提币</font>功能</string>
+    <string name="trust_transfer_tip">Note: \nTransfer allows you to transfer to a Escrow Account, if you want to transfer to a Wallet, please use <font color='#6144CC'>Withdraw</font>.</string>
     <string name="trust_recharge_from_digest"><u>Deposit from wallet</u></string>
 
     <string name="date_picker_longvaild">Never</string>
@@ -522,8 +524,12 @@
     <string name="payment_add_bigger">需大于</string>
     <string name="payment_add_smallest">Minimum</string>
 
+    <string name="payment_add_toast_text1">请填写标题</string>
+    <string name="payment_add_toast_text2">请填写说明</string>
+    <string name="payment_add_toast_text3">请输入金额</string>
+
     <string name="payment_trans_detail_page_title">Transaction Details</string>
-    <string name="payment_trans_detail_status1">支付成功</string>
+    <string name="payment_trans_detail_status1">Success</string>
     <string name="payment_trans_detail_title">Title</string>
     <string name="payment_trans_detail_mark">Description</string>
     <string name="payment_trans_detail_transtime">Time</string>
@@ -531,6 +537,7 @@
     <string name="payment_trans_detail_user_mark">Remarks</string>
     <string name="payment_trans_detail_user_mark1">Remarks：</string>
     <string name="payment_trans_detail_account">Amount paid</string>
+    <string name="payment_trans_detail_account1">Amount paid</string>
     <string name="payment_trans_detail_fee">Merchant Fee</string>
     <!--<string name="payment_trans_detail_fee">Merchant Fee</string>-->
     <string name="payment_trans_detail_toaccount">Received</string>
@@ -603,6 +610,7 @@
     <string name="modify">Reset</string>
     <string name="finger_pay">Pay with Touch ID</string>
     <string name="coin_type">Currency</string>
+    <string name="scan">Scan</string>
     <string name="save_image">Save image</string>
     <string name="copy_address">Copy</string>
     <string name="mark1">Remarks</string>
@@ -619,10 +627,30 @@
     <string name="trust_pocket_set_new_passwd">Set payment password</string>
     <string name="trust_pocket_setting_title">Escrow Account settings</string>
 
+    <string name="trust_pocket_success_text1">Escrow Account created successfully!</string>
+    <string name="trust_pocket_success_text2">Verify now</string>
+    <string name="trust_pocket_success_text3">In order to protect account security, it is recommended to complete real-name authentication immediately</string>
+
+    <string name="trust_forget_pwd">Forget Password</string>
+    <string name="trust_forget_pwd1">Forget your password?</string>
+
+    <string name="trust_change_text1">Verify your current phone number</string>
+
+    <string name="please_input_old_pwd">Enter the original payment password</string>
+
+    <string name="dialog_text1">Enter payment password</string>
+    <string name="dialog_text2">结束时间不能小于起始时间</string>
+    <string name="dialog_text3">The default expiration date is Never, but you can select any expiration date within 7 days.</string>
+    <string name="dialog_text4">您的收入金额为订单金额*（1-手续费率）；手续费率可能根据实际情况调整，具体请关注官网信息</string>
+    <string name="dialog_text5">确认关闭吗？关闭后他人无法向该笔收款发起付款？</string>
+    <string name="dialog_text6">You have backed up real-name authentication data in the cloud, so you do not need to authenticate again after downloading data.</string>
+    <string name="dialog_text7">Download</string>
+
     <string name="type">Type</string>
     <string name="time">Time</string>
     <string name="account">Account</string>
     <string name="trust_pay">Pay</string>
+    <string name="trust_trade">Trade</string>
     <string name="trust_get">Receive</string>
     <string name="nick_name">Nickname</string>
     <string name="nick_name1">Nickname：</string>
@@ -655,7 +683,7 @@
     <string name="trust_pocket_transfer_text5">Enter the account address</string>
     <string name="trust_pocket_transfer_text6">该钱包地址不存在，请检查后重试</string>
     <string name="trust_pocket_transfer_text7">超过可提总量</string>
-    <string name="trust_pocket_transfer_text8">请确认对方信息是否正确！</string>
+    <string name="trust_pocket_transfer_text8">Please check the recipient\'s information!</string>
     <string name="trust_pocket_transfer_text9">提币数量加手续费超过可用数量</string>
     <string name="trust_pocket_transfer_text10">币种和提币地址不匹配</string>
 
@@ -703,6 +731,83 @@
     <string name="toast_msg5">您至少需要在系统设置中添加一个指纹</string>
     <string name="toast_msg6">开启成功</string>
     <string name="toast_msg7">Date range should not exceed 1 month!</string>
+    <string name="toast_msg8">请先开通托管钱包</string>
+    <string name="toast_msg9">Save failed</string>
+    <string name="toast_msg10">Save successful</string>
+    <string name="toast_msg11">已保存至相册</string>
+    <string name="toast_msg12">Save failed, the node did not respond</string>
+    <string name="toast_msg13">二维码保存失败</string>
+    <string name="toast_msg14">二维码已保存至:</string>
+    <string name="toast_msg15">长按保存海报</string>
+
+    <string name="toast_ipfs_msg1">输入云存储密码不符合要求,请检查</string>
+    <string name="toast_ipfs_msg2">Incorrect password!Please enter again.</string>
+    <string name="toast_ipfs_msg3">Sync failed</string>
+    <string name="toast_ipfs_msg4">Please enter Public IP Address!</string>
+    <string name="toast_ipfs_msg5">Please enter Port Number!</string>
+    <string name="toast_ipfs_msg6">Copied!</string>
+    <string name="toast_ipfs_msg7">Copied!</string>
+    <string name="toast_ipfs_msg8">Copied!</string>
+    <string name="toast_ipfs_msg9">实名认证信息上传失败</string>
+    <string name="toast_ipfs_msg10">银行卡认证信息上传失败</string>
+    <string name="toast_ipfs_msg11">运营商认证信息上传失败</string>
+    <string name="toast_ipfs_msg12">同牛认证信息上传失败</string>
+    <string name="toast_ipfs_msg13">云存储数据加密算法已升级，为确保该功能可以继续使用，请更新APP到最新版本。</string>
+
+    <string name="ipfs_help_text1">Not selected</string>
+    <string name="ipfs_help_text2">To be downloaded</string>
+    <string name="ipfs_help_text3">To be uploaded</string>
+    <string name="ipfs_help_text4">Uploading</string>
+    <string name="ipfs_help_text5">Downloading</string>
+    <string name="ipfs_help_text6">Uploaded</string>
+    <string name="ipfs_help_text6_1">Downloaded</string>
+    <string name="ipfs_help_text7">Downloadable</string>
+    <string name="ipfs_help_text8">No data can be uploaded/downloaded, you are recommended to re-authenticate</string>
+    <string name="ipfs_help_text9">Local and cloud data are up-to-date</string>
+    <string name="ipfs_help_text10">Uploadable</string>
+
+    <string name="my_ipfs_text1">Real-name authentication data</string>
+    <string name="my_ipfs_text2">Card Authentication Data</string>
+    <string name="my_ipfs_text3">Operator Communication Records</string>
+    <string name="my_ipfs_text4">同牛运营商通讯记录</string>
+    <string name="my_ipfs_text5">Data can be synced</string>
+    <string name="my_ipfs_text6">Start Synchronization</string>
+    <string name="my_ipfs_text7">Reset Cloud Storage Password</string>
+    <string name="my_ipfs_text8">Copy Hash</string>
+    <string name="my_ipfs_text9">Copy Address</string>
+    <string name="my_ipfs_text10">Gateway Address</string>
+    <string name="my_ipfs_text11">Gateway Address：</string>
+    <string name="my_ipfs_text12">A unique Hash will be obtained after the data encrypted and stored in IPFS, and you can access and download the data you stored by the Hash.</string>
+
+    <string name="edit_ipfs_text1">Public IP Address</string>
+    <string name="edit_ipfs_text2">Please enter public domain name or IP</string>
+    <string name="edit_ipfs_text3">Port Number</string>
+    <string name="edit_ipfs_text4">Please enter port number</string>
+    <string name="edit_ipfs_text5">Save</string>
+    <string name="edit_ipfs_text6">Edit Node</string>
+    <string name="edit_ipfs_text7">Choose Node</string>
+
+    <string name="ipfs_dialog_text1">Data can be synced</string>
+    <string name="ipfs_dialog_text2">Only authentication data synchronization to the cloud is currently supported.If the authentication data and the latest records on the chain are identical, they can be uploaded or downloaded. If they are inconsistent, they can not be uploaded or downloaded even if there is local data or data in the cloud. Re-authentication is recommended before uploading again.</string>
+    <string name="ipfs_dialog_text3">Got It</string>
+
+    <string name="open_ipfs_text1">My Cloud Storage</string>
+    <string name="open_ipfs_text2">Please enter an 8-20 bit password</string>
+    <string name="open_ipfs_text3">Your wallet has started data cloud storage. Please enter the cloud storage password to download the data stored in the cloud to the local mobile phone.</string>
+    <string name="open_ipfs_text4">Forget your password?</string>
+    <string name="open_ipfs_text5">Start Using Cloud Storage</string>
+    <string name="open_ipfs_text6">Please set an 8-20 bit password</string>
+    <string name="open_ipfs_text7">You need to set the cloud storage password to start cloud storage.\nCloud storage password can not be retrieved after lost, please keep it properly.</string>
+    <string name="open_ipfs_text8">Learn More</string>
+    <string name="open_ipfs_text9">Cloud Storage Password</string>
+    <string name="open_ipfs_text10">Confirm</string>
+    <string name="open_ipfs_text11">If you forget your password or want to change it, you can reset password.\n\nBecause the cloud data is encrypted by the old password, it will be deleted completely after resetting the password  (the local data of the mobile phone will not be affected). You need to set a new password before uploading the data to the cloud. Please operate with caution.</string>
+
+    <string name="ipfs_node_text1">Not yet configured</string>
+    <string name="ipfs_node_text2">Custom node is not accessible and we will switch to the default node for you</string>
+    <string name="ipfs_node_text3">Port</string>
+    <string name="ipfs_node_text4">Default Node</string>
+    <string name="ipfs_node_text5">Custom Node</string>
 
     <string name="trust_passwd_text1">您的密码已被暂时锁定，请等待解锁</string>
     <string name="trust_passwd_text2">确定要退出吗？</string>
@@ -710,5 +815,9 @@
     <string name="trust_passwd_text4">退出</string>
     <string name="trust_passwd_text5">密码输入错误，超过3次将被锁定3小时，您还有</string>
     <string name="trust_passwd_text6">次机会</string>
+
+    <string name="current_holding">Holding</string>
+
+    <string name="be_cert_home_text1">Authentication Data Cloud Storage ></string>
 
 </resources>

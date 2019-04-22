@@ -42,7 +42,6 @@ import io.wexchain.dcc.databinding.ActivityTrustTransferBinding
 import io.wexchain.dccchainservice.domain.Result
 import io.wexchain.dccchainservice.domain.trustpocket.TransferBean
 import io.wexchain.dccchainservice.domain.trustpocket.ValidatePaymentPasswordBean
-import io.wexchain.digitalwallet.util.isNumberkeep8
 import io.wexchain.ipfs.utils.doMain
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -113,33 +112,29 @@ class TrustTransferActivity : BindActivity<ActivityTrustTransferBinding>() {
                 toast(getString(R.string.trust_pocket_transfer_text7))
             } else {
 
-                if (isNumberkeep8(mAccount)) {
-                    trustTransferDialog = TrustTransferDialog(this)
-                    trustTransferDialog.setParameters(mobile, address, "$mAccount $mCode", "$mTotalAccount $mCode")
+                trustTransferDialog = TrustTransferDialog(this)
+                trustTransferDialog.setParameters(mobile, address, "$mAccount $mCode", "$mTotalAccount $mCode")
 
-                    trustTransferDialog.setOnClickListener(object : TrustTransferDialog.OnClickListener {
-                        override fun transfer() {
+                trustTransferDialog.setOnClickListener(object : TrustTransferDialog.OnClickListener {
+                    override fun transfer() {
 
 
-                            val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
+                        val fingerPayStatus = ShareUtils.getBoolean(Extras.SP_TRUST_FINGER_PAY_STATUS, false)
 
-                            if (fingerPayStatus) {
-                                if (supportFingerprint()) {
-                                    initKey()
-                                    initCipher()
-                                } else {
-                                    checkPasswd()
-                                }
+                        if (fingerPayStatus) {
+                            if (supportFingerprint()) {
+                                initKey()
+                                initCipher()
                             } else {
                                 checkPasswd()
                             }
-
+                        } else {
+                            checkPasswd()
                         }
-                    })
-                    trustTransferDialog.show()
-                } else {
-                    toast("最多小数点后面8位")
-                }
+
+                    }
+                })
+                trustTransferDialog.show()
             }
         }
     }

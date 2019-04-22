@@ -37,10 +37,10 @@ class PaymentShareActivity : BindActivity<ActivityPaymentShareBinding>() {
                 onError = {
                     toast(if (it is DccChainServiceException)
                         it.message!!
-                    else "保存失败")
+                    else getString(R.string.toast_msg9))
                 },
                 onSuccess = {
-                    toast("保存成功")
+                    toast(getString(R.string.toast_msg10))
                 })
 
         binding.ivSave.onClick {

@@ -40,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="14dp"
-                    android:text="验证您现有手机号"
+                    android:text="@string/trust_change_text1"
                     android:textColor="#4A4A4A"
                     android:textSize="16sp"/>
 
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="14dp"
-                    android:text="验证码"
+                    android:text="@string/check_code"
                     android:textColor="#4A4A4A"
                     android:textSize="16sp"/>
 
@@ -82,7 +82,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="请输入验证码"
+                    android:hint="@string/trust_pocket_open_hint2"
                     android:inputType="number"
                     android:maxLines="1"
                     android:text="@={vm.code}"

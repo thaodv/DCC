@@ -25,6 +25,7 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ActivityPaymentAddBinding
 import io.wexchain.ipfs.utils.doMain
 
+@SuppressLint("SetTextI18n")
 class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
 
     override val contentLayoutId: Int get() = R.layout.activity_payment_add
@@ -43,14 +44,13 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
     private lateinit var mMinAmount: String
 
 
-    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
         initTimerPicker()
 
         binding.name = getString(R.string.select)
-        binding.tvDeadtimeValue.text = "长期有效"
+        binding.tvDeadtimeValue.text = getString(R.string.payment_add_deadtime_v)
 
         binding.paystyle.setFixChecked()
         binding.paystyle.setSelfUnChecked()
@@ -84,18 +84,18 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
         binding.btCreate.onClick {
 
             if ("" == binding.etTitle.text.toString()) {
-                toast("请填写标题")
+                toast(getString(R.string.payment_add_toast_text1))
             } else if ("" == binding.etDescription.text.toString()) {
-                toast("请填写说明")
+                toast(getString(R.string.payment_add_toast_text2))
             } else if (getString(R.string.select) == binding.tvName.text.toString()) {
                 toast(getString(R.string.please_choose_coin_type))
             } else {
                 if ("0" == mPayStyle) {
                     if ("" == binding.paystyle.etAmount) {
-                        toast("请输入金额")
+                        toast(getString(R.string.payment_add_toast_text3))
                     } else {
                         if (binding.paystyle.etAmount.toBigDecimal().compareTo(mMinAmount.toBigDecimal()) == -1) {
-                            toast("最少$mMinAmount")
+                            toast(getString(R.string.payment_add_smallest) + "$mMinAmount")
                         } else {
                             mAmount = binding.paystyle.etAmount
                             createGoods(binding.tvName.text.toString(), mAmount, binding.etTitle.text.toString(), binding.etDescription.text.toString())
@@ -111,8 +111,8 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
         binding.llQuestion.setOnClickListener {
 
             val deleteDialog = DeleteAddressBookDialog(this)
-            deleteDialog.mTvTips.text = "到期时间"
-            deleteDialog.mTvText.text = "默认长期有效，可以选择7天内的时间，到期后其他人无法通过链接付款"
+            deleteDialog.mTvTips.text = getString(R.string.payment_receipt_detail_deadtime)
+            deleteDialog.mTvText.text = getString(R.string.dialog_text3)
             deleteDialog.mTvText.gravity = Gravity.LEFT
             deleteDialog.setBtnText("", getString(R.string.confirm))
             deleteDialog.mBtSure.visibility = View.GONE
@@ -128,8 +128,8 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
 
         binding.ivQuestion2.onClick {
             val deleteDialog = DeleteAddressBookDialog(this)
-            deleteDialog.mTvTips.text = "手续费"
-            deleteDialog.mTvText.text = "您的收入金额为订单金额*（1-手续费率）；手续费率可能根据实际情况调整，具体请关注官网信息"
+            deleteDialog.mTvTips.text = getString(R.string.across_trans_poundage)
+            deleteDialog.mTvText.text = getString(R.string.dialog_text4)
             deleteDialog.mTvText.gravity = Gravity.LEFT
             deleteDialog.setBtnText("", getString(R.string.confirm))
             deleteDialog.mBtSure.visibility = View.GONE
@@ -169,7 +169,7 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
                     }
                 }, {
                     if ("createGoods.arg0.mobileUserId:must not be null" == it.message.toString()) {
-                        toast("请先开通托管钱包")
+                        toast(getString(R.string.toast_msg8))
                         navigateTo(TrustPocketOpenTipActivity::class.java)
                         finish()
                     } else {
@@ -228,7 +228,7 @@ class PaymentAddActivity : BindActivity<ActivityPaymentAddBinding>() {
         // 通过日期字符串初始化日期，格式请用：yyyy/MM/dd HH:mm
         mTimerPicker = CustomDatePicker(this, object : CustomDatePicker.Callback {
             override fun cancel() {
-                binding.tvDeadtimeValue.text = "长期有效"
+                binding.tvDeadtimeValue.text = getString(R.string.payment_add_deadtime_v)
                 mExpiredTimeValue = ""
             }
 

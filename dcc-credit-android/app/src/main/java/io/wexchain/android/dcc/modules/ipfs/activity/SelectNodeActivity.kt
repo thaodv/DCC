@@ -1,17 +1,18 @@
 package io.wexchain.android.dcc.modules.ipfs.activity
 
+import android.annotation.SuppressLint
 import android.content.ClipData
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.view.animation.AnimationUtils
 import io.reactivex.rxkotlin.subscribeBy
+import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.common.getClipboardManager
 import io.wexchain.android.common.navigateTo
 import io.wexchain.android.common.onClick
 import io.wexchain.android.common.toast
 import io.wexchain.android.dcc.App
-import io.wexchain.android.common.base.BaseCompatActivity
 import io.wexchain.android.dcc.view.dialog.CloudstorageDialog
 import io.wexchain.dcc.BuildConfig
 import io.wexchain.dcc.R
@@ -21,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_ipfs_select_node.*
 /**
  *Created by liuyang on 2018/8/27.
  */
+@SuppressLint("SetTextI18n")
 class SelectNodeActivity : BaseCompatActivity() {
 
     private val passport by lazy {
@@ -48,13 +50,13 @@ class SelectNodeActivity : BaseCompatActivity() {
         if (TextUtils.isEmpty(urlConfig.first) || TextUtils.isEmpty(urlConfig.second)) {
             default_tag.isClickable = false
             custom_tag.isClickable = false
-            custom_host.text = "尚未配置"
+            custom_host.text = getString(R.string.ipfs_node_text1)
         } else {
             default_tag.isClickable = true
             custom_tag.isClickable = true
             host = urlConfig.first
             port = urlConfig.second
-            custom_host.text = "${urlConfig.first} 端口${urlConfig.second}"
+            custom_host.text = "${urlConfig.first} " + getString(R.string.ipfs_node_text3) + "${urlConfig.second}"
             if (hostStatus) {
                 custom_img.visibility = View.INVISIBLE
                 default_img.visibility = View.VISIBLE
@@ -85,7 +87,7 @@ class SelectNodeActivity : BaseCompatActivity() {
                         custom_loding.visibility = View.VISIBLE
                     }
                     .doOnError {
-                        CloudstorageDialog(this).createTipsDialog(getString(R.string.tips), "自定义节点无法访问，将为您切换到默认节点", "确认")
+                        CloudstorageDialog(this).createTipsDialog(getString(R.string.tips), getString(R.string.ipfs_node_text2), getString(R.string.confirm2))
                     }
                     .doFinally {
                         custom_loding.clearAnimation()
@@ -100,8 +102,8 @@ class SelectNodeActivity : BaseCompatActivity() {
         }
 
         ipfs_node_tip.onClick {
-            getClipboardManager().primaryClip = ClipData.newPlainText("网址", "https://open.dcc.finance/cn/sdk/ipfs.html")
-            toast("网址复制成功")
+            getClipboardManager().primaryClip = ClipData.newPlainText("address", "https://open.dcc.finance/cn/sdk/ipfs.html")
+            toast(getString(R.string.toast_ipfs_msg6))
         }
     }
 }

@@ -40,24 +40,24 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
             }
         } else if ("TRANSFER-IN" == item.kind) {
 
-            if("TRANSFER" == item.type){
+            if ("TRANSFER" == item.type) {
                 navigateTo(TrustTransferDetailActivity::class.java) {
                     putExtra("id", item!!.requestIdentity.requestNo)
                     putExtra("type", "1")
                 }
-            }else{
+            } else {
                 navigateTo(TrustTransferGetDetailActivity::class.java) {
                     putExtra("id", item!!.requestIdentity.requestNo)
                     putExtra("type", "1")
                 }
             }
         } else {
-            if("TRANSFER" == item.type){
+            if ("TRANSFER" == item.type) {
                 navigateTo(TrustTransferDetailActivity::class.java) {
                     putExtra("id", item!!.requestIdentity.requestNo)
                     putExtra("type", "2")
                 }
-            }else{
+            } else {
                 navigateTo(TrustTransferGetDetailActivity::class.java) {
                     putExtra("id", item!!.requestIdentity.requestNo)
                     putExtra("type", "2")
@@ -307,7 +307,7 @@ class TrustTradeDetailActivity : BindActivity<ActivityTrustTradeDetailBinding>()
                     override fun sure() {
 
                         if (DateUtil.isRightSelect(trustTradeDetailTimeSelectDialog.mTvStartTime.text.toString().replace("/", ""), trustTradeDetailTimeSelectDialog.mTvEndTime.text.toString().replace("/", ""), "yyyyMMdd")) {
-                            toast("结束时间不能小于起始时间")
+                            toast(getString(R.string.dialog_text2))
                             return
                         }
 

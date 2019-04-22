@@ -105,7 +105,6 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
             }
         }
 
-
     }
 
     private fun getCloudToken() {
@@ -442,8 +441,8 @@ class MyCreditActivity : BindActivity<ActivityMyCreditBinding>() {
 
     private fun showIpfsDialog() {
         val dialog = DeleteAddressBookDialog(this@MyCreditActivity)
-        dialog.setTvText("您已在云端备份过实名认证数据，下载到本地后无需再次认证。")
-        dialog.setBtnText("去下载", getString(R.string.cancel))
+        dialog.setTvText(getString(R.string.dialog_text6))
+        dialog.setBtnText(getString(R.string.dialog_text7), getString(R.string.cancel))
         dialog.setOnClickListener(object : DeleteAddressBookDialog.OnClickListener {
             override fun cancel() {
                 dialog.dismiss()

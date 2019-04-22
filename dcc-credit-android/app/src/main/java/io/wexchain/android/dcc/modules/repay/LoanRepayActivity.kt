@@ -97,7 +97,7 @@ class LoanRepayActivity : BindActivity<ActivityLoanRepayBinding>() {
         binding.btnCopyAddress.setOnClickListener {
             val addr = binding.etRepayAddress.text?.toString()
             addr?.let {
-                getClipboardManager().primaryClip = ClipData.newPlainText("还币地址", addr)
+                getClipboardManager().primaryClip = ClipData.newPlainText("repayAddress", addr)
                 toast("已复制到剪贴板")
             }
         }
