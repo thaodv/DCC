@@ -764,7 +764,8 @@ Cloud data is stored by default on the nodes provided by Bit Express. You can al
     <string name="ipfs_help_text7">Downloadable</string>
     <string name="ipfs_help_text8">No data can be uploaded/downloaded, you are recommended to re-authenticate</string>
     <string name="ipfs_help_text9">Local and cloud data are up-to-date</string>
-    <string name="ipfs_help_text10">Uploadable</string>
+    <string name="ipfs_help_text10">Uploadable</string>Cloud Address
+    <string name="ipfs_help_text11">Cloud Address</string>
 
     <string name="my_ipfs_text1">Real-name authentication data</string>
     <string name="my_ipfs_text2">Card Authentication Data</string>

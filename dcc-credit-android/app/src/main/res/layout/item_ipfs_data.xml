@@ -88,7 +88,7 @@
             android:background="@drawable/round_rect_border"
             android:onClick="@{(v)->vm.addressClick()}"
             android:padding="5dp"
-            android:text="云端地址"
+            android:text="@string/ipfs_help_text11"
             android:textColor="@color/blue_magenta"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"

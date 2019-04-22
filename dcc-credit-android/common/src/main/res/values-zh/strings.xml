@@ -765,6 +765,7 @@
     <string name="ipfs_help_text8">无可上传下载数据，建议重新认证</string>
     <string name="ipfs_help_text9">本地和云端数据均为最新数据</string>
     <string name="ipfs_help_text10">可上传</string>
+    <string name="ipfs_help_text11">云端地址</string>
 
     <string name="my_ipfs_text1">实名认证数据</string>
     <string name="my_ipfs_text2">银行卡认证数据</string>

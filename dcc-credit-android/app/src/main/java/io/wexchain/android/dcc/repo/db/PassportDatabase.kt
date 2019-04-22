@@ -65,7 +65,8 @@ abstract class PassportDatabase : RoomDatabase() {
 
                 val contentValues = ContentValues()
                 contentValues.put(CurrencyMeta.COLUMN_CHAIN, Chain.publicEthChain.name)
-                contentValues.put(CurrencyMeta.COLUMN_CONTRACT_ADDRESS, "0x056fd409e1d7a124bd7017459dfea2f387b6d5cd")
+                //contentValues.put(CurrencyMeta.COLUMN_CONTRACT_ADDRESS, "0x056fd409e1d7a124bd7017459dfea2f387b6d5cd")
+                contentValues.put(CurrencyMeta.COLUMN_CONTRACT_ADDRESS, "0xcd30222ecee49341b3acb4b52ac4444c40fd2be3")
                 contentValues.put(CurrencyMeta.COLUMN_DECIMALS, 2)
                 contentValues.put(CurrencyMeta.COLUMN_SYMBOL, "GUSD")
                 contentValues.put(CurrencyMeta.COLUMN_DESCRIPTION, "Gemini dollar")
