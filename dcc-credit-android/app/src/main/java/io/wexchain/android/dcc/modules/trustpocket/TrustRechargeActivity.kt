@@ -106,7 +106,6 @@ class TrustRechargeActivity : BindActivity<ActivityTrustRechargeBinding>() {
         return digitalCurrency
     }
 
-    @SuppressLint("SetTextI18n")
     private fun getHolding(digitalCurrency: DigitalCurrency?) {
 
         if (null == digitalCurrency) {
