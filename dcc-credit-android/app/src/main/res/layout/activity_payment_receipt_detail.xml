@@ -125,9 +125,8 @@
                         android:gravity="center">
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:gravity="center">
 
                             <TextView
@@ -157,9 +156,8 @@
                             android:background="@color/white"/>
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:gravity="center">
 
                             <TextView

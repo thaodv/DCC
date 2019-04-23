@@ -2,6 +2,7 @@ package io.wexchain.android.dcc.view.dialog
 
 import android.app.Dialog
 import android.content.Context
+import android.view.Gravity
 import android.view.LayoutInflater
 import io.wexchain.android.common.onClick
 import io.wexchain.dcc.R
@@ -11,9 +12,9 @@ import kotlinx.android.synthetic.main.dialog_tips_cloud.*
 /**
  *Created by liuyang on 2018/8/13.
  */
-class CloudstorageDialog(context: Context):Dialog(context) {
+class CloudstorageDialog(context: Context) : Dialog(context) {
 
-    fun createHelpDialog(){
+    fun createHelpDialog() {
         this.setCancelable(false)
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.dialog_help_cloud, null)
@@ -30,8 +31,24 @@ class CloudstorageDialog(context: Context):Dialog(context) {
         show()
     }
 
+    fun createHelpDialog2() {
+        this.setCancelable(false)
+        val inflater = LayoutInflater.from(context)
+        val view = inflater.inflate(R.layout.dialog_help_cloud, null)
+        setContentView(view)
+        val dialogWindow = window
+        val lp = dialogWindow!!.attributes
+        lp.gravity = Gravity.CENTER
+        dialogWindow.attributes = lp
+        window.setBackgroundDrawableResource(R.drawable.background_holding2)
+        help_cancel.onClick {
+            dismiss()
+        }
+        show()
+    }
 
-    fun createTipsDialog(title:String? = null,about:String? = null,btn:String? = null){
+
+    fun createTipsDialog(title: String? = null, about: String? = null, btn: String? = null) {
         this.setCancelable(false)
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.dialog_tips_cloud, null)

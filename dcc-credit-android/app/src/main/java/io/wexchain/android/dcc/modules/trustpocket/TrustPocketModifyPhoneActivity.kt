@@ -46,7 +46,7 @@ class TrustPocketModifyPhoneActivity : BindActivity<ActivityTrustPocketModifyPho
                 .withLoading()
                 .subscribe({
                     phoneNum = it.mobile
-                    //binding.tvPhone.text = CommonUtils.phone(it.mobile)
+                    binding.tvPhone.text = CommonUtils.phone(it.mobile)
                 }, {
                     toast(it.message.toString())
                 })

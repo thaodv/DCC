@@ -3,6 +3,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/trade_records"
-        android:title="交易记录"
+        android:title="@string/trans_records"
         app:showAsAction="ifRoom"/>
 </menu>

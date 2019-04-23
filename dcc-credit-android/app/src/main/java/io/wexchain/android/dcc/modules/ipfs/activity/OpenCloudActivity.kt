@@ -52,7 +52,7 @@ class OpenCloudActivity : BindActivity<ActivityOpencloudBinding>() {
             binding.ivDescribe.text = getString(R.string.open_ipfs_text7)
             binding.tvLoadMore.text = getString(R.string.open_ipfs_text8)
             binding.tvLoadMore.onClick {
-                CloudstorageDialog(this).createHelpDialog()
+                CloudstorageDialog(this).createHelpDialog2()
             }
         }
         binding.inputPw = getViewModel<InputPasswordVm>().apply {
