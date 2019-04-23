@@ -21,7 +21,6 @@ import io.wexchain.dcc.R
 import io.wexchain.dcc.databinding.ItemTrustCoinQueryBinding
 import io.wexchain.dccchainservice.domain.trustpocket.TrustAssetBean
 import io.wexchain.ipfs.utils.doMain
-import java.math.RoundingMode
 
 class TrustChooseCoinActivity : BaseCompatActivity(), TextWatcher, ItemViewClickListener<TrustAssetBean> {
 
@@ -137,7 +136,7 @@ class TrustChooseCoinActivity : BaseCompatActivity(), TextWatcher, ItemViewClick
                         putExtra("code", code)
                         putExtra("name", name)
                         putExtra("value", it.availableAmount.assetValue.amount.toBigDecimal().setSelfScale(4))
-                        putExtra("value2", "≈" + CommonUtils.showCurrencySymbol() + it.availableAmount.legalTenderPrice.amount.toBigDecimal().divide(App.get().mUsdtquote.toBigDecimal(), 4, RoundingMode.DOWN).toPlainString())
+                        putExtra("value2", "≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue(it.availableAmount.legalTenderPrice.amount.toBigDecimal(), App.get().mUsdtquote.toBigDecimal(), 4))
                     }
 
                 }, {

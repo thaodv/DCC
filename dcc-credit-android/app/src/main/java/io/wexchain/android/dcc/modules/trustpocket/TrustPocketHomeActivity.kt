@@ -46,7 +46,7 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
 
         val cacheTrustAmount = ShareUtils.getString(Extras.SP_CACHE_TRUST_AMOUNT, "")
         if ("" != cacheTrustAmount) {
-            binding.totalPrice = "≈" + CommonUtils.showCurrencySymbol() + cacheTrustAmount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).setSelfScale(2)
+            binding.totalPrice = "≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue2(cacheTrustAmount.toBigDecimal(), App.get().mUsdtquote.toBigDecimal(), 2)
             binding.totalPrice2 = "≈" + cacheTrustAmount.toBigDecimal().setSelfScale(8) + " USDT"
         }
 
@@ -140,7 +140,7 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
                 .withLoading()
                 .subscribeBy(onSuccess = {
 
-                    mValue1 = "≈" + CommonUtils.showCurrencySymbol() + it.first.totalPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).setSelfScale(2)
+                    mValue1 = "≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue2(it.first.totalPrice.amount.toBigDecimal(), App.get().mUsdtquote.toBigDecimal(), 2)
                     mValue2 = "≈" + it.first.totalPrice.amount.toBigDecimal().setSelfScale(8) + " " + it.first.totalPrice.assetCode
 
                     binding.totalPrice = mValue1
@@ -179,7 +179,7 @@ class TrustPocketHomeActivity : BindActivity<ActivityTrustPocketHomeBinding>(), 
                                 if (tempCode == it.assetValue.assetCode) {
 
                                     res.value = it.assetValue.amount.toBigDecimal().setSelfScale(8)
-                                    res.value2 = "≈" + CommonUtils.showCurrencySymbol() + it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).toPlainString().toBigDecimal().setSelfScale(2)
+                                    res.value2 = "≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue2(it.legalTenderPrice.amount.toBigDecimal(), App.get().mUsdtquote.toBigDecimal(), 2)
                                     res.value3 = it.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal())
                                 }
                                 if (resultAsset.contains(res)) {

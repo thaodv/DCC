@@ -12,6 +12,7 @@ import android.text.style.ForegroundColorSpan
 import io.wexchain.android.common.checkLanguage
 import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.common.versionInfo
+import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.domain.CertificationType
 import io.wexchain.android.dcc.repo.db.BeneficiaryAddress
 import io.wexchain.android.dcc.tools.getString
@@ -263,7 +264,7 @@ object ViewModelHelper {
             val price = quote.price!!.toBigDecimalSafe()
             val value = dc.toDecimalAmount(holding) * price
             if (value.signum() != 0) {
-                return "≈¥${value.setSelfScale(4)}"
+                return "≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue(value, App.get().mUsdtquote.toBigDecimal(), 4)
             }
         }
         return "--"
@@ -635,7 +636,7 @@ object ViewModelHelper {
 
     @JvmStatic
     fun showRedPacketGetMoney(count: String): String {
-        return CommonUtils.showCurrencySymbol() + count + "红包"
+        return CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue(count.toBigDecimal(), App.get().mUsdtquote.toBigDecimal(), 2) + "红包"
     }
 
     @JvmStatic

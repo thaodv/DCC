@@ -77,11 +77,7 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
         const val SCAN_TYPE_ADDRESS = 0x1
 
         val qrDecodeFactory = DefaultDecoderFactory(
-                listOf(BarcodeFormat.QR_CODE),
-                null,
-                null,
-                false
-        )
+                listOf(BarcodeFormat.QR_CODE), null, null, false)
     }
 
     override val contentLayoutId: Int = R.layout.activity_qr_scanner
@@ -147,7 +143,7 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                         .doMain()
                         .withLoading()
                         .subscribe({
-                            if (it.beMember) {
+                            if (it.mobileUser) {
                                 getMemberAndMobileUserInfo(text)
                             } else {
                                 if ("ETH" == it.chainCode) {
@@ -287,6 +283,7 @@ class QrScannerPocketActivity : BindActivity<ActivityQrScannerBinding>() {
                         }
 
                         override fun cancel() {
+                            finish()
                         }
                     })
                     paymentCodePayDialog.show()

@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,6 +15,7 @@ import io.wexchain.android.common.constant.Extras
 import io.wexchain.android.common.constant.RequestCodes
 import io.wexchain.android.common.constant.ResultCodes
 import io.wexchain.android.common.onClick
+import io.wexchain.android.common.tools.EditInputFilter
 import io.wexchain.android.common.transTips
 import io.wexchain.android.dcc.App
 import io.wexchain.android.dcc.modules.addressbook.activity.AddressBookActivity
@@ -80,6 +82,11 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
             txVm.isEdit = true
             txVm.tx = tx
             dc = tx.digitalCurrency
+
+            initParameters(dc!!)
+
+            binding.etInputAmount.filters  = arrayOf<InputFilter>(EditInputFilter(dc!!.decimals))
+
             binding.etInputAmount.setText(tx.digitalCurrency.toDecimalAmount(tx.amount).setSelfScale(4))
             txVm.toAddress.set(tx.to)
             txVm.amount.set(tx.digitalCurrency.toDecimalAmount(tx.amount).setSelfScale(4))
@@ -159,6 +166,8 @@ class CreateTransactionActivity : BindActivity<ActivityCreateTransactionBinding>
         binding.url = if (null == dc.icon) "" else dc.icon
 
         title = ("${dc.symbol} " + getString(R.string.transfer))
+
+        binding.etInputAmount.filters  = arrayOf<InputFilter>(EditInputFilter(dc.decimals))
 
         binding.tvTransSymbol.text = dc.symbol
         App.get().assetsRepository.getBalance(dc, App.get().passportRepository.currPassport.value!!.address)

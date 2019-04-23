@@ -59,12 +59,35 @@ public class CommonUtils {
         return macAddress;
     }
     
-    public static BigDecimal showMoney(BigDecimal bigDecimal, BigDecimal exchangeRate, int scale, int
-            roundingMode) {
+    /**
+     * 根据语言返回响应的货币价值-人民币兑换美元
+     *
+     * @param bigDecimal   人民币价值
+     * @param exchangeRate 人民币兑美元汇率
+     * @param scale        精度
+     * @return
+     */
+    public static String showMoneyValue(BigDecimal bigDecimal, BigDecimal exchangeRate, int scale) {
         if (isRMB()) {
-            return bigDecimal;
+            return bigDecimal.toPlainString();
         } else {
-            return bigDecimal.divide(exchangeRate, scale, roundingMode);
+            return bigDecimal.divide(exchangeRate, scale, RoundingMode.DOWN).toPlainString();
+        }
+    }
+    
+    /**
+     * 根据语言返回响应的货币价值-美元兑换人民币
+     *
+     * @param bigDecimal   美元价值
+     * @param exchangeRate 人民币兑美元汇率
+     * @param scale        精度
+     * @return
+     */
+    public static String showMoneyValue2(BigDecimal bigDecimal, BigDecimal exchangeRate, int scale) {
+        if (isRMB()) {
+            return bigDecimal.multiply(exchangeRate).setScale(scale, RoundingMode.DOWN).toPlainString();
+        } else {
+            return bigDecimal.toPlainString();
         }
     }
     
@@ -73,7 +96,7 @@ public class CommonUtils {
     }
     
     public static boolean isRMB() {
-        if ("zh".equals(Locale.getDefault().getLanguage())) {
+        if (Locale.CHINESE == Locale.getDefault() || Locale.SIMPLIFIED_CHINESE == Locale.getDefault()) {
             return true;
         } else {
             return false;

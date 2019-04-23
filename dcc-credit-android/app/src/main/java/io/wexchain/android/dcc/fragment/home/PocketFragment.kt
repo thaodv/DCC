@@ -164,7 +164,7 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
 
                     val trustAmount = tempTrustAmount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal())
 
-                    mTrustValue = "≈" + CommonUtils.showCurrencySymbol() + trustAmount.setSelfScale(2)
+                    mTrustValue = "≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue(trustAmount, App.get().mUsdtquote.toBigDecimal(), 2)
 
                     binding.tvTrustAmount.text = mTrustValue
 
@@ -178,7 +178,7 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
 
                     //ShareUtils.setString(Extras.SP_CACHE_BSX_AMOUNT, bsxAccount)
 
-                    mBsxValue = "≈" + CommonUtils.showCurrencySymbol() + bsxAccount
+                    mBsxValue = "≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue(bsxAccount.toBigDecimal(), App.get().mUsdtquote.toBigDecimal(), 2)
 
                     binding.tvBsx.text = mBsxValue
 
@@ -198,7 +198,7 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                         res = digestAccountRnb.toBigDecimal()
                     }
 
-                    mValue1 = CommonUtils.showCurrencySymbol() + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).setSelfScale(2)
+                    mValue1 = CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue(trustAmount.plus(bsxAccount.toBigDecimal()).plus(res), App.get().mUsdtquote.toBigDecimal(), 2)
                     mValue2 = "≈" + trustAmount.plus(bsxAccount.toBigDecimal()).plus(res).divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setSelfScale(8) + " USDT"
 
                     binding.assetsAmountValue.text = mValue1
@@ -240,7 +240,7 @@ class PocketFragment : BindFragment<FragmentPocketBinding>(), ItemViewClickListe
                         res = digestAccountRnb.toBigDecimal()
                     }
 
-                    mValue1 = CommonUtils.showCurrencySymbol() + res.setSelfScale(2)
+                    mValue1 = CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue(res, App.get().mUsdtquote.toBigDecimal(), 2)
                     mValue2 = "≈" + res.divide(App.get().mUsdtquote.toBigDecimal(), 8, RoundingMode.DOWN).setSelfScale(8) + " USDT"
 
                 })

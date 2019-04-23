@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName
  */
 data class ParseBean(
         @SerializedName("beMember") val beMember: Boolean,
+        @SerializedName("mobileUser") val mobileUser: Boolean,
         @SerializedName("chainCode") val chainCode: String
         ) {
 }

@@ -25,7 +25,6 @@ import io.wexchain.dccchainservice.domain.PagedList
 import io.wexchain.dccchainservice.domain.trustpocket.GetBalanceLogBean
 import io.wexchain.dccchainservice.util.DateUtil
 import io.wexchain.ipfs.utils.doMain
-import java.math.RoundingMode
 import java.text.SimpleDateFormat
 
 @SuppressLint("SimpleDateFormat")
@@ -381,7 +380,7 @@ class TrustCoinDetailActivity : BindActivity<ActivityTrustCoinDetailBinding>(), 
                 .subscribe({
 
                     binding.holding = it.availableAmount.assetValue.amount.toBigDecimal().setSelfScale(8)
-                    binding.holdingValue = "≈" + CommonUtils.showCurrencySymbol() + it.availableAmount.legalTenderPrice.amount.toBigDecimal().multiply(App.get().mUsdtquote.toBigDecimal()).setScale(2, RoundingMode.DOWN).toPlainString()
+                    binding.holdingValue = "≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue2(it.availableAmount.legalTenderPrice.amount.toBigDecimal(), App.get().mUsdtquote.toBigDecimal(), 2)
 
                 }, {
                     if ("getBalance.arg0.mobileUserId:must not be null" == it.message.toString()) {

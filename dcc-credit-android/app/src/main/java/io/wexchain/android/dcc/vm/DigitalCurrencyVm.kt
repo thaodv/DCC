@@ -8,6 +8,7 @@ import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.wexchain.android.common.SingleLiveEvent
+import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.dcc.R
 import io.wexchain.digitalwallet.Chain
@@ -130,7 +131,7 @@ class DigitalCurrencyVm(application: Application) : AndroidViewModel(application
         if (coinDetail?.price == null) {
             holdingValueStr.set("--")
         } else {
-            holdingValueStr.set("≈¥${(c.toDecimalAmount(amount) * coinDetail.price!!.toBigDecimalSafe()).setSelfScale(4)}")
+            holdingValueStr.set("≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue(c.toDecimalAmount(amount) * coinDetail.price!!.toBigDecimalSafe(), App.get().mUsdtquote.toBigDecimal(), 4))
         }
     }
 
@@ -148,7 +149,7 @@ class DigitalCurrencyVm(application: Application) : AndroidViewModel(application
                 })
     }*/
 
-    private fun getCoinDetail(){
+    private fun getCoinDetail() {
         val symbol = dc.get()!!.symbol
         assetsRepository.getCoinDetail(symbol)
                 .subscribe({

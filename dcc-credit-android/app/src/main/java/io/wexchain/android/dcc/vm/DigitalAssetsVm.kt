@@ -9,6 +9,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.wexchain.android.common.SingleLiveEvent
 import io.wexchain.android.common.map
 import io.wexchain.android.common.stackTrace
+import io.wexchain.android.common.tools.CommonUtils
 import io.wexchain.android.dcc.App
 import io.wexchain.digitalwallet.DigitalCurrency
 import io.wexchain.digitalwallet.api.domain.front.CoinDetail
@@ -102,7 +103,7 @@ class DigitalAssetsVm(app: Application) : AndroidViewModel(app) {
         assetsSumValue.set(if ("" == sumString) {
             ""
         } else {
-            "≈¥$sumString"
+            "≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue(sumString.toBigDecimal(), App.get().mUsdtquote.toBigDecimal(), 2)
         })
         assetsSumValue2.set(if ("" == sumString) {
             ""
