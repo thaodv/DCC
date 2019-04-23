@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="14dp"
-                android:text="币种"
+                android:text="@string/coin_type"
                 android:textColor="#4A4A4A"
                 android:textSize="16sp"
                 />
@@ -187,7 +187,7 @@
                 android:id="@+id/tv_trans_tips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="可用数量:"
+                android:text="@string/across_trans_count1"
                 android:textColor="#404040"
                 android:textSize="16sp"/>
 
