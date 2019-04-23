@@ -69,7 +69,7 @@ public class CommonUtils {
      */
     public static String showMoneyValue(BigDecimal bigDecimal, BigDecimal exchangeRate, int scale) {
         if (isRMB()) {
-            return bigDecimal.toPlainString();
+            return bigDecimal.setScale(scale, RoundingMode.DOWN).toPlainString();
         } else {
             return bigDecimal.divide(exchangeRate, scale, RoundingMode.DOWN).toPlainString();
         }
@@ -87,7 +87,7 @@ public class CommonUtils {
         if (isRMB()) {
             return bigDecimal.multiply(exchangeRate).setScale(scale, RoundingMode.DOWN).toPlainString();
         } else {
-            return bigDecimal.toPlainString();
+            return bigDecimal.setScale(scale, RoundingMode.DOWN).toPlainString();
         }
     }
     
@@ -96,7 +96,8 @@ public class CommonUtils {
     }
     
     public static boolean isRMB() {
-        if (Locale.CHINESE == Locale.getDefault() || Locale.SIMPLIFIED_CHINESE == Locale.getDefault()) {
+        if (Locale.CHINESE.equals(Locale.getDefault()) || Locale.SIMPLIFIED_CHINESE.equals(Locale
+                .getDefault())) {
             return true;
         } else {
             return false;

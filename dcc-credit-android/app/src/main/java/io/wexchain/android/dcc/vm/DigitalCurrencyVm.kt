@@ -131,7 +131,7 @@ class DigitalCurrencyVm(application: Application) : AndroidViewModel(application
         if (coinDetail?.price == null) {
             holdingValueStr.set("--")
         } else {
-            holdingValueStr.set("≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue(c.toDecimalAmount(amount) * coinDetail.price!!.toBigDecimalSafe(), App.get().mUsdtquote.toBigDecimal(), 4))
+            holdingValueStr.set("≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue(c.toDecimalAmount(amount) * coinDetail.price!!.toBigDecimalSafe(), App.get().mUsdtquote.toBigDecimal(), 2))
         }
     }
 

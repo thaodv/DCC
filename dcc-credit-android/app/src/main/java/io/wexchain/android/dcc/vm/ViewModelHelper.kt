@@ -264,7 +264,7 @@ object ViewModelHelper {
             val price = quote.price!!.toBigDecimalSafe()
             val value = dc.toDecimalAmount(holding) * price
             if (value.signum() != 0) {
-                return "≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue(value, App.get().mUsdtquote.toBigDecimal(), 4)
+                return "≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue(value, App.get().mUsdtquote.toBigDecimal(), 2)
             }
         }
         return "--"

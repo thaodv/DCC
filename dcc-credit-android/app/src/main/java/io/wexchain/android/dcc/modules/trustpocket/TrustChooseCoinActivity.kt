@@ -136,7 +136,7 @@ class TrustChooseCoinActivity : BaseCompatActivity(), TextWatcher, ItemViewClick
                         putExtra("code", code)
                         putExtra("name", name)
                         putExtra("value", it.availableAmount.assetValue.amount.toBigDecimal().setSelfScale(4))
-                        putExtra("value2", "≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue(it.availableAmount.legalTenderPrice.amount.toBigDecimal(), App.get().mUsdtquote.toBigDecimal(), 4))
+                        putExtra("value2", "≈" + CommonUtils.showCurrencySymbol() + CommonUtils.showMoneyValue(it.availableAmount.legalTenderPrice.amount.toBigDecimal(), App.get().mUsdtquote.toBigDecimal(), 2))
                     }
 
                 }, {
